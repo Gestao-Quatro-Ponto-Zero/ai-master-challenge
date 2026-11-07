@@ -1,0 +1,253 @@
+.app-shell {
+  min-height: 100vh;
+}
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  background: var(--deep);
+  color: #a8bac7;
+  display: flex;
+  flex-direction: column;
+  padding: 32px 18px;
+  z-index: 2;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 0 9px;
+  color: #faf9f7;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+.g4-mark {
+  font-family: Manrope, sans-serif;
+  font-size: 33px;
+  font-weight: 800;
+  letter-spacing: -3px;
+}
+.g4-mark > span {
+  font-size: 17px;
+  letter-spacing: 0;
+  color: var(--gold);
+  vertical-align: top;
+  margin-left: 4px;
+}
+.brand-divider {
+  height: 32px;
+  width: 1px;
+  background: #37505e;
+}
+.brand-sub {
+  display: block;
+  font-size: 9px;
+  color: #bfa27a;
+  letter-spacing: 3px;
+  font-weight: 400;
+  margin-top: 4px;
+}
+.workspace-label {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: #8ba0ad;
+  margin: 52px 14px 18px;
+}
+.sidebar nav {
+  display: grid;
+  gap: 7px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  background: transparent;
+  color: #9aafbc;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  text-align: left;
+  padding: 13px 14px;
+  font-size: 12px;
+  transition: background 0.2s;
+}
+.nav-item:hover {
+  background: #122d3c;
+}
+.nav-item.active {
+  background: #233741;
+  color: #e4cfb0;
+  border-color: #4c4b42;
+}
+.nav-item.active svg {
+  color: #c5a16a;
+}
+.nav-count {
+  margin-left: auto;
+  background: var(--gold);
+  color: var(--deep);
+  border-radius: 4px;
+  padding: 2px 5px;
+  font-size: 10px;
+  font-weight: 700;
+}
+.side-tip {
+  border: 1px solid #28414e;
+  border-radius: 9px;
+  padding: 18px 15px;
+  margin: 55px 5px 24px;
+  background: linear-gradient(135deg, #163442, #0b2331);
+}
+.side-tip svg {
+  color: var(--gold);
+  margin-bottom: 15px;
+}
+.side-tip strong {
+  display: block;
+  font-size: 12px;
+  color: #dbe4e8;
+}
+.side-tip p {
+  font-size: 11px;
+  line-height: 1.8;
+  color: #97afbc;
+  margin-top: 8px;
+}
+.side-footer {
+  margin-top: auto;
+  padding: 0 10px;
+  font-size: 10px;
+  color: #a8bdc8;
+}
+.live-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #70a48a;
+  margin-right: 7px;
+  flex-shrink: 0;
+}
+.side-footer small {
+  display: block;
+  font-size: 9px;
+  color: #91a6b3;
+  margin: 10px 0 0 13px;
+}
+.challenge {
+  display: block;
+  font-size: 8px;
+  letter-spacing: 0.3px;
+  color: #91a6b3;
+  border-top: 1px solid #223b49;
+  padding-top: 21px;
+  margin-top: 23px;
+}
+main {
+  margin-left: 230px;
+  min-width: 0;
+}
+.topbar {
+  height: 83px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 38px;
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+  gap: 20px;
+}
+.breadcrumb {
+  font-size: 11px;
+  color: #7d8990;
+}
+.breadcrumb > span {
+  padding: 0 14px;
+  color: #aab2b5;
+}
+.breadcrumb strong {
+  font-weight: 500;
+  color: #3b4e5b;
+}
+.top-controls {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+.demo-label {
+  font-size: 8px;
+  letter-spacing: 1px;
+  color: #927e60;
+  background: #f8f4ed;
+  border: 1px solid #ebe2d5;
+  border-radius: 4px;
+  padding: 6px 8px;
+}
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #f0e9df;
+  color: #97764c;
+  font-size: 10px;
+  font-weight: 700;
+}
+.identity-text {
+  font-size: 9px;
+  color: #7d8990;
+}
+.identity select {
+  display: block;
+  background: none;
+  border: 0;
+  color: #314552;
+  font-size: 11px;
+  font-weight: 600;
+  max-width: 180px;
+  margin: 3px 0 0 -4px;
+}
+.page-content {
+  max-width: 1650px;
+  padding: 23px 38px 26px;
+  margin: auto;
+}
+.context-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 9px;
+  color: #7c858a;
+  margin-bottom: 29px;
+}
+.context-pill {
+  font-size: 8px;
+  letter-spacing: 1px;
+  color: #697e70;
+  display: flex;
+  align-items: center;
+}
+.context-pill .live-dot {
+  width: 5px;
+  height: 5px;
+}
+.context-dot {
+  margin: 0 7px;
+}
+.text-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #8c7453;
+  font-size: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.context-line > .text-button {
+  margin-left: auto;
+}

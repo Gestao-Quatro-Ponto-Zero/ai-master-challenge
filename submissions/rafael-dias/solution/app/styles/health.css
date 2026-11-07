@@ -1,0 +1,120 @@
+/* Evidence-based health, using the existing semantic palette. */
+.evidence-fields {
+  padding: 14px;
+  margin: 16px 0;
+  border: 1px solid #d5e1e7;
+  border-radius: 10px;
+  background: #f5f8fa;
+}
+.evidence-fields > p {
+  font-size: 11px;
+  line-height: 1.6;
+  margin: 7px 0 12px;
+  color: #5c7688;
+}
+.evidence-fields label {
+  margin-top: 10px;
+}
+.health-summary {
+  margin: 18px 0;
+}
+.health-summary > small {
+  display: block;
+  font-size: 10px;
+  line-height: 1.6;
+  color: #617c8e;
+  margin-bottom: 12px;
+}
+.health-factors {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 9px;
+}
+.health-factors li {
+  border-bottom: 1px solid #dce5eb;
+  padding-bottom: 7px;
+}
+.health-factors li > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 10px;
+}
+.health-factors li > div > span {
+  white-space: nowrap;
+  color: #607c8f;
+}
+.health-factors small {
+  display: block;
+  margin-top: 3px;
+  color: #6d8290;
+  font-size: 9px;
+  line-height: 1.6;
+}
+.health-disclosure {
+  margin-top: 12px;
+  color: #6d8290;
+  font-size: 9px;
+  line-height: 1.7;
+}
+.health-pill {
+  display: inline-flex;
+  border: 1px solid currentColor;
+  border-radius: 20px;
+  padding: 4px 9px;
+  font-size: 10px;
+  margin: 8px 0;
+  line-height: 1.4;
+}
+.health-pill-unknown {
+  color: #607e90;
+  background: #edf3f6;
+}
+.health-pill-green {
+  color: #177750;
+  background: #e5f5ec;
+}
+.health-pill-amber {
+  color: #8a6425;
+  background: #fff5dc;
+}
+.health-pill-red {
+  color: #a14543;
+  background: #fceceb;
+}
+.theme-dark .evidence-fields {
+  background: #1b384b;
+  border-color: #4b677a;
+}
+.theme-dark .evidence-fields > p,
+.theme-dark .health-summary > small,
+.theme-dark .health-factors small,
+.theme-dark .health-factors li > div > span,
+.theme-dark .health-disclosure {
+  color: #bdd0de;
+}
+.theme-dark .health-factors li {
+  border-color: #3c5668;
+}
+.theme-dark .health-factors strong {
+  color: #e0ecf5;
+}
+.theme-dark .health-pill-unknown {
+  color: #c4d8e6;
+  background: #294355;
+}
+.theme-dark .health-pill-green {
+  color: #8ce5b8;
+  background: #184638;
+}
+.theme-dark .health-pill-red {
+  color: #ffbbb6;
+  background: #4f2c2d;
+}
+.theme-dark .health-pill-amber {
+  color: #f3d296;
+  background: #463c27;
+}

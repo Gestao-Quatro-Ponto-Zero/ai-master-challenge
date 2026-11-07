@@ -1,0 +1,60 @@
+{
+  "total": 8800,
+  "open": 2089,
+  "missingAccounts": 1425,
+  "normalizedProducts": 1480,
+  "cycles": {
+    "Won": {
+      "count": 4238,
+      "mean": 51.781972628598396,
+      "median": 57
+    },
+    "Lost": {
+      "count": 2473,
+      "mean": 41.479175090982615,
+      "median": 14
+    },
+    "All": {
+      "count": 6711,
+      "mean": 47.98539710922366,
+      "median": 45
+    }
+  },
+  "references": {
+    "GTX Plus Basic": {
+      "days": 48,
+      "count": 1051,
+      "fallback": false
+    },
+    "GTX Pro": {
+      "days": 37,
+      "count": 1147,
+      "fallback": false
+    },
+    "MG Special": {
+      "days": 49,
+      "count": 1223,
+      "fallback": false
+    },
+    "GTX Basic": {
+      "days": 50,
+      "count": 1436,
+      "fallback": false
+    },
+    "MG Advanced": {
+      "days": 43,
+      "count": 1084,
+      "fallback": false
+    },
+    "GTX Plus Pro": {
+      "days": 38,
+      "count": 745,
+      "fallback": false
+    },
+    "GTK 500": {
+      "days": 45,
+      "count": 25,
+      "fallback": true
+    }
+  }
+}

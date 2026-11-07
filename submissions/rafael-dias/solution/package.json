@@ -1,0 +1,27 @@
+{
+  "name": "revenue-priority",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "next build",
+    "start": "next start --hostname 127.0.0.1",
+    "data": "node scripts/prepare-data.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "db:import": "node --env-file=.env.local scripts/import-supabase.mjs",
+    "format": "prettier --write app components features lib scripts tests",
+    "format:check": "prettier --check app components features lib scripts tests",
+    "check": "npm run format:check && npm test && npm run build"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.119.0",
+    "csv-parse": "^7.0.3",
+    "next": "16.4.5",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "prettier": "3.9.10"
+  }
+}

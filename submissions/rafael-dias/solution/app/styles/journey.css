@@ -1,0 +1,238 @@
+/* Visible journey and focused registration: no hidden steps or form fields. */
+.theme-switch {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: 70px;
+  height: 36px;
+  border: 1px solid #d5dfe7;
+  border-radius: 24px;
+  background: #edf2f6;
+  color: #627f95;
+  padding: 0 10px;
+  flex-shrink: 0;
+  isolation: isolate;
+  cursor: pointer;
+}
+.theme-switch > svg {
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+}
+.theme-thumb {
+  position: absolute;
+  z-index: 1;
+  left: 4px;
+  top: 4px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 1px 5px #17354b30;
+  transition: transform 0.18s;
+}
+.theme-switch[aria-checked="true"] {
+  background: #203d53;
+  border-color: #49657c;
+  color: #c5d7e6;
+}
+.theme-switch[aria-checked="true"] .theme-thumb {
+  transform: translateX(33px);
+  background: #4b6d88;
+}
+.client-details {
+  margin-top: 22px;
+}
+.client-details > h3:first-child {
+  font-size: 13px;
+  margin: 0 0 17px;
+  color: #547b96;
+}
+.playbook ol {
+  margin-top: 17px;
+}
+.guide-branches > h3 {
+  font-size: 14px;
+  color: #77618f;
+  line-height: 1.7;
+}
+.guide-branches > p {
+  font-size: 11px;
+  line-height: 1.8;
+}
+.guide-branches > button {
+  background: #f7f5fb;
+  border-color: #ded8e9;
+  padding: 15px;
+}
+.guide-branches > button strong {
+  font-size: 12px;
+  color: #705e88;
+}
+.guide-branches > button small {
+  font-size: 11px;
+  line-height: 1.9;
+  color: #7f718f;
+}
+.quick-record {
+  border: 2px solid #c6aa70;
+  background: #fcfaf5;
+  box-shadow: 0 4px 17px #9b7c3d0d;
+}
+.record-heading {
+  margin: 0 !important;
+  border-bottom: 1px solid #e1d2b5;
+  padding: 17px 18px;
+  font-size: 15px !important;
+  font-weight: 800;
+  color: #755927;
+  background: #f3e6cb;
+}
+.quick-record .activity-form {
+  padding: 0 20px 20px;
+}
+.quick-record .form-submit {
+  font-size: 13px;
+  font-weight: 700;
+  padding: 15px 18px;
+  box-shadow: 0 4px 13px #97702f29;
+}
+.record-intro {
+  font-size: 12px;
+  line-height: 1.8;
+  color: #7c8d96;
+  padding: 16px 20px 0;
+}
+.spin-guide {
+  overflow: visible;
+}
+.spin-context {
+  margin: 15px 18px;
+  padding: 12px 14px;
+  background: #f2f6f8;
+  border-left: 3px solid #8eabbf;
+  border-radius: 4px;
+}
+.spin-context strong {
+  font-size: 10px;
+  color: #6e8a9d;
+  font-weight: 600;
+}
+.spin-context p {
+  font-size: 11px;
+  color: #7a909d;
+  line-height: 1.8;
+  margin-top: 6px;
+}
+.spin-conversation {
+  display: grid;
+  gap: 12px;
+  padding: 0 16px 18px;
+}
+.spin-conversation .spin-question {
+  padding: 15px;
+  background: #f5f9fc;
+  border: 1px solid #dde8ef;
+  border-radius: 7px;
+}
+.spin-question h3 {
+  font-size: 12px;
+  color: #527c98;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 10px;
+}
+.spin-question h3 > span {
+  display: grid;
+  place-items: center;
+  border-radius: 5px;
+  background: #e0ebf3;
+  width: 27px;
+  height: 27px;
+  font:
+    700 15px Manrope,
+    Arial,
+    sans-serif;
+  color: #527c98;
+}
+.spin-conversation .spin-question p {
+  font-size: 14px;
+  line-height: 1.9;
+  margin: 0;
+  color: #365b75;
+}
+.spin-conversation .spin-question small {
+  font-size: 10px;
+  line-height: 1.8;
+  margin-top: 10px;
+  color: #8296a3;
+}
+.spin-conversation .spin-P {
+  background: #fff9ed;
+  border-color: #f0e2c7;
+}
+.spin-conversation .spin-P h3,
+.spin-conversation .spin-P h3 > span {
+  color: #a17b3e;
+}
+.spin-conversation .spin-P h3 > span {
+  background: #f5e9ce;
+}
+.spin-conversation .spin-I {
+  background: #fcf4f6;
+  border-color: #eedce2;
+}
+.spin-conversation .spin-I h3,
+.spin-conversation .spin-I h3 > span {
+  color: #a36d7e;
+}
+.spin-conversation .spin-I h3 > span {
+  background: #f1dfe6;
+}
+.spin-conversation .spin-N {
+  background: #f1f9f4;
+  border-color: #dbeade;
+}
+.spin-conversation .spin-N h3,
+.spin-conversation .spin-N h3 > span {
+  color: #548466;
+}
+.spin-conversation .spin-N h3 > span {
+  background: #dfede3;
+}
+.record-only {
+  width: min(590px, 94vw);
+}
+.record-only .dialog-body {
+  display: block;
+}
+.record-only .deal-work {
+  padding: 20px 25px 25px;
+}
+.record-only .quick-record {
+  margin-top: 0;
+}
+.record-only .dialog-header {
+  padding: 22px 25px;
+}
+.record-only .dialog-header h2 {
+  font-size: 22px;
+}
+.record-only .commitment {
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+.record-only .form-footnote {
+  font-size: 10px;
+}
+.record-only .activity-form label {
+  font-size: 12px;
+}
+.record-only .activity-form input,
+.record-only .activity-form textarea,
+.record-only .activity-form select {
+  font-size: 13px;
+}

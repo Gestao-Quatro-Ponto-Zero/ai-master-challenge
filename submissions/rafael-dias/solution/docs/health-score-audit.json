@@ -1,0 +1,24 @@
+{
+  "reviewDate": "2026-11-06",
+  "source": "data/prepared.json",
+  "sha256": "dc0fd8bf3b7ef3214a3958f894ac1331050948f6606a09857af011e18c3e0f0a",
+  "referenceDate": "2017-12-31",
+  "totalOpen": 2089,
+  "missingAccount": 1425,
+  "missingAccountPercent": 68.21445667783628,
+  "uniqueScores": 21,
+  "byStage": {
+    "Engaging": {
+      "count": 1589,
+      "min": 62,
+      "max": 95,
+      "missingAccount": 1088
+    },
+    "Prospecting": {
+      "count": 500,
+      "min": 32,
+      "max": 45,
+      "missingAccount": 337
+    }
+  }
+}

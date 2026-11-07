@@ -1,0 +1,1558 @@
+{
+  "purpose": "Comparação descritiva de composição; não mede conversão, lift ou eficácia do health score futuro.",
+  "source": "data/prepared.json",
+  "sourceSha256": "dc0fd8bf3b7ef3214a3958f894ac1331050948f6606a09857af011e18c3e0f0a",
+  "asOf": "2017-12-31",
+  "k": 5,
+  "eligibility": {
+    "open": 2089,
+    "identified": 664,
+    "missingAccountExcluded": 1425,
+    "sellersWithEligible": 27,
+    "commonPoolAndCapacity": true
+  },
+  "missingDates": "Idade ausente sempre por último nos comparadores temporais; não representa data de criação nem último contato.",
+  "reverseIdTieOverlapWithCurrentPercent": 77.8,
+  "summary": [
+    {
+      "key": "current",
+      "label": "Score atual",
+      "selected": 133,
+      "prospectingPercent": 1.5,
+      "averageCatalogUnitPriceUSD": 5031.5,
+      "averageKnownSnapshotAgeDays": 163.6,
+      "unknownAgePercent": 1.5,
+      "overTwoHistoricalCyclesPercent": 77.4,
+      "dominantProduct": "GTX Plus Pro",
+      "dominantProductPercent": 26.3,
+      "meanOverlapWithCurrentPercent": 100,
+      "products": [
+        {
+          "product": "GTX Plus Pro",
+          "count": 35
+        },
+        {
+          "product": "GTX Pro",
+          "count": 35
+        },
+        {
+          "product": "MG Advanced",
+          "count": 30
+        },
+        {
+          "product": "GTX Plus Basic",
+          "count": 13
+        },
+        {
+          "product": "GTX Basic",
+          "count": 9
+        },
+        {
+          "product": "GTK 500",
+          "count": 7
+        },
+        {
+          "product": "MG Special",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "key": "price",
+      "label": "Maior preço de catálogo",
+      "selected": 133,
+      "prospectingPercent": 17.3,
+      "averageCatalogUnitPriceUSD": 5891.4,
+      "averageKnownSnapshotAgeDays": 202.1,
+      "unknownAgePercent": 17.3,
+      "overTwoHistoricalCyclesPercent": 78.9,
+      "dominantProduct": "GTX Plus Pro",
+      "dominantProductPercent": 46.6,
+      "meanOverlapWithCurrentPercent": 63,
+      "products": [
+        {
+          "product": "GTX Plus Pro",
+          "count": 62
+        },
+        {
+          "product": "GTX Pro",
+          "count": 33
+        },
+        {
+          "product": "MG Advanced",
+          "count": 28
+        },
+        {
+          "product": "GTK 500",
+          "count": 7
+        },
+        {
+          "product": "GTX Basic",
+          "count": 2
+        },
+        {
+          "product": "GTX Plus Basic",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "key": "oldest",
+      "label": "Negociação mais antiga",
+      "selected": 133,
+      "prospectingPercent": 1.5,
+      "averageCatalogUnitPriceUSD": 2484.6,
+      "averageKnownSnapshotAgeDays": 269.5,
+      "unknownAgePercent": 1.5,
+      "overTwoHistoricalCyclesPercent": 98.5,
+      "dominantProduct": "MG Special",
+      "dominantProductPercent": 21.1,
+      "meanOverlapWithCurrentPercent": 33.3,
+      "products": [
+        {
+          "product": "MG Special",
+          "count": 28
+        },
+        {
+          "product": "GTX Basic",
+          "count": 25
+        },
+        {
+          "product": "GTX Plus Basic",
+          "count": 24
+        },
+        {
+          "product": "MG Advanced",
+          "count": 24
+        },
+        {
+          "product": "GTX Pro",
+          "count": 16
+        },
+        {
+          "product": "GTX Plus Pro",
+          "count": 14
+        },
+        {
+          "product": "GTK 500",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "key": "newest",
+      "label": "Negociação mais recente",
+      "selected": 133,
+      "prospectingPercent": 1.5,
+      "averageCatalogUnitPriceUSD": 2418.4,
+      "averageKnownSnapshotAgeDays": 122.7,
+      "unknownAgePercent": 1.5,
+      "overTwoHistoricalCyclesPercent": 75.9,
+      "dominantProduct": "MG Special",
+      "dominantProductPercent": 21.8,
+      "meanOverlapWithCurrentPercent": 45.9,
+      "products": [
+        {
+          "product": "MG Special",
+          "count": 29
+        },
+        {
+          "product": "GTX Plus Basic",
+          "count": 27
+        },
+        {
+          "product": "GTX Basic",
+          "count": 25
+        },
+        {
+          "product": "MG Advanced",
+          "count": 19
+        },
+        {
+          "product": "GTX Pro",
+          "count": 17
+        },
+        {
+          "product": "GTX Plus Pro",
+          "count": 14
+        },
+        {
+          "product": "GTK 500",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "key": "stage",
+      "label": "Estágio primeiro",
+      "selected": 133,
+      "prospectingPercent": 1.5,
+      "averageCatalogUnitPriceUSD": 3262.7,
+      "averageKnownSnapshotAgeDays": 189.9,
+      "unknownAgePercent": 1.5,
+      "overTwoHistoricalCyclesPercent": 95.5,
+      "dominantProduct": "GTX Pro",
+      "dominantProductPercent": 18.8,
+      "meanOverlapWithCurrentPercent": 43.7,
+      "products": [
+        {
+          "product": "GTX Pro",
+          "count": 25
+        },
+        {
+          "product": "GTX Basic",
+          "count": 23
+        },
+        {
+          "product": "MG Special",
+          "count": 23
+        },
+        {
+          "product": "GTX Plus Basic",
+          "count": 21
+        },
+        {
+          "product": "GTX Plus Pro",
+          "count": 21
+        },
+        {
+          "product": "MG Advanced",
+          "count": 16
+        },
+        {
+          "product": "GTK 500",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "key": "discovery",
+      "label": "Experimento: 20% para descoberta",
+      "selected": 133,
+      "prospectingPercent": 8.3,
+      "averageCatalogUnitPriceUSD": 5140.3,
+      "averageKnownSnapshotAgeDays": 164.3,
+      "unknownAgePercent": 8.3,
+      "overTwoHistoricalCyclesPercent": 70.7,
+      "dominantProduct": "GTX Plus Pro",
+      "dominantProductPercent": 27.8,
+      "meanOverlapWithCurrentPercent": 93.3,
+      "products": [
+        {
+          "product": "GTX Plus Pro",
+          "count": 37
+        },
+        {
+          "product": "GTX Pro",
+          "count": 37
+        },
+        {
+          "product": "MG Advanced",
+          "count": 29
+        },
+        {
+          "product": "GTX Plus Basic",
+          "count": 11
+        },
+        {
+          "product": "GTX Basic",
+          "count": 8
+        },
+        {
+          "product": "GTK 500",
+          "count": 7
+        },
+        {
+          "product": "MG Special",
+          "count": 4
+        }
+      ]
+    }
+  ],
+  "perSeller": [
+    {
+      "agent": "Maureen Marcano",
+      "eligible": 16,
+      "selections": {
+        "current": [
+          "DYNHHN6P",
+          "MV227O65",
+          "8LA72RM8",
+          "FZC2J90W",
+          "UP409DSB"
+        ],
+        "price": [
+          "MV227O65",
+          "DYNHHN6P",
+          "8LA72RM8",
+          "FZC2J90W",
+          "UP409DSB"
+        ],
+        "oldest": [
+          "UP409DSB",
+          "0DRC1U9Q",
+          "AI76U58A",
+          "FZC2J90W",
+          "F2B62IW4"
+        ],
+        "newest": [
+          "8LA72RM8",
+          "1UW6ILCH",
+          "H7GXKD3O",
+          "PODXJ4SP",
+          "WA4TPQ5U"
+        ],
+        "stage": [
+          "0DRC1U9Q",
+          "1UW6ILCH",
+          "8LA72RM8",
+          "8SVMGDPA",
+          "AI76U58A"
+        ],
+        "discovery": [
+          "DYNHHN6P",
+          "MV227O65",
+          "8LA72RM8",
+          "FZC2J90W",
+          "UP409DSB"
+        ]
+      }
+    },
+    {
+      "agent": "Corliss Cosme",
+      "eligible": 27,
+      "selections": {
+        "current": [
+          "0STR2QEA",
+          "5VYJCJAE",
+          "A5SCVK7E",
+          "BTUG5VDL",
+          "CJ2ON1LV"
+        ],
+        "price": [
+          "0STR2QEA",
+          "5VYJCJAE",
+          "A5SCVK7E",
+          "CVFUMOK9",
+          "HF74MC9F"
+        ],
+        "oldest": [
+          "M7I5O9YU",
+          "O7UUAK3Y",
+          "CJ2ON1LV",
+          "5VYJCJAE",
+          "BTUG5VDL"
+        ],
+        "newest": [
+          "A5SCVK7E",
+          "WZN26QZQ",
+          "5UFU5IO4",
+          "B3A6VXVQ",
+          "YT34YUZN"
+        ],
+        "stage": [
+          "0K59ZLQC",
+          "0STR2QEA",
+          "11V16SZZ",
+          "5UFU5IO4",
+          "5VYJCJAE"
+        ],
+        "discovery": [
+          "0STR2QEA",
+          "5VYJCJAE",
+          "A5SCVK7E",
+          "BTUG5VDL",
+          "CJ2ON1LV"
+        ]
+      }
+    },
+    {
+      "agent": "Markita Hansen",
+      "eligible": 27,
+      "selections": {
+        "current": [
+          "K9KGXL2E",
+          "XSEG5T4H",
+          "021Z2J9L",
+          "5URQT67R",
+          "SCS5H8V1"
+        ],
+        "price": [
+          "021Z2J9L",
+          "5URQT67R",
+          "SCS5H8V1",
+          "3SEMPUU1",
+          "YX4E972E"
+        ],
+        "oldest": [
+          "VDIU10RV",
+          "PFFHM7HR",
+          "MCE5DKD1",
+          "81MXE1H7",
+          "SCS5H8V1"
+        ],
+        "newest": [
+          "K9KGXL2E",
+          "XSEG5T4H",
+          "MG1YUTUE",
+          "RYNZ2WOK",
+          "021Z2J9L"
+        ],
+        "stage": [
+          "021Z2J9L",
+          "3PVNGGBX",
+          "3SEMPUU1",
+          "4G0X8VHP",
+          "5URQT67R"
+        ],
+        "discovery": [
+          "K9KGXL2E",
+          "XSEG5T4H",
+          "021Z2J9L",
+          "5URQT67R",
+          "SCS5H8V1"
+        ]
+      }
+    },
+    {
+      "agent": "Daniell Hammack",
+      "eligible": 25,
+      "selections": {
+        "current": [
+          "NXXKM7C7",
+          "TOJ902PF",
+          "0N11U6L3",
+          "GXIVJQPG",
+          "MA56XGWR"
+        ],
+        "price": [
+          "FM505XD5",
+          "KJHM27ZM",
+          "2N2MUDOA",
+          "DC2JL47C",
+          "ICMXZOVL"
+        ],
+        "oldest": [
+          "579LZ3F9",
+          "ICMXZOVL",
+          "RJYG004O",
+          "IE7VQ5BA",
+          "XYLNH45V"
+        ],
+        "newest": [
+          "TOJ902PF",
+          "NXXKM7C7",
+          "MA56XGWR",
+          "0N11U6L3",
+          "GXIVJQPG"
+        ],
+        "stage": [
+          "0N11U6L3",
+          "25FUROM1",
+          "26CH1NDR",
+          "2N2MUDOA",
+          "579LZ3F9"
+        ],
+        "discovery": [
+          "NXXKM7C7",
+          "TOJ902PF",
+          "0N11U6L3",
+          "GXIVJQPG",
+          "MA56XGWR"
+        ]
+      }
+    },
+    {
+      "agent": "Kami Bicknell",
+      "eligible": 29,
+      "selections": {
+        "current": [
+          "7XRWWM0X",
+          "RYWETTBK",
+          "059K86LU",
+          "30R81VZX",
+          "3ATYY665"
+        ],
+        "price": [
+          "059K86LU",
+          "S3W6Q07M",
+          "30R81VZX",
+          "3ATYY665",
+          "7FLPKZN7"
+        ],
+        "oldest": [
+          "SU8JNMP4",
+          "B00UMAV4",
+          "LMOAYCUK",
+          "S3W6Q07M",
+          "PKDJTR06"
+        ],
+        "newest": [
+          "7XRWWM0X",
+          "RYWETTBK",
+          "7FLPKZN7",
+          "EDM7CEZ6",
+          "059K86LU"
+        ],
+        "stage": [
+          "059K86LU",
+          "30R81VZX",
+          "3ATYY665",
+          "7FLPKZN7",
+          "7VMOJBPN"
+        ],
+        "discovery": [
+          "7XRWWM0X",
+          "RYWETTBK",
+          "059K86LU",
+          "30R81VZX",
+          "3ATYY665"
+        ]
+      }
+    },
+    {
+      "agent": "Cassey Cress",
+      "eligible": 29,
+      "selections": {
+        "current": [
+          "PM2BF2KB",
+          "WJO52I18",
+          "GWOOPZE8",
+          "EM1BA4EK",
+          "102XKYAC"
+        ],
+        "price": [
+          "49T60OCI",
+          "WEKW3XIN",
+          "102XKYAC",
+          "4ZX1WPS7",
+          "MNVMY83P"
+        ],
+        "oldest": [
+          "MNVMY83P",
+          "YM8DBAFV",
+          "AF8NG5JC",
+          "QRQ8C6MQ",
+          "73HO9OZC"
+        ],
+        "newest": [
+          "PM2BF2KB",
+          "WJO52I18",
+          "XSTGL252",
+          "EM1BA4EK",
+          "GWOOPZE8"
+        ],
+        "stage": [
+          "102XKYAC",
+          "3372JYYQ",
+          "37UCYEDY",
+          "3N3RAHXR",
+          "49T60OCI"
+        ],
+        "discovery": [
+          "PM2BF2KB",
+          "WJO52I18",
+          "GWOOPZE8",
+          "EM1BA4EK",
+          "102XKYAC"
+        ]
+      }
+    },
+    {
+      "agent": "Kary Hendrixson",
+      "eligible": 37,
+      "selections": {
+        "current": [
+          "D55HTKRU",
+          "RTWE19SU",
+          "YMWG4Z3S",
+          "JJGRAQ2K",
+          "SQ71BWHG"
+        ],
+        "price": [
+          "5CAP1055",
+          "5G4I94TF",
+          "9E8A7MQ8",
+          "BYF6ABTZ",
+          "JJGRAQ2K"
+        ],
+        "oldest": [
+          "J53D8EOL",
+          "BNY8MJ6L",
+          "CYWZJ2AI",
+          "9E8A7MQ8",
+          "ZTLLHCBU"
+        ],
+        "newest": [
+          "RTWE19SU",
+          "D55HTKRU",
+          "YMWG4Z3S",
+          "J9PCNCUP",
+          "SQ71BWHG"
+        ],
+        "stage": [
+          "1ORXGKVH",
+          "5CAP1055",
+          "5CZBHSRI",
+          "5G4I94TF",
+          "74KGIZW4"
+        ],
+        "discovery": [
+          "D55HTKRU",
+          "RTWE19SU",
+          "YMWG4Z3S",
+          "JJGRAQ2K",
+          "SQ71BWHG"
+        ]
+      }
+    },
+    {
+      "agent": "Boris Faz",
+      "eligible": 18,
+      "selections": {
+        "current": [
+          "I5VHXAWW",
+          "EZVKSQ9C",
+          "5P3NH791",
+          "ALZNZ666",
+          "PSMWYTMB"
+        ],
+        "price": [
+          "EZVKSQ9C",
+          "I5VHXAWW",
+          "5P3NH791",
+          "ALZNZ666",
+          "PSMWYTMB"
+        ],
+        "oldest": [
+          "EZVKSQ9C",
+          "5P3NH791",
+          "DEHQTB8B",
+          "P1SGQODJ",
+          "7Y530NLJ"
+        ],
+        "newest": [
+          "I5VHXAWW",
+          "PSMWYTMB",
+          "1VFT3UCK",
+          "SU1NDYXR",
+          "693K7IAT"
+        ],
+        "stage": [
+          "1VFT3UCK",
+          "3CB3WNBM",
+          "5P3NH791",
+          "693K7IAT",
+          "7Y530NLJ"
+        ],
+        "discovery": [
+          "I5VHXAWW",
+          "EZVKSQ9C",
+          "5P3NH791",
+          "ALZNZ666",
+          "PSMWYTMB"
+        ]
+      }
+    },
+    {
+      "agent": "Rosie Papadopoulos",
+      "eligible": 15,
+      "selections": {
+        "current": [
+          "2DY9U1V7",
+          "68EYCEV4",
+          "8XY5IA68",
+          "PFKDTEYU",
+          "XOVYPE58"
+        ],
+        "price": [
+          "2DY9U1V7",
+          "68EYCEV4",
+          "8XY5IA68",
+          "PFKDTEYU",
+          "XOVYPE58"
+        ],
+        "oldest": [
+          "N07K7DR7",
+          "CZ8PPZTC",
+          "5XPYFICK",
+          "A1TDRYHZ",
+          "NFMCPYOV"
+        ],
+        "newest": [
+          "2DY9U1V7",
+          "8XY5IA68",
+          "68EYCEV4",
+          "K7056XS7",
+          "AW4PSTWR"
+        ],
+        "stage": [
+          "2DY9U1V7",
+          "5653N8BM",
+          "5XPYFICK",
+          "68EYCEV4",
+          "8XY5IA68"
+        ],
+        "discovery": [
+          "2DY9U1V7",
+          "68EYCEV4",
+          "8XY5IA68",
+          "PFKDTEYU",
+          "XOVYPE58"
+        ]
+      }
+    },
+    {
+      "agent": "Elease Gluck",
+      "eligible": 18,
+      "selections": {
+        "current": [
+          "125VIRMX",
+          "DJMPI9TO",
+          "GG85QBTM",
+          "6OD1J7MW",
+          "K5CWSFCW"
+        ],
+        "price": [
+          "125VIRMX",
+          "DJMPI9TO",
+          "GG85QBTM",
+          "6OD1J7MW",
+          "K5CWSFCW"
+        ],
+        "oldest": [
+          "125VIRMX",
+          "K5CWSFCW",
+          "CT3HBBI2",
+          "RP7KA6HS",
+          "9A9E1KPG"
+        ],
+        "newest": [
+          "1LHU0876",
+          "6OD1J7MW",
+          "7DOGGIXI",
+          "E29GOFUV",
+          "HABN7JBG"
+        ],
+        "stage": [
+          "125VIRMX",
+          "1LHU0876",
+          "6OD1J7MW",
+          "7DOGGIXI",
+          "9A9E1KPG"
+        ],
+        "discovery": [
+          "125VIRMX",
+          "DJMPI9TO",
+          "GG85QBTM",
+          "6OD1J7MW",
+          "K5CWSFCW"
+        ]
+      }
+    },
+    {
+      "agent": "Zane Levy",
+      "eligible": 29,
+      "selections": {
+        "current": [
+          "FZWU2I30",
+          "J1G2SZKD",
+          "J5BCAQ1Z",
+          "L8XNQONA",
+          "4D0K5T7T"
+        ],
+        "price": [
+          "01XZ9CRY",
+          "FZWU2I30",
+          "041Q1IZL",
+          "23NAJF9W",
+          "4D0K5T7T"
+        ],
+        "oldest": [
+          "SQLYCFGV",
+          "BTT6YAVZ",
+          "N5UIZYIV",
+          "7TI1WTV9",
+          "Z9QZKUV5"
+        ],
+        "newest": [
+          "J5BCAQ1Z",
+          "FZWU2I30",
+          "L8XNQONA",
+          "J1G2SZKD",
+          "4D0K5T7T"
+        ],
+        "stage": [
+          "01XZ9CRY",
+          "041Q1IZL",
+          "23NAJF9W",
+          "246MLWZ7",
+          "4D0K5T7T"
+        ],
+        "discovery": [
+          "FZWU2I30",
+          "J1G2SZKD",
+          "J5BCAQ1Z",
+          "L8XNQONA",
+          "4D0K5T7T"
+        ]
+      }
+    },
+    {
+      "agent": "Rosalina Dieter",
+      "eligible": 16,
+      "selections": {
+        "current": [
+          "OHOWVHYX",
+          "1LY8CAXD",
+          "6AO6E15O",
+          "IN9S33CD",
+          "LC2RIMSX"
+        ],
+        "price": [
+          "1LY8CAXD",
+          "IN9S33CD",
+          "6AO6E15O",
+          "LC2RIMSX",
+          "WWCMITY9"
+        ],
+        "oldest": [
+          "EQCD7G7Q",
+          "5RNWV17L",
+          "E887HZT1",
+          "IN9S33CD",
+          "X8GGF9MG"
+        ],
+        "newest": [
+          "OHOWVHYX",
+          "1LY8CAXD",
+          "61IKUAZI",
+          "XT8HCGAD",
+          "QEZ2X87C"
+        ],
+        "stage": [
+          "1LY8CAXD",
+          "23J295J4",
+          "5RNWV17L",
+          "61IKUAZI",
+          "6AO6E15O"
+        ],
+        "discovery": [
+          "OHOWVHYX",
+          "1LY8CAXD",
+          "6AO6E15O",
+          "IN9S33CD",
+          "LC2RIMSX"
+        ]
+      }
+    },
+    {
+      "agent": "Violet Mclelland",
+      "eligible": 20,
+      "selections": {
+        "current": [
+          "4ZQTMS3Z",
+          "CUV49MUR",
+          "NOLCZMV6",
+          "DMG5EOFC",
+          "SZAMHBGA"
+        ],
+        "price": [
+          "CUV49MUR",
+          "NOLCZMV6",
+          "DMG5EOFC",
+          "SZAMHBGA",
+          "TJ03NDNX"
+        ],
+        "oldest": [
+          "XYNTWPN1",
+          "0I6U3MQ6",
+          "NOLCZMV6",
+          "STT3X4NB",
+          "YQ0Y0YQS"
+        ],
+        "newest": [
+          "4ZQTMS3Z",
+          "VGSH1TSW",
+          "L4R7LDY1",
+          "I9SPENCQ",
+          "DMG5EOFC"
+        ],
+        "stage": [
+          "0I6U3MQ6",
+          "4ZQTMS3Z",
+          "ANRCHVJM",
+          "BJOY31DL",
+          "CUV49MUR"
+        ],
+        "discovery": [
+          "4ZQTMS3Z",
+          "CUV49MUR",
+          "NOLCZMV6",
+          "DMG5EOFC",
+          "SZAMHBGA"
+        ]
+      }
+    },
+    {
+      "agent": "Hayden Neloms",
+      "eligible": 14,
+      "selections": {
+        "current": [
+          "HB740BLB",
+          "2BXYT4PD",
+          "7GDSUY9K",
+          "3N46WQVI",
+          "SWJ9OOZU"
+        ],
+        "price": [
+          "2BXYT4PD",
+          "7GDSUY9K",
+          "3N46WQVI",
+          "SWJ9OOZU",
+          "WRUG19FZ"
+        ],
+        "oldest": [
+          "WRUG19FZ",
+          "JCPQZ2SN",
+          "6VIK2VX8",
+          "SWJ9OOZU",
+          "3E4VTH6E"
+        ],
+        "newest": [
+          "HB740BLB",
+          "7GDSUY9K",
+          "GRYHHER0",
+          "OI3UIKVF",
+          "LDK61ORQ"
+        ],
+        "stage": [
+          "2BXYT4PD",
+          "3E4VTH6E",
+          "3N46WQVI",
+          "6VIK2VX8",
+          "7GDSUY9K"
+        ],
+        "discovery": [
+          "HB740BLB",
+          "2BXYT4PD",
+          "7GDSUY9K",
+          "3N46WQVI",
+          "SWJ9OOZU"
+        ]
+      }
+    },
+    {
+      "agent": "James Ascencio",
+      "eligible": 17,
+      "selections": {
+        "current": [
+          "4NGSQODD",
+          "AY3KTIXX",
+          "EF24VTVA",
+          "HU970PDK",
+          "OLGT0VHP"
+        ],
+        "price": [
+          "AY3KTIXX",
+          "EF24VTVA",
+          "HU970PDK",
+          "OLGT0VHP",
+          "4NGSQODD"
+        ],
+        "oldest": [
+          "UQQE9ILV",
+          "VKT0UN11",
+          "0OESOJNN",
+          "4NGSQODD",
+          "VXMFL425"
+        ],
+        "newest": [
+          "EJVD09HQ",
+          "NJC4XMEN",
+          "PW9DTZON",
+          "2MKG6ZDD",
+          "H176AX96"
+        ],
+        "stage": [
+          "0OESOJNN",
+          "2MKG6ZDD",
+          "3H3TNCP5",
+          "4NGSQODD",
+          "AY3KTIXX"
+        ],
+        "discovery": [
+          "4NGSQODD",
+          "AY3KTIXX",
+          "EF24VTVA",
+          "HU970PDK",
+          "OLGT0VHP"
+        ]
+      }
+    },
+    {
+      "agent": "Vicki Laflamme",
+      "eligible": 27,
+      "selections": {
+        "current": [
+          "20CVXRTX",
+          "4SOUOUKH",
+          "58W7CZGD",
+          "7A3R2M9T",
+          "B06D1F9M"
+        ],
+        "price": [
+          "4SOUOUKH",
+          "7A3R2M9T",
+          "IGHYUSN8",
+          "VMIAO42Z",
+          "ZK4S74FD"
+        ],
+        "oldest": [
+          "JIACLB24",
+          "H2MC2E7K",
+          "B06D1F9M",
+          "Q19RWR17",
+          "4CXUC4VR"
+        ],
+        "newest": [
+          "4SOUOUKH",
+          "D9MZMDOL",
+          "I35REHYN",
+          "Y3AAS62P",
+          "0XYUJ7HF"
+        ],
+        "stage": [
+          "0QPZIIPF",
+          "0XYUJ7HF",
+          "20CVXRTX",
+          "4CXUC4VR",
+          "4SOUOUKH"
+        ],
+        "discovery": [
+          "20CVXRTX",
+          "4SOUOUKH",
+          "58W7CZGD",
+          "7A3R2M9T",
+          "B06D1F9M"
+        ]
+      }
+    },
+    {
+      "agent": "Wilburn Farren",
+      "eligible": 3,
+      "selections": {
+        "current": [
+          "1L68AC0E",
+          "GEQ7KT9J",
+          "VRYR5A81"
+        ],
+        "price": [
+          "1L68AC0E",
+          "GEQ7KT9J",
+          "VRYR5A81"
+        ],
+        "oldest": [
+          "VRYR5A81",
+          "GEQ7KT9J",
+          "1L68AC0E"
+        ],
+        "newest": [
+          "1L68AC0E",
+          "GEQ7KT9J",
+          "VRYR5A81"
+        ],
+        "stage": [
+          "1L68AC0E",
+          "GEQ7KT9J",
+          "VRYR5A81"
+        ],
+        "discovery": [
+          "1L68AC0E",
+          "GEQ7KT9J",
+          "VRYR5A81"
+        ]
+      }
+    },
+    {
+      "agent": "Anna Snelling",
+      "eligible": 43,
+      "selections": {
+        "current": [
+          "1FEHFRKX",
+          "7FZ9CBZ3",
+          "LD4F6QTP",
+          "NSX4NR40",
+          "0KRVN3V5"
+        ],
+        "price": [
+          "1FEHFRKX",
+          "7FZ9CBZ3",
+          "9P9ISECL",
+          "9PDR4X2R",
+          "LD4F6QTP"
+        ],
+        "oldest": [
+          "055Z2OAS",
+          "Q9VC6GV0",
+          "1FEHFRKX",
+          "DNBR1VHP",
+          "LD4F6QTP"
+        ],
+        "newest": [
+          "NSX4NR40",
+          "OSG9KZGB",
+          "AZN2K0V9",
+          "4ZB2W6O7",
+          "QD4ONE04"
+        ],
+        "stage": [
+          "055Z2OAS",
+          "0KRVN3V5",
+          "1FEHFRKX",
+          "1XJFMYCW",
+          "4DLY9ZDH"
+        ],
+        "discovery": [
+          "1FEHFRKX",
+          "7FZ9CBZ3",
+          "LD4F6QTP",
+          "NSX4NR40",
+          "9P9ISECL"
+        ]
+      }
+    },
+    {
+      "agent": "Darcel Schlecht",
+      "eligible": 60,
+      "selections": {
+        "current": [
+          "0TC6I9SJ",
+          "1QKDD1OI",
+          "7TFHGN6O",
+          "9B7FS6YL",
+          "GQ7H31ZJ"
+        ],
+        "price": [
+          "7TFHGN6O",
+          "CVMNBKGH",
+          "FU2PQZR4",
+          "I3KQNE9V",
+          "LZW4N9KF"
+        ],
+        "oldest": [
+          "I3KQNE9V",
+          "PNISVWNN",
+          "T9QD8U1Y",
+          "WLDFQR7Z",
+          "0TC6I9SJ"
+        ],
+        "newest": [
+          "HMWIP0F2",
+          "MUSSD9WD",
+          "1FLN8BTI",
+          "R55U5QI4",
+          "TJ95PY76"
+        ],
+        "stage": [
+          "0TC6I9SJ",
+          "1976N63N",
+          "1FLN8BTI",
+          "1QKDD1OI",
+          "7TFHGN6O"
+        ],
+        "discovery": [
+          "0TC6I9SJ",
+          "1QKDD1OI",
+          "7TFHGN6O",
+          "9B7FS6YL",
+          "2IRZM0LB"
+        ]
+      }
+    },
+    {
+      "agent": "Jonathan Berthelot",
+      "eligible": 23,
+      "selections": {
+        "current": [
+          "PQOHTS9I",
+          "29W6WPLA",
+          "PU62ZGX4",
+          "GY10EROJ",
+          "MBPJUJ7F"
+        ],
+        "price": [
+          "B26TNOGQ",
+          "OAMIMSUU",
+          "9R8AKL0D",
+          "PQOHTS9I",
+          "R14YE68N"
+        ],
+        "oldest": [
+          "PQOHTS9I",
+          "29W6WPLA",
+          "GY10EROJ",
+          "WARBRUXU",
+          "PU62ZGX4"
+        ],
+        "newest": [
+          "MBPJUJ7F",
+          "PU62ZGX4",
+          "WARBRUXU",
+          "29W6WPLA",
+          "GY10EROJ"
+        ],
+        "stage": [
+          "29W6WPLA",
+          "GY10EROJ",
+          "MBPJUJ7F",
+          "PQOHTS9I",
+          "PU62ZGX4"
+        ],
+        "discovery": [
+          "PQOHTS9I",
+          "29W6WPLA",
+          "PU62ZGX4",
+          "GY10EROJ",
+          "9R8AKL0D"
+        ]
+      }
+    },
+    {
+      "agent": "Lajuana Vencill",
+      "eligible": 23,
+      "selections": {
+        "current": [
+          "EMH2I8XE",
+          "EZDMNAK8",
+          "JH643YRI",
+          "KPH05GU8",
+          "LDQITW5C"
+        ],
+        "price": [
+          "3TMNC3GW",
+          "EMH2I8XE",
+          "EZDMNAK8",
+          "JH643YRI",
+          "KPH05GU8"
+        ],
+        "oldest": [
+          "LORMJLTE",
+          "GZ6SFRAT",
+          "JH643YRI",
+          "KPH05GU8",
+          "7W9S4DCZ"
+        ],
+        "newest": [
+          "EZDMNAK8",
+          "PXNDLIL2",
+          "EVXPG3V5",
+          "PDMZ1I99",
+          "LDQITW5C"
+        ],
+        "stage": [
+          "5W29OCB8",
+          "7W9S4DCZ",
+          "EMH2I8XE",
+          "ERTQ4SN3",
+          "EVXPG3V5"
+        ],
+        "discovery": [
+          "EMH2I8XE",
+          "EZDMNAK8",
+          "JH643YRI",
+          "KPH05GU8",
+          "3TMNC3GW"
+        ]
+      }
+    },
+    {
+      "agent": "Marty Freudenburg",
+      "eligible": 34,
+      "selections": {
+        "current": [
+          "7439NGIG",
+          "CBQRKYZP",
+          "E3XLWCWX",
+          "FSNL204U",
+          "J31SUXQJ"
+        ],
+        "price": [
+          "CBQRKYZP",
+          "E3XLWCWX",
+          "FSNL204U",
+          "J31SUXQJ",
+          "0BQTT5UF"
+        ],
+        "oldest": [
+          "E3XLWCWX",
+          "7439NGIG",
+          "CBQRKYZP",
+          "MV7I9RKH",
+          "HJRM13DI"
+        ],
+        "newest": [
+          "I6PXHXST",
+          "O0L6JUYE",
+          "8CBTC1PX",
+          "J31SUXQJ",
+          "FSNL204U"
+        ],
+        "stage": [
+          "7439NGIG",
+          "8CBTC1PX",
+          "CBQRKYZP",
+          "E3XLWCWX",
+          "FSNL204U"
+        ],
+        "discovery": [
+          "7439NGIG",
+          "CBQRKYZP",
+          "E3XLWCWX",
+          "FSNL204U",
+          "0BQTT5UF"
+        ]
+      }
+    },
+    {
+      "agent": "Niesha Huffines",
+      "eligible": 25,
+      "selections": {
+        "current": [
+          "BBOWBQA6",
+          "FKY3O5O1",
+          "CMW6IQJI",
+          "SJ3QA8KP",
+          "22HV3N2W"
+        ],
+        "price": [
+          "BBOWBQA6",
+          "DDHNCZMO",
+          "Z99W80UY",
+          "FKY3O5O1",
+          "CMW6IQJI"
+        ],
+        "oldest": [
+          "2WDSO6PG",
+          "BBOWBQA6",
+          "G1M1KVHU",
+          "CMW6IQJI",
+          "DZP0MNRM"
+        ],
+        "newest": [
+          "I6M40320",
+          "49SUORYW",
+          "ATMWAQL5",
+          "22HV3N2W",
+          "FKY3O5O1"
+        ],
+        "stage": [
+          "22HV3N2W",
+          "2WDSO6PG",
+          "49SUORYW",
+          "ATMWAQL5",
+          "BBOWBQA6"
+        ],
+        "discovery": [
+          "BBOWBQA6",
+          "FKY3O5O1",
+          "CMW6IQJI",
+          "SJ3QA8KP",
+          "DDHNCZMO"
+        ]
+      }
+    },
+    {
+      "agent": "Moses Frase",
+      "eligible": 21,
+      "selections": {
+        "current": [
+          "F3EOBN5A",
+          "0R5KAHNB",
+          "FUI9BIS3",
+          "KIKG1BGV",
+          "MLD3WEJC"
+        ],
+        "price": [
+          "F3EOBN5A",
+          "0R5KAHNB",
+          "9H2V1F1E",
+          "EL09RK8X",
+          "FUI9BIS3"
+        ],
+        "oldest": [
+          "F3EOBN5A",
+          "AWCGYWTE",
+          "2TYZRE2R",
+          "7MP6KLZO",
+          "MLD3WEJC"
+        ],
+        "newest": [
+          "44Q1W18Y",
+          "9P180HVQ",
+          "ACGLK2YE",
+          "5VW9YVTU",
+          "FUI9BIS3"
+        ],
+        "stage": [
+          "0R5KAHNB",
+          "2TYZRE2R",
+          "44Q1W18Y",
+          "5VW9YVTU",
+          "7MP6KLZO"
+        ],
+        "discovery": [
+          "F3EOBN5A",
+          "0R5KAHNB",
+          "FUI9BIS3",
+          "KIKG1BGV",
+          "9H2V1F1E"
+        ]
+      }
+    },
+    {
+      "agent": "Gladys Colclough",
+      "eligible": 30,
+      "selections": {
+        "current": [
+          "5MAXF8FK",
+          "7FFV8D9U",
+          "N07XYH50",
+          "RTWAUR7C",
+          "8TFYRWZ6"
+        ],
+        "price": [
+          "49T7VKA7",
+          "5MAXF8FK",
+          "9RGWSKNU",
+          "BTDY3DHP",
+          "RTWAUR7C"
+        ],
+        "oldest": [
+          "GVJFKHNL",
+          "33BMGHPN",
+          "751V8OFM",
+          "8TFYRWZ6",
+          "RTWAUR7C"
+        ],
+        "newest": [
+          "5MAXF8FK",
+          "7FFV8D9U",
+          "TIPXNDS2",
+          "ICG3THQK",
+          "WOO9JXOQ"
+        ],
+        "stage": [
+          "33BMGHPN",
+          "5MAXF8FK",
+          "751V8OFM",
+          "7FFV8D9U",
+          "8TFYRWZ6"
+        ],
+        "discovery": [
+          "5MAXF8FK",
+          "7FFV8D9U",
+          "N07XYH50",
+          "RTWAUR7C",
+          "49T7VKA7"
+        ]
+      }
+    },
+    {
+      "agent": "Versie Hillebrand",
+      "eligible": 28,
+      "selections": {
+        "current": [
+          "18YA4UUP",
+          "WRKPDK7O",
+          "SZS2IPM3",
+          "YY2DWBG5",
+          "S3LATQVJ"
+        ],
+        "price": [
+          "18YA4UUP",
+          "WRKPDK7O",
+          "8M2O0Q8V",
+          "FCNN6UY0",
+          "SZS2IPM3"
+        ],
+        "oldest": [
+          "EUBMHJGQ",
+          "S3LATQVJ",
+          "806KPNNN",
+          "SZS2IPM3",
+          "YY2DWBG5"
+        ],
+        "newest": [
+          "W1XRTUT2",
+          "7ZN8YCH8",
+          "3FWZBSW1",
+          "PR1H7NHK",
+          "VIY7P8J6"
+        ],
+        "stage": [
+          "18YA4UUP",
+          "3FWZBSW1",
+          "7ZN8YCH8",
+          "806KPNNN",
+          "EUBMHJGQ"
+        ],
+        "discovery": [
+          "18YA4UUP",
+          "WRKPDK7O",
+          "SZS2IPM3",
+          "YY2DWBG5",
+          "8M2O0Q8V"
+        ]
+      }
+    },
+    {
+      "agent": "Cecily Lampkin",
+      "eligible": 10,
+      "selections": {
+        "current": [
+          "OT5G3M9A",
+          "SXFE42KG",
+          "AV72Y65Y",
+          "2SZX9B7J",
+          "IAV71BEX"
+        ],
+        "price": [
+          "2SZX9B7J",
+          "IAV71BEX",
+          "OT5G3M9A",
+          "SXFE42KG",
+          "38K5251H"
+        ],
+        "oldest": [
+          "OT5G3M9A",
+          "SXFE42KG",
+          "AV72Y65Y",
+          "2SZX9B7J",
+          "38K5251H"
+        ],
+        "newest": [
+          "AV72Y65Y",
+          "SXFE42KG",
+          "OT5G3M9A",
+          "2SZX9B7J",
+          "38K5251H"
+        ],
+        "stage": [
+          "AV72Y65Y",
+          "OT5G3M9A",
+          "SXFE42KG",
+          "2SZX9B7J",
+          "38K5251H"
+        ],
+        "discovery": [
+          "OT5G3M9A",
+          "SXFE42KG",
+          "AV72Y65Y",
+          "IAV71BEX",
+          "2SZX9B7J"
+        ]
+      }
+    }
+  ]
+}
