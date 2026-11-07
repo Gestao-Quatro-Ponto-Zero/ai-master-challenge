@@ -1,0 +1,254 @@
+/* Dark text palette: readable secondary information, including forms and guides. */
+.theme-dark {
+  --text-main: #e7eff5;
+  --text-secondary: #c0d0dc;
+  --text-muted: #a9bdcc;
+}
+.theme-dark .dialog-header p,
+.theme-dark .client-context p,
+.theme-dark .client-context small,
+.theme-dark .client-context dt,
+.theme-dark .client-context dd,
+.theme-dark .client-context li,
+.theme-dark .score-factor span,
+.theme-dark .activity-form label,
+.theme-dark .form-hint,
+.theme-dark .form-footnote,
+.theme-dark .next-step-fields > small,
+.theme-dark .timeline-item p,
+.theme-dark .timeline-item small,
+.theme-dark .timeline-next span,
+.theme-dark .guide-branches > p,
+.theme-dark .help-card p,
+.theme-dark .help-card li,
+.theme-dark .help-faq p {
+  color: var(--text-secondary);
+}
+.theme-dark .playbook li,
+.theme-dark .playbook li:before {
+  color: #c2d7e5;
+}
+.theme-dark .dialog-tabs button,
+.theme-dark .client-details > h3:first-child {
+  color: #bad2e2;
+}
+.theme-dark .guide-branches > button {
+  background: #29344a;
+  border-color: #4b536a;
+}
+.theme-dark .guide-branches > h3,
+.theme-dark .guide-branches > button strong {
+  color: #d5c5e6;
+}
+.theme-dark .guide-branches > button small {
+  color: #c3bfd3;
+}
+.theme-dark .guide-branches > button > svg {
+  color: #c3b4da;
+}
+.theme-dark .quick-record {
+  background: #182f40;
+  border-color: #b7975a;
+}
+.theme-dark .record-heading {
+  background: #5b492c;
+  color: #f4dcad;
+  border-color: #8c744a;
+}
+.theme-dark .record-intro {
+  color: #c2d2de;
+}
+.theme-dark .spin-context {
+  background: #1d3b4e;
+  border-color: #6b96b1;
+}
+.theme-dark .spin-context strong {
+  color: #b2ccde;
+}
+.theme-dark .spin-context p {
+  color: #c0d3df;
+}
+.theme-dark .spin-conversation .spin-question {
+  background: #183448;
+  border-color: #35596f;
+}
+.theme-dark .spin-conversation .spin-question p {
+  color: #d6e4ee;
+}
+.theme-dark .spin-conversation .spin-question small {
+  color: #b5c8d5;
+}
+.theme-dark .spin-question h3 {
+  color: #afd0e6;
+}
+.theme-dark .spin-question h3 > span {
+  background: #2b526d;
+  color: #c8e0f1;
+}
+.theme-dark .spin-conversation .spin-P {
+  background: #393424;
+  border-color: #62563d;
+}
+.theme-dark .spin-conversation .spin-P h3 {
+  color: #dec08d;
+}
+.theme-dark .spin-conversation .spin-P h3 > span {
+  background: #604c2c;
+  color: #efd4a4;
+}
+.theme-dark .spin-conversation .spin-I {
+  background: #3d2b38;
+  border-color: #674655;
+}
+.theme-dark .spin-conversation .spin-I h3 {
+  color: #deb4c6;
+}
+.theme-dark .spin-conversation .spin-I h3 > span {
+  background: #64414f;
+  color: #efc6d6;
+}
+.theme-dark .spin-conversation .spin-N {
+  background: #1d3c31;
+  border-color: #3b6150;
+}
+.theme-dark .spin-conversation .spin-N h3 {
+  color: #abd3b9;
+}
+.theme-dark .spin-conversation .spin-N h3 > span {
+  background: #355a46;
+  color: #c5e5cf;
+}
+.theme-dark .after-action p,
+.theme-dark .after-action > small,
+.theme-dark .health-description,
+.theme-dark .contact-info a,
+.theme-dark .agent-options small,
+.theme-dark .agent-trigger small,
+.theme-dark .picker-footnote,
+.theme-dark .page-heading p,
+.theme-dark .section-title p,
+.theme-dark .data-note p,
+.theme-dark .measurement-note,
+.theme-dark .day-plan-tasks small,
+.theme-dark .plan-note,
+.theme-dark .historical-numbers span,
+.theme-dark .historical-numbers small,
+.theme-dark .historical-bars > div > div:first-child,
+.theme-dark .status-strip > span,
+.theme-dark .conversion-step p {
+  color: #b9cbd8;
+}
+.theme-dark .after-action h3,
+.theme-dark .contact-info > strong,
+.theme-dark .account-track > div > strong {
+  color: #e1c58e;
+}
+.theme-dark .record-heading ~ .activity-form .form-submit {
+  color: #152b3c;
+}
+.theme-dark input::placeholder,
+.theme-dark textarea::placeholder {
+  color: #a4bac9;
+}
+.theme-dark .spin-question small {
+  color: #b5c8d5;
+}
+.theme-dark .kpi-top > span,
+.theme-dark .kpi > small,
+.theme-dark .next-client > span,
+.theme-dark .deal-card > p,
+.theme-dark .deal-card-next,
+.theme-dark .deal-card-footer,
+.theme-dark .agenda-item p,
+.theme-dark .agenda-item small {
+  color: #b5c8d5;
+}
+.theme-dark .account-track,
+.theme-dark .qualification-box {
+  border-color: #645940;
+}
+.theme-dark .spin-header small,
+.theme-dark .record-only .dialog-header p {
+  color: #b6cbd9;
+}
+@media (max-width: 800px) {
+  .theme-switch {
+    width: 62px;
+    height: 32px;
+    padding: 0 8px;
+    gap: 10px;
+  }
+  .theme-thumb {
+    width: 22px;
+    height: 22px;
+  }
+  .theme-switch[aria-checked="true"] .theme-thumb {
+    transform: translateX(29px);
+  }
+  .spin-conversation {
+    padding: 0 12px 14px;
+  }
+  .spin-conversation .spin-question p {
+    font-size: 14px;
+  }
+  .record-only .deal-work {
+    padding: 16px;
+  }
+  .record-only .activity-form input,
+  .record-only .activity-form textarea,
+  .record-only .activity-form select {
+    font-size: 16px;
+  }
+  .record-only .dialog-header {
+    padding: 20px;
+  }
+  .quick-record .form-submit {
+    white-space: normal;
+    line-height: 1.6;
+  }
+  .theme-dark .spin-question small {
+    font-size: 11px;
+  }
+}
+.dialog-tabs .register-shortcut {
+  margin-left: auto;
+  align-self: center;
+  border: 1px solid #c6a66b;
+  background: #c7a266;
+  color: #152e3e;
+  border-radius: 6px;
+  padding: 9px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.quick-record {
+  scroll-margin-top: 70px;
+}
+.theme-dark .dialog-tabs .register-shortcut {
+  background: #d0ac70;
+  color: #132b3c;
+  border-color: #d0ac70;
+}
+@media (max-width: 800px) {
+  .dialog-tabs {
+    gap: 13px;
+    flex-wrap: wrap;
+  }
+  .dialog-tabs .register-shortcut {
+    font-size: 10px;
+    padding: 9px;
+  }
+  .quick-record {
+    scroll-margin-top: 15px;
+  }
+}
+.theme-dark {
+  color-scheme: dark;
+}
+.theme-switch {
+  color-scheme: light;
+}
+.theme-switch[aria-checked="true"] {
+  color-scheme: dark;
+}

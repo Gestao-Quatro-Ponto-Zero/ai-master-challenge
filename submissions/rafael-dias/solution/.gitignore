@@ -1,0 +1,8 @@
+node_modules/
+.next/
+.env*
+!.env.example
+data/source.zip
+*.log
+
+.backups/

@@ -1,0 +1,659 @@
+@media (min-width: 1500px) {
+  .page-content {
+    padding: 27px 48px;
+  }
+  .topbar {
+    padding: 0 48px;
+  }
+  .work-layout {
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 30px;
+  }
+  h1 {
+    font-size: 36px;
+  }
+  .hero-deal {
+    padding: 30px;
+  }
+  .hero-client h2 {
+    font-size: 26px;
+  }
+  .hero-reason p {
+    font-size: 12px;
+  }
+  .hero-reason strong {
+    font-size: 11px;
+  }
+  .hero-bottom > span {
+    font-size: 10px;
+  }
+  .hero-bottom .button {
+    font-size: 12px;
+    padding: 13px 17px;
+  }
+  .next-card {
+    padding: 21px;
+  }
+  .next-client > strong {
+    font-size: 13px;
+  }
+  .next-client p {
+    font-size: 10px;
+  }
+  .kpi {
+    padding: 23px;
+  }
+  .kpi-top > span {
+    font-size: 11px;
+  }
+  .kpi > strong {
+    font-size: 36px;
+  }
+  .right-column .panel {
+    padding: 24px;
+  }
+  .right-column .section-title h2 {
+    font-size: 14px;
+  }
+}
+@media (max-width: 1150px) {
+  .sidebar {
+    width: 190px;
+    padding: 28px 13px;
+  }
+  .brand {
+    gap: 10px;
+    padding: 0 7px;
+  }
+  .g4-mark {
+    font-size: 30px;
+  }
+  .workspace-label {
+    font-size: 8px;
+    margin-top: 40px;
+  }
+  .nav-item {
+    font-size: 11px;
+    padding: 13px 10px;
+    gap: 9px;
+  }
+  main {
+    margin-left: 190px;
+  }
+  .topbar {
+    padding: 0 25px;
+  }
+  .page-content {
+    padding: 23px 25px;
+  }
+  .work-layout {
+    grid-template-columns: minmax(0, 1fr) 260px;
+    gap: 18px;
+  }
+  .hero-deal {
+    padding: 22px;
+  }
+  .hero-client {
+    margin-top: 2px;
+    margin-right: 0;
+  }
+  .hero-client h2 {
+    font-size: 20px;
+  }
+  .hero-bottom {
+    flex-wrap: wrap;
+  }
+  .hero-bottom > .button {
+    margin-left: auto;
+  }
+  .hero-product {
+    flex-wrap: wrap;
+  }
+  .hero-reason p {
+    max-width: 100%;
+  }
+  .kpi-grid {
+    gap: 10px;
+  }
+  .kpi {
+    padding: 16px;
+  }
+  .kpi-top {
+    gap: 5px;
+  }
+  .kpi-top > span {
+    font-size: 9px;
+  }
+  .kpi-top svg {
+    width: 14px;
+  }
+  .kpi > strong {
+    font-size: 28px;
+  }
+  .kpi > small {
+    font-size: 8px;
+  }
+  .hero-flag {
+    font-size: 7px;
+  }
+  .page-heading h1 {
+    font-size: 27px;
+  }
+  .next-card {
+    gap: 11px;
+    padding: 15px;
+  }
+  .next-card .score-badge {
+    width: 55px;
+  }
+  .next-card > svg {
+    display: none;
+  }
+  .right-column .panel {
+    padding: 17px;
+  }
+  .context-line {
+    font-size: 8px;
+  }
+  .demo-label {
+    display: none;
+  }
+  .portfolio-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .results-kpis {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .hygiene-banner > span:last-child {
+    font-size: 8px;
+    gap: 6px;
+  }
+  .dialog-body {
+    grid-template-columns: 320px 1fr;
+  }
+  .client-context {
+    padding: 23px 20px;
+  }
+  .deal-work {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+}
+@media (max-width: 900px) {
+  .work-layout {
+    grid-template-columns: 1fr;
+  }
+  .right-column {
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+  .data-note {
+    grid-column: 1/-1;
+  }
+  .hero-client {
+    margin-top: -18px;
+    margin-right: 75px;
+  }
+  .hero-bottom {
+    flex-wrap: nowrap;
+  }
+  .hero-deal {
+    padding: 25px;
+  }
+  .hero-reason p {
+    font-size: 11px;
+  }
+  .next-card > svg {
+    display: block;
+  }
+  .side-tip {
+    margin-top: 35px;
+  }
+  .identity select {
+    max-width: 155px;
+  }
+  .top-controls {
+    gap: 10px;
+  }
+  .context-line > .text-button {
+    display: none;
+  }
+  .historical-layout {
+    gap: 24px;
+  }
+  .dialog-body {
+    grid-template-columns: 290px 1fr;
+  }
+  .deal-dialog {
+    width: 96vw;
+    max-height: 94vh;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .dialog-header h2 {
+    font-size: 22px;
+  }
+  .page-heading .button {
+    font-size: 9px;
+    padding: 10px 12px;
+  }
+}
+@media (max-width: 800px) {
+  .sidebar {
+    position: static;
+    width: 100%;
+    padding: 18px 16px 0;
+    display: block;
+  }
+  .brand {
+    font-size: 13px;
+    padding: 0 3px;
+  }
+  .g4-mark {
+    font-size: 28px;
+  }
+  .brand-sub {
+    font-size: 7px;
+  }
+  .brand-divider {
+    height: 27px;
+  }
+  .workspace-label,
+  .side-tip,
+  .side-footer {
+    display: none;
+  }
+  .sidebar nav {
+    display: flex;
+    gap: 5px;
+    overflow-x: auto;
+    margin-top: 17px;
+    padding-bottom: 12px;
+  }
+  .nav-item {
+    font-size: 9px;
+    padding: 9px 10px;
+    white-space: nowrap;
+    border-radius: 5px;
+    gap: 7px;
+  }
+  .nav-item svg {
+    width: 14px;
+    height: 14px;
+  }
+  .nav-count {
+    font-size: 8px;
+  }
+  main {
+    margin-left: 0;
+  }
+  .topbar {
+    height: 67px;
+    padding: 0 17px;
+  }
+  .breadcrumb {
+    font-size: 9px;
+  }
+  .breadcrumb > span {
+    padding: 0 8px;
+  }
+  .top-controls {
+    gap: 0;
+  }
+  .identity {
+    gap: 7px;
+  }
+  .avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 8px;
+  }
+  .identity-text {
+    font-size: 8px;
+  }
+  .identity select {
+    font-size: 10px;
+    max-width: 145px;
+  }
+  .page-content {
+    padding: 19px 16px;
+  }
+  .context-line {
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .context-pill {
+    font-size: 7px;
+  }
+  .context-line > span:nth-child(2) {
+    font-size: 7px;
+  }
+  .context-dot {
+    margin: 0 3px;
+  }
+  .page-heading {
+    align-items: flex-start;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .page-heading h1 {
+    font-size: 27px;
+  }
+  .page-heading p {
+    font-size: 11px;
+  }
+  .page-heading > .button {
+    padding: 9px 11px;
+    font-size: 10px;
+  }
+  .eyebrow {
+    font-size: 7px;
+    letter-spacing: 1.5px;
+  }
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 25px;
+  }
+  .kpi {
+    padding: 16px;
+  }
+  .kpi-top > span {
+    font-size: 9px;
+  }
+  .kpi > strong {
+    font-size: 28px;
+  }
+  .kpi > small {
+    font-size: 8px;
+  }
+  .section-title h2 {
+    font-size: 16px;
+  }
+  .hero-deal {
+    padding: 21px;
+  }
+  .hero-flag {
+    font-size: 7px;
+    padding: 6px 8px;
+    letter-spacing: 0.7px;
+  }
+  .hero-client {
+    margin-top: 7px;
+    margin-right: 0;
+  }
+  .company-avatar {
+    width: 38px;
+    height: 38px;
+    font-size: 11px;
+  }
+  .hero-client h2 {
+    font-size: 21px;
+  }
+  .hero-client p {
+    font-size: 8px;
+  }
+  .score-badge.large {
+    width: 61px;
+    padding: 7px;
+  }
+  .score-badge.large strong {
+    font-size: 27px;
+  }
+  .score-badge.large > span {
+    font-size: 5px;
+  }
+  .hero-product {
+    margin-top: 19px;
+    gap: 10px;
+  }
+  .hero-reason {
+    margin: 17px 0;
+    padding: 15px 0;
+  }
+  .hero-reason p {
+    font-size: 10px;
+  }
+  .hero-bottom {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .hero-bottom > span {
+    font-size: 8px;
+  }
+  .hero-bottom .button {
+    font-size: 10px;
+    padding: 11px 12px;
+    margin-left: auto;
+  }
+  .next-card {
+    gap: 11px;
+    padding: 15px;
+  }
+  .next-client > strong {
+    font-size: 11px;
+  }
+  .next-client > span {
+    font-size: 8px;
+  }
+  .next-client p {
+    font-size: 8px;
+  }
+  .next-card .score-badge {
+    width: 51px;
+    padding: 5px;
+  }
+  .next-card .score-badge strong {
+    font-size: 16px;
+  }
+  .next-card > svg {
+    display: none;
+  }
+  .right-column {
+    grid-template-columns: 1fr;
+  }
+  .data-note {
+    grid-column: auto;
+  }
+  .right-column .panel {
+    padding: 22px;
+  }
+  .right-column .section-title h2 {
+    font-size: 14px;
+  }
+  .agenda-empty {
+    padding: 22px 12px;
+  }
+  .agenda-empty strong {
+    font-size: 11px;
+  }
+  .agenda-empty p {
+    font-size: 11px;
+  }
+  .data-note p {
+    font-size: 10px;
+  }
+  .hygiene-banner {
+    padding: 15px 13px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .hygiene-banner strong {
+    font-size: 10px;
+    line-height: 1.8;
+  }
+  .hygiene-banner small {
+    font-size: 9px;
+  }
+  .hygiene-banner > span:last-child {
+    margin-left: 48px;
+    font-size: 10px;
+  }
+  .page-footer {
+    display: block;
+    font-size: 8px;
+    margin-top: 25px;
+  }
+  .page-footer > span {
+    display: block;
+    margin-top: 7px;
+  }
+  .pipeline-toolbar {
+    align-items: stretch;
+  }
+  .search-field {
+    max-width: none;
+    flex-basis: 100%;
+  }
+  .segmented {
+    width: 100%;
+  }
+  .segmented button {
+    flex: 1;
+    font-size: 9px;
+    padding: 9px 11px;
+  }
+  .kanban-column {
+    min-width: 240px;
+  }
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+  }
+  .results-panel {
+    padding: 21px 17px;
+  }
+  .results-filters {
+    gap: 13px;
+  }
+  .results-filters .segmented {
+    flex-basis: 100%;
+  }
+  .results-filters > label {
+    flex: 1;
+    min-width: 125px;
+  }
+  .results-filters select {
+    width: 100%;
+  }
+  .conversion-track {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .conversion-step {
+    padding: 15px;
+  }
+  .conversion-step:nth-child(2) {
+    border-right: 0;
+  }
+  .conversion-step:nth-child(-n + 2) {
+    border-bottom: 1px solid #e5dfd5;
+  }
+  .conversion-step p {
+    font-size: 9px;
+  }
+  .conversion-step strong {
+    font-size: 25px;
+  }
+  .historical-layout {
+    grid-template-columns: 1fr;
+  }
+  .historical-numbers {
+    grid-template-columns: 1fr;
+  }
+  .historical-numbers strong {
+    font-size: 26px;
+  }
+  .activity-feed > div {
+    flex-wrap: wrap;
+  }
+  .activity-feed small {
+    margin-left: 48px;
+    margin-top: -6px;
+    flex-basis: 100%;
+  }
+  .method-grid {
+    grid-template-columns: 1fr;
+  }
+  .method-grid p,
+  .sources p {
+    font-size: 11px;
+  }
+  .deal-dialog {
+    width: 96vw;
+    max-height: 95vh;
+    border-radius: 10px;
+  }
+  .dialog-header {
+    padding: 20px;
+  }
+  .dialog-header h2 {
+    font-size: 22px;
+  }
+  .dialog-body {
+    display: flex;
+    flex-direction: column;
+  }
+  .client-context {
+    border-right: 0;
+    border-bottom: 1px solid #e8e5de;
+    padding: 20px;
+  }
+  .client-context .reason-copy {
+    font-size: 11px;
+  }
+  .client-info dl {
+    font-size: 11px;
+  }
+  .score-panel .score-badge.large {
+    width: 65px;
+  }
+  .score-panel > div:last-child > strong {
+    font-size: 12px;
+  }
+  .score-panel > div:last-child > span {
+    font-size: 10px;
+  }
+  .health-line {
+    font-size: 11px;
+  }
+  .health-description {
+    font-size: 10px;
+  }
+  .contact-info p {
+    font-size: 11px;
+  }
+  .deal-work {
+    padding: 0 20px 25px;
+  }
+  .dialog-tabs {
+    position: static;
+  }
+  .activity-form input,
+  .activity-form textarea,
+  .activity-form select {
+    font-size: 16px;
+  }
+  .activity-form label {
+    font-size: 11px;
+  }
+  .form-hint,
+  .playbook li {
+    font-size: 11px;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-footnote {
+    font-size: 10px;
+  }
+  .toast {
+    font-size: 10px;
+    bottom: 16px;
+    width: 90vw;
+  }
+  .results-kpis .kpi > strong {
+    font-size: 24px;
+  }
+}
