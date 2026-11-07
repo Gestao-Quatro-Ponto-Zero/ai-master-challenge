@@ -396,7 +396,7 @@ function DealTable(props: {
                   <a href={link("deal", d.id)} className="cell-deal">
                     <DealName deal={d} />
                     {d.conflicts && d.conflicts.length > 0 && (
-                      <span className="tag-conflict" title={`${d.conflicts.length} fechamento(s) do mesmo produto nesta conta por outro vendedor depois deste deal abrir`}>
+                      <span className="tag-conflict" title={`${d.conflicts.length === 1 ? "1 fechamento" : `${d.conflicts.length} fechamentos`} do mesmo produto nesta conta por outro vendedor depois deste deal abrir`}>
                         conflito
                       </span>
                     )}

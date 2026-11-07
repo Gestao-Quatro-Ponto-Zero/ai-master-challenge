@@ -24,8 +24,8 @@ export function Validation() {
         <h1>Validação</h1>
         <p className="lede">
           A mesma fila, testada em quatro datas de 2017. Em cada corte o motor aprende só com os deals
-          fechados até aquele dia e reconstrói o pipeline aberto na data. O desfecho posterior serve
-          apenas para medir — nada dele entra no score.
+          fechados até aquele dia e reconstrói o pipeline aberto na data. O desfecho posterior só serve
+          para medir; nada dele entra no score.
         </p>
       </header>
 
@@ -90,7 +90,7 @@ export function Validation() {
         </div>
         <p className="queue-note">
           Captura é a métrica de negócio: quanta receita ganha em 30 dias caiu nos 20% melhores da ordem.
-          AUC mede separação, não dinheiro — “mais novos primeiro” tem AUC alta nos cortes em que só deals
+          AUC mede separação, e não dinheiro: “mais novos primeiro” tem AUC alta nos cortes em que só deals
           recém-engajados fecham, mas captura {pct(newest.capture)} no total e {pct(newest.min_capture)} no
           pior corte. A nossa fila é a única que fica acima de 50% em todos os cortes.
         </p>
@@ -182,7 +182,7 @@ export function Validation() {
           <div>
             <dt>Conflito conta × produto</dt>
             <dd>{int(q.conflicts)}</dd>
-            <p>{moneyShort(q.conflicts_value)} em deals em que outro vendedor fechou o mesmo produto na mesma conta depois do deal abrir. É confirmação, não encerramento.</p>
+            <p>{moneyShort(q.conflicts_value)} em deals em que outro vendedor fechou o mesmo produto na mesma conta depois do deal abrir. O app pede confirmação e nunca encerra esses deals sozinho.</p>
           </div>
           <div>
             <dt>Pares duplicados</dt>
@@ -205,16 +205,16 @@ export function Validation() {
             associação, não que seguir a ordem <em>causa</em> a venda.
           </li>
           <li>
-            Em julho e outubro a base não tem deals antigos fechando dentro de 30 dias — os cohorts pulam
-            meses. Por isso o forecast ajustado erra para cima nesses cortes; o ingênuo erra muito mais.
+            Em julho e outubro nenhum deal antigo da base fecha nos 30 dias seguintes, porque as safras de
+            deals, agrupadas por mês de engajamento, pulam meses. Por isso o forecast ajustado erra para cima nesses cortes; o ingênuo erra muito mais.
           </li>
           <li>
             O desfecho é o que está no CRM: um deal marcado como ganho não prova que o cliente comprou por
             causa da priorização.
           </li>
           <li>
-            A AUC da janela de 30 dias mede separação de ganhos e perdas; a captura mede dinheiro. As duas
-            aparecem juntas de propósito, porque uma sozinha conta meia história.
+            A AUC da janela de 30 dias mede separação de ganhos e perdas; a captura mede dinheiro. A tela
+            mostra as duas porque elas discordam: “mais novos primeiro” tem a maior AUC e uma das menores capturas.
           </li>
         </ul>
       </section>

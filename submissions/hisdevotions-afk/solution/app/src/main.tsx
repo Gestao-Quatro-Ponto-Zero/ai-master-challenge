@@ -154,7 +154,7 @@ function DecisionsBackup() {
       if (!valid) throw new Error("formato inesperado");
       importDecisions(data);
     } catch {
-      setError("Não consegui ler esse arquivo — exporte um novo daqui e tente de novo.");
+      setError("Não consegui ler esse arquivo. Exporte um novo daqui e tente de novo.");
     }
   };
 
@@ -288,7 +288,7 @@ function Shell() {
           {hasFilter ? (
             <button
               type="button" className="nav-operator" onClick={() => setFilters(NO_FILTERS)}
-              title={`${scope} — limpar filtro`} aria-label={`Escopo: ${scope}. Limpar filtro.`}
+              title={`${scope}: limpar filtro`} aria-label={`Escopo: ${scope}. Limpar filtro.`}
             >
               <span className="nav-operator-avatar">{initialsOf(scope)}</span>
               <span className="nav-operator-name">{scope}</span>

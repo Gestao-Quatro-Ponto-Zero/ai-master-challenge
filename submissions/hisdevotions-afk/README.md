@@ -60,7 +60,7 @@ A nossa fila é a única acima de 50% em todos os cortes. Na simulação por ven
 
 #### Conflito conta × produto
 
-Em 464 dos 501 deals abertos com conta, outro vendedor fechou o mesmo produto na mesma conta depois de o deal abrir — US$ 1,0 mi em pipeline. Isso não prova que é o mesmo pedido (pode ser outro departamento, outra quantidade ou recompra), então o app não encerra: coloca o deal na fila de conflito e pede confirmação. Também há 189 pares de conta e produto com mais de um deal aberto (481 deals), que valem consolidação antes de prever.
+Em 464 dos 501 deals abertos com conta, outro vendedor fechou o mesmo produto na mesma conta depois de o deal abrir, somando US$ 1,0 mi em pipeline. Isso não prova que é o mesmo pedido (pode ser outro departamento, outra quantidade ou recompra), então o app não encerra: coloca o deal na fila de conflito e pede confirmação. Também há 189 pares de conta e produto com mais de um deal aberto (481 deals), que valem consolidação antes de prever.
 
 Os limites das filas saem dos dados e se ajustam com outra base:
 - *Avançar*: menos de 44 dias, ainda cedo para fechar.
@@ -140,7 +140,7 @@ Sem `--webhook`, `--to` ou `--targets` o bot só imprime. Trecho real da saída:
 - O CRM não registra atividade, então um deal com 150 dias e reunião marcada para amanhã aparece como parado.
 - Os dados são um retrato de 31/12/2017. Em produção o motor rodaria toda noite e as decisões voltariam para o CRM. Hoje ficam no `localStorage`, com exportar e importar em JSON.
 - Há viés de sobrevivência no limite de 138 dias. A base termina em 31/12/2017, e um deal aberto há 150 dias pode ter um desfecho que ainda não foi registrado. Por isso a fila Decidir pede requalificar ou encerrar, e o sistema nunca encerra sozinho.
-- O backtest é de quatro cortes de uma base sintética, não um experimento causal. Em julho e outubro os cohorts pulam meses e o forecast ajustado erra para cima; o ingênuo erra muito mais. A captura de receita mostra associação, não que seguir a ordem causa a venda.
+- O backtest é de quatro cortes de uma base sintética, não um experimento causal. Em julho e outubro as safras de deals, agrupadas por mês de engajamento, pulam meses, e o forecast ajustado erra para cima; o ingênuo erra muito mais. A captura de receita mostra associação, não que seguir a ordem causa a venda.
 - Conflito de conta não prova que o pedido é o mesmo: pode ser outro departamento, outra quantidade ou recompra. Por isso o app pede confirmação e nunca encerra sozinho um deal com conflito.
 - O pico da curva depende de um ponto só: a idade com o maior valor entre as que têm pelo menos 30 deals, e pode mudar com a amostra. Suavizar a curva antes de procurar o pico resolveria.
 - O envio do script de notificação não foi testado com Slack ou email reais: os testes cobrem a formatação e a escolha de destino, e nenhuma mensagem foi enviada. O `sales_teams.csv` também não tem email nem Slack de ninguém, então `targets.json` é um diretório mantido à mão (em produção viria do SSO).
@@ -167,7 +167,7 @@ O registro completo, com os erros, está em [`process-log/PROCESS.md`](process-l
 4. Pedi uma auditoria externa do motor a uma segunda sessão, sem o contexto de quem o construiu, e depois uma revisão adversarial da própria correção com o Codex.
 5. Pedi um review com o olhar de um avaliador e priorizei as correções.
 
-Foram 28 etapas, registradas em ordem no PROCESS.md com o que foi decisão minha, o que foi proposta da IA e o que os dados mostraram. Três delas foram revisões feitas de fora do código: a auditoria externa, a revisão adversarial e o review com olhar de avaliador.
+Foram 29 etapas, registradas em ordem no PROCESS.md com o que foi decisão minha, o que foi proposta da IA e o que os dados mostraram. Três delas foram revisões feitas de fora do código: a auditoria externa, a revisão adversarial e o review com olhar de avaliador.
 
 ### Onde a IA errou e como corrigi
 
