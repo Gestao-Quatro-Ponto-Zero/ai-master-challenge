@@ -130,11 +130,8 @@ O registro completo, com os erros, está em [`process-log/PROCESS.md`](process-l
 
 | Ferramenta | Para que usei |
 |---|---|
-| Claude Code (Claude Opus 5.5 e Claude Sonnet 5) | Exploração dos dados, testes estatísticos, motor, app, revisão visual e documentação |
+| Claude Code (Claude Opus 5.5 e Claude Sonnet 5) | Exploração dos dados, testes estatísticos, motor de scoring, script de notificação e testes |
 | Codex (`/codex:adversarial-review`) | Revisão adversarial da correção do motor, por um modelo diferente do que a escreveu |
-| Claude Design | Mockup de referência que guiou o visual da Overview |
-| Impeccable e Humanizer (skills do Claude Code) | Detector de padrões de interface gerada por IA; revisão do texto |
-| Chrome headless e Claude in Chrome | Screenshots e medição do layout no desktop e no celular |
 
 ### Onde a IA errou e como corrigi
 
