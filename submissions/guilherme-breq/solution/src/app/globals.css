@@ -10,7 +10,8 @@
   --color-line-strong: rgb(255 255 255 / 0.12);
   --color-fg: #eceef1;
   --color-fg-muted: #9aa1ab;
-  --color-fg-subtle: #656c76;
+  /* #7d848e sobre ink-950/900 ≈ 4,9:1 (WCAG AA para texto pequeno). */
+  --color-fg-subtle: #7d848e;
   --color-signal: #c8f250;
   --color-signal-dim: #8fae3a;
   --color-warm: #f2b54b;
@@ -23,6 +24,25 @@
 
 html {
   color-scheme: dark;
+  scrollbar-gutter: stable;
+}
+
+/* Faixa rolável sem barra visível (o corte do último card já indica a rolagem). */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Indica que a faixa de abas rola na horizontal no mobile. */
+.tabs-fade {
+  mask-image: linear-gradient(to right, black calc(100% - 40px), transparent);
+}
+@media (min-width: 768px) {
+  .tabs-fade {
+    mask-image: none;
+  }
 }
 
 body {

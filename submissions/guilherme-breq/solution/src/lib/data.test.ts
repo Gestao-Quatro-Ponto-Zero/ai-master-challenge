@@ -30,6 +30,13 @@ describe("getPipeline com os dados reais do CRM", async () => {
     expect(data.deals.every((d) => d.manager !== "—" && d.region !== "—")).toBe(true);
   });
 
+  it("curva de momento (Kaplan-Meier) bate com analysis/06 e cai depois do pico", () => {
+    expect(data.decideCurve[0]).toBeCloseTo(0.381, 2);
+    expect(data.decideCurve[90]).toBeCloseTo(0.417, 2);
+    expect(data.decideCurve[120]).toBeCloseTo(0.125, 2);
+    expect(data.decideCurve[135]).toBeCloseTo(0.017, 2);
+  });
+
   it("taxa global de vitória bate com a análise (63,2%)", () => {
     expect(data.globalWinRate).toBeCloseTo(0.6315, 3);
   });

@@ -1,4 +1,12 @@
 """
+⚠ SUPERADO PELO 06_momentum_km_backtest.py. Mantido como registro do processo.
+A revisão independente (agente Esquadro) achou dois vieses aqui:
+  (a) o teste do momento usa só deals que ACABARAM fechando (seleção pelo futuro), o que inflou a AUC
+      para 0,66-0,87; com todos os abertos, ela fica em 0,53-0,79 (média 0,65);
+  (b) a curva ignora deals ainda abertos (censura), o que superestimou a chance de decisão
+      (previa 41% em jul/2017, contra 10% observados).
+Além disso, os "589 zumbis" abaixo somam observações repetidas: são 411 deals únicos.
+
 Sinais que SOBREVIVEM ao teste fora da amostra (o 04_backtest mostrou que p(win) não diferencia deals).
 
 1. Regra do zumbi: algum deal aberto há mais que o ciclo máximo histórico fechou depois?

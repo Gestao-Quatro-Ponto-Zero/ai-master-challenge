@@ -16,7 +16,7 @@ function ScoreBadge({ deal }: { deal: Deal }) {
     return (
       <div className="flex h-12 w-14 shrink-0 flex-col items-center justify-center rounded-lg border border-risk/30 bg-risk/10 text-risk">
         <span className="tabular font-mono text-sm font-semibold">+{deal.daysOverCycle}d</span>
-        <span className="text-[10px] uppercase tracking-wider opacity-80">zumbi</span>
+        <span className="text-[11px] uppercase tracking-wider opacity-80">zumbi</span>
       </div>
     );
   }
@@ -26,7 +26,7 @@ function ScoreBadge({ deal }: { deal: Deal }) {
       aria-label={`Score ${deal.score} de 100`}
     >
       <span className="tabular font-mono text-lg font-semibold leading-none">{deal.score}</span>
-      <span className="mt-0.5 text-[10px] uppercase tracking-wider opacity-70">score</span>
+      <span className="mt-0.5 text-[11px] uppercase tracking-wider opacity-70">score</span>
     </div>
   );
 }
@@ -57,7 +57,7 @@ function Breakdown({ deal }: { deal: Deal }) {
         <div className="h-full bg-cool" style={{ width: `${deal.valuePts}%` }} />
         <div className="h-full bg-signal" style={{ width: `${deal.momentumPts}%` }} />
       </div>
-      <div className="mt-1.5 flex gap-4 text-[11px] text-fg-subtle">
+      <div className="mt-1.5 flex gap-4 text-xs text-fg-subtle">
         <span className="flex items-center gap-1.5"><i className="size-2 rounded-full bg-cool" />Valor do deal</span>
         {!isProspect && <span className="flex items-center gap-1.5"><i className="size-2 rounded-full bg-signal" />Momento de decisão</span>}
       </div>
@@ -99,14 +99,16 @@ export function DealRow({
       >
         <ScoreBadge deal={deal} />
         <div className="min-w-0 flex-1">
-          <div className="flex items-baseline gap-2">
-            <span className={`truncate font-medium ${deal.account ? "text-fg" : "italic text-fg-muted"}`}>
-              {deal.account ?? "Conta não vinculada"}
-            </span>
+          {/* flex-wrap: no mobile o selo e o ID descem de linha em vez de truncar o título. */}
+          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+            <span className="max-w-full truncate font-medium text-fg">{deal.account ?? deal.product}</span>
+            {!deal.account && (
+              <span className="shrink-0 rounded border border-risk/30 px-1.5 py-px text-xs leading-snug text-risk">sem conta</span>
+            )}
             <span className="shrink-0 font-mono text-[11px] text-fg-subtle">{deal.id}</span>
           </div>
           <div className="mt-0.5 flex flex-wrap gap-x-3 text-sm text-fg-muted">
-            <span>{deal.product}</span>
+            {deal.account && <span>{deal.product}</span>}
             <span className="tabular">{formatUSD(deal.price)}</span>
             <span className="tabular text-fg-subtle">{meta}</span>
             {showAgent && <span className="text-fg-subtle">{deal.agent}</span>}
