@@ -18,7 +18,59 @@ App publicado: https://hisdevotions-afk.github.io/ai-master-challenge/
 
 ---
 
-## Setup
+## Solução
+
+### Abordagem
+
+Comecei pelos dados, não pelas telas. Usei como referência projetos meus anteriores que já rodam em produção com uma base grande de dados (o CRM de uma rede de escolas): de lá vieram o raciocínio do deal "morto" que pede uma decisão, a comparação com pares com amostra mínima e a fila ordenada por valor esperado. O código ficou lá.
+
+Antes de usar qualquer característica, testei cada uma com uma simulação: se todos os grupos tivessem a mesma chance de ganhar, com que frequência o acaso produziria diferenças tão grandes quanto as dos dados?
+
+| Característica | p vs. acaso | No score? |
+|---|---|---|
+| Idade do deal | < 0,001 | Sim |
+| Mês de fim de trimestre | < 0,001 | Não: diz quando o deal é registrado, não se um aberto vai fechar |
+| Vendedor / Vendedor × produto | 0,30 / 0,22 | Não |
+| Produto / duração do ciclo por produto | 0,48 / 0,10 | Não |
+| Tamanho da conta (receita / funcionários) | 0,64 / 0,78 | Não |
+| Região / Manager / Conta / Setor | 0,78 / 0,88 / 0,95 / 0,99 | Não |
+
+Com a idade como único sinal, decompus o trabalho em três partes, nesta ordem: o motor em Python com testes, o app em React que lê o resultado do motor, e a revisão das telas com os números conferidos contra o motor.
+
+### Resultados / Findings
+
+O achado principal: 65% do pipeline declarado (US$ 3,2 mi de US$ 5,0 mi, 1.301 deals) está parado além do maior ciclo que a base já fechou. Os outros números que orientam as recomendações estão abaixo, em Recomendações.
+
+O score é `P(ganhar nos próximos 30 dias | idade)`, em %. A curva aprende com os 6.711 deals fechados e também com os abertos: um deal aberto há 90 dias que não fechou é evidência de que 90 dias não garantem fechar em 30. Nesta base o melhor score possível é 31% (deals com 85 dias). Por isso a tela mostra o score junto de uma faixa que compara com esse máximo, e um deal de 28% aparece como "alta". O valor do deal não entra no score.
+
+As filas são ordenadas pela receita esperada em 30 dias (valor × score), que aparece ao lado do score na mesma tabela.
+
+Os limites das filas saem dos dados e se ajustam com outra base:
+- *Avançar*: menos de 44 dias, ainda cedo para fechar.
+- *Fechar*, de 44 a 138 dias, com a ação mudando conforme a fase: antes do pico, "envie a proposta"; no pico (85 dias), "peça a decisão"; depois dele, "feche antes de esfriar"; a partir de 115 dias, quando a chance cai abaixo de metade do pico, "peça um sim ou não".
+- *Decidir*: 138 dias ou mais. Nenhum deal da base fechou depois disso. A sugestão de encerrar ou confirmar vem de quanto o deal passou do limite, comparado com a mediana dos parados (653 para encerrar, 648 para confirmar). Falta de conta no CRM é falha de cadastro e não indica que o deal morreu, então ela não pesa na sugestão; vira uma tarefa de cadastro dentro da própria ação.
+- *Prospectar*: ainda não engajado, sem score.
+
+A conta não muda a chance de ganhar (p = 0,95), então fica fora do score. Mas saber que o cliente já comprou 34 vezes ou que tem outros 13 deals abertos muda a conversa do vendedor, e por isso entra como motivo e no texto da ação.
+
+Não há LLM em tempo de execução. Todo texto é montado a partir dos números, então sempre bate com o dado e ninguém precisa de chave de API.
+
+Duas correções nos dados: `GTXPro` virou `GTX Pro` (1.480 deals perdiam o preço no join) e `technolgy` virou `technology`.
+
+#### O que o vendedor e o gestor veem
+
+| Tela | Pergunta que responde |
+|---|---|
+| Overview | Para o vendedor: "em que eu trabalho esta semana?", com quatro filas com verbo (feche, decida, mantenha em movimento, engaje) e a ação do momento. Para o gestor, sem vendedor escolhido: "onde está o problema?", com uma linha por manager (ou por vendedor do time) mostrando a composição do pipeline por fila, o valor parado e a receita esperada; um clique abre o recorte |
+| Pipeline | "Como está tudo?" Lista e kanban na mesma ordem das filas. Na fila Decidir dá para decidir em lote, com desfazer |
+| Ficha do deal | "Por que esse score?" Os motivos, a curva histórica e o contexto da conta |
+| Forecast | "Quanto vai entrar?" Declarado, esperado (sem prazo) e próximos 30 dias, por região, manager ou vendedor, na mesma tabela da Overview: barra de composição por linha, ordenável e clicável para descer um nível |
+| Contas | "Qual o histórico com esse cliente?" |
+| Time | "Quem produz o quê?" Receita ganha, ticket médio e higiene de pipeline de cada pessoa |
+
+Todas as telas têm filtro em cascata de região, manager e vendedor. Com um vendedor escolhido, a Overview abre com "Bom dia, Hayden."
+
+#### Setup
 
 Para só ver, abra o link acima. Para rodar local (Node 22+):
 
@@ -55,64 +107,14 @@ Sem `--webhook`, `--to` ou `--targets` o bot só imprime. Trecho real da saída:
   - Sem conta vinculada — MG Advanced — US$ 604 em 30d: Feche antes de esfriar: a chance cai a cada semana, e em 3 dias fica abaixo de metade do pico.
 ```
 
----
-
-## O que o vendedor e o gestor veem
-
-| Tela | Pergunta que responde |
-|---|---|
-| Overview | Para o vendedor: "em que eu trabalho esta semana?", com quatro filas com verbo (feche, decida, mantenha em movimento, engaje) e a ação do momento. Para o gestor, sem vendedor escolhido: "onde está o problema?", com uma linha por manager (ou por vendedor do time) mostrando a composição do pipeline por fila, o valor parado e a receita esperada; um clique abre o recorte |
-| Pipeline | "Como está tudo?" Lista e kanban na mesma ordem das filas. Na fila Decidir dá para decidir em lote, com desfazer |
-| Ficha do deal | "Por que esse score?" Os motivos, a curva histórica e o contexto da conta |
-| Forecast | "Quanto vai entrar?" Declarado, esperado (sem prazo) e próximos 30 dias, por região, manager ou vendedor, na mesma tabela da Overview: barra de composição por linha, ordenável e clicável para descer um nível |
-| Contas | "Qual o histórico com esse cliente?" |
-| Time | "Quem produz o quê?" Receita ganha, ticket médio e higiene de pipeline de cada pessoa |
-
-Todas as telas têm filtro em cascata de região, manager e vendedor. Com um vendedor escolhido, a Overview abre com "Bom dia, Hayden."
-
----
-
-## Lógica do scoring
-
-Antes de usar qualquer característica, testei cada uma com uma simulação: se todos os grupos tivessem a mesma chance de ganhar, com que frequência o acaso produziria diferenças tão grandes quanto as dos dados?
-
-| Característica | p vs. acaso | No score? |
-|---|---|---|
-| Idade do deal | < 0,001 | Sim |
-| Mês de fim de trimestre | < 0,001 | Não: diz quando o deal é registrado, não se um aberto vai fechar |
-| Vendedor / Vendedor × produto | 0,30 / 0,22 | Não |
-| Produto / duração do ciclo por produto | 0,48 / 0,10 | Não |
-| Tamanho da conta (receita / funcionários) | 0,64 / 0,78 | Não |
-| Região / Manager / Conta / Setor | 0,78 / 0,88 / 0,95 / 0,99 | Não |
-
-O score é `P(ganhar nos próximos 30 dias | idade)`, em %. A curva aprende com os 6.711 deals fechados e também com os abertos: um deal aberto há 90 dias que não fechou é evidência de que 90 dias não garantem fechar em 30. Nesta base o melhor score possível é 31% (deals com 85 dias). Por isso a tela mostra o score junto de uma faixa que compara com esse máximo, e um deal de 28% aparece como "alta". O valor do deal não entra no score.
-
-As filas são ordenadas pela receita esperada em 30 dias (valor × score), que aparece ao lado do score na mesma tabela.
-
-Os limites das filas saem dos dados e se ajustam com outra base:
-- *Avançar*: menos de 44 dias, ainda cedo para fechar.
-- *Fechar*, de 44 a 138 dias, com a ação mudando conforme a fase: antes do pico, "envie a proposta"; no pico (85 dias), "peça a decisão"; depois dele, "feche antes de esfriar"; a partir de 115 dias, quando a chance cai abaixo de metade do pico, "peça um sim ou não".
-- *Decidir*: 138 dias ou mais. Nenhum deal da base fechou depois disso. A sugestão de encerrar ou confirmar vem de quanto o deal passou do limite, comparado com a mediana dos parados (653 para encerrar, 648 para confirmar). Falta de conta no CRM é falha de cadastro e não indica que o deal morreu, então ela não pesa na sugestão; vira uma tarefa de cadastro dentro da própria ação.
-- *Prospectar*: ainda não engajado, sem score.
-
-A conta não muda a chance de ganhar (p = 0,95), então fica fora do score. Mas saber que o cliente já comprou 34 vezes ou que tem outros 13 deals abertos muda a conversa do vendedor, e por isso entra como motivo e no texto da ação.
-
-Não há LLM em tempo de execução. Todo texto é montado a partir dos números, então sempre bate com o dado e ninguém precisa de chave de API.
-
-Duas correções nos dados: `GTXPro` virou `GTX Pro` (1.480 deals perdiam o preço no join) e `technolgy` virou `technology`.
-
----
-
-## Recomendações para a Head de RevOps
+### Recomendações
 
 1. Limpar o forecast esta semana: 1.301 deals (US$ 3,2 mi) estão além de qualquer ciclo já fechado. Cada vendedor decide os seus na fila Decidir.
 2. Cadastrar as contas: 1.425 dos 2.089 deals abertos (68%) estão sem conta. Sem conta não há histórico do cliente, e o contexto que melhora a ação some.
 3. Cobrar receita e higiene de pipeline. Receita e volume variam muito entre vendedores (de US$ 1,15 mi a US$ 0 no histórico), mas a taxa de ganho não varia além do acaso (p = 0,30), e ranquear por ela seria ranquear ruído.
 4. Registrar atividade no CRM, como emails e reuniões. Hoje a idade é o único sinal. Com atividade, o score passa a distinguir o deal velho que tem reunião marcada para amanhã.
 
----
-
-## Limitações
+### Limitações
 
 - Alguns padrões são limpos demais para uma operação real: a região Central não tem nenhum deal em negociação, e todos os 500 prospects estão lá; 62% do pipeline aberto passou do maior ciclo já fechado. O app mostra esses achados, mas eles podem vir de como a base foi gerada. Em uma empresa real, eu confirmaria no CRM antes de mudar a cobrança do time.
 - O CRM não registra atividade, então um deal com 150 dias e reunião marcada para amanhã aparece como parado.
@@ -128,10 +130,22 @@ Duas correções nos dados: `GTXPro` virou `GTX Pro` (1.480 deals perdiam o pre�
 
 O registro completo, com os erros, está em [`process-log/PROCESS.md`](process-log/PROCESS.md). O histórico de commits da branch mostra a evolução.
 
+### Ferramentas usadas
+
 | Ferramenta | Para que usei |
 |---|---|
 | Claude Code (Claude Opus 5.5 e Claude Sonnet 5) | Exploração dos dados, testes estatísticos, motor de scoring, script de notificação e testes |
 | Codex (`/codex:adversarial-review`) | Revisão adversarial da correção do motor, por um modelo diferente do que a escreveu |
+
+### Workflow
+
+1. Escolhi o challenge e decidi usar como referência projetos meus anteriores que já rodam em produção com uma base grande de dados. Só o raciocínio veio de lá.
+2. Explorei os dados antes de escolher qualquer feature. O teste contra o acaso derrubou quase todas as features óbvias.
+3. Motor com testes, depois o app, depois a revisão das telas.
+4. Pedi uma auditoria externa do motor a uma segunda sessão, sem o contexto de quem o construiu, e depois uma revisão adversarial da própria correção com o Codex.
+5. Pedi um review com o olhar de um avaliador e priorizei as correções.
+
+Foram 26 etapas, registradas em ordem no PROCESS.md com o que foi decisão minha, o que foi proposta da IA e o que os dados mostraram. Três delas foram revisões feitas de fora do código: a auditoria externa, a revisão adversarial e o review com olhar de avaliador.
 
 ### Onde a IA errou e como corrigi
 
