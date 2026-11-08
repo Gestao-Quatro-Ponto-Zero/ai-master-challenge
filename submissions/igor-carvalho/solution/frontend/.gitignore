@@ -1,0 +1,19 @@
+node_modules
+dist
+.env.local
+*.log
+
+# Segredos e configuração local (use o .env.example como modelo)
+.env
+.env.*
+!.env.example
+
+# Build, testes e caches
+coverage/
+.vite/
+*.tsbuildinfo
+
+# SO e editores
+.DS_Store
+.idea/
+.vscode/

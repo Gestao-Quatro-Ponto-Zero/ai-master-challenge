@@ -1,0 +1,21 @@
+services:
+  app:
+    build: .
+    image: g4-lead-scorer:latest
+    container_name: g4-lead-scorer
+    ports:
+      - "8000:8000"
+    environment:
+      # lido do backend/.env (ou do terminal) na hora do "docker compose"
+      G4_JWT_SECRET: ${G4_JWT_SECRET:-troque-este-segredo-com-no-minimo-32-caracteres}
+      G4_SHOW_PROBABILITY: ${G4_SHOW_PROBABILITY:-true}
+      G4_RATE_LIMIT_PER_MINUTE: ${G4_RATE_LIMIT_PER_MINUTE:-120}
+    volumes:
+      - g4_artifacts:/app/artifacts   # modelos treinados (versões)
+      - g4_var:/app/var               # SQLite + logs
+      - ./data:/app/data              # CSVs: atualize aqui os leads novos; o cron das 02:00 lê esta pasta
+    restart: unless-stopped
+
+volumes:
+  g4_artifacts:
+  g4_var:

@@ -1,0 +1,33 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.venv/
+*.egg-info/
+artifacts/
+var/
+*.db
+*.db-wal
+*.db-shm
+
+# Segredos e configuração local (use o .env.example como modelo)
+.env
+.env.*
+!.env.example
+
+# Python / ferramentas
+.mypy_cache/
+.coverage
+htmlcov/
+build/
+dist/
+.eggs/
+
+# Logs e locks do treino diário
+*.log
+train.lock/
+
+# SO e editores
+.DS_Store
+.idea/
+.vscode/
