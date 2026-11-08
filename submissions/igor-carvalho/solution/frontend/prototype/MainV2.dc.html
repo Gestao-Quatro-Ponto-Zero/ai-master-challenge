@@ -1,0 +1,895 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Seu dia (v2 corporativa)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:'Inter',system-ui,sans-serif;background:#EEF1F5;color:#0F1B2D}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:#1D4E89}
+:focus-visible{outline:2px solid #1D4E89;outline-offset:2px}
+.rowbtn:hover{background:#F1F6F5 !important}
+.tabbtn:hover{background:#F1F3F6}
+.navlink:hover{background:#F1F3F6}
+.fbbtn:hover{background:#F1F3F6}
+</style>
+</helmet>
+
+<div style="--accent: {{accent}}; --accent-soft: {{accentSoft}}; min-height: 100%; background: #EEF1F5; color: #0F1B2D; font-family: 'IBM Plex Sans', system-ui, sans-serif;">
+
+  <!-- Barra superior -->
+  <header style="background: #0B2540; border-bottom: 3px solid #1D4E89;">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 10px clamp(16px, 3vw, 32px); display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="width: 32px; height: 32px; border-radius: 4px; background: rgba(255,255,255,0.14); display: inline-flex; align-items: center; justify-content: center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V11M12 20V4M19 20v-6"/></svg>
+        </span>
+        <strong style="color: #FFFFFF; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 18px; letter-spacing: -0.01em;">Sales Priority</strong>
+      </div>
+      <nav aria-label="Principal" style="display: flex; flex-wrap: wrap; gap: 4px; flex-grow: 1;">
+        <a class="navlink" href="#main" aria-current="page" style="min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center; padding: 0 14px; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: 600; color: #FFFFFF; background: rgba(255,255,255,0.14);">Meu foco</a>
+      </nav>
+      <a href="Manager.dc.html" style="font-size: 13px; font-weight: 500; color: #BFD3EA;">Demo: ver como manager →</a>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="width: 36px; height: 36px; border-radius: 50%; background: #E3E8EE; color: #3B4656; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center;" aria-hidden="true">VL</span>
+        <span style="display: flex; flex-direction: column; line-height: 1.25;">
+          <span style="font-size: 14px; font-weight: 600; color: #FFFFFF;">Vicki Laflamme</span>
+          <span style="font-size: 12px; color: #A9BBD0;">Vendedor · West</span>
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" style="max-width: 1280px; margin: 0 auto; padding: 28px clamp(16px, 3vw, 32px) 56px; display: flex; flex-direction: column; gap: 20px;">
+
+    <!-- Título -->
+    <section style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px;">
+      <div>
+        <h1 style="margin: 0; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 30px; line-height: 1.15; letter-spacing: -0.01em;">{{title}}</h1>
+        <p style="margin: 6px 0 0; font-size: 15px; color: #5B6472;">{{subtitle}}</p>
+        <button type="button" class="fbbtn" onClick="{{onSwitch}}" style="margin-top: 10px; min-height: 40px; padding: 0 14px; border: 1px solid #B7C0CC; border-radius: 4px; background: #FFFFFF; font-size: 13px; font-weight: 600; color: var(--accent);">{{switchLabel}}</button>
+      </div>
+      <span style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border: 1px solid #D5DBE3; border-radius: 4px; background: #FFFFFF; font-size: 13px; color: #3B4656;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+        Pipeline em <strong style="font-weight: 600;">31/12/2017</strong> · dados de exemplo
+      </span>
+    </section>
+
+<sc-if value="{{isAll}}" hint-placeholder-val="{{false}}"><div style="display: contents;">
+    <!-- Aviso de uso -->
+    <section aria-label="Aviso" style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; background: #FFFFFF; border: 1px solid #D5DBE3; border-radius: 6px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 1px;"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+      <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #3B4656;">A ordem da lista pesa sobretudo <strong style="font-weight: 600;">valor do produto, tempo no funil e limpeza do pipeline</strong>. A chance de ganhar é só um apoio fraco, vinda de padrões do histórico: use junto com seu julgamento. <a href="#main" style="font-weight: 600;">Como a prioridade é calculada</a></p>
+    </section>
+
+    <!-- KPIs -->
+    <section aria-label="Resumo do pipeline" style="display: flex; flex-wrap: wrap; gap: 16px;">
+      <sc-for list="{{kpis}}" as="k" hint-placeholder-count="4">
+        <button type="button" aria-pressed="{{k.selected}}" onClick="{{k.pick}}" style="flex: 1 1 220px; box-sizing: border-box; display: block; text-align: left; background: {{k.bg}}; border: 2px solid {{k.border}}; border-radius: 6px; padding: 14px 16px;">
+          <span style="display: block; font-size: 13px; font-weight: 600; color: {{k.labelColor}};">{{k.label}}</span>
+          <span style="display: block; margin-top: 6px; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 32px; font-weight: 700; letter-spacing: -0.01em; color: {{k.valueColor}}; font-variant-numeric: tabular-nums;">{{k.value}}</span>
+          <span style="display: block; margin-top: 2px; font-size: 13px; color: #5B6472;">{{k.note}}</span>
+          <sc-if value="{{k.showBar}}" hint-placeholder-val="{{false}}">
+            <span style="display: block; margin-top: 8px; height: 6px; border-radius: 3px; background: #E3E8EE; overflow: hidden;">
+              <span style="display: block; width: {{k.barPct}}%; height: 6px; background: var(--accent);"></span>
+            </span>
+          </sc-if>
+          <span style="display: block; margin-top: 8px; font-size: 12px; font-weight: 600; color: var(--accent);">Ver na lista →</span>
+        </button>
+      </sc-for>
+    </section>
+
+    <!-- Lista + painel -->
+    <section style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start;">
+
+      <!-- Lista -->
+      <div style="flex: 999 1 640px; min-width: 0; background: #FFFFFF; border: 1px solid #D5DBE3; border-radius: 6px; overflow: hidden;">
+
+        <!-- Filtros -->
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 16px; padding: 16px 20px; border-bottom: 1px solid #D5DBE3;">
+          <div style="display: flex; flex-direction: column; gap: 4px; flex: 1 1 200px;">
+            <label for="q" style="font-size: 12px; font-weight: 600; color: #5B6472;">Buscar</label>
+            <input id="q" type="search" placeholder="ID do deal ou produto" value="{{search}}" onChange="{{onSearch}}" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid #B7C0CC; border-radius: 4px; background: #FFFFFF; font-size: 14px;">
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 4px; flex: 0 1 190px;">
+            <label for="prod" style="font-size: 12px; font-weight: 600; color: #5B6472;">Produto</label>
+            <select id="prod" value="{{product}}" onChange="{{onProduct}}" style="height: 44px; box-sizing: border-box; padding: 0 10px; border: 1px solid #B7C0CC; border-radius: 4px; background: #FFFFFF; font-size: 14px;">
+              <option value="all">Todos os produtos</option>
+              <option value="GTK 500">GTK 500</option>
+              <option value="GTX Plus Pro">GTX Plus Pro</option>
+              <option value="GTX Pro">GTX Pro</option>
+              <option value="MG Advanced">MG Advanced</option>
+              <option value="GTX Plus Basic">GTX Plus Basic</option>
+              <option value="GTX Basic">GTX Basic</option>
+              <option value="MG Special">MG Special</option>
+            </select>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 4px; flex: 0 1 190px;">
+            <label for="sort" style="font-size: 12px; font-weight: 600; color: #5B6472;">Ordenar por</label>
+            <select id="sort" value="{{sort}}" onChange="{{onSort}}" style="height: 44px; box-sizing: border-box; padding: 0 10px; border: 1px solid #B7C0CC; border-radius: 4px; background: #FFFFFF; font-size: 14px;">
+              <option value="score">Prioridade</option>
+              <option value="ev">Valor esperado</option>
+              <option value="age">Tempo no funil</option>
+            </select>
+          </div>
+          <div style="position: relative; display: flex; flex-direction: column; gap: 4px; flex: 0 1 240px; min-width: 200px;">
+            <span style="font-size: 12px; font-weight: 600; color: #5B6472;">Índice de prioridade (0 a 100)</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+            <label for="minscore" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">Índice mínimo</label>
+            <input id="minscore" type="number" min="0" max="100" step="1" inputmode="numeric" placeholder="Mín." value="{{minText}}" onChange="{{onMin}}" onInput="{{onMin}}" disabled="{{minDisabled}}" style="height: 44px; width: 84px; box-sizing: border-box; padding: 0 10px; border: 1px solid #B7C0CC; border-radius: 4px; background: #FFFFFF; font-size: 14px;">
+            <span aria-hidden="true" style="font-size: 14px; color: #5B6472;">até</span>
+            <label for="maxscore" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">Índice máximo</label>
+            <input id="maxscore" type="number" min="0" max="100" step="1" inputmode="numeric" placeholder="Máx." value="{{maxText}}" onChange="{{onMax}}" onInput="{{onMax}}" disabled="{{minDisabled}}" style="height: 44px; width: 84px; box-sizing: border-box; padding: 0 10px; border: 1px solid #B7C0CC; border-radius: 4px; background: #FFFFFF; font-size: 14px;">
+            </div>
+            <span style="position: absolute; top: 100%; left: 0; margin-top: 2px; white-space: nowrap; font-size: 12px; color: #9B2C2C;">{{rangeHint}}</span>
+          </div>
+          <span style="height: 44px; box-sizing: border-box; display: inline-flex; align-items: center; gap: 6px; padding: 0 12px; border: 1px dashed #B7C0CC; border-radius: 4px; font-size: 13px; color: #5B6472;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+            Só os seus deals
+          </span>
+        </div>
+
+        <!-- Abas -->
+        <div role="tablist" aria-label="Faixas de prioridade" style="display: flex; gap: 2px; padding: 0 12px; border-bottom: 1px solid #D5DBE3; overflow-x: auto;">
+          <sc-for list="{{tabs}}" as="t" hint-placeholder-count="5">
+            <button type="button" role="tab" class="tabbtn" aria-selected="{{t.selected}}" onClick="{{t.pick}}" style="flex-shrink: 0; min-height: 52px; box-sizing: border-box; padding: 0 14px; border: 0; border-bottom: 3px solid {{t.line}}; background: transparent; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: {{t.weight}}; color: {{t.color}};">
+              {{t.label}}
+              <span style="min-width: 24px; padding: 2px 8px; border-radius: 4px; background: {{t.pillBg}}; color: {{t.pillFg}}; font-size: 12px; font-weight: 600; text-align: center; font-variant-numeric: tabular-nums;">{{t.count}}</span>
+            </button>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+          <div role="status" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 20px; background: var(--accent-soft); border-bottom: 1px solid #D5DBE3; font-size: 13px; font-weight: 500;">
+            <span>{{toast}}</span>
+            <button type="button" class="fbbtn" onClick="{{onUndo}}" style="min-height: 36px; padding: 0 12px; border: 1px solid #B7C0CC; border-radius: 4px; background: #FFFFFF; font-size: 13px; font-weight: 600;">Desfazer</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{bulkIdle}}" hint-placeholder-val="{{false}}">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 12px 20px; background: #FCE8E6; border-bottom: 1px solid #D5DBE3; font-size: 13px; color: #7A2222;">
+            <span style="flex: 1 1 260px; font-weight: 500;">Ação em lote nos {{bulkCount}} deals listados (mais de 138 dias no funil, mais antigos que qualquer deal já fechado).</span>
+            <button type="button" class="fbbtn" onClick="{{onBulkAsk}}" style="min-height: 40px; padding: 0 14px; border: 1px solid #C0504D; border-radius: 4px; background: #FFFFFF; font-size: 13px; font-weight: 600; color: #9B2C2C;">Encerrar como perdidos</button>
+            <button type="button" class="fbbtn" onClick="{{onBulkSnooze}}" style="min-height: 40px; padding: 0 14px; border: 1px solid #B7C0CC; border-radius: 4px; background: #FFFFFF; font-size: 13px; font-weight: 600; color: #0F1B2D;">Adiar 30 dias</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{bulkAsk}}" hint-placeholder-val="{{false}}">
+          <div role="alert" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 12px 20px; background: #FCE8E6; border-bottom: 1px solid #D5DBE3; font-size: 13px; color: #7A2222;">
+            <span style="flex: 1 1 260px; font-weight: 600;">Encerrar {{bulkCount}} deals como perdidos?</span>
+            <button type="button" class="fbbtn" onClick="{{onBulkLostOk}}" style="min-height: 40px; padding: 0 14px; border: 1px solid #9B2C2C; border-radius: 4px; background: #9B2C2C; font-size: 13px; font-weight: 600; color: #FFFFFF;">Confirmar</button>
+            <button type="button" class="fbbtn" onClick="{{onBulkCancel}}" style="min-height: 40px; padding: 0 14px; border: 1px solid #B7C0CC; border-radius: 4px; background: #FFFFFF; font-size: 13px; font-weight: 600;">Cancelar</button>
+          </div>
+        </sc-if>
+
+        <!-- Tabela -->
+        <div style="overflow-x: auto;">
+          <div style="min-width: 920px;">
+            <div style="display: grid; grid-template-columns: 84px minmax(170px, 1.2fr) minmax(160px, 1fr) 130px minmax(210px, 1.4fr); gap: 16px; padding: 10px 20px; background: #E9EDF3; border-bottom: 1px solid #D5DBE3; font-size: 12px; font-weight: 600; color: #5B6472;">
+              <span>Prioridade</span>
+              <span>Deal e conta</span>
+              <span>Tempo e contato</span>
+              <span>Valor</span>
+              <span>Próxima ação</span>
+            </div>
+
+            <sc-for list="{{rows}}" as="row" hint-placeholder-count="6">
+              <button type="button" class="rowbtn" onClick="{{row.select}}" aria-pressed="{{row.selected}}" aria-label="{{row.aria}}" style="display: grid; grid-template-columns: 84px minmax(170px, 1.2fr) minmax(160px, 1fr) 130px minmax(210px, 1.4fr); gap: 16px; align-items: center; width: 100%; box-sizing: border-box; text-align: left; padding: 14px 20px; border: 0; border-bottom: 1px solid #DDE2E9; border-left: 4px solid {{row.edge}}; background: {{row.bg}};">
+                <span style="display: block;">
+                  <sc-if value="{{row.hasScore}}" hint-placeholder-val="{{true}}">
+                    <span style="display: flex; flex-direction: column; align-items: flex-start; gap: 5px;">
+                      <span style="font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 24px; font-weight: 700; line-height: 1; color: {{row.prioFg}}; font-variant-numeric: tabular-nums;">{{row.scoreText}}</span>
+                      <span style="font-size: 13px; font-weight: 600; color: {{row.prioFg}};">{{row.prioLabel}}</span>
+                      <span title="Mudança desde a semana passada" style="font-size: 11px; font-weight: 600; color: {{row.changeFg}};">{{row.changeText}}</span>
+                    </span>
+                  </sc-if>
+                  <sc-if value="{{row.noScore}}" hint-placeholder-val="{{false}}">
+                    <span style="font-size: 12px; line-height: 1.3; color: #5B6472;">Sem prioridade</span>
+                  </sc-if>
+                </span>
+                <span style="display: flex; flex-direction: column; gap: 4px; min-width: 0;">
+                  <span style="font-size: 15px; font-weight: 600;">{{row.product}}</span>
+                  <span style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px;">
+                    <span style="padding: 2px 8px; border-radius: 6px; background: {{row.bandBg}}; color: {{row.bandFg}}; font-size: 12px; font-weight: 600;">{{row.bandLabel}}</span>
+                    <span style="font-size: 12px; color: #5B6472;">{{row.id}} · {{row.stage}}</span>
+                  </span>
+                  <span style="font-size: 13px; font-weight: 500; color: {{row.accountFg}};">{{row.accountText}}</span>
+                </span>
+                <span style="display: flex; flex-direction: column; gap: 6px;">
+                  <span style="font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums;">{{row.ageTop}}</span>
+                  <sc-if value="{{row.showBar}}" hint-placeholder-val="{{true}}">
+                    <span style="display: block; width: 100%; max-width: 150px; height: 6px; border-radius: 3px; background: #E3E8EE; overflow: hidden;">
+                      <span style="display: block; width: {{row.barPct}}%; height: 6px; background: {{row.barColor}};"></span>
+                    </span>
+                  </sc-if>
+                  <span style="font-size: 12px; color: #5B6472;">{{row.ageNote}}</span>
+                  <span style="font-size: 12px; font-weight: 600; color: {{row.lastFg}};">{{row.lastText}}</span>
+                </span>
+                <span style="display: flex; flex-direction: column; gap: 2px;">
+                  <span style="font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums;">{{row.priceText}}</span>
+                  <span style="font-size: 12px; color: #5B6472;">Esperado {{row.evText}}</span>
+                  <span style="font-size: 12px; color: #5B6472;">Previsão: {{row.closeText}}</span>
+                </span>
+                <span style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px;">
+                  <span style="font-size: 13px; font-weight: 600; line-height: 1.35;">{{row.nextText}}</span>
+                  <sc-for list="{{row.reasons}}" as="r" hint-placeholder-count="2">
+                    <span style="padding: 4px 10px; border-radius: 4px; background: {{r.bg}}; color: {{r.fg}}; font-size: 12px; font-weight: 500; line-height: 1.3;">{{r.text}}</span>
+                  </sc-for>
+                </span>
+              </button>
+            </sc-for>
+
+            <sc-if value="{{isEmpty}}" hint-placeholder-val="{{false}}">
+              <div style="padding: 48px 20px; text-align: center;">
+                <div style="font-size: 16px; font-weight: 600;">Nenhum deal encontrado</div>
+                <div style="margin-top: 4px; font-size: 14px; color: #5B6472;">Tente limpar a busca ou escolher outro produto.</div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+
+        <sc-if value="{{hasPager}}" hint-placeholder-val="{{true}}">
+          <nav aria-label="Paginação" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; padding: 12px 20px; border-top: 1px solid #D5DBE3;">
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #5B6472;">
+              <label for="psize">Por página</label>
+              <select id="psize" value="{{pageSize}}" onChange="{{onPageSize}}" style="height: 40px; box-sizing: border-box; padding: 0 8px; border: 1px solid #B7C0CC; border-radius: 4px; background: #FFFFFF; font-size: 14px;">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+              </select>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px;">
+              <button type="button" class="fbbtn" onClick="{{onPrev}}" disabled="{{prevOff}}" style="min-height: 40px; padding: 0 12px; border: 1px solid #B7C0CC; border-radius: 4px; background: #FFFFFF; font-size: 13px; font-weight: 600; opacity: {{prevOpacity}};">← Anterior</button>
+              <sc-for list="{{pages}}" as="p" hint-placeholder-count="3">
+                <button type="button" class="fbbtn" aria-current="{{p.current}}" aria-label="{{p.aria}}" onClick="{{p.pick}}" style="min-width: 40px; min-height: 40px; padding: 0 10px; border: 1px solid {{p.border}}; border-radius: 4px; background: {{p.bg}}; color: {{p.fg}}; font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums;">{{p.n}}</button>
+              </sc-for>
+              <button type="button" class="fbbtn" onClick="{{onNext}}" disabled="{{nextOff}}" style="min-height: 40px; padding: 0 12px; border: 1px solid #B7C0CC; border-radius: 4px; background: #FFFFFF; font-size: 13px; font-weight: 600; opacity: {{nextOpacity}};">Próxima →</button>
+            </div>
+          </nav>
+        </sc-if>
+
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 14px 20px; font-size: 13px; color: #5B6472;">
+          <span>{{footerText}}</span>
+          <span>Conta, último contato, previsão, meta e mudança semanal vêm do CRM; aqui são exemplos</span>
+        </div>
+      </div>
+
+      <!-- Painel de detalhe -->
+      <aside aria-label="Detalhe do deal selecionado" style="flex: 1 1 340px; min-width: 300px; background: #FFFFFF; border: 1px solid #D5DBE3; border-radius: 6px; padding: 20px; display: flex; flex-direction: column; gap: 18px;">
+        <sc-if value="{{hasSel}}" hint-placeholder-val="{{true}}">
+          <div style="display: flex; flex-direction: column; gap: 18px;">
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <sc-if value="{{sel.hasScore}}" hint-placeholder-val="{{true}}">
+                <span style="flex-shrink: 0; width: 84px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px;">
+                  <span aria-hidden="true" style="display: inline-flex; align-items: flex-end; gap: 3px; height: 28px;">
+                    <span style="width: 11px; height: 11px; border-radius: 2px; background: {{sel.bar1}};"></span>
+                    <span style="width: 11px; height: 19px; border-radius: 2px; background: {{sel.bar2}};"></span>
+                    <span style="width: 11px; height: 28px; border-radius: 2px; background: {{sel.bar3}};"></span>
+                  </span>
+                  <span style="font-size: 16px; font-weight: 700; color: {{sel.prioFg}}; line-height: 1.1;">Prioridade {{sel.prioLabel}}</span>
+                  <span style="font-size: 12px; color: #5B6472; font-variant-numeric: tabular-nums;">Índice {{sel.scoreText}}/100</span>
+                </span>
+              </sc-if>
+              <sc-if value="{{sel.noScore}}" hint-placeholder-val="{{false}}">
+                <span style="flex-shrink: 0; width: 84px; font-size: 13px; line-height: 1.3; color: #5B6472;">Sem prioridade</span>
+              </sc-if>
+              <div style="min-width: 0;">
+                <h2 style="margin: 0; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 20px; line-height: 1.2;">{{sel.product}}</h2>
+                <div style="margin-top: 4px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px;">
+                  <span style="padding: 2px 8px; border-radius: 6px; background: {{sel.bandBg}}; color: {{sel.bandFg}}; font-size: 12px; font-weight: 600;">{{sel.bandLabel}}</span>
+                  <span style="font-size: 12px; color: #5B6472;">{{sel.id}} · {{sel.stage}}</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="padding: 12px 14px; border-radius: 6px; background: {{sel.bandBg}}; color: {{sel.bandFg}}; font-size: 14px; line-height: 1.5; font-weight: 500;">{{sel.action}}</div>
+
+            <div style="display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; font-size: 13px;">
+              <span style="color: #5B6472;">Conta</span>
+              <span style="font-weight: 600; color: {{sel.accountFg}};">{{sel.accountText}}</span>
+              <span style="color: #5B6472;">Último contato</span>
+              <span style="font-weight: 600; color: {{sel.lastFg}};">{{sel.lastShort}}</span>
+              <span style="color: #5B6472;">Previsão de fechar</span>
+              <span style="font-weight: 600;">{{sel.closeText}}</span>
+              <span style="color: #5B6472;">Preço do deal</span>
+              <span style="font-weight: 600; font-variant-numeric: tabular-nums;">{{sel.priceText}}</span>
+            </div>
+
+            <div>
+              <h3 style="margin: 0 0 8px; font-size: 14px; font-weight: 600;">Ações rápidas</h3>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                <button type="button" class="fbbtn" onClick="{{onAct}}" style="min-height: 44px; padding: 0 14px; border: 1px solid var(--accent); border-radius: 4px; background: var(--accent); color: #FFFFFF; font-size: 13px; font-weight: 600;">Registrar atividade</button>
+                <button type="button" class="fbbtn" onClick="{{onSnooze}}" style="min-height: 44px; padding: 0 14px; border: 1px solid #B7C0CC; border-radius: 4px; background: #FFFFFF; font-size: 13px; font-weight: 600;">Adiar 7 dias</button>
+                <button type="button" class="fbbtn" onClick="{{onLost}}" style="min-height: 44px; padding: 0 14px; border: 1px solid #B7C0CC; border-radius: 4px; background: #FFFFFF; font-size: 13px; font-weight: 600; color: #9B2C2C;">Marcar como perdido</button>
+                <button type="button" class="fbbtn" onClick="{{onCrm}}" style="min-height: 44px; padding: 0 14px; border: 1px solid #B7C0CC; border-radius: 4px; background: #FFFFFF; font-size: 13px; font-weight: 600;">Abrir no CRM ↗</button>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 12px;">
+              <div style="flex: 1; padding: 10px 12px; border: 1px solid #D5DBE3; border-radius: 6px;">
+                <div style="font-size: 12px; color: #5B6472;">Valor esperado</div>
+                <div style="margin-top: 2px; font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums;">{{sel.evText}}</div>
+              </div>
+              <div style="flex: 1; padding: 10px 12px; border: 1px solid #D5DBE3; border-radius: 6px;">
+                <div style="font-size: 12px; color: #5B6472;">Confiança da prioridade</div>
+                <div style="margin-top: 2px; font-size: 18px; font-weight: 700;">{{sel.confidence}}</div>
+              </div>
+            </div>
+
+            <sc-if value="{{sel.hasProb}}" hint-placeholder-val="{{false}}">
+              <div style="font-size: 13px; color: #3B4656;">Chance estimada de ganhar: <strong style="font-variant-numeric: tabular-nums;">{{sel.probText}}</strong></div>
+            </sc-if>
+
+            <div>
+              <h3 style="margin: 0 0 6px; font-size: 14px; font-weight: 600;">Por que esta prioridade?</h3>
+              <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #0F1B2D;">{{sel.reasonText}}</p>
+              <p style="margin: 8px 0 0; font-size: 12px; line-height: 1.5; color: #5B6472;">Padrões do histórico de deals fechados. Não são causas.</p>
+            </div>
+
+            <sc-if value="{{sel.hasTimeline}}" hint-placeholder-val="{{true}}">
+              <div>
+                <h3 style="margin: 0 0 10px; font-size: 14px; font-weight: 600;">Tempo no funil: <span style="font-variant-numeric: tabular-nums;">{{sel.ageTop}}</span></h3>
+                <div style="position: relative; height: 10px; border-radius: 5px; overflow: hidden; display: flex;">
+                  <div style="width: 69.3%; background: #DCE3EA;"></div>
+                  <div style="width: 22.7%; background: #F2C78A;"></div>
+                  <div style="width: 8%; background: #E8A6A1;"></div>
+                </div>
+                <div style="position: relative; height: 0;">
+                  <div style="position: absolute; top: -17px; left: {{sel.markerLeft}}%; width: 4px; height: 24px; margin-left: -2px; border-radius: 2px; background: #0F1B2D;"></div>
+                </div>
+                <div style="position: relative; height: 34px; margin-top: 10px; font-size: 12px; color: #5B6472;">
+                  <span style="position: absolute; left: 0;">0</span>
+                  <span style="position: absolute; left: 27.3%; transform: translateX(-50%); white-space: nowrap;">41 d · metade fecha</span>
+                  <span style="position: absolute; left: 69.3%; top: 16px; transform: translateX(-50%); white-space: nowrap;">104 d · 90% fecha</span>
+                  <span style="position: absolute; right: 0; white-space: nowrap;">138 d · máx.</span>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{sel.accountMissing}}" hint-placeholder-val="{{true}}">
+              <div style="display: flex; gap: 10px; padding: 10px 12px; border: 1px dashed #B8C0CC; border-radius: 6px; font-size: 13px; line-height: 1.5; color: #3B4656;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 2px;"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+                <span>Este deal não tem conta no CRM, então o score não usa setor nem porte. Preencher a conta melhora a leitura.</span>
+              </div>
+            </sc-if>
+
+            <div>
+              <h3 style="margin: 0 0 8px; font-size: 14px; font-weight: 600;">Esta prioridade faz sentido?</h3>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                <button type="button" class="fbbtn" onClick="{{onDisagree}}" style="min-height: 44px; padding: 0 14px; border: 1px solid {{sel.disagreeBorder}}; border-radius: 4px; background: {{sel.disagreeBg}}; font-size: 13px; font-weight: 600;">Discordo da prioridade</button>
+                <button type="button" class="fbbtn" onClick="{{onIgnore}}" style="min-height: 44px; padding: 0 14px; border: 1px solid {{sel.ignoreBorder}}; border-radius: 4px; background: {{sel.ignoreBg}}; font-size: 13px; font-weight: 600;">Ignorar</button>
+              </div>
+              <div aria-live="polite" style="margin-top: 8px; min-height: 18px; font-size: 13px; color: var(--accent); font-weight: 500;">{{sel.feedbackMsg}}</div>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{noSel}}" hint-placeholder-val="{{false}}">
+          <div style="padding: 24px 4px; text-align: center; font-size: 14px; color: #5B6472;">Selecione um deal para ver o porquê do score.</div>
+        </sc-if>
+      </aside>
+
+    </section>
+</div></sc-if>
+
+<sc-if value="{{isToday}}" hint-placeholder-val="{{true}}"><div style="display: contents;">
+    <section aria-label="Progresso do dia" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding: 16px 20px; background: #FFFFFF; border: 1px solid #D5DBE3; border-radius: 6px;">
+      <div style="flex: 1 1 260px;">
+        <div style="font-size: 13px; font-weight: 600; color: #5B6472;">Hoje</div>
+        <div style="margin-top: 4px; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 28px; font-weight: 700; letter-spacing: -0.01em; font-variant-numeric: tabular-nums;">{{doneCount}} de {{todayCount}} feitos</div>
+        <div style="margin-top: 10px; height: 8px; border-radius: 4px; background: #E3E8EE; overflow: hidden;">
+          <div style="width: {{donePct}}%; height: 8px; background: var(--accent);"></div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <label for="cap" style="font-size: 12px; font-weight: 600; color: #5B6472;">Quantos deals você cuida hoje?</label>
+        <select id="cap" value="{{cap}}" onChange="{{onCap}}" style="height: 44px; box-sizing: border-box; padding: 0 10px; border: 1px solid #B7C0CC; border-radius: 4px; background: #FFFFFF; font-size: 14px;">
+          <option value="3">3 deals</option>
+          <option value="5">5 deals</option>
+          <option value="8">8 deals</option>
+        </select>
+      </div>
+    </section>
+
+    <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+      <div role="status" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 16px; background: var(--accent-soft); border-radius: 6px; font-size: 13px; font-weight: 500;">
+        <span>{{toast}}</span>
+        <button type="button" class="fbbtn" onClick="{{onUndo}}" style="min-height: 36px; padding: 0 12px; border: 1px solid #B7C0CC; border-radius: 4px; background: #FFFFFF; font-size: 13px; font-weight: 600;">Desfazer</button>
+      </div>
+    </sc-if>
+
+    <section aria-label="Deals de hoje" style="display: flex; flex-direction: column; gap: 12px;">
+      <sc-for list="{{todayRows}}" as="c" hint-placeholder-count="5">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding: 16px 20px; background: {{c.bg}}; border: 1px solid #D5DBE3; border-left: 4px solid {{c.edge}}; border-radius: 6px; opacity: {{c.opacity}};">
+          <span style="width: 76px; flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 4px;">
+            <span style="font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 32px; font-weight: 700; line-height: 1; color: {{c.prioFg}}; font-variant-numeric: tabular-nums;">{{c.scoreText}}</span>
+            <span style="font-size: 13px; font-weight: 600; color: {{c.prioFg}};">Prioridade {{c.prioLabel}}</span>
+            <span style="font-size: 11px; color: #5B6472;">Índice de 0 a 100</span>
+          </span>
+          <button type="button" class="rowbtn" onClick="{{c.open}}" aria-label="Ver todas as informações do deal" style="flex: 1 1 300px; min-width: 0; text-align: left; border: 0; background: transparent; padding: 0;">
+            <div style="font-size: 16px; font-weight: 700; line-height: 1.35; text-decoration: {{c.deco}};">{{c.next}}</div>
+            <div style="margin-top: 3px; font-size: 14px; color: #3B4656;">{{c.product}} · <span style="font-weight: 600; color: {{c.accFg}};">{{c.account}}</span></div>
+            <div style="margin-top: 3px; font-size: 13px; color: #5B6472;">{{c.why}}</div>
+            <div style="margin-top: 3px; font-size: 13px; font-weight: 600; color: {{c.lastFg}};">{{c.lastText}} · {{c.priceText}}</div>
+            <div style="margin-top: 6px; font-size: 12px; font-weight: 600; color: var(--accent);">Ver todas as informações →</div>
+          </button>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="fbbtn" onClick="{{c.toggle}}" style="min-height: 44px; padding: 0 16px; border: 1px solid var(--accent); border-radius: 4px; background: {{c.btnBg}}; color: {{c.btnFg}}; font-size: 14px; font-weight: 600;">{{c.doneLabel}}</button>
+            <button type="button" class="fbbtn" onClick="{{c.snooze}}" style="min-height: 44px; padding: 0 14px; border: 1px solid #B7C0CC; border-radius: 4px; background: #FFFFFF; font-size: 14px; font-weight: 600;">Adiar</button>
+          </div>
+        </div>
+      </sc-for>
+    </section>
+
+    <sc-if value="{{todayEmpty}}" hint-placeholder-val="{{false}}">
+      <div style="padding: 32px 20px; text-align: center; background: #FFFFFF; border: 1px solid #D5DBE3; border-radius: 6px; font-size: 15px; font-weight: 600;">Nada pendente para hoje.</div>
+    </sc-if>
+
+    <p style="margin: 0; font-size: 13px; color: #5B6472;">Os outros deals ficam para outro dia. Ordem pelo valor do produto, tempo no funil e último contato.</p>
+</div></sc-if>
+
+<sc-if value="{{hasModal}}" hint-placeholder-val="{{false}}">
+<div role="dialog" aria-modal="true" aria-label="Detalhes do deal" style="position: fixed; inset: 0; z-index: 50; display: flex; align-items: flex-start; justify-content: center; padding: 24px 16px; overflow-y: auto; box-sizing: border-box;">
+  <div onClick="{{closeModal}}" aria-hidden="true" style="position: fixed; inset: 0; background: rgba(20, 24, 31, 0.5);"></div>
+  <div style="position: relative; width: 100%; max-width: 560px; box-sizing: border-box; background: #FFFFFF; border-radius: 4px; padding: 28px 22px 22px; display: flex; flex-direction: column; gap: 18px; box-shadow: 0 20px 60px rgba(20, 24, 31, 0.3);">
+    <button type="button" class="fbbtn" onClick="{{closeModal}}" aria-label="Fechar" style="position: absolute; top: 6px; right: 6px; width: 44px; height: 44px; border: 0; border-radius: 4px; background: transparent; font-size: 26px; line-height: 1; color: #3B4656;">×</button>
+
+        <sc-if value="{{hasSel}}" hint-placeholder-val="{{true}}">
+          <div style="display: flex; flex-direction: column; gap: 18px;">
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <sc-if value="{{sel.hasScore}}" hint-placeholder-val="{{true}}">
+                <span style="flex-shrink: 0; width: 84px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px;">
+                  <span aria-hidden="true" style="display: inline-flex; align-items: flex-end; gap: 3px; height: 28px;">
+                    <span style="width: 11px; height: 11px; border-radius: 2px; background: {{sel.bar1}};"></span>
+                    <span style="width: 11px; height: 19px; border-radius: 2px; background: {{sel.bar2}};"></span>
+                    <span style="width: 11px; height: 28px; border-radius: 2px; background: {{sel.bar3}};"></span>
+                  </span>
+                  <span style="font-size: 16px; font-weight: 700; color: {{sel.prioFg}}; line-height: 1.1;">Prioridade {{sel.prioLabel}}</span>
+                  <span style="font-size: 12px; color: #5B6472; font-variant-numeric: tabular-nums;">Índice {{sel.scoreText}}/100</span>
+                </span>
+              </sc-if>
+              <sc-if value="{{sel.noScore}}" hint-placeholder-val="{{false}}">
+                <span style="flex-shrink: 0; width: 84px; font-size: 13px; line-height: 1.3; color: #5B6472;">Sem prioridade</span>
+              </sc-if>
+              <div style="min-width: 0;">
+                <h2 style="margin: 0; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 20px; line-height: 1.2;">{{sel.product}}</h2>
+                <div style="margin-top: 4px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px;">
+                  <span style="padding: 2px 8px; border-radius: 6px; background: {{sel.bandBg}}; color: {{sel.bandFg}}; font-size: 12px; font-weight: 600;">{{sel.bandLabel}}</span>
+                  <span style="font-size: 12px; color: #5B6472;">{{sel.id}} · {{sel.stage}}</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="padding: 12px 14px; border-radius: 6px; background: {{sel.bandBg}}; color: {{sel.bandFg}}; font-size: 14px; line-height: 1.5; font-weight: 500;">{{sel.action}}</div>
+
+            <div style="display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; font-size: 13px;">
+              <span style="color: #5B6472;">Conta</span>
+              <span style="font-weight: 600; color: {{sel.accountFg}};">{{sel.accountText}}</span>
+              <span style="color: #5B6472;">Último contato</span>
+              <span style="font-weight: 600; color: {{sel.lastFg}};">{{sel.lastShort}}</span>
+              <span style="color: #5B6472;">Previsão de fechar</span>
+              <span style="font-weight: 600;">{{sel.closeText}}</span>
+              <span style="color: #5B6472;">Preço do deal</span>
+              <span style="font-weight: 600; font-variant-numeric: tabular-nums;">{{sel.priceText}}</span>
+            </div>
+
+            <div>
+              <h3 style="margin: 0 0 8px; font-size: 14px; font-weight: 600;">Ações rápidas</h3>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                <button type="button" class="fbbtn" onClick="{{onAct}}" style="min-height: 44px; padding: 0 14px; border: 1px solid var(--accent); border-radius: 4px; background: var(--accent); color: #FFFFFF; font-size: 13px; font-weight: 600;">Registrar atividade</button>
+                <button type="button" class="fbbtn" onClick="{{onSnooze}}" style="min-height: 44px; padding: 0 14px; border: 1px solid #B7C0CC; border-radius: 4px; background: #FFFFFF; font-size: 13px; font-weight: 600;">Adiar 7 dias</button>
+                <button type="button" class="fbbtn" onClick="{{onLost}}" style="min-height: 44px; padding: 0 14px; border: 1px solid #B7C0CC; border-radius: 4px; background: #FFFFFF; font-size: 13px; font-weight: 600; color: #9B2C2C;">Marcar como perdido</button>
+                <button type="button" class="fbbtn" onClick="{{onCrm}}" style="min-height: 44px; padding: 0 14px; border: 1px solid #B7C0CC; border-radius: 4px; background: #FFFFFF; font-size: 13px; font-weight: 600;">Abrir no CRM ↗</button>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 12px;">
+              <div style="flex: 1; padding: 10px 12px; border: 1px solid #D5DBE3; border-radius: 6px;">
+                <div style="font-size: 12px; color: #5B6472;">Valor esperado</div>
+                <div style="margin-top: 2px; font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums;">{{sel.evText}}</div>
+              </div>
+              <div style="flex: 1; padding: 10px 12px; border: 1px solid #D5DBE3; border-radius: 6px;">
+                <div style="font-size: 12px; color: #5B6472;">Confiança da prioridade</div>
+                <div style="margin-top: 2px; font-size: 18px; font-weight: 700;">{{sel.confidence}}</div>
+              </div>
+            </div>
+
+            <sc-if value="{{sel.hasProb}}" hint-placeholder-val="{{false}}">
+              <div style="font-size: 13px; color: #3B4656;">Chance estimada de ganhar: <strong style="font-variant-numeric: tabular-nums;">{{sel.probText}}</strong></div>
+            </sc-if>
+
+            <div>
+              <h3 style="margin: 0 0 6px; font-size: 14px; font-weight: 600;">Por que esta prioridade?</h3>
+              <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #0F1B2D;">{{sel.reasonText}}</p>
+              <p style="margin: 8px 0 0; font-size: 12px; line-height: 1.5; color: #5B6472;">Padrões do histórico de deals fechados. Não são causas.</p>
+            </div>
+
+            <sc-if value="{{sel.hasTimeline}}" hint-placeholder-val="{{true}}">
+              <div>
+                <h3 style="margin: 0 0 10px; font-size: 14px; font-weight: 600;">Tempo no funil: <span style="font-variant-numeric: tabular-nums;">{{sel.ageTop}}</span></h3>
+                <div style="position: relative; height: 10px; border-radius: 5px; overflow: hidden; display: flex;">
+                  <div style="width: 69.3%; background: #DCE3EA;"></div>
+                  <div style="width: 22.7%; background: #F2C78A;"></div>
+                  <div style="width: 8%; background: #E8A6A1;"></div>
+                </div>
+                <div style="position: relative; height: 0;">
+                  <div style="position: absolute; top: -17px; left: {{sel.markerLeft}}%; width: 4px; height: 24px; margin-left: -2px; border-radius: 2px; background: #0F1B2D;"></div>
+                </div>
+                <div style="position: relative; height: 34px; margin-top: 10px; font-size: 12px; color: #5B6472;">
+                  <span style="position: absolute; left: 0;">0</span>
+                  <span style="position: absolute; left: 27.3%; transform: translateX(-50%); white-space: nowrap;">41 d · metade fecha</span>
+                  <span style="position: absolute; left: 69.3%; top: 16px; transform: translateX(-50%); white-space: nowrap;">104 d · 90% fecha</span>
+                  <span style="position: absolute; right: 0; white-space: nowrap;">138 d · máx.</span>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{sel.accountMissing}}" hint-placeholder-val="{{true}}">
+              <div style="display: flex; gap: 10px; padding: 10px 12px; border: 1px dashed #B8C0CC; border-radius: 6px; font-size: 13px; line-height: 1.5; color: #3B4656;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 2px;"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+                <span>Este deal não tem conta no CRM, então o score não usa setor nem porte. Preencher a conta melhora a leitura.</span>
+              </div>
+            </sc-if>
+
+            <div>
+              <h3 style="margin: 0 0 8px; font-size: 14px; font-weight: 600;">Esta prioridade faz sentido?</h3>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                <button type="button" class="fbbtn" onClick="{{onDisagree}}" style="min-height: 44px; padding: 0 14px; border: 1px solid {{sel.disagreeBorder}}; border-radius: 4px; background: {{sel.disagreeBg}}; font-size: 13px; font-weight: 600;">Discordo da prioridade</button>
+                <button type="button" class="fbbtn" onClick="{{onIgnore}}" style="min-height: 44px; padding: 0 14px; border: 1px solid {{sel.ignoreBorder}}; border-radius: 4px; background: {{sel.ignoreBg}}; font-size: 13px; font-weight: 600;">Ignorar</button>
+              </div>
+              <div aria-live="polite" style="margin-top: 8px; min-height: 18px; font-size: 13px; color: var(--accent); font-weight: 500;">{{sel.feedbackMsg}}</div>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{noSel}}" hint-placeholder-val="{{false}}">
+          <div style="padding: 24px 4px; text-align: center; font-size: 14px; color: #5B6472;">Selecione um deal para ver o porquê do score.</div>
+        </sc-if>
+        </div>
+</div>
+</sc-if>
+  </main>
+</div>
+</x-dc>
+
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#1D4E89","options":["#1D4E89","#0B2540","#1E6B45","#5A2D82"]},"showProbability":{"editor":"boolean","default":false},"$preview":{"width":1360,"height":1340}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tab: 'focus', selId: null, product: 'all', search: '', sort: 'score', minText: '0', maxText: '100', feedback: {}, hidden: {}, toast: '', undoIds: [], bulk: null, page: 1, pageKey: '', pageSize: 10, view: 'today', cap: 5, done: {}, modalId: null };
+  }
+
+  money(n) { return 'US$ ' + Math.round(n).toLocaleString('pt-BR'); }
+
+  hash(s) { let h = 7; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h; }
+
+  fmtDate(days) {
+    const d = new Date(2017, 11, 31 + days);
+    return String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0');
+  }
+
+  account(d) {
+    const A = ['Nordwind Ltda', 'Kestrel Systems', 'Bluepeak Co.', 'Orion Retail', 'Lumen Foods', 'Tallis Group', 'Verde Logística', 'Pallas Health'];
+    return d.age % 2 === 0 ? null : A[this.hash(d.id) % A.length];
+  }
+
+  lastContact(d) {
+    const h = this.hash(d.id);
+    return d.tab === 'review' ? 35 + (h % 80) : 2 + (h % Math.max(6, Math.min(d.age, 40)));
+  }
+
+  change(d) {
+    if (d.score === null) return { t: '', fg: '#5B6472' };
+    if (d.age <= 40) return { t: 'Novo', fg: '#1F4FA3' };
+    const v = (this.hash(d.id + 'x') % 21) - 10;
+    if (v > 0) return { t: '▲ ' + v, fg: '#1E6B45' };
+    if (v < 0) return { t: '▼ ' + Math.abs(v), fg: '#9B2C2C' };
+    return { t: '= igual', fg: '#5B6472' };
+  }
+
+  deals() {
+    // [id, faixa, produto, estágio, idade (dias), score, chance, histórico, momento recente, carga]
+    const R = [
+      ['4SOUOUKH', 'focus', 'GTX Plus Pro', 'Engaging', 92, 94, 0.70, 30, 12, -9],
+      ['E2CJIO85', 'focus', 'GTX Plus Pro', 'Engaging', 89, 94, 0.70, 30, 12, -9],
+      ['X7MN9ROG', 'focus', 'GTX Plus Pro', 'Engaging', 69, 94, 0.70, 30, 12, -9],
+      ['DYYJW46L', 'focus', 'GTX Plus Pro', 'Engaging', 78, 94, 0.69, 30, 12, -9],
+      ['6JBM1ZKO', 'focus', 'GTX Pro', 'Engaging', 52, 87, 0.70, 26, 9, -7],
+
+      ['DY8DMZZ9', 'decide', 'GTX Plus Pro', 'Engaging', 106, 95, 0.70, 22, 8, -8],
+      ['6SMB6SDY', 'decide', 'GTX Pro', 'Engaging', 138, 87, 0.71, 15, -10, -6],
+      ['MAH5U65E', 'decide', 'MG Advanced', 'Engaging', 135, 64, 0.66, 10, 6, -14],
+      ['Y3AAS62P', 'decide', 'GTX Plus Basic', 'Engaging', 110, 58, 0.70, 8, -6, -5],
+      ['P6NQ2LZK', 'decide', 'GTX Basic', 'Engaging', 130, 40, 0.72, -12, 10, -7],
+      ['RTX8ZJXT', 'decide', 'GTX Basic', 'Engaging', 122, 40, 0.72, 8, -6, -5],
+
+      ['2FM8HJDM', 'follow', 'MG Advanced', 'Engaging', 102, 64, 0.65, 12, 8, -12],
+      ['3Q15OHQB', 'follow', 'MG Advanced', 'Engaging', 99, 63, 0.65, -14, 8, -12],
+      ['31IV2B9O', 'follow', 'GTX Basic', 'Engaging', 66, 39, 0.71, 14, 6, -5],
+      ['PV3TH2FF', 'follow', 'MG Special', 'Engaging', 38, 19, 0.72, 8, 6, -4],
+      ['D9MZMDOL', 'follow', 'MG Special', 'Engaging', 102, 18, 0.72, 8, -6, -4],
+      ['LZ3B174J', 'follow', 'MG Special', 'Engaging', 93, 18, 0.72, 8, 6, -4],
+
+      ['Y6UBZM6P', 'review', 'GTX Plus Pro', 'Engaging', 356, null, 0.71, -10, -6, -8],
+      ['IGHYUSN8', 'review', 'GTX Plus Pro', 'Engaging', 239, null, 0.71, -10, -6, -8],
+      ['VMIAO42Z', 'review', 'GTX Plus Pro', 'Engaging', 247, null, 0.71, -10, -6, -8],
+      ['ZK4S74FD', 'review', 'GTX Plus Pro', 'Engaging', 220, null, 0.71, -10, -6, -8],
+      ['C6TQMD3C', 'review', 'GTX Plus Pro', 'Engaging', 207, null, 0.71, -10, -6, -8],
+      ['2FNTCPOU', 'review', 'GTX Plus Pro', 'Engaging', 189, null, 0.71, -10, -6, -8]
+    ];
+    const PRICE = { 'GTK 500': 26768, 'GTX Plus Pro': 5482, 'GTX Pro': 4821, 'MG Advanced': 3393, 'GTX Plus Basic': 1096, 'GTX Basic': 550, 'MG Special': 55 };
+    return R.map((r) => {
+      const price = PRICE[r[2]];
+      let band = r[1];
+      if (band === 'follow') band = r[5] >= 40 ? 'follow' : 'low';
+      return { id: r[0], tab: r[1], band, product: r[2], stage: r[3], age: r[4], score: r[5], p: r[6], hist: r[7], recent: r[8], load: r[9], price, ev: r[6] * price };
+    });
+  }
+
+  prio(score, accent) {
+    const off = '#D5DAE1';
+    if (score === null) return { prioLabel: '', prioFg: '#5B6472', bar1: off, bar2: off, bar3: off };
+    if (score >= 80) return { prioLabel: 'Alta', prioFg: accent, bar1: accent, bar2: accent, bar3: accent };
+    if (score >= 40) return { prioLabel: 'Média', prioFg: '#3B4656', bar1: '#3B4656', bar2: '#3B4656', bar3: off };
+    return { prioLabel: 'Baixa', prioFg: '#566070', bar1: '#7A8494', bar2: off, bar3: off };
+  }
+
+  contribs(d) {
+    const out = [];
+    const tk = d.price;
+    out.push({ long: 'Ticket do produto: ' + this.money(tk), short: tk >= 3000 ? 'Alto ticket' : (tk >= 1000 ? 'Ticket médio' : 'Ticket baixo'), dir: tk >= 1000 ? 'pos' : 'neg', w: Math.max(4, Math.min(95, Math.round(tk / 300))) });
+    if (d.hist) out.push({ long: 'Histórico do vendedor com este produto', short: d.hist > 0 ? 'Bom histórico com o produto' : 'Histórico fraco com o produto', dir: d.hist > 0 ? 'pos' : 'neg', w: Math.abs(d.hist) });
+    if (d.recent) out.push({ long: 'Desempenho recente do vendedor (90 dias)', short: d.recent > 0 ? 'Bom momento recente' : 'Momento recente fraco', dir: d.recent > 0 ? 'pos' : 'neg', w: Math.abs(d.recent) });
+    if (d.load) out.push({ long: 'Quantidade de deals abertos ao mesmo tempo', short: 'Pipeline muito cheio', dir: 'neg', w: Math.abs(d.load) });
+    if (d.age !== null) {
+      if (d.age <= 30) out.push({ long: 'Tempo no funil: ' + d.age + ' dias', short: 'Deal recente', dir: 'pos', w: 12 });
+      else if (d.age <= 104) out.push({ long: 'Tempo no funil: ' + d.age + ' dias', short: 'Há ' + d.age + ' dias no funil', dir: 'neu', w: 6 });
+      else if (d.age <= 138) out.push({ long: 'Tempo no funil: ' + d.age + ' dias', short: 'Passou do prazo típico', dir: 'warn', w: 22 });
+      else out.push({ long: 'Tempo no funil: ' + d.age + ' dias', short: 'Mais antigo que todo deal fechado', dir: 'warn', w: 40 });
+    }
+    return out.sort((a, b) => b.w - a.w);
+  }
+
+  render_style(dir) {
+    const m = {
+      pos: { sym: '+', fg: '#1E6B45', bg: 'rgba(30,107,69,0.10)', txt: 'a favor' },
+      neg: { sym: '−', fg: '#9B2C2C', bg: '#FCE8E6', txt: 'contra' },
+      neu: { sym: '•', fg: '#4A5565', bg: '#EAEEF3', txt: 'neutro' },
+      warn: { sym: '!', fg: '#8A4B00', bg: '#FFF1D6', txt: 'atenção' }
+    };
+    return m[dir];
+  }
+
+  renderVals() {
+    const accent = this.props.accent ?? '#1D4E89';
+    const hx = accent.replace('#', '');
+    const rgb = hx.length === 6 ? [parseInt(hx.slice(0, 2), 16), parseInt(hx.slice(2, 4), 16), parseInt(hx.slice(4, 6), 16)] : [11, 107, 99];
+    const accentSoft = 'rgba(' + rgb.join(',') + ',0.10)';
+    const st = this.state;
+
+    const BAND = {
+      focus: { label: 'Foco', bg: accentSoft, fg: accent, ring: accent, edge: accent },
+      decide: { label: 'Decidir agora', bg: '#FFF1D6', fg: '#8A4B00', ring: '#C77A12', edge: '#C77A12' },
+      follow: { label: 'Seguir', bg: '#EAEEF3', fg: '#3B4656', ring: '#6B7686', edge: '#B8C0CC' },
+      low: { label: 'Baixa prioridade', bg: '#F0F2F5', fg: '#566070', ring: '#A3ACB8', edge: '#D5DAE1' },
+      review: { label: 'Revisar', bg: '#FCE8E6', fg: '#9B2C2C', ring: '#C0504D', edge: '#C0504D' },
+      prospect: { label: 'Prospecting', bg: '#EBEAFB', fg: '#3F3A8F', ring: '#6B66C9', edge: '#6B66C9' }
+    };
+    const ACTION = {
+      focus: 'Agende uma conversa com quem decide ainda esta semana.',
+      decide: 'Passou do prazo em que 90% dos deals fecham. Defina o próximo passo ou encerre.',
+      follow: 'Mantenha o ritmo e revise na próxima semana.',
+      low: 'Pouco valor esperado. Só vale o tempo se for rápido.',
+      review: 'Mais antigo que qualquer deal já fechado (138 dias). Encerrar ou reativar.',
+      prospect: 'Sem contato registrado. Inicie o engajamento.'
+    };
+
+    const NEXT = {
+      focus: 'Ligar para quem decide e agendar a próxima reunião',
+      decide: 'Definir o próximo passo com o cliente ou encerrar',
+      follow: 'Enviar um follow-up leve',
+      low: 'Só se for rápido',
+      review: 'Encerrar ou reativar'
+    };
+
+    const all = this.deals();
+    const hid = all.filter((d) => st.hidden[d.id]);
+    const hBy = { focus: 0, decide: 0, follow: 0, review: 0 };
+    hid.forEach((d) => { hBy[d.tab] += 1; });
+    const hEv = hid.filter((d) => d.tab !== 'review').length;
+    const counts = { focus: 5 - hBy.focus, decide: 13 - hBy.decide, follow: 6 - hBy.follow, review: 80 - hBy.review, all: 104 - hid.length };
+    const totals = Object.assign({}, counts, { ev: 24 - hEv });
+    const tabDefs = [
+      { key: 'focus', label: 'Foco da semana' },
+      { key: 'decide', label: 'Decidir agora' },
+      { key: 'follow', label: 'Seguir' },
+      { key: 'review', label: 'A revisar' }
+    ];
+    const tabs = tabDefs.map((t) => {
+      const on = st.tab === t.key;
+      return {
+        label: t.label, count: counts[t.key], selected: on,
+        line: on ? accent : 'transparent', weight: on ? 700 : 500, color: on ? '#0F1B2D' : '#3B4656',
+        pillBg: on ? accent : '#EAEEF3', pillFg: on ? '#FFFFFF' : '#3B4656',
+        pick: () => this.setState({ tab: t.key, selId: null })
+      };
+    });
+
+    const q = st.search.trim().toLowerCase();
+    let list = all.filter((d) => !st.hidden[d.id]).filter((d) => (st.tab === 'all' ? true : (st.tab === 'ev' ? d.tab !== 'review' : d.tab === st.tab)));
+    if (st.product !== 'all') list = list.filter((d) => d.product === st.product);
+    const lo = Math.min(100, Math.max(0, parseInt(st.minText, 10) || 0));
+    const hiRaw = parseInt(st.maxText, 10);
+    const hi = Math.min(100, Math.max(0, isNaN(hiRaw) ? 100 : hiRaw));
+    const filtered = lo > 0 || hi < 100;
+    if (filtered && st.tab !== 'review') list = list.filter((d) => d.score !== null && d.score >= lo && d.score <= hi);
+    if (q) list = list.filter((d) => (d.id + ' ' + d.product).toLowerCase().indexOf(q) !== -1);
+    const sorters = {
+      score: (a, b) => ((b.score ?? -1) - (a.score ?? -1)) || (b.ev - a.ev),
+      ev: (a, b) => b.ev - a.ev,
+      age: (a, b) => ((b.age ?? -1) - (a.age ?? -1))
+    };
+    list = list.slice().sort(st.tab === 'ev' ? sorters.ev : (sorters[st.sort] || sorters.score));
+
+    const sig = [st.tab, st.product, st.search, st.minText, st.maxText, st.sort, st.pageSize, hid.length].join('|');
+    const pageCount = Math.max(1, Math.ceil(list.length / st.pageSize));
+    const curPage = Math.min(pageCount, st.pageKey === sig ? st.page : 1);
+    const pageStart = (curPage - 1) * st.pageSize;
+    const pageList = list.slice(pageStart, pageStart + st.pageSize);
+    const goPage = (p) => () => this.setState({ page: Math.min(pageCount, Math.max(1, p)), pageKey: sig, selId: null });
+
+    const selDeal = st.view === 'today' ? (st.modalId ? (all.find((d) => d.id === st.modalId) || null) : null) : (pageList.find((d) => d.id === st.selId) || pageList[0] || null);
+
+    const rows = pageList.map((d) => {
+      const b = BAND[d.band];
+      const cs = this.contribs(d);
+      const top = cs.slice(0, 2).map((c) => { const s = this.render_style(c.dir); return { text: s.sym + ' ' + c.short, fg: s.fg, bg: s.bg }; });
+      const isP = d.stage === 'Prospecting';
+      const barColor = d.age > 138 ? '#C0504D' : (d.age > 104 ? '#D9902F' : '#8FA3B5');
+      const on = selDeal && selDeal.id === d.id;
+      const acc = this.account(d);
+      const lc = this.lastContact(d);
+      const chg = this.change(d);
+      return {
+        accountText: acc || 'Sem conta no CRM', accountFg: acc ? '#0F1B2D' : '#8A4B00',
+        lastText: 'Último contato: há ' + lc + ' dias', lastFg: lc > 14 ? '#9B2C2C' : '#3B4656',
+        priceText: this.money(d.price), closeText: d.tab === 'review' ? 'sem previsão' : this.fmtDate(Math.max(7, 104 - d.age)),
+        nextText: NEXT[d.band], changeText: chg.t, changeFg: chg.fg,
+        id: d.id, product: d.product, stage: d.stage,
+        selected: !!on,
+        select: () => this.setState({ selId: d.id }),
+        aria: 'Deal ' + d.id + ', ' + d.product + ', faixa ' + b.label + (d.score !== null ? ', prioridade ' + this.prio(d.score, accent).prioLabel.toLowerCase() : ', sem prioridade') + ', valor esperado ' + this.money(d.ev),
+        bg: on ? 'rgba(29,78,137,0.07)' : '#FFFFFF', edge: on ? b.edge : 'transparent',
+        hasScore: d.score !== null, noScore: d.score === null, scoreText: d.score === null ? '' : String(d.score), ring: b.ring, ...this.prio(d.score, accent),
+        bandLabel: b.label, bandBg: b.bg, bandFg: b.fg,
+        ageTop: isP ? 'Sem data' : d.age + ' dias', ageNote: isP ? 'Ainda não engajado' : (d.age > 138 ? 'Acima do máximo já visto' : (d.age > 104 ? 'Acima de 90% dos fechados' : 'Dentro do prazo típico')),
+        showBar: !isP, barPct: isP ? 0 : Math.round(Math.min(d.age, 150) / 150 * 100), barColor,
+        evText: this.money(d.ev), evNote: isP ? 'Taxa base × preço' : 'Preço: ' + this.money(d.price),
+        reasons: isP ? [{ text: '• Sem histórico do deal: usa a taxa do produto', fg: '#4A5565', bg: '#EAEEF3' }] : top.slice(0, 1)
+      };
+    });
+
+    let sel = null;
+    if (selDeal) {
+      const d = selDeal;
+      const b = BAND[d.band];
+      const isP = d.stage === 'Prospecting';
+      const fb = st.feedback[d.id] || null;
+      const acc = this.account(d);
+      const lc = this.lastContact(d);
+      const reasonText = this.contribs(d).slice(0, 3).map((c) => c.short).join(' · ') + '.';
+      const msgs = { act: 'Atividade registrada no deal (exemplo).', crm: 'Abriria este deal no CRM (exemplo).', disagree: 'Registrado: você discorda do score. Isso ajuda a melhorar o modelo.', ignore: 'Registrado: deal ignorado nesta semana.' };
+      const contribs = isP ? [{ long: 'Taxa de vitória do produto', dir: 'neu', w: 60 }, { long: 'Ticket do produto: ' + this.money(d.price), dir: d.price >= 1000 ? 'pos' : 'neg', w: Math.max(4, Math.min(95, Math.round(d.price / 300))) }] : this.contribs(d).slice(0, 5);
+      const hl = (key) => (fb === key ? accent : '#B7C0CC');
+      const hb = (key) => (fb === key ? accentSoft : '#FFFFFF');
+      sel = {
+        id: d.id, product: d.product, stage: d.stage, bandLabel: b.label, bandBg: b.bg, bandFg: b.fg, ring: b.ring,
+        hasScore: d.score !== null, noScore: d.score === null, scoreText: d.score === null ? '' : String(d.score),
+        ...this.prio(d.score, accent), action: ACTION[d.band], evText: this.money(d.ev), confidence: isP ? 'Baixa' : (d.hist < 0 || d.age > 138 ? 'Baixa' : 'Média'),
+        hasProb: !!this.props.showProbability, probText: Math.round(d.p * 100) + '%',
+        contribs: contribs.map((c) => { const s = this.render_style(c.dir); return { long: c.long, sym: s.sym, fg: s.fg, dirText: s.txt, w: c.w }; }),
+        hasTimeline: !isP, ageTop: d.age + ' dias', markerLeft: isP ? 0 : Math.round(Math.min(d.age, 150) / 150 * 1000) / 10,
+        accountMissing: !isP && d.age % 2 === 0,
+        accountText: acc || 'Sem conta no CRM', accountFg: acc ? '#0F1B2D' : '#8A4B00',
+        lastShort: 'há ' + lc + ' dias', lastFg: lc > 14 ? '#9B2C2C' : '#0F1B2D',
+        closeText: d.tab === 'review' ? 'sem previsão' : this.fmtDate(Math.max(7, 104 - d.age)), priceText: this.money(d.price), reasonText,
+        feedbackMsg: fb ? msgs[fb] : '',
+        workedBorder: hl('worked'), workedBg: hb('worked'), disagreeBorder: hl('disagree'), disagreeBg: hb('disagree'), ignoreBorder: hl('ignore'), ignoreBg: hb('ignore')
+      };
+    }
+
+    const GOAL = 60000, WON = 41300, LEFT = GOAL - WON;
+    const focusEv = all.filter((d) => d.tab === 'focus' && !st.hidden[d.id]).reduce((s, d) => s + d.ev, 0);
+    const kpis = [
+      { label: 'Em foco esta semana', value: String(counts.focus), note: 'Esperado ' + this.money(focusEv) + (focusEv >= LEFT ? ': cobre o que falta da meta' : ''), tab: 'focus', valueColor: accent },
+      { label: 'A revisar', value: String(counts.review), note: '77% do pipeline: encerrar ou reativar', tab: 'review', valueColor: '#9B2C2C' },
+      { label: 'Deals abertos', value: String(counts.all), note: 'Nenhum em prospecção', tab: 'all', valueColor: '#0F1B2D' },
+      { label: 'Meta do trimestre (exemplo)', value: Math.round(WON / GOAL * 100) + '%', note: this.money(WON) + ' de ' + this.money(GOAL) + ' · faltam ' + this.money(LEFT) + ' · esperado nos ativos US$ 35,2 mil', tab: 'ev', valueColor: '#0F1B2D', showBar: true, barPct: Math.round(WON / GOAL * 100) }
+    ].map((kp) => {
+      const on = st.tab === kp.tab;
+      return Object.assign({ showBar: false, barPct: 0 }, kp, { selected: on, bg: on ? accentSoft : '#FFFFFF', border: on ? accent : '#D5DBE3', labelColor: on ? accent : '#5B6472', pick: () => this.setState({ tab: kp.tab, selId: null }) });
+    });
+    const setFb = (key) => () => { if (!selDeal) return; const next = Object.assign({}, this.state.feedback); next[selDeal.id] = key; this.setState({ feedback: next }); };
+    const hideIds = (ids, msg) => () => {
+      const h = Object.assign({}, this.state.hidden);
+      ids.forEach((i) => { h[i] = 1; });
+      this.setState({ hidden: h, toast: msg, undoIds: ids, bulk: null, selId: null, modalId: null });
+    };
+    const rowIds = list.map((d) => d.id);
+    const oneId = selDeal ? [selDeal.id] : [];
+    const onUndo = () => {
+      const h = Object.assign({}, this.state.hidden);
+      this.state.undoIds.forEach((i) => { delete h[i]; });
+      this.setState({ hidden: h, toast: '', undoIds: [] });
+    };
+
+    const isToday = st.view === 'today';
+    const todayDeals = all.filter((d) => !st.hidden[d.id] && d.tab !== 'review' && d.score !== null)
+      .sort((a, b) => (b.score - a.score) || (b.ev - a.ev)).slice(0, st.cap);
+    const doneCount = todayDeals.filter((d) => st.done[d.id]).length;
+    const todayRows = todayDeals.map((d, i) => {
+      const dn = !!st.done[d.id];
+      const acc = this.account(d);
+      const lc = this.lastContact(d);
+      const topC = this.contribs(d)[0];
+      return {
+        ...this.prio(d.score, accent), scoreText: String(d.score), n: i + 1, open: () => this.setState({ modalId: d.id }), next: NEXT[d.band], product: d.product, account: acc || 'Sem conta no CRM', accFg: acc ? '#0F1B2D' : '#8A4B00',
+        why: (topC ? topC.short + ' · ' : '') + d.age + ' dias no funil',
+        lastText: 'Último contato há ' + lc + ' dias', lastFg: lc > 14 ? '#9B2C2C' : '#3B4656', priceText: this.money(d.price),
+        bg: dn ? '#EEF1F5' : '#FFFFFF', edge: dn ? '#B8C0CC' : accent, opacity: dn ? 0.65 : 1, deco: dn ? 'line-through' : 'none',
+        numBg: dn ? accent : accentSoft, numFg: dn ? '#FFFFFF' : accent,
+        doneLabel: dn ? '✓ Feito' : 'Marcar feito', btnBg: dn ? accent : '#FFFFFF', btnFg: dn ? '#FFFFFF' : accent,
+        toggle: () => { const m = Object.assign({}, this.state.done); if (m[d.id]) delete m[d.id]; else m[d.id] = 1; this.setState({ done: m }); },
+        snooze: hideIds([d.id], d.product + ' adiado por 7 dias.')
+      };
+    });
+
+    return {
+      hasModal: isToday && !!sel, closeModal: () => this.setState({ modalId: null }),
+      isToday, isAll: !isToday, title: isToday ? 'Seu dia' : 'Todo o pipeline',
+      subtitle: isToday ? 'Só o que vale fazer hoje. O resto fica para outro dia.' : 'Filtros, faixas e detalhes de cada deal.',
+      switchLabel: isToday ? 'Ver todo o pipeline (' + counts.all + ' deals) →' : '← Voltar para o meu dia',
+      onSwitch: () => this.setState({ view: isToday ? 'all' : 'today', selId: null }),
+      doneCount, todayCount: todayDeals.length, donePct: todayDeals.length ? Math.round(doneCount / todayDeals.length * 100) : 0,
+      cap: String(st.cap), onCap: (e) => this.setState({ cap: parseInt(e.target.value, 10) || 5 }),
+      todayRows, todayEmpty: todayRows.length === 0,
+      onAct: setFb('act'), onCrm: setFb('crm'),
+      onSnooze: hideIds(oneId, 'Deal adiado por 7 dias.'), onLost: hideIds(oneId, 'Deal marcado como perdido.'),
+      hasToast: !!st.toast, toast: st.toast, onUndo,
+      bulkCount: list.length,
+      bulkIdle: st.tab === 'review' && st.bulk !== 'lost' && list.length > 0,
+      bulkAsk: st.tab === 'review' && st.bulk === 'lost' && list.length > 0,
+      hasPager: list.length > 5,
+      pageSize: String(st.pageSize),
+      onPageSize: (e) => this.setState({ pageSize: parseInt(e.target.value, 10) || 10, selId: null }),
+      onPrev: goPage(curPage - 1), onNext: goPage(curPage + 1),
+      prevOff: curPage <= 1, nextOff: curPage >= pageCount,
+      prevOpacity: curPage <= 1 ? 0.45 : 1, nextOpacity: curPage >= pageCount ? 0.45 : 1,
+      pages: Array.from({ length: pageCount }, (_, i) => {
+        const n = i + 1, on = n === curPage;
+        return { n, current: on ? 'page' : 'false', aria: 'Página ' + n, pick: goPage(n), bg: on ? accent : '#FFFFFF', fg: on ? '#FFFFFF' : '#0F1B2D', border: on ? accent : '#B7C0CC' };
+      }),
+      onBulkAsk: () => this.setState({ bulk: 'lost' }), onBulkCancel: () => this.setState({ bulk: null }),
+      onBulkSnooze: hideIds(rowIds, rowIds.length + ' deals adiados por 30 dias.'),
+      onBulkLostOk: hideIds(rowIds, rowIds.length + ' deals encerrados como perdidos.'),
+      accent, accentSoft, tabs, kpis, rows, sel: sel || {}, hasSel: !!sel, noSel: !sel, isEmpty: rows.length === 0,
+      search: st.search, product: st.product, sort: st.sort, minText: st.minText, maxText: st.maxText, minDisabled: st.tab === 'review',
+      rangeHint: lo > hi ? 'O mínimo está maior que o máximo.' : '',
+      onMin: (e) => this.setState({ minText: e.target.value, selId: null }),
+      onMax: (e) => this.setState({ maxText: e.target.value, selId: null }),
+      onSearch: (e) => this.setState({ search: e.target.value, selId: null }),
+      onProduct: (e) => this.setState({ product: e.target.value, selId: null }),
+      onSort: (e) => this.setState({ sort: e.target.value }),
+      onWorked: setFb('worked'), onDisagree: setFb('disagree'), onIgnore: setFb('ignore'),
+      footerText: 'Mostrando ' + (list.length ? pageStart + 1 : 0) + '–' + (pageStart + rows.length) + ' de ' + list.length + (st.tab === 'ev' ? ' deals com valor esperado, do maior para o menor (amostra do exemplo)' : (st.tab === 'all' ? ' deals abertos (amostra do exemplo)' : ' deals nesta faixa (amostra do exemplo)')) + (filtered && st.tab !== 'review' ? ' · índice de ' + lo + ' a ' + hi : '')
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+.env
+.venv
+var
+artifacts
+tests
+bruno
+docs
+deploy
+**/__pycache__
+.pytest_cache
+.ruff_cache
+*.tar.gz
+*.postman_collection.json

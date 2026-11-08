@@ -1,0 +1,29 @@
+{
+  "v": 3,
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-11-06T23:45:00Z"
+  },
+  "title": "Sales Priority — Vendedor",
+  "launch": {
+    "view": "focused",
+    "file": "MainV2.dc.html"
+  },
+  "pages": [],
+  "boards": {
+    "MainV2.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 1360,
+      "h": 1340,
+      "title": "Vendedor — v2 (principal)",
+      "expand": "fill",
+      "is_interactive": true
+    }
+  },
+  "order": [
+    "MainV2.dc.html"
+  ],
+  "notes": {},
+  "designSystems": []
+}

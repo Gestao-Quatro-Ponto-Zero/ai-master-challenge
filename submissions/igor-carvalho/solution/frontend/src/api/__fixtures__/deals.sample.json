@@ -1,0 +1,598 @@
+{
+ "page": 1,
+ "page_size": 1,
+ "total": 5,
+ "items": [
+  {
+   "opportunity_id": "4SOUOUKH",
+   "seller": "Vicki Laflamme",
+   "manager": "Celia Rouche",
+   "office": "West",
+   "stage": "Engaging",
+   "product": "GTX Plus Pro",
+   "series": "GTX",
+   "account": "Treequote",
+   "account_missing": false,
+   "list_price": 5482.0,
+   "engage_date": "2017-09-30",
+   "age_days": 92,
+   "score": 95,
+   "priority_level": "Alta",
+   "band": "focus",
+   "view": "focus",
+   "expected_value": 3935.27,
+   "p_win": null,
+   "confidence": "medium",
+   "confidence_reason": null,
+   "suggested_action": "Agende uma conversa com quem decide ainda esta semana.",
+   "flags": [],
+   "reasons": [
+    {
+     "code": "sales_agent",
+     "label": "Perfil do vendedor: Vicki Laflamme",
+     "value": "Vicki Laflamme",
+     "direction": "positive",
+     "impact": 0.2484
+    },
+    {
+     "code": "agent_n",
+     "label": "Experiência do vendedor: 347 deals fechados",
+     "value": "347.0",
+     "direction": "negative",
+     "impact": 0.162
+    },
+    {
+     "code": "age_band",
+     "label": "Tempo no funil: 92 dias",
+     "value": "92",
+     "direction": "positive",
+     "impact": 0.1302
+    }
+   ]
+  },
+  {
+   "opportunity_id": "E2CJIO85",
+   "seller": "Vicki Laflamme",
+   "manager": "Celia Rouche",
+   "office": "West",
+   "stage": "Engaging",
+   "product": "GTX Plus Pro",
+   "series": "GTX",
+   "account": null,
+   "account_missing": true,
+   "list_price": 5482.0,
+   "engage_date": "2017-10-03",
+   "age_days": 89,
+   "score": 95,
+   "priority_level": "Alta",
+   "band": "focus",
+   "view": "focus",
+   "expected_value": 3935.27,
+   "p_win": null,
+   "confidence": "medium",
+   "confidence_reason": null,
+   "suggested_action": "Agende uma conversa com quem decide ainda esta semana.",
+   "flags": [
+    "account_missing"
+   ],
+   "reasons": [
+    {
+     "code": "sales_agent",
+     "label": "Perfil do vendedor: Vicki Laflamme",
+     "value": "Vicki Laflamme",
+     "direction": "positive",
+     "impact": 0.2498
+    },
+    {
+     "code": "agent_n",
+     "label": "Experiência do vendedor: 347 deals fechados",
+     "value": "347.0",
+     "direction": "negative",
+     "impact": 0.162
+    },
+    {
+     "code": "age_band",
+     "label": "Tempo no funil: 89 dias",
+     "value": "89",
+     "direction": "positive",
+     "impact": 0.1263
+    }
+   ]
+  },
+  {
+   "opportunity_id": "X7MN9ROG",
+   "seller": "Vicki Laflamme",
+   "manager": "Celia Rouche",
+   "office": "West",
+   "stage": "Engaging",
+   "product": "GTX Plus Pro",
+   "series": "GTX",
+   "account": null,
+   "account_missing": true,
+   "list_price": 5482.0,
+   "engage_date": "2017-10-23",
+   "age_days": 69,
+   "score": 94,
+   "priority_level": "Alta",
+   "band": "focus",
+   "view": "focus",
+   "expected_value": 3925.72,
+   "p_win": null,
+   "confidence": "medium",
+   "confidence_reason": null,
+   "suggested_action": "Agende uma conversa com quem decide ainda esta semana.",
+   "flags": [
+    "account_missing"
+   ],
+   "reasons": [
+    {
+     "code": "sales_agent",
+     "label": "Perfil do vendedor: Vicki Laflamme",
+     "value": "Vicki Laflamme",
+     "direction": "positive",
+     "impact": 0.2613
+    },
+    {
+     "code": "agent_n",
+     "label": "Experiência do vendedor: 347 deals fechados",
+     "value": "347.0",
+     "direction": "negative",
+     "impact": 0.1602
+    },
+    {
+     "code": "agent_wr",
+     "label": "Taxa de vitória do vendedor: 64%",
+     "value": "0.6364589274428499",
+     "direction": "positive",
+     "impact": 0.1329
+    }
+   ]
+  },
+  {
+   "opportunity_id": "DY8DMZZ9",
+   "seller": "Vicki Laflamme",
+   "manager": "Celia Rouche",
+   "office": "West",
+   "stage": "Engaging",
+   "product": "GTX Plus Pro",
+   "series": "GTX",
+   "account": null,
+   "account_missing": true,
+   "list_price": 5482.0,
+   "engage_date": "2017-09-16",
+   "age_days": 106,
+   "score": 95,
+   "priority_level": "Alta",
+   "band": "stale_risk",
+   "view": "decide",
+   "expected_value": 3961.74,
+   "p_win": null,
+   "confidence": "medium",
+   "confidence_reason": null,
+   "suggested_action": "Decidir agora: este deal passou do prazo em que 90% dos deals fecham.",
+   "flags": [
+    "stale",
+    "account_missing"
+   ],
+   "reasons": [
+    {
+     "code": "sales_agent",
+     "label": "Perfil do vendedor: Vicki Laflamme",
+     "value": "Vicki Laflamme",
+     "direction": "positive",
+     "impact": 0.2257
+    },
+    {
+     "code": "age_band",
+     "label": "Tempo no funil: 106 dias",
+     "value": "106",
+     "direction": "positive",
+     "impact": 0.1953
+    },
+    {
+     "code": "agent_n",
+     "label": "Experiência do vendedor: 347 deals fechados",
+     "value": "347.0",
+     "direction": "negative",
+     "impact": 0.1712
+    }
+   ]
+  },
+  {
+   "opportunity_id": "6SMB6SDY",
+   "seller": "Vicki Laflamme",
+   "manager": "Celia Rouche",
+   "office": "West",
+   "stage": "Engaging",
+   "product": "GTX Pro",
+   "series": "GTX",
+   "account": null,
+   "account_missing": true,
+   "list_price": 4821.0,
+   "engage_date": "2017-08-15",
+   "age_days": 138,
+   "score": 89,
+   "priority_level": "Alta",
+   "band": "stale_risk",
+   "view": "decide",
+   "expected_value": 3540.71,
+   "p_win": null,
+   "confidence": "medium",
+   "confidence_reason": null,
+   "suggested_action": "Decidir agora: este deal passou do prazo em que 90% dos deals fecham.",
+   "flags": [
+    "stale",
+    "account_missing"
+   ],
+   "reasons": [
+    {
+     "code": "sales_agent",
+     "label": "Perfil do vendedor: Vicki Laflamme",
+     "value": "Vicki Laflamme",
+     "direction": "positive",
+     "impact": 0.3321
+    },
+    {
+     "code": "age_band",
+     "label": "Tempo no funil: 138 dias",
+     "value": "138",
+     "direction": "positive",
+     "impact": 0.2169
+    },
+    {
+     "code": "agent_n",
+     "label": "Experiência do vendedor: 347 deals fechados",
+     "value": "347.0",
+     "direction": "negative",
+     "impact": 0.1468
+    }
+   ]
+  },
+  {
+   "opportunity_id": "MAH5U65E",
+   "seller": "Vicki Laflamme",
+   "manager": "Celia Rouche",
+   "office": "West",
+   "stage": "Engaging",
+   "product": "MG Advanced",
+   "series": "MG",
+   "account": null,
+   "account_missing": true,
+   "list_price": 3393.0,
+   "engage_date": "2017-08-18",
+   "age_days": 135,
+   "score": 64,
+   "priority_level": "Média",
+   "band": "stale_risk",
+   "view": "decide",
+   "expected_value": 2260.22,
+   "p_win": null,
+   "confidence": "medium",
+   "confidence_reason": null,
+   "suggested_action": "Decidir agora: este deal passou do prazo em que 90% dos deals fecham.",
+   "flags": [
+    "stale",
+    "account_missing"
+   ],
+   "reasons": [
+    {
+     "code": "product",
+     "label": "Produto: MG Advanced",
+     "value": "MG Advanced",
+     "direction": "negative",
+     "impact": 0.209
+    },
+    {
+     "code": "age_band",
+     "label": "Tempo no funil: 135 dias",
+     "value": "135",
+     "direction": "positive",
+     "impact": 0.1954
+    },
+    {
+     "code": "agent_n",
+     "label": "Experiência do vendedor: 347 deals fechados",
+     "value": "347.0",
+     "direction": "negative",
+     "impact": 0.1353
+    }
+   ]
+  },
+  {
+   "opportunity_id": "2FM8HJDM",
+   "seller": "Vicki Laflamme",
+   "manager": "Celia Rouche",
+   "office": "West",
+   "stage": "Engaging",
+   "product": "MG Advanced",
+   "series": "MG",
+   "account": null,
+   "account_missing": true,
+   "list_price": 3393.0,
+   "engage_date": "2017-09-20",
+   "age_days": 102,
+   "score": 64,
+   "priority_level": "Média",
+   "band": "follow_up",
+   "view": "follow",
+   "expected_value": 2176.81,
+   "p_win": null,
+   "confidence": "medium",
+   "confidence_reason": null,
+   "suggested_action": "Mantenha o ritmo e revise na próxima semana.",
+   "flags": [
+    "account_missing"
+   ],
+   "reasons": [
+    {
+     "code": "product",
+     "label": "Produto: MG Advanced",
+     "value": "MG Advanced",
+     "direction": "negative",
+     "impact": 0.249
+    },
+    {
+     "code": "agent_n",
+     "label": "Experiência do vendedor: 347 deals fechados",
+     "value": "347.0",
+     "direction": "negative",
+     "impact": 0.1585
+    },
+    {
+     "code": "sales_agent",
+     "label": "Perfil do vendedor: Vicki Laflamme",
+     "value": "Vicki Laflamme",
+     "direction": "positive",
+     "impact": 0.1075
+    }
+   ]
+  },
+  {
+   "opportunity_id": "3Q15OHQB",
+   "seller": "Vicki Laflamme",
+   "manager": "Celia Rouche",
+   "office": "West",
+   "stage": "Engaging",
+   "product": "MG Advanced",
+   "series": "MG",
+   "account": null,
+   "account_missing": true,
+   "list_price": 3393.0,
+   "engage_date": "2017-09-23",
+   "age_days": 99,
+   "score": 63,
+   "priority_level": "Média",
+   "band": "follow_up",
+   "view": "follow",
+   "expected_value": 2173.21,
+   "p_win": null,
+   "confidence": "medium",
+   "confidence_reason": null,
+   "suggested_action": "Mantenha o ritmo e revise na próxima semana.",
+   "flags": [
+    "account_missing"
+   ],
+   "reasons": [
+    {
+     "code": "product",
+     "label": "Produto: MG Advanced",
+     "value": "MG Advanced",
+     "direction": "negative",
+     "impact": 0.2511
+    },
+    {
+     "code": "agent_n",
+     "label": "Experiência do vendedor: 347 deals fechados",
+     "value": "347.0",
+     "direction": "negative",
+     "impact": 0.1595
+    },
+    {
+     "code": "sales_agent",
+     "label": "Perfil do vendedor: Vicki Laflamme",
+     "value": "Vicki Laflamme",
+     "direction": "positive",
+     "impact": 0.1073
+    }
+   ]
+  },
+  {
+   "opportunity_id": "31IV2B9O",
+   "seller": "Vicki Laflamme",
+   "manager": "Celia Rouche",
+   "office": "West",
+   "stage": "Engaging",
+   "product": "GTX Basic",
+   "series": "GTX",
+   "account": null,
+   "account_missing": true,
+   "list_price": 550.0,
+   "engage_date": "2017-10-26",
+   "age_days": 66,
+   "score": 39,
+   "priority_level": "Baixa",
+   "band": "low",
+   "view": "follow",
+   "expected_value": 407.09,
+   "p_win": null,
+   "confidence": "medium",
+   "confidence_reason": null,
+   "suggested_action": "Pouco valor esperado. Só vale o tempo se for rápido.",
+   "flags": [
+    "account_missing"
+   ],
+   "reasons": [
+    {
+     "code": "sales_agent",
+     "label": "Perfil do vendedor: Vicki Laflamme",
+     "value": "Vicki Laflamme",
+     "direction": "positive",
+     "impact": 0.3907
+    },
+    {
+     "code": "product",
+     "label": "Produto: GTX Basic",
+     "value": "GTX Basic",
+     "direction": "positive",
+     "impact": 0.1332
+    },
+    {
+     "code": "agent_wr",
+     "label": "Taxa de vitória do vendedor: 64%",
+     "value": "0.6364589274428499",
+     "direction": "positive",
+     "impact": 0.1317
+    }
+   ]
+  },
+  {
+   "opportunity_id": "Y6UBZM6P",
+   "seller": "Vicki Laflamme",
+   "manager": "Celia Rouche",
+   "office": "West",
+   "stage": "Engaging",
+   "product": "GTX Plus Pro",
+   "series": "GTX",
+   "account": null,
+   "account_missing": true,
+   "list_price": 5482.0,
+   "engage_date": "2017-01-09",
+   "age_days": 356,
+   "score": null,
+   "priority_level": null,
+   "band": "review",
+   "view": "review",
+   "expected_value": 4012.42,
+   "p_win": null,
+   "confidence": "medium",
+   "confidence_reason": null,
+   "suggested_action": "Mais antigo que qualquer deal já fechado. Encerrar ou reativar.",
+   "flags": [
+    "zombie",
+    "account_missing"
+   ],
+   "reasons": [
+    {
+     "code": "age_band",
+     "label": "Tempo no funil: 356 dias",
+     "value": "356",
+     "direction": "positive",
+     "impact": 0.2571
+    },
+    {
+     "code": "sales_agent",
+     "label": "Perfil do vendedor: Vicki Laflamme",
+     "value": "Vicki Laflamme",
+     "direction": "positive",
+     "impact": 0.2121
+    },
+    {
+     "code": "agent_n",
+     "label": "Experiência do vendedor: 347 deals fechados",
+     "value": "347.0",
+     "direction": "negative",
+     "impact": 0.1539
+    }
+   ]
+  },
+  {
+   "opportunity_id": "1GT10YJD",
+   "seller": "Vicki Laflamme",
+   "manager": "Celia Rouche",
+   "office": "West",
+   "stage": "Engaging",
+   "product": "GTX Plus Pro",
+   "series": "GTX",
+   "account": null,
+   "account_missing": true,
+   "list_price": 5482.0,
+   "engage_date": "2017-03-17",
+   "age_days": 289,
+   "score": null,
+   "priority_level": null,
+   "band": "review",
+   "view": "review",
+   "expected_value": 4012.42,
+   "p_win": null,
+   "confidence": "medium",
+   "confidence_reason": null,
+   "suggested_action": "Mais antigo que qualquer deal já fechado. Encerrar ou reativar.",
+   "flags": [
+    "zombie",
+    "account_missing"
+   ],
+   "reasons": [
+    {
+     "code": "age_band",
+     "label": "Tempo no funil: 289 dias",
+     "value": "289",
+     "direction": "positive",
+     "impact": 0.2571
+    },
+    {
+     "code": "sales_agent",
+     "label": "Perfil do vendedor: Vicki Laflamme",
+     "value": "Vicki Laflamme",
+     "direction": "positive",
+     "impact": 0.2121
+    },
+    {
+     "code": "agent_n",
+     "label": "Experiência do vendedor: 347 deals fechados",
+     "value": "347.0",
+     "direction": "negative",
+     "impact": 0.1539
+    }
+   ]
+  },
+  {
+   "opportunity_id": "VMIAO42Z",
+   "seller": "Vicki Laflamme",
+   "manager": "Celia Rouche",
+   "office": "West",
+   "stage": "Engaging",
+   "product": "GTX Plus Pro",
+   "series": "GTX",
+   "account": "Donquadtech",
+   "account_missing": false,
+   "list_price": 5482.0,
+   "engage_date": "2017-04-28",
+   "age_days": 247,
+   "score": null,
+   "priority_level": null,
+   "band": "review",
+   "view": "review",
+   "expected_value": 4012.42,
+   "p_win": null,
+   "confidence": "medium",
+   "confidence_reason": null,
+   "suggested_action": "Mais antigo que qualquer deal já fechado. Encerrar ou reativar.",
+   "flags": [
+    "zombie"
+   ],
+   "reasons": [
+    {
+     "code": "age_band",
+     "label": "Tempo no funil: 247 dias",
+     "value": "247",
+     "direction": "positive",
+     "impact": 0.2571
+    },
+    {
+     "code": "sales_agent",
+     "label": "Perfil do vendedor: Vicki Laflamme",
+     "value": "Vicki Laflamme",
+     "direction": "positive",
+     "impact": 0.2121
+    },
+    {
+     "code": "agent_n",
+     "label": "Experiência do vendedor: 347 deals fechados",
+     "value": "347.0",
+     "direction": "negative",
+     "impact": 0.1539
+    }
+   ]
+  }
+ ]
+}

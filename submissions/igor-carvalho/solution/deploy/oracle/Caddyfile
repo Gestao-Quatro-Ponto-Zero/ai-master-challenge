@@ -1,0 +1,14 @@
+# SITE_ADDRESS vem do .env (ex.: 140-238-1-2.sslip.io). O Caddy emite o certificado HTTPS sozinho.
+{$SITE_ADDRESS} {
+	encode zstd gzip
+
+	handle /api/* {
+		reverse_proxy api:8000
+	}
+
+	handle {
+		root * /srv
+		try_files {path} /index.html
+		file_server
+	}
+}
