@@ -1,0 +1,40 @@
+# Produção numa VM (Oracle Cloud Always Free): API + Caddy (frontend + HTTPS automático).
+# Uso (nesta pasta):  docker compose -f docker-compose.prod.yml up -d --build
+services:
+  api:
+    build: ../../backend
+    image: g4-lead-scorer:latest
+    environment:
+      G4_JWT_SECRET: ${G4_JWT_SECRET:?defina G4_JWT_SECRET no .env}
+      G4_SHOW_PROBABILITY: ${G4_SHOW_PROBABILITY:-true}
+      G4_RATE_LIMIT_PER_MINUTE: ${G4_RATE_LIMIT_PER_MINUTE:-120}
+    volumes:
+      - g4_artifacts:/app/artifacts   # modelos treinados (versões)
+      - g4_var:/app/var               # SQLite + logs
+      - ../../backend/data:/app/data  # CSVs lidos pelo treino diário (02:00)
+    restart: unless-stopped
+    # sem "ports": a API só é acessível pelo Caddy (rede interna do compose)
+
+  web:
+    build:
+      context: ../../frontend
+      dockerfile: ../deploy/oracle/web.Dockerfile
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:?defina SITE_ADDRESS no .env}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data              # certificados HTTPS
+      - caddy_config:/config
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  g4_artifacts:
+  g4_var:
+  caddy_data:
+  caddy_config:
