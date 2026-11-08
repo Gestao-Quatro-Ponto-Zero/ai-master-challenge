@@ -3,7 +3,7 @@
 ## Sobre mim
 
 - **Nome:** Guilherme (Breq)
-- **LinkedIn:** _[preencher]_
+- **LinkedIn:** [linkedin.com/in/guilhermebreq](https://www.linkedin.com/in/guilhermebreq/)
 - **Challenge escolhido:** 003 — Lead Scorer (Vendas / RevOps)
 
 ---
