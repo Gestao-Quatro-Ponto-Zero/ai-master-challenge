@@ -45,26 +45,23 @@ Por isso o score combina **valor (60 pts) e momento de decisão (40 pts)**, e se
 | "Fim de trimestre converte 81%" é artefato | Efeito igual em todos os dias do mês, não só no fim |
 | Qualidade do CRM | 68% dos deals abertos sem conta; `GTXPro` × `GTX Pro`; `technolgy` |
 
-**O que o vendedor vê:**
+**O que o vendedor vê** (identidade G4: navy, off-white e dourado, Manrope):
 
-- **Frase de abertura:** "Bom dia, Rosalina. N deals vivos de M abertos. X pedem decisão esta semana."
-- **4 KPIs:** vivos, decidem em 30 dias (≈ 66 no time, US$ 166 mil em jogo), janela fechando, zumbis para limpar.
-- **Abas:**
-  - **Foco da semana:** vivos por score.
-  - **Janela fechando.**
-  - **Higiene do pipeline:** zumbis.
-  - **Prospecção.**
-  - **Time:** visão do manager por vendedor.
-  - **Como o score funciona:** a curva com as fases "cedo / decisão / esfriando" e o que foi testado e descartado.
-- **Cada deal abre** com os motivos em linguagem simples (ex.: "Esfriando: só 16% dos deals com 117 dias se decidem no mês seguinte. Nesta idade, a maioria vira zumbi"), a composição do score (valor X/60 + momento Y/40) e a próxima ação.
-- **Ações em progressão:** manter a cadência → preparar a proposta → ligar hoje → reengajar → forçar o sim ou o não → confirmar ou marcar como perdido.
-- **Filtros** por região, manager e vendedor, busca (inclusive por ação), estados vazios com saída e versão mobile.
+- **Entrada:** "Bom dia. Quem está abrindo?". O vendedor escolhe o nome (com busca; quem tem fila vem primeiro e quem não tem deals vivos fica num grupo à parte) e cai na fila dele. O app lembra o último vendedor neste navegador e abre direto na fila; "Trocar" esquece. Gerente e RevOps entram por "ver o time".
+- **A fila da semana** (esquerda): "Bom dia, Rosalina.", progresso "0 de 5 feitas" com o valor em jogo e os deals agrupados pelo verbo da ação: **Ligar**, **Forçar sim ou não**, **Reengajar** e **Preparar proposta**. Os deals de ticket baixo viram uma linha só (**Em lote**: "11 deals de US$ 55, um e-mail resolve"), os zumbis outra (**Encerrar**; o lote vem por urgência, e cada linha traz o ID do deal) e a prospecção, outra.
+- **A ficha do deal** (direita): o que fazer agora ("Ligar hoje e propor data de fechamento"), com **Feito**, **Adiar** e **Não está vivo**. Abaixo, "Por que este deal, e por que agora" em três cartões desenhados (quanto vale, em que momento está, quanto tempo resta), a soma do score (60 valor + 35 momento) e **"O que o score não sabe"**: a chance de ganhar é igual para qualquer deal e o CRM não registra o último contato.
+- **Ação variada pelo valor:** `src/lib/playbook.ts` deriva a próxima ação do status, do valor, da idade e dos dias restantes (tabela em [`docs/scoring.md`](docs/scoring.md)). No time, a divisão passou de 98/89/75/25/11 para Ligar 72, Decidir 76, Reengajar 53, Preparar 35 e Lote 62, com os dias concretos no texto.
+- **Teclado:** J e K navegam a fila, E marca como feito, A adia. No celular a fila é a tela inicial e a ficha abre por cima, com "← Fila".
+- **Feito, Adiar e Não está vivo** ficam salvos **só no navegador** (`localStorage`), com aviso na tela. Não há backend nem login: trocar de navegador ou limpar os dados apaga as marcações.
+- **Visão do time** (gerente, RevOps): a tese ("não dá para prever quem ganha, dá para prever quando se decide") e o **mapa idade × produto** (cada deal vivo é um ponto, a curva de decisão por trás, a faixa dourada é a fase de decisão e à direita do limite ficam os zumbis por produto). Abaixo, as pilhas em tabela, que acendem os pontos no mapa. Filtros por região e manager, busca e abertura da fila de qualquer vendedor.
+- **Como o score funciona:** a curva com as fases "cedo / decisão / esfriando" e o que foi testado e descartado.
+- Estados vazios (vendedor sem deals vivos, busca sem resultado), `prefers-reduced-motion` respeitado e sem rolagem horizontal em 390 px.
 
 Lógica completa, fórmulas e evidências: [`docs/scoring.md`](docs/scoring.md).
 
 ### Recomendações
 
-1. **Esta semana: higiene.** Cada vendedor confirma ou fecha os próprios zumbis (aba Higiene). Enquanto 81% do pipeline for fantasma, nenhuma previsão de receita feita a partir do CRM é confiável.
+1. **Esta semana: higiene.** Cada vendedor confirma ou fecha os próprios zumbis (pilha Encerrar). Enquanto 81% do pipeline for fantasma, nenhuma previsão de receita feita a partir do CRM é confiável.
 2. **Toda segunda: Foco da semana + Janela fechando.** São os deals vivos de maior valor na fase de decisão, e os que vão estourar o ciclo.
 3. **Tratar 100 dias como alerta.** Depois disso, o deal esfria. Reengajar na hora, em vez de esperar.
 4. **Regra de processo:** deal Engaging sem decisão em 138 dias fecha automaticamente como perdido (ou pede justificativa).
@@ -80,6 +77,7 @@ Lógica completa, fórmulas e evidências: [`docs/scoring.md`](docs/scoring.md).
 - O app é só leitura: o vendedor ainda não registra ações ("contatei", "perdido") por ele.
 - Dataset sintético: os números valem para ele, e o que se transfere é o **método**.
 - Sem autenticação: hoje qualquer pessoa vê o pipeline inteiro.
+- Feito, Adiar e Não está vivo ficam só no navegador de quem marcou (`localStorage`). A visão do time **não conta** essas marcas: um deal marcado como feito pela vendedora continua em "Ligar" na pilha do time. Fechar esse ciclo pede gravar a ação no servidor.
 
 Mais em [`docs/scoring.md`](docs/scoring.md#limitações).
 

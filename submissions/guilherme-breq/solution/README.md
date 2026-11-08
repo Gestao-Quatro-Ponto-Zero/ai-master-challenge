@@ -20,7 +20,7 @@ Não precisa de banco, chave de API nem `.env`. Os 4 CSVs do dataset (CC0) estã
 ## Verificar
 
 ```bash
-npm test           # 35 testes: motor de score, bordas, filtros e integração com os CSVs reais
+npm test           # 83 testes: motor de score, playbook de ações, marcações e armazenamento local, filtros e integração com os CSVs reais
 npm run lint
 npm run build
 ```
@@ -47,8 +47,11 @@ solution/
 └── src/
     ├── lib/scoring.ts     Motor de score: puro, sem I/O, testado
     ├── lib/data.ts        Lê os CSVs, roda o modelo e cruza com time e contas ('use cache')
+    ├── lib/playbook.ts    Próxima ação por deal (lote, decidir, ligar, preparar, reengajar) e a fila agrupada (puro, testado)
+    ├── lib/marks.ts       Feito / Adiar / Não está vivo no localStorage: leitura tolerante e versionada (puro, testado)
+    ├── lib/persisted.ts   Store do localStorage (marcas e último vendedor): memória só enquanto a gravação falha (puro, testado)
     ├── lib/selection.ts   Filtros e indicadores da tela (puro, testado)
-    ├── components/        Dashboard, DealRow, TeamTable, HowItWorks
+    ├── components/        Dashboard (entrada, fila, time), WorkView, DealSheet, PileView, TeamView, CycleMap, HowItWorks
     └── app/page.tsx       Server component: carrega os dados e entrega ao Dashboard
 ```
 

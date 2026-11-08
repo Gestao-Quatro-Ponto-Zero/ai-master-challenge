@@ -103,26 +103,34 @@ Momento = 40 × p(decisão em 30 dias | idade) / p_pico
 - **Por que 60/40:** é julgamento, não ajuste fino. O valor é o sinal mais forte e mais estável, e o momento diz *quando* agir. As constantes ficam no topo de `src/lib/scoring.ts`.
 - **Momento relativo ao pico:** 40 pts = a idade em que mais deals se decidem. Como a calibração acima de 50% é otimista, ordenar pela posição relativa é mais robusto do que usar a porcentagem crua.
 - **Desempate:** com o mesmo score, vem primeiro quem tem menos dias restantes no ciclo.
-- **Ações sugeridas**, em progressão ao longo do ciclo:
+- **Próxima ação** (`src/lib/playbook.ts`, função pura `nextStep`): o motor decide *quem* vem primeiro; o playbook decide *o que fazer* com cada deal, usando só o que o motor já devolve (status, pontos de valor, idade, dias restantes) e a fase de decisão da curva (dias 57 a 101). A primeira regra que casar vale:
 
-| Situação | Ação |
-|---|---|
-| Ainda cedo | "Manter a cadência" |
-| Momento razoável | "Preparar a proposta" |
-| Fase de decisão | "Ligar hoje" |
-| Esfriando | "Reengajar antes que esfrie de vez" |
-| 20 dias ou menos para o limite | "Forçar o sim ou o não esta semana" |
-| Zumbi | "Confirmar se está vivo ou marcar como perdido" |
+| # | Regra | Ação (verbo) | Texto |
+|---|---|---|---|
+| 1 | Zumbi | Encerrar | "Confirmar se está vivo ou marcar como perdido" |
+| 2 | Prospecção | Abrir | "Agendar o primeiro contato" |
+| 3 | Ticket baixo (valor < 10 pts, hoje só o MG Special, US$ 55) | Lote | "Resolver por e-mail, sem ligação"; a 20 dias ou menos do limite: "E-mail de sim ou não: faltam N dias" |
+| 4 | 20 dias ou menos do limite | Decidir | "Forçar o sim ou o não: faltam N dias" |
+| 5 | Fase de decisão, ticket alto (valor ≥ 40 pts) | Ligar | "Ligar hoje e propor data de fechamento" |
+| 6 | Fase de decisão, ticket médio | Ligar | "Ligar esta semana: está na fase de decisão" |
+| 7 | Antes da fase de decisão | Preparar | "Proposta pronta: entra na fase de decisão em N dias" |
+| 8 | Depois da fase de decisão | Reengajar | "Reengajar: saiu da fase de decisão há N dias" |
 
-No estado atual (31/12/2017), os 298 deals vivos se dividem assim:
+  **Por que o ticket baixo vira lote:** a ação antiga ignorava o valor, então um deal de US$ 55 pedia a mesma ligação que um de US$ 26 mil. Para a Rosalina, 11 dos 16 deals vivos valem US$ 55 (US$ 605 somados): uma ligação custa mais que o deal.
+
+  `scoring.ts` não mudou: o campo `action` do motor (cinco rótulos fixos) continua nele e nos testes, mas o app mostra o passo do playbook.
+
+No estado atual (31/12/2017), os 298 deals vivos se dividem assim (conferido por teste contra os dados reais):
 
 | Ação | Deals |
 |---|---|
-| Forçar o sim ou o não | 98 |
-| Ligar hoje | 89 |
-| Preparar a proposta | 75 |
-| Manter a cadência | 25 |
-| Reengajar | 11 |
+| Ligar | 72 |
+| Forçar o sim ou o não (Decidir) | 76 |
+| Reengajar | 53 |
+| Preparar proposta | 35 |
+| Em lote (e-mail) | 62 |
+
+Antes, com a ação do motor, a divisão era 98 / 89 / 75 / 25 / 11, com dois rótulos dominando e sem distinguir o valor.
 
 ## Robustez do código
 
@@ -149,6 +157,6 @@ Tudo isso coberto por testes (`src/lib/scoring.test.ts`).
 
 - Ligar no CRM real (API ou export diário) em vez dos CSVs; a função `getPipeline` é o único ponto a trocar.
 - Recalcular o modelo a cada carga (já é automático: nada está fixo no código, exceto pesos e limiares).
-- Gravar a ação do vendedor (contatado, perdido, adiado) para fechar o ciclo e medir se a priorização aumentou a receita.
+- Gravar a ação do vendedor no servidor (hoje Feito, Adiar e Não está vivo ficam só no navegador, em `localStorage`) para fechar o ciclo e medir se a priorização aumentou a receita.
 - Coletar atividade (e-mail, reunião, ligação) e testar "dias sem contato" como terceiro componente, pelo mesmo backtest.
 - Autenticação por vendedor, para cada um ver só a própria carteira, e alerta semanal por Slack ou e-mail com o Foco da semana.
