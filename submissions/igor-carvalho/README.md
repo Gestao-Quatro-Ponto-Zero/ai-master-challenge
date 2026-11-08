@@ -17,6 +17,7 @@
   - [Resultados / Findings](#resultados--findings)
   - [Recomendações](#recomendações)
   - [Limitações](#limitações)
+- [Evidências](#evidências)
 
 ---
 
@@ -215,6 +216,24 @@ O que foi construído para o vendedor:
 - **Leads novos do dia** entram só por CSV em `data/`; não há leitura direta de CRM ou banco.
 - **Docker e o agendamento diário foram escritos, mas não executados** em ambiente real. O backtest usa datas móveis, mas os dados vão só até 2017-12-31.
 - Para escalar: rate limit compartilhado (hoje em memória), fila de jobs real, CI e trocar SQLite. Um code review do backend achou 6 riscos de operação, listados e priorizados no plano de pendências.
+
+---
+
+## Evidências
+
+- [ ] Screenshots das conversas com IA
+- [ ] Screen recording do workflow
+- [ ] Chat exports
+- [x] Git history (commits da branch `submission/igor-carvalho`)
+- [x] Narrativa escrita: [`process-log/process.md`](./process-log/process.md), com o que pedi e o que a IA entregou em cada fase
+- [x] Outro: screenshots do app funcionando, em [`process-log/screenshots/`](./process-log/screenshots/)
+  - [Meu dia](./process-log/screenshots/pagina-01-meu-dia.png)
+  - [Pipeline: foco da semana](./process-log/screenshots/pagina-02-pipeline-foco-da-semana.png)
+  - [Pipeline: decidir agora](./process-log/screenshots/pagina-03-pipeline-decidir-agora.png)
+  - [Pipeline: baixa prioridade](./process-log/screenshots/pagina-04-pipeline-baixa-prioridade.png)
+  - [Pipeline: prospecção](./process-log/screenshots/pagina-05-pipeline-prospeccao.png)
+  - [Pipeline: a revisar](./process-log/screenshots/pagina-06-pipeline-a-revisar.png)
+  - [Como a prioridade é calculada](./process-log/screenshots/pagina-07-como-a-prioridade-e-calculada.png)
 
 ---
 
