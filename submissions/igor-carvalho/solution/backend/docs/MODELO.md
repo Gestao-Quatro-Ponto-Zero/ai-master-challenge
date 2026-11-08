@@ -7,7 +7,7 @@ Antes o modelo previa "o deal termina Won?" treinado só com deals já fechados,
 (viés de sobrevivência) e o score acompanhar quase só o preço.
 
 ## Treino (`lead_trainer/training.py`)
-- Fotos semanais do pipeline até **T − 30 dias**; entram **todos** os deals abertos na foto.
+- Snapshots semanais do pipeline até **T − 30 dias**; entram **todos** os deals abertos na foto.
 - Rótulo `won_30d` = fechou Won em até 30 dias da foto. Perdido **ou ainda parado** = 0. Só olha até Tk + 30 ≤ T: sem vazamento.
 - Features point-in-time (`lead_core/features.py`), mais `age_vs_cycle` = idade / P99 do ciclo dos deals fechados.
 - LightGBM com parada antecipada por AUC (paciência 100, mínimo 50 árvores).
