@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+/*
+ * Tokens G4 (medidos pelo Design, WCAG 2.x). Regra de uso:
+ *  - gold (#B9915B) é só fio, faixa, ponto e fundo de botão: sobre o papel dá 2,63:1, então NUNCA vira texto.
+ *  - Texto dourado: gold-hi sobre navy (9,0:1) e gold-ink sobre papel (5,75:1).
+ *  - Risco: risk sobre navy (6,8:1) e brick sobre papel (8,0:1).
+ */
+@theme {
+  --color-navy-deep: #031a26;
+  --color-navy: #001f35;
+  --color-paper: #f5f4f3;
+  --color-card: #ffffff;
+
+  /* Texto sobre o papel/branco: 16,2 · 9,2 · 5,6 */
+  --color-ink: #031a26;
+  --color-ink-2: #33444f;
+  --color-ink-3: #56636c;
+
+  /* Texto sobre o navy: 15,3 · 9,4 · 5,8 */
+  --color-fg: #f5f4f3;
+  --color-fg-2: #b9c3ca;
+  --color-fg-3: #8a9aa6;
+
+  --color-gold: #b9915b;
+  --color-gold-hi: #d9b98a;
+  --color-gold-ink: #7a5a2c;
+  --color-brick: #842e20;
+  --color-risk: #e0907e;
+  --color-blue: #184560;
+  --color-sky: #8dbad6;
+
+  --color-line: rgb(245 244 243 / 0.1);
+  --color-line-strong: rgb(245 244 243 / 0.2);
+  --color-rule: rgb(3 26 38 / 0.12);
+
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
+}
+
+html {
+  color-scheme: dark;
+  scrollbar-gutter: stable;
+}
+
+body {
+  background: var(--color-navy-deep);
+  color: var(--color-fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Faixa rolável sem barra visível (o corte do último item já indica a rolagem). */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/*
+ * Foco visível: dourado claro no navy (9,0:1) e tinta no papel (16,2:1). O dourado puro não passa 3:1 sobre o papel.
+ * Dentro do papel, o banner navy ("O que fazer", `.on-navy`) volta ao dourado claro: tinta sobre navy dava 1,0:1.
+ *
+ * Em `@layer base` DE PROPÓSITO: CSS fora de camada vence as utilities do Tailwind 4, o que anulava o
+ * `outline-none` dos títulos com tabIndex={-1} e desenhava uma caixa em volta do título a cada foco programático.
+ */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-gold-hi);
+    outline-offset: 2px;
+  }
+  .on-paper :focus-visible {
+    outline-color: var(--color-ink);
+  }
+  .on-paper .on-navy :focus-visible {
+    outline-color: var(--color-gold-hi);
+  }
+}
+
+/* A calha só existe onde a página rola (entrada, time, como funciona). Na fila a página não rola e a calha mostraria navy ao lado do papel. */
+html:has(.fila-root) {
+  scrollbar-gutter: auto;
+}
+
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath stroke='%23b9c3ca' stroke-linecap='round' stroke-width='1.5' d='m1 1 4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
