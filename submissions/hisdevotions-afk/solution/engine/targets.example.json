@@ -1,0 +1,5 @@
+{
+  "_comment": "Diretório vendedor -> destino, para 'python3 notify.py --all --targets targets.json'. Nomes exatos de sales_agent em sales_teams.csv. webhook e/ou to são opcionais por vendedor; quem não aparecer aqui cai no modo seguro (só imprime) ou no --webhook/--to global, se algum foi passado. Em produção isso viria do diretório da empresa (SSO), não de um arquivo à parte.",
+  "Hayden Neloms": { "webhook": "https://hooks.slack.com/services/T000/B000/XXXXXXXXXXXXXXXXXXXXXXXX" },
+  "Wilburn Farrell": { "to": "wilburn.farrell@empresa.com" }
+}
