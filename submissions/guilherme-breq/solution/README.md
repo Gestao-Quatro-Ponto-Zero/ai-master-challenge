@@ -20,7 +20,7 @@ Não precisa de banco, chave de API nem `.env`. Os 4 CSVs do dataset (CC0) estã
 ## Verificar
 
 ```bash
-npm test           # 83 testes: motor de score, playbook de ações, marcações e armazenamento local, filtros e integração com os CSVs reais
+npm test           # 93 testes: motor de score, playbook de ações, marcações e armazenamento local, filtros e integração com os CSVs reais
 npm run lint
 npm run build
 ```

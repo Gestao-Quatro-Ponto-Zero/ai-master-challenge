@@ -187,9 +187,10 @@ export function WorkView({
       <nav
         aria-label="Fila da semana"
         onKeyDown={onListKey}
-        className={`flex flex-col bg-navy px-4 pb-6 pt-5 min-[900px]:sticky min-[900px]:top-0 min-[900px]:h-screen min-[900px]:overflow-y-auto min-[900px]:px-6 min-[900px]:pb-6 min-[900px]:pt-7 ${sheetOpen ? "max-[899px]:hidden" : ""}`}
+        className={`bg-navy min-[900px]:sticky min-[900px]:top-0 min-[900px]:h-screen min-[900px]:scroll-pt-28 min-[900px]:overflow-y-auto ${sheetOpen ? "max-[899px]:hidden" : ""}`}
       >
-        <div className="flex items-center justify-between gap-3">
+        {/* Cabeçalho do painel fica fixo no topo: Trocar, Time e Como funciona nunca saem de vista, mesmo com Tab até o fim da fila. */}
+        <div className="flex items-center justify-between gap-3 bg-navy px-4 pb-1 pt-5 min-[900px]:sticky min-[900px]:top-0 min-[900px]:z-20 min-[900px]:px-6 min-[900px]:pt-6">
           <Brand />
           <div className="-mr-2 flex items-center">
             <button type="button" onClick={onChangeAgent} className="min-h-11 px-2 text-[13px] font-semibold text-fg-2 underline-offset-4 hover:text-gold-hi hover:underline">
@@ -204,7 +205,8 @@ export function WorkView({
           </div>
         </div>
 
-        <h1 id="tela-titulo" tabIndex={-1} className="mb-1 mt-4 text-[26px] font-bold leading-tight tracking-[-0.02em] text-fg outline-none">
+        <div className="flex flex-col px-4 pb-4 min-[900px]:px-6">
+        <h1 id="tela-titulo" tabIndex={-1} className="mb-1 mt-3 text-[26px] font-bold leading-tight tracking-[-0.02em] text-fg outline-none">
           Bom dia, {first}.
         </h1>
         <p className="text-sm text-fg-2">
@@ -286,10 +288,10 @@ export function WorkView({
             </PileCard>
           </Group>
         )}
-
+        </div>
       </nav>
 
-      <main className={`on-paper bg-paper px-4 pb-12 pt-3 text-ink min-[900px]:px-14 min-[900px]:pb-14 min-[900px]:pt-9 ${sheetOpen || empty ? "" : "max-[899px]:hidden"}`}>
+      <main className={`on-paper bg-paper px-4 pb-12 pt-3 text-ink min-[900px]:px-14 min-[900px]:pb-10 min-[900px]:pt-9 ${sheetOpen || empty ? "" : "max-[899px]:hidden"}`}>
         <div className="max-w-[1080px]">
           {shownPile ? (
             <PileView
@@ -343,8 +345,8 @@ export function WorkView({
 function Group({ label, count, children }: { label: string; count: number; children: React.ReactNode }) {
   const id = `grupo-${label.replace(/\s+/g, "-").toLowerCase()}`;
   return (
-    <section className="mt-6" aria-labelledby={id}>
-      <h2 id={id} className="sticky top-0 z-10 -mx-1 mb-1 flex justify-between bg-navy px-1 py-1.5 text-[13px] font-bold uppercase tracking-[0.14em] text-fg-3">
+    <section className="mt-4" aria-labelledby={id}>
+      <h2 id={id} className="sticky top-0 z-10 -mx-1 mb-1 flex justify-between min-[900px]:top-[72px] bg-navy px-1 py-1.5 text-[13px] font-bold uppercase tracking-[0.14em] text-fg-3">
         <span>{label}</span>
         <span>{formatInt(count)}</span>
       </h2>
@@ -365,7 +367,7 @@ function QueueItem({ item, mark, current, tabStop, onOpen, showVerb }: { item: W
         tabIndex={tabStop ? 0 : -1}
         aria-current={current ? "true" : undefined}
         onClick={onOpen}
-        className="grid min-h-14 w-full grid-cols-[18px_minmax(0,1fr)_auto] items-center gap-2.5 rounded-[10px] px-3 py-2.5 text-left transition-colors hover:bg-fg/5 aria-[current=true]:bg-fg aria-[current=true]:text-ink"
+        className="grid min-h-[52px] w-full grid-cols-[18px_minmax(0,1fr)_auto] items-center gap-2.5 rounded-[10px] px-3 py-2 text-left transition-colors hover:bg-fg/5 aria-[current=true]:bg-fg aria-[current=true]:text-ink"
       >
         <span
           aria-hidden

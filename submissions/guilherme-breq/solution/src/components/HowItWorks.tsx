@@ -7,7 +7,7 @@ function CurveSvg({ curve, maxCycle, compact }: { curve: number[]; maxCycle: num
   const W = compact ? 340 : 960;
   const H = compact ? 250 : 300;
   const P = { l: compact ? 34 : 36, r: compact ? 10 : 16, t: 30, b: 28 };
-  const fs = "text-[13px]";
+  const fs = compact ? "text-[15px]" : "text-[14px]";
   const x = (age: number) => P.l + (age / maxCycle) * (W - P.l - P.r);
   const top = Math.max(0.5, Math.ceil(Math.max(...curve) * 10) / 10);
   const y = (p: number) => P.t + (1 - p / top) * (H - P.t - P.b);

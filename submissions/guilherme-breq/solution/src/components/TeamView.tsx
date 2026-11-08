@@ -3,7 +3,7 @@
 import { useMemo, useRef, useState, type KeyboardEvent } from "react";
 import type { Deal, PipelineData } from "@/lib/data";
 import { formatCompactUSD, formatDate, formatInt } from "@/lib/format";
-import { buildQueue, nextStep, type Step, type Window } from "@/lib/playbook";
+import { ageNote, buildQueue, modalPattern, nextStep, textPattern, type Step, type Window } from "@/lib/playbook";
 import { decisionWindow, formatUSD, WINDOW_ALERT_DAYS } from "@/lib/scoring";
 import { agentOptions, filterDeals, summarize, type Selection } from "@/lib/selection";
 import { CycleMap } from "./CycleMap";
@@ -87,6 +87,8 @@ export function TeamView({
   const tabRefs = useRef<Partial<Record<TabId, HTMLButtonElement | null>>>({});
 
   const rows = piles[tab];
+  // A ação que se repete na pilha já está na introdução; a linha de apoio só aparece nas exceções.
+  const common = useMemo(() => modalPattern(rows.map((r) => r.step.text)), [rows]);
   const q = fold(query.trim());
   const visible = q ? rows.filter((r) => [r.deal.account ?? "", r.deal.id, r.deal.product, r.deal.agent, r.step.text].some((f) => fold(f).includes(q))) : rows;
   const highlight = useMemo(() => new Set(tab === "Encerrar" || tab === "Prospecção" ? [] : piles[tab].map((r) => r.deal.id)), [tab, piles]);
@@ -257,8 +259,8 @@ export function TeamView({
               <Empty title={q ? "Nada encontrado para essa busca." : "Nada nesta pilha."}>{q ? "Limpe a busca para ver a pilha inteira." : "Nenhum deal nesta seleção cai aqui."}</Empty>
             ) : (
               <>
-                <DealTable rows={visible.slice(0, limit)} win={win} peakAge={win.peakAge} maxCycle={data.maxCycleDays} onPickAgent={onPickAgent} />
-                <DealCards rows={visible.slice(0, limit)} peakAge={win.peakAge} onPickAgent={onPickAgent} />
+                <DealTable rows={visible.slice(0, limit)} win={win} common={common} maxCycle={data.maxCycleDays} onPickAgent={onPickAgent} />
+                <DealCards rows={visible.slice(0, limit)} win={win} common={common} onPickAgent={onPickAgent} />
               </>
             )}
             {visible.length > limit && (
@@ -297,7 +299,9 @@ function Key({ color, children }: { color: string; children: React.ReactNode }) 
 
 const agePosition = (age: number, max: number) => `${Math.min(100, (age / max) * 100)}%`;
 
-function DealTable({ rows, win, peakAge, maxCycle, onPickAgent }: { rows: Row[]; win: Window; peakAge: number; maxCycle: number; onPickAgent: (a: string) => void }) {
+type PeakWindow = Window & { peakAge: number };
+
+function DealTable({ rows, win, common, maxCycle, onPickAgent }: { rows: Row[]; win: PeakWindow; common: string; maxCycle: number; onPickAgent: (a: string) => void }) {
   return (
     <table className="hidden w-full border-collapse text-left min-[900px]:table">
       <thead>
@@ -340,8 +344,8 @@ function DealTable({ rows, win, peakAge, maxCycle, onPickAgent }: { rows: Row[];
               </button>
             </td>
             <td className="px-3.5 py-3">
-              <span className="block font-semibold text-fg">{ageNote(d, peakAge)}</span>
-              <small className="mt-0.5 block text-[13px] text-fg-3">{step.text}</small>
+              <span className="block font-semibold text-fg">{ageNote(d, step, win)}</span>
+              {textPattern(step.text) !== common && <small className="mt-0.5 block text-[13px] text-fg-3">{step.text}</small>}
             </td>
           </tr>
         ))}
@@ -350,7 +354,7 @@ function DealTable({ rows, win, peakAge, maxCycle, onPickAgent }: { rows: Row[];
   );
 }
 
-function DealCards({ rows, peakAge, onPickAgent }: { rows: Row[]; peakAge: number; onPickAgent: (a: string) => void }) {
+function DealCards({ rows, win, common, onPickAgent }: { rows: Row[]; win: PeakWindow; common: string; onPickAgent: (a: string) => void }) {
   return (
     <ul className="space-y-2 min-[900px]:hidden">
       {rows.map(({ deal: d, step }) => (
@@ -363,8 +367,8 @@ function DealCards({ rows, peakAge, onPickAgent }: { rows: Row[]; peakAge: numbe
             {d.account ? d.product : "conta não vinculada"} · {d.id}
             {d.status === "ativo" && ` · score ${d.score}`}
           </p>
-          <p className="mt-2 text-sm font-semibold text-fg">{ageNote(d, peakAge)}</p>
-          <p className="mt-0.5 text-[13px] text-fg-3">{step.text}</p>
+          <p className="mt-2 text-sm font-semibold text-fg">{ageNote(d, step, win)}</p>
+          {textPattern(step.text) !== common && <p className="mt-0.5 text-[13px] text-fg-3">{step.text}</p>}
           <button type="button" onClick={() => onPickAgent(d.agent)} className="mt-1 min-h-11 text-left text-sm text-fg-2 underline underline-offset-4 hover:text-gold-hi">
             {d.agent}
           </button>
@@ -374,11 +378,3 @@ function DealCards({ rows, peakAge, onPickAgent }: { rows: Row[]; peakAge: numbe
   );
 }
 
-function ageNote(d: Deal, peakAge: number): string {
-  if (d.status === "prospeccao") return "ainda sem engajamento";
-  if (d.status === "zumbi") return `aberto há ${d.ageDays} dias · ${d.daysOverCycle} além do limite`;
-  const age = d.ageDays ?? 0;
-  const dias = (n: number) => `${n} ${n === 1 ? "dia" : "dias"}`;
-  const pico = age === peakAge ? "no pico · " : age < peakAge ? `${dias(peakAge - age)} até o pico · ` : `${dias(age - peakAge)} depois do pico · `;
-  return `${pico}dia ${age}, faltam ${d.daysLeft} para o limite`;
-}

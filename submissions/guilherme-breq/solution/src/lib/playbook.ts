@@ -69,6 +69,43 @@ export function nextStep(d: StepInput, win: Window): Step {
   }
 }
 
+/**
+ * O que difere entre as linhas de uma pilha (idade, posição no ciclo, prazo). A ação em si repete
+ * dentro da pilha; esta nota é a informação que muda de uma linha para outra.
+ */
+export function ageNote(d: Pick<ScoredDeal, "status" | "ageDays" | "daysLeft" | "daysOverCycle">, step: Step, win: Window & { peakAge: number }): string {
+  if (d.status === "prospeccao") return "ainda sem engajamento";
+  const age = d.ageDays ?? 0;
+  if (d.status === "zumbi") return `aberto há ${age} dias · ${d.daysOverCycle} além do limite`;
+  const left = d.daysLeft ?? 0;
+  const rest = left <= 0 ? remaining(left) : `${remaining(left)} para o limite`;
+  let lead = "";
+  if (step.verb === "Ligar") lead = age === win.peakAge ? "no pico · " : age < win.peakAge ? `${days(win.peakAge - age)} até o pico · ` : `${days(age - win.peakAge)} depois do pico · `;
+  else if (step.verb === "Preparar") lead = `entra na fase de decisão em ${days(win.start - age)} · `;
+  else if (step.verb === "Reengajar") lead = `saiu da fase de decisão há ${days(age - win.end)} · `;
+  return `${lead}dia ${age}, ${rest}`;
+}
+
+/** Padrão de um texto para comparar sem os números nem o singular ("falta 1 dia" e "faltam 18 dias" são o mesmo). */
+export const textPattern = (t: string) =>
+  t
+    .replace(/\d+ dias?/g, "N dias")
+    .replace(/\d+/g, "N")
+    .replace(/\bfaltam?\b/g, "faltam");
+
+/** O padrão mais frequente numa lista de textos (empate: o que apareceu primeiro; vazio: ""). */
+export function modalPattern(texts: string[]): string {
+  const count = new Map<string, number>();
+  for (const t of texts) {
+    const p = textPattern(t);
+    count.set(p, (count.get(p) ?? 0) + 1);
+  }
+  let best = "";
+  let bestN = 0;
+  for (const [p, n] of count) if (n > bestN) [best, bestN] = [p, n];
+  return best;
+}
+
 export interface WorkItem<D extends ScoredDeal> {
   deal: D;
   step: Step;
