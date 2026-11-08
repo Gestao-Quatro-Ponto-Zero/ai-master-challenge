@@ -34,7 +34,7 @@ function OpenDealView({ deal }: { deal: OpenDeal }) {
         <div>
           <h1 className="deal-name"><DealName deal={deal} /></h1>
           <p className="deal-meta">
-            <BucketTag bucket={deal.bucket} /> {BUCKETS[deal.bucket].hint}. Oportunidade {deal.id}, com {deal.agent}.
+            <BucketTag bucket={deal.bucket} /> {BUCKETS[deal.bucket].hint}. Com {deal.agent}.
           </p>
         </div>
         <div className="deal-score">
