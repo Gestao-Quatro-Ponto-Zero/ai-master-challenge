@@ -377,4 +377,3 @@ function DealCards({ rows, win, common, onPickAgent }: { rows: Row[]; win: PeakW
     </ul>
   );
 }
-

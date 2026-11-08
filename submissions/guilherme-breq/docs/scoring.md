@@ -91,7 +91,7 @@ A faixa precisa ser *contínua ao redor do pico* porque a curva também é alta 
 ## A fórmula
 
 ```
-se idade > 138 dias  → ZUMBI: sem score; vai para "Higiene do pipeline"
+se idade > 138 dias  → ZUMBI: sem score; vai para a pilha "Encerrar"
 se não engajou       → PROSPECÇÃO: score = só Valor
 senão                → score = Valor (0–60) + Momento (0–40)
 
@@ -150,8 +150,11 @@ Tudo isso coberto por testes (`src/lib/scoring.test.ts`).
 4. **Valor é preço de tabela.** Não há desconto nem quantidade no CRM.
 5. **Prospecção não tem data de início**, então não há como medir momento. Fica ordenada só por valor.
 6. **Não há dados de atividade** (último contato, e-mails, reuniões). É o sinal que mais falta, porque "esfriar" se mede pelo tempo sem contato. Seria o primeiro dado a pedir.
-7. **O app é só leitura.** O vendedor não consegue marcar um zumbi como perdido pela ferramenta.
+7. **O CRM é só leitura.** O vendedor marca Feito, Adiar e Não está vivo no navegador (`localStorage`), mas nada é gravado no CRM: um zumbi não vira "perdido" lá.
 8. **Dataset sintético.** As conclusões valem para estes dados. O que se transfere é o **método**: testar cada sinal fora da amostra, com a população certa e tratando a censura, antes de colocá-lo no score.
+9. **Viewport testado: 390 a 1440 px, no Chrome.** Abaixo de 360 px o texto do mapa fica menor que 13 px (em 320 px, ~11,5 px). Firefox, Safari e leitor de tela real não foram testados.
+10. **Ao reabrir com o vendedor lembrado**, a tela de entrada pode piscar antes de abrir a fila.
+11. **Se outra aba apagar as marcações**, a fila da aba aberta se atualiza, mas o aviso para leitor de tela fica desatualizado até a próxima ação.
 
 ## Para escalar
 

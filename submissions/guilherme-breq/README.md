@@ -22,7 +22,9 @@ Por isso o score combina **valor (60 pts) e momento de decisão (40 pts)**, e se
 
 **Rodar:** `cd solution && npm install && npm run build && npm start` → http://localhost:3000 (detalhes em [`solution/README.md`](solution/README.md)).
 
-![Visão do time](process-log/screenshots/03-desktop-final.png)
+![Fila da semana de uma vendedora](process-log/screenshots/04-fila-vendedor.png)
+
+![Visão do time: o relógio do ciclo](process-log/screenshots/04-time-mapa.png)
 
 ### Abordagem
 
@@ -74,10 +76,13 @@ Lógica completa, fórmulas e evidências: [`docs/scoring.md`](docs/scoring.md).
 - O corte de 138 dias vem deste histórico e é heurístico. Com dados reais, usaria um percentil por produto.
 - O momento é um sinal modesto (AUC média 0,65) e instável entre períodos. Ordena melhor que o acaso, mas não é certeza.
 - Valor = preço de tabela (não há desconto ou quantidade no CRM).
-- O app é só leitura: o vendedor ainda não registra ações ("contatei", "perdido") por ele.
+- O CRM é só leitura: o vendedor marca Feito, Adiar e Não está vivo no navegador, mas nada é gravado no CRM (não marca um zumbi como perdido lá).
 - Dataset sintético: os números valem para ele, e o que se transfere é o **método**.
 - Sem autenticação: hoje qualquer pessoa vê o pipeline inteiro.
 - Feito, Adiar e Não está vivo ficam só no navegador de quem marcou (`localStorage`). A visão do time **não conta** essas marcas: um deal marcado como feito pela vendedora continua em "Ligar" na pilha do time. Fechar esse ciclo pede gravar a ação no servidor.
+- Viewport testado: 390 a 1440 px, no Chrome. Abaixo de 360 px o texto do mapa fica menor que 13 px (em 320 px, ~11,5 px); Firefox, Safari e leitor de tela real não foram testados.
+- Ao reabrir com o vendedor lembrado, a tela de entrada pode piscar antes de abrir a fila.
+- Se outra aba apagar as marcações, a fila da aba aberta se atualiza, mas o aviso para leitor de tela fica desatualizado até a próxima ação.
 
 Mais em [`docs/scoring.md`](docs/scoring.md#limitações).
 
@@ -128,11 +133,11 @@ Narrativa completa: [`process-log/process-log.md`](process-log/process-log.md). 
 
 ## Evidências
 
-- [x] Screenshots (`process-log/screenshots/`, incluindo as 3 rodadas de QA)
+- [x] Screenshots (`process-log/screenshots/`, interface antiga (01–03) e redesign (04), além das 3 rodadas de QA)
 - [ ] Screen recording do workflow
 - [ ] Chat exports (`process-log/chat-exports/`), _a incluir_
 - [x] Git history (branch `submission/guilherme-breq`)
-- [x] Outro: scripts de análise versionados, inclusive a versão com viés e a corrigida (`solution/analysis/05` e `06`), 35 testes automatizados e relatório da revisão (`process-log/review-findings.md`)
+- [x] Outro: scripts de análise versionados, inclusive a versão com viés e a corrigida (`solution/analysis/05` e `06`), 93 testes automatizados (35 do motor de score + 58 do playbook, das marcações e da interface) e relatório da revisão (`process-log/review-findings.md`)
 
 ---
 

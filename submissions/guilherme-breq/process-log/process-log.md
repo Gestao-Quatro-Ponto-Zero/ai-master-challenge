@@ -89,6 +89,19 @@ No meio da sessão, eu cobrei: *"por que não delegou nada pra ninguém?"*. Defi
 
 Os achados e o que foi feito com cada um estão em [`review-findings.md`](review-findings.md).
 
+### 8. Redesign com identidade G4 (time de agentes no Maestri)
+
+- **Meu pedido:** rever o que o desafio pede e dizer se tínhamos entregado algo genérico ou útil, com um design à altura e nas cores da G4 (extraídas do site: navy, off-white, dourado, tijolo; Manrope). **Crítica de partida (orquestrador e Design):** a análise era o diferencial, mas a interface ainda era um dashboard genérico. A ação ignorava o valor ("Ligar hoje" em um deal de US$ 55; 11 dos 16 vivos da Rosalina somavam US$ 605) e o app abria na visão do time, não no vendedor.
+- **Crítica a mais:** o número do score era lido como chance de ganhar, que o backtest mostra ser igual para todos. Nas direções novas, o score aparece só como soma explicada.
+- **3 direções com dados reais:** Pauta da segunda (editorial), Relógio do ciclo (mapa idade × produto com a curva por trás) e Fila de trabalho (fila + ficha).
+- **Minha escolha:** a Fila como estrutura, o mapa do Relógio como visão do time e a entrada "Quem está abrindo?" da Pauta; ação variada pelo valor (ticket baixo vira lote por e-mail) e marcações Feito / Adiar / Não está vivo no navegador, com aviso de que ficam só ali.
+- **Implementação pelo Frontend, em TDD:** `playbook.ts` (ação por status, valor, idade e dias restantes) com 18 testes, marcações versionadas em `marks.ts`/`persisted.ts`, vendedor lembrado e teclado J/K/E/A. `scoring.ts` intocado e a distribuição nova coberta por teste: Ligar 72 · Decidir 76 · Reengajar 53 · Preparar 35 · Lote 62 = 298.
+- **Revisão em paralelo, na mesma base:** Design (fidelidade ao protótipo: achou 2 desvios altos, a caixa de foco no título e a ação repetida de volta na tabela do time), Olho do Usuário (1 P1: foco invisível nos três botões da ficha, e 8 P2) e Segurança (2 P2 de persistência: queda de quota descartava a marcação nova, e remoção por outra aba a ressuscitava).
+- **3 rodadas do Frontend** com recapturas a cada rodada, e o Olho revalidando a 2ª com Tab real: foco com anel dourado 9,54:1 sobre o navy, estado vazio com saídas, grupos de ativos e sem vivos na entrada, lote por urgência com ID do deal, e store que prioriza memória só enquanto a gravação falha.
+- **Rodada 3:** o mapa ganhou quatro variantes de viewBox, uma por faixa de largura, para o texto nunca cair de 13 px entre 900 e 1440 px (medido com barra de rolagem real; abaixo de 360 px continua < 13 px).
+- **Gate do QA Líder:** lint, typecheck, build e 93/93 testes aprovados; escopo confinado à submissão; veredito aprovado com ressalvas — as pendências eram documentais (Q1/Q2) e um `git diff --check` por linha em branco.
+- **Números reais: 35 → 93 testes** (35 do motor intocados + 58 de playbook, marcações e interface).
+
 ---
 
 ## Onde a IA errou e como foi corrigido
@@ -127,3 +140,4 @@ Os achados e o que foi feito com cada um estão em [`review-findings.md`](review
 - 1 validação refeita depois da revisão independente (05 → 06, Kaplan-Meier).
 - Motor em TDD: 14 → 19 → 23 → 24 → 32 → 35 testes.
 - 1 revisão visual própria, 1 revisão de código e estatística, 3 rodadas de QA de interface e 1 rodada de implementação delegada.
+- 1 redesign com identidade G4: 3 direções, 1 implementação em TDD, revisão de Design, Olho do Usuário e Segurança em paralelo, 3 rodadas de correção e gate do QA Líder (35 → 93 testes).
