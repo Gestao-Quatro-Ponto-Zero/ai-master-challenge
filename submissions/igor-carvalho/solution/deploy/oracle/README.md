@@ -9,7 +9,7 @@ Faça commit e push de `deploy/oracle/` no branch `submission/igor-carvalho` (a 
 
 ## 2. Criar a VM (Console → Compute → Instances → Create instance)
 - Image: **Canonical Ubuntu 24.04**
-- Shape: **Ampere → VM.Standard.A1.Flex**, 2 OCPU / 12 GB (Always Free)
+- Shape: **Ampere → VM.Standard.A1.Flex** (até 4 OCPU / 24 GB grátis) ou, se faltar capacidade, **Specialty and previous generation → VM.Standard.E2.1.Micro** (1 GB; o script cria 4 GB de swap)
 - Networking: VCN e sub-rede **pública** novas; **Assign a public IPv4 address** marcado
 - SSH keys: gere e **baixe a chave privada**
 - Advanced options → Management → **Cloud-init script**: cole o conteúdo de `cloud-init.sh`

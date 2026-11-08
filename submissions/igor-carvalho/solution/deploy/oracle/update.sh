@@ -3,5 +3,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 git -C /opt/g4 pull --ff-only
-docker compose -f docker-compose.prod.yml up -d --build
+docker compose -f docker-compose.prod.yml build api
+docker compose -f docker-compose.prod.yml build web
+docker compose -f docker-compose.prod.yml up -d
 docker image prune -f
