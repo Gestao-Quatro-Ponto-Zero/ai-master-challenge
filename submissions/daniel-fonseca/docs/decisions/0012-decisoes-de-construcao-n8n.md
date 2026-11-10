@@ -13,7 +13,7 @@ O rascunho dos fluxos (`docs/n8n-flows.md`) deixou 6 pontos para o Daniel decidi
 2. **Nível 1 só com solução validada da categoria.** Torna obrigatório o playbook-semente de `validated_resolutions` (IA rascunha, Daniel revisa).
 3. **Lista de bloqueio estreita** (salary, payroll, bonus, termination, dismissal, resignation, lawsuit, legal, harassment, sick leave, maternity): **6 falsos positivos em 2.983 tickets do nível 1 (0,2%)**. A lista ampla, com termos de TI (administrator, password, contract, leaver…), rebaixaria 21,4% do nível 1 e foi descartada. A preocupação do Daniel com falsos positivos se confirmou para termos amplos, mas não para os estreitos.
 4. **`gpt-5.4-mini`** com raciocínio `low` e teto de tokens por nó: ~US$ 0,003 por ticket → ~1.600 tickets com os US$ 5 de crédito. `gpt-5.4-nano` fica como alternativa mais barata.
-5. **Idioma:** a demo principal sorteia do holdout; o texto livre do console é em inglês, a mesma língua da base. A resposta ao cliente sai no idioma do ticket; o material para o agente sai em pt-BR.
+5. **Idioma:** a demo principal sorteia do holdout; o texto livre do console é em inglês, a mesma língua da base. A resposta ao cliente sai no idioma do ticket; o material para o atendente sai em pt-BR.
 6. **Heartbeat do n8n às 06:00 (America/Sao_Paulo)**; o cron da Vercel fica em outro horário.
 
 ## Alternativas consideradas

@@ -8,7 +8,7 @@
  * A economia oficial considera só os casos com autonomia: a revisão humana entra sem ganho (PRD §4.2, C13).
  */
 
-/** Horas de trabalho de um agente em tempo integral por ano: 38 h/semana × 52 semanas (CAGED, CBO 4223-20). */
+/** Horas de trabalho de um atendente em tempo integral por ano: 38 h/semana × 52 semanas (CAGED, CBO 4223-20). */
 export const HOURS_PER_FTE_YEAR = 38 * 52
 
 export interface RoiInputs {
@@ -16,7 +16,7 @@ export interface RoiInputs {
   annualVolume: number
   /** minutos de manuseio por ticket */
   handleMinutes: number
-  /** custo por hora de agente, em R$ */
+  /** custo por hora de atendente, em R$ */
   hourlyCost: number
   /** fração dos tickets elegíveis (DS1) em que a IA teria autonomia (DS2), 0–1 */
   autonomyShare: number
@@ -30,7 +30,7 @@ export interface RoiResult {
   automatedTickets: number
   hoursSaved: number
   savingsBrl: number
-  /** agentes em tempo integral liberados (horas ÷ 1.976) */
+  /** atendentes em tempo integral liberados (horas ÷ 1.976) */
   ftesFreed: number
   totalCostBefore: number
   totalCostAfter: number

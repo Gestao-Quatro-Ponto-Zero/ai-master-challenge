@@ -237,3 +237,50 @@ A regra de conduta também foi registrada no AGENTS.md.
 4. Fluxo 3: URL de produção e autenticação configuradas; a ativação espera a credencial do cron, que leva o `CRON_SECRET` e por isso fica com o Daniel.
 5. O rascunho do fluxo 4 seguiu o desenho já aprovado no PRD §8.1 e foi documentado nó a nó em `docs/n8n-flows.md`.
 
+
+## Sessão 03 — 2026-11-10 (noite) — Claude Code (Opus 5.5, app desktop) — ~3h
+
+**Objetivo:** pente fino do app em produção antes da revisão da documentação, do vídeo e do PR (o PR fica com o Daniel, manual).
+
+**Direcionamento do Daniel:**
+- Rodada de dúvidas e sugestões antes de qualquer alteração. Depois, plano aprovado em modo de planejamento.
+- Navegação: um controle só, com subitens (proposta A, entre quatro opções levantadas pela IA), com rotas reais.
+- Diagnóstico: começar nos 3 KPIs com a frase abaixo; sem cabeçalho (também no ROI e na Operação); sem o card do CSAT; significância num ícone ⓘ; dimensão "Geral".
+- "Agente" para IA e "atendente" para pessoa, na interface e nos docs.
+- Operação: contagem ao lado do %, sem a descrição do caminho.
+- Console vira **Tickets**, no formato de um app de conversa: fila à esquerda (mais recente primeiro, "Não lido", tag do caminho), conversa à direita, botão "Adicionar ticket" com pop-up e marca "editado". Na Revisão humana e no Somente humano, campo para o atendente escrever. Na Revisão humana, escrever conta como recusa e não entra na base.
+- Slack simulado só no navegador (notificação + bolinha). No n8n sai só a gravação na caixa. Heartbeat e alertas de uso fora da interface.
+- "Como foi feito": sem matriz de confusão e mais objetivo.
+
+**O que a IA fez:**
+1. Corrigiu uma leitura do Daniel: o gráfico de CSAT mostrava média e intervalo de confiança de 95%, sem máximo e mínimo.
+2. Defendeu manter a informação de significância (ícone ⓘ) e propôs o token por navegador para não expor o texto de um visitante a outro (judgment #40–46).
+3. ADR-0015 (Proposta) e nota no PRD.
+4. `12_painel_extras.py` gera os intervalos da linha "Geral"; os intervalos já publicados não mudaram (conferido contra o commit anterior). `load_analysis.py` republicou.
+5. Migration `…0008_tickets`: `client_token`, `is_demo`, `human_summary`, `alert_title`, `alert_body`, `human_reply` em `triage_runs`.
+6. Fluxo 1: o nó "Gravar na caixa do painel" saiu. O texto do Slack e a nota interna vão para `triage_runs`, e a resposta do webhook devolve `alert` e `human_summary`. Republicado e testado.
+7. App:
+   - rotas reais (`/painel/*`, `/tickets`, `/como-foi-feito/*`) com redirects das antigas;
+   - menu com subitens no desktop e no mobile;
+   - tela Tickets;
+   - rotas `/api/tickets` e `/api/tickets/reply`;
+   - `/api/hitl` passou a exigir o token (ou ticket de demonstração).
+8. Os 10 tickets do último reset viraram demonstração, e a nota dos dois de Somente humano foi preenchida a partir do alerta antigo, sem apagar dados.
+9. Exportou os JSON dos 4 fluxos para `solution/n8n/`, sem a URL da VPS.
+
+**Testes:**
+- Lint, 5 testes e build ok; nenhum segredo nem host do n8n no bundle.
+- No navegador:
+  - redirects;
+  - menu no desktop e no mobile;
+  - "Geral" e ⓘ;
+  - ticket de RH → Somente humano com nota, notificação e bolinha;
+  - resposta do atendente;
+  - aprovação de rascunho com o aviso "aprendeu" e o vizinho no pop-up;
+  - ticket editado com a marca;
+  - conversa em tela cheia no mobile.
+- Pela API: recusa por resposta escrita (fluxo 2 grava `rejected`, nada na base), 404 sem token, 409 na repetição, lista sem token sem o ticket do visitante.
+
+**Isolamento:** os MCPs do projeto não carregaram nesta sessão. A IA não usou os MCPs das contas pessoais (judgment #46).
+
+**Próximo passo:** deploy de produção e smoke test; revisão da documentação pedida pelo G4 (README final); vídeo; PR manual pelo Daniel.

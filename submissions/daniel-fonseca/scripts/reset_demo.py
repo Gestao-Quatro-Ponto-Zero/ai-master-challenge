@@ -4,7 +4,7 @@
 2. Mantém o playbook validado e as soluções aprendidas no HITL (ex.: #15), desligando o vínculo com a fila apagada.
 3. Repovoa pelo webhook de produção do n8n (com o X-Webhook-Secret), usando tickets reais do holdout do DS2:
    - REVIEW tickets que caem em "Revisão humana" (a fila fica com itens para decidir),
-   - HUMAN tickets de categoria sensível (a caixa fica com alertas),
+   - HUMAN tickets de categoria sensível (Somente humano, com a nota interna e o texto do Slack),
    - AUTO tickets com autonomia da IA (o Painel › Operação começa com dados).
    A escolha é determinística (menor id que atende ao critério), e o custo fica em torno de US$ 0,01.
 
@@ -75,3 +75,8 @@ if __name__ == "__main__":
     for kind, ds2_id, text, category, conf in picks:
         out = triage(text, ds2_id)
         print(f"{kind:6s} ds2 {ds2_id:5d} {category:22s} {conf:.2f} → {out.get('status', out)}")
+    # Tudo o que o script cria é demonstração: aparece para todos os visitantes na tela Tickets (ADR-0015).
+    with psycopg.connect(os.environ["SUPABASE_DB_URL"]) as conn:
+        n = conn.execute("update public.triage_runs set is_demo = true where not is_demo").rowcount
+        conn.commit()
+    print(f"triage_runs: {n} marcadas como demonstração")

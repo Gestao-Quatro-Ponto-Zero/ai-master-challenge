@@ -38,9 +38,9 @@ Cortes por **canal, prioridade, tipo, assunto e produto**. Para cada grupo: volu
 | Tickets sem 1ª resposta (backlog) | **Medido** | 2.819 (33,3%) |
 | Tickets aguardando cliente (retrabalho de follow-up) | **Medido** | 2.881 (34,0%) |
 | Tempo 1ª resposta → resolução | **Medido, só nos 50,7% coerentes** | média 7,6h · mediana 6,3h · p90 16h |
-| Tempo médio na fila (abertura → 1ª resposta) | **Não mensurável** (não há data de abertura) → indicador de SLA, **fora do custo** (espera custa satisfação, não hora de agente) | instrumentar |
+| Tempo médio na fila (abertura → 1ª resposta) | **Não mensurável** (não há data de abertura) → indicador de SLA, **fora do custo** (espera custa satisfação, não hora de atendente) | instrumentar |
 | Tempo de manuseio humano por ticket | **Benchmark com fonte**, editável por tipo | 8,6 min (MetricNet/HDI) |
-| Custo/hora do agente | **Benchmark com fonte**, editável | R$ 21,30 (CAGED, CBO 4223-20, com encargos) |
+| Custo/hora do atendente | **Benchmark com fonte**, editável | R$ 21,30 (CAGED, CBO 4223-20, com encargos) |
 | % automatizável e precisão | **Medido no DS2** (ADR-0009) | após a avaliação do classificador |
 
 Desperdício recuperável = volume × mix (DS1) × tempo de manuseio (premissa) × custo/hora (premissa) × taxa de automação por nível (DS2). Todas as premissas ficam visíveis e ajustáveis no dashboard; o número nunca aparece sem a origem.

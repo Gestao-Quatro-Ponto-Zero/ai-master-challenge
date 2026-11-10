@@ -61,10 +61,17 @@ export type RunOutcome =
  * Chama o fluxo 1 do n8n e completa a resposta com as métricas de triage_runs.
  * Lança N8nUnavailable (timeout, rede, 5xx): o chamador decide o modo offline.
  */
-export async function runTriage(input: { ticket_text: string; source: "console" | "holdout"; ds2_id?: number }): Promise<RunOutcome> {
+export async function runTriage(input: { ticket_text: string; source: "console" | "holdout"; ds2_id?: number }, owner: { client_token?: string; is_demo?: boolean } = {}): Promise<RunOutcome> {
   const { status, data } = await callN8n<TriageResult & { error?: string }>("triage", input)
   if (status !== 200 || !data?.triage_run_id) {
     return { kind: "client_error", status: status >= 400 ? status : 502, error: data?.error ?? "A triagem não pôde ser concluída." }
+  }
+  // Dono do ticket (ADR-0015): o token do navegador ou a marca de demonstração. O n8n não conhece o token.
+  if (owner.client_token || owner.is_demo) {
+    await supabaseServer()
+      .from("triage_runs")
+      .update({ ...(owner.client_token ? { client_token: owner.client_token } : {}), ...(owner.is_demo ? { is_demo: true } : {}) })
+      .eq("id", data.triage_run_id)
   }
   const metrics = await getRunMetrics(data.triage_run_id)
   return {

@@ -22,6 +22,8 @@ O método (proposta de automação, decisões, uso de IA e condução do projeto
 
 ## 3. Arquitetura de informação
 
+> **Atualização (10/11, ADR-0015):** os toggles internos deram lugar a submenus na top bar com rotas reais, e Console › Triagem · Fila · Caixa virou a tela **Tickets** em formato de conversa. As seções 3, 3.1 e 4.4–4.6 abaixo ficam como registro do desenho anterior.
+
 Três áreas, cada uma com um **toggle interno** (controle segmentado) que troca a visão sem mudar de rota principal.
 
 | Área (rota) | Toggle interno | Conteúdo |
@@ -71,7 +73,7 @@ Princípio: **poucos gráficos, cada um com uma conclusão escrita no topo** (he
    - minutos por ticket (8,6, MetricNet/HDI);
    - custo/hora (R$ 21,30, CAGED);
    - % de casos com autonomia da IA. Padrão: **medido no DS2**, com opção de ajuste manual.
-2. **Frase de resultado (dourado no valor):** "Nos casos em que a IA teria autonomia, a economia seria de aproximadamente **R$ X por ano**." Logo abaixo: Y horas/ano · Z agentes em tempo integral liberados · custo por ticket de R$ 3,05 → R$ W.
+2. **Frase de resultado (dourado no valor):** "Nos casos em que a IA teria autonomia, a economia seria de aproximadamente **R$ X por ano**." Logo abaixo: Y horas/ano · Z atendentes em tempo integral liberados · custo por ticket de R$ 3,05 → R$ W.
 3. **Composição do cálculo:** uma linha de "fórmula legível" com os valores atuais, por exemplo "30.000 tickets × 44,4% elegíveis × 42,2% com autonomia × 8,6 min × R$ 21,30/h" (≈ R$ 17 mil/ano; valores de `app_summary.json`).
 4. Sem a nomenclatura "nível 1/2/3"; ver seção 5.
 5. A economia oficial considera **só os casos com autonomia** (C13 sem cenário de ganho na revisão humana).
@@ -139,7 +141,7 @@ Uma tela, sem rolagem longa. Cada bloco tem um título, até 3 linhas e o link d
 3. **Decisões registradas:** número de ADRs, quem decidiu cada uma, quantas a IA propôs e o Daniel mudou.
 4. **Riscos tratados:** dado sintético, credenciais de outros projetos auto-atribuídas no n8n, custo da OpenAI, app público sem login (limites + monitoramento).
 5. **Custo do projeto:** embeddings, avaliações e testes (valores medidos).
-6. **Capacidade da operação:** horas e agentes equivalentes liberados, puxados do ROI.
+6. **Capacidade da operação:** horas e atendentes equivalentes liberados, puxados do ROI.
 
 ## 5. Nomenclatura dos caminhos (substitui "nível 1/2/3" na interface)
 | Interno (banco, ADRs) | Na interface | Cor |
@@ -248,7 +250,7 @@ O script e o workflow ficam versionados (`scripts/monitor_usage.py`, `solution/n
 | CSAT médio (IC 95%) | média dos fechados | DS1 | Diagnóstico |
 | Poder explicativo do CSAT | R² com 70 variáveis | DS1 | Diagnóstico |
 | Economia nos casos com autonomia | volume × % elegível × % autonomia × min × R$/h | DS1 × DS2 + premissas | ROI |
-| Horas/ano e agentes liberados | economia em horas ÷ 1.976 h/ano | idem | ROI |
+| Horas/ano e atendentes liberados | economia em horas ÷ 1.976 h/ano | idem | ROI |
 | Custo por ticket antes × depois | custo total ÷ volume | idem | ROI |
 | % com autonomia (ao vivo) | caminho automático / triagens | `triage_runs` | Operação |
 | Acurácia ao vivo | previsto = real (holdout) | `triage_runs` × `ds2_tickets` | Operação |

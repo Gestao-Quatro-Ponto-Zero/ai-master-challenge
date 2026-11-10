@@ -15,15 +15,6 @@ export async function getOpsSummary(): Promise<OpsSummary> {
 }
 
 /** Contagens para os badges da navegação (fila pendente + caixa não lida). */
-export async function getNavCounts(): Promise<{ fila: number; caixa: number }> {
-  await connection()
-  const db = supabaseServer()
-  const [fila, caixa] = await Promise.all([
-    db.from("hitl_queue").select("id", { count: "exact", head: true }).eq("status", "pending"),
-    db.from("notifications").select("id", { count: "exact", head: true }).is("read_at", null),
-  ])
-  return { fila: fila.count ?? 0, caixa: caixa.count ?? 0 }
-}
 
 export async function getLastHeartbeat(): Promise<{ ran_at: string; source: string; ok: boolean } | null> {
   await connection()

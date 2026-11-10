@@ -1,7 +1,7 @@
 /** Formatos que o servidor monta para os gráficos do Painel › Diagnóstico (PRD §4.1). */
 
 export type MetricKey = "pct_open" | "pct_pending" | "hours" | "csat"
-export type DimensionKey = "canal" | "prioridade" | "tipo" | "assunto" | "produto"
+export type DimensionKey = "canal" | "prioridade" | "tipo" | "assunto" | "produto" | "geral"
 export type Interval = [number, number]
 
 export interface GroupStat {
@@ -54,6 +54,7 @@ export const METRICS: { key: MetricKey; label: string; short: string }[] = [
 ]
 
 export const DIMENSIONS: { key: DimensionKey; label: string; subject: string }[] = [
+  { key: "geral", label: "Geral", subject: "Todos os tickets" },
   { key: "canal", label: "Canal", subject: "Os canais" },
   { key: "prioridade", label: "Prioridade", subject: "As prioridades" },
   { key: "tipo", label: "Tipo", subject: "Os tipos de ticket" },

@@ -589,7 +589,7 @@ const montarCorpo = node({
           { id: 'kind', name: 'kind', value: 'level3_alert', type: 'string' },
           { id: 'channel_intended', name: 'channel_intended', value: 'slack', type: 'string' },
           { id: 'title', name: 'title', value: expr('{{ $json.title }}'), type: 'string' },
-          { id: 'body', name: 'body', value: expr(':rotating_light: *{{ $json.title }}*\n*Motivo:* {{ $("Aplicar política de 3 níveis").item.json.level_reason }}\n*Categoria prevista:* {{ $("Aplicar política de 3 níveis").item.json.category }} (confiança {{ $("Aplicar política de 3 níveis").item.json.confidence.toFixed(2) }})\n*Resumo:* {{ $json.llm.summary }}\n*Sinais de risco:* {{ ($json.llm.risk_signals ?? []).join(", ") || "nenhum" }}\n*Time sugerido:* {{ $json.llm.suggested_owner }}\nA IA não respondeu ao cliente. Abra o console para assumir o ticket.'), type: 'string' },
+          { id: 'body', name: 'body', value: expr(':rotating_light: *{{ $json.title }}*\n*Motivo:* {{ $("Aplicar política de 3 níveis").item.json.level_reason }}\n*Categoria prevista:* {{ $("Aplicar política de 3 níveis").item.json.category }} (confiança {{ $("Aplicar política de 3 níveis").item.json.confidence.toFixed(2) }})\n*Resumo:* {{ $json.llm.summary }}\n*Sinais de risco:* {{ ($json.llm.risk_signals ?? []).join(", ") || "nenhum" }}\n*Time sugerido:* {{ $json.llm.suggested_owner }}\nA IA não respondeu ao cliente. Abra Tickets no app para assumir o ticket.'), type: 'string' },
           { id: 'payload', name: 'payload', value: expr('{{ $json.llm }}'), type: 'object' }
         ]
       },
@@ -597,25 +597,6 @@ const montarCorpo = node({
     }
   },
   output: [{ triage_run_id: 1, kind: 'level3_alert', channel_intended: 'slack', title: 'Ticket só para humano', body: 'texto do alerta', payload: { summary: 'Colaborador pede...' } }]
-});
-
-const gravarCaixa = node({
-  type: 'n8n-nodes-base.supabase',
-  version: 1,
-  config: {
-    name: 'Gravar na caixa do painel',
-    parameters: {
-      resource: 'row',
-      operation: 'create',
-      tableId: 'notifications',
-      dataToSend: 'autoMapInputData'
-    },
-    credentials: sbCred,
-    retryOnFail: true,
-    maxTries: 3,
-    waitBetweenTries: 1000
-  },
-  output: [{ id: 1, title: 'Ticket só para humano', body: 'texto do alerta' }]
 });
 
 const avisarSlack = node({
@@ -630,7 +611,7 @@ const avisarSlack = node({
       select: 'channel',
       channelId: { __rl: true, mode: 'name', value: '#suporte-alertas' },
       messageType: 'text',
-      text: expr('{{ $("Gravar na caixa do painel").item.json.body }}'),
+      text: expr('{{ $("Formatar texto do alerta").item.json.body }}'),
       otherOptions: { includeLinkToWorkflow: false }
     },
     credentials: { slackApi: newCredential('G4 – Slack') },
@@ -661,7 +642,10 @@ const marcarAguardando = node({
           { fieldId: 'tokens_out', fieldValue: expr('{{ ["Ler resposta adaptada", "Ler rascunho", "Montar mensagem de alerta"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.output_tokens ?? 0), 0) }}') },
           { fieldId: 'cost_usd', fieldValue: expr('{{ Math.round(($("Gerar embedding (OpenAI)").item.json.usage?.total_tokens ?? 0) * 0.02 + ["Ler resposta adaptada", "Ler rascunho", "Montar mensagem de alerta"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.input_tokens ?? 0), 0) * 0.75 + ["Ler resposta adaptada", "Ler rascunho", "Montar mensagem de alerta"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.output_tokens ?? 0), 0) * 4.5) / 1000000 }}') },
           { fieldId: 'latency_ms', fieldValue: expr('{{ $now.toMillis() - $("Preparar ticket").item.json.t0 }}') },
-          { fieldId: 'step_ms', fieldValue: expr('{{ ({ classificacao: $("Reunir resultado e limiares").item.json.t_class - $("Preparar ticket").item.json.t0, redacao: $now.toMillis() - $("Reunir resultado e limiares").item.json.t_class }) }}') }
+          { fieldId: 'step_ms', fieldValue: expr('{{ ({ classificacao: $("Reunir resultado e limiares").item.json.t_class - $("Preparar ticket").item.json.t0, redacao: $now.toMillis() - $("Reunir resultado e limiares").item.json.t_class }) }}') },
+          { fieldId: 'human_summary', fieldValue: expr('{{ $("Formatar texto do alerta").item.json.payload }}') },
+          { fieldId: 'alert_title', fieldValue: expr('{{ $("Formatar texto do alerta").item.json.title }}') },
+          { fieldId: 'alert_body', fieldValue: expr('{{ $("Formatar texto do alerta").item.json.body }}') }
         ]
       }
     },
@@ -680,7 +664,7 @@ const responderConsole = node({
     name: 'Responder ao console',
     parameters: {
       respondWith: 'json',
-      responseBody: expr('{{ JSON.stringify({ triage_run_id: $("Registrar triagem").item.json.id, status: $json.status, level: $json.level ?? $("Aplicar política de 3 níveis").item.json.level, level_reason: $json.level_reason ?? $("Aplicar política de 3 níveis").item.json.level_reason, category: $("Aplicar política de 3 níveis").item.json.category, confidence: $("Aplicar política de 3 níveis").item.json.confidence, sensitive_share: $("Aplicar política de 3 níveis").item.json.sensitive_share, votes: $("Aplicar política de 3 níveis").item.json.votes, similar_cases: $("Aplicar política de 3 níveis").item.json.similar_cases, resolutions: $("Aplicar política de 3 níveis").item.json.resolutions, response_text: $json.response_text ?? null, resolution_id: $json.resolution_id ?? null, hitl: $("Enviar para fila de revisão").isExecuted ? { hitl_id: $("Enviar para fila de revisão").item.json.id, draft_text: $("Enviar para fila de revisão").item.json.draft_text, checks: $("Enviar para fila de revisão").item.json.checks } : null, notification: $("Gravar na caixa do painel").isExecuted ? { notification_id: $("Gravar na caixa do painel").item.json.id, title: $("Gravar na caixa do painel").item.json.title, body: $("Gravar na caixa do painel").item.json.body } : null }) }}'),
+      responseBody: expr('{{ JSON.stringify({ triage_run_id: $("Registrar triagem").item.json.id, status: $json.status, level: $json.level ?? $("Aplicar política de 3 níveis").item.json.level, level_reason: $json.level_reason ?? $("Aplicar política de 3 níveis").item.json.level_reason, category: $("Aplicar política de 3 níveis").item.json.category, confidence: $("Aplicar política de 3 níveis").item.json.confidence, sensitive_share: $("Aplicar política de 3 níveis").item.json.sensitive_share, votes: $("Aplicar política de 3 níveis").item.json.votes, similar_cases: $("Aplicar política de 3 níveis").item.json.similar_cases, resolutions: $("Aplicar política de 3 níveis").item.json.resolutions, response_text: $json.response_text ?? null, resolution_id: $json.resolution_id ?? null, hitl: $("Enviar para fila de revisão").isExecuted ? { hitl_id: $("Enviar para fila de revisão").item.json.id, draft_text: $("Enviar para fila de revisão").item.json.draft_text, checks: $("Enviar para fila de revisão").item.json.checks } : null, notification: null, alert: $("Formatar texto do alerta").isExecuted ? { title: $("Formatar texto do alerta").item.json.title, body: $("Formatar texto do alerta").item.json.body } : null, human_summary: $("Formatar texto do alerta").isExecuted ? $("Formatar texto do alerta").item.json.payload : null }) }}'),
       options: { responseCode: 200 }
     }
   },
@@ -733,7 +717,7 @@ const notaRag = sticky('## Classificação (RAG no Supabase)\nO voto dos 50 tick
 
 const notaNivel1 = sticky('## Nível 1: resposta automática\nO LLM só adapta a solução validada (sem passos, prazos ou promessas novas). Se ela não servir ao ticket, o ticket desce para a revisão humana.', [adaptarSolucao, lerAdaptacao, solucaoServe, marcarRespondido], { color: 6 });
 
-const notaNivel3 = sticky('## Nível 3: só humano\nA IA não responde ao cliente: resume, aponta riscos e avisa. A caixa do painel é a fonte de verdade. O nó Slack fica **desativado** até existir um workspace; para ligar, selecione a credencial e o canal (ADR-0007).', [resumirHumano, montarAlerta, montarCorpo, gravarCaixa, avisarSlack, marcarAguardando], { color: 3 });
+const notaNivel3 = sticky('## Nível 3: só humano\nA IA não responde ao cliente: resume em pt-BR, aponta riscos e monta o aviso. A nota e o texto do Slack ficam na própria triagem (triage_runs), e o app simula o aviso no navegador. O nó Slack fica **desativado** até existir um workspace; para ligar, selecione a credencial e o canal (ADR-0007, ADR-0015).', [resumirHumano, montarAlerta, montarCorpo, avisarSlack, marcarAguardando], { color: 3 });
 
 export default workflow('g4-triagem-v2', 'G4 · Triagem de ticket (RAG + 3 níveis)')
   .add(receberTicket)
@@ -768,7 +752,6 @@ export default workflow('g4-triagem-v2', 'G4 · Triagem de ticket (RAG + 3 níve
   .add(resumirHumano)
   .to(montarAlerta)
   .to(montarCorpo)
-  .to(gravarCaixa)
   .to(avisarSlack)
   .to(marcarAguardando)
   .to(responderConsole)

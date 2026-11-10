@@ -5,8 +5,9 @@ import { checkLimit, ipHash, logUsage } from "@/lib/usage"
 
 /**
  * POST /api/demo/reset — restaura a demonstração (PRD §8) sem apagar nenhum dado.
- * Se a fila tiver menos de 3 pendentes, dispara triagens de tickets do holdout que caem em Revisão humana
- * e uma de Somente humano, pulando os tickets que já estão pendentes na fila ou na caixa.
+ * Se a demonstração tiver menos de 3 rascunhos pendentes, dispara triagens de tickets do holdout que caem em
+ * Revisão humana e uma de Somente humano, pulando os que já estão abertos. As triagens novas ficam com
+ * is_demo = true e aparecem para todos os visitantes (ADR-0015).
  * Ids verificados na construção do fluxo 1 (docs/n8n-flows.md).
  */
 export const maxDuration = 60
@@ -21,9 +22,9 @@ export async function POST(req: Request) {
   const ms = () => Date.now() - t0
   const db = supabaseServer()
 
-  const [{ data: pendingRows }, { data: openAlerts }] = await Promise.all([
-    db.from("hitl_queue").select("id, triage_runs(ds2_id)").eq("status", "pending"),
-    db.from("notifications").select("id, triage_runs(ds2_id)").eq("kind", "level3_alert").is("assigned_to", null),
+  const [{ data: pendingRows }, { data: openHuman }] = await Promise.all([
+    db.from("hitl_queue").select("id, triage_runs!inner(ds2_id, is_demo)").eq("status", "pending").eq("triage_runs.is_demo", true),
+    db.from("triage_runs").select("ds2_id").eq("is_demo", true).eq("level", 3).is("human_reply", null),
   ])
   const ds2Of = (r: { triage_runs: unknown }) => {
     const t = (Array.isArray(r.triage_runs) ? r.triage_runs[0] : r.triage_runs) as { ds2_id: number | null } | null
@@ -33,7 +34,7 @@ export async function POST(req: Request) {
   if (pending.length >= MIN_PENDING) {
     // Nada a fazer: o evento fica registrado sem consumir a cota (só "ok" conta no limite).
     await logUsage(req, { route: ROUTE, action: "demo_reset", outcome: "disabled", status_code: 200, latency_ms: ms() })
-    return json({ created: 0, pending: pending.length, message: `A fila já tem ${pending.length} itens pendentes. Nada foi criado.` })
+    return json({ created: 0, pending: pending.length, message: `A demonstração já tem ${pending.length} rascunhos pendentes. Nada foi criado.` })
   }
 
   const limit = await checkLimit("demo_reset", ipHash(req))
@@ -43,16 +44,16 @@ export async function POST(req: Request) {
   }
 
   const pendingDs2 = new Set(pending.map(ds2Of))
-  const alertDs2 = new Set((openAlerts ?? []).map(ds2Of))
+  const humanDs2 = new Set((openHuman ?? []).map((r) => r.ds2_id as number | null))
   const review = REVIEW_IDS.filter((id) => !pendingDs2.has(id)).slice(0, MIN_PENDING - pending.length)
-  const human = HUMAN_IDS.find((id) => !alertDs2.has(id))
+  const human = HUMAN_IDS.find((id) => !humanDs2.has(id))
   const ids = human ? [...review, human] : review
 
   const runs = await Promise.allSettled(
     ids.map(async (id) => {
       const ticket = await getHoldoutTicket(id)
       if (!ticket) return null
-      const out = await runTriage({ ticket_text: ticket.document, source: "holdout", ds2_id: id })
+      const out = await runTriage({ ticket_text: ticket.document, source: "holdout", ds2_id: id }, { is_demo: true })
       return out.kind === "ok" ? { ds2_id: id, triage_run_id: out.result.triage_run_id, level: out.result.level } : null
     }),
   )
@@ -66,5 +67,5 @@ export async function POST(req: Request) {
   await logUsage(req, { route: ROUTE, action: "demo_reset", outcome: "ok", status_code: 200, latency_ms: ms(), triage_run_id: created[0].triage_run_id })
   const toQueue = created.filter((c) => c.level === 2).length
   const toInbox = created.filter((c) => c.level === 3).length
-  return json({ created: created.length, to_queue: toQueue, to_inbox: toInbox, runs: created, message: `${toQueue} na fila e ${toInbox} na caixa.` })
+  return json({ created: created.length, to_queue: toQueue, to_inbox: toInbox, runs: created, message: `${toQueue} em Revisão humana e ${toInbox} em Somente humano.` })
 }

@@ -89,6 +89,10 @@ top10 = df["Product Purchased"].value_counts().head(10).index
 rest = df[~df["Product Purchased"].isin(top10)]
 outros = {"dimension": "produto", "value": "Outros", "groups": int(rest["Product Purchased"].nunique()), **group_stats(rest)}
 
+# Linha "Geral" do seletor de dimensão (todos os tickets). Calculada depois dos grupos para não
+# mudar a sequência do bootstrap dos intervalos já publicados.
+geral = {"dimension": "geral", "value": "Todos os tickets", **group_stats(df)}
+
 ci_out = {
     "method": {
         "proportions": "Wilson 95%",
@@ -98,6 +102,7 @@ ci_out = {
     "rows": rows,
     "produto_top10": list(top10),
     "produto_outros": outros,
+    "geral": geral,
 }
 (OUT / "diagnostic_ci.json").write_text(json.dumps(ci_out, ensure_ascii=False, indent=1))
 print(f"diagnostic_ci.json: {len(rows)} grupos; Outros = {outros['groups']} produtos, n = {outros['n']}")

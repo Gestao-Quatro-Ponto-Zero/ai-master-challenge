@@ -9,8 +9,8 @@
 
 ## A. Objetivo, público e narrativa
 
-**A1 ★ Quem é o usuário principal do app?** O avaliador do G4 (que abre o link sem contexto), o "Diretor de Operações" da história do case, ou o agente de suporte?
-→ Sugestão: **duas personas, uma narrativa.** O Diretor no dashboard (perguntas 1 e 3 do diretor) e o agente/supervisor no console e na fila. O avaliador entra como "Diretor" e termina operando o console.
+**A1 ★ Quem é o usuário principal do app?** O avaliador do G4 (que abre o link sem contexto), o "Diretor de Operações" da história do case, ou o atendente de suporte?
+→ Sugestão: **duas personas, uma narrativa.** O Diretor no dashboard (perguntas 1 e 3 do diretor) e o atendente/supervisor no console e na fila. O avaliador entra como "Diretor" e termina operando o console.
 
 **A2 ★ Qual é a história que o app conta, e em que ordem?**
 → Sugestão, em 4 atos:
@@ -105,7 +105,7 @@
 **C11 Origem de cada número:** rótulo "medido / benchmark com fonte / premissa / não mensurável" em cada card?
 → Sugestão: **sim, obrigatório** (ADR-0003). Pill pequena e neutra, com link para a fonte.
 
-**C12 Saída do ROI:** horas/ano, R$/ano, agentes equivalentes (FTE), custo por ticket antes × depois?
+**C12 Saída do ROI:** horas/ano, R$/ano, atendentes equivalentes (FTE), custo por ticket antes × depois?
 → Sugestão: **as 4**, sendo **R$/ano recuperável** o dourado. Mostrar também a faixa conservadora ("só nível 1") × otimista ("nível 1 + 50% de ganho de tempo no nível 2"). Ver C13.
 
 **C13 ★ Contar ganho de produtividade no nível 2** (rascunho pronto reduz o tempo de manuseio)?
@@ -367,7 +367,7 @@
 | Aprovação sem edição | approved / decididos | `hitl_queue` | Operação |
 
 **M1** Falta algum KPI que o Diretor pediria?
-→ Sugestão: **custo por ticket antes × depois** (R$ 3,05 → ?) e **FTE liberados** (6,2 agentes → ?).
+→ Sugestão: **custo por ticket antes × depois** (R$ 3,05 → ?) e **FTE liberados** (6,2 atendentes → ?).
 
 **M2 ★ Elegibilidade do DS1 para automação:** a ponte usa 44,4% elegíveis (excluindo reembolso, cancelamento e Critical, ADR-0010). Confirma que esses tipos ficam fora do automático na história do DS1?
 → Sugestão: **confirmar** (já está na ADR-0005/0010).

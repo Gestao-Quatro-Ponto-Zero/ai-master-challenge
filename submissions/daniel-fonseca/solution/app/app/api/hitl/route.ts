@@ -1,12 +1,13 @@
 import { isCategory, json, readJson, tooMany } from "@/app/api/triage/_core"
 import type { HitlApiResult, NeighborTicket } from "@/components/console/types"
 import { callN8n, N8nUnavailable } from "@/lib/n8n"
+import { getTicketForWrite } from "@/lib/queries/tickets"
 import { supabaseServer } from "@/lib/supabase"
 import type { HitlDecisionResult } from "@/lib/types"
 import { checkLimit, detectFlag, ipHash, logUsage } from "@/lib/usage"
 
 /**
- * POST /api/hitl — repassa a decisão da fila ao fluxo 2 do n8n (PRD §4.5).
+ * POST /api/hitl — repassa a decisão sobre o rascunho (Revisão humana) ao fluxo 2 do n8n (PRD §4.5, ADR-0015).
  * Sem login: o revisor fica registrado como "visitante" (+ ip_hash em usage_events).
  * Depois de aprovar, devolve o ticket de teste mais parecido (efeito "aprendeu").
  */
@@ -45,6 +46,16 @@ export async function POST(req: Request) {
     await logUsage(req, { route: ROUTE, action: "hitl", outcome: "rate_limited", status_code: 429, latency_ms: ms(), flag })
     return tooMany(limit.message, limit.retryAfter)
   }
+
+  // Só decide rascunhos de demonstração ou do próprio navegador (ADR-0015).
+  const token = typeof body.client_token === "string" ? body.client_token : null
+  const { data: owner } = await supabaseServer().from("hitl_queue").select("triage_run_id").eq("id", hitlId).maybeSingle()
+  const ticket = owner ? await getTicketForWrite(owner.triage_run_id as number, token) : null
+  if (!ticket) {
+    await logUsage(req, { route: ROUTE, action: "hitl", outcome: "client_error", status_code: 404, latency_ms: ms(), flag })
+    return json({ error: "Rascunho não encontrado." }, 404)
+  }
+  if (ticket.human_reply) return json({ error: "Este ticket já tem uma resposta do atendente." }, 409)
 
   try {
     const { status, data } = await callN8n<HitlDecisionResult & { error?: string }>("hitl-decision", {

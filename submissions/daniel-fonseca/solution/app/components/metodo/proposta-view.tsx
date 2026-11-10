@@ -1,5 +1,4 @@
 import type { AppSummary } from "@/components/painel/diagnostic-data"
-import { ConfusionMatrix } from "@/components/metodo/confusion-matrix"
 import { repoHref } from "@/components/metodo/content"
 import { FlowDiagram, type FlowNode } from "@/components/metodo/flow-diagram"
 import { Section } from "@/components/metodo/section"
@@ -20,22 +19,16 @@ interface ClassifierEval {
   n_test: number
   results: { method: string; accuracy: number }[]
 }
-interface Confusion {
-  labels: string[]
-  matrix: number[][]
-  accuracy: number
-}
 interface Blocklist {
   lists: { estreita: { terms: string[]; false_positive_rate_l1: number; escapes_caught: number } }
 }
 
 export async function PropostaView() {
-  const [rag, clf, zs, ragLlm, conf, db, block, summary, examples] = await Promise.all([
+  const [rag, clf, zs, ragLlm, db, block, summary, examples] = await Promise.all([
     getMetric<RagPolicy>("rag_only_policy"),
     getMetric<ClassifierEval>("classifier_eval"),
     getMetric<{ n: number; zero_shot: { accuracy: number; precision_at_conf_0_9: number } }>("zero_shot_eval"),
     getMetric<{ n: number; rag_llm_accuracy: number }>("rag_llm_eval"),
-    getMetric<Confusion>("rag_confusion"),
     getMetric<{ latency_ms: { p50: number } }>("db_rag_validation"),
     getMetric<Blocklist>("blocklist_eval"),
     getMetric<AppSummary>("app_summary"),
@@ -47,7 +40,7 @@ export async function PropostaView() {
   const terms = block.lists.estreita.terms
 
   const nodes: FlowNode[] = [
-    { id: "ticket", title: "Ticket chega", subtitle: "webhook do n8n", detail: "O ticket entra pelo webhook do fluxo de triagem no n8n, protegido por um segredo no cabeçalho. No Console, ele vem do holdout do DS2 ou de um texto livre em inglês." },
+    { id: "ticket", title: "Ticket chega", subtitle: "webhook do n8n", detail: "O ticket entra pelo webhook do fluxo de triagem no n8n, protegido por um segredo no cabeçalho. Em Tickets, ele vem do holdout do DS2 ou de um texto livre em inglês." },
     { id: "embedding", title: "Embedding", subtitle: "OpenAI · 512 dim.", detail: "O texto vira um vetor de 512 dimensões com o text-embedding-3-small, ao custo de cerca de US$ 0,000002 por ticket." },
     {
       id: "busca",
@@ -68,8 +61,8 @@ export async function PropostaView() {
       detail: "Somente humano quando a categoria prevista é sensível, quando 30% ou mais dos votos caem em categoria sensível, quando a confiança fica abaixo de 0,5 ou quando o texto tem um termo da lista de bloqueio. Resposta automática quando a confiança chega a 0,9 e existe solução validada da categoria. O restante segue para Revisão humana.",
     },
     { id: "auto", kind: "auto", title: PATHS.auto.label, subtitle: "adapta solução validada", detail: "O gpt-5.4-mini adapta ao ticket a solução validada mais parecida e mantém só os passos dela, sem prazo, promessa ou exceção nova. Se a solução não serve ao caso, o ticket segue para a Revisão humana." },
-    { id: "review", kind: "review", title: PATHS.review.label, subtitle: "rascunho na fila", detail: "O LLM redige um rascunho e uma lista de pontos de checagem. Um agente aprova, edita ou rejeita no Console › Fila, e pode corrigir a categoria." },
-    { id: "human", kind: "human", title: PATHS.human.label, subtitle: "resumo + alerta", detail: "A IA classifica e resume o ticket em pt-BR para o agente. O atendimento fica com uma pessoa, e o alerta chega à Caixa (no ambiente real, pelo nó Slack do n8n)." },
+    { id: "review", kind: "review", title: PATHS.review.label, subtitle: "rascunho para validar", detail: "O LLM redige um rascunho e uma lista de pontos de checagem. Em Tickets, o atendente aprova, edita, rejeita ou escreve a própria resposta, e pode corrigir a categoria." },
+    { id: "human", kind: "human", title: PATHS.human.label, subtitle: "nota interna + Slack", detail: "A IA classifica e escreve uma nota interna em pt-BR para o atendente. O atendimento fica com uma pessoa, e o aviso vai para o Slack (simulado no app; no ambiente real, pelo nó Slack do n8n)." },
     { id: "base", kind: "base", title: "Soluções validadas", subtitle: "playbook + aprendidas", detail: "A base reúne o playbook inicial revisado pelo Daniel e cada resposta aprovada na Revisão humana. Uma aprovação passa a atender tickets parecidos pela Resposta automática." },
   ]
 
@@ -86,10 +79,14 @@ export async function PropostaView() {
     { name: "LLM zero-shot", acc: zs.zero_shot.accuracy, n: zs.n, note: `com confiança declarada ≥ 0,9, acerta ${fmt.pct(zs.zero_shot.precision_at_conf_0_9, 0)}` },
   ]
 
-  const off: { n: number; real: string; pred: string }[] = []
-  conf.matrix.forEach((row, i) => row.forEach((n, j) => i !== j && off.push({ n, real: conf.labels[i], pred: conf.labels[j] })))
-  off.sort((a, b) => b.n - a.n)
-  const top = off[0]
+  const [first, ...rest] = examples
+  const keep = [
+    { what: "RH", why: "Salário, desligamento, licença e dados de pessoas." },
+    { what: "Permissões administrativas", why: "Acesso privilegiado a sistemas." },
+    { what: "Reembolso e cancelamento", why: "Envolvem dinheiro e contrato (DS1)." },
+    { what: "Prioridade crítica", why: "Cliente com impacto crítico no negócio (DS1)." },
+    { what: "Termos de RH e jurídico no texto", why: `Lista de bloqueio com ${terms.length} termos, como ${terms.slice(0, 3).join(", ")}.` },
+  ]
 
   const rule = summary.roi_inputs.ds1_eligible_rule.replace(/^fora:\s*/, "").replace(/\s*\(sempre humano\)/, "")
 
@@ -119,49 +116,44 @@ export async function PropostaView() {
           ))}
         </div>
         <p className="text-sm leading-relaxed text-text-2">
-          Dos {fmt.int(esc.total_sensitive)} tickets sensíveis do holdout, {fmt.int(esc.to_level_1)} ({fmt.pct(esc.to_level_1 / esc.total_sensitive)}) chegariam à Resposta automática pela regra de votos, a maioria
-          com rótulo duvidoso na leitura. A lista de bloqueio ({terms.length} termos de RH e jurídico, como {terms.slice(0, 4).join(", ")}) pega {fmt.int(block.lists.estreita.escapes_caught)} deles e rebaixa{" "}
-          {fmt.pct(block.lists.estreita.false_positive_rate_l1)} dos casos automáticos.
+          A lista de bloqueio ({terms.length} termos de RH e jurídico) rebaixa para Somente humano {fmt.int(block.lists.estreita.escapes_caught)} dos {fmt.int(esc.to_level_1)} tickets sensíveis que
+          chegariam à Resposta automática, ao custo de {fmt.pct(block.lists.estreita.false_positive_rate_l1)} dos casos automáticos.
         </p>
       </Section>
 
-      <Section eyebrow="O que não automatizar" title="RH, permissões administrativas, reembolso, cancelamento e prioridade crítica ficam com pessoas">
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+      <Section eyebrow="O que não automatizar" title="Cinco tipos de ticket ficam sempre com pessoas">
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+          <ul className="flex flex-col divide-y divide-border rounded-xl border border-border bg-surface">
+            {keep.map((k) => (
+              <li key={k.what} className="flex flex-col gap-0.5 px-4 py-3">
+                <span className="text-sm font-semibold text-text-1">{k.what}</span>
+                <span className="text-sm leading-relaxed text-text-2">{k.why}</span>
+              </li>
+            ))}
+          </ul>
           <div className="flex flex-col gap-3">
-            <p className="text-sm leading-relaxed text-text-2">
-              Tickets reais do holdout que o RAG classifica certo e com confiança alta. Mesmo assim, seguem para Somente humano: tratam de pessoas, dados de RH ou acesso privilegiado.
-            </p>
-            <ul className="flex flex-col gap-3">
-              {examples.map((e) => (
-                <li key={e.ds2_id} className="rounded-lg border border-border bg-surface p-4">
-                  <div className="mb-2 flex flex-wrap items-center gap-2">
-                    <PathBadge path="human" size="sm" />
-                    <span className="font-mono text-xs text-text-3">
-                      DS2 #{e.ds2_id} · {e.note}
-                    </span>
-                  </div>
-                  <p className="font-mono text-sm leading-relaxed text-text-1">“{e.document}”</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="flex flex-col gap-3 self-start rounded-xl border border-border bg-surface-2/60 p-5">
-            <p className="font-mono text-xs uppercase tracking-[0.14em] text-text-3">No DS1</p>
-            <p className="text-sm leading-relaxed text-text-2">
-              {rule.charAt(0).toUpperCase() + rule.slice(1)} vão sempre para atendimento humano. Envolvem dinheiro, contrato ou um cliente com impacto crítico, e são {fmt.pct(1 - summary.roi_inputs.ds1_eligible_share)} dos tickets.
-            </p>
-            <p className="text-sm leading-relaxed text-text-2">
-              Por isso a economia do ROI parte dos {fmt.pct(summary.roi_inputs.ds1_eligible_share)} elegíveis.
+            {first ? <Example e={first} /> : null}
+            {rest.length ? (
+              <details className="group rounded-lg border border-border bg-surface">
+                <summary className="cursor-pointer list-none px-4 py-3 text-sm font-medium text-text-2 hover:text-text-1">Ver mais {rest.length} exemplos reais</summary>
+                <ul className="flex flex-col gap-3 px-4 pb-4">
+                  {rest.map((e) => (
+                    <li key={e.ds2_id}>
+                      <Example e={e} />
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            ) : null}
+            <p className="text-xs leading-relaxed text-text-3">
+              Exemplos reais do holdout que o RAG classifica certo e com confiança alta. No DS1, {rule} são {fmt.pct(1 - summary.roi_inputs.ds1_eligible_share)} dos tickets; por isso o ROI parte dos{" "}
+              {fmt.pct(summary.roi_inputs.ds1_eligible_share)} elegíveis.
             </p>
           </div>
         </div>
       </Section>
 
-      <Section
-        eyebrow="Comparação de métodos"
-        title={`O RAG acerta ${fmt.pct(rag.accuracy)} e mostra ao agente os casos que sustentam cada decisão`}
-        lead={`O Daniel escolheu o RAG como classificador único (ADR-0010), aceitando ${fmt.dec((tfidf - rag.accuracy) * 100, 1)} pontos a menos que o TF-IDF: ele entrega os casos parecidos, aprende com a Revisão humana e fica simples de manter no n8n. O LLM entra só para redigir.`}
-      >
+      <Section eyebrow="Comparação de métodos" title={`O RAG acerta ${fmt.pct(rag.accuracy)} e mostra ao atendente os casos que sustentam cada decisão`} lead="Escolha do Daniel (ADR-0010): o RAG entrega os casos parecidos, aprende com a Revisão humana e fica simples de manter no n8n.">
         <ul className="flex flex-col gap-2.5">
           {methods.map((m) => (
             <li key={m.name} className="grid grid-cols-[minmax(0,1fr)_56px] items-center gap-x-3 gap-y-1 sm:grid-cols-[240px_minmax(0,1fr)_56px]">
@@ -180,19 +172,25 @@ export async function PropostaView() {
         </ul>
       </Section>
 
-      <Section
-        eyebrow="Matriz de confusão do RAG"
-        title={`A maior confusão é ${top.real} prevista como ${top.pred}: ${fmt.int(top.n)} tickets`}
-        lead={`Cada linha soma 100% da categoria real. Acurácia total de ${fmt.pct(conf.accuracy)} em ${fmt.int(clf.n_test)} tickets.`}
-      >
-        <ConfusionMatrix labels={conf.labels} matrix={conf.matrix} />
-      </Section>
-
       <p className="text-xs leading-relaxed text-text-3">
         Evidência: <a className="underline underline-offset-2 hover:text-text-1" href={repoHref("docs/decisions/0010-classificador-de-producao.md")} target="_blank" rel="noreferrer">ADR-0010</a>,{" "}
         <a className="underline underline-offset-2 hover:text-text-1" href={repoHref("docs/n8n-flows.md")} target="_blank" rel="noreferrer">fluxos do n8n</a> e scripts{" "}
         <span className="font-mono">03</span> a <span className="font-mono">12</span> em <span className="font-mono">solution/analysis/</span>.
       </p>
+    </div>
+  )
+}
+
+function Example({ e }: { e: { ds2_id: number; note: string; document: string } }) {
+  return (
+    <div className="rounded-lg border border-border bg-surface p-4">
+      <div className="mb-2 flex flex-wrap items-center gap-2">
+        <PathBadge path="human" size="sm" />
+        <span className="font-mono text-xs text-text-3">
+          DS2 #{e.ds2_id} · {e.note}
+        </span>
+      </div>
+      <p className="font-mono text-sm leading-relaxed text-text-1">“{e.document}”</p>
     </div>
   )
 }

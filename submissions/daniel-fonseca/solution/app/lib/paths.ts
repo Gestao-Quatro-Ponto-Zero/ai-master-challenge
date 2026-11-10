@@ -12,7 +12,7 @@ export const PATHS: Record<PathKey, { level: Level; label: string; short: string
     level: 2,
     label: "Revisão humana",
     short: "Revisão",
-    description: "A IA redige um rascunho e um agente aprova, edita ou rejeita antes do envio.",
+    description: "A IA redige um rascunho e um atendente aprova, edita ou rejeita antes do envio.",
   },
   human: {
     level: 3,

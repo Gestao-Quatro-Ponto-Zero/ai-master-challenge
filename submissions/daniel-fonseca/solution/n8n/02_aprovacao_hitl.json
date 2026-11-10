@@ -1,0 +1,826 @@
+{
+  "name": "G4 · Aprovação HITL",
+  "nodes": [
+    {
+      "id": "af7ea288-77c0-4ab9-be86-83c6ad9a23b5",
+      "name": "Receber decisão do revisor",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        368
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "g4-support/hitl-decision",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "yD741LTYlWeGQxYN",
+          "name": "G4 - Segredo do webhookk"
+        }
+      }
+    },
+    {
+      "id": "36853ee9-2c0c-467c-aa2b-8d7bd8c10913",
+      "name": "Preparar decisão",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        224,
+        368
+      ],
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "hitl_id",
+              "name": "hitl_id",
+              "value": "={{ Number($json.body?.hitl_id ?? $json.hitl_id ?? 0) }}",
+              "type": "number"
+            },
+            {
+              "id": "decision",
+              "name": "decision",
+              "value": "={{ String($json.body?.decision ?? $json.decision ?? \"\").toLowerCase().trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "final_text",
+              "name": "final_text",
+              "value": "={{ String($json.body?.final_text ?? \"\").trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "final_category",
+              "name": "final_category",
+              "value": "={{ String($json.body?.final_category ?? \"\").trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "reviewer",
+              "name": "reviewer",
+              "value": "={{ String($json.body?.reviewer ?? \"revisor\").trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "note",
+              "name": "note",
+              "value": "={{ String($json.body?.note ?? \"\").trim() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "9a5be3e0-cc8a-44b9-be74-c5a3b49706d7",
+      "name": "Entrada válida?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        448,
+        368
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.hitl_id }}",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              },
+              "rightValue": 0
+            },
+            {
+              "leftValue": "={{ [\"approve\", \"edit\", \"reject\"].includes($json.decision) }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "leftValue": "={{ $json.decision !== \"edit\" || $json.final_text.length > 0 }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "leftValue": "={{ $json.final_category === \"\" || [\"Access\", \"Administrative rights\", \"HR Support\", \"Hardware\", \"Internal Project\", \"Miscellaneous\", \"Purchase\", \"Storage\"].includes($json.final_category) }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "23ed978f-ab59-4032-aee8-dd3d6d17d1ce",
+      "name": "Buscar item pendente",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        672,
+        288
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "getAll",
+        "tableId": "hitl_queue",
+        "filterType": "manual",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.hitl_id }}"
+            },
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "pending"
+            }
+          ]
+        },
+        "returnAll": false,
+        "limit": 1
+      },
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SEmoMU7WjCZ71Snn",
+          "name": "G4 - Supabase"
+        }
+      }
+    },
+    {
+      "id": "0c457fe3-d9f7-4b09-a702-b41aad51ad40",
+      "name": "Responder erro 400",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1568,
+        480
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{ \"error\": \"hitl_id e decision (approve | edit | reject) são obrigatórios; edit exige final_text; final_category deve ser uma das 8 categorias\" }",
+        "options": {
+          "responseCode": 400
+        }
+      }
+    },
+    {
+      "id": "62d49721-46cb-4d76-995e-3d31c91d2f88",
+      "name": "Item pendente existe?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        896,
+        288
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ Number($json.id ?? 0) > 0 }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "5a3a3f64-c7ed-427a-b1c4-c371d525489e",
+      "name": "Buscar triagem do item",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        144
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "getAll",
+        "tableId": "triage_runs",
+        "filterType": "manual",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.triage_run_id }}"
+            }
+          ]
+        },
+        "returnAll": false,
+        "limit": 1
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SEmoMU7WjCZ71Snn",
+          "name": "G4 - Supabase"
+        }
+      }
+    },
+    {
+      "id": "833b74b1-6e4a-447c-95c6-6fbbce92c1fb",
+      "name": "Responder 409 (já decidido)",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1120,
+        336
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{ \"error\": \"Item não encontrado ou já decidido por outro revisor\" }",
+        "options": {
+          "responseCode": 409
+        }
+      }
+    },
+    {
+      "id": "a92ecb91-d68c-48ca-bac0-9308a6656c1d",
+      "name": "Qual decisão?",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1344,
+        128
+      ],
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "outputKey": "Aprovar ou editar",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ [\"approve\", \"edit\"].includes($(\"Preparar decisão\").item.json.decision) }}",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "outputKey": "Rejeitar",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $(\"Preparar decisão\").item.json.decision }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "rightValue": "reject"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra",
+          "renameFallbackOutput": "Decisão desconhecida"
+        }
+      }
+    },
+    {
+      "id": "121e2a59-cccd-44d7-a544-7d221409b4ce",
+      "name": "Gravar solução validada",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "create",
+        "tableId": "validated_resolutions",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "category",
+              "fieldValue": "={{ $(\"Preparar decisão\").item.json.final_category || $(\"Buscar triagem do item\").item.json.category }}"
+            },
+            {
+              "fieldId": "problem_text",
+              "fieldValue": "={{ $(\"Buscar triagem do item\").item.json.ticket_text }}"
+            },
+            {
+              "fieldId": "resolution_text",
+              "fieldValue": "={{ $(\"Preparar decisão\").item.json.final_text || $(\"Buscar item pendente\").item.json.draft_text }}"
+            },
+            {
+              "fieldId": "embedding",
+              "fieldValue": "={{ $(\"Buscar triagem do item\").item.json.embedding }}"
+            },
+            {
+              "fieldId": "source",
+              "fieldValue": "hitl"
+            },
+            {
+              "fieldId": "hitl_id",
+              "fieldValue": "={{ $(\"Buscar item pendente\").item.json.id }}"
+            },
+            {
+              "fieldId": "approved_by",
+              "fieldValue": "={{ $(\"Preparar decisão\").item.json.reviewer }}"
+            }
+          ]
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SEmoMU7WjCZ71Snn",
+          "name": "G4 - Supabase"
+        }
+      }
+    },
+    {
+      "id": "7db9cefc-b437-4f4c-b8ae-41b85f01ac7a",
+      "name": "Fechar item da fila",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "tableId": "hitl_queue",
+        "filterType": "manual",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $(\"Buscar item pendente\").item.json.id }}"
+            }
+          ]
+        },
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "={{ $(\"Preparar decisão\").item.json.decision === \"edit\" ? \"edited\" : \"approved\" }}"
+            },
+            {
+              "fieldId": "final_text",
+              "fieldValue": "={{ $(\"Preparar decisão\").item.json.final_text || $(\"Buscar item pendente\").item.json.draft_text }}"
+            },
+            {
+              "fieldId": "final_category",
+              "fieldValue": "={{ $(\"Preparar decisão\").item.json.final_category || null }}"
+            },
+            {
+              "fieldId": "reviewer",
+              "fieldValue": "={{ $(\"Preparar decisão\").item.json.reviewer }}"
+            },
+            {
+              "fieldId": "review_note",
+              "fieldValue": "={{ $(\"Preparar decisão\").item.json.note || null }}"
+            },
+            {
+              "fieldId": "decided_at",
+              "fieldValue": "={{ $now.toISO() }}"
+            }
+          ]
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SEmoMU7WjCZ71Snn",
+          "name": "G4 - Supabase"
+        }
+      }
+    },
+    {
+      "id": "838336fb-1bf8-41d2-b558-286adc7101a5",
+      "name": "Marcar triagem como respondida",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2016,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "tableId": "triage_runs",
+        "filterType": "manual",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $(\"Buscar item pendente\").item.json.triage_run_id }}"
+            }
+          ]
+        },
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "answered_after_review"
+            },
+            {
+              "fieldId": "response_text",
+              "fieldValue": "={{ $(\"Preparar decisão\").item.json.final_text || $(\"Buscar item pendente\").item.json.draft_text }}"
+            },
+            {
+              "fieldId": "resolution_id",
+              "fieldValue": "={{ $(\"Gravar solução validada\").item.json.id }}"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $now.toISO() }}"
+            }
+          ]
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SEmoMU7WjCZ71Snn",
+          "name": "G4 - Supabase"
+        }
+      }
+    },
+    {
+      "id": "27f36df7-0b9c-4369-81a8-5d4620bfd26b",
+      "name": "Responder ao console",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        2240,
+        48
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ hitl_id: $(\"Buscar item pendente\").item.json.id, decision: $(\"Preparar decisão\").item.json.decision, triage_run_id: $json.id, triage_status: $json.status, resolution_id: $json.resolution_id ?? null }) }}",
+        "options": {
+          "responseCode": 200
+        }
+      }
+    },
+    {
+      "id": "b49555be-713f-4e1e-84f6-d90a3b797c58",
+      "name": "Fechar item como rejeitado",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        192
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "tableId": "hitl_queue",
+        "filterType": "manual",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $(\"Buscar item pendente\").item.json.id }}"
+            }
+          ]
+        },
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "rejected"
+            },
+            {
+              "fieldId": "reviewer",
+              "fieldValue": "={{ $(\"Preparar decisão\").item.json.reviewer }}"
+            },
+            {
+              "fieldId": "review_note",
+              "fieldValue": "={{ $(\"Preparar decisão\").item.json.note || null }}"
+            },
+            {
+              "fieldId": "decided_at",
+              "fieldValue": "={{ $now.toISO() }}"
+            }
+          ]
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SEmoMU7WjCZ71Snn",
+          "name": "G4 - Supabase"
+        }
+      }
+    },
+    {
+      "id": "fcca5db1-212d-49e7-a038-7e9b891b80e4",
+      "name": "Marcar triagem como rejeitada",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2016,
+        192
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "tableId": "triage_runs",
+        "filterType": "manual",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $(\"Buscar item pendente\").item.json.triage_run_id }}"
+            }
+          ]
+        },
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "rejected"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $now.toISO() }}"
+            }
+          ]
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SEmoMU7WjCZ71Snn",
+          "name": "G4 - Supabase"
+        }
+      }
+    },
+    {
+      "id": "6d3ca82e-fae7-4b2a-8b9b-73ab51074f69",
+      "name": "Sticky Note 2def1373",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1056,
+        480
+      ],
+      "parameters": {
+        "content": "## Aprovação HITL (ADR-0004)\nO console envia a decisão do revisor. **Aprovar/editar** grava o texto final em `validated_resolutions` com o embedding do ticket (reaproveitado da triagem, sem nova chamada à OpenAI).\nA partir daí, um ticket parecido com confiança ≥ 0,9 pode sair no nível 1 com essa solução: o sistema aprende com o humano.\n**Rejeitar** devolve o ticket ao atendimento manual. Um item só pode ser decidido uma vez (409 no segundo clique).",
+        "color": 4
+      }
+    }
+  ],
+  "connections": {
+    "Receber decisão do revisor": {
+      "main": [
+        [
+          {
+            "node": "Preparar decisão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar decisão": {
+      "main": [
+        [
+          {
+            "node": "Entrada válida?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Entrada válida?": {
+      "main": [
+        [
+          {
+            "node": "Buscar item pendente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Responder erro 400",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar item pendente": {
+      "main": [
+        [
+          {
+            "node": "Item pendente existe?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Item pendente existe?": {
+      "main": [
+        [
+          {
+            "node": "Buscar triagem do item",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Responder 409 (já decidido)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar triagem do item": {
+      "main": [
+        [
+          {
+            "node": "Qual decisão?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qual decisão?": {
+      "main": [
+        [
+          {
+            "node": "Gravar solução validada",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fechar item como rejeitado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Responder erro 400",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gravar solução validada": {
+      "main": [
+        [
+          {
+            "node": "Fechar item da fila",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fechar item da fila": {
+      "main": [
+        [
+          {
+            "node": "Marcar triagem como respondida",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar triagem como respondida": {
+      "main": [
+        [
+          {
+            "node": "Responder ao console",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fechar item como rejeitado": {
+      "main": [
+        [
+          {
+            "node": "Marcar triagem como rejeitada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar triagem como rejeitada": {
+      "main": [
+        [
+          {
+            "node": "Responder ao console",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "meta": {
+    "exportedFrom": "n8n (VPS do Daniel, URL fora do repositório)",
+    "workflowId": "FWb7G9cGmMC69Q6D",
+    "active": true,
+    "activeVersionId": "3a3e5041-fad1-48d4-b0a1-c23372ae1804"
+  }
+}

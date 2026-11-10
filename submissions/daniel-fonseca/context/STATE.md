@@ -2,9 +2,11 @@
 
 > Atualize ao final de cada sessão. Qualquer agente (Claude Code, Codex…) deve conseguir continuar o trabalho só com este arquivo + AGENTS.md.
 
-**Última atualização:** 2026-11-10 · Sessão 02 · Claude Code (Opus 5.5)
+**Última atualização:** 2026-11-10 · Sessão 03 · Claude Code (Opus 5.5)
 
 ## Fase atual
+**Sessão 03 (pente fino, 10/11 noite):** navegação de um nível com submenus, tela **Tickets** em formato de conversa, Slack simulado no navegador, Diagnóstico enxuto, "atendente" × "agente" e Proposta mais objetiva (ADR-0015, Proposta). Fluxo 1 sem a gravação na caixa, republicado. JSON dos 4 fluxos exportados. **Próximo:** deploy de produção + smoke test; revisão da documentação pedida pelo G4 (README final); vídeo (última etapa); PR manual pelo Daniel.
+
 **App Vercel integrado e em produção** (https://triagem-case-ai-master-case-g4.vercel.app). Frentes A e B integradas na `submission/daniel-fonseca` com o OK do Daniel (10/11). Monitoramento de uso ativo (n8n a cada 15 min + tarefa local a cada 2 h). Próximo: credencial do fluxo 3 (Daniel) e ativação; revisão do app pelo Daniel; exportar os JSON do n8n; README final; vídeo; PR.
 
 ## Timebox (decisão do Daniel)
@@ -80,6 +82,13 @@ No máximo **dois turnos noturnos**: hoje (09/11) e amanhã (10/11), incluindo v
    - sobra do teste: 1 alerta de teste (`notifications` id 11) e 1 evento sinalizado (`usage_events` id 37). O comando de limpeza foi recusado; o `reset_demo.py` remove os dois.
 14. Fluxo 3 (heartbeat): URL de produção e Header Auth configurados. **Passo do Daniel:** criar no n8n a credencial `G4 - Cron da Vercel` (Header Auth, Name `Authorization`, Value `Bearer ` + `CRON_SECRET` do `.env`). Depois a IA vincula pelo ID, testa e publica.
 15. Turno 2: app Vercel (dashboard + console + `/api/heartbeat`) + deploy + ativar o fluxo 3 com a URL + vídeo + PR.
+
+## Sessão 03 — notas para a próxima sessão
+- Rotas novas: `/painel/diagnostico|roi|operacao`, `/tickets`, `/como-foi-feito/proposta|decisoes|conducao`; as antigas redirecionam (`next.config.ts`).
+- Tickets: lista = `is_demo` (compartilhados) + `client_token` do navegador (`components/tickets/store.ts`, localStorage). `/api/hitl` e `/api/tickets/reply` só aceitam ticket de demonstração ou com o token.
+- `reset_demo.py` marca tudo o que cria como `is_demo`; `/api/demo/reset` também.
+- Migration `20261110000008_tickets` aplicada pela conexão do `.env` (os MCPs do projeto não carregaram nesta sessão) e registrada em `supabase_migrations.schema_migrations`.
+- Testes de 10/11 deixaram as triagens #40–44 (não demo, invisíveis para outros navegadores) e uma solução aprendida a partir do ticket de demonstração #34.
 
 ## Perguntas abertas para o Daniel
 - [x] ADR-0010: RAG como classificador único (Daniel). ADR-0011: diretrizes do n8n (Daniel).

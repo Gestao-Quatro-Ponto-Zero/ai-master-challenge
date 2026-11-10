@@ -1,14 +1,15 @@
 # Fluxos n8n — rascunho nó a nó (ADR-0011)
 
 > **Status: ATIVO no n8n (fluxos 1, 2 e 4), 10/11.** Rascunho v2 aprovado pelo Daniel (ADR-0012). Nós Postgres trocados por nós nativos do Supabase (ADR-0013). Testado ponta a ponta e pelo webhook de produção. O fluxo 3 tem a URL de produção e espera a credencial `G4 - Cron da Vercel`.
-> Depois de aprovado: construir via MCP `n8n-g4`, exportar o JSON de cada fluxo para `solution/n8n/` e completar este documento (como importar e testar).
+> **Exportação (10/11):** o JSON de cada fluxo está em `solution/n8n/0N_*.json` (nós, conexões e configurações; sem a URL da VPS e sem segredos). Para importar: n8n → *Import from File*, depois selecionar as credenciais `G4 - Supabase`, `G4 - OpenAI` e `G4 - Segredo do webhookk` nos nós que pedem.
+> **Mudança de 10/11 (ADR-0015):** no caminho Somente humano, o fluxo 1 deixou de gravar em `notifications`. A nota interna (`human_summary`) e o texto do Slack (`alert_title`, `alert_body`) ficam na própria `triage_runs`, e o app simula o aviso do Slack no navegador.
 > Fontes consultadas no `n8n-g4` (09/11): SDK reference (guidelines), best practices de *triage*, *scheduling* e *chatbot* (a de *human_in_the_loop* ainda não tem documentação no servidor) e definições dos nós nativos listados abaixo.
 
 ## Status da construção (10/11)
 
 | Fluxo | ID no n8n | Nós | Fonte versionada | Estado |
 |---|---|---|---|---|
-| G4 · Triagem de ticket (RAG + 3 níveis) | `msFVCvUdsmRq49pv` | 35 | [`solution/n8n/01_triagem.sdk.ts`](../solution/n8n/01_triagem.sdk.ts) | **Ativo** (10/11) · testado ponta a ponta e pelo webhook de produção |
+| G4 · Triagem de ticket (RAG + 3 níveis) | `msFVCvUdsmRq49pv` | 34 | [`solution/n8n/01_triagem.sdk.ts`](../solution/n8n/01_triagem.sdk.ts) | **Ativo** (10/11) · testado ponta a ponta e pelo webhook de produção |
 | G4 · Aprovação HITL | `FWb7G9cGmMC69Q6D` | 16 | [`solution/n8n/02_aprovacao_hitl.sdk.ts`](../solution/n8n/02_aprovacao_hitl.sdk.ts) | **Ativo** (10/11) · testado (4 caminhos + produção) |
 | G4 · Heartbeat diário (Supabase ativo) | `LpQK8XX5AZJrUCy8` | 6 | [`solution/n8n/03_heartbeat.sdk.ts`](../solution/n8n/03_heartbeat.sdk.ts) | URL de produção configurada (10/11) · caminho de falha testado · inativo até a credencial `G4 - Cron da Vercel` |
 | G4 · Monitor de uso (alertas) | `xchzY3KKbsm0hzyG` | 9 | [`solution/n8n/04_monitor_uso.sdk.ts`](../solution/n8n/04_monitor_uso.sdk.ts) | **Ativo** (10/11) · testado: sem alerta, com alerta e repetição barrada |
@@ -47,6 +48,8 @@ Tickets do holdout do DS2 (`source = holdout`). O rótulo real é conhecido e n�
 | HITL sem header | **403** |
 | HITL com header, item #2 já decidido | **409** |
 
+**Reteste de 10/11 (ADR-0015):** triagens #41 e #42 (HR Support) e #43 (texto editado, confiança 0,37) caíram em Somente humano com `human_summary`, `alert_title` e `alert_body` gravados em `triage_runs` e nenhuma linha nova em `notifications`.
+
 **Não testado:** o nó Slack (desativado, sem workspace).
 
 ### Diferenças em relação ao rascunho v2 (ajustes da construção)
@@ -67,7 +70,7 @@ Tickets do holdout do DS2 (`source = holdout`). O rótulo real é conhecido e n�
 | # | Fluxo | Gatilho | Para quê |
 |---|---|---|---|
 | 1 | **Triagem de ticket** | Webhook (console da Vercel) | Classifica pelo RAG, aplica a política de 3 níveis da ADR-0010 e responde, rascunha ou alerta |
-| 2 | **Aprovação HITL** | Webhook (console da Vercel) | Registra a decisão do agente; aprovação vira **solução validada** com embedding (ADR-0004) |
+| 2 | **Aprovação HITL** | Webhook (console da Vercel) | Registra a decisão do atendente; aprovação vira **solução validada** com embedding (ADR-0004) |
 | 3 | **Heartbeat diário** | Schedule | Redundância do cron da Vercel para o Supabase free não pausar (ADR-0006) |
 | 4 | **Monitor de uso** | Schedule (15 min) | Calcula os sinais de abuso do app público e grava alertas na caixa como Slack simulado (PRD §8.1) |
 
@@ -103,7 +106,7 @@ flowchart LR
   FIT -- sim --> A2[Marcar como respondido] --> OUT[Responder ao console]
   FIT -- não --> B1
   SW -- 2 --> B1[Redigir rascunho OpenAI] --> B2[Enviar para fila de revisão] --> B3[Marcar como em revisão] --> OUT
-  SW -- 3 / fallback --> C1[Resumir para o humano OpenAI] --> C2[Montar mensagem de alerta] --> C3[Gravar na caixa do painel] --> C4[Avisar no Slack desativado] --> C5[Marcar como aguardando humano] --> OUT
+  SW -- 3 / fallback --> C1[Resumir para o humano OpenAI] --> C2[Montar mensagem de alerta] --> C4[Avisar no Slack desativado] --> C5[Marcar como aguardando humano] --> OUT
 ```
 
 | # | Nome do nó | Tipo (nativo) | O que faz | Entrada → saída | Credencial |
@@ -125,11 +128,10 @@ flowchart LR
 | 2b | **Enviar para fila de revisão** | Supabase · Create em `hitl_queue` | Cria o item pendente com o rascunho e o que conferir | → `hitl_id` | `G4 - Supabase` |
 | 2c | **Marcar como em revisão** | Supabase · Update `triage_runs` (filtro `id`) | `status = 'pending_review'` | — | `G4 - Supabase` |
 | 3a | **Resumir para o humano (OpenAI)** | OpenAI · Text → Response (`gpt-5.4-mini`, raciocínio `low`, máx. 300 tokens), saída `json_schema` | **Não responde ao cliente.** Resume o pedido, aponta sinais de risco e explica por que caiu no nível 3 (`level_reason`) | → `{ summary, risk_signals[] }` | `G4 - OpenAI` |
-| 3b | **Montar mensagem de alerta** | Edit Fields (Set) | Texto **idêntico** ao que iria para o Slack: categoria, confiança, motivo, resumo, link do console | → `{ title, body }` | — |
-| 3c | **Gravar na caixa do painel** | Supabase · Create em `notifications` | Fonte de verdade da demo (ADR-0007): `channel_intended = 'slack'`, `delivered_slack = false` | → `notification_id` | `G4 - Supabase` |
+| 3b | **Montar mensagem de alerta** + **Formatar texto do alerta** | Edit Fields (Set) | Texto **idêntico** ao que iria para o Slack: categoria, confiança, motivo, resumo, sinais de risco e time sugerido | → `{ title, body, payload }` | — |
 | 3d | **Avisar no Slack** | Slack · Message → Post | Mesmo `body` no canal do suporte. **Desativado** (sem workspace); `onError: continue` para não derrubar o fluxo quando for ligado | — | `G4 – Slack` |
-| 3e | **Marcar como aguardando humano** | Supabase · Update `triage_runs` (filtro `id`) | `status = 'awaiting_human'` | — | `G4 - Supabase` |
-| 10 | **Responder ao console** | Respond to Webhook (JSON) | Um nó só, ligado ao fim dos 3 ramos (só um roda por execução) | `200 { triage_run_id, level, level_reason, category, confidence, votes, similar_cases, response_text \| draft \| summary, hitl_id?, notification_id? }` | — |
+| 3e | **Marcar como aguardando humano** | Supabase · Update `triage_runs` (filtro `id`) | `status = 'awaiting_human'`, `human_summary` (nota interna), `alert_title` e `alert_body` (texto do Slack simulado) | — | `G4 - Supabase` |
+| 10 | **Responder ao console** | Respond to Webhook (JSON) | Um nó só, ligado ao fim dos 3 ramos (só um roda por execução) | `200 { triage_run_id, level, level_reason, category, confidence, votes, similar_cases, response_text, hitl?, alert?, human_summary? }` (`notification` sempre `null` desde a ADR-0015) | — |
 
 **Regra do nó 7 (ADR-0010 + mitigação da ADR-0010):**
 1. **Nível 3** se a categoria prevista é sensível **ou** `sensitive_share ≥ 0,3` **ou** `confidence < 0,5` **ou** o texto contém termo de bloqueio (`bloqueado`, calculado no mesmo Set: `{{ $json.termos_bloqueio.some(t => new RegExp('\\b' + t + '\\b', 'i').test($json.ticket_text)) }}`).
@@ -202,7 +204,7 @@ flowchart LR
 | 2 | **Chamar /api/heartbeat da Vercel** | HTTP Request `GET <URL do app>/api/heartbeat?source=n8n` (placeholder até o deploy); `onError: continueErrorOutput`; *retry* 3× | A rota faz leitura e escrita real no Supabase (`heartbeat`, `source = 'n8n'`) | `G4 – Cron da Vercel` |
 | 3 | **Heartbeat ok** | No Operation | Fim do caminho de sucesso; a saída de erro do nó 2 leva ao 4 | — |
 | 4 | **Registrar heartbeat direto no banco** | Supabase · Create em `heartbeat` (`source = 'n8n-fallback'`, `ok = false`, `detail` = erro) | Mantém o banco ativo mesmo com a Vercel fora | `G4 - Supabase` |
-| 5 | **Gravar alerta na caixa do painel** | Supabase · Create em `notifications` (`kind = 'heartbeat_failure'`) | Aparece no painel como "último heartbeat com falha" | `G4 - Supabase` |
+| 5 | **Gravar alerta na caixa do painel** | Supabase · Create em `notifications` (`kind = 'heartbeat_failure'`) | Fica na tabela para as rotinas do Claude (fora da interface desde a ADR-0015) | `G4 - Supabase` |
 
 Best practice de *scheduling* aplicada: tarefa idempotente (inserir um heartbeat a mais não causa problema) e sem risco de sobreposição (a execução leva segundos, o intervalo é de 24 h). A URL pública do app na Vercel pode ficar no JSON exportado; quem não pode aparecer no repositório é a URL da VPS do n8n.
 
@@ -228,7 +230,7 @@ flowchart LR
 | 4 | **Uso dentro dos limites** | No Operation | Fim sem alerta | — |
 | 5 | **Separar alertas** | Split Out (`alerts`) | Um item por alerta | — |
 | 6 | **Formatar alerta para o Slack** | Edit Fields (Set) | `kind = usage_alert`, `channel_intended = slack`, texto no formato do Slack com o horário de São Paulo | — |
-| 7 | **Gravar alerta na caixa do painel** | Supabase · Create em `notifications` | O alerta aparece em Console › Caixa › Sistema | `G4 - Supabase` |
+| 7 | **Gravar alerta na caixa do painel** | Supabase · Create em `notifications` | O alerta fica na tabela, lida pelas rotinas do Claude do Daniel (fora da interface desde a ADR-0015) | `G4 - Supabase` |
 | 8 | **Avisar no Slack** | Slack · Message → Post | **Desativado** (sem workspace, ADR-0007) | `G4 – Slack` |
 
 **Sinais e limites** (iguais ao PRD §8.1): triagens de um IP > 10/h · respostas 429 > 20/h · triagens no app > 100/h · custo OpenAI do dia > US$ 0,50 · erros do servidor ou n8n fora do ar > 5/h · qualquer texto com padrão de *prompt injection* · decisões na fila de um IP > 30/h · banco > 400 MB.
@@ -356,7 +358,7 @@ Espaço: cada triagem guarda cerca de 1 KB de embedding. Mesmo 10 mil triagens s
 | 2 | Pré-condição do nível 1 | **Só há nível 1 quando existe solução validada da categoria.** Exige o playbook-semente (1 a 3 soluções por categoria não sensível), rascunhado pela IA e revisado pelo Daniel | Nó 7 + seed de `validated_resolutions` |
 | 3 | Lista de bloqueio | **Lista estreita** (11 termos de RH/jurídico): 0,2% de falsos positivos medidos. A ampla (21,4%) foi descartada | Nó 7 |
 | 4 | Modelo | `gpt-5.4-mini` com raciocínio `low` e teto de tokens por nó (custo abaixo). Alternativa mais barata: `gpt-5.4-nano` (~3,6× menos) | Nós 1a, 2a, 3a |
-| 5 | Idioma | Demo principal = sortear do holdout. O texto livre do console é **em inglês** (mesma língua da base), com aviso na tela. A resposta ao cliente sai no idioma do ticket, e o resumo e os pontos de checagem para o agente saem em pt-BR | Console + prompts |
+| 5 | Idioma | Demo principal = sortear do holdout. O texto livre do console é **em inglês** (mesma língua da base), com aviso na tela. A resposta ao cliente sai no idioma do ticket, e o resumo e os pontos de checagem para o atendente saem em pt-BR | Console + prompts |
 | 6 | Heartbeat | n8n às **06:00 (São Paulo)**; cron da Vercel em outro horário | Fluxo 3 |
 
 ### Custo estimado da OpenAI (preços oficiais consultados em 09/11/2026)

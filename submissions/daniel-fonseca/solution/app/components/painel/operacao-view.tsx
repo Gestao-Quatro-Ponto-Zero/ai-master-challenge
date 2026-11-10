@@ -6,7 +6,6 @@ import { Headline } from "@/components/shared/headline"
 import { KpiCard } from "@/components/shared/kpi-card"
 import { PathBadge } from "@/components/shared/path-badge"
 import { fmt } from "@/lib/format"
-import { PATHS } from "@/lib/paths"
 import { getMetric } from "@/lib/queries/analysis"
 import { getOpsSummary } from "@/lib/queries/ops"
 import type { PathKey } from "@/lib/types"
@@ -70,9 +69,9 @@ export async function OperacaoView() {
             {paths.map((p) => (
               <li key={p.key} className="flex flex-col gap-1.5">
                 <PathBadge path={p.key} size="sm" />
-                <span className="text-2xl font-semibold tabular-nums text-text-1">{fmt.pct(share(p.n))}</span>
-                <span className="text-xs leading-relaxed text-text-3">
-                  {fmt.int(p.n)} triagens · {PATHS[p.key].description}
+                <span className="flex items-baseline gap-2">
+                  <span className="text-2xl font-semibold tabular-nums text-text-1">{fmt.pct(share(p.n))}</span>
+                  <span className="text-xs text-text-3 tabular-nums">{fmt.int(p.n)} triagens</span>
                 </span>
               </li>
             ))}
@@ -115,8 +114,8 @@ export async function OperacaoView() {
           <h2 id="ops-revisao" className="text-sm font-medium text-text-2">
             Revisão humana
           </h2>
-          <Link href="/console?aba=fila" className="text-sm text-text-2 underline underline-offset-4 hover:text-text-1">
-            Abrir a fila ({fmt.int(s.hitl_pendentes)} pendentes)
+          <Link href="/tickets?filtro=revisao" className="text-sm text-text-2 underline underline-offset-4 hover:text-text-1">
+            Abrir os tickets em revisão ({fmt.int(s.hitl_pendentes)} pendentes)
           </Link>
         </div>
         <dl className="grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -132,9 +131,9 @@ export async function OperacaoView() {
             </div>
           ))}
           <div className="flex flex-col gap-0.5">
-            <dt className="text-xs text-text-3">Tempo médio na fila</dt>
+            <dt className="text-xs text-text-3">Tempo até a decisão</dt>
             <dd className="text-2xl font-semibold tabular-nums text-text-1">{s.hitl_tempo_medio_s === null ? "—" : formatDuration(s.hitl_tempo_medio_s)}</dd>
-            <dd className="text-xs text-text-3">da entrada na fila até a decisão</dd>
+            <dd className="text-xs text-text-3">do rascunho pronto até a decisão do atendente</dd>
           </div>
         </dl>
         <SmallSample n={decided} what="decisões" />
@@ -142,7 +141,7 @@ export async function OperacaoView() {
 
       <p className="text-xs leading-relaxed text-text-3">
         Fonte: tabelas triage_runs, hitl_queue e validated_resolutions do Supabase (view v_ops_summary), lidas a cada carregamento. Inclui as triagens dos testes de ponta a ponta e as feitas pelos
-        visitantes no Console.
+        visitantes em Tickets.
       </p>
     </div>
   )

@@ -4,6 +4,7 @@ import { checkLimit, ipHash, logUsage } from "@/lib/usage"
 
 /**
  * GET /api/triage/sample?categoria=Storage — sorteia um ticket do holdout (split test), sem o rótulo real.
+ * GET /api/triage/sample?id=123 — devolve esse ticket do holdout.
  * Aplica o limite da triagem de holdout e registra só o bloqueio (429): o sorteio é uma leitura barata e
  * não consome a cota de triagens, que conta apenas as triagens feitas.
  */
@@ -14,6 +15,12 @@ export async function GET(req: Request) {
   if (!limit.allowed) {
     await logUsage(req, { route: "/api/triage/sample", action: "triage_holdout", outcome: "rate_limited", status_code: 429 })
     return tooMany(limit.message, limit.retryAfter)
+  }
+  // ?id=N: um ticket específico do holdout (o vizinho do efeito "aprendeu", ADR-0015)
+  const id = Number(new URL(req.url).searchParams.get("id"))
+  if (Number.isInteger(id) && id > 0) {
+    const { data } = await supabaseServer().from("ds2_tickets").select("id, document").eq("id", id).eq("split", "test").maybeSingle()
+    return data ? json({ id: data.id, document: data.document }) : json({ error: "Ticket não encontrado no conjunto de teste." }, 404)
   }
   const { data, error } = await supabaseServer().rpc("random_holdout_ticket", { p_category: category })
   const row = (Array.isArray(data) ? data[0] : data) as { id: number; document: string } | undefined

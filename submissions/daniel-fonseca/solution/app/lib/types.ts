@@ -50,6 +50,8 @@ export interface TriageRequest {
   ds2_id?: number
   /** obrigatório em mode = free_text (inglês, até 4.000 caracteres) */
   ticket_text?: string
+  /** ticket sorteado e editado pelo visitante: guarda a origem para a marca "editado" */
+  edited_from?: number
 }
 
 /** Resposta do webhook do fluxo 1 (repassada pelo /api/triage) + campos do app. */
@@ -67,7 +69,11 @@ export interface TriageResult {
   response_text: string | null
   resolution_id: number | null
   hitl: { hitl_id: number; draft_text: string; checks: string[] } | null
-  notification: { notification_id: number; title: string; body: string } | null
+  /** o fluxo 1 deixou de gravar na caixa (ADR-0015): sempre null */
+  notification: null
+  /** Somente humano: texto do Slack simulado e nota interna em pt-BR */
+  alert?: { title: string; body: string } | null
+  human_summary?: { summary: string; risk_signals: string[]; suggested_owner: string } | null
   /** preenchidos pelo app depois da chamada */
   true_category?: Category | null
   offline?: boolean

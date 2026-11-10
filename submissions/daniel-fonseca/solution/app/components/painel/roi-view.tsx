@@ -25,7 +25,7 @@ export async function RoiView() {
     { key: "handleMinutes", label: "Minutos por ticket", origin: "benchmark", source: p("handle_time_minutes").source, href: p("handle_time_minutes").url },
     {
       key: "hourlyCost",
-      label: "Custo por hora do agente",
+      label: "Custo por hora do atendente",
       origin: "benchmark",
       source: `${p("agent_hourly_cost_brl").source}. ${p("agent_monthly_cost_brl").source}.`,
       href: p("agent_monthly_cost_brl").url,

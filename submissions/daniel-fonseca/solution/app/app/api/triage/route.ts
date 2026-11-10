@@ -65,14 +65,15 @@ export async function POST(req: Request) {
 
   // 3. Triagem pelo n8n, com modo offline para o holdout
   try {
-    const out = await runTriage({ ticket_text: ticketText, source: mode === "holdout" ? "holdout" : "console", ds2_id: ds2Id })
+    const clientToken = crypto.randomUUID()
+    const out = await runTriage({ ticket_text: ticketText, source: mode === "holdout" ? "holdout" : "console", ds2_id: ds2Id }, { client_token: clientToken })
     if (out.kind === "client_error") {
       await logUsage(req, { route: ROUTE, action, outcome: "client_error", status_code: out.status, latency_ms: ms(), flag })
       return json({ error: out.error }, out.status)
     }
     const latency = ms()
     await logUsage(req, { route: ROUTE, action, outcome: "ok", status_code: 200, latency_ms: latency, triage_run_id: out.result.triage_run_id, flag })
-    return json({ ...out.result, true_category: trueCategory?.topic_group ?? null, offline: false, latency_ms: latency })
+    return json({ ...out.result, client_token: clientToken, true_category: trueCategory?.topic_group ?? null, offline: false, latency_ms: latency })
   } catch (err) {
     if (!(err instanceof N8nUnavailable)) throw err
     if (mode === "free_text") {

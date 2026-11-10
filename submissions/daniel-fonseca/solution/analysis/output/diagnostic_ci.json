@@ -1252,5 +1252,32 @@
    6.55
   ],
   "n_coherent": 1020
+ },
+ "geral": {
+  "dimension": "geral",
+  "value": "Todos os tickets",
+  "n": 8469,
+  "pct_open": 0.3329,
+  "pct_open_ci": [
+   0.3229,
+   0.343
+  ],
+  "pct_pending": 0.3402,
+  "pct_pending_ci": [
+   0.3302,
+   0.3503
+  ],
+  "n_closed": 2769,
+  "csat_mean": 2.9913,
+  "csat_ci": [
+   2.9389,
+   3.0437
+  ],
+  "hours_median_coherent": 6.3417,
+  "hours_ci": [
+   5.9667,
+   6.9
+  ],
+  "n_coherent": 1404
  }
 }

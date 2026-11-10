@@ -154,6 +154,17 @@
    "originKind": "daniel_ia",
    "summary": "Três áreas no lugar de oito páginas:",
    "href": "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca/docs/decisions/0014-arquitetura-do-app.md"
+  },
+  {
+   "number": "0015",
+   "title": "Navegação de um nível, Tickets em formato de conversa e Slack simulado no navegador",
+   "status": "Proposta (decisões do Daniel na revisão de 10/11; aguarda o OK final depois da construção)",
+   "statusKind": "proposta",
+   "date": "2026-11-10",
+   "origin": "Daniel (pente fino do app em produção) · IA (opções de navegação, desenho da conversa e da camada de dados)",
+   "originKind": "daniel_ia",
+   "summary": "Navegação de um nível com submenus: a top bar tem Painel ▾ · Tickets · Como foi feito ▾. O menu abre com um clique, e cada subitem traz uma linha de descrição. No mobile, a barra do rodapé abre uma folha. As visões passam a ter rotas reais (/painel/roi,…",
+   "href": "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca/docs/decisions/0015-tickets-em-conversa.md"
   }
  ],
  "judgment": [
@@ -297,7 +308,7 @@
    "n": 18,
    "date": "2026-11-09",
    "type": "Ideia humana adaptada",
-   "what": "\"Tempo médio na fila\" saiu do custo: espera do cliente não consome hora de agente (custa satisfação) e não há benchmark confiável",
+   "what": "\"Tempo médio na fila\" saiu do custo: espera do cliente não consome hora de atendente (custa satisfação) e não há benchmark confiável",
    "who": "IA",
    "result": "Vira indicador de SLA + recomendação de instrumentação"
   },

@@ -1,0 +1,214 @@
+{
+  "name": "G4 · Heartbeat diário (Supabase ativo)",
+  "nodes": [
+    {
+      "id": "897bedad-44d3-4a97-8ffd-a1805c8cd693",
+      "name": "Todo dia às 06:00 (São Paulo)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        96
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "days",
+              "daysInterval": 1,
+              "triggerAtHour": 6,
+              "triggerAtMinute": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cdbfe2ba-cc1c-49c8-96e0-c5e2fec4c3b1",
+      "name": "Chamar /api/heartbeat da Vercel",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        224,
+        96
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "https://triagem-case-ai-master-case-g4.vercel.app/api/heartbeat?source=n8n",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 20000
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "id": "f94db4b7-1cc0-467e-b1e5-1d4c990d39c0",
+      "name": "Heartbeat ok",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        448,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "12769368-3e9e-4806-aa7b-4b2e0cf7a68d",
+      "name": "Registrar heartbeat direto no banco",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        448,
+        192
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "create",
+        "tableId": "heartbeat",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "source",
+              "fieldValue": "n8n-fallback"
+            },
+            {
+              "fieldId": "ok",
+              "fieldValue": "={{ false }}"
+            },
+            {
+              "fieldId": "detail",
+              "fieldValue": "={{ \"Vercel não respondeu: \" + String($json.error?.message ?? $json.message ?? \"erro desconhecido\").slice(0, 300) }}"
+            }
+          ]
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SEmoMU7WjCZ71Snn",
+          "name": "G4 - Supabase"
+        }
+      }
+    },
+    {
+      "id": "5fd336cc-f488-4712-a935-ea6c87a7d0fe",
+      "name": "Gravar alerta na caixa do painel",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        672,
+        192
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "create",
+        "tableId": "notifications",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "kind",
+              "fieldValue": "heartbeat_failure"
+            },
+            {
+              "fieldId": "channel_intended",
+              "fieldValue": "slack"
+            },
+            {
+              "fieldId": "title",
+              "fieldValue": "Heartbeat da Vercel falhou"
+            },
+            {
+              "fieldId": "body",
+              "fieldValue": "={{ \"O n8n não conseguiu chamar /api/heartbeat às \" + $now.setZone(\"America/Sao_Paulo\").toFormat(\"dd/MM HH:mm\") + \". O banco foi mantido ativo por escrita direta; verifique o deploy da Vercel.\" }}"
+            }
+          ]
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SEmoMU7WjCZ71Snn",
+          "name": "G4 - Supabase"
+        }
+      }
+    },
+    {
+      "id": "1baa1b22-297d-4d7a-afbb-31f7c1465e7b",
+      "name": "Sticky Note d08f8cd3",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        272,
+        192
+      ],
+      "parameters": {
+        "content": "## Heartbeat (ADR-0006)\nO Supabase free pausa por inatividade. O cron da Vercel chama `/api/heartbeat` uma vez por dia; este fluxo é a **redundância**, às 06:00 de São Paulo.\nSe a Vercel falhar, o n8n escreve direto no banco (mantém o projeto ativo) e deixa um alerta na caixa do painel.",
+        "color": 4
+      }
+    }
+  ],
+  "connections": {
+    "Todo dia às 06:00 (São Paulo)": {
+      "main": [
+        [
+          {
+            "node": "Chamar /api/heartbeat da Vercel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chamar /api/heartbeat da Vercel": {
+      "main": [
+        [
+          {
+            "node": "Heartbeat ok",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Registrar heartbeat direto no banco",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar heartbeat direto no banco": {
+      "main": [
+        [
+          {
+            "node": "Gravar alerta na caixa do painel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true,
+    "timezone": "America/Sao_Paulo"
+  },
+  "meta": {
+    "exportedFrom": "n8n (VPS do Daniel, URL fora do repositório)",
+    "workflowId": "LpQK8XX5AZJrUCy8",
+    "active": false,
+    "activeVersionId": null
+  }
+}

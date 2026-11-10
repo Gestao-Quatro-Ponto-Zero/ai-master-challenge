@@ -1,0 +1,314 @@
+{
+  "name": "G4 · Monitor de uso (alertas)",
+  "nodes": [
+    {
+      "id": "89c9ae8d-393f-44fe-af2e-1266521d3cdc",
+      "name": "A cada 15 minutos",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        96
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "3b90157b-cd36-4715-b8e2-e0bb5610bf23",
+      "name": "Calcular sinais de uso",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        224,
+        96
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://awiphrbtvgapuuebiouw.supabase.co/rest/v1/rpc/usage_monitor_check",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "{}",
+        "options": {
+          "timeout": 20000
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SEmoMU7WjCZ71Snn",
+          "name": "G4 - Supabase"
+        }
+      }
+    },
+    {
+      "id": "71847e4c-b62d-417d-b8ee-4b4019cf58ef",
+      "name": "Há alerta novo?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        448,
+        96
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.alert_count }}",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              },
+              "rightValue": 0
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "a46038f1-5087-4e0d-8aca-d4dae248761a",
+      "name": "Separar alertas",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        672,
+        0
+      ],
+      "parameters": {
+        "fieldToSplitOut": "alerts",
+        "include": "noOtherFields",
+        "options": {}
+      }
+    },
+    {
+      "id": "fef95ed9-ffac-46ba-9abe-2dfd71d10c3a",
+      "name": "Uso dentro dos limites",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        672,
+        192
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "f3f5e134-84d3-4255-afd3-7c0d9c239ed0",
+      "name": "Formatar alerta para o Slack",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        896,
+        0
+      ],
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "kind",
+              "name": "kind",
+              "value": "usage_alert",
+              "type": "string"
+            },
+            {
+              "id": "channel_intended",
+              "name": "channel_intended",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "title",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "body",
+              "name": "body",
+              "value": "=:warning: *{{ $json.title }}*\n{{ $json.body }}\n*Verificado em:* {{ DateTime.fromISO($json.payload.checked_at).setZone(\"America/Sao_Paulo\").toFormat(\"dd/MM HH:mm\") }} (São Paulo)",
+              "type": "string"
+            },
+            {
+              "id": "payload",
+              "name": "payload",
+              "value": "={{ $json.payload }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "a905afe5-436a-445e-bd5f-e3231bbe2c81",
+      "name": "Gravar alerta na caixa do painel",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "create",
+        "tableId": "notifications",
+        "dataToSend": "autoMapInputData"
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SEmoMU7WjCZ71Snn",
+          "name": "G4 - Supabase"
+        }
+      }
+    },
+    {
+      "id": "767bb34d-b7da-4c60-8428-7f162270e5bf",
+      "name": "Avisar no Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        1344,
+        0
+      ],
+      "parameters": {
+        "resource": "message",
+        "operation": "post",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "#suporte-alertas"
+        },
+        "messageType": "text",
+        "text": "={{ $(\"Gravar alerta na caixa do painel\").item.json.body }}",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "disabled": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "13997c3d-cb5c-4c33-ba26-f340da7fa954",
+      "name": "Sticky Note 7df7873b",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        608,
+        192
+      ],
+      "parameters": {
+        "content": "## Monitor de uso (PRD §8.1)\nA cada 15 min, a função `usage_monitor_check` calcula 8 sinais (IP com muitas triagens, 429, volume, custo do dia, erros, prompt injection, ações em massa na fila, tamanho do banco) e devolve só os alertas novos.\nO alerta vai para a caixa do painel como Slack simulado. **O monitor só observa e alerta: nenhuma ação contra abuso sem instrução do Daniel.**",
+        "color": 5
+      }
+    }
+  ],
+  "connections": {
+    "A cada 15 minutos": {
+      "main": [
+        [
+          {
+            "node": "Calcular sinais de uso",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calcular sinais de uso": {
+      "main": [
+        [
+          {
+            "node": "Há alerta novo?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Há alerta novo?": {
+      "main": [
+        [
+          {
+            "node": "Separar alertas",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Uso dentro dos limites",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Separar alertas": {
+      "main": [
+        [
+          {
+            "node": "Formatar alerta para o Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatar alerta para o Slack": {
+      "main": [
+        [
+          {
+            "node": "Gravar alerta na caixa do painel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gravar alerta na caixa do painel": {
+      "main": [
+        [
+          {
+            "node": "Avisar no Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "meta": {
+    "exportedFrom": "n8n (VPS do Daniel, URL fora do repositório)",
+    "workflowId": "xchzY3KKbsm0hzyG",
+    "active": true,
+    "activeVersionId": "8b0320c8-bbbb-40f3-9e43-8688c0bb92f3"
+  }
+}

@@ -19,6 +19,7 @@ O campo **Origem** deixa explícito quem trouxe a ideia — isso é parte da evi
 | [0012](0012-decisoes-de-construcao-n8n.md) | n8n: nível 1 com LLM adaptando solução validada (só se existir), lista de bloqueio estreita (0,2% FP), gpt-5.4-mini, texto livre em inglês, heartbeat 06:00 | Aceita | Daniel (decisões) + IA (medição) |
 | [0013](0013-nos-nativos-supabase.md) | n8n: nós nativos do Supabase (tabelas) + HTTP Request com credencial Supabase (funções do RAG via REST); wrapper `match_resolutions_json` | Aceita | Daniel (sugestão) + IA (teste e ajustes) |
 | [0014](0014-arquitetura-do-app.md) | App: 3 áreas com toggles (Painel · Console · Como foi feito), dados do Supabase, frentes paralelas | Proposta | Daniel + IA |
+| [0015](0015-tickets-em-conversa.md) | App: navegação de um nível com submenus, Tickets em formato de conversa, Slack simulado no navegador | Proposta | Daniel (revisão) + IA (desenho) |
 
 ## Modelo
 

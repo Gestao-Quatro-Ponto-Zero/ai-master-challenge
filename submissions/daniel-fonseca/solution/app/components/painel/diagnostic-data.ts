@@ -53,6 +53,20 @@ interface DiagnosticCi {
     hours_median_coherent: number
     hours_ci: Interval
   }
+  /** todos os tickets (opção "Geral" do seletor de dimensão) */
+  geral: {
+    n: number
+    n_closed: number
+    n_coherent: number
+    pct_open: number
+    pct_open_ci: Interval
+    pct_pending: number
+    pct_pending_ci: Interval
+    csat_mean: number
+    csat_ci: Interval
+    hours_median_coherent: number
+    hours_ci: Interval
+  }
 }
 
 const TEST_METRIC: Record<string, MetricKey> = {
@@ -67,6 +81,24 @@ export async function getDiagnosticData(): Promise<{ summary: AppSummary; dimens
   const ciKey = new Map(ci.rows.map((r) => [`${r.dimension}|${r.value}`, r]))
 
   const dimensions = DIMENSIONS.map((d): DimensionData => {
+    if (d.key === "geral") {
+      const g = ci.geral
+      const all: GroupStat = {
+        value: "Todos os tickets",
+        n: g.n,
+        nClosed: g.n_closed,
+        nCoherent: g.n_coherent,
+        pct_open: g.pct_open,
+        pct_open_ci: g.pct_open_ci,
+        pct_pending: g.pct_pending,
+        pct_pending_ci: g.pct_pending_ci,
+        hours: g.hours_median_coherent,
+        hours_ci: g.hours_ci,
+        csat: g.csat_mean,
+        csat_ci: g.csat_ci,
+      }
+      return { ...d, groups: [all], tests: { pct_open: null, pct_pending: null, hours: null, csat: null }, totalGroups: 1 }
+    }
     const rows = cuts.filter((c) => c.dimension === d.key)
     let groups: GroupStat[] = rows.map((c) => {
       const x = ciKey.get(`${c.dimension}|${c.value}`)

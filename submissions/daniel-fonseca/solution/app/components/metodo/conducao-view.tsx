@@ -94,8 +94,8 @@ export async function ConducaoView() {
             <dd className="text-right font-semibold text-text-1">{fmt.usd(total, 2)}</dd>
           </dl>
         </Block>
-        <Block n={6} title="Capacidade da operação" href="/?visao=roi" evidence="Painel › ROI">
-          Com os padrões do ROI, a Resposta automática devolve {fmt.int(roi.hoursSaved)} horas de agente por ano, o equivalente a {fmt.dec(roi.ftesFreed, 2)} agente em tempo integral (1.976 h/ano), em{" "}
+        <Block n={6} title="Capacidade da operação" href="/painel/roi" evidence="Painel › ROI">
+          Com os padrões do ROI, a Resposta automática devolve {fmt.int(roi.hoursSaved)} horas de atendente por ano, o equivalente a {fmt.dec(roi.ftesFreed, 2)} atendente em tempo integral (1.976 h/ano), em{" "}
           {fmt.pct(roi.automatedShare)} do volume.
         </Block>
       </div>

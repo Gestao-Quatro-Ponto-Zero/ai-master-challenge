@@ -22,7 +22,7 @@ test("padrões: ≈ 18,7% de automação, ~810 h e ~R$ 17 mil por ano", () => {
   assert.ok(r.savingsBrl > 16_500 && r.savingsBrl < 17_500, "economia na faixa de R$ 17 mil")
 })
 
-test("agentes liberados = horas ÷ 1.976", () => {
+test("atendentes liberados = horas ÷ 1.976", () => {
   assert.equal(HOURS_PER_FTE_YEAR, 1976)
   const r = computeRoi(defaultInputs(premises, roiInputs))
   near(r.ftesFreed, r.hoursSaved / 1976, 1e-9, "FTE")

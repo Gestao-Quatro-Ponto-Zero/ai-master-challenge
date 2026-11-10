@@ -61,9 +61,9 @@ export function RoiCalculator({ defaults, premises, eligibleRule, autonomyRule }
             <span className="font-sans font-semibold whitespace-nowrap text-gold tabular-nums">{fmt.brl(Math.round(r.savingsBrl / 100) * 100)} por ano</span>.
           </p>
           <dl className="mt-6 grid gap-4 border-t border-border pt-5 sm:grid-cols-3">
-            <Stat label="Horas de agente por ano" value={fmt.int(r.hoursSaved)} hint={`${fmt.int(r.automatedTickets)} tickets resolvidos com autonomia`} />
-            <Stat label="Agentes em tempo integral liberados" value={fmt.dec(r.ftesFreed, 2)} hint="horas ÷ 1.976 h/ano (38 h × 52 semanas)" />
-            <Stat label="Custo por ticket" value={`${fmt.brl(r.costPerTicketBefore, 2)} → ${fmt.brl(r.costPerTicketAfter, 2)}`} hint="custo de agente ÷ volume, antes e depois" />
+            <Stat label="Horas de atendente por ano" value={fmt.int(r.hoursSaved)} hint={`${fmt.int(r.automatedTickets)} tickets resolvidos com autonomia`} />
+            <Stat label="Atendentes em tempo integral liberados" value={fmt.dec(r.ftesFreed, 2)} hint="horas ÷ 1.976 h/ano (38 h × 52 semanas)" />
+            <Stat label="Custo por ticket" value={`${fmt.brl(r.costPerTicketBefore, 2)} → ${fmt.brl(r.costPerTicketAfter, 2)}`} hint="custo de atendente ÷ volume, antes e depois" />
           </dl>
         </div>
 
