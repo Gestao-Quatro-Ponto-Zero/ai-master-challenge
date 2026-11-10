@@ -7,9 +7,10 @@ NOTA = 0,70 × FIT + 0,30 × HEAT + BONUS, de 0 a 120.
 
 | Item | Valor |
 |---|---|
-| Execução ativa | `score_execucoes.id = 9`, versão `lead-score-1.0`, referência 31/12/2017, com os donos depois da redistribuição de domingo |
+| Execução ativa | `score_execucoes.id = 11`, versão `lead-score-1.0`, referência 31/12/2017, com os 35 vendedores na redistribuição (decisão 49) |
 | Arquivo de carga | `scoring/carga/score_2017-12-31.json` |
-| sha256 | `de9f5962d01a271fc0ddaa4728bea830f242472c0841282b1dbe851d25d59858` |
+| sha256 | `f78eb182aa4cc02d6ee3d190c96322751aca72c4a651485b4d87217ec62ede79` |
+| Execução 9 | sha256 `de9f5962d01a271fc0ddaa4728bea830f242472c0841282b1dbe851d25d59858` (redistribuição com 30 vendedores). O id 10 foi gasto pelo ensaio |
 | Execução 7 | sha256 `f3aab6b5606d0cc2d1f8194e181eb79ca9e61c2f46f7031adf0af57e943e018f` (donos antes da redistribuição). Os ids 6 e 8 foram gastos pelos ensaios, que não deixaram linha |
 | Execução anterior | `id = 5`, sha256 `73ce4a8934a172fe352c0bf3156d5941ae778cccf888d97c303fe899fee8aa32` (mesmas notas, texto antigo dos motivos). O id 6 foi gasto pelo ensaio, que não deixou linha |
 | Como | Uma transação: `set role system_carga` → `system_iniciar_contexto_sistema` → só INSERT nas 6 tabelas `score_*` → `score_ativar_execucao` → conferências → COMMIT. Antes, um ensaio completo com ROLLBACK |
@@ -29,6 +30,39 @@ Conferências antes do COMMIT, todas aprovadas:
 - nota entre 0 e 89 (dentro de 0–120);
 - 0 deals com dono diferente do atual;
 - execução ativa = a carregada.
+
+## Decisão 49: os 35 vendedores na redistribuição (execução 11)
+
+- **Regra:**
+  - elegíveis = os 35 vendedores ativos do time;
+  - quem não tem histórico na janela (Mei-Mei Johns, Elizabeth Anderson, Natalya Ivanova, Carol Thompson, Carl Lin) vale FIT 50 em todo lead, como os sem destaque;
+  - motivo: "Vendedor sem histórico: encaixe neutro (50).";
+  - limite da semana = ativos ÷ 35, arredondado para cima = 23.
+  - Mesma regra no Python (`regra.py`, `redistribuir.py`) e no TS (`src/lib/score/`), com teste de paridade do plano.
+- **Proteção nova:** a carga e a redistribuição param se a data de negócio do banco (`system_data_negocio()`) for diferente da data do cálculo.
+- **Gravação:**
+  - a 1ª tentativa caiu no meio do ensaio (conexão perdida) e não gravou nada;
+  - depois: ensaio com ROLLBACK (261 de 261) e COMMIT com 261 trocas, 0 recusadas e o motivo "Redistribuição de domingo.";
+  - `acao_reatribuicoes` com esse motivo: 475 → 736;
+  - `core_deals`: 8.801 deals (2.089 abertos).
+
+| | Antes (execução 9) | Depois (execução 11) |
+|---|---|---|
+| Trocas | — | 261 |
+| Leads de cada um dos 5 sem histórico | 0 | 23 (Mei-Mei Johns, Elizabeth Anderson, Natalya Ivanova, Carol Thompson, Carl Lin) |
+| Ativos por vendedor | 0 a 31 (35 vendedores) | 9 a 31 |
+| FIT médio dos leads sem contato | 77,8 | 73,4 |
+| Leads sem contato com FIT ≥ 75 | 265 | 235 |
+
+- **Nas pontas:**
+  - Wilburn Farren (sem destaque) fica com 9;
+  - Rosalina Dieter, com 19;
+  - Vicki Laflamme, Kami Bicknell e Zane Levy ficam acima de 23 (24, 25 e 31), por causa dos ativos em Engaging que não mudam.
+- **Execução 11:**
+  - 2.089 deals, nota de 0 a 89, 0 donos diferentes;
+  - componentes 17.791, motivos 6.041 (115 com "Vendedor sem histórico");
+  - top 5: 175 deals (35 vendedores), 94,9% ativos;
+  - FIT ≥ 75: 479.
 
 ## Redistribuição de domingo (31/12/2017) e execução 9
 

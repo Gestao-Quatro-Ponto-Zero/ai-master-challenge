@@ -8,6 +8,7 @@ import { atendeConta, atendeDeal } from "@/lib/filtro/aplicar";
 import type { Etiquetas } from "@/lib/filtro/etiquetas";
 import type { Contexto, Modo } from "@/lib/filtro/interpretar";
 import { rotularLinhaDoTempo } from "@/lib/etapas";
+import { dataNegocioAgora } from "@/lib/relogio";
 import { HORAS_DESFAZER_LOTE, type LoteBruto, type TipoLote } from "@/lib/lotes";
 import { funil, numerosPainel } from "@/lib/painel";
 import { compararPrioridade, entraNaListaDoGestor, explicacaoDoItem, grupoPrioridade, type ItemOrdem } from "@/lib/prioridades";
@@ -100,7 +101,8 @@ async function estado(): Promise<Estado> {
 
 /** Na reserva em arquivo, escrever só com a opção explícita de memória. */
 export const escritaEmMemoria = (): boolean => process.env.G4_ESCRITA_EM_MEMORIA === "1";
-export const dataNegocio = (): string => CONFIG.dataReferencia;
+/** Data de negócio de hoje: o relógio anda 1 dia por dia real a partir da âncora (decisão 48). */
+export const dataNegocio = (): string => dataNegocioAgora();
 const diaReal = (): string => new Date().toLocaleDateString("sv-SE", { timeZone: CONFIG.fusoHorario });
 const agoraIso = (): string => new Date().toISOString();
 

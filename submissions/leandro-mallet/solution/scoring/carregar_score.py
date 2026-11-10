@@ -35,6 +35,10 @@ def carregar(caminho: Path, aplicar: bool) -> dict:
     try:
         cur.execute("set role system_carga")
         cur.execute("select system_iniciar_contexto_sistema(%s::uuid)", (corr,))
+        cur.execute("select system_data_negocio()")
+        data_banco = str(cur.fetchone()[0])
+        if data_banco != c["reference_date"]:
+            raise SystemExit(f"Data de negócio do banco ({data_banco}) diferente da data do cálculo: refaça o cálculo.")
         cur.execute(
             "insert into score_execucoes (reference_date, gerado_em, versao, pesos, parametros, arquivo_sha256, observacao) "
             "values (%s, now(), %s, %s, %s, %s, %s) returning id",

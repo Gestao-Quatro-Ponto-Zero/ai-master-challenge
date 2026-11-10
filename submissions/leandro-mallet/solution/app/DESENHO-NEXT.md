@@ -74,10 +74,15 @@ solution/app/
       desfazer.ts         formato do token do "Desfazer"
       lotes.ts            rótulos, prazo de 24 horas e quem vê cada lote
       prioridades.ts      contador e ordem das Prioridades do dia (a mesma da 0030) e a explicação do item
+      relogio.ts          relógio do CRM (decisão 48): data de negócio = âncora + dias reais
+      score/              motor do lead score em TypeScript (sessão #3): regra.ts, movimentos.ts
       etapas.ts           as 5 etapas da tela (O-31): Novo lead e Atendimento = Prospecting sem e com contato
       validacao.ts        frase específica para erro de campo na API
       filtro/             etiquetas.ts, interpretar.ts (frase → etiquetas), aplicar.ts
     server/               só roda no servidor (import "server-only")
+      motor/              rotina diária do score (O-41): rotina.ts (transação, idempotência, falha), motor-score.ts
+                          (liga src/lib/score da #3 ao banco), conexao.ts (DATABASE_URL_ROTINA), autorizacao.ts (CRON_SECRET),
+                          contrato.ts e instalado.ts; rotas /api/rotina/diaria (cron, vercel.json) e /api/rotina/rodar-agora
       banco.ts            cliente do Supabase (service_role só aqui), tradução de erros e correlation_id
       repositorio.ts      a única porta das telas: escolhe banco ou reserva e faz as contas das telas
       repositorio-banco.ts    leitura pela view e pelas tabelas; escrita só pelas functions do banco

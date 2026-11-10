@@ -28,7 +28,7 @@ def main():
     ap.add_argument("--aplicar", action="store_true")
     a = ap.parse_args()
     d = regra.preparar(*cs.ler_banco())
-    plano = redistribuir.planejar(d, cs.REFERENCIA)
+    plano = redistribuir.planejar(d, cs.REFERENCIA, cs.ler_vendedores_ativos())
     trocas = [t for t in plano["trocas"] if t["muda"]]
     corr = str(uuid.uuid4())
     con = psycopg2.connect(cs.url_banco())
@@ -36,6 +36,10 @@ def main():
     try:
         cur.execute("set role system_carga")
         cur.execute("select system_iniciar_contexto_sistema(%s::uuid)", (corr,))
+        cur.execute("select system_data_negocio()")
+        data_banco = str(cur.fetchone()[0])
+        if data_banco != str(cs.REFERENCIA.date()):
+            raise SystemExit(f"Data de negócio do banco ({data_banco}) diferente da data do cálculo: refaça o cálculo.")
         cur.execute("select score_execucao_ativa()")
         execucao = cur.fetchone()[0]
         cur.execute("select count(*) from core_deals")

@@ -161,7 +161,7 @@ Decisão do Leandro: "o recálculo sempre divide igual entre vendedores... calcu
   - limite da semana = leads ativos ÷ vendedores, arredondado para cima (hoje 798 ÷ 30 = 27), contando os ativos que cada vendedor já tem;
   - os pares lead × vendedor são ordenados do maior FIT para o menor, e cada lead vai para o primeiro vendedor abaixo do limite;
   - lead travado pelo manager fica fora.
-- Considera os 30 vendedores com fechamentos nos últimos 3 meses. Os 5 sem nenhum deal no dataset ficam fora, porque não têm FIT. Os 2 sem destaque (FIT 50 para tudo) entram e recebem os leads que sobram.
+- Elegíveis: os 35 vendedores ativos do time (decisão 49). Quem não tem destaque (2) ou não tem histórico (os 5 sem nenhum deal no dataset) entra com FIT 50 em todo lead, e o motivo diz "Vendedor sem histórico: encaixe neutro (50).". O limite da semana passa a ser ativos ÷ 35. Antes da decisão 49, só os 30 com fechamentos na janela entravam.
 - **Resultado hoje:**
   - 482 dos 500 mudam de dono, e 29 vendedores recebem;
   - ativos por vendedor passam de 0–111 para 17–31;

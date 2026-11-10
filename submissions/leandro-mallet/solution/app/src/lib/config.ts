@@ -3,6 +3,8 @@
 export const CONFIG = {
   /** Relógio do CRM no modo demonstração (P6): "hoje" = último dia com registro no dataset. */
   dataReferencia: "2017-12-31",
+  /** Relógio que anda (decisão 48, migration 0034): no dia real ancoraReal, a data de negócio é ancoraNegocio. */
+  relogio: { ancoraReal: "2026-11-10", ancoraNegocio: "2017-12-31" },
   fusoHorario: "America/Sao_Paulo",
   faixasNota: { alta: 70, media: 40 },
   /** precoMinQuente null = super hot sem critério de ticket (O-24). */

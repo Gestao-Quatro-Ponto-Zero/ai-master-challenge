@@ -81,6 +81,8 @@ Legenda: **D** = vem do dataset · **C** = calculado · **N** = dado novo do CRM
 - Idade, dias sem contato e filtros de data contam a partir dela.
 - Contato, comentário e deal registrados agora ganham duas datas: a **data do negócio** (a data de referência, usada nas contas) e o momento real (usado na auditoria).
 - Sem isso, um contato registrado hoje apareceria "8 anos depois" de todos os outros dados.
+- **Atualizado (decisão 48, O-41, migration 0034): o relógio anda.** A data de negócio avança 1 dia por dia real, ancorada em 10/11/2026 (America/Sao_Paulo) = 31/12/2017: 17/11/2026 = 07/01/2018 (o 1º domingo), e assim por diante. As âncoras ficam em `config_parametros` (`data_ancora_real`, `data_ancora_negocio`); `system_data_negocio()` e o app (`src/lib/relogio.ts`) fazem a mesma conta. Dias no pipeline, faixas, linha do tempo e o "Dados até …" do Painel andam juntos.
+- **Rotina diária do score (O-41):** cron da Vercel todo dia às 03:00 de Brasília (`/api/rotina/diaria`, protegida por `CRON_SECRET`). Numa transação com o papel de carga (`g4_rotina` → `system_carga`): no domingo de negócio, o job semanal (FIT da janela de 3 meses, redistribuição, padrões de conta); todo dia, o diário (HEAT e nota novos em execução nova, repasse por mudança de faixa sem contato, lead novo sem dono roteado). Um dia de negócio roda uma vez só (registro em `system_eventos`); erro desfaz tudo e registra a falha. Teste manual: `POST /api/rotina/rodar-agora` com o mesmo segredo. O cálculo do score é o motor da #3 (`src/lib/score/`), ligado em `src/server/motor/instalado.ts`.
 
 ### 1.4 O que cada perfil vê (vale para todas as telas)
 

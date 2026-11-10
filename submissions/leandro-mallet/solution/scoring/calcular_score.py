@@ -68,6 +68,19 @@ def ler_banco() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     return deals, contas, produtos
 
 
+def ler_vendedores_ativos() -> list[str]:
+    """Vendedores ativos do time (os elegíveis da redistribuição de domingo, decisão 49)."""
+    import psycopg2
+    con = psycopg2.connect(url_banco())
+    con.set_session(readonly=True)
+    try:
+        cur = con.cursor()
+        cur.execute("select distinct v.nome from core_vendedores v join config_usuarios u on u.vendedor_nome = v.nome and u.ativo order by 1")
+        return [r[0] for r in cur.fetchall()]
+    finally:
+        con.close()
+
+
 def montar_carga(res: dict, produtos: pd.DataFrame, fonte: str) -> dict:
     deals = res["deals"].sort_values("opportunity_id")
     cel, pad = res["celulas"], res["padroes"]

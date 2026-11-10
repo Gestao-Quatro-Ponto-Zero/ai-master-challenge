@@ -130,11 +130,13 @@ def fit_do_lead(cel: Celulas, vendedor: str, lead: pd.Series) -> dict:
                 "taxa_encolhida": float(c.taxa_encolhida) if c else None, "desvio": float(c.desvio) if c else 0.0}
         (usadas if c is not None and c.ok else fora).append(item)
     if not cel.tem_destaque(vendedor):
-        return {"fit": 50.0, "sem_destaque": True, "usadas": usadas, "fora": fora, "media": 0.0, "destaque": None}
+        # sem destaque ou sem histórico na janela (decisão 49: os sem histórico entram com FIT 50 em todo lead)
+        return {"fit": 50.0, "sem_destaque": True, "sem_historico": vendedor not in cel.taxa_vendedor,
+                "usadas": usadas, "fora": fora, "media": 0.0, "destaque": None}
     dest = cel.destaque.loc[vendedor]
     media = float(np.mean([u["desvio"] for u in usadas])) if usadas else 0.0
     fit = float(np.clip(50 + 50 * media / dest["desvio"], 0, 100))
-    return {"fit": fit, "sem_destaque": False, "usadas": usadas, "fora": fora, "media": media,
+    return {"fit": fit, "sem_destaque": False, "sem_historico": False, "usadas": usadas, "fora": fora, "media": media,
             "destaque": {"dim": dest["dim"], "valor": dest["valor"], "n": int(dest["n"]), "ganhos": int(dest["ganhos"]),
                          "taxa_encolhida": float(dest["taxa_encolhida"]), "desvio": float(dest["desvio"])}}
 
@@ -267,7 +269,9 @@ def motivos(l: dict) -> list[tuple[str, str]]:
     """
     f = l["detalhe_fit"]
     saida = []
-    if f["sem_destaque"]:
+    if f.get("sem_historico"):
+        saida.append(("fit", "Vendedor sem histórico: encaixe neutro (50)."))
+    elif f["sem_destaque"]:
         saida.append(("fit", "O vendedor não tem um destaque com casos suficientes nos últimos 3 meses: o encaixe fica neutro (50)."))
     elif not f["usadas"]:
         saida.append(("fit", "Ainda não há casos suficientes para medir o encaixe deste lead com o vendedor: nota neutra (50)."))

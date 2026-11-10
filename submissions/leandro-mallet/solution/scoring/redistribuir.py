@@ -3,7 +3,7 @@
 Uso (a partir da pasta solution/):  python scoring/redistribuir.py      # só leitura: calcula e grava o plano
 
 Método (desenho.md, "Recálculo de domingo"):
-- elegíveis: vendedores com fechamentos na janela de 3 meses (os sem destaque entram com FIT 50);
+- elegíveis: os vendedores ativos do time; sem destaque ou sem histórico entram com FIT 50 (decisão 49);
 - limite da semana = ativos ÷ elegíveis, arredondado para cima, contando os ativos que cada um já tem;
 - pares lead × vendedor do maior FIT para o menor; cada lead vai ao primeiro vendedor abaixo do limite.
 Saída: scoring/carga/redistribuicao_<data>.json. Gravar exige função de banco própria (ver validacao.md).
@@ -22,10 +22,11 @@ import calcular_score as cs  # noqa: E402
 import regra  # noqa: E402
 
 
-def planejar(d: pd.DataFrame, referencia: pd.Timestamp) -> dict:
+def planejar(d: pd.DataFrame, referencia: pd.Timestamp, vendedores: list[str] | None = None) -> dict:
     res = regra.calcular(d, referencia)
     cel, deals = res["celulas"], res["deals"].set_index("opportunity_id")
-    elegiveis = sorted(cel.taxa_vendedor)
+    # elegíveis: os vendedores ativos do time (decisão 49); sem lista, os que têm fechamentos na janela
+    elegiveis = sorted(vendedores) if vendedores else sorted(cel.taxa_vendedor)
     sem_contato = d[(d["estagio"] == "Prospecting") & d["ultimo_contato_em"].isna()]
     alvo = sem_contato["opportunity_id"].tolist()
     ativos = deals[deals["ativo"]]
@@ -55,9 +56,9 @@ def planejar(d: pd.DataFrame, referencia: pd.Timestamp) -> dict:
 def main():
     deals, contas, produtos = cs.ler_banco()
     d = regra.preparar(deals, contas, produtos)
-    p = planejar(d, cs.REFERENCIA)
+    p = planejar(d, cs.REFERENCIA, cs.ler_vendedores_ativos())
     t = pd.DataFrame(p["trocas"])
-    antes = p["deals"][p["deals"]["ativo"]].groupby("vendedor_nome").size()
+    antes = p["deals"][p["deals"]["ativo"]].groupby("vendedor_nome").size().reindex(p["elegiveis"], fill_value=0)
     depois_dono = {r.opportunity_id: r.para for r in t.itertuples()}
     dd = p["deals"][p["deals"]["ativo"]].copy()
     dd["dono"] = [depois_dono.get(o, v) for o, v in zip(dd.index, dd["vendedor_nome"])]
