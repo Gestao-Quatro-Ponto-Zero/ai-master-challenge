@@ -13,7 +13,7 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "check:tokens": "node scripts/check-tokens.mjs"
+    "dados": "node scripts/dados.mjs"
   },
   "dependencies": {
     "next": "16.4.3",

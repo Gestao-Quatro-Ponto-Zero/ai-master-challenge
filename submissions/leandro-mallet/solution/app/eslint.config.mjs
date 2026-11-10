@@ -4,8 +4,8 @@ import nextTs from "eslint-config-next/typescript";
 // FE-03: nenhuma cor nem tamanho de fonte solto fora do tema (src/tema/).
 const SOLTO = String.raw`(#[0-9a-fA-F]{3,8}\b|\brgba?\(|\bhsla?\(|text-\[\d|bg-\[#|text-\[#|border-\[#)`;
 
-export default [
-  { ignores: [".next/**", "node_modules/**", "prototipo-html/**", "supabase/**", "sample/**", "next-env.d.ts"] },
+const config = [
+  { ignores: [".next/**", "node_modules/**", "sample/**", "scripts/**", "data/**", "next-env.d.ts"] },
   ...next,
   ...nextTs,
   {
@@ -20,3 +20,5 @@ export default [
     },
   },
 ];
+
+export default config;

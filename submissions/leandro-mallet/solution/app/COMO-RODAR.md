@@ -1,91 +1,67 @@
-# Foco da Semana: como rodar
+# G4 Sight: como rodar
 
-Uma página web estática (HTML, CSS e JavaScript puro). Não tem build, não tem `npm install` e não tem dependência além de um navegador e de um servidor de arquivos.
+CRM do time comercial com a prioridade embutida no pipeline. App em Next.js 16 (App Router), React 19, TypeScript strict e Tailwind 4.
 
-## Rodar em 1 minuto
+## Rodar em 3 comandos
 
-Pré-requisito: Python 3 (qualquer versão recente; só para servir os arquivos).
+Pré-requisito: Node 20.9 ou mais novo.
 
 ```bash
-cd submissions/leandro-mallet/solution
-python -m http.server 8000
+cd submissions/leandro-mallet/solution/app
+npm ci
+npm run dev
 ```
 
-Abra **http://localhost:8000/app/** no navegador.
+Abra **http://localhost:3010**. Não precisa de banco nem de senha: escolha um perfil (vendedor, manager ou admin) e use.
 
-Sem Python, qualquer servidor estático na pasta `solution/` funciona, por exemplo `npx serve .`.
+Para a versão de produção: `npm run build` e depois `npm start`.
 
-> Abrir o `index.html` com dois cliques não funciona: o navegador bloqueia a leitura do arquivo de dados quando a página vem direto do disco. Nesse caso a própria tela explica o que fazer e deixa escolher o JSON manualmente.
+## O que já está pronto (primeira fatia)
 
-## De onde vêm os dados
+| Tela | O que faz |
+|---|---|
+| **Quem é você?** | Escolha de perfil sem login: vendedor ou manager escolhem o nome; admin entra direto. |
+| **Painel** | Oito números (leads novos, em negociação, fechamentos, conversão, receita, pipeline aberto, total e em risco de esfriar), o funil por estágio e as **Prioridades do dia**. O ✓ pede o tipo de atividade e um comentário, salva o horário e vai para a linha do tempo do lead; o ✗ pula o deal hoje. Manager e admin veem também o quadro por vendedor. |
+| **Pipeline** | Deals abertos em duas colunas (Prospecção e Em negociação), cartão com nome, contato, barra da nota, data de abertura e ícone (super hot, em risco de esfriar ou esfriou). O estágio muda arrastando o cartão ou pelo seletor. Filtro em campo livre, que vira etiquetas removíveis. |
+| **Modal do deal** | Abre ao clicar no deal (ou pelo link `?deal=ID`): linha do tempo, explicação da nota, comentários (postar e apagar) e ações (Liguei, Requalifiquei, Desisti). |
 
-O app lê, nesta ordem:
+Leads (com a aba Contas, importação e ações em lote) vêm na fatia seguinte. A especificação completa está em [ESPEC-TELAS.md](ESPEC-TELAS.md).
 
-1. `?dados=<caminho>` na URL, se informado (útil para testar outro arquivo);
-2. `../data/scored/deals_scored.json`: o score oficial, gerado em `solution/scoring/`;
-3. `sample/deals_scored.sample.json`: um exemplo com os deals abertos reais e um score provisório. Quando ele é usado, aparece uma faixa amarela no topo avisando.
+## Dados
 
-Para regenerar o exemplo (a partir de `solution/`): `python app/sample/gerar_sample.py`.
+- O app lê `data/base.json` (8.800 deals, 85 contas, 35 vendedores e 7 produtos), gerado a partir dos CSVs limpos por `npm run dados -- <pasta solution/data>`.
+- Se existir `data/deals_scored.json` (o arquivo de notas do score), o app mostra a nota, o FIT, o HEAT e o bônus. Sem ele, aparece "Sem nota ainda" e as prioridades seguem a ordem: super hot, em risco e maior valor.
+- "Hoje" é 31/12/2017, o último dia com registro no dataset.
+- **Nesta versão, as mudanças ficam em memória no servidor:** ações, comentários, estágios e prioridades somem ao reiniciar o servidor. A ligação com o banco entra depois, só na camada de dados (`src/server/`), sem mexer nas telas.
 
-## O que tem na tela
-
-| Tela | Para quem | O que mostra |
-|---|---|---|
-| **Meu dia** | Vendedor | Escolhe o nome e vê os 5 deals para focar hoje, cada um com 2–3 motivos em frase simples; a lista "Requalificar ou desistir"; atalho para a lista completa. |
-| **Visão do manager** | Manager | Pipeline do time (deals, valor esperado, % esfriando), deals esfriando que ainda valem salvar e um quadro por vendedor. Tocar num nome abre o dia daquele vendedor. |
-| **Todos os deals** | Ambos | Tabela com busca, filtro por ação e ordenação por score, valor, dias ou vendedor. |
-
-- **Filtros** de região, manager e vendedor no topo valem para todas as telas e ficam no link (dá para mandar `.../app/#dia?vendedor=Anna+Snelling` para a pessoa).
-- **Explicação do score:** tocar em qualquer deal abre o detalhe com os motivos, os pontos de cada componente (chance de fechar, valor em jogo, tempo no pipeline, histórico da conta) e os dados do deal. A barra colorida ao lado de cada score mostra a mesma divisão em miniatura.
-- O app lembra o último vendedor escolhido neste navegador.
-
-## Formato esperado do arquivo
-
-```json
-{
-  "reference_date": "2017-12-31",
-  "generated_at": "2026-11-09T21:00:00+00:00",
-  "component_weights": { "chance": 40, "valor": 25, "tempo": 20, "conta": 15 },
-  "deals": [
-    {
-      "opportunity_id": "FZWU2I30",
-      "sales_agent": "Zane Levy", "manager": "Summer Sewald", "regional_office": "West",
-      "product": "GTX Plus Pro", "account": "The New York Inquirer", "sector": "medical",
-      "deal_stage": "Engaging", "engage_date": "2017-12-10", "days_in_pipeline": 21,
-      "expected_value": 3525,
-      "score": 70,
-      "components": { "chance": 26, "valor": 14, "tempo": 20, "conta": 10 },
-      "reasons": ["frase simples 1", "frase simples 2"],
-      "flags": ["esfriando", "sem_conta"],
-      "action": "focar"
-    }
-  ]
-}
-```
-
-- `component_weights` é opcional: quando existe, o detalhe mostra "26 de 40 pontos". Sem ele, o app detecta sozinho se os componentes somam o score (pontos) ou se cada um vai de 0 a 100.
-- Componentes com outros nomes também aparecem (com o nome do campo e uma cor neutra).
-- `action` aceita `focar`, `requalificar` e `desistir`. `flags` conhecidas: `esfriando`, `sem_conta`, `sem_data`; outras aparecem com o próprio texto.
-
-## Como o "Meu dia" escolhe os deals
-
-- **Seus 5 deals para hoje:** os 5 de maior score com ação `focar`. Se houver menos de 5, completa com os de maior score marcados para `requalificar`.
-- **Requalificar:** ordenados por valor esperado (o que mais vale salvar primeiro).
-- **Desistir:** ordenados por tempo aberto (os mais parados primeiro).
-
-## Arquivos
+## Organização do código
 
 ```
-app/
-  index.html       estrutura da página
-  styles.css       visual (claro e escuro, celular e computador)
-  app.js           leitura do arquivo, filtros, telas e detalhe do deal
-  sample/          arquivo de exemplo e o script que o gera
-  COMO-RODAR.md    este arquivo
+src/
+  tema/tema.css        único arquivo com cores, fontes, tamanhos, raios e sombras (marca G4, fundo branco)
+  app/                 páginas (/, /painel, /pipeline) e rotas de API
+  components/          peças de tela
+  lib/                 funções puras: cálculos, números do painel, filtro livre por regras
+  server/              só roda no servidor: fonte dos dados, repositório, perfil e base das rotas
+data/                  dados que o app lê
+scripts/               dados.mjs (traz os CSVs limpos) e espelhar-para-drive.ps1
 ```
 
-## Limitações
+## Cuidados de segurança
 
-- Só leitura: o app não grava nada no CRM. Para atualizar, gere um novo `deals_scored.json`.
-- Sem login: qualquer pessoa com o link vê o pipeline de todos. Em produção, cada vendedor veria só o próprio (e o manager, o time).
-- A fonte é carregada do Google Fonts; sem internet, o navegador usa a fonte do sistema e tudo continua funcionando.
+- Nenhuma fonte de dados vem da URL, e nenhum texto digitado entra na página como HTML.
+- Toda rota de escrita valida a entrada, tem limite por endereço de rede (60 por minuto) e gera o código de rastreio no servidor.
+- O usuário "sistema" nunca é aceito vindo da tela.
+- Sem login, o perfil organiza a tela e assina as ações, mas não protege nada: qualquer pessoa pode escolher qualquer nome.
+
+## Checagens
+
+```bash
+npm run typecheck
+npm run lint
+npm run build
+```
+
+## Onde o app é desenvolvido
+
+As dependências (`node_modules`) e o build (`.next`) não podem ficar no Google Drive, e o volume do Drive não aceita junção. Por isso o app é editado e rodado numa cópia local fora do Drive, e `scripts/espelhar-para-drive.ps1` copia só o código para esta pasta. Esta pasta é um espelho de mão única.

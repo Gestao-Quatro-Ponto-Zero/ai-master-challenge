@@ -30,7 +30,7 @@ interface DealEstado extends DealBase {
   atualizadoEm: string;
   atualizadoPor: string | null;
 }
-interface AcaoReg { id: number; dealId: string; usuarioId: number; autor: string; acao: TipoAcao; nota: string | null; data: string; criadoEm: string; diaReal: string; desfeitaEm: string | null }
+interface AcaoReg { id: number; dealId: string; usuarioId: number; autor: string; acao: TipoAcao; tipoAtividade: string | null; nota: string | null; data: string; criadoEm: string; diaReal: string; desfeitaEm: string | null }
 interface ComentarioReg { id: number; dealId: string; usuarioId: number; autor: string; texto: string; data: string; criadoEm: string; editado: boolean; removidoEm: string | null; removidoPor: number | null }
 interface DealTagReg { id: number; dealId: string; tagId: number; criadoEm: string; removidaEm: string | null }
 interface EventoReg { dealId: string; data: string; momento: string; tipo: EventoLinhaDoTempo["tipo"]; descricao: string; autor: string }
@@ -267,7 +267,10 @@ export async function detalheDeal(id: string, u: Usuario): Promise<DealDetalhe> 
   for (const e of eventos) linha.push({ data: e.data, momento: e.momento, tipo: e.tipo, descricao: e.descricao, autor: e.autor, desfeito: false });
   const rotuloAcao: Record<TipoAcao, string> = { liguei: "Liguei", requalifiquei: "Requalifiquei", desisti: "Desisti", prioridade_feita: "Feito na prioridade do dia", prioridade_pulada: "Pulado na prioridade do dia" };
   for (const a of est.acoes.filter((x) => x.dealId === id))
-    linha.push({ data: a.data, momento: a.criadoEm, tipo: "acao", descricao: rotuloAcao[a.acao] + (a.nota ? ` — "${a.nota}"` : ""), autor: a.autor, desfeito: !!a.desfeitaEm });
+    linha.push({
+      data: a.data, momento: a.criadoEm, tipo: "acao", autor: a.autor, desfeito: !!a.desfeitaEm,
+      descricao: (a.tipoAtividade ? `${CONFIG.tiposAtividade.find((t) => t.codigo === a.tipoAtividade)?.rotulo ?? a.tipoAtividade} (prioridade do dia)` : rotuloAcao[a.acao]) + (a.nota ? ` — "${a.nota}"` : ""),
+    });
   const comentarios = est.comentarios.filter((c) => c.dealId === id && !c.removidoEm);
   for (const c of comentarios) linha.push({ data: c.data, momento: c.criadoEm, tipo: "comentario", descricao: c.texto + (c.editado ? " (editado)" : ""), autor: c.autor, desfeito: false });
   linha.sort((a, b) => (a.data ?? "").localeCompare(b.data ?? "") || (a.momento ?? "").localeCompare(b.momento ?? ""));
@@ -570,7 +573,7 @@ export async function registrarAcao(u: Usuario, dealId: string, acao: "liguei" |
   const d = travar(est, dealId);
   if (!ABERTOS.includes(d.estagio)) throw new ErroCRM("GS422", "Só é possível registrar ação em deal aberto.");
   if (nota && nota.length > 280) throw new ErroCRM("GS400", "A nota pode ter até 280 caracteres.");
-  const r: AcaoReg = { id: est.seq++, dealId, usuarioId: u.id, autor: u.nome, acao, nota: nota?.trim() || null, data: dataNegocio(), criadoEm: agoraIso(), diaReal: diaReal(), desfeitaEm: null };
+  const r: AcaoReg = { id: est.seq++, dealId, usuarioId: u.id, autor: u.nome, acao, tipoAtividade: null, nota: nota?.trim() || null, data: dataNegocio(), criadoEm: agoraIso(), diaReal: diaReal(), desfeitaEm: null };
   est.acoes.push(r);
   recalcularContato(est, d);
   const token = registrarDesfazer(est, u, () => {
@@ -581,7 +584,10 @@ export async function registrarAcao(u: Usuario, dealId: string, acao: "liguei" |
 }
 
 function recalcularContato(est: Estado, d: DealEstado) {
-  const contatos = est.acoes.filter((a) => a.dealId === d.id && !a.desfeitaEm && (CONFIG.acoesContato as readonly string[]).includes(a.acao));
+  const contaComoContato = (a: AcaoReg) =>
+    (CONFIG.acoesContato as readonly string[]).includes(a.acao) ||
+    (a.acao === "prioridade_feita" && !!CONFIG.tiposAtividade.find((t) => t.codigo === a.tipoAtividade)?.contaComoContato);
+  const contatos = est.acoes.filter((a) => a.dealId === d.id && !a.desfeitaEm && contaComoContato(a));
   d.ultimoContatoCrm = contatos.map((a) => a.data).sort().at(-1) ?? null;
 }
 
@@ -723,7 +729,10 @@ export async function desfazerLote(u: Usuario, loteId: number) {
   return { restaurados, pulados };
 }
 
-export async function marcarPrioridade(u: Usuario, dealId: string, resultado: "feita" | "pulada", nota?: string | null) {
+export async function marcarPrioridade(
+  u: Usuario, dealId: string, resultado: "feita" | "pulada",
+  registro: { tipoAtividade?: string | null; comentario?: string | null } = {},
+) {
   exigirEscrita();
   const est = await estado();
   const hoje = diaReal();
@@ -732,9 +741,21 @@ export async function marcarPrioridade(u: Usuario, dealId: string, resultado: "f
     throw new ErroCRM("GS422", "Este item já foi marcado hoje.");
   const d = travar(est, dealId);
   if (!ABERTOS.includes(d.estagio)) throw new ErroCRM("GS422", "Este deal já foi encerrado.");
-  const r: AcaoReg = { id: est.seq++, dealId, usuarioId: u.id, autor: u.nome, acao: resultado === "feita" ? "prioridade_feita" : "prioridade_pulada", nota: nota?.trim() || null, data: dataNegocio(), criadoEm: agoraIso(), diaReal: hoje, desfeitaEm: null };
+  const comentario = registro.comentario?.trim() || null;
+  const tipo = registro.tipoAtividade || null;
+  if (resultado === "feita") {
+    // Decisão 37: o ✓ registra o que foi feito (tipo de atividade e comentário obrigatórios; o horário é salvo).
+    if (!tipo || !CONFIG.tiposAtividade.some((t) => t.codigo === tipo)) throw new ErroCRM("GS400", "Escolha o tipo de atividade.");
+    if (!comentario) throw new ErroCRM("GS400", "Escreva o que foi feito.");
+  }
+  if (comentario && comentario.length > 280) throw new ErroCRM("GS400", "O comentário pode ter até 280 caracteres.");
+  const r: AcaoReg = {
+    id: est.seq++, dealId, usuarioId: u.id, autor: u.nome, acao: resultado === "feita" ? "prioridade_feita" : "prioridade_pulada",
+    tipoAtividade: resultado === "feita" ? tipo : null, nota: comentario, data: dataNegocio(), criadoEm: agoraIso(), diaReal: hoje, desfeitaEm: null,
+  };
   est.acoes.push(r);
-  return { desfazer: registrarDesfazer(est, u, () => { r.desfeitaEm = agoraIso(); }) };
+  recalcularContato(est, d);
+  return { desfazer: registrarDesfazer(est, u, () => { r.desfeitaEm = agoraIso(); recalcularContato(est, d); }) };
 }
 
 export async function criarDeal(u: Usuario, dados: { produto: string; conta?: string | null; vendedor?: string | null; estagio: "Prospecting" | "Engaging"; nome?: string | null }) {

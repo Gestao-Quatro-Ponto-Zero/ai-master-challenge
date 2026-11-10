@@ -54,6 +54,11 @@ export interface Etiqueta {
   rotulo: string;
 }
 
+/** Etiquetas no link da página (?f=): lista compacta [chave, valor, rótulo]. */
+export function codificar(lista: Etiqueta[]): string {
+  return JSON.stringify(lista.map((e) => [e.chave, e.valor, e.rotulo]));
+}
+
 /** Junta as etiquetas num filtro; listas da mesma chave se somam. */
 export function juntar(lista: Etiqueta[]): Etiquetas {
   const e: Record<string, unknown> = {};
