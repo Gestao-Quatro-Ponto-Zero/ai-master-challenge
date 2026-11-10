@@ -370,6 +370,37 @@ await db.exec(`set role system_carga; begin; select system_iniciar_contexto_sist
 ok("papel de carga passa mesmo com o teto global atingido");
 await db.exec(`begin; select system_iniciar_contexto_sistema('${corr()}');
   update config_parametros set valor = '300'::jsonb where chave = 'limite_global_escritas'; commit;`);
+
+// 0028 (achado L2-1): o app não grava sem o pedido registrado
+const limpa = async () => { await db.exec(`rollback`).catch(() => {}); await db.exec(`reset role`); };
+await esperaErro("atalho: app ajusta app.usuario_id e app.correlation_id direto e grava",
+  () => db.exec(`set role service_role; begin;
+    select set_config('app.usuario_id', '${anna}', true), set_config('app.correlation_id', '${corr()}', true);
+    update core_deals set nome = 'atalho' where opportunity_id = 'AAAA0002'; commit;`), "GS401");
+await limpa();
+await esperaErro("atalho: app registra evento sem pedido registrado",
+  () => db.exec(`set role service_role; begin;
+    select set_config('app.usuario_id', '${anna}', true), set_config('app.correlation_id', '${corr()}', true);
+    select system_registrar_evento('teste_atalho'); commit;`), "GS401");
+await limpa();
+await esperaErro("registro forjado direto em system_correlacoes passa pelos limites (usuário já no limite)",
+  () => db.exec(`set role service_role; begin;
+    insert into system_correlacoes (correlation_id, usuario_id, transacao, do_app) values ('${corr()}', ${zane}, 0, false); commit;`), "GS429");
+await limpa();
+const hayden = await usuario("vendedor", "Hayden Neloms");
+const cNormal = corr();
+await db.exec(`set role service_role; begin; select system_iniciar_contexto(${hayden}, '${cNormal}');
+  update core_deals set nome = 'Sem empresa · MG Special (caminho normal)' where opportunity_id = 'AAAA0002'; commit; reset role;`);
+const normal = (await q(`select a.usuario_id, c.do_app from system_auditoria a join system_correlacoes c on c.correlation_id = a.correlation_id
+  where a.correlation_id = $1`, [cNormal]))[0];
+normal && normal.usuario_id == hayden && normal.do_app === true
+  ? ok("caminho normal do app (system_iniciar_contexto) aceito, auditado e contado como pedido do app")
+  : falha(`caminho normal: ${JSON.stringify(normal)}`);
+const cCarga = corr();
+await db.exec(`set role system_carga; begin; select system_iniciar_contexto_sistema('${cCarga}');
+  update core_contas set pais = 'Brazil' where nome = 'Hottechi'; commit; reset role;`);
+const carga = (await q(`select c.do_app from system_correlacoes c where c.correlation_id = $1`, [cCarga]))[0];
+carga && carga.do_app === false ? ok("papel de carga aceito pelo caminho próprio, fora dos limites do app") : falha(`carga: ${JSON.stringify(carga)}`);
 await db.exec(`set role system_carga; begin; select system_iniciar_contexto_sistema('${corr()}');
   insert into core_contas (nome, setor, funcionarios, porte, pais) values ('Carga Teste', 'retail', 10, 'pequena', 'Brazil'); commit; reset role;`);
 const cargaOk = (await q(`select a.papel from system_auditoria a where a.tabela = 'core_contas' and a.registro_id = 'Carga Teste'`))[0];

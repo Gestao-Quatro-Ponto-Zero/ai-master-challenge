@@ -9,13 +9,14 @@ Migrations do Postgres (Supabase). Elas saem de `app/ESPEC-TELAS.md` (seção 8)
 | Lote 1 | `migrations/0001`–`0006` + `seed/seed_dataset.sql` | **aplicado** no Supabase em 10/11/2026: 9 tabelas, 8.800 deals, 85 contas, 43 usuários e 9.006 linhas de auditoria. Não alterar: mudanças entram como migrations novas |
 | Lote 2 | `migrations/0007`–`0025` | **aplicado** no Supabase |
 | Teto global | `migrations/0026_limite_global.sql` | **aplicado** no Supabase (versão do commit `d6c4f12`, sha256 `ea36c7b6…443a`) |
-| Teto exato | `migrations/0027_limite_exato.sql` | escrito e validado (PGlite); **falta aplicar**, depois da 0026 |
+| Teto exato | `migrations/0027_limite_exato.sql` | **aplicado** no Supabase |
+| Contexto obrigatório | `migrations/0028_contexto_obrigatorio.sql` | escrito e validado (PGlite); **falta aplicar**, depois da 0027 (corrige o achado L2-1 da revisão do lote 2) |
 
 **Histórico da 0026:** ela foi aplicada antes de um ajuste pedido pela revisão de segurança. A versão aplicada contava o pedido atual e usava `>`, o que deixava passar um pedido a mais que o teto. O arquivo `0026` no repositório é exatamente o que está no banco. O ajuste (contar só os pedidos anteriores e usar `>=`, para o teto ficar exato) entrou como `0027`, que substitui a função `system_iniciar_contexto`.
 
 ## Ordem de execução do lote 2 em diante
 
-Cada arquivo numa transação, rodado pelo dono do schema (`postgres`), na ordem. Já aplicados: 1 a 20. **Falta aplicar: só a 21 (`0027`).**
+Cada arquivo numa transação, rodado pelo dono do schema (`postgres`), na ordem. Já aplicados: 1 a 21. **Falta aplicar: só a 22 (`0028`).**
 
 | # | Arquivo | O que faz |
 |---|---|---|
@@ -40,6 +41,7 @@ Cada arquivo numa transação, rodado pelo dono do schema (`postgres`), na ordem
 | 19 | `0025_permissoes_e_guardas.sql` | proteções das tabelas novas, política do papel de carga e permissões finais |
 | 20 | `0026_limite_global.sql` | **teto global** de pedidos do app por janela (soma de todos os usuários); o papel de carga fica fora |
 | 21 | `0027_limite_exato.sql` | tetos exatos (no máximo 30 por usuário e 300 no total por janela); limite por IP nas rotas do app é obrigatório |
+| 22 | `0028_contexto_obrigatorio.sql` | o app só grava com o pedido registrado em `system_correlacoes` (mesma transação e mesmo usuário); o registro passa por um gatilho que preenche a origem e confere os limites |
 
 ## Segurança
 
@@ -49,6 +51,11 @@ Cada arquivo numa transação, rodado pelo dono do schema (`postgres`), na ordem
 - O app também não consegue escolher o usuário "sistema" nem gravar como ele: o contexto e a auditoria recusam (`GS403`).
 - As cargas usam conexão direta, como dono: `set role system_carga;` e depois `select system_iniciar_contexto_sistema('<uuid novo>');`, numa transação.
 - O papel de carga tem uma política de RLS só para ele. Não há política para `anon`, `authenticated` ou `service_role`.
+
+**Contexto obrigatório (`0028`).** O app não grava ajustando `app.usuario_id` e `app.correlation_id` à mão.
+- Para os papéis do app, a auditoria e os eventos só aceitam o pedido registrado em `system_correlacoes`, na mesma transação e com o mesmo usuário. Fora disso, a gravação é recusada com `GS401`.
+- O registro é conferido por gatilho: a origem (app ou carga), a transação e o horário são preenchidos pelo banco. Os limites e a recusa do usuário "sistema" valem até para um registro gravado direto na tabela.
+- O papel de carga e o dono seguem o caminho próprio, sem limites.
 
 **`correlation_id`.**
 - Gerado pelo servidor (na rota, com `crypto.randomUUID()`), nunca aceito do cliente.
@@ -120,7 +127,9 @@ Resultado em 10/11/2026, tudo aprovado:
   | Índices | 103 |
 
   Também: RLS e bloqueio de DELETE e TRUNCATE em todas as tabelas, e nenhuma política fora do papel de carga. `anon` não executa nada; `service_role` não apaga e não executa as funções de carga.
-- **Testes de uso: 71 verificações** (com a 0026: o teto global recusa o app mesmo trocando de usuário, e o papel de carga passa).
+- **Testes de uso: 76 verificações.**
+  - Com a 0026: o teto global recusa o app mesmo trocando de usuário, e o papel de carga passa.
+  - Com a 0028: o atalho direto é recusado, tanto na gravação quanto no evento; um registro forjado na tabela continua barrado pelo limite; o caminho normal do app e a carga são aceitos.
   - Carga, busca, ícones, roteamento, estágios, conflito de versão, desfazer, contato, ações, comentários, tags, lote, importação, prioridades, painel, linha do tempo e bloqueios.
   - ✓ com tipo e comentário (e as recusas sem eles).
   - Segurança: o app não age como sistema; `correlation_id` reaproveitado é recusado; o 31º pedido no minuto é recusado; a carga grava como sistema.
