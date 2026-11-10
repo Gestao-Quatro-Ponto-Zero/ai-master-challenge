@@ -108,6 +108,186 @@ def mann_whitney(a: np.ndarray, b: np.ndarray) -> dict:
             "prob_a_gt_b": round(u / (n1 * n2), 4)}
 
 
+def _p_2x2(k1, n1, k2, n2) -> float:
+    """p-valor do qui-quadrado 2x2 (célula x resto), sem correção de continuidade."""
+    n = n1 + n2
+    k = k1 + k2
+    if n1 == 0 or n2 == 0 or k == 0 or k == n:
+        return 1.0
+    obs = np.array([[k1, n1 - k1], [k2, n2 - k2]], float)
+    exp = np.array([[n1 * k / n, n1 * (n - k) / n], [n2 * k / n, n2 * (n - k) / n]])
+    stat = float(((obs - exp) ** 2 / exp).sum())
+    return _gammaincc(0.5, stat / 2)
+
+
+# ---------------------------------------------------------------- vendedor
+SHRINK_M = 20          # força do encolhimento: o recorte "pesa" como 20 deals na média do vendedor
+MIN_CELL_H1 = 10       # mínimo de deals no 1º semestre para um recorte concorrer a ponto forte
+MIN_ACCOUNT = 10       # empresa só entra como recorte com 10+ deals do vendedor
+N_PERM_AGENT = 1000
+
+
+def agent_strengths(pos: pd.DataFrame, summary: dict) -> None:
+    """Ponto forte por vendedor (interação vendedor x atributo) e teste fora do tempo."""
+    df = pos.copy()
+    df["half"] = np.where(df["close_date"] < "2017-07-01", "H1", "H2")
+    dims = {"produto": "product", "serie": "series", "setor": "sector",
+            "funcionarios": "employees_band", "receita": "revenue_band",
+            "empresa": "account", "tempo_venda": "fast_band", "sede": "us_hq"}
+    long = []
+    for dname, col in dims.items():
+        part = df[["opportunity_id", "sales_agent", "won", "half"]].copy()
+        part["dimensao"] = dname
+        part["valor"] = df[col].astype(str).to_numpy()
+        long.append(part)
+    long = pd.concat(long, ignore_index=True)
+    # empresa só com casos suficientes dentro do vendedor
+    acc_n = long[long["dimensao"] == "empresa"].groupby(["sales_agent", "valor"]).size()
+    ok_acc = set(acc_n[acc_n >= MIN_ACCOUNT].index)
+    is_acc = long["dimensao"] == "empresa"
+    keep = ~is_acc | pd.Series(list(zip(long["sales_agent"], long["valor"]))).isin(ok_acc).to_numpy()
+    long = long[keep].reset_index(drop=True)
+    long["cell"] = long["sales_agent"] + " | " + long["dimensao"] + " | " + long["valor"]
+    cell_codes, cell_names = pd.factorize(long["cell"])
+    n_cells = len(cell_names)
+    cell_agent = pd.Series(cell_names).str.split(" | ", regex=False).str[0].to_numpy()
+    agents = sorted(df["sales_agent"].unique())
+    agent_idx = {a: i for i, a in enumerate(agents)}
+    cell_agent_i = np.array([agent_idx[a] for a in cell_agent])
+    h2 = (long["half"] == "H2").to_numpy()
+    # índice de cada linha longa -> linha do deal (para permutar o rótulo por deal)
+    deal_pos = pd.Series(np.arange(len(df)), index=df["opportunity_id"].to_numpy())
+    long_deal = deal_pos.loc[long["opportunity_id"]].to_numpy()
+    deal_agent = np.array([agent_idx[a] for a in df["sales_agent"]])
+    deal_h2 = (df["half"] == "H2").to_numpy()
+    y0 = df["won"].to_numpy(int)
+
+    n_h = [np.bincount(cell_codes[h2 == hh], minlength=n_cells).astype(float) for hh in (False, True)]
+    agent_n_h = [np.bincount(deal_agent[deal_h2 == hh], minlength=len(agents)).astype(float) for hh in (False, True)]
+
+    def stats(y: np.ndarray) -> dict:
+        yl = y[long_deal]
+        k_h = [np.bincount(cell_codes[h2 == hh], weights=yl[h2 == hh], minlength=n_cells) for hh in (False, True)]
+        ak_h = [np.bincount(deal_agent[deal_h2 == hh], weights=y[deal_h2 == hh], minlength=len(agents)) for hh in (False, True)]
+        pa = [ak_h[i] / np.maximum(agent_n_h[i], 1) for i in (0, 1)]
+        pa_c = [pa[i][cell_agent_i] for i in (0, 1)]
+        shr1 = (k_h[0] + SHRINK_M * pa_c[0]) / (n_h[0] + SHRINK_M)
+        lift1 = np.where(n_h[0] >= MIN_CELL_H1, shr1 - pa_c[0], np.nan)
+        raw2 = np.where(n_h[1] > 0, k_h[1] / np.maximum(n_h[1], 1), np.nan)
+        lift2 = raw2 - pa_c[1]
+        best, worst = [], []
+        for ai in range(len(agents)):
+            idx = np.where((cell_agent_i == ai) & ~np.isnan(lift1) & (n_h[1] > 0))[0]
+            if len(idx) == 0:
+                continue
+            best.append(idx[np.nanargmax(lift1[idx])])
+            worst.append(idx[np.nanargmin(lift1[idx])])
+        best, worst = np.array(best), np.array(worst)
+        both = (n_h[0] >= MIN_CELL_H1) & (n_h[1] >= MIN_CELL_H1)
+        corr = float(np.corrcoef(lift1[both], lift2[both])[0, 1])
+        return {"k_h": k_h, "pa": pa, "lift1": lift1, "lift2": lift2, "best": best, "worst": worst,
+                "best_mean_lift2": float(np.mean(lift2[best])), "worst_mean_lift2": float(np.mean(lift2[worst])),
+                "corr": corr, "n_corr": int(both.sum())}
+
+    obs = stats(y0)
+    rng = np.random.default_rng(SEED)
+    perm_best, perm_worst, perm_corr = [], [], []
+    groups_idx = [np.where(deal_agent == ai)[0] for ai in range(len(agents))]
+    for _ in range(N_PERM_AGENT):
+        y = y0.copy()
+        for g in groups_idx:               # embaralha ganho/perda dentro do vendedor
+            y[g] = rng.permutation(y0[g])
+        s = stats(y)
+        perm_best.append(s["best_mean_lift2"])
+        perm_worst.append(s["worst_mean_lift2"])
+        perm_corr.append(s["corr"])
+    perm_best, perm_worst, perm_corr = map(np.array, (perm_best, perm_worst, perm_corr))
+
+    # ---- tabela fora do tempo: ponto forte (e fraco) do 1º semestre visto no 2º
+    oot_rows = []
+    for kind, arr in (("forte", obs["best"]), ("fraco", obs["worst"])):
+        for c in arr:
+            a = cell_agent_i[c]
+            k2, n2 = obs["k_h"][1][c], n_h[1][c]
+            ka2, na2 = obs["pa"][1][a] * agent_n_h[1][a], agent_n_h[1][a]
+            p = _p_2x2(k2, n2, ka2 - k2, na2 - n2)
+            oot_rows.append({
+                "vendedor": agents[a], "tipo": kind, "recorte": cell_names[c].split(" | ", 1)[1],
+                "n_h1": int(n_h[0][c]), "taxa_h1": obs["k_h"][0][c] / n_h[0][c] * 100,
+                "media_vendedor_h1": obs["pa"][0][a] * 100, "lift_h1_encolhido_pp": obs["lift1"][c] * 100,
+                "n_h2": int(n2), "taxa_h2": k2 / n2 * 100, "media_vendedor_h2": obs["pa"][1][a] * 100,
+                "lift_h2_pp": obs["lift2"][c] * 100, "p_h2_vs_resto": p,
+                "p_h2_bonferroni_30": min(1.0, p * len(agents)),
+                "repete": bool((obs["lift2"][c] > 0) if kind == "forte" else (obs["lift2"][c] < 0)),
+                "poucos_casos_h2": n2 < MIN_N,
+            })
+    oot = pd.DataFrame(oot_rows)
+    oot.to_csv(TABLES / "agent_strength_out_of_time.csv", index=False, lineterminator="\n")
+
+    # ---- perfil do período inteiro (todas as células)
+    k_all = obs["k_h"][0] + obs["k_h"][1]
+    n_all = n_h[0] + n_h[1]
+    ak_all = np.bincount(deal_agent, weights=y0, minlength=len(agents))
+    an_all = np.bincount(deal_agent, minlength=len(agents)).astype(float)
+    prof = pd.DataFrame({"cell": cell_names, "n": n_all.astype(int), "won": k_all.astype(int)})
+    parts = prof["cell"].str.split(" | ", regex=False)
+    prof["vendedor"], prof["dimensao"], prof["valor"] = parts.str[0], parts.str[1], parts.str[2]
+    prof["taxa"] = prof["won"] / prof["n"] * 100
+    prof["media_vendedor"] = (ak_all / an_all)[cell_agent_i] * 100
+    prof["diff_pp"] = prof["taxa"] - prof["media_vendedor"]
+    ci = [wilson(k, n) for k, n in zip(prof["won"], prof["n"])]
+    prof["ci_low"], prof["ci_high"] = [c[0] * 100 for c in ci], [c[1] * 100 for c in ci]
+    prof["taxa_encolhida"] = (prof["won"] + SHRINK_M * prof["media_vendedor"] / 100) / (prof["n"] + SHRINK_M) * 100
+    prof["diff_encolhida_pp"] = prof["taxa_encolhida"] - prof["media_vendedor"]
+    prof["p_value"] = [_p_2x2(k, n, ak_all[a] - k, an_all[a] - n)
+                       for k, n, a in zip(prof["won"], prof["n"], cell_agent_i)]
+    prof["p_bonferroni"] = np.minimum(1.0, prof["p_value"] * len(prof))
+    prof["poucos_casos"] = prof["n"] < MIN_N
+    prof = prof.drop(columns="cell").sort_values(["vendedor", "dimensao", "valor"])
+    prof.to_csv(TABLES / "agent_profile_cells.csv", index=False, lineterminator="\n")
+
+    bw = []
+    for a, g in prof.groupby("vendedor"):
+        b = g.loc[g["diff_encolhida_pp"].idxmax()]
+        w = g.loc[g["diff_encolhida_pp"].idxmin()]
+        non_us = df[(df["sales_agent"] == a) & (df["us_hq"] != "EUA")]
+        bw.append({
+            "vendedor": a, "deals": int(an_all[agent_idx[a]]), "media": ak_all[agent_idx[a]] / an_all[agent_idx[a]] * 100,
+            "deals_empresa_fora_eua": len(non_us), "empresas_fora_eua": int(non_us["account"].nunique()),
+            "melhor_recorte": f'{b["dimensao"]} = {b["valor"]}', "melhor_n": int(b["n"]), "melhor_taxa": b["taxa"],
+            "melhor_ci": f'{b["ci_low"]:.1f}–{b["ci_high"]:.1f}', "melhor_encolhida": b["taxa_encolhida"],
+            "melhor_p_bonf": b["p_bonferroni"], "melhor_poucos_casos": bool(b["poucos_casos"]),
+            "pior_recorte": f'{w["dimensao"]} = {w["valor"]}', "pior_n": int(w["n"]), "pior_taxa": w["taxa"],
+            "pior_ci": f'{w["ci_low"]:.1f}–{w["ci_high"]:.1f}', "pior_encolhida": w["taxa_encolhida"],
+            "pior_p_bonf": w["p_bonferroni"], "pior_poucos_casos": bool(w["poucos_casos"]),
+        })
+    pd.DataFrame(bw).to_csv(TABLES / "agent_best_worst.csv", index=False, lineterminator="\n")
+
+    # quantas células "significativas" no período inteiro x o que o acaso daria
+    sig_obs = int((prof["p_value"] < 0.05).sum())
+    fortes = oot[oot["tipo"] == "forte"]
+    summary["agent_strengths"] = {
+        "cells": int(len(prof)), "shrink_m": SHRINK_M, "min_cell_h1": MIN_CELL_H1, "min_account": MIN_ACCOUNT,
+        "halves": "H1 = fechados até 2017-06-30; H2 = 2017-07-01 em diante",
+        "cells_p_lt_005": sig_obs, "cells_p_lt_005_expected_if_noise": round(0.05 * len(prof), 1),
+        "cells_significant_bonferroni": int((prof["p_bonferroni"] < 0.05).sum()),
+        "best_h1_mean_lift_h2_pp": round(obs["best_mean_lift2"] * 100, 2),
+        "best_perm_mean_pp": round(float(perm_best.mean()) * 100, 2),
+        "best_perm_p95_pp": round(float(np.quantile(perm_best, .95)) * 100, 2),
+        "best_p_value_perm": float((np.sum(perm_best >= obs["best_mean_lift2"]) + 1) / (N_PERM_AGENT + 1)),
+        "worst_h1_mean_lift_h2_pp": round(obs["worst_mean_lift2"] * 100, 2),
+        "worst_perm_mean_pp": round(float(perm_worst.mean()) * 100, 2),
+        "worst_p_value_perm": float((np.sum(perm_worst <= obs["worst_mean_lift2"]) + 1) / (N_PERM_AGENT + 1)),
+        "corr_lift_h1_h2": round(obs["corr"], 4), "corr_cells": obs["n_corr"],
+        "corr_perm_mean": round(float(perm_corr.mean()), 4),
+        "corr_perm_p95": round(float(np.quantile(perm_corr, .95)), 4),
+        "corr_p_value_perm": float((np.sum(perm_corr >= obs["corr"]) + 1) / (N_PERM_AGENT + 1)),
+        "strong_repeats_h2": int(fortes["repete"].sum()), "agents": int(len(fortes)),
+        "strong_confirmed_bonferroni": fortes.loc[(fortes["lift_h2_pp"] > 0) & (fortes["p_h2_bonferroni_30"] < 0.05),
+                                                  ["vendedor", "recorte", "lift_h2_pp", "p_h2_bonferroni_30"]].round(4).to_dict(orient="records"),
+    }
+
+
 # ---------------------------------------------------------------- tabelas
 def win_table(df: pd.DataFrame, by, overall: float) -> pd.DataFrame:
     g = df.groupby(by, observed=True)["won"].agg(n="count", won="sum").reset_index()
@@ -364,6 +544,8 @@ def main() -> None:
         "cells_significant_after_bonferroni": fl.loc[fl["p_bonferroni"] < 0.05,
                                                      ["dimensao", "valor", "grupo_b", "pct_a", "pct_b", "diff_pp", "p_bonferroni"]].round(4).to_dict(orient="records"),
     }
+
+    agent_strengths(pos, summary)
 
     # Mês dentro do trimestre (1º, 2º, 3º): regra de calendário do ciclo
     closed["close_month_in_q"] = (closed["close_date"].dt.month - 1) % 3 + 1

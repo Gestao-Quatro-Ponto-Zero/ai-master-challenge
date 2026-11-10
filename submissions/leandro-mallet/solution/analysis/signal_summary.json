@@ -1050,6 +1050,31 @@
       }
     ]
   },
+  "agent_strengths": {
+    "cells": 1095,
+    "shrink_m": 20,
+    "min_cell_h1": 10,
+    "min_account": 10,
+    "halves": "H1 = fechados até 2017-06-30; H2 = 2017-07-01 em diante",
+    "cells_p_lt_005": 71,
+    "cells_p_lt_005_expected_if_noise": 54.8,
+    "cells_significant_bonferroni": 0,
+    "best_h1_mean_lift_h2_pp": -1.96,
+    "best_perm_mean_pp": -0.04,
+    "best_perm_p95_pp": 2.93,
+    "best_p_value_perm": 0.8531468531468531,
+    "worst_h1_mean_lift_h2_pp": -0.15,
+    "worst_perm_mean_pp": 0.06,
+    "worst_p_value_perm": 0.4485514485514486,
+    "corr_lift_h1_h2": -0.0085,
+    "corr_cells": 538,
+    "corr_perm_mean": -0.0029,
+    "corr_perm_p95": 0.0957,
+    "corr_p_value_perm": 0.5364635364635365,
+    "strong_repeats_h2": 11,
+    "agents": 30,
+    "strong_confirmed_bonferroni": []
+  },
   "open": {
     "open": 2089,
     "prospecting": 500,
