@@ -499,6 +499,115 @@
       }
     }
   },
+  "speed_bands": {
+    "cut_days": {
+      "P5": 2,
+      "P20": 7,
+      "P50": 45,
+      "P70": 79,
+      "P95": 115
+    },
+    "tie_rule": "corte por valor do dia (inverted_cdf); empates ficam juntos na faixa de baixo",
+    "test": {
+      "chi2": 108.27,
+      "dof": 5,
+      "p_value": 9.486052155892846e-22,
+      "cramers_v": 0.127,
+      "min_expected": 109.4
+    },
+    "rows": [
+      {
+        "faixa": "até P5 (5% mais rápidas)",
+        "dias_min": 1,
+        "dias_max": 2,
+        "deals": 579,
+        "pct_fechados": 8.63,
+        "pct_nominal": 5,
+        "pct_total_8800": 6.58,
+        "won": 298,
+        "lost": 281,
+        "conversao_pct": 51.47,
+        "perda_pct": 48.53,
+        "conversao_ci_low": 47.4,
+        "conversao_ci_high": 55.52
+      },
+      {
+        "faixa": "P5–P20",
+        "dias_min": 3,
+        "dias_max": 7,
+        "deals": 834,
+        "pct_fechados": 12.43,
+        "pct_nominal": 15,
+        "pct_total_8800": 9.48,
+        "won": 458,
+        "lost": 376,
+        "conversao_pct": 54.92,
+        "perda_pct": 45.08,
+        "conversao_ci_low": 51.52,
+        "conversao_ci_high": 58.26
+      },
+      {
+        "faixa": "P20–P50",
+        "dias_min": 8,
+        "dias_max": 45,
+        "deals": 1945,
+        "pct_fechados": 28.98,
+        "pct_nominal": 30,
+        "pct_total_8800": 22.1,
+        "won": 1188,
+        "lost": 757,
+        "conversao_pct": 61.08,
+        "perda_pct": 38.92,
+        "conversao_ci_low": 58.89,
+        "conversao_ci_high": 63.22
+      },
+      {
+        "faixa": "P50–P70",
+        "dias_min": 46,
+        "dias_max": 79,
+        "deals": 1352,
+        "pct_fechados": 20.15,
+        "pct_nominal": 20,
+        "pct_total_8800": 15.36,
+        "won": 897,
+        "lost": 455,
+        "conversao_pct": 66.35,
+        "perda_pct": 33.65,
+        "conversao_ci_low": 63.78,
+        "conversao_ci_high": 68.82
+      },
+      {
+        "faixa": "P70–P95",
+        "dias_min": 80,
+        "dias_max": 115,
+        "deals": 1704,
+        "pct_fechados": 25.39,
+        "pct_nominal": 25,
+        "pct_total_8800": 19.36,
+        "won": 1178,
+        "lost": 526,
+        "conversao_pct": 69.13,
+        "perda_pct": 30.87,
+        "conversao_ci_low": 66.9,
+        "conversao_ci_high": 71.28
+      },
+      {
+        "faixa": "acima de P95 (5% mais lentas)",
+        "dias_min": 116,
+        "dias_max": 138,
+        "deals": 297,
+        "pct_fechados": 4.43,
+        "pct_nominal": 5,
+        "pct_total_8800": 3.38,
+        "won": 219,
+        "lost": 78,
+        "conversao_pct": 73.74,
+        "perda_pct": 26.26,
+        "conversao_ci_low": 68.45,
+        "conversao_ci_high": 78.42
+      }
+    ]
+  },
   "open": {
     "open": 2089,
     "prospecting": 500,

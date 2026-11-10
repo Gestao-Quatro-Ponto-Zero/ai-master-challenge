@@ -255,6 +255,39 @@ def main() -> None:
         "cohort_first_two_weeks_test": chi2_test(coh["cycle_bucket2"], coh["won"]),
     }
 
+    # Faixas de tempo de venda por percentil (Won + Lost juntos).
+    # Empates: corte pelo VALOR do dia. O limite de cada faixa é o menor dia d
+    # com F(d) >= p (np.quantile, method="inverted_cdf"), e todos os deals com
+    # duração <= d ficam nela. Deals com a mesma duração nunca são separados,
+    # por isso o tamanho real de cada faixa difere do nominal.
+    pct = [0.05, 0.20, 0.50, 0.70, 0.95]
+    labels_p = ["até P5 (5% mais rápidas)", "P5–P20", "P20–P50", "P50–P70", "P70–P95", "acima de P95 (5% mais lentas)"]
+    nominal = [5, 15, 30, 20, 25, 5]
+    cuts_d = [int(np.quantile(closed["cycle_days"], p, method="inverted_cdf")) for p in pct]
+    edges = [-1] + cuts_d + [10_000]
+    closed["speed_band"] = pd.cut(closed["cycle_days"], edges, labels=labels_p)
+    total_deals = len(deals)
+    rows = []
+    for lab, nom in zip(labels_p, nominal):
+        s = closed[closed["speed_band"] == lab]
+        k, n = int(s["won"].sum()), len(s)
+        lo, hi = wilson(k, n)
+        rows.append({
+            "faixa": lab, "dias_min": int(s["cycle_days"].min()), "dias_max": int(s["cycle_days"].max()),
+            "deals": n, "pct_fechados": n / len(closed) * 100, "pct_nominal": nom,
+            "pct_total_8800": n / total_deals * 100, "won": k, "lost": n - k,
+            "conversao_pct": k / n * 100, "perda_pct": (n - k) / n * 100,
+            "conversao_ci_low": lo * 100, "conversao_ci_high": hi * 100,
+        })
+    sb = pd.DataFrame(rows)
+    sb.to_csv(TABLES / "speed_bands_by_percentile.csv", index=False, lineterminator="\n")
+    summary["speed_bands"] = {
+        "cut_days": dict(zip(["P5", "P20", "P50", "P70", "P95"], cuts_d)),
+        "tie_rule": "corte por valor do dia (inverted_cdf); empates ficam juntos na faixa de baixo",
+        "test": chi2_test(closed["speed_band"].astype(str), closed["won"]),
+        "rows": sb.round(2).to_dict(orient="records"),
+    }
+
     # Mês dentro do trimestre (1º, 2º, 3º): regra de calendário do ciclo
     closed["close_month_in_q"] = (closed["close_date"].dt.month - 1) % 3 + 1
     coh["close_month_in_q"] = (coh["close_date"].dt.month - 1) % 3 + 1
