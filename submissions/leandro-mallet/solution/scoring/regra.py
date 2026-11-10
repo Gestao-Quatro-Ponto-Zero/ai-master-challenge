@@ -232,30 +232,57 @@ def calcular(d: pd.DataFrame, referencia: pd.Timestamp) -> dict:
     return {"deals": deals, "celulas": cel, "padroes": pad}
 
 
+SETORES = {  # igual à tabela SETORES do app (src/lib/calculos.ts)
+    "employment": "recrutamento", "entertainment": "entretenimento", "finance": "finanças", "marketing": "marketing",
+    "medical": "saúde", "retail": "varejo", "services": "serviços", "software": "software",
+    "technology": "tecnologia", "telecommunications": "telecomunicações",
+}
+PORTE = {"pequena": "pequena", "media": "média", "grande": "grande"}
+
+
 def _rot(item) -> str:
-    return f"{ROTULO_DIM[item['dim']]} {item['valor']}"
+    """Característica em português, como a tela mostra."""
+    dim, v = item["dim"], item["valor"]
+    if dim == "produto":
+        return f"produto {v}"
+    if dim == "serie":
+        return f"série {v}"
+    if dim == "setor":
+        return f"setor {SETORES.get(v, v)}"
+    if dim == "receita":
+        return f"empresa de receita {PORTE.get(v, v)}"
+    if dim == "funcionarios":
+        return f"empresa {PORTE.get(v, v)} em funcionários"
+    if dim == "empresa":
+        return f"empresa {v}"
+    if dim == "sede":
+        return "sede nos EUA" if v == "EUA" else "sede fora dos EUA"
+    return f"{ROTULO_DIM.get(dim, dim)} {v}"
 
 
 def motivos(l: dict) -> list[tuple[str, str]]:
-    """2 ou 3 frases simples: encaixe, tempo e bônus (ou falta de empresa)."""
+    """2 ou 3 frases simples: encaixe, tempo e bônus (ou falta de empresa).
+
+    Em terceira pessoa ("o vendedor"), porque a mesma frase aparece para o vendedor e para o manager.
+    """
     f = l["detalhe_fit"]
     saida = []
     if f["sem_destaque"]:
-        saida.append(("fit", "Você não tem um destaque com casos suficientes nos últimos 3 meses: o encaixe fica neutro (50)."))
+        saida.append(("fit", "O vendedor não tem um destaque com casos suficientes nos últimos 3 meses: o encaixe fica neutro (50)."))
     elif not f["usadas"]:
-        saida.append(("fit", "Ainda não há casos suficientes para medir o encaixe deste lead com você: nota neutra (50)."))
+        saida.append(("fit", "Ainda não há casos suficientes para medir o encaixe deste lead com o vendedor: nota neutra (50)."))
     else:
         dest = f["destaque"]
         bate = [u for u in f["usadas"] if u["dim"] == dest["dim"] and u["valor"] == dest["valor"]]
         if bate:
             u = bate[0]
-            saida.append(("fit", f"Encaixa no seu destaque: {_rot(u)} ({u['ganhos']} de {u['n']} ganhos nos últimos 3 meses)."))
+            saida.append(("fit", f"Encaixa no destaque do vendedor: {_rot(u)} ({u['ganhos']} de {u['n']} ganhos nos últimos 3 meses)."))
         elif f["media"] >= 0:
             u = max(f["usadas"], key=lambda x: x["desvio"])
-            saida.append(("fit", f"Encaixe acima da sua média: {_rot(u)} ({u['ganhos']} de {u['n']} ganhos nos últimos 3 meses)."))
+            saida.append(("fit", f"Encaixe acima da média do vendedor: {_rot(u)} ({u['ganhos']} de {u['n']} ganhos nos últimos 3 meses)."))
         else:
             u = min(f["usadas"], key=lambda x: x["desvio"])
-            saida.append(("fit", f"Fora do seu forte: {_rot(u)} ({u['ganhos']} de {u['n']} ganhos nos últimos 3 meses, abaixo da sua média)."))
+            saida.append(("fit", f"Fora do forte do vendedor: {_rot(u)} ({u['ganhos']} de {u['n']} ganhos nos últimos 3 meses, abaixo da média dele)."))
     if l["conta_nome"] is None:
         saida.append(("fit", "Sem empresa cadastrada: o encaixe usa só o produto. Identifique a empresa."))
     dias = l["dias"]

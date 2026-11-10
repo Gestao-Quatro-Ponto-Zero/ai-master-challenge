@@ -7,12 +7,13 @@ NOTA = 0,70 × FIT + 0,30 × HEAT + BONUS, de 0 a 120.
 
 | Item | Valor |
 |---|---|
-| Execução | `score_execucoes.id = 5`, versão `lead-score-1.0`, referência 31/12/2017 |
+| Execução ativa | `score_execucoes.id = 7`, versão `lead-score-1.0`, referência 31/12/2017 |
 | Arquivo de carga | `scoring/carga/score_2017-12-31.json` |
-| sha256 | `73ce4a8934a172fe352c0bf3156d5941ae778cccf888d97c303fe899fee8aa32` |
+| sha256 | `f3aab6b5606d0cc2d1f8194e181eb79ca9e61c2f46f7031adf0af57e943e018f` |
+| Execução anterior | `id = 5`, sha256 `73ce4a8934a172fe352c0bf3156d5941ae778cccf888d97c303fe899fee8aa32` (mesmas notas, texto antigo dos motivos). O id 6 foi gasto pelo ensaio, que não deixou linha |
 | Como | Uma transação: `set role system_carga` → `system_iniciar_contexto_sistema` → só INSERT nas 6 tabelas `score_*` → `score_ativar_execucao` → conferências → COMMIT. Antes, um ensaio completo com ROLLBACK |
 | Dono do deal | o atual. Sem redistribuição, sem repasse e nenhuma mudança em `core_deals` |
-| Evento | `system_eventos` `carga_score` `{deals: 2089, execucao_id: 5}` |
+| Evento | `system_eventos` `carga_score` em cada carga (`{deals: 2089, execucao_id: 5}` e `{deals: 2089, execucao_id: 7}`) |
 
 | Tabela | Linhas |
 |---|---|
@@ -26,11 +27,37 @@ Conferências antes do COMMIT, todas aprovadas:
 - deals com nota = deals abertos (2.089) e nenhum aberto sem nota;
 - nota entre 0 e 89 (dentro de 0–120);
 - 0 deals com dono diferente do atual;
-- execução ativa = 5.
+- execução ativa = a carregada.
+
+## Execução 7: só o texto dos motivos
+
+A 7 troca o texto dos motivos. A regra e os números são os mesmos da 5.
+
+- **Rótulos em português, como na tela:**
+  - produto X;
+  - série X;
+  - setor varejo, saúde e os demais traduzidos pela tabela SETORES do app;
+  - empresa de receita pequena, média ou grande;
+  - empresa pequena, média ou grande em funcionários;
+  - empresa X;
+  - sede nos EUA ou fora dos EUA.
+- **Terceira pessoa:** "destaque do vendedor", "média do vendedor", "o vendedor não tem um destaque". A mesma frase serve para o vendedor e para o manager.
+- **Conferência no banco, 5 × 7, deal a deal:** 2.089 de 2.089 iguais em nota, FIT, HEAT, BONUS, ação, dono, marcadores, valor e dias. Também ficam iguais os pontos dos componentes, o FIT por vendedor e os padrões de conta. Na execução ativa, 0 motivos com "você", "seu" ou "sua" e 0 com rótulo cru.
+- **Testes:** dois novos em `test_regra.py` (texto dos motivos e rótulos), 13 no total, todos passando.
+- **No ar:** a lista do dia de Anna Snelling segue a nota (70, 69, 67, 67, 64) e mostra o 1º motivo no texto novo.
+
+| Antes (5) | Depois (7) |
+|---|---|
+| Encaixa no seu destaque: receita media (11 de 15 ganhos nos últimos 3 meses). | Encaixa no destaque do vendedor: empresa de receita média (11 de 15 ganhos nos últimos 3 meses). |
+| Encaixe acima da sua média: funcionários pequena (26 de 35 ganhos nos últimos 3 meses). | Encaixe acima da média do vendedor: empresa pequena em funcionários (26 de 35 ganhos nos últimos 3 meses). |
+| Encaixe acima da sua média: setor retail (10 de 13 ganhos nos últimos 3 meses). | Encaixe acima da média do vendedor: setor varejo (10 de 13 ganhos nos últimos 3 meses). |
+| Encaixe acima da sua média: sede EUA (49 de 74 ganhos nos últimos 3 meses). | Encaixe acima da média do vendedor: sede nos EUA (49 de 74 ganhos nos últimos 3 meses). |
+| Você não tem um destaque com casos suficientes nos últimos 3 meses: o encaixe fica neutro (50). | O vendedor não tem um destaque com casos suficientes nos últimos 3 meses: o encaixe fica neutro (50). |
+| Fora do seu forte: série GTX (35 de 70 ganhos nos últimos 3 meses, abaixo da sua média). | Fora do forte do vendedor: série GTX (35 de 70 ganhos nos últimos 3 meses, abaixo da média dele). |
 
 ## Conferência contra o desenho (dataset limpo, `python -m unittest scoring/test_regra.py`)
 
-11 testes, todos passando.
+13 testes, todos passando.
 
 | Item | Desenho | Obtido |
 |---|---|---|
@@ -86,7 +113,7 @@ O 50 inclui o arredondamento de 49,5 a 50,4.
 
 Na tela, pela view `core_deals_visao`: faixa de nota alta 98, média 1.063, baixa 928.
 
-## Top 5 por nota (execução 5)
+## Top 5 por nota (execução 7, igual à 5)
 
 | Vendedor | Deal | Nota | FIT | HEAT | BONUS | Produto · empresa |
 |---|---|---|---|---|---|---|

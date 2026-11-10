@@ -227,3 +227,7 @@ A #5 aplicou 0007–0026 no Supabase, sem erro. Contagem: 29 tabelas, 60 FKs (RE
   - a lista de uma vendedora saiu de 46, 55, 50, 41, 44 para 55, 55, 55, 54, 54, com o motivo da nota em cada item e o lead mais recente antes no empate;
   - a lista de um manager mostra só os deals do time em risco de esfriar, pela nota.
 - **Achado da #1 no ar:** dois problemas no texto dos motivos. Aparecem "receita media" (sem acento) e "funcionários pequena". E a frase "seu destaque" aparece também na tela do manager, onde o destaque é do vendedor. Virou a O-27.
+- O-27 (#3): motivos reescritos em terceira pessoa ("destaque do vendedor", "média do vendedor") e com rótulos em português ("empresa de receita média", "setor varejo", "sede nos EUA"). Carga como execução 7 (o ensaio com ROLLBACK gastou o id 6 sem deixar linha); sha256 f3aab6b5…, conferido pela #1.
+  - As notas da 7 são iguais às da 5 deal a deal (2.089 de 2.089): mudou só o texto.
+  - 13 testes passando. Nenhum "você/seu/sua" nos motivos.
+  - No ar: a lista do manager se refez sozinha com a troca de execução e mostra o texto novo.

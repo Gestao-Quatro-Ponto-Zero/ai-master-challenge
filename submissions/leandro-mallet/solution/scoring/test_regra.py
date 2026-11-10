@@ -83,6 +83,25 @@ class TestDataset(unittest.TestCase):
         self.assertTrue(n.between(2, 3).all())
         self.assertTrue(all(len(t) <= 280 for ms in self.deals["motivos"] for _, t in ms))
 
+    def test_texto_dos_motivos(self):
+        import re
+        textos = [t for ms in self.deals["motivos"] for _, t in ms]
+        segunda_pessoa = re.compile(r"\b(você|seu|sua|seus|suas)\b", re.IGNORECASE)
+        self.assertFalse([t for t in textos if segunda_pessoa.search(t)])
+        crus = re.compile(r"receita (media|pequena|grande)\b|funcionários (media|pequena|grande)|sede EUA\b|"
+                          r"setor (" + "|".join(k for k, v in regra.SETORES.items() if k != v) + r")\b")
+        self.assertFalse([t for t in textos if crus.search(t) and "de receita" not in t])
+        self.assertEqual(self.deals.loc["4ZQTMS3Z", "motivos"][0][1],
+                         "Encaixa no destaque do vendedor: série MG (27 de 39 ganhos nos últimos 3 meses).")
+
+    def test_rotulos(self):
+        casos = {("produto", "GTX Pro"): "produto GTX Pro", ("serie", "MG"): "série MG",
+                 ("setor", "retail"): "setor varejo", ("receita", "media"): "empresa de receita média",
+                 ("funcionarios", "pequena"): "empresa pequena em funcionários", ("empresa", "Kan-code"): "empresa Kan-code",
+                 ("sede", "EUA"): "sede nos EUA", ("sede", "fora dos EUA"): "sede fora dos EUA"}
+        for (dim, v), esperado in casos.items():
+            self.assertEqual(regra._rot({"dim": dim, "valor": v}), esperado)
+
     def test_marcadores_e_acao(self):
         m = pd.Series([x for ms in self.deals["marcadores"] for x in ms]).value_counts().to_dict()
         self.assertEqual(m, {"esfriou": 1291, "risco_esfriar": 141})
