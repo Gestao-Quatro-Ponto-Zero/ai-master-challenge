@@ -58,7 +58,7 @@ export function DiagnosticExplorer({
 
   return (
     <>
-      <section className="flex flex-col gap-5 rounded-xl border border-border bg-surface p-5 shadow-soft sm:p-6" aria-labelledby="fluxo-titulo">
+      <section className="flex min-w-0 flex-col gap-5 rounded-xl border border-border bg-surface p-5 shadow-soft sm:p-6" aria-labelledby="fluxo-titulo">
         <div className="space-y-2">
           <p className="font-mono text-xs uppercase tracking-[0.14em] text-text-3">Onde o fluxo trava</p>
           <Headline>
@@ -74,7 +74,7 @@ export function DiagnosticExplorer({
       </section>
 
       <section className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]" aria-labelledby="csat-titulo">
-        <div className="flex flex-col gap-5 rounded-xl border border-border bg-surface p-5 shadow-soft sm:p-6">
+        <div className="flex min-w-0 flex-col gap-5 rounded-xl border border-border bg-surface p-5 shadow-soft sm:p-6">
           <div className="space-y-2">
             <p className="font-mono text-xs uppercase tracking-[0.14em] text-text-3">O que impacta a satisfação</p>
             <Headline>
@@ -85,7 +85,7 @@ export function DiagnosticExplorer({
           <Segmented label="Dimensão" options={dimOptions} value={dimension} onChange={setDimension} />
           <Forest dim={dim} overall={overall.csat} />
         </div>
-        <div className="flex flex-col gap-4">{aside}</div>
+        <div className="flex min-w-0 flex-col gap-4">{aside}</div>
       </section>
     </>
   )
@@ -172,7 +172,7 @@ function Bars({ dim, metric, overall }: { dim: DimensionData; metric: MetricKey;
         <span />
         <div className="relative h-4 font-mono text-[10px] text-text-3">
           {ticks.map((t, i) => (
-            <span key={t} className={cn("absolute", i === 0 ? "left-0" : i === ticks.length - 1 ? "right-0" : "-translate-x-1/2")} style={i === 0 || i === ticks.length - 1 ? undefined : { left: pos(t, domain) }}>
+            <span key={t} className={cn("absolute", i === 0 ? "left-0" : i === ticks.length - 1 ? "right-0" : "-translate-x-1/2", ticks.length > 4 && i % 2 === 1 && "hidden sm:inline")} style={i === 0 || i === ticks.length - 1 ? undefined : { left: pos(t, domain) }}>
               {metric === "csat" ? fmt.dec(t, 1) : metric === "hours" ? fmt.hours(t, 0) : fmt.pct(t, 0)}
             </span>
           ))}
@@ -250,8 +250,8 @@ function Forest({ dim, overall }: { dim: DimensionData; overall: number }) {
       <div className="grid grid-cols-[minmax(84px,30%)_1fr_92px] gap-3 px-1 sm:grid-cols-[180px_1fr_120px]" aria-hidden>
         <span />
         <div className="relative h-4 font-mono text-[10px] text-text-3">
-          {ticks.map((t) => (
-            <span key={t} className="absolute -translate-x-1/2" style={{ left: pos(t, domain) }}>
+          {ticks.map((t, i) => (
+            <span key={t} className={cn("absolute -translate-x-1/2", i % 2 === 1 && "hidden sm:inline")} style={{ left: pos(t, domain) }}>
               {fmt.dec(t, 2)}
             </span>
           ))}
