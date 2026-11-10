@@ -227,3 +227,13 @@ A regra de conduta também foi registrada no AGENTS.md.
 5. Testou ao vivo os 3 caminhos, a fila (aprovação, solução aprendida, 409) e os erros de entrada; conferiu as telas no navegador.
 6. Rodou `reset_demo.py` para deixar a demonstração limpa.
 
+### Sessão 02 — parte 9 (10/11 · monitoramento de uso e fluxo 3)
+**Direcionamento do Daniel:** "Ative o monitoramento de uso e ativação do fluxo 3"; a revisão do app, da documentação e o vídeo ficam para a segunda sessão do dia.
+
+**O que a IA fez:**
+1. Função SQL `usage_monitor_check()` com os 8 sinais e limites do PRD §8.1; testada no banco (tudo dentro dos limites; banco com 151 MB).
+2. Fluxo n8n "Monitor de uso" com nós nativos (Schedule, HTTP Request com a credencial Supabase, If, Split Out, Set, Supabase, Slack desativado). O n8n auto-atribuiu de novo a credencial de outro contexto; a IA trocou pelo ID G4 antes de executar. Testou os dois caminhos e a repetição barrada, e publicou.
+3. Tarefa agendada local a cada 2 h, só de leitura, com a regra de conduta do Daniel escrita no prompt.
+4. Fluxo 3: URL de produção e autenticação configuradas; a ativação espera a credencial do cron, que leva o `CRON_SECRET` e por isso fica com o Daniel.
+5. O rascunho do fluxo 4 seguiu o desenho já aprovado no PRD §8.1 e foi documentado nó a nó em `docs/n8n-flows.md`.
+

@@ -1,6 +1,6 @@
 # Fluxos n8n — rascunho nó a nó (ADR-0011)
 
-> **Status: ATIVO no n8n (fluxos 1 e 2), 10/11.** Rascunho v2 aprovado pelo Daniel (ADR-0012). Nós Postgres trocados por nós nativos do Supabase (ADR-0013). Testado ponta a ponta e pelo webhook de produção. O fluxo 3 espera o deploy da Vercel.
+> **Status: ATIVO no n8n (fluxos 1, 2 e 4), 10/11.** Rascunho v2 aprovado pelo Daniel (ADR-0012). Nós Postgres trocados por nós nativos do Supabase (ADR-0013). Testado ponta a ponta e pelo webhook de produção. O fluxo 3 tem a URL de produção e espera a credencial `G4 - Cron da Vercel`.
 > Depois de aprovado: construir via MCP `n8n-g4`, exportar o JSON de cada fluxo para `solution/n8n/` e completar este documento (como importar e testar).
 > Fontes consultadas no `n8n-g4` (09/11): SDK reference (guidelines), best practices de *triage*, *scheduling* e *chatbot* (a de *human_in_the_loop* ainda não tem documentação no servidor) e definições dos nós nativos listados abaixo.
 
@@ -10,7 +10,8 @@
 |---|---|---|---|---|
 | G4 · Triagem de ticket (RAG + 3 níveis) | `msFVCvUdsmRq49pv` | 35 | [`solution/n8n/01_triagem.sdk.ts`](../solution/n8n/01_triagem.sdk.ts) | **Ativo** (10/11) · testado ponta a ponta e pelo webhook de produção |
 | G4 · Aprovação HITL | `FWb7G9cGmMC69Q6D` | 16 | [`solution/n8n/02_aprovacao_hitl.sdk.ts`](../solution/n8n/02_aprovacao_hitl.sdk.ts) | **Ativo** (10/11) · testado (4 caminhos + produção) |
-| G4 · Heartbeat diário (Supabase ativo) | `LpQK8XX5AZJrUCy8` | 6 | [`solution/n8n/03_heartbeat.sdk.ts`](../solution/n8n/03_heartbeat.sdk.ts) | Caminho de falha testado · inativo até o deploy da Vercel |
+| G4 · Heartbeat diário (Supabase ativo) | `LpQK8XX5AZJrUCy8` | 6 | [`solution/n8n/03_heartbeat.sdk.ts`](../solution/n8n/03_heartbeat.sdk.ts) | URL de produção configurada (10/11) · caminho de falha testado · inativo até a credencial `G4 - Cron da Vercel` |
+| G4 · Monitor de uso (alertas) | `xchzY3KKbsm0hzyG` | 9 | [`solution/n8n/04_monitor_uso.sdk.ts`](../solution/n8n/04_monitor_uso.sdk.ts) | **Ativo** (10/11) · testado: sem alerta, com alerta e repetição barrada |
 
 As versões de 09/11 (com nó Postgres) foram **arquivadas** no n8n: `ML8nNXH22pSaDF09`, `Mm1hZMJvQMQu1uQJ` e `RtQAhCEnwxEDQrd4`.
 
@@ -59,7 +60,7 @@ Tickets do holdout do DS2 (`source = holdout`). O rótulo real é conhecido e n�
 
 ### O que falta
 1. Exportar os JSON finais para `solution/n8n/*.json`.
-2. Fluxo 3: preencher a URL e a credencial `G4 – Cron da Vercel` depois do deploy, e então ativar.
+2. Fluxo 3: o Daniel cria a credencial `G4 - Cron da Vercel` (Header Auth: Name `Authorization`, Value `Bearer ` + `CRON_SECRET` do `.env`); a IA vincula pelo ID, testa e publica.
 
 ## Visão geral
 
@@ -68,6 +69,7 @@ Tickets do holdout do DS2 (`source = holdout`). O rótulo real é conhecido e n�
 | 1 | **Triagem de ticket** | Webhook (console da Vercel) | Classifica pelo RAG, aplica a política de 3 níveis da ADR-0010 e responde, rascunha ou alerta |
 | 2 | **Aprovação HITL** | Webhook (console da Vercel) | Registra a decisão do agente; aprovação vira **solução validada** com embedding (ADR-0004) |
 | 3 | **Heartbeat diário** | Schedule | Redundância do cron da Vercel para o Supabase free não pausar (ADR-0006) |
+| 4 | **Monitor de uso** | Schedule (15 min) | Calcula os sinais de abuso do app público e grava alertas na caixa como Slack simulado (PRD §8.1) |
 
 Princípios (ADR-0011): nós nativos, nomes em português, regra de negócio numa **nota (sticky)** ao lado do nó, sem nó de código. A lógica pesada (voto dos 50 vizinhos) fica na função SQL `classify_ticket`, já criada e validada no Supabase (migration `20261109000002_rag.sql`, validação em `solution/analysis/09_db_rag_validation.py`).
 
@@ -75,10 +77,10 @@ Princípios (ADR-0011): nós nativos, nomes em português, regra de negócio num
 
 | Nome no n8n | Tipo | Usada em |
 |---|---|---|
-| `G4 - Supabase` | `supabaseApi` (URL do projeto + service role key) | Fluxos 1, 2 e 3: nós Supabase e HTTP Request das funções do RAG |
+| `G4 - Supabase` | `supabaseApi` (URL do projeto + service role key) | Fluxos 1 a 4: nós Supabase e HTTP Request das funções SQL |
 | `G4 - OpenAI` | `openAiApi` | Fluxo 1: embedding e os 3 nós de redação |
 | `G4 - Segredo do webhookk` | `httpHeaderAuth` (`X-Webhook-Secret`) | Webhooks dos fluxos 1 e 2 |
-| `G4 – Cron da Vercel` | Custom Auth (template) | Fluxo 3, depois do deploy |
+| `G4 - Cron da Vercel` | `httpHeaderAuth` (`Authorization: Bearer <CRON_SECRET>`) | Fluxo 3 (a criar pelo Daniel) |
 | `G4 – Slack` | `slackApi` | Opcional; nó desativado (ADR-0007) |
 
 As credenciais de outros contextos do Daniel na mesma instância (`Supabase – padaria-bi`, `Waha VPS`, `BI Linear`) **não são usadas**. O n8n tenta auto-atribuí-las na criação por MCP. Por isso cada criação é seguida de `setNodeCredential` com os IDs G4 e de conferência (ADR-0013).
@@ -205,6 +207,36 @@ flowchart LR
 Best practice de *scheduling* aplicada: tarefa idempotente (inserir um heartbeat a mais não causa problema) e sem risco de sobreposição (a execução leva segundos, o intervalo é de 24 h). A URL pública do app na Vercel pode ficar no JSON exportado; quem não pode aparecer no repositório é a URL da VPS do n8n.
 
 ---
+
+## Fluxo 4 — Monitor de uso (PRD §8.1)
+
+Pedido do Daniel: monitorar o uso do app público e alertar, **sem tomar nenhuma ação contra abuso**. A lógica fica na função SQL `usage_monitor_check()` (migration `20261110000007_usage_monitor.sql`); o fluxo só agenda, separa e grava.
+
+```mermaid
+flowchart LR
+  T[A cada 15 minutos] --> S[Calcular sinais de uso]
+  S --> IF{Há alerta novo?}
+  IF -- não --> OK[Uso dentro dos limites]
+  IF -- sim --> SP[Separar alertas] --> F[Formatar alerta para o Slack] --> C[Gravar alerta na caixa do painel] --> SL[Avisar no Slack desativado]
+```
+
+| # | Nó | Tipo | O que faz | Credencial |
+|---|---|---|---|---|
+| 1 | **A cada 15 minutos** | Schedule Trigger | Intervalo do PRD §8.1 | — |
+| 2 | **Calcular sinais de uso** | HTTP Request `POST /rest/v1/rpc/usage_monitor_check` | Devolve os 8 sinais (valor, limite, se passou) e só os alertas novos | `G4 - Supabase` |
+| 3 | **Há alerta novo?** | If (`alert_count > 0`) | Separa o caminho sem alerta | — |
+| 4 | **Uso dentro dos limites** | No Operation | Fim sem alerta | — |
+| 5 | **Separar alertas** | Split Out (`alerts`) | Um item por alerta | — |
+| 6 | **Formatar alerta para o Slack** | Edit Fields (Set) | `kind = usage_alert`, `channel_intended = slack`, texto no formato do Slack com o horário de São Paulo | — |
+| 7 | **Gravar alerta na caixa do painel** | Supabase · Create em `notifications` | O alerta aparece em Console › Caixa › Sistema | `G4 - Supabase` |
+| 8 | **Avisar no Slack** | Slack · Message → Post | **Desativado** (sem workspace, ADR-0007) | `G4 – Slack` |
+
+**Sinais e limites** (iguais ao PRD §8.1): triagens de um IP > 10/h · respostas 429 > 20/h · triagens no app > 100/h · custo OpenAI do dia > US$ 0,50 · erros do servidor ou n8n fora do ar > 5/h · qualquer texto com padrão de *prompt injection* · decisões na fila de um IP > 30/h · banco > 400 MB.
+**Repetição:** o mesmo sinal só volta a alertar depois de 60 min (custo: 12 h; banco: 24 h). O sinal de *prompt injection* conta só as ocorrências novas desde o último alerta.
+
+**Teste (10/11):** execução 248 com um evento sinalizado de teste → 1 alerta gravado na caixa; execução 249 → nenhum alerta repetido, caminho "Uso dentro dos limites".
+
+**Camada de leitura (Claude):** a tarefa agendada local `g4-monitor-uso-app` roda a cada 2 h, lê a função acima, `usage_events`, os erros de runtime da Vercel e as execuções com erro do n8n, e reporta ao Daniel na sessão do Claude Code. Ela só lê e lista opções; o Daniel decide.
 
 ## Tabelas de apoio — schema (aplicado em 09/11)
 

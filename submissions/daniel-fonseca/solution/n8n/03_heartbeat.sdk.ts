@@ -1,4 +1,4 @@
-import { workflow, node, trigger, sticky, newCredential, placeholder, expr } from '@n8n/workflow-sdk';
+import { workflow, node, trigger, sticky, newCredential, expr } from '@n8n/workflow-sdk';
 
 const sbCred = { supabaseApi: newCredential('G4 - Supabase') };
 
@@ -19,12 +19,13 @@ const chamarVercel = node({
     name: 'Chamar /api/heartbeat da Vercel',
     parameters: {
       method: 'GET',
-      url: placeholder('URL da rota no app da Vercel, ex.: https://<projeto>.vercel.app/api/heartbeat?source=n8n'),
+      url: 'https://triagem-case-ai-master-case-g4.vercel.app/api/heartbeat?source=n8n',
       authentication: 'genericCredentialType',
-      genericAuthType: 'httpTemplatedCustomAuth',
+      genericAuthType: 'httpHeaderAuth',
       options: { timeout: 20000 }
     },
-    credentials: { httpTemplatedCustomAuth: newCredential('G4 – Cron da Vercel') },
+    // Header Auth: Name = Authorization, Value = Bearer <CRON_SECRET> (criada pelo Daniel no n8n)
+    credentials: { httpHeaderAuth: newCredential('G4 - Cron da Vercel') },
     retryOnFail: true,
     maxTries: 3,
     waitBetweenTries: 5000,

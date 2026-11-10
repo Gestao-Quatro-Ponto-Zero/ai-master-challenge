@@ -5,7 +5,7 @@
 **Última atualização:** 2026-11-10 · Sessão 02 · Claude Code (Opus 5.5)
 
 ## Fase atual
-**App Vercel integrado e em produção** (https://triagem-case-ai-master-case-g4.vercel.app). Frentes A e B integradas na `submission/daniel-fonseca` com o OK do Daniel (10/11). Próximo: monitoramento de uso (n8n + tarefa local a cada 2 h), ativar o fluxo 3, exportar os JSON do n8n, README final, vídeo e PR.
+**App Vercel integrado e em produção** (https://triagem-case-ai-master-case-g4.vercel.app). Frentes A e B integradas na `submission/daniel-fonseca` com o OK do Daniel (10/11). Monitoramento de uso ativo (n8n a cada 15 min + tarefa local a cada 2 h). Próximo: credencial do fluxo 3 (Daniel) e ativação; revisão do app pelo Daniel; exportar os JSON do n8n; README final; vídeo; PR.
 
 ## Timebox (decisão do Daniel)
 No máximo **dois turnos noturnos**: hoje (09/11) e amanhã (10/11), incluindo vídeo e PR. Se terminar hoje, melhor.
@@ -73,7 +73,13 @@ No máximo **dois turnos noturnos**: hoje (09/11) e amanhã (10/11), incluindo v
    - **Teste ao vivo:** 9 rotas de página 200; heartbeat sem segredo 401; triagem pelo app nos 3 caminhos (Purchase 0,94 → Resposta automática; Hardware 0,62 → Revisão humana; HR Support → Somente humano), com tokens, custo (US$ 0,0006–0,0014) e tempos por etapa em `triage_runs`; texto curto 400; aprovação na fila 200 com solução aprendida #18 e vizinho sugerido (similaridade 0,84); aprovação repetida 409.
    - `reset_demo.py` rodado: fila com 6, caixa com 2, 2 respostas automáticas. As soluções aprendidas dos testes (#16, #17, #18) ficaram, conforme o script.
    - Sugestões das frentes para o Daniel decidir: esconder `usage_alert` da caixa pública; vizinho do efeito "aprendeu" filtrado pela categoria aprovada; glossário (PRD §6.1).
-13. Turno 2: app Vercel (dashboard + console + `/api/heartbeat`) + deploy + ativar o fluxo 3 com a URL + vídeo + PR.
+13. ✔ (10/11) **Monitoramento de uso**, com instrução do Daniel ("Ative o monitoramento"):
+   - migration `…0007_usage_monitor`: função `usage_monitor_check()` com os 8 sinais do PRD §8.1 e repetição barrada por sinal;
+   - fluxo n8n **G4 · Monitor de uso (alertas)** `xchzY3KKbsm0hzyG`, a cada 15 min, **publicado**; credencial `G4 - Supabase` vinculada por ID (o n8n tinha auto-atribuído `Supabase – padaria-bi`). Testado: alerta gravado na caixa (exec 248) e repetição barrada (exec 249);
+   - tarefa agendada local `g4-monitor-uso-app` (a cada 2 h, até o Daniel mandar desligar): só leitura de Supabase, Vercel e n8n; reporta nesta sessão. Ela substitui o `scripts/monitor_usage.py` previsto no PRD. **Passo do Daniel:** abrir a tarefa no app e clicar em "Run now" uma vez para aprovar as ferramentas e definir o modo de permissão;
+   - sobra do teste: 1 alerta de teste (`notifications` id 11) e 1 evento sinalizado (`usage_events` id 37). O comando de limpeza foi recusado; o `reset_demo.py` remove os dois.
+14. Fluxo 3 (heartbeat): URL de produção e Header Auth configurados. **Passo do Daniel:** criar no n8n a credencial `G4 - Cron da Vercel` (Header Auth, Name `Authorization`, Value `Bearer ` + `CRON_SECRET` do `.env`). Depois a IA vincula pelo ID, testa e publica.
+15. Turno 2: app Vercel (dashboard + console + `/api/heartbeat`) + deploy + ativar o fluxo 3 com a URL + vídeo + PR.
 
 ## Perguntas abertas para o Daniel
 - [x] ADR-0010: RAG como classificador único (Daniel). ADR-0011: diretrizes do n8n (Daniel).
