@@ -130,11 +130,6 @@ def band_of(age):
     raise ValueError(age)
 
 
-def band_label(i):
-    lo, hi = AGE_BANDS[i]
-    return f"{lo}-{hi} dias" if hi < 10**6 else f"mais de {lo - 1} dias"
-
-
 def training_rows(world, cut):
     """Past snapshots whose HORIZON-day window had fully elapsed by the cut."""
     by_id = {w["id"]: w for w in world}
