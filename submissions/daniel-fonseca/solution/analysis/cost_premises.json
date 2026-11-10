@@ -1,0 +1,63 @@
+{
+  "_doc": "Premissas do modelo de custo (ADR-0003). Valores padrão do dashboard; todos editáveis. Fontes e grau de verificação em docs/premissas-de-custo.md.",
+  "annual_ticket_volume": {
+    "value": 30000,
+    "unit": "tickets/ano",
+    "source": "Brief do challenge 002 ('~30.000 tickets por ano'). O DS1 (8.469) é usado só como mix.",
+    "verification": "primária"
+  },
+  "handle_time_minutes": {
+    "value": 8.6,
+    "unit": "min/ticket",
+    "source": "MetricNet via HDI (Jeff Rumburg, 'Metric of the Month: Ticket Handle Time', 2019): média de 8,6 min por ticket em service desks",
+    "url": "https://thinkhdi.com/library/supportworld/2019/metric-of-month-ticket-handle-time",
+    "verification": "primária (lida em 2026-11-09)"
+  },
+  "handle_time_minutes_phone_alt": {
+    "value": 7.1,
+    "unit": "min/ligação",
+    "source": "SQM Group: AHT (talk + wrap-up) de 424 s em call centers da América do Norte (estudo de 2021)",
+    "url": "https://sqmgroup.com/resources/library/blog/call-center-operational-data-findings",
+    "verification": "primária (lida em 2026-11-09)"
+  },
+  "agent_monthly_cost_brl": {
+    "value": 3508,
+    "unit": "R$/mês (custo para a empresa)",
+    "source": "Salario.com.br com base no Novo CAGED, Operador de Suporte Técnico (CBO 4223-20): média de R$ 2.063,79, 38 h/semana, custo para a empresa de R$ 3.508; 12 meses até 09/2026",
+    "url": "https://www.salario.com.br/profissao/operador-de-suporte-tecnico-telemarketing-cbo-422320",
+    "verification": "primária (lida em 2026-11-09)"
+  },
+  "agent_weekly_hours": {
+    "value": 38,
+    "unit": "h/semana",
+    "source": "Mesma fonte do custo do agente",
+    "verification": "primária"
+  },
+  "agent_hourly_cost_brl": {
+    "value": 21.30,
+    "unit": "R$/h",
+    "source": "Derivado: 3.508 / (38 h × 52 / 12 = 164,7 h/mês)",
+    "verification": "cálculo"
+  },
+  "tickets_per_agent_month": {
+    "value": 400,
+    "unit": "tickets/agente/mês",
+    "source": "MetricNet via HDI (2019): ~400 tickets/mês com 10 min de manuseio; ~270 com 15 min",
+    "url": "https://thinkhdi.com/library/supportworld/2019/metric-of-month-ticket-handle-time",
+    "verification": "primária"
+  },
+  "extra_touches_per_pending_ticket": {
+    "value": 1,
+    "unit": "contatos extras",
+    "source": "Sem fonte — premissa conservadora (1 follow-up por ticket aguardando cliente). Ajustar com dado real.",
+    "verification": "premissa sem fonte"
+  },
+  "cost_per_contact_reference_usd": {
+    "assisted": 13.50,
+    "self_service": 1.84,
+    "unit": "US$ por contato (mediana)",
+    "source": "Gartner, resumo do documento 5164231 (atrás de paywall; data não confirmada)",
+    "url": "https://www.gartner.com/en/documents/5164231",
+    "verification": "só o resumo e fontes secundárias — usar como referência de ordem de grandeza, não no cálculo"
+  }
+}

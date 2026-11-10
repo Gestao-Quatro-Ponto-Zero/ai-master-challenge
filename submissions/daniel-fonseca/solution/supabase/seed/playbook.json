@@ -1,0 +1,76 @@
+{
+  "_status": "Rascunho da IA (2026-11-09), revisado e validado pelo Daniel em 2026-11-10 (ADR-0004). No banco: approved_by = 'Daniel (revisão do playbook, 2026-11-10)'.",
+  "_note": "problem_text no estilo do DS2 (inglês, palavras-chave) para cair perto dos tickets reais no espaço de embeddings. resolution_text é o que o LLM adapta no nível 1 — não pode prometer prazo nem exceção.",
+  "entries": [
+    {
+      "category": "Hardware",
+      "problem_text": "laptop not working hardware issue error cannot start very slow performance computer freezes screen problem",
+      "resolution_text": "Thanks for reporting this. Please try these steps first: (1) save your work and fully restart the device (shut down, wait 30 seconds, power on); (2) check that the charger and all cables are firmly connected; (3) if the device is slow, close unused applications and install any pending updates. If the problem continues after a restart, reply with the device asset number, a short description of the symptoms and any error message (a screenshot helps), and an engineer will schedule a hands-on check."
+    },
+    {
+      "category": "Hardware",
+      "problem_text": "request second monitor additional peripheral keyboard mouse docking station headset new equipment for desk",
+      "resolution_text": "Thanks for your request. Peripheral equipment (monitors, docking stations, keyboards, mice and headsets) is provided from IT stock after your manager's approval. Please reply with: the item(s) needed, your desk location, and your manager's name so we can request the approval. Once approved, IT will prepare the equipment and contact you to arrange delivery and setup."
+    },
+    {
+      "category": "Hardware",
+      "problem_text": "failing updates pending updates install software update error failed to install updates on pc",
+      "resolution_text": "Thanks for letting us know. Please connect the device to the office network or VPN, restart it, and run the update tool again — most failed updates complete after a restart. If the same update keeps failing, reply with the update name or error code shown and the device asset number, and an engineer will install it remotely."
+    },
+    {
+      "category": "Access",
+      "problem_text": "password reset account locked cannot log in forgot password access denied login error",
+      "resolution_text": "Thanks for reaching out. You can reset your password through the self-service password portal using your registered recovery method. If your account is locked, wait 15 minutes before trying again, then use the portal. If the portal does not work for you, reply confirming your username and the system you are trying to access, and the access team will verify your identity and reset it for you. For security, IT will never ask for your current password."
+    },
+    {
+      "category": "Access",
+      "problem_text": "access request confluence space license create user account add user to tool need access",
+      "resolution_text": "Thanks for your request. Access to tools and spaces is granted after approval from your manager or the owner of the space. Please reply with the exact tool or space name, the access level you need (read or edit), and who approves it. As soon as the approval is recorded, the access team will grant the access and confirm by email."
+    },
+    {
+      "category": "Access",
+      "problem_text": "lost access card new badge card replacement card not working building entry",
+      "resolution_text": "Thanks for letting us know. A lost card is deactivated for security as soon as it is reported. Please reply confirming your full name and office location; a replacement card will be issued and you will be told where and when to collect it. If you find the old card, do not use it — return it to the reception desk."
+    },
+    {
+      "category": "Miscellaneous",
+      "problem_text": "change owner distribution list group members add remove members update owner of group",
+      "resolution_text": "Thanks for your request. Changes to a group or distribution list must be confirmed by its current owner. Please reply with the group name, the members or owner to add or remove, and the current owner's confirmation (or copy them on your reply). Once confirmed, the change will be applied and you will receive a confirmation."
+    },
+    {
+      "category": "Miscellaneous",
+      "problem_text": "rename update details change name request modify information record update",
+      "resolution_text": "Thanks for your request. To make this change, please reply with the item to be updated, the current value, the new value, and the approval from the item owner if it is a shared resource. The change will be applied once these details are confirmed."
+    },
+    {
+      "category": "Storage",
+      "problem_text": "shared folder access request permissions read write folder wants access accept decline files",
+      "resolution_text": "Thanks for your request. Access to a shared folder is approved by the folder owner. Please reply with the folder path or name, the access level needed (read or write), and the owner's approval. After approval, the permissions will be updated and you can open the folder within a few minutes after signing out and in again."
+    },
+    {
+      "category": "Storage",
+      "problem_text": "mailbox full increase size storage quota almost full disk space increase mailbox size",
+      "resolution_text": "Thanks for reporting this. To free space right away, please empty the Deleted Items folder and archive or delete large old emails and attachments. If you still need more space after that, reply with your username and how much space you expect to need, and the storage team will review a quota increase."
+    },
+    {
+      "category": "Purchase",
+      "problem_text": "purchase order po log receipt item received allocation receive items mandatory receipts",
+      "resolution_text": "Thanks for the update. To complete the purchase order, please confirm in your reply the PO number and the items and quantities received. The receipt will then be logged against the PO and the items allocated. Partial deliveries are logged as partial receipts, and the PO stays open until all items arrive."
+    },
+    {
+      "category": "Purchase",
+      "problem_text": "new purchase request order equipment buy new device quote approval purchase",
+      "resolution_text": "Thanks for your request. New purchases require an approved purchase request. Please reply with the item description, quantity, business justification, and your manager's approval. The purchasing team will then request quotes and raise the purchase order, and you will be notified when it is placed."
+    },
+    {
+      "category": "Internal Project",
+      "problem_text": "project code setup create sub codes new project oracle pas form attached project setup",
+      "resolution_text": "Thanks for your request. New project or sub-project codes are created from the project setup form. Please make sure the attached form includes the project name, client, project manager, start date and the cost center, and that it is approved by the project manager. Once the form is complete, the codes will be created and shared with you."
+    },
+    {
+      "category": "Internal Project",
+      "problem_text": "time sheet codes add client code time code help assign project code to team",
+      "resolution_text": "Thanks for your request. To add time-sheet codes or assign people to a project code, please reply with the project code, the names of the people to add, and the project manager's approval. The codes will then appear in the time-sheet tool for those users."
+    }
+  ]
+}

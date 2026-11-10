@@ -1,0 +1,33 @@
+{
+ "sample": {
+  "n": 500,
+  "split": "test",
+  "seed": 42
+ },
+ "accuracy_db": 0.804,
+ "accuracy_local_exact": 0.802,
+ "agreement_category": 0.998,
+ "agreement_tier": 0.996,
+ "max_abs_confidence_diff": 0.1104,
+ "tiers_db": {
+  "nivel_1": {
+   "share": 0.322,
+   "precision": 1.0
+  },
+  "nivel_2": {
+   "share": 0.294,
+   "precision": 0.7619
+  },
+  "nivel_3": {
+   "share": 0.384,
+   "precision": 0.6719
+  }
+ },
+ "similar_cases_always_5": true,
+ "latency_ms": {
+  "p50": 64.2,
+  "p95": 142.0
+ },
+ "uses_hnsw_index": true,
+ "reference_full_holdout": "output/rag_only_policy.json (82,8% em 9.567 tickets)"
+}

@@ -1,0 +1,65 @@
+{
+ "config": {
+  "dims": 512,
+  "k": 50,
+  "power": 16
+ },
+ "accuracy": 0.828,
+ "curve": [
+  {
+   "threshold": 0.5,
+   "coverage": 0.8545,
+   "precision": 0.891
+  },
+  {
+   "threshold": 0.7,
+   "coverage": 0.6609,
+   "precision": 0.9495
+  },
+  {
+   "threshold": 0.8,
+   "coverage": 0.5559,
+   "precision": 0.9707
+  },
+  {
+   "threshold": 0.85,
+   "coverage": 0.5022,
+   "precision": 0.9771
+  },
+  {
+   "threshold": 0.9,
+   "coverage": 0.4405,
+   "precision": 0.9869
+  },
+  {
+   "threshold": 0.95,
+   "coverage": 0.3632,
+   "precision": 0.9919
+  },
+  {
+   "threshold": 0.98,
+   "coverage": 0.2882,
+   "precision": 0.9967
+  }
+ ],
+ "tiers": {
+  "1_automatico": {
+   "share": 0.3118,
+   "precision": 0.9883
+  },
+  "2_revisao_humana": {
+   "share": 0.2835,
+   "precision": 0.8116
+  },
+  "3_so_humano": {
+   "share": 0.4047,
+   "precision": 0.7159
+  },
+  "sensitive_escapes": {
+   "to_level_1": 15,
+   "to_level_2": 165,
+   "total_sensitive": 2535
+  }
+ },
+ "rule": "nível 3 = categoria sensível prevista ou ≥30% dos votos em categoria sensível ou confiança < 0.5; nível 1 = confiança ≥ 0.9; nível 2 = resto"
+}
