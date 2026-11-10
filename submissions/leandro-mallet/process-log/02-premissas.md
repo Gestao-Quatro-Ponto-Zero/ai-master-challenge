@@ -28,7 +28,7 @@
 
 ## Resultado
 
-Documento final com 22 premissas, todas com o "como fica no G4 Sight", em 4 grupos (arquitetura, banco de dados, backend e frontend): as premissas do padrão que ficaram, mantidas ou adaptadas, e 7 pedidas por mim (stack de backend, stack de frontend, UI/UX ultra simples, estética como requisito, prefixos de banco, chaves estrangeiras e marca do G4). Depois da minha aprovação, ele vira o arquivo comum que todas as sessões leem antes de construir.
+Documento final com 22 premissas, sem a coluna de situação e renumeradas em sequência por grupo (ARQ-01 a 04, BD-01 a 05, BE-01 a 07, FE-01 a 06), a pedido meu. Os códigos citados acima são os originais do padrão. São 22 premissas, todas com o "como fica no G4 Sight", em 4 grupos (arquitetura, banco de dados, backend e frontend): as premissas do padrão que ficaram, mantidas ou adaptadas, e 7 pedidas por mim (stack de backend, stack de frontend, UI/UX ultra simples, estética como requisito, prefixos de banco, chaves estrangeiras e marca do G4). Depois da minha aprovação, ele vira o arquivo comum que todas as sessões leem antes de construir.
 
 ## O que foi julgamento meu nesta etapa
 
