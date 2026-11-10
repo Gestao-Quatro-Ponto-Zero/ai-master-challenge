@@ -9,9 +9,9 @@
 1. **Taxa de ganho geral: 63,2%** (4.238 Won em 6.711 fechados; IC 62,0–64,3%).
 2. **Nenhum atributo do deal separa Won de Lost**: produto, setor, porte, país, região, manager, vendedor, conta e vendedor × produto ficam todos dentro do ruído.
 3. **O histórico não prevê o futuro**: a taxa passada da conta ou do vendedor não muda a chance do próximo deal (teste fora do tempo).
-4. **Só o tempo tem sinal**: deal que passa das 2 primeiras semanas ganha 67%; o que fecha antes ganha 54% (+13 pp, p ≈ 10⁻¹⁶). Depois de 15 dias, a taxa fica plana.
+4. **Só o tempo tem sinal**: deal que passa das 2 primeiras semanas ganha 67%; o que fecha antes ganha 54% (+13 pp, p ≈ 10⁻¹⁶). Depois de 15 dias, a taxa fica plana. O mecanismo é o calendário do gerador: a diferença some quando se controla pelo mês de fechamento, mas continua quando se controla pelo mês de início, que é o que se conhece de um deal aberto.
 5. **O pipeline aberto está quase todo parado**: 81% dos deals em Engaging (1.291 de 1.589) estão abertos há mais tempo que qualquer deal já fechado (138 dias). E 68% dos abertos não têm conta.
-6. **Os dados parecem sintéticos** (detalhes no fim). Isso muda o que dá para prometer no score.
+6. **Os dados são fictícios**: a fonte declara isso (empresa fictícia da Maven Analytics) e os padrões medidos confirmam (detalhes no fim). Isso muda o que dá para prometer no score.
 
 ## Período e data de referência
 
@@ -73,6 +73,28 @@ p ≈ 3,5 × 10⁻¹⁶ (V de Cramér 0,13). A perda costuma ser rápida: metade
 
 Depois dos 15 dias, a taxa não sobe mais: 67,2% (≥15), 66,6% (≥30), 67,0% (≥60), 68,1% (≥90), 67,1% (≥120, n = 85). Na base inteira parece subir até 75% acima de 120 dias, mas isso vem do corte de 2016 e do fim de trimestre. **Não usar "mais velho = melhor".**
 
+**De onde vem o efeito: controle pelo calendário** (mesma coorte; `tables/cohort_two_weeks_by_*.csv`)
+
+Pelo **mês de fechamento** dentro do trimestre, a diferença some:
+
+| Mês de fechamento no trimestre | 0–14 dias | 15+ dias | p |
+|---|---|---|---|
+| 1º | 48,9% (n = 1.213) | — (nenhum deal) | — |
+| 2º | 51,7% (n = 300) | 55,9% (n = 1.103) | 0,19 |
+| 3º | 86,2% (n = 224) | 81,4% (n = 878) | 0,10 |
+
+Pelo **mês de início** (engajamento) dentro do trimestre, a diferença continua:
+
+| Mês de início no trimestre | 0–14 dias | 15+ dias | p |
+|---|---|---|---|
+| 1º | 49,7% (n = 1.035) | 68,9% (n = 514) | ≈ 10⁻¹² |
+| 2º | 56,5% (n = 239) | 63,5% (n = 594) | 0,06 |
+| 3º | 63,1% (n = 463) | 68,8% (n = 873) | 0,03 |
+
+Leitura: o que decide a taxa é **em que mês do trimestre o deal fecha** (o 3º mês ganha ~81–86%, os outros ~49–56%). Fechar rápido é só o caminho para cair no 1º ou 2º mês. Para um deal aberto não se sabe quando ele vai fechar, mas se sabe quando começou, e nesse corte "passou das 2 semanas" ainda informa. A diferença é forte para quem começou no 1º mês do trimestre, fraca no 3º e não significativa no 2º.
+
+Implicação prática: só 7 dos 1.589 Engaging abertos ainda estão nas 2 primeiras semanas. O efeito explica o histórico, mas quase não separa o pipeline de hoje.
+
 ### 2. Fim de trimestre
 
 | Mês do fechamento | Deals | Taxa de ganho |
@@ -110,7 +132,35 @@ O ciclo longo, portanto, é quase todo "esperou o fim do trimestre". Para deals 
 - Os abertos por vendedor vão de 31 a 194 (Darcel Schlecht tem 194). Por produto: GTX Basic 430, MG Special 428, GTX Pro 333, GTX Plus Basic 332, MG Advanced 328, GTX Plus Pro 223, GTK 500 15.
 - Há um pico de engajamentos ainda abertos em julho/2017 (402, contra 100–250 nos meses vizinhos).
 
-## Sinais de que os dados são sintéticos
+## Os dados são fictícios, e os padrões estatísticos confirmam
+
+São duas linhas de prova independentes: o que a fonte declara e o que se mede no arquivo.
+
+### 1. Origem documentada
+
+- O dataset do Kaggle é uma republicação do **"CRM Sales Opportunities"** do Data Playground da Maven Analytics, usado também no Maven Sales Challenge. A própria Maven o descreve como dados de pipeline B2B de uma **empresa fictícia** que vende hardware para empresas (a "MavenTech"), com 8.800 oportunidades, em domínio público.
+  - https://mavenanalytics.io/data-playground/crm-sales-opportunities
+  - https://mavenanalytics.io/challenges/maven-sales-challenge
+- As páginas não informam o período. O período vem do próprio arquivo: engajamentos de out/2016 a dez/2017.
+- **Evidência dentro do arquivo**: 11 das 85 contas são empresas de ficção conhecidas da cultura pop.
+
+  | Conta | Origem |
+  |---|---|
+  | Acme Corporation | Looney Tunes |
+  | Bluth Company | Arrested Development |
+  | Bubba Gump | Forrest Gump |
+  | Cheers | Cheers |
+  | Gekko & Co | Wall Street (Gordon Gekko) |
+  | Genco Pura Olive Oil Company | O Poderoso Chefão |
+  | Globex Corporation | Os Simpsons |
+  | Initech | Office Space |
+  | Massive Dynamic | Fringe |
+  | The New York Inquirer | Cidadão Kane |
+  | Umbrella Corporation | Resident Evil |
+
+  As outras têm cara de nome gerado por combinação de sílabas (Zathunicon, Rundofase, Lexiqvolax, Xx-zobam, Zumgoity…).
+
+### 2. Sinais medidos
 
 - **Fim de semana**: 28,6% dos engajamentos e 28,4% dos fechamentos caem em sábado ou domingo, exatamente 2/7. Cada dia da semana fica entre 13,8% e 14,8%. Em vendas B2B reais, o fim de semana é quase vazio.
 - **Vendedores iguais**: a variação da taxa entre vendedores é do tamanho que o acaso produziria se todos fossem idênticos.
@@ -118,8 +168,9 @@ O ciclo longo, portanto, é quase todo "esperou o fim do trimestre". Para deals 
 - **Valor com ruído simétrico** em torno do preço de tabela (sem desconto típico, sem arredondamento).
 - **Abertos impossíveis**: nenhum deal fechado passou de 138 dias, mas 81% dos abertos passaram.
 - **Ritmo de trimestre muito regular**: em todo mês de fim de trimestre há ~500–530 Won e ~110–140 Lost; nos outros meses, ~280–450 de cada.
+- **Duração presa ao mês do trimestre** (`tables/cycle_by_close_month_in_quarter.csv`): os 1.779 deals que fecham no 1º mês de um trimestre duram no máximo 13 dias (mediana 7); no 2º mês, até 125 dias (mediana 68); no 3º, até 138 (mediana 75). Nenhum deal que fecha no 1º mês passou de 13 dias. Isso parece regra de gerador, não comportamento de venda, e explica o "ciclo longo" e o teto de 138 dias.
 
-A conclusão prática é que o resultado (Won/Lost) parece ter sido sorteado com a mesma probabilidade para todos, com uma regra de calendário por cima. Um score que "descobre" efeitos de setor ou vendedor aqui estaria vendendo ruído.
+A conclusão prática: os dados foram gerados, e o resultado (Won/Lost) parece ter sido sorteado com a mesma probabilidade para todos, com uma regra de calendário por cima. Um score que "descobre" efeitos de setor ou vendedor aqui estaria vendendo ruído.
 
 ## Pontos de decisão para o Leandro
 
@@ -128,7 +179,7 @@ A conclusão prática é que o resultado (Won/Lost) parece ter sido sorteado com
 3. **Valor**: preço de tabela como valor esperado, mostrado em faixas, para o ranking não virar "ordenar por valor".
 4. **Sem conta (68%)**: tratar como tarefa de cadastro (flag e ação), não como penalidade de chance, porque não há como medir o efeito.
 5. **Fim de trimestre**: usar como contexto de calendário ("faltam X dias para o fechamento do trimestre"), não como chance por deal.
-6. **Transparência**: dizer na documentação que os dados parecem sintéticos e que o score foi desenhado para não inventar sinal.
+6. **Transparência**: dizer na documentação que os dados são fictícios (com a fonte) e que o score foi desenhado para não inventar sinal.
 
 ## Arquivos
 

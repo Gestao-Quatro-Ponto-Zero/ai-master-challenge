@@ -255,6 +255,36 @@ def main() -> None:
         "cohort_first_two_weeks_test": chi2_test(coh["cycle_bucket2"], coh["won"]),
     }
 
+    # Mês dentro do trimestre (1º, 2º, 3º): regra de calendário do ciclo
+    closed["close_month_in_q"] = (closed["close_date"].dt.month - 1) % 3 + 1
+    coh["close_month_in_q"] = (coh["close_date"].dt.month - 1) % 3 + 1
+    coh["engage_month_in_q"] = (coh["engage_date"].dt.month - 1) % 3 + 1
+    miq = closed.groupby("close_month_in_q")["cycle_days"].agg(
+        n="count", min="min", median="median", max="max").reset_index()
+    miq.to_csv(TABLES / "cycle_by_close_month_in_quarter.csv", index=False, lineterminator="\n")
+    summary["robustness"]["cycle_by_close_month_in_quarter"] = {
+        int(r["close_month_in_q"]): {"n": int(r["n"]), "median": float(r["median"]), "max": int(r["max"])}
+        for _, r in miq.iterrows()}
+
+    # As 2 primeiras semanas controlando pelo calendário (coorte sem viés)
+    def two_weeks_by(stratum: str) -> dict:
+        rows, out = [], {}
+        for m, g in coh.groupby(stratum):
+            res = {}
+            for label, s in g.groupby("cycle_bucket2"):
+                lo, hi = wilson(s["won"].sum(), len(s))
+                rows.append({stratum: m, "cycle_bucket2": label, "n": len(s),
+                             "win_rate": s["won"].mean(), "ci_low": lo, "ci_high": hi})
+                res[label] = {"n": int(len(s)), "win_rate": round(float(s["won"].mean()), 4)}
+            if g["cycle_bucket2"].nunique() == 2:
+                res["p_value"] = chi2_test(g["cycle_bucket2"], g["won"])["p_value"]
+            out[int(m)] = res
+        pd.DataFrame(rows).to_csv(TABLES / f"cohort_two_weeks_by_{stratum}.csv", index=False, lineterminator="\n")
+        return out
+
+    summary["robustness"]["two_weeks_by_close_month_in_quarter"] = two_weeks_by("close_month_in_q")
+    summary["robustness"]["two_weeks_by_engage_month_in_quarter"] = two_weeks_by("engage_month_in_q")
+
     # Fim de trimestre: fechamentos em mar/jun/set/dez
     closed["quarter_end_month"] = np.where(closed["close_date"].dt.month.isin([3, 6, 9, 12]), "fim de trimestre", "meio de trimestre")
     qe = win_table(closed, "quarter_end_month", overall)

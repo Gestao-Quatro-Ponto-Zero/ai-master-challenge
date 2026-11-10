@@ -6,7 +6,41 @@ Complemento ao [baseline.md](baseline.md). O baseline estima o que uma IA entreg
 
 **Método.** Tudo só de leitura: nenhum código deles rodou, sem login, sem comentário, sem fork. Os autores estão anonimizados (Submissão A a J); a correspondência com o número do PR está na nota do fim. Os achados descrevem a abordagem de cada um com as nossas palavras.
 
-"Completo" aqui é sinal de esforço e acabamento, não nota de qualidade. O G4 não publicou avaliação de nenhum PR.
+"Completo" aqui é sinal de esforço e acabamento, não nota de qualidade. Nenhum desses 10 recebeu avaliação pública; a única avaliação real que se pode ler é a de março (seção abaixo).
+
+---
+
+## Critérios reais do avaliador
+
+Fonte: comentários e reviews públicos do G4 em 6 PRs e 2 issues (março a outubro de 2026), lidos em 09/11. O avaliador é um colaborador do repositório; várias notas vêm assinadas como produzidas por um **assistente de avaliação de IA** do próprio G4, com nota de 0 a 10. Desde 24/03 não há mais comentário público: a decisão passou a chegar por e-mail.
+
+**O que aconteceu com cada um**
+
+| Caso | Desafio | Resultado | Motivo principal |
+|---|---|---|---|
+| K | 003 | **Aprovado** (13/03) depois de 1 rodada | Pediram para testar o score com os dados reais ("há fatores que não contribuem") e para **aproveitar mais dados do dataset**. Ele corrigiu a data de referência (máximo do dataset) e acrescentou histórico da conta, win rate regional e por série |
+| L | 003 | 5,8 → 6,4 → **não avançou** (13/04, depois de 4 rodadas) | `node_modules` commitado; process log só com links externos; pesos no README diferentes dos do código |
+| M | 004 | 5,5 → 7,0 → **aprovado** (23/03) | Faltava mostrar onde discordou da IA e quais insights eram dele. Resolveu com uma seção curta no README |
+| N | 002 | 6,5 → 7,3 → **aprovado** (23/03) | Estratégia da análise veio da IA antes de explorar os dados. Resolveu documentando o raciocínio próprio. Nota do avaliador: o ideal é isso vir já na primeira versão |
+| O | 001 | 7,3 → sem decisão pública | A IA corrigiu a interpretação causal do candidato, e não o contrário. "O julgamento foi da IA" |
+| P | 001 | **Aprovado** depois de 1 rodada | A 1ª versão tinha `solution/` vazio. Aprovada com código + 3 erros da IA documentados; observação: screenshots sozinhos não bastam, precisa de log textual |
+| Q (issue) | 003 | Não avançou | Dependências commitadas; o próprio candidato reconhece como erro de higiene |
+| R (issue) | 002 | Não avançou por e-mail ~13 h depois do convite | Abriu o PR incompleto (sem prints e sem link publicado) e foi avaliado assim |
+
+**Critérios extraídos** (cada um virou item na seção 9 do [checklist.md](checklist.md))
+
+1. **Uso de IA vale 30% da nota.** O avaliador quer ver: hipóteses escritas **antes** de pedir à IA; momentos concretos em que o candidato discordou, corrigiu ou redirecionou; o que foi insight dele e o que foi da IA; o que decidiu perseguir e o que descartou. Uma seção curta no README (10–15 linhas) bastou para aprovar o caso M.
+2. **Tudo auditável dentro do repositório.** Link externo de conversa não conta (pode expirar). Screenshots sem log textual não bastam. Export do chat com conteúdo, dentro da pasta.
+3. **Higiene é bloqueador.** `node_modules` ou dependências commitadas reprovaram dois candidatos do 003, mesmo com documentação elogiada.
+4. **Documentação igual ao código.** Peso no README diferente do implementado foi bloqueador.
+5. **O score precisa ser testado ponta a ponta com os dados reais**, e cada fator precisa mexer no resultado como a documentação diz. "Fator que não contribui" foi o primeiro pedido de mudança no único 003 aprovado.
+6. **Aproveitar os dados do dataset.** O avaliador pediu explicitamente para usar mais das 4 tabelas e aprovou quando o candidato incluiu histórico da conta e win rate regional. **Atenção:** os nossos dados mostram que esses fatores não têm sinal (`analysis/findings.md`). Não dá para simplesmente omiti-los: a entrega precisa mostrar que **cada atributo das 4 tabelas foi testado**, com o número, e onde ele aparece na tela como contexto. Senão um avaliador (humano ou IA) lê como "dados não aproveitados".
+7. **Data de referência = data máxima do dataset.** Elogiado quando corrigido; erro quando faltou.
+8. **Solução para usar, não só para ler**, com código e instruções no repositório. `solution/` sem código ou entrypoint de mentira pesaram.
+9. **A primeira versão conta.** A avaliação pode sair em horas, por e-mail, e reabrir depois não garante nada (caso L teve 4 rodadas e não avançou). Abrir o PR só quando estiver completo.
+10. **Insights principais condensados no README**, para leitura rápida sem precisar abrir o transcript.
+
+**Ressalva.** O caso K foi aprovado em 13/03, quando havia 13 submissões do 003; hoje são 116. A entrega dele era simples (feita em menos de 2 horas, com arquivos fora da pasta da submissão). A régua de agora é mais alta. O que vale copiar são os critérios, não o nível daquela entrega.
 
 ---
 
@@ -70,7 +104,7 @@ Comparação com o estado em 09/11/2026: `analysis/findings.md`, `scoring/desenh
 ### Já se diferencia (manter e deixar visível)
 
 1. **Diagnóstico de dados sintéticos.** Nenhum dos dez diz isso. É o tipo de julgamento que o G4 pede ("saber quando desconfiar") e muda o que o score pode prometer. Há uma evidência nova e forte para somar ao `findings.md`: **os 1.779 deals que fecharam no 1º mês de um trimestre levaram no máximo 13 dias** (mediana 7); quem fecha no 2º ou 3º mês leva até 125 e 138. Isso é regra de gerador, não comportamento de vendedor.
-2. **Curva de idade e calendário, mais completos que o melhor concorrente nesse ponto (F).** F mostrou que o efeito das "2 primeiras semanas" some quando se controla pelo mês de **fechamento**. Conferi: é verdade (no 3º mês, rápidos 86% × lentos 81%). Só que o mês de fechamento não existe para um deal aberto. Controlando pelo mês de **início** (que existe), o efeito continua: 50% × 69%, 57% × 64% e 63% × 69% nos três meses do trimestre. A leitura certa é "sobreviver às 2 primeiras semanas ainda informa, e o mecanismo é o calendário do gerador". Nenhum dos dez chegou a essa distinção.
+2. **Curva de idade e calendário, mais completos que o melhor concorrente nesse ponto (F).** F mostrou que o efeito das "2 primeiras semanas" some quando se controla pelo mês de **fechamento**. Conferi: é verdade (no 3º mês, rápidos 86% × lentos 81%). Só que o mês de fechamento não existe para um deal aberto. Controlando pelo mês de **início** (que existe), o efeito continua: rápidos × lentos = 49,7% × 68,9%, 56,5% × 63,5% e 63,1% × 68,8% nos três meses do trimestre (coorte engajada de 01/03 a 15/08/2017). A leitura certa é "sobreviver às 2 primeiras semanas ainda informa, e o mecanismo é o calendário do gerador". Nenhum dos dez chegou a essa distinção.
 3. **Corte de "desistir" em 276 dias** (o dobro do recorde), separado de "requalificar". Os outros usam um corte só.
 4. **App estático sem build**: abre em qualquer servidor, sem dormir e sem login, se for publicado num host estático.
 
@@ -89,4 +123,8 @@ Comparação com o estado em 09/11/2026: `analysis/findings.md`, `scoring/desenh
 
 ## 5. Nota — correspondência com os PRs
 
-PRs do repositório oficial `Gestao-Quatro-Ponto-Zero/ai-master-challenge`: A = 239, B = 197, C = 75, D = 238, E = 110, F = 175, G = 124, H = 25, I = 200, J = 129. Leitura feita em 09/11/2026; os PRs podem ter mudado depois.
+PRs do repositório oficial `Gestao-Quatro-Ponto-Zero/ai-master-challenge`: A = 239, B = 197, C = 75, D = 238, E = 110, F = 175, G = 124, H = 25, I = 200, J = 129.
+
+Casos avaliados publicamente: K = PR 9, L = PR 7, M = PR 4, N = PR 20, O = PR 12, P = PR 19, Q = issue 64, R = issue 194.
+
+Leitura feita em 09/11/2026; os PRs podem ter mudado depois.

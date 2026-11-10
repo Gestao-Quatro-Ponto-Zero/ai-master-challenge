@@ -91,3 +91,26 @@ Status: ⬜ não verificado · ✅ ok · ❌ falhou (detalhe em `testes.md`).
 | H3 | Fim de linha LF em todos os arquivos de texto | ⬜ |
 | H4 | Sem `node_modules`, `__pycache__`, `.venv` ou arquivos grandes desnecessários versionados | ⬜ |
 | H5 | Data de referência fixa e documentada (dados terminam em 2017-12-31) | ⬜ |
+
+## 9. Critérios do avaliador (comentários públicos do G4)
+
+Origem: seção "Critérios reais do avaliador" em [benchmark-prs.md](benchmark-prs.md). Itens marcados **bloqueador** reprovaram candidatos mesmo com o resto elogiado.
+
+| # | Item | Como verificar | Status |
+|---|---|---|---|
+| A1 | **Hipóteses antes da IA** registradas com data, antes da análise | Arquivo no process log com as hipóteses do Leandro e o resultado de cada uma (confirmada / derrubada) | ⬜ |
+| A2 | **Momentos de correção ou redirecionamento da IA**, concretos e datados | `decisoes.md` tem pelo menos 3 linhas em que a decisão do Leandro foi diferente da proposta da IA | ⬜ |
+| A3 | **Insights do Leandro × insights da IA** separados | Seção no README que diz de quem veio cada achado principal | ⬜ |
+| A4 | O que foi **descartado** e por quê | README ou `decisoes.md` lista hipóteses e componentes descartados, com o número | ⬜ |
+| A5 | Seção curta de **steering humano** no README (10–15 linhas), legível sem abrir o transcript | Ler o README de cima a baixo | ⬜ |
+| A6 | **Chat export com conteúdo** dentro do repo, não link | `process-log/chat-exports/` tem o texto das conversas; nenhum link de conversa como única evidência | ⬜ |
+| A7 | **Log textual** além dos prints | Existe narrativa em texto; prints só ilustram | ⬜ |
+| A8 | **Bloqueador:** nenhuma dependência ou artefato de build versionado | `git ls-files submissions/leandro-mallet` sem `node_modules`, `.venv`, `__pycache__`, `dist`, `.next` | ⬜ |
+| A9 | **Bloqueador:** documentação igual ao código | Cada peso, corte e componente citado no README, em `scoring/` e na tela confere com o código (incluindo `app/COMO-RODAR.md`) | ⬜ |
+| A10 | **Score testado ponta a ponta com os dados reais**: cada componente mexe no ranking | `validacao.md` mostra a contribuição de cada componente e um caso em que ele muda a ordem | ⬜ |
+| A11 | **As 4 tabelas aproveitadas e o porquê de cada exclusão visível** | README tem uma tabela "atributo → testado? → resultado → onde aparece (score / contexto na tela / fora)" cobrindo accounts, products, sales_teams e sales_pipeline | ⬜ |
+| A12 | Dados de conta, produto e time aparecem **como contexto na tela**, mesmo fora do score | Teste no app: o detalhe do deal mostra setor, porte, série/preço, manager e região | ⬜ |
+| A13 | Data de referência = **máximo do dataset**, dita no README e na tela | README + cabeçalho do app | ⬜ |
+| A14 | Solução **para usar**: código e instruções no repo, sem entrypoint falso | Seguir o COMO-RODAR de um clone limpo (ver S1) | ⬜ |
+| A15 | **Insights principais no topo do README**, em poucas linhas | Executive summary com os 3–5 achados e o número de cada | ⬜ |
+| A16 | **PR aberto só com tudo pronto** (prints, link publicado testado, chat export), porque a avaliação pode sair em horas | Todos os itens deste checklist em ✅ antes de abrir o PR | ⬜ |

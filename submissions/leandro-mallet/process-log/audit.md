@@ -103,7 +103,7 @@ Ao assumir, a pasta já tinha trabalho das outras sessões, ainda sem auditoria 
 
 Leitura pública do repositório oficial, sem login e sem nenhuma interação:
 - 239 PRs, 116 do challenge 003. Nenhum foi mesclado; os fechados foram todos fechados pelos próprios autores.
-- O avaliador comentou em março, com notas de 0 a 10 de um assistente de avaliação por IA. Notas 6,4 / 7,0 / 7,3 ainda não foram aprovadas.
+- O avaliador comentou em março, com notas de 0 a 10 de um assistente de avaliação por IA. **Correção feita pela #5:** a #1 tinha escrito que as notas 6,4 / 7,0 / 7,3 não foram aprovadas. Na verdade, a 7,0 e uma das 7,3 foram aprovadas em 23/03, depois que os candidatos acrescentaram uma seção mostrando onde conduziram a IA. A 6,4 não avançou (13/04, depois de 4 rodadas), e a outra 7,3 ficou sem decisão pública.
 - Critérios citados nas devolutivas:
   - "Uso de IA" pesa 30% da nota;
   - o process log precisa mostrar onde o candidato corrigiu ou redirecionou a IA, e que hipóteses ele tinha antes;
@@ -136,3 +136,22 @@ Leitura pública do repositório oficial, sem login e sem nenhuma interação:
 - #2: acrescentar ao `findings.md` a regra do 1º mês do trimestre e a distinção entre controlar pelo início e pelo fechamento.
 - #3: incluir "mais novo primeiro" no backtest e rever o componente "conta" (hoje tiraria 20 pontos de 68% do pipeline). As duas coisas vão ao Leandro junto com as decisões pendentes.
 - #4: o `COMO-RODAR.md` precisa acompanhar o desenho final dos componentes.
+
+## 09/11 — #5 QA: critérios reais do avaliador e nota no baseline
+
+**Entregue:** seção "Critérios reais do avaliador" no `benchmark-prs.md` (casos K–R, anonimizados); seção 9 do `checklist.md` com 16 itens verificáveis (A1–A16, dos quais A8 e A9 são bloqueadores); nota no item E do `baseline.md`, liberada pela #1.
+
+**Conferência:** nenhum nome de candidato nem do avaliador nos 3 arquivos (a busca só achou a palavra "Fontes", falso positivo). Nenhum termo proibido; tudo em LF. A correção da #5 sobre as notas aprovadas foi aceita e registrada acima. O caso "AUC 0,43" que a #1 citou existe (comentário público no PR 46, de 24/03); só não estava nos arquivos que a #5 leu.
+
+**Ponto que vai ao Leandro junto com as decisões do score:** no único 003 aprovado, o primeiro pedido do avaliador foi aproveitar mais dados do dataset. Por isso, mesmo que a chance por segmento saia do score, a entrega precisa de uma tabela com cada atributo das 4 tabelas → testado → resultado → onde aparece (no score, como contexto na tela ou fora) (A11), e de contexto da conta, do produto e do time no detalhe do deal (A12).
+
+## 09/11 — #2 Dados: origem fictícia e duas evidências novas
+
+**Entregue:** `findings.md`, `signal.py` e `signal_summary.json` atualizados, mais 3 tabelas novas (ciclo por mês do trimestre; efeito das 2 semanas controlado pelo mês de fechamento e pelo mês de início).
+
+**Conferência:**
+- Reprodução numa cópia separada: os 42 arquivos saíram idênticos. ✅
+- Números iguais aos recalculados pela #1 na auditoria do benchmark. ✅
+- Ressalva honesta da #2: o efeito das 2 semanas só é forte para quem começou no 1º mês do trimestre (49,7% × 68,9%). No 2º mês não é significativo e no 3º fica no limite. ✅
+- Origem documentada: o dataset é o "CRM Sales Opportunities" da Maven Analytics, de uma empresa fictícia de hardware. Várias contas têm nomes de ficção (Acme Corporation, Bluth Company, Bubba Gump). Com isso, "parecem sintéticos" passa a ser "são fictícios", com duas linhas de prova separadas: a fonte e os padrões medidos. ✅
+- Sem termos proibidos; tudo em LF. ✅
