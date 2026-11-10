@@ -7,12 +7,15 @@ Migrations do Postgres (Supabase). Elas saem de `app/ESPEC-TELAS.md` (seção 8)
 | Parte | Arquivos | Estado |
 |---|---|---|
 | Lote 1 | `migrations/0001`–`0006` + `seed/seed_dataset.sql` | **aplicado** no Supabase em 10/11/2026: 9 tabelas, 8.800 deals, 85 contas, 43 usuários e 9.006 linhas de auditoria. Não alterar: mudanças entram como migrations novas |
-| Lote 2 | `migrations/0007`–`0025` | escrito e validado (PGlite); em aplicação |
-| Complemento de segurança | `migrations/0026_limite_global.sql` | escrito e validado (PGlite); **falta aplicar**, depois da 0025 |
+| Lote 2 | `migrations/0007`–`0025` | **aplicado** no Supabase |
+| Teto global | `migrations/0026_limite_global.sql` | **aplicado** no Supabase (versão do commit `d6c4f12`, sha256 `ea36c7b6…443a`) |
+| Teto exato | `migrations/0027_limite_exato.sql` | escrito e validado (PGlite); **falta aplicar**, depois da 0026 |
 
-## Ordem de execução do que falta aplicar
+**Histórico da 0026:** ela foi aplicada antes de um ajuste pedido pela revisão de segurança. A versão aplicada contava o pedido atual e usava `>`, o que deixava passar um pedido a mais que o teto. O arquivo `0026` no repositório é exatamente o que está no banco. O ajuste (contar só os pedidos anteriores e usar `>=`, para o teto ficar exato) entrou como `0027`, que substitui a função `system_iniciar_contexto`.
 
-Cada arquivo numa transação, rodado pelo dono do schema (`postgres`), na ordem:
+## Ordem de execução do lote 2 em diante
+
+Cada arquivo numa transação, rodado pelo dono do schema (`postgres`), na ordem. Já aplicados: 1 a 20. **Falta aplicar: só a 21 (`0027`).**
 
 | # | Arquivo | O que faz |
 |---|---|---|
@@ -36,6 +39,7 @@ Cada arquivo numa transação, rodado pelo dono do schema (`postgres`), na ordem
 | 18 | `0024_roteamento_repasse.sql` | **decisões 35 e 38**: roteamento sem teto, repasse e penalidade |
 | 19 | `0025_permissoes_e_guardas.sql` | proteções das tabelas novas, política do papel de carga e permissões finais |
 | 20 | `0026_limite_global.sql` | **teto global** de pedidos do app por janela (soma de todos os usuários); o papel de carga fica fora |
+| 21 | `0027_limite_exato.sql` | tetos exatos (no máximo 30 por usuário e 300 no total por janela); limite por IP nas rotas do app é obrigatório |
 
 ## Segurança
 
@@ -55,7 +59,7 @@ Cada arquivo numa transação, rodado pelo dono do schema (`postgres`), na ordem
 | Limite | Conta | Padrão | Erro |
 |---|---|---|---|
 | por usuário | pedidos daquele usuário | no máximo 30 por janela; o 31º é recusado | `GS429`: "Muitas mudanças seguidas. Espere alguns segundos." |
-| global (`0026`) | pedidos de todos os usuários do app somados | no máximo 300 por janela (`limite_global_escritas`); o 301º é recusado | `GS429`: "O sistema está recebendo muitas mudanças agora. Tente de novo em alguns segundos." |
+| global (`0026`, exato desde a `0027`) | pedidos de todos os usuários do app somados | no máximo 300 por janela (`limite_global_escritas`); o 301º é recusado | `GS429`: "O sistema está recebendo muitas mudanças agora. Tente de novo em alguns segundos." |
 
 **Limite por endereço de rede (IP): obrigatório.** Ele fica nas rotas do app, que é onde se conhece o IP, e vem **antes** do banco. É o controle principal contra abuso.
 - O teto global do banco é rede de segurança: protege o banco.

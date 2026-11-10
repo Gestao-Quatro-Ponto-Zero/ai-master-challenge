@@ -178,3 +178,9 @@ Por mensagens que chegaram fora de ordem, a #2 e a #4 escreveram o banco ao mesm
 
 **Regras aprovadas (decisão 39):** ordens numeradas com confirmação; dono único por pasta; sequência no mesmo artefato; até 2 sessões pesadas por vez; dependências fora do Drive; mesmo modo de permissão; quadro de status (local).
 
+## 10/11 — Lote 2 aplicado; a 0026 foi aplicada antes do ajuste
+
+A #5 aplicou 0007–0026 no Supabase, sem erro. Contagem: 29 tabelas, 60 FKs (RESTRICT, validadas e com índice), 68 funções, 3 views, 86 gatilhos, 104 índices. Os dados foram preservados: 8.800 deals, 85 contas, 43 usuários, receita ganha de US$ 10.005.534.
+
+**Erro de orquestração da #1:** o aviso "não aplicar a 0026 ainda" chegou à #5 depois que ela já tinha aplicado a 0026 original (commit d6c4f12). A #1 já tinha commitado a 0026 ajustada (4017322), o que deixava o repositório diferente do banco. Correção, proposta pela #5: a 0026 do repositório volta à versão aplicada, e o ajuste (teto exato) entra como migration nova, 0027.
+

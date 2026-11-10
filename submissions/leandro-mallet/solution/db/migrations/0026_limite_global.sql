@@ -2,11 +2,8 @@
 -- Sem login, o usuário é escolhido na tela: o limite por usuário (0022) se contorna trocando de usuário.
 -- Este arquivo acrescenta um TETO GLOBAL de pedidos do app por janela (soma de todos os usuários),
 -- contado pelo banco e verificado junto com o limite por usuário. O papel de carga fica fora do teto.
--- Tetos exatos: no máximo 30 pedidos por usuário e 300 no total por janela (o próximo é recusado).
---
--- IMPORTANTE: o limite por endereço de rede (IP) nas rotas do app é OBRIGATÓRIO e vem antes do banco.
--- O teto global aqui é rede de segurança: protege o banco, mas, se o limite por IP faltar, uma só origem
--- pode esgotá-lo e travar as escritas de todos até a janela passar. O limite por usuário só organiza o uso.
+-- A proteção contra abuso fica em duas camadas: este teto global e o limite por endereço de rede
+-- nas rotas do app. O limite por usuário só organiza o uso.
 
 -- 1. Marca de origem do pedido (app ou carga) ----------------------------------------------------------
 
@@ -65,20 +62,17 @@ begin
   perform set_config('app.lote_id', coalesce(p_lote_id::text, ''), true);
 
   -- limites do app, contados pelo banco: por usuário (organiza) e global (protege). A carga fica fora.
-  -- Contam os pedidos ANTERIORES da janela (sem o atual): com ">=", o teto é exato (30 passam, o 31º não).
   if v_app then
     select count(*) into v_recentes
       from system_correlacoes
-     where usuario_id = p_usuario_id and criado_em > now() - v_janela
-       and correlation_id <> p_correlation_id;
-    if v_recentes >= coalesce(config_inteiro('limite_escritas_por_minuto'), 30) then
+     where usuario_id = p_usuario_id and criado_em > now() - v_janela;
+    if v_recentes > coalesce(config_inteiro('limite_escritas_por_minuto'), 30) then
       raise exception 'Muitas mudanças seguidas. Espere alguns segundos.' using errcode = 'GS429';
     end if;
     select count(*) into v_global
       from system_correlacoes
-     where do_app and criado_em > now() - v_janela
-       and correlation_id <> p_correlation_id;
-    if v_global >= coalesce(config_inteiro('limite_global_escritas'), 300) then
+     where do_app and criado_em > now() - v_janela;
+    if v_global > coalesce(config_inteiro('limite_global_escritas'), 300) then
       raise exception 'O sistema está recebendo muitas mudanças agora. Tente de novo em alguns segundos.' using errcode = 'GS429';
     end if;
   end if;
