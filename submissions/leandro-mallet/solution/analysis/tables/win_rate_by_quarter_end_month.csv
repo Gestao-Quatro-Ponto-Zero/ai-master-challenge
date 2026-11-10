@@ -1,0 +1,3 @@
+quarter_end_month,n,won,win_rate,ci_low,ci_high,diff_vs_overall_pp,ci_excludes_overall,poucos_casos
+fim de trimestre,2574,2076,0.8065268065268065,0.7908139434669331,0.8213260732043782,17.502628499499306,True,False
+meio de trimestre,4137,2162,0.5226009185400048,0.5073661387722652,0.5377937630216116,-10.889960299180867,True,False

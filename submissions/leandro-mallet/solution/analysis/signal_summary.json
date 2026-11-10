@@ -1,0 +1,522 @@
+{
+  "reference_date": "2017-12-31",
+  "closed_deals": 6711,
+  "overall_win_rate": 0.6315,
+  "overall_ci": [
+    0.6199,
+    0.643
+  ],
+  "variables": {
+    "product": {
+      "chi2": 6.48,
+      "dof": 6,
+      "p_value": 0.3718909586489477,
+      "cramers_v": 0.0311,
+      "min_expected": 9.2,
+      "p_bonferroni": 1.0,
+      "p_permutation": 0.3888055972013993,
+      "groups": 7,
+      "groups_poucos_casos": 1,
+      "groups_ci_excludes_overall": 0,
+      "win_rate_min": 0.6,
+      "win_rate_max": 0.6484,
+      "win_rate_min_n30": 0.6033,
+      "win_rate_max_n30": 0.6484
+    },
+    "series": {
+      "chi2": 0.4,
+      "dof": 2,
+      "p_value": 0.8188863311471423,
+      "cramers_v": 0.0077,
+      "min_expected": 9.2,
+      "p_bonferroni": 1.0,
+      "p_permutation": 0.8125937031484258,
+      "groups": 3,
+      "groups_poucos_casos": 1,
+      "groups_ci_excludes_overall": 0,
+      "win_rate_min": 0.6,
+      "win_rate_max": 0.6339,
+      "win_rate_min_n30": 0.6272,
+      "win_rate_max_n30": 0.6339
+    },
+    "price_band": {
+      "chi2": 2.35,
+      "dof": 3,
+      "p_value": 0.5022583438803877,
+      "cramers_v": 0.0187,
+      "min_expected": 9.2,
+      "p_bonferroni": 1.0,
+      "p_permutation": 0.504247876061969,
+      "groups": 4,
+      "groups_poucos_casos": 1,
+      "groups_ci_excludes_overall": 0,
+      "win_rate_min": 0.6,
+      "win_rate_max": 0.6423,
+      "win_rate_min_n30": 0.6213,
+      "win_rate_max_n30": 0.6423
+    },
+    "sector": {
+      "chi2": 2.83,
+      "dof": 9,
+      "p_value": 0.9706100917948224,
+      "cramers_v": 0.0205,
+      "min_expected": 105.4,
+      "p_bonferroni": 1.0,
+      "p_permutation": 0.9730134932533733,
+      "groups": 10,
+      "groups_poucos_casos": 0,
+      "groups_ci_excludes_overall": 0,
+      "win_rate_min": 0.6117,
+      "win_rate_max": 0.6485,
+      "win_rate_min_n30": 0.6117,
+      "win_rate_max_n30": 0.6485
+    },
+    "revenue_band": {
+      "chi2": 0.03,
+      "dof": 2,
+      "p_value": 0.986993540195644,
+      "cramers_v": 0.002,
+      "min_expected": 667.7,
+      "p_bonferroni": 1.0,
+      "p_permutation": 0.9895052473763118,
+      "groups": 3,
+      "groups_poucos_casos": 0,
+      "groups_ci_excludes_overall": 0,
+      "win_rate_min": 0.6301,
+      "win_rate_max": 0.6323,
+      "win_rate_min_n30": 0.6301,
+      "win_rate_max_n30": 0.6323
+    },
+    "employees_band": {
+      "chi2": 0.81,
+      "dof": 2,
+      "p_value": 0.6662096304132401,
+      "cramers_v": 0.011,
+      "min_expected": 696.1,
+      "p_bonferroni": 1.0,
+      "p_permutation": 0.6696651674162919,
+      "groups": 3,
+      "groups_poucos_casos": 0,
+      "groups_ci_excludes_overall": 0,
+      "win_rate_min": 0.6237,
+      "win_rate_max": 0.6358,
+      "win_rate_min_n30": 0.6237,
+      "win_rate_max_n30": 0.6358
+    },
+    "us_hq": {
+      "chi2": 0.16,
+      "dof": 1,
+      "p_value": 0.6869009225007189,
+      "cramers_v": 0.0049,
+      "min_expected": 426.0,
+      "p_bonferroni": 1.0,
+      "p_permutation": 0.7001499250374813,
+      "groups": 2,
+      "groups_poucos_casos": 0,
+      "groups_ci_excludes_overall": 0,
+      "win_rate_min": 0.6263,
+      "win_rate_max": 0.6326,
+      "win_rate_min_n30": 0.6263,
+      "win_rate_max_n30": 0.6326
+    },
+    "is_subsidiary": {
+      "chi2": 0.13,
+      "dof": 1,
+      "p_value": 0.7148444309904693,
+      "cramers_v": 0.0045,
+      "min_expected": 427.5,
+      "p_bonferroni": 1.0,
+      "p_permutation": 0.7221389305347327,
+      "groups": 2,
+      "groups_poucos_casos": 0,
+      "groups_ci_excludes_overall": 0,
+      "win_rate_min": 0.6305,
+      "win_rate_max": 0.6362,
+      "win_rate_min_n30": 0.6305,
+      "win_rate_max_n30": 0.6362
+    },
+    "company_age_band": {
+      "chi2": 2.24,
+      "dof": 2,
+      "p_value": 0.32670979563411395,
+      "cramers_v": 0.0185,
+      "min_expected": 579.3,
+      "p_bonferroni": 1.0,
+      "p_permutation": 0.3288355822088955,
+      "groups": 3,
+      "groups_poucos_casos": 0,
+      "groups_ci_excludes_overall": 0,
+      "win_rate_min": 0.6233,
+      "win_rate_max": 0.6426,
+      "win_rate_min_n30": 0.6233,
+      "win_rate_max_n30": 0.6426
+    },
+    "account": {
+      "chi2": 64.55,
+      "dof": 84,
+      "p_value": 0.9432099813839866,
+      "cramers_v": 0.0981,
+      "min_expected": 14.0,
+      "p_bonferroni": 1.0,
+      "p_permutation": 0.9435282358820589,
+      "groups": 85,
+      "groups_poucos_casos": 0,
+      "groups_ci_excludes_overall": 2,
+      "win_rate_min": 0.5312,
+      "win_rate_max": 0.75,
+      "win_rate_min_n30": 0.5312,
+      "win_rate_max_n30": 0.75
+    },
+    "sales_agent": {
+      "chi2": 33.35,
+      "dof": 29,
+      "p_value": 0.2639369797718241,
+      "cramers_v": 0.0705,
+      "min_expected": 29.1,
+      "p_bonferroni": 1.0,
+      "p_permutation": 0.25837081459270367,
+      "groups": 30,
+      "groups_poucos_casos": 0,
+      "groups_ci_excludes_overall": 2,
+      "win_rate_min": 0.5498,
+      "win_rate_max": 0.7039,
+      "win_rate_min_n30": 0.5498,
+      "win_rate_max_n30": 0.7039
+    },
+    "manager": {
+      "chi2": 2.44,
+      "dof": 5,
+      "p_value": 0.7860975736716689,
+      "cramers_v": 0.0191,
+      "min_expected": 274.5,
+      "p_bonferroni": 1.0,
+      "p_permutation": 0.7971014492753623,
+      "groups": 6,
+      "groups_poucos_casos": 0,
+      "groups_ci_excludes_overall": 0,
+      "win_rate_min": 0.6208,
+      "win_rate_max": 0.6443,
+      "win_rate_min_n30": 0.6208,
+      "win_rate_max_n30": 0.6443
+    },
+    "regional_office": {
+      "chi2": 1.01,
+      "dof": 2,
+      "p_value": 0.6042121600487984,
+      "cramers_v": 0.0123,
+      "min_expected": 684.7,
+      "p_bonferroni": 1.0,
+      "p_permutation": 0.6116941529235382,
+      "groups": 3,
+      "groups_poucos_casos": 0,
+      "groups_ci_excludes_overall": 0,
+      "win_rate_min": 0.6256,
+      "win_rate_max": 0.6394,
+      "win_rate_min_n30": 0.6256,
+      "win_rate_max_n30": 0.6394
+    },
+    "agent_x_product": {
+      "chi2": 191.45,
+      "dof": 177,
+      "p_value": 0.2167569030339579,
+      "cramers_v": 0.1689,
+      "min_expected": 0.4,
+      "p_bonferroni": 1.0,
+      "p_permutation": 0.223888055972014,
+      "groups": 178,
+      "groups_poucos_casos": 89,
+      "groups_ci_excludes_overall": 9,
+      "win_rate_min": 0.0,
+      "win_rate_max": 1.0,
+      "win_rate_min_n30": 0.4667,
+      "win_rate_max_n30": 0.8125
+    },
+    "agent_x_sector": {
+      "chi2": 290.23,
+      "dof": 287,
+      "p_value": 0.4356513950309476,
+      "cramers_v": 0.208,
+      "min_expected": 0.4,
+      "p_bonferroni": 1.0,
+      "groups": 288,
+      "groups_poucos_casos": 213,
+      "groups_ci_excludes_overall": 16,
+      "win_rate_min": 0.0,
+      "win_rate_max": 1.0,
+      "win_rate_min_n30": 0.439,
+      "win_rate_max_n30": 0.8
+    },
+    "engage_quarter": {
+      "chi2": 72.82,
+      "dof": 4,
+      "p_value": 5.762267904426103e-15,
+      "cramers_v": 0.1042,
+      "min_expected": 112.4,
+      "p_bonferroni": 1.0372082227966985e-13,
+      "p_permutation": 0.0004997501249375312,
+      "groups": 5,
+      "groups_poucos_casos": 0,
+      "groups_ci_excludes_overall": 3,
+      "win_rate_min": 0.5999,
+      "win_rate_max": 0.8197,
+      "win_rate_min_n30": 0.5999,
+      "win_rate_max_n30": 0.8197
+    },
+    "close_quarter": {
+      "chi2": 111.18,
+      "dof": 3,
+      "p_value": 6.119156531634532e-24,
+      "cramers_v": 0.1287,
+      "min_expected": 238.4,
+      "p_bonferroni": 1.1014481756942158e-22,
+      "p_permutation": 0.0004997501249375312,
+      "groups": 4,
+      "groups_poucos_casos": 0,
+      "groups_ci_excludes_overall": 2,
+      "win_rate_min": 0.6025,
+      "win_rate_max": 0.8207,
+      "win_rate_min_n30": 0.6025,
+      "win_rate_max_n30": 0.8207
+    },
+    "engage_weekday": {
+      "chi2": 7.93,
+      "dof": 6,
+      "p_value": 0.24295208022088677,
+      "cramers_v": 0.0344,
+      "min_expected": 342.3,
+      "p_bonferroni": 1.0,
+      "p_permutation": 0.248375812093953,
+      "groups": 7,
+      "groups_poucos_casos": 0,
+      "groups_ci_excludes_overall": 0,
+      "win_rate_min": 0.6068,
+      "win_rate_max": 0.6596,
+      "win_rate_min_n30": 0.6068,
+      "win_rate_max_n30": 0.6596
+    },
+    "cycle_bucket": {
+      "chi2": 110.64,
+      "dof": 5,
+      "p_value": 2.9955489762402333e-22,
+      "cramers_v": 0.1284,
+      "min_expected": 71.1
+    }
+  },
+  "cycle": {
+    "won_median": 57.0,
+    "lost_median": 14.0,
+    "won_p90": 106.0,
+    "max_closed_cycle": 138,
+    "mann_whitney_won_vs_lost": {
+      "U": 6057932.0,
+      "z": 10.682,
+      "p_value": 1.2293375091375212e-26,
+      "prob_a_gt_b": 0.578
+    },
+    "product_effect_on_cycle_won_kruskal_like": null,
+    "won_median_by_product": {
+      "GTK 500": 69.0,
+      "GTX Basic": 61.0,
+      "GTX Plus Basic": 56.0,
+      "GTX Plus Pro": 57.0,
+      "GTX Pro": 47.0,
+      "MG Advanced": 57.5,
+      "MG Special": 57.0
+    }
+  },
+  "robustness": {
+    "cohort": "engage 2017-03-01..2017-08-15",
+    "cohort_n": 3718,
+    "cohort_win_rate": 0.6114,
+    "cohort_first_two_weeks": {
+      "15+": {
+        "n": 1981,
+        "win_rate": 0.6724,
+        "ci": [
+          0.6514,
+          0.6927
+        ]
+      },
+      "0-14": {
+        "n": 1737,
+        "win_rate": 0.5417,
+        "ci": [
+          0.5182,
+          0.5651
+        ]
+      }
+    },
+    "cohort_first_two_weeks_test": {
+      "chi2": 66.49,
+      "dof": 1,
+      "p_value": 3.5214880719981287e-16,
+      "cramers_v": 0.1337,
+      "min_expected": 675.1
+    },
+    "quarter_end": {
+      "win_rate": {
+        "fim de trimestre": 0.8065,
+        "meio de trimestre": 0.5226
+      },
+      "n": {
+        "fim de trimestre": 2574,
+        "meio de trimestre": 4137
+      },
+      "test": {
+        "chi2": 549.68,
+        "dof": 1,
+        "p_value": 1.4812435161228232e-121,
+        "cramers_v": 0.2862,
+        "min_expected": 948.5
+      },
+      "median_cycle": {
+        "Lost": {
+          "fim de trimestre": 76.0,
+          "meio de trimestre": 11.0
+        },
+        "Won": {
+          "fim de trimestre": 75.0,
+          "meio de trimestre": 12.0
+        }
+      },
+      "share_of_won_closed_at_quarter_end": 0.4899,
+      "share_of_lost_closed_at_quarter_end": 0.2014
+    },
+    "out_of_time_history": {
+      "account": {
+        "min_prior_deals": 10,
+        "next_deal_win_rate_by_prior_quartile": {
+          "Q1 (pior histórico)": 0.6357,
+          "Q2": 0.6073,
+          "Q3": 0.6228,
+          "Q4 (melhor histórico)": 0.6014
+        },
+        "test": {
+          "chi2": 4.48,
+          "dof": 3,
+          "p_value": 0.21408193819609767,
+          "cramers_v": 0.0276,
+          "min_expected": 558.7
+        }
+      },
+      "sales_agent": {
+        "min_prior_deals": 30,
+        "next_deal_win_rate_by_prior_quartile": {
+          "Q1 (pior histórico)": 0.6198,
+          "Q2": 0.6322,
+          "Q3": 0.6219,
+          "Q4 (melhor histórico)": 0.6029
+        },
+        "test": {
+          "chi2": 2.72,
+          "dof": 3,
+          "p_value": 0.43715614937425684,
+          "cramers_v": 0.0216,
+          "min_expected": 551.8
+        }
+      }
+    }
+  },
+  "open": {
+    "open": 2089,
+    "prospecting": 500,
+    "engaging": 1589,
+    "without_account": 1425,
+    "without_account_by_stage": {
+      "Engaging": 1088,
+      "Prospecting": 337
+    },
+    "engaging_age_days": {
+      "count": 1589.0,
+      "mean": 198.8,
+      "std": 83.6,
+      "min": 9.0,
+      "10%": 107.0,
+      "25%": 148.0,
+      "50%": 165.0,
+      "75%": 263.0,
+      "90%": 319.0,
+      "max": 423.0
+    },
+    "engaging_older_than_won_p90": 1432,
+    "engaging_older_than_max_closed_cycle": 1291,
+    "engaging_engaged_in_last_90d": 110,
+    "open_by_product": {
+      "GTX Basic": 430,
+      "MG Special": 428,
+      "GTX Pro": 333,
+      "GTX Plus Basic": 332,
+      "MG Advanced": 328,
+      "GTX Plus Pro": 223,
+      "GTK 500": 15
+    },
+    "open_by_agent_top": {
+      "Darcel Schlecht": 194,
+      "Anna Snelling": 112,
+      "Vicki Laflamme": 104,
+      "Kary Hendrixson": 103,
+      "Versie Hillebrand": 97
+    },
+    "open_by_agent_min": 31,
+    "open_by_agent_max": 194
+  },
+  "value": {
+    "won_price_ratio": {
+      "count": 4238.0,
+      "mean": 0.9965,
+      "std": 0.0989,
+      "min": 0.6573,
+      "1%": 0.7679,
+      "5%": 0.8327,
+      "50%": 0.9982,
+      "95%": 1.1636,
+      "99%": 1.2255,
+      "max": 1.3418
+    },
+    "won_value_by_product_mean": {
+      "GTK 500": 26707.0,
+      "GTX Basic": 546.0,
+      "GTX Plus Basic": 1080.0,
+      "GTX Plus Pro": 5490.0,
+      "GTX Pro": 4816.0,
+      "MG Advanced": 3389.0,
+      "MG Special": 55.0
+    },
+    "share_of_won_revenue_by_product": {
+      "GTK 500": 0.04,
+      "GTX Basic": 0.0499,
+      "GTX Plus Basic": 0.0705,
+      "GTX Plus Pro": 0.2628,
+      "GTX Pro": 0.3509,
+      "MG Advanced": 0.2215,
+      "MG Special": 0.0044
+    }
+  },
+  "synthetic_checks": {
+    "engage_weekday_share": {
+      "Sunday": 0.1475,
+      "Thursday": 0.1445,
+      "Wednesday": 0.1445,
+      "Monday": 0.1433,
+      "Friday": 0.1422,
+      "Tuesday": 0.1395,
+      "Saturday": 0.1384
+    },
+    "weekend_share_engage": 0.2859,
+    "weekend_share_close": 0.2843,
+    "deals_per_account": {
+      "count": 85.0,
+      "mean": 79.0,
+      "std": 29.3,
+      "min": 38.0,
+      "25%": 58.0,
+      "50%": 75.0,
+      "75%": 91.0,
+      "max": 193.0
+    },
+    "agent_winrate_sd_observed": 0.0367,
+    "agent_winrate_sd_if_all_equal_p50": 0.0341,
+    "agent_winrate_sd_if_all_equal_p95": 0.0427,
+    "accounts_per_agent_median": 30.0
+  }
+}

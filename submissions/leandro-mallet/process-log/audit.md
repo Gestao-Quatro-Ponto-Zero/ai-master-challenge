@@ -71,3 +71,28 @@ Ao assumir, a pasta já tinha trabalho das outras sessões, ainda sem auditoria 
 3. **A #1 errou neste ponto.** A #5 já usava o mesmo corte estrito (ciclo > d) nos quatro pontos, então o 76% (75,6) estava coerente. A #1 tinha comparado com "≥ d". A #5 declarou o corte e mostrou as duas versões: > d = 63,2 / 68,7 / 71,1 / 75,6%; ≥ d = 63,2 / 68,6 / 71,3 / 75,1%. A #1 conferiu: o ciclo mínimo é 1 dia, por isso d = 0 dá o mesmo nas duas. ✅
 
 **Resultado:** `solution/qa/` aprovado e commitado.
+
+---
+
+## 09/11 — #2 Dados: limpeza e análise de sinal
+
+**Entregue:**
+- `data/raw/`: os 5 CSVs originais. A #2 moveu para cá os arquivos que estavam soltos em `data/`, sem alterar nada.
+- `data/clean.py` gera `data/clean/` (as tabelas limpas, `deals.csv` com tudo junto e `cleaning_report.json`). As regras de limpeza estão em `data/README.md`.
+- `analysis/signal.py` gera `analysis/signal_summary.json` e `analysis/tables/` (32 CSVs). A leitura está em `analysis/findings.md`.
+
+**Conferência:**
+
+| Verificação | Como | Resultado |
+|---|---|---|
+| Reprodutibilidade | Copiei `data/` e `analysis/` para uma pasta à parte, rodei os dois scripts e comparei os arquivos gerados com os entregues | ✅ Os 39 arquivos são idênticos, byte a byte |
+| Coorte sem viés (engajados de 01/03 a 15/08/2017) | Recalculado | ✅ n = 3.718; fechou em 0–14 dias = 1.737 deals, 54,2%; em 15 dias ou mais = 1.981 deals, 67,2% |
+| Fim de trimestre | Recalculado | ✅ 2.574 deals, 80,7%, contra 4.137 deals, 52,3% |
+| Fim de semana como sinal de dado sintético | Recalculado sobre `engage_date` | ✅ 28,7% (a #2 diz 28,6%; a diferença é de base ou de arredondamento, sem efeito) |
+| Engaging com mais de 138 dias e engajados nos últimos 90 dias | Recalculado | ✅ 1.291 e 110 |
+| Variáveis sem sinal, p-valores e teste fora do tempo | Tabelas reproduzidas byte a byte; os spreads batem com os da #1 na auditoria da #5 | ✅ |
+| Termos proibidos e fim de linha | Busca por nomes e e-mails; checagem de CRLF | ✅ Nenhuma ocorrência; tudo em LF |
+
+**Achado da auditoria, levado ao Leandro junto com as decisões:** só **7 dos 1.589 Engaging** abertos têm até 14 dias, e só 18 têm até 30. O único sinal do dataset (as duas primeiras semanas) praticamente não se aplica ao pipeline atual. Na prática, nada nos dados ordena os deals abertos por chance. O que dá para usar é o valor (preço de tabela, ±10%), o estado do deal (dentro ou fora do ciclo histórico) e a qualidade do cadastro (sem conta).
+
+**Resultado:** `data/` e `analysis/` aprovados e commitados. As decisões 1 a 6 do `findings.md` vão ao Leandro antes de a #3 construir o score.
