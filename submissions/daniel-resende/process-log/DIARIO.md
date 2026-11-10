@@ -269,6 +269,12 @@ O Daniel usou o app e escreveu, como ele disse:
 - README: "em relação ao guardado", depois da troca de palavras.
 - O app foi reiniciado a partir deste repositório, em http://127.0.0.1:8000/.
 
+### 4a. O README fechado (prompt `04a-readme-final.md`, 18:56 a 18:57)
+
+- O bloco de processo do README tinha ainda o texto do modelo. Foi preenchido: a tabela de ferramentas, o workflow em doze passos, onde a IA errou e como foi corrigido, o que o candidato acrescentou, as evidências com links, "Depois da entrega" e como ler o process log (o que foi organizado antes da publicação, o sha256 da regra congelada, os arquivos de trabalho fora do repositório, o segundo verificador cortado por tempo).
+- O tempo real no README vai até 18:57; não é o número final, que o último passo escreve.
+- A seção "O que eu adicionei que a IA sozinha não faria" foi escrita a partir do diário e o Daniel a lê antes de qualquer envio.
+
 ## O que o candidato decidiu
 
 ### Etapa 1: a regra e a forma do produto (10/11/2026, resposta recebida no chat e registrada às 15:54, do `date`)

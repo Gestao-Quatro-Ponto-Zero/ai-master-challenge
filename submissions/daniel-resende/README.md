@@ -114,52 +114,88 @@ Todos os números abaixo saem de `solution/numbers.py` (`docs/numeros-saida.txt`
 
 ---
 
+## Depois da entrega
+
+- **Recalcular tudo:** `python3 submissions/daniel-resende/solution/run.py --port 8000` refaz os arquivos de cada segunda-feira a partir dos CSVs; `build.py` faz o mesmo sem abrir o app.
+- **Relatório de desvio:** `python3 submissions/daniel-resende/solution/drift.py` compara o prazo aprendido dos dados novos (o ganho mais demorado, os fechamentos depois do prazo do trimestre, a conta por idade) com o guardado em `solution/window.json` e diz se ele se moveu.
+- **O ganho real:** com um grupo de controle, metade do time usando a ferramenta e metade sem, por um ciclo de vendas, comparando valor ganho e tempo gasto com negócios vencidos.
+
+---
+
 ## Process Log — Como usei IA
 
 > **Este bloco é obrigatório.** Sem ele, a submissão é desclassificada.
 
+O diário completo, com as horas reais de cada passo, está em [process-log/DIARIO.md](process-log/DIARIO.md); cada prompt, em [process-log/prompts/](process-log/prompts/).
+
 ### Ferramentas usadas
 
-_Liste as ferramentas de IA que usou e para quê._
-
-| Ferramenta | Para que usou |
-|------------|--------------|
-| _ex: Claude Code_ | _Análise exploratória dos dados e geração de gráficos_ |
-| _ex: Cursor_ | _Construção do protótipo web_ |
-| _ex: ChatGPT_ | _Brainstorm de hipóteses iniciais_ |
+| Ferramenta | O que fez | Por quê |
+|---|---|---|
+| Claude Code no VS Code, construtor líder | Auditoria, desenho e validação do score, contratos, interface, integração, commits. Claude Fable 5 das 15:06 às 17:24; Claude Opus 5.5 a partir das 17:25 (o Daniel trocou o modelo para os últimos ajustes da tela e o que veio depois) | Lê e roda no disco: cada afirmação sai de um comando |
+| Subagentes do Claude Code | A auditoria dos dados, o núcleo do score, a camada de IA, os revisores que não desenharam as telas e o teste dos quinze anos | Trabalho em paralelo, com contexto próprio; quem revisa não é quem desenhou |
+| Subagente de pesquisa, com busca na web (duas vezes) | Como se ordena um pipeline e como manter texto gerado preso aos fatos; depois, a forma do gráfico | Decisões apoiadas em fontes nomeadas e datadas ([docs/pesquisa.md](docs/pesquisa.md)) |
+| CLI do Claude Code sem interface | O baseline "IA sozinha" e a geração dos 148 textos (modelos registrados na procedência: claude-sonnet-5-5 e claude-haiku-5-5) | Sem chave de API, em contexto limpo, com saída estruturada |
+| Codex CLI | Verificador independente, outra família de modelo, num clone limpo | Quem construiu não aprova |
+| Duas sessões do Claude Code como orquestrador | Planejaram, escreveram e conferiram cada prompt, rodaram os comandos de aceitação em clones limpos e organizaram o repositório antes da publicação; nunca construíram | Separar quem planeja e confere de quem constrói |
+| Skill `visual-tier1` | O método visual do Daniel | O padrão dele para telas |
+| GitHub CLI | Conferir o upstream, criar o fork; o PR com o ok do Daniel | É o canal de entrega |
 
 ### Workflow
 
-_Descreva passo a passo como você trabalhou. Onde a IA entrou em cada etapa?_
-
-1.
-2.
-3.
+1. As regras do teste foram lidas por duas sessões, separadamente, e comparadas; o produto foi escrito antes de qualquer código ([produto-v1-antes-dos-dados.md](process-log/produto-v1-antes-dos-dados.md)).
+2. Baseline: o texto cru do desafio, sozinho, num modelo em contexto limpo ([process-log/baseline/](process-log/baseline/)).
+3. Auditoria dos dados por script: o que um negócio aberto carrega de verdade ([docs/auditoria-saida.txt](docs/auditoria-saida.txt)).
+4. Três candidatos de score comparados com "ordenar por valor", em datas de corte, sem vazamento ([docs/validacao-saida.txt](docs/validacao-saida.txt)).
+5. A regra congelada e rodada uma vez em três datas novas, e contada em negócios distintos ([docs/confirmacao-saida.txt](docs/confirmacao-saida.txt)).
+6. O Daniel decidiu a regra e a forma nova do produto ([produto.md](process-log/produto.md)).
+7. Construção em paralelo: núcleo e camada de IA por subagentes, interface pelo construtor, contratos escritos entre eles.
+8. A interface refeita quatro vezes: menos texto, cor própria, figuras que se leem sozinhas, a tela do gestor.
+9. O Daniel usou o app e trocou as palavras pelas de um vendedor.
+10. O repositório foi organizado antes da publicação.
+11. Verificação independente num clone limpo.
+12. As correções do que a verificação achou.
 
 ### Onde a IA errou e como corrigi
 
-_A IA fez algo errado? Você percebeu? Como corrigiu?_
-
-
+- **O tempo "não reduz a chance":** foi o primeiro veredito da auditoria, porque ela contava só negócios que fecharam. Percebi porque a validação mostrava o contrário; refeita com os que nunca fecham, a chance cai com a idade.
+- **A primeira regra perdia para ordenar por valor:** negócios anteriores ao primeiro fechamento registrado inflavam as idades. A causa apareceu cruzando mês de engajamento com mês de fechamento.
+- **O primeiro grupo "deixar ir" deixava passar ganhos:** tratava falta de evidência como evidência. Percebi rodando mais datas de corte; passou a exigir prazo vencido ou idade acima do ganho mais demorado.
+- **A primeira execução do baseline** partiu de uma pasta cujo nome lembrava o projeto. Percebi lendo a resposta e rodei de novo de uma pasta neutra; as duas ficaram guardadas.
+- **A tabela que contava o mesmo negócio várias vezes:** somava datas de corte sobrepostas. Quem apontou foi o orquestrador; a segurança passou a ser medida em negócios distintos.
+- **O gráfico de uma estatística**, que ninguém lia em dez segundos: o prompt do próprio orquestrador o tinha pedido. O Daniel julgou complexo; virou uma linha do tempo.
+- **Palavras que um vendedor não usa** ("vivos", "fila", "para limpar"): o Daniel trocou por "no prazo", "para iniciar", "vencidos".
+- **A conferência dos textos de IA quebrava num clone limpo:** achada pelo orquestrador; corrigida, com um teste que roda a conferência sem os arquivos montados.
+- **O que o verificador independente achou:** completado no último passo.
 
 ### O que eu adicionei que a IA sozinha não faria
 
-_Qual foi seu julgamento, contexto, ou insight que fez diferença?_
+- Recusei o primeiro plano por ser pequeno demais e fixei a regra: as regras do teste são o piso, o produto é o teto.
+- Exigi IA dentro do produto sem nenhuma chave de API.
+- Escolhi o jeito de trabalhar: um orquestrador que nunca constrói, construtores em paralelo, um verificador independente de outra família de modelo, e a meta de tempo.
+- Quando a auditoria contradisse a primeira página do produto, decidi o score e a forma nova; as duas páginas estão no process log.
+- Julguei as primeiras telas pesadas de texto e os gráficos complexos, e fixei a régua: alguém de quinze anos tem de entender a figura.
+- Troquei as palavras da ferramenta pelas que um vendedor usa.
+- Usei o app e pedi que o link dos vencidos abrisse a lista.
+- Aprovei cada passo público.
 
+### Como ler este process log
 
+- O process log foi organizado antes da publicação: os scripts e as instruções da ferramenta particular do candidato ficaram de fora, sete cópias de prompts são trechos marcados na primeira linha, e os caminhos da máquina foram trocados. Os hashes de commit citados nos prompts e no diário são do histórico local anterior a isso; a regra congelada é `solution/validate.py`, com sha256 `336760fdcc511cde2ad5d28e9437dd0b061a222b18f2f5f03e2a38164abca212`.
+- `PRODUTO.md`, `CLAUDE.md`, `prompts/` e `relatorios/`, citados dentro dos prompts, são os arquivos de trabalho fora do repositório; o que deles é publicado está em `process-log/` (`produto.md`, `piso.md`, `prompts/`).
+- O plano tinha dois verificadores independentes; rodou um (outra família de modelo). O segundo, uma sessão nova do mesmo modelo, foi cortado por tempo.
+- **Tempo real:** o Daniel começou por volta das 13:30 de 10/11/2026; o primeiro prompt ao construtor foi às 15:06; este README foi fechado às 18:57, e esse não é o número final, que o último passo escreve. Os subagentes trabalharam em paralelo ao construtor.
 
 ---
 
 ## Evidências
 
-_Anexe ou linke as evidências do processo:_
-
-- [ ] Screenshots das conversas com IA
+- [x] Screenshots: das telas, nos dois temas, e das decisões do Daniel ([process-log/screenshots/](process-log/screenshots/))
 - [ ] Screen recording do workflow
 - [ ] Chat exports
-- [ ] Git history (se construiu código)
-- [ ] Outro: _____________
+- [x] Git history: um commit por passo, cada um dizendo o que provou
+- [x] Outro: o diário ([process-log/DIARIO.md](process-log/DIARIO.md)), cada prompt ([process-log/prompts/](process-log/prompts/)), o baseline ([process-log/baseline/](process-log/baseline/)) e o relatório da verificação (acrescentado no último passo)
 
 ---
 
-_Submissão enviada em: [data]_
+_Submissão enviada em: 10/11/2026 (o envio do pull request é o último passo)._
