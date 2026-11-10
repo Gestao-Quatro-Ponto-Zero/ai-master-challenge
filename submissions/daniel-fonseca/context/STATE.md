@@ -61,6 +61,10 @@ No máximo **dois turnos noturnos**: hoje (09/11) e amanhã (10/11), incluindo v
    - **Correção:** ponte do ROI de 23% → **18,7%** (~R$ 17 mil/ano; judgment #37).
    - ✔ Projeto Vercel `triagem-case-ai-master` (prj_JsF7acFdxYDKOmKzNVG5Lxns7hqY, time case-g4) ligado ao fork, root `submissions/daniel-fonseca/solution/app`, Next.js, Node 24, funções em gru1. Variáveis importadas pelo Daniel via arquivo local (os segredos não passaram pela conversa; arquivo apagado em seguida).
    - Frentes A e B pausaram no limite de uso e foram retomadas por mensagem em 10/11.
+   - ✔ **Produção no ar:** https://triagem-case-ai-master-case-g4.vercel.app (branch de produção = `submission/daniel-fonseca`, ajustada pelo Daniel no painel).
+     - A proteção padrão do time (Vercel Authentication em `all_except_custom_domains`) bloqueava o domínio de produção. A IA mudou para `preview`, conforme a decisão de app público: a produção fica aberta e os previews protegidos.
+     - Smoke test: 3 áreas 200; heartbeat 401 sem segredo e 200 com segredo; triage 501 (stub); nenhum segredo nem host do n8n nos 9 chunks do cliente.
+   - Erro corrigido: os worktrees das frentes (`.claude/worktrees/`) entraram no commit `26ee06f` como repositórios embutidos (só ponteiros). Saíram no `8afee68`, e `.claude/worktrees/` foi para o `.gitignore`.
 12. Turno 2: app Vercel (dashboard + console + `/api/heartbeat`) + deploy + ativar o fluxo 3 com a URL + vídeo + PR.
 
 ## Perguntas abertas para o Daniel
