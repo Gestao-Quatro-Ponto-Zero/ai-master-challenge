@@ -104,6 +104,8 @@ export interface DealDetalhe {
   deal: DealVisao;
   componentes: Componente[];
   motivos: string[];
+  /** Grupo de cada motivo (mesma ordem de motivos), para o ícone; nulo quando a fonte não diz. */
+  gruposDosMotivos: (Componente["grupo"] | null)[];
   linhaDoTempo: EventoLinhaDoTempo[];
   comentarios: Comentario[];
   contatoCompleto: Contato | null;

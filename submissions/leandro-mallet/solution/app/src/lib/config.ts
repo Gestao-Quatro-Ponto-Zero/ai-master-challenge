@@ -26,6 +26,8 @@ export const CONFIG = {
   metaPrioridadesDia: 20,
   diasPuladoAlerta: 3,
   fitMinimoFurarFila: 75,
+  /** Pesos da nota (decisão 33): NOTA = 0,70 × FIT + 0,30 × HEAT + BONUS (0 a 20). */
+  pesosNota: { fit: 0.7, heat: 0.3 },
   /** Itens da lista do dia do manager e do admin (config_parametros.prioridades_gestor). Leandro: "só o que pede ação". */
   prioridadesGestor: "atencao" as "icone" | "atencao" | "todos",
   janelaPainelDias: 30,

@@ -123,3 +123,15 @@ describe("ordem dos itens marcados (O-34)", () => {
     expect(pos("Primeiro")).toBeLessThan(pos("Terceiro"));
   });
 });
+
+describe("barra de nota fina no item (adendo à O-36)", () => {
+  it("barra de 3 px na 2ª linha, dourada sobre trilho translúcido; sem nota, sem barra", async () => {
+    const h = await html([item()]);
+    expect(h).toContain("data-barra-nota");
+    expect(h).toContain("h-[3px]");
+    expect(h).toContain("bg-trilho-escuro");
+    expect(h).toContain('aria-label="Nota 70 de 120"');
+    expect(h).toContain("width:58.333");
+    expect(await html([item({ deal: deal({ score: null, faixaNota: null }) })])).not.toContain("data-barra-nota");
+  });
+});

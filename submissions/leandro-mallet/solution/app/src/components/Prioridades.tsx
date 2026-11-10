@@ -161,7 +161,8 @@ export function Prioridades({ itens, papel, somenteLeitura, topo, className = ""
                     </>
                   )}
                 </div>
-                <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-claro-3">
+                <div className="mt-1 flex items-center gap-3 text-xs text-claro-3">
+                  <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-1">
                   <span className="tabular-nums">
                     {vendedor ? "" : `${d.vendedor} · `}
                     {dinheiro(d.valorEsperado)}
@@ -177,6 +178,18 @@ export function Prioridades({ itens, papel, somenteLeitura, topo, className = ""
                     <Etiqueta tom="atencao" icone="alerta" title="Requalificar ou encerrar?">
                       Pulado {item.puladoDiasSeguidos} dias seguidos
                     </Etiqueta>
+                  ) : null}
+                  </div>
+                  {/* Barra da nota fina, na altura do texto pequeno: não muda a altura do item (adendo à O-36). */}
+                  {d.score !== null ? (
+                    <span
+                      data-barra-nota
+                      className="h-[3px] w-12 shrink-0 overflow-hidden rounded-selo bg-trilho-escuro sm:w-24 lg:w-28"
+                      role="img"
+                      aria-label={`Nota ${d.score} de 120`}
+                    >
+                      <span className="block h-full rounded-selo bg-ouro" style={{ width: `${Math.min(100, (d.score / 120) * 100)}%` }} />
+                    </span>
                   ) : null}
                 </div>
 

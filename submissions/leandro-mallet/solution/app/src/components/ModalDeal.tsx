@@ -11,6 +11,7 @@ import { SeloTag } from "./Dialogo";
 import { Esqueleto, Estado } from "./Estado";
 import { SeletorEstagio } from "./Estagio";
 import { BarraNota, IconeDeal } from "./Nota";
+import { NotaExplicada } from "./NotaExplicada";
 import { Botao, BotaoIcone } from "./ui/Botao";
 import { AreaTexto, Campo } from "./ui/Campo";
 import { Seletor } from "./ui/Seletor";
@@ -285,58 +286,25 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
                   <h3 id="t-nota" className="text-base font-bold">
                     {d.score === null ? "Nota" : `Por que a nota é ${d.score}`}
                   </h3>
-                  <div className="mt-3">
-                    <BarraNota score={d.score} faixa={d.faixaNota} grande />
-                  </div>
                   {d.score === null ? (
-                    <p className="mt-2 text-sm text-texto-2">
-                      Este deal ainda não tem nota. Ela junta o encaixe do lead com o vendedor, o tempo de atendimento e o bônus da empresa, e é recalculada todo domingo.
-                    </p>
-                  ) : (
                     <>
-                      <p className="mt-2 text-sm text-texto-2">A nota soma 70% do encaixe com o vendedor (FIT), 30% do tempo de atendimento (HEAT) e o bônus da empresa (BONUS, de 0 a 20).</p>
-                      <dl className="mt-3 grid grid-cols-3 gap-2 text-sm">
-                        {(
-                          [
-                            ["fit", "FIT", "Encaixe com o vendedor", d.fit],
-                            ["heat", "HEAT", "Tempo de atendimento", d.heat],
-                            ["bonus", "BONUS", "Bônus da empresa", d.bonus],
-                          ] as const
-                        ).map(([grupo, sigla, rot, v]) => {
-                          const partes = det.componentes.filter((c) => c.grupo === grupo);
-                          return (
-                            <div key={grupo} className="rounded-controle bg-superficie-2 px-2 py-2">
-                              <dt className="text-center text-xs text-texto-2">
-                                <span className="font-semibold text-marinho">{sigla}</span> · {rot}
-                              </dt>
-                              <dd className="text-center text-lg font-semibold tabular-nums">{v ?? "—"}</dd>
-                              {partes.length ? (
-                                <dd>
-                                  <ul className="mt-1 grid gap-0.5 border-t border-divisoria pt-1 text-xs text-texto-2">
-                                    {partes.map((c) => (
-                                      <li key={c.nome} className="flex justify-between gap-2">
-                                        <span className="min-w-0 truncate" title={c.nome}>
-                                          {c.nome}
-                                        </span>
-                                        <span className="shrink-0 tabular-nums">
-                                          {c.pontos.toLocaleString("pt-BR", { maximumFractionDigits: 1 })}
-                                          {c.maximo !== null ? `/${c.maximo.toLocaleString("pt-BR", { maximumFractionDigits: 1 })}` : ""}
-                                        </span>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                </dd>
-                              ) : null}
-                            </div>
-                          );
-                        })}
-                      </dl>
-                      <ul className="mt-3 list-disc pl-5 text-sm">
-                        {det.motivos.map((m, i) => (
-                          <li key={i}>{m}</li>
-                        ))}
-                      </ul>
+                      <div className="mt-3">
+                        <BarraNota score={d.score} faixa={d.faixaNota} grande />
+                      </div>
+                      <p className="mt-2 text-sm text-texto-2">
+                        Este deal ainda não tem nota. Ela junta o encaixe do lead com o vendedor, o tempo de atendimento e o bônus da empresa, e é recalculada todo domingo.
+                      </p>
                     </>
+                  ) : (
+                    <NotaExplicada
+                      nota={d.score}
+                      fit={d.fit ?? 0}
+                      heat={d.heat ?? 0}
+                      bonus={d.bonus ?? 0}
+                      componentes={det.componentes}
+                      motivos={det.motivos}
+                      grupos={det.gruposDosMotivos}
+                    />
                   )}
                 </section>
 

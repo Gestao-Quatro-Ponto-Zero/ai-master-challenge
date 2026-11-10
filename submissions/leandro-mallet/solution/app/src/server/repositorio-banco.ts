@@ -195,7 +195,7 @@ export async function detalheDeal(id: string, u: Usuario): Promise<DealDetalhe> 
           db.from("score_componentes").select("grupo,componente,pontos,maximo").eq("execucao_id", execucao).eq("opportunity_id", id))
       : Promise.resolve([]),
     execucao
-      ? ler<{ texto: string }[]>(db.from("score_motivos").select("texto,ordem").eq("execucao_id", execucao).eq("opportunity_id", id).order("ordem"))
+      ? ler<{ texto: string; grupo: "fit" | "heat" | "bonus" | null }[]>(db.from("score_motivos").select("texto,ordem,grupo").eq("execucao_id", execucao).eq("opportunity_id", id).order("ordem"))
       : Promise.resolve([]),
     linha?.contato_id
       ? ler<{ id: number; conta_nome: string | null; nome: string; cargo: string | null; email: string | null; telefone: string | null } | null>(
@@ -209,6 +209,7 @@ export async function detalheDeal(id: string, u: Usuario): Promise<DealDetalhe> 
     deal,
     componentes: comp.map((c) => ({ grupo: c.grupo, nome: c.componente, pontos: Number(c.pontos), maximo: c.maximo === null ? null : Number(c.maximo) })),
     motivos: motivos.map((m) => moedaNoTexto(m.texto)),
+    gruposDosMotivos: motivos.map((m) => m.grupo ?? null),
     linhaDoTempo: rotularLinhaDoTempo(tempo.map((t) => ({
       data: t.data_negocio, momento: t.momento, descricao: moedaNoTexto(t.descricao), autor: t.autor, desfeito: t.desfeito,
       tipo: tipos.has(t.tipo as EventoLinhaDoTempo["tipo"]) ? (t.tipo as EventoLinhaDoTempo["tipo"]) : "criado",

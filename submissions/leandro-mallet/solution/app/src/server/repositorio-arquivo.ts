@@ -285,6 +285,7 @@ export async function detalheDeal(id: string, u: Usuario): Promise<DealDetalhe> 
     deal,
     componentes: nota?.componentes ?? [],
     motivos: (nota?.motivos ?? []).map(moedaNoTexto),
+    gruposDosMotivos: (nota?.motivos ?? []).map(() => null),
     linhaDoTempo: rotularLinhaDoTempo(linha),
     comentarios: comentarios
       .map<Comentario>((c) => ({ id: c.id, autorId: c.usuarioId, autor: c.autor, texto: c.texto, data: c.data, criadoEm: c.criadoEm, editado: c.editado }))
