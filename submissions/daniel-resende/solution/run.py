@@ -49,9 +49,16 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--port", type=int, default=8000)
     args = parser.parse_args()
-    build.main()
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8")
     handler = lambda *a, **k: Handler(*a, directory=str(HERE / "web"), **k)
-    server = ThreadingHTTPServer(("127.0.0.1", args.port), handler)
+    try:  # take the port before building, so a busy port is said at once
+        server = ThreadingHTTPServer(("127.0.0.1", args.port), handler)
+    except OSError as error:
+        print(f"A porta {args.port} está em uso ({error.strerror}). Escolha outra: python3 run.py --port 8001",
+              file=sys.stderr)
+        raise SystemExit(1)
+    build.main()
     print(f"Aberto em http://127.0.0.1:{args.port}/  (Ctrl+C para parar)", flush=True)
     try:
         server.serve_forever()
