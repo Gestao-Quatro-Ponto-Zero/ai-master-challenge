@@ -261,6 +261,14 @@ O Daniel usou o app e escreveu, como ele disse:
 
 Às 17:51 o Daniel mandou uma captura da tela dele (`screenshots/18-daniel-usando-link-vencidos.png`) e escreveu: "Um pequeno detalhe pontual, quando eu clico nesse vencidos aí do print, não abre o vlista embaixo. Deveria abrir automaticamente." Corrigido às 17:52: o link "91 vencidos" ao lado da linha do tempo agora abre a lista dos vencidos e leva até ela. Uma conferência automática passou a cobrir isso (705 conferências, 0 achados).
 
+### 2.9 Repositório organizado e uma correção (prompt `02z-repositorio-organizado-e-uma-correcao.md`, 18:24 a 18:26)
+
+- Antes da publicação, o orquestrador organizou o repositório com o ok do Daniel; nada tinha sido enviado. Conferido ao começar: árvore limpa, último commit "O link dos vencidos ao lado da linha do tempo abre a lista deles", `origin` no fork do Daniel e `upstream` no G4, e a regra congelada com o sha256 `336760fdcc511cde2ad5d28e9437dd0b061a222b18f2f5f03e2a38164abca212`.
+- **Defeito, achado pelo orquestrador num clone limpo:** a conferência dos textos de IA (`solution/ai/check.py`) quebrava quando `solution/out/` ainda não existia. A causa: a montagem dos arquivos do score mexia na saída do terminal, e a conferência a chama com a saída redirecionada. A montagem não mexe mais na saída; só o comando `build.py`, quando rodado sozinho. A geração dos textos passa pelo mesmo caminho e ficou corrigida junto.
+- **Teste novo:** a conferência rodada numa cópia sem `out/`, como num clone novo. Passa com a correção; com o arquivo anterior, falha com o mesmo erro. São 21 testes agora, todos passando.
+- README: "em relação ao guardado", depois da troca de palavras.
+- O app foi reiniciado a partir deste repositório, em http://127.0.0.1:8000/.
+
 ## O que o candidato decidiu
 
 ### Etapa 1: a regra e a forma do produto (10/11/2026, resposta recebida no chat e registrada às 15:54, do `date`)

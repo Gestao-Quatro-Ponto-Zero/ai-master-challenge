@@ -34,7 +34,7 @@ Outros comandos, todos da raiz e todos só com Python:
 | `python3 submissions/daniel-resende/solution/check_contract.py` | confere cada arquivo emitido contra `docs/contrato-score.md` e os textos contra os fatos |
 | `python3 -m unittest discover -s submissions/daniel-resende/solution/tests` | os testes, em linhas reais do dataset |
 | `python3 submissions/daniel-resende/solution/numbers.py` | imprime cada número citado neste README (saída guardada em `docs/numeros-saida.txt`) |
-| `python3 submissions/daniel-resende/solution/drift.py` | relatório de desvio: diz se o prazo mudou em relação à guardada em `solution/window.json` |
+| `python3 submissions/daniel-resende/solution/drift.py` | relatório de desvio: diz se o prazo mudou em relação ao guardado em `solution/window.json` |
 | `python3 submissions/daniel-resende/solution/validate.py` e `confirm.py` | a validação da regra, sem vazamento, e a confirmação em datas novas |
 | `python3 submissions/daniel-resende/solution/ai/check.py` | confere os 148 textos de IA guardados |
 | `python3 submissions/daniel-resende/solution/ai/generate.py` | regenera os textos (só este precisa do Claude Code instalado e logado; não usa chave de API) |
