@@ -15,7 +15,7 @@ export class ErroCRM extends Error {
   }
 }
 
-/** O banco não respondeu (rede, tempo esgotado, projeto pausado). As leituras caem na reserva em arquivo. */
+/** O banco não atendeu este pedido (rede, tempo esgotado, projeto pausado ou consulta lenta). As leituras caem na reserva em arquivo. */
 export class BancoFora extends Error {}
 
 const TEMPO_LIMITE_MS = 12_000;
@@ -55,10 +55,37 @@ const FRASES: Partial<Record<CodigoErro, string>> = {
   GS405: "Apagar dados não é permitido neste sistema.",
 };
 
-/** Traduz o erro do banco: GSxxx vira frase simples; o resto conta como banco fora. */
-function traduzir(e: ErroPostgrest): Error {
+export type ClasseErro = "regra" | "entrada" | "lento" | "disponibilidade";
+
+/**
+ * Classifica o erro do banco. Só a classe "disponibilidade" abre o disjuntor (app em somente leitura
+ * por alguns segundos). Entrada mal formada NUNCA abre: senão uma pessoa conseguiria, de propósito,
+ * travar as escritas de todos.
+ *   regra           — GSxxx: regra de negócio do próprio banco, já com frase simples;
+ *   entrada         — dado inválido ou pedido mal formado (22xxx, 23xxx, 42xxx, P0001, PGRST1xx/2xx, demais 4xx);
+ *   lento           — a consulta passou do tempo limite do banco (57014): falha só deste pedido;
+ *   disponibilidade — rede ou tempo esgotado (exceção ou erro sem código), HTTP 5xx, conexão do Postgres
+ *                     (08xxx, 53xxx, 57P0x) e do PostgREST (PGRST0xx conexão, PGRST3xx credencial do servidor).
+ */
+export function classificarErro(e: ErroPostgrest & { status?: number }, lancou = false): ClasseErro {
   const codigo = e.code ?? "";
-  if (/^GS\d{3}$/.test(codigo)) {
+  const status = e.status ?? 0;
+  if (lancou) return "disponibilidade";
+  if (/^GS\d{3}$/.test(codigo)) return "regra";
+  if (/^(08|53)/.test(codigo) || /^57P0/.test(codigo) || /^PGRST[03]/.test(codigo)) return "disponibilidade";
+  if (codigo === "57014") return "lento";
+  if (/^(22|23|42)/.test(codigo) || codigo === "P0001" || /^PGRST[12]/.test(codigo)) return "entrada";
+  // Daqui para baixo, código desconhecido ou ausente: decide o status HTTP.
+  // Sem código e sem status 4xx é como o supabase-js devolve a falha de rede e o tempo esgotado do fetch.
+  if (status >= 400 && status < 500) return "entrada";
+  return codigo === "" || status >= 500 ? "disponibilidade" : "entrada";
+}
+
+/** Traduz o erro do banco em frase simples (ErroCRM) ou em BancoFora; só a falha de disponibilidade abre o disjuntor. */
+function traduzir(e: ErroPostgrest & { status?: number }, lancou = false): Error {
+  const codigo = e.code ?? "";
+  const classe = classificarErro(e, lancou);
+  if (classe === "regra") {
     let detalhe: Record<string, unknown> | undefined;
     try {
       detalhe = e.details ? (JSON.parse(e.details) as Record<string, unknown>) : undefined;
@@ -69,22 +96,27 @@ function traduzir(e: ErroPostgrest): Error {
     if (codigo === "GS409" && detalhe?.alterado_por) frase = `Este deal foi alterado por ${String(detalhe.alterado_por)}. Recarregue para ver a versão atual.`;
     return new ErroCRM(codigo as CodigoErro, frase, detalhe);
   }
-  // 23xxx: o banco recusou por integridade (chave, check). Não é queda do banco.
-  if (/^23/.test(codigo)) return new ErroCRM("GS422", "Não foi possível salvar: os dados não são aceitos. Confira os campos e tente de novo.");
-  g.__g4BancoForaAte = Date.now() + PAUSA_APOS_FALHA_MS;
-  console.error(JSON.stringify({ momento: new Date().toISOString(), nivel: "erro", banco: "indisponivel", codigo: codigo || "rede" }));
+  if (classe === "entrada") {
+    // A mensagem crua do banco não vai para a tela: fica só no log do servidor, sem o conteúdo digitado.
+    console.error(JSON.stringify({ momento: new Date().toISOString(), nivel: "aviso", banco: "entrada_recusada", codigo }));
+    return /^23/.test(codigo) || codigo === "P0001"
+      ? new ErroCRM("GS422", "Não foi possível salvar: os dados não são aceitos. Confira os campos e tente de novo.")
+      : new ErroCRM("GS400", "Não entendi o pedido. Confira os dados e tente de novo.");
+  }
+  if (classe === "disponibilidade") g.__g4BancoForaAte = Date.now() + PAUSA_APOS_FALHA_MS;
+  console.error(JSON.stringify({ momento: new Date().toISOString(), nivel: "erro", banco: classe === "lento" ? "consulta_lenta" : "indisponivel", codigo: codigo || "rede" }));
   return new BancoFora(codigo || "rede");
 }
 
 /** Executa uma consulta do supabase-js e devolve os dados, com o erro já traduzido. */
-export async function ler<T>(consulta: PromiseLike<{ data: T | null; error: ErroPostgrest | null }>): Promise<T> {
-  let r: { data: T | null; error: ErroPostgrest | null };
+export async function ler<T>(consulta: PromiseLike<{ data: T | null; error: ErroPostgrest | null; status?: number }>): Promise<T> {
+  let r: { data: T | null; error: ErroPostgrest | null; status?: number };
   try {
     r = await consulta;
   } catch {
-    throw traduzir({});
+    throw traduzir({}, true);
   }
-  if (r.error) throw traduzir(r.error);
+  if (r.error) throw traduzir({ ...r.error, status: r.status });
   return r.data as T;
 }
 
@@ -115,13 +147,13 @@ export async function escrever<T>(funcao: string, usuarioId: number, args: Recor
 /** Lê todas as linhas de uma consulta paginada (o banco devolve no máximo 1.000 por pedido). */
 export async function lerTudo<T>(montar: (de: number, ate: number) => PromiseLike<{ data: T[] | null; error: ErroPostgrest | null; count?: number | null }>): Promise<T[]> {
   const PAGINA = 1000;
-  let primeira: { data: T[] | null; error: ErroPostgrest | null; count?: number | null };
+  let primeira: { data: T[] | null; error: ErroPostgrest | null; count?: number | null; status?: number };
   try {
     primeira = await montar(0, PAGINA - 1);
   } catch {
-    throw traduzir({});
+    throw traduzir({}, true);
   }
-  if (primeira.error) throw traduzir(primeira.error);
+  if (primeira.error) throw traduzir({ ...primeira.error, status: primeira.status });
   const linhas = primeira.data ?? [];
   const total = primeira.count ?? linhas.length;
   if (total <= PAGINA) return linhas;

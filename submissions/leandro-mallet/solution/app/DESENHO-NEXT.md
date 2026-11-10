@@ -22,7 +22,7 @@ npm run dev        # http://localhost:3010
 solution/app/
   package.json, package-lock.json
   next.config.ts          inclui data/ no pacote publicado (outputFileTracingIncludes)
-  tsconfig.json, eslint.config.mjs, postcss.config.mjs, vitest.config.ts
+  tsconfig.json, eslint.config.mjs, postcss.config.mjs, vitest.config.mts
   .gitignore              node_modules/, .next/, .env*.local
   COMO-RODAR.md, ESPEC-TELAS.md, DESENHO-NEXT.md, DESENHO-ACOES.md, DESENHO-CRM.md
 
@@ -61,6 +61,7 @@ solution/app/
       Dialogo, Estado, Nota    peças comuns (diálogo, selo de tag, vazio/erro/esqueleto, barra da nota, ícone)
     lib/                  funções puras, sem I/O
       tipos.ts, config.ts, calculos.ts, painel.ts, cliente.ts
+      desfazer.ts         formato do token do "Desfazer"
       filtro/             etiquetas.ts, interpretar.ts (frase → etiquetas), aplicar.ts
     server/               só roda no servidor (import "server-only")
       banco.ts            cliente do Supabase (service_role só aqui), tradução de erros e correlation_id
@@ -93,7 +94,7 @@ solution/app/
 | `POST /api/lotes` | ação em lote (marcados ou todos os do filtro, até 500) |
 | `GET /api/contas/[nome]` | ficha da empresa |
 | `POST /api/contas` | criar ou editar empresa |
-| `POST /api/desfazer` | desfazer uma mudança ou um lote |
+| `POST /api/desfazer` | desfazer uma mudança ou um lote (token fora do formato = 400, sem chamar o banco) |
 
 Toda rota de escrita: valida a entrada com zod, tem limite por endereço de rede (60 por minuto, resposta 429 em frase simples), gera o `correlation_id` no servidor e o devolve em `x-correlation-id`, e responde erro sempre como `{ erro, codigo }`.
 
@@ -110,7 +111,8 @@ Toda rota de escrita: valida a entrada com zod, tem limite por endereço de rede
 - **Leitura no banco:** os deals do perfil vêm da view `core_deals_visao`, com o filtro do escopo aplicado no banco. Os abertos vêm com todas as colunas (ícone, nota, tags); os fechados, só com as colunas básicas, porque são a maioria e não têm ícone nem nota. Filtro, ordenação e números do Painel são calculados no servidor pelas funções puras de `src/lib/`, as mesmas da reserva.
 - **Por que não as functions de leitura do banco:** `core_buscar_deals` leva cerca de 6 s e `core_painel_numeros` passa do tempo limite (8 s) no escopo do admin. Lendo a view direto, o Painel do admin (8.800 deals) abre em 3 a 4 s e o do vendedor em cerca de 1 s.
 - **Escrita:** só pelas functions do banco (`core_mudar_estagio`, `acao_registrar`, `acao_marcar_prioridade`, `system_executar_lote`…), com `p_usuario_id` do perfil e `p_correlation_id` gerado na rota. O "Desfazer" chama a function inversa (`core_desfazer_alteracao`, `acao_desfazer`, `acao_restaurar_comentario`, `system_desfazer_lote`).
-- **Erros do banco:** `GS400`–`GS429` viram a frase simples que o banco devolve; conflito de versão (`GS409`) diz quem alterou. Falha de rede ou tempo esgotado marca o banco como fora por 15 s.
+- **Erros do banco:** `GS400`–`GS429` viram a frase simples que o banco devolve; conflito de versão (`GS409`) diz quem alterou. Entrada que o banco recusa (dado inválido, pedido mal formado) vira frase simples (400 ou 422), sem mostrar a mensagem crua.
+- **Banco fora por 15 s:** só em falha de disponibilidade (rede, tempo esgotado, HTTP 5xx, erro de conexão do Postgres). Entrada inválida nunca aciona, para que ninguém consiga travar as escritas dos outros de propósito. Consulta que passa do tempo limite do banco falha só naquele pedido.
 - **Reserva:** banco fora ou não configurado = leitura de `data/base.json`, faixa de somente leitura e escrita recusada (503).
 - Variáveis: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `G4_ESCRITA_EM_MEMORIA` e `G4_SOMENTE_LEITURA` (ver `.env.example`).
 
@@ -119,4 +121,4 @@ Toda rota de escrita: valida a entrada com zod, tem limite por endereço de rede
 - Importação de leads por CSV (desenhada em [DESENHO-CRM.md](DESENHO-CRM.md)).
 - Editar o nome do deal e a empresa do deal pelo modal.
 - Cadastrar e editar empresa com o banco ligado (falta a function no banco).
-- Playwright nos caminhos críticos (o Vitest já cobre a reserva, as prioridades e o escopo da ficha da empresa).
+- Playwright nos caminhos críticos (o Vitest já cobre a reserva, as prioridades, o escopo da ficha da empresa, a classificação dos erros do banco e o token do "Desfazer").
