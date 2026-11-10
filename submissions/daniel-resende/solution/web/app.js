@@ -234,7 +234,8 @@
     svg.classList.toggle("tp-still", !animate);
     const cooling = seller.alive.filter((d) => d.cooling).length;
     svg.setAttribute("aria-label",
-      `O prazo, de ${num(0)} a ${longest} dias de aberto: ${count(seller.alive.length, "negócio no prazo", "negócios no prazo", "nenhum negócio no prazo")}, ` +
+      `Linha dos dias em aberto, de 0 a ${longest}, o mais longo já ganho; alguns negócios vencem antes, no fim do trimestre, e os dias restantes de cada um estão na lista: ` +
+        `${count(seller.alive.length, "negócio no prazo", "negócios no prazo", "nenhum negócio no prazo")}, ` +
       `${count(cooling, "com prazo acabando", "com prazo acabando", "nenhum com prazo acabando")} (depois de ${cool} dias). A lista "No prazo" traz os mesmos negócios.`);
     const kids = [];
     if (!narrow && lineReady) {
@@ -247,8 +248,9 @@
     kids.push(s("text", { x: (X(cool) + x1) / 2, y: y + 4.5, "font-size": 13, "text-anchor": "middle", class: "tp-l-word" }, "prazo acabando"));
     kids.push(s("text", { x: x0, y: y + half + 19, "font-size": 12.5, "data-dado": "" }, narrow ? "0" : "abriu agora"));
     kids.push(s("text", { x: X(cool), y: y + half + 19, "font-size": 12.5, "text-anchor": "middle", "data-dado": "" }, String(cool)));
-    kids.push(s("text", { x: x1, y: y + half + 19, "font-size": 12.5, "text-anchor": "end", "data-dado": "" }, narrow ? `${longest} dias` : `fim do prazo: ${longest} dias`));
-    kids.push(s("text", { x: x0, y: 14, "font-size": 12.5 }, "ponto = negócio no prazo"));
+    kids.push(s("text", { x: x1, y: y + half + 19, "font-size": 12.5, "text-anchor": "end", "data-dado": "" }, narrow ? `${longest} dias` : `${longest} dias: o mais longo já ganho`));
+    kids.push(s("text", { x: (x0 + X(cool)) / 2, y: y + half + 19, "font-size": 12.5, "text-anchor": "middle" }, "dias em aberto"));
+    kids.push(s("text", { x: x0, y: 14, "font-size": 12.5 }, narrow ? "ponto = negócio no prazo" : "ponto = negócio no prazo · os dias restantes de cada um estão na lista"));
     const deals = [...seller.alive].sort((a, b) => a.days_open - b.days_open || (a.id < b.id ? -1 : 1));
     // the largest marks that still let every deal sit on the track
     const levelsFor = (rr) => { const lv = []; for (const d of deals) { const cx = X(d.days_open); let k = 0; while (lv[k] !== undefined && cx - lv[k] < 2 * rr + 2) k += 1; lv[k] = cx; } return lv.length; };
@@ -351,7 +353,7 @@
         d.cooling ? h("span", { class: "tp-tag" }, "prazo acabando") : null),
       h("span", { class: "tp-num tp-c-val" }, num(d.value)),
       h("span", { class: "tp-c-days" }, h("span", { class: "tp-num" }, d.days_left === 0 ? "último" : num(d.days_left)),
-        h("span", { class: "tp-left" + (d.cooling ? " tp-left-frio" : ""), "aria-hidden": "true" }, h("i", { style: `width:${Math.max(4, (d.days_left / 138) * 100).toFixed(1)}%` }))),
+        h("span", { class: "tp-left" + (d.cooling ? " tp-left-frio" : ""), "aria-hidden": "true" }, h("i", { style: `width:${Math.max(4, (d.days_left / current.meta.window.longest_win_days) * 100).toFixed(1)}%` }))),
       result ? h("span", { class: "tp-c-after tp-" + d.after.result }, result) : null);
     return h("li", {}, withTip(row, () => dealTip(d, table)));
   }
@@ -510,6 +512,7 @@
       para("A ação nos vencidos é encerrar no CRM e tirar da segunda-feira. Os dados não dizem por que esses negócios pararam."),
       h("h3", {}, "A ordem dos negócios no prazo"),
       para(`Valor de tabela, do maior para o menor; no empate, mais dias restantes primeiro. Com ${index.value_note.list_prices} preços de tabela é quase ordem por produto, e ela não foi confirmada em datas novas.`),
+      para(`A linha do tempo mostra os dias em aberto; ${w.longest_win_days} dias é o mais longo já ganho, mas o prazo de alguns negócios acaba antes, no fim do trimestre: os dias restantes de cada um estão na lista.`),
       para("Os dias restantes e a marca “prazo acabando” (aberto há mais de " + m.cooling_after_days + " dias) informam, mas não mudam a ordem. Nada na tela diz que um negócio no prazo fecha mais que outro."),
       h("h3", {}, "Valor"),
       para("É o valor de tabela: o preço de lista do produto. Negócio aberto ainda não tem valor de fechamento."),

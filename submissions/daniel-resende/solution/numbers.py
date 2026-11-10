@@ -72,6 +72,10 @@ def main():
     print(f"fechamentos dentro do prazo (fim do trimestre seguinte ao do engajamento): "
           f"{inside} de {rules['closed']} ({rules['late']} depois do prazo)")
     print(f"prazo aplicado pela regra: {'sim' if rules['use_deadline'] else 'nao'}")
+    early = sum(1 for r in alive
+                if (v.deadline(r["engage"]) - default).days < rules["longest_win"] - r["age"])
+    print(f"negocios no prazo da segunda padrao cujo prazo acaba antes de {rules['longest_win']} dias "
+          f"em aberto, no fim do trimestre: {early} de {len(alive)}")
 
     print("\n== 3. A evidencia, em negocios distintos, nos doze cortes ==")
     evidence = build.evidence(deals)

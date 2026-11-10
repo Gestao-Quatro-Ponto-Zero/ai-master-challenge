@@ -12,6 +12,7 @@ vendedores com os tres blocos (vivo, fila e limpar): 0
 ganho mais demorado conhecido: 138 dias
 fechamentos dentro do prazo (fim do trimestre seguinte ao do engajamento): 6710 de 6711 (1 depois do prazo)
 prazo aplicado pela regra: sim
+negocios no prazo da segunda padrao cujo prazo acaba antes de 138 dias em aberto, no fim do trimestre: 34 de 115
 
 == 3. A evidencia, em negocios distintos, nos doze cortes ==
 cortes medidos: 12
