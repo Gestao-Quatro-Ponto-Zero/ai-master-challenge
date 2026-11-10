@@ -259,6 +259,8 @@ O Daniel usou o app e escreveu, como ele disse:
 
 **Conferências automáticas (17:48):** números da tela sem divergências; texto com 112 palavras visíveis (alvo 124); encaixe e acessibilidade sem problemas nos dois temas. Capturas refeitas às 17:48.
 
+Às 17:51 o Daniel mandou uma captura da tela dele (`screenshots/18-daniel-usando-link-vencidos.png`) e escreveu: "Um pequeno detalhe pontual, quando eu clico nesse vencidos aí do print, não abre o vlista embaixo. Deveria abrir automaticamente." Corrigido às 17:52: o link "91 vencidos" ao lado da linha do tempo agora abre a lista dos vencidos e leva até ela. Uma conferência automática passou a cobrir isso (705 conferências, 0 achados).
+
 ## O que o candidato decidiu
 
 ### Etapa 1: a regra e a forma do produto (10/11/2026, resposta recebida no chat e registrada às 15:54, do `date`)

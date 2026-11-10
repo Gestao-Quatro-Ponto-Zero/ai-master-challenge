@@ -279,7 +279,13 @@
     const n = seller.headline.clean;
     // after the end of the window there is no bar and no block: one line of text that leads to the list
     const out = h("button", { type: "button", class: "tp-out", id: "out-link" }, n ? `${num(n)} ${pl(n, "vencido", "vencidos")}` : "nenhum vencido");
-    out.addEventListener("click", () => { const t = document.querySelector(".tp-limpar .tp-title"); if (t) { t.scrollIntoView({ block: "nearest" }); t.focus(); } });
+    out.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const open = document.querySelector('.tp-limpar .tp-btn[aria-expanded="false"]');
+      if (open) open.click(); // the link opens the list of the expired deals, not just the block
+      const t = document.querySelector(".tp-limpar .tp-title");
+      if (t) { t.scrollIntoView({ block: "nearest" }); t.focus(); }
+    });
     const section = h("section", { class: "tp-window", "aria-label": "O prazo" }, svg, out);
     let lastW = 0;
     const draw = (anim) => {
