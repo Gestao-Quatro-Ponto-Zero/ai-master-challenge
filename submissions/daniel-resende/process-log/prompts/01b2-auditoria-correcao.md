@@ -1,0 +1,11 @@
+# 01b2: audit, correction asked by the lead (sent to the same sub-builder)
+
+Two verdicts of your section 10 disagree with what the lead's validation measured. Amend `audit.py` (same file, same constraints: standard library, no clock, no git, deterministic) and save the new output to `docs/auditoria-saida.txt`. Time box: 8 minutes.
+
+1. Section 8 and verdict 10.3 ("time lowers the chance"). Your table conditions on deals that HAD an outcome, so the deals that never close are left out, and they are exactly the "deals that will not close" of the seller's pain. Keep your table, and add a second one next to it that keeps them in: among deals engaged on or after the first closing ever recorded (2017-03-01, so the start-up cohort is out), of those still open at age a (a = 0, 15, 30, 45, 60, 75, 90, 100, 110, 120, 130, 140), how many were won in the following 90 days, how many lost, how many still open 90 days later. Use only deals whose 90-day window fits inside the data (engage_date + a + 90 <= reference date). Then state the verdict of 10.3 with both views: among deals that close, age does not lower the win share; among all open deals, the chance of winning in the next 90 days falls with age (print the numbers) because old ages fill with deals that never close.
+
+2. A new short section (number it 8b): the quarter deadline. For every closed deal, compare its close_date with the last day of the calendar quarter that FOLLOWS the quarter of its engage_date. Print how many closed within that deadline and how many after, and for the open Engaging deals at the reference date how many are already past their own deadline and how many are not.
+
+3. Verdict 10.2 ("sorting by value fails"). Keep your finding that the win rate is flat across products, and add the second half: value order ignores which deals are already past the point (print how many of the open Engaging deals at the reference date are older than the longest win ever, and what share of the open list value they carry). The verdict becomes PARCIAL: among live deals value order is the right order; over the whole open list it is not.
+
+Done means the same check as before (clean python3.12 venv, exit 0, identical output on two runs). Final message under 150 words: the new numbers only.
