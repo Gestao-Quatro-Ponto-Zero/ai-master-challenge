@@ -56,7 +56,7 @@ export default async function Pagina({ searchParams }: { searchParams: Promise<{
           itens={prioridades}
           papel={usuario.papel}
           somenteLeitura={somenteLeitura()}
-          className="order-1 col-span-2 max-h-[34rem] lg:col-span-4 xl:order-none xl:col-span-2 xl:col-start-2 xl:row-span-2 xl:row-start-1 xl:h-0 xl:max-h-none xl:min-h-full"
+          className="order-1 col-span-2 lg:col-span-4 xl:order-none xl:col-span-2 xl:col-start-2 xl:row-span-2 xl:row-start-1 xl:h-0 xl:min-h-full"
           topo={
             <Link href={filtro({ chave: "icones", valor: ["em_risco"], rotulo: "Ícone: em risco de esfriar" })} className="rounded-selo hover:opacity-80" title="Ver os deals em risco de esfriar no Pipeline">
               <EtiquetaUi tom="atencao" icone="alerta">

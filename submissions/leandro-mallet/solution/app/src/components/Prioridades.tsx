@@ -1,8 +1,9 @@
 "use client";
-// Prioridades do dia (O-32): bloco escuro no padrão do deck. Cada lead em uma linha (nome · produto, nota em
-// dourado, ✕ e ✓), com uma linha pequena embaixo (valor, dias e alerta). Clicar no lead abre o deal na parte
-// "Por que a nota é N" (FIT, HEAT, BONUS, pontos e motivos). ✓ registra o que foi feito (tipo de atividade e
-// comentário obrigatórios, com o horário salvo) e ✕ pula o deal hoje. Cada marcação vai para a linha do tempo.
+// Prioridades do dia (O-32 e O-34): bloco escuro no padrão do deck, com os 20 leads do dia à mostra, na ordem da
+// nota, sem fila. Cada lead em uma linha (nome · produto, nota em dourado, ✕ e ✓), com uma linha pequena embaixo
+// (valor, dias e alerta). Clicar no lead abre o deal na parte "Por que a nota é N". ✓ registra o que foi feito
+// (tipo de atividade e comentário obrigatórios, com o horário salvo) e ✕ pula o deal hoje. O item marcado fica na
+// lista, esmaecido e com o estado; a lista não anda. Cada marcação vai para a linha do tempo do lead.
 import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { pedir } from "@/lib/cliente";
@@ -36,10 +37,8 @@ export function Prioridades({ itens, papel, somenteLeitura, topo, className = ""
   const [enviando, setEnviando] = useState(false);
   const [saindo, setSaindo] = useState<string | null>(null);
 
-  const pendentes = itens.filter((i) => !i.marcada);
   // "Feitas" conta só o ✓; o ✗ (pulada) não sobe o contador.
-  const { feitas, puladas, meta } = resumoPrioridades(itens);
-  const visiveis = pendentes.slice(0, CONFIG.prioridadesVisiveis);
+  const { feitas, puladas, pendentes, meta } = resumoPrioridades(itens);
   const vendedor = papel === "vendedor";
 
   async function marcar(dealId: string, resultado: "feita" | "pulada") {
@@ -70,14 +69,6 @@ export function Prioridades({ itens, papel, somenteLeitura, topo, className = ""
       setSaindo(null);
       avisos.atualizar();
     }, 200);
-  }
-
-  async function puxarMais() {
-    setEnviando(true);
-    const r = await pedir("/api/prioridades/mais", "POST");
-    setEnviando(false);
-    if (r.ok) avisos.atualizar();
-    else avisos.erro(r.erro ?? "Não foi possível puxar mais itens.", r.codigo);
   }
 
   return (
@@ -114,26 +105,21 @@ export function Prioridades({ itens, papel, somenteLeitura, topo, className = ""
             Ir para o Pipeline
           </Link>
         </p>
-      ) : visiveis.length === 0 ? (
-        <div className="mt-4 border-t border-fio-ouro pt-4 text-sm">
-          <p className="font-semibold text-claro">
-            Lista de hoje concluída: {feitas} ✓ e {puladas} ✗.
-          </p>
-          {somenteLeitura ? null : (
-            <button type="button" onClick={puxarMais} disabled={enviando} className={`${BOTAO_FEITO} mt-3`}>
-              <Icone nome="mais" />
-              Puxar mais 5
-            </button>
-          )}
-        </div>
       ) : (
         <ol className="mt-3 min-h-0 flex-1 overflow-y-auto pr-1">
-          {visiveis.map((item) => {
+          {pendentes === 0 ? (
+            <li className="border-t border-fio-ouro py-2.5 text-sm font-semibold text-claro">
+              Lista de hoje concluída: {feitas} ✓ e {puladas} ✗.
+            </li>
+          ) : null}
+          {/* Os que faltam fazer primeiro; os marcados descem e ficam à mostra, esmaecidos. Em cada grupo, a ordem da nota. */}
+          {[...itens.filter((i) => !i.marcada), ...itens.filter((i) => i.marcada)].map((item) => {
             const d = item.deal;
             const aberto = registrando === d.id;
+            const marcado = item.marcada !== null;
             const porque = d.score === null ? "Ver o deal" : `Ver por que a nota é ${d.score}`;
             return (
-              <li key={d.id} className={`border-t border-fio-ouro py-2.5 ${saindo === d.id ? "motion-safe:animate-sair" : ""}`}>
+              <li key={d.id} className={`border-t border-fio-ouro py-2.5 ${marcado ? "opacity-60" : ""} ${saindo === d.id ? "motion-safe:animate-pulsar" : ""}`}>
                 <div className="flex items-center gap-2">
                   {/* Clicar no lead abre o racional da nota; os botões ✕ e ✓ ficam fora do link. */}
                   <Link
@@ -147,7 +133,11 @@ export function Prioridades({ itens, papel, somenteLeitura, topo, className = ""
                       {d.score ?? "—"}
                     </span>
                   </Link>
-                  {somenteLeitura || aberto ? null : (
+                  {marcado ? (
+                    <Etiqueta tom={item.marcada === "feita" ? "positivo" : "neutro"} icone={item.marcada === "feita" ? "check" : item.marcada === "pulada" ? "x" : "conversa"}>
+                      {item.marcada === "feita" ? "Feito" : item.marcada === "pulada" ? "Pulado" : "Contato hoje"}
+                    </Etiqueta>
+                  ) : somenteLeitura || aberto ? null : (
                     <>
                       <button type="button" onClick={() => marcar(d.id, "pulada")} disabled={enviando} aria-label={`Pular hoje: ${d.nome}`} title="Pular hoje" className={BOTAO_PULAR}>
                         <Icone nome="x" />
@@ -236,7 +226,6 @@ export function Prioridades({ itens, papel, somenteLeitura, topo, className = ""
           })}
         </ol>
       )}
-      {pendentes.length > visiveis.length ? <p className="mt-2 shrink-0 text-xs text-claro-3">Próximos: {pendentes.length - visiveis.length} na fila.</p> : null}
     </section>
   );
 }

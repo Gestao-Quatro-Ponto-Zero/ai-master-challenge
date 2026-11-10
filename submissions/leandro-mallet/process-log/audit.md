@@ -231,3 +231,7 @@ A #5 aplicou 0007–0026 no Supabase, sem erro. Contagem: 29 tabelas, 60 FKs (RE
   - As notas da 7 são iguais às da 5 deal a deal (2.089 de 2.089): mudou só o texto.
   - 13 testes passando. Nenhum "você/seu/sua" nos motivos.
   - No ar: a lista do manager se refez sozinha com a troca de execução e mostra o texto novo.
+- O-31 a O-33: funil com 5 etapas (Novo lead, Atendimento automático no 1º contato, Em negociação, Fechado, Perdido). A 0031 foi aplicada pela #5 (sha256 51da2c34…, sem achados). As Prioridades ficaram com o fundo azul do deck, um item por linha, e o clique abre o racional da nota. O Painel ficou responsivo de 375 a 1536 px, e os valores aparecem em reais. 143 testes passando. Publicado e conferido no ar pela #1 (ce4ea2a).
+  - Revisão automática de segurança: acao_registrar_contato não confere se o deal é do vendedor do perfil.
+  - Mantido como está, porque não há login (decisão 16): o perfil é escolhido na tela, sem senha, então qualquer visitante já pode agir como qualquer vendedor. O escopo organiza a tela e não é controle de acesso, e a função nova segue o mesmo padrão de acao_registrar e acao_comentar.
+  - O que protege são a trava de contexto, os limites de escrita (30/min por usuário e 300/min no total), a auditoria e o desfazer. A conferência por dono só passa a fazer sentido com login, o que fica como evolução registrada.

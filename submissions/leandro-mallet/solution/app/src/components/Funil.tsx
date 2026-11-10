@@ -14,6 +14,9 @@ export function Funil({ barras, className = "" }: { barras: BarraFunil[]; classN
   const max = Math.max(1, ...barras.map((b) => b[modo]));
   const vazio = barras.every((b) => b.quantidade === 0);
   const ordenadas = [...barras.filter((b) => b.etapa !== "perdido"), ...barras.filter((b) => b.etapa === "perdido")];
+  const rotulo = `Funil por ${modo === "quantidade" ? "quantidade" : "valor"}: ${ordenadas
+    .map((b) => `${ROTULO_ETAPA[b.etapa]} ${modo === "quantidade" ? inteiro(b.quantidade) : dinheiroCurto(b.valor)}`)
+    .join(", ")}`;
   return (
     <section aria-labelledby="t-funil" className={`${classeSuperficie} flex flex-col p-4 ${className}`}>
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -38,12 +41,22 @@ export function Funil({ barras, className = "" }: { barras: BarraFunil[]; classN
             <span>Início do funil</span>
             <span>Fim do funil</span>
           </p>
+          {/* Celular (< 640 px): barras horizontais, com o nome inteiro à esquerda e o número à direita. */}
+          <ul className="mt-3 grid gap-2 sm:hidden" role="img" aria-label={rotulo}>
+            {ordenadas.map((b) => (
+              <li key={b.etapa} className={`grid grid-cols-[6.5rem_1fr_auto] items-center gap-2 text-sm ${b.etapa === "perdido" ? "mt-1 border-t border-divisoria pt-3" : ""}`}>
+                <span className="font-semibold">{ROTULO_ETAPA[b.etapa]}</span>
+                <span className="h-4 overflow-hidden rounded-controle bg-superficie-2">
+                  <span className={`block h-full rounded-controle ${COR[b.etapa]}`} style={{ width: `${Math.max(b[modo] ? 2 : 0, (b[modo] / max) * 100)}%` }} />
+                </span>
+                <span className="min-w-12 text-right font-bold whitespace-nowrap tabular-nums">{modo === "quantidade" ? inteiro(b.quantidade) : dinheiroCurto(b.valor)}</span>
+              </li>
+            ))}
+          </ul>
           <div
-            className="mt-auto grid grid-cols-5 items-end gap-2 pt-3 sm:gap-4"
+            className="mt-auto hidden grid-cols-5 items-end gap-2 pt-3 sm:grid sm:gap-4"
             role="img"
-            aria-label={`Funil por ${modo === "quantidade" ? "quantidade" : "valor"}: ${ordenadas
-              .map((b) => `${ROTULO_ETAPA[b.etapa]} ${modo === "quantidade" ? inteiro(b.quantidade) : dinheiroCurto(b.valor)}`)
-              .join(", ")}`}
+            aria-label={rotulo}
           >
             {ordenadas.map((b) => (
               <div key={b.etapa} className={`flex min-w-0 flex-col ${b.etapa === "perdido" ? "border-l border-divisoria pl-2 sm:pl-4" : ""}`}>
@@ -55,7 +68,7 @@ export function Funil({ barras, className = "" }: { barras: BarraFunil[]; classN
                     </span>
                   </div>
                 </div>
-                <span className="mt-2 line-clamp-2 border-t border-borda pt-1 text-center text-xs leading-tight font-semibold break-words text-texto-2" title={ROTULO_ETAPA[b.etapa]}>
+                <span className="mt-2 line-clamp-2 border-t border-borda pt-1 text-center text-xs leading-tight font-semibold text-texto-2" title={ROTULO_ETAPA[b.etapa]}>
                   {ROTULO_ETAPA[b.etapa]}
                 </span>
               </div>

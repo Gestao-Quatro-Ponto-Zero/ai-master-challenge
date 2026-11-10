@@ -76,7 +76,7 @@ describe("N3: contador das Prioridades do dia", () => {
       { marcada: "contato" as const },
       ...Array.from({ length: 4 }, () => ({ marcada: null })),
     ];
-    expect(resumoPrioridades(itens)).toEqual({ feitas: 2, puladas: 3, pendentes: 4, meta: 10 });
+    expect(resumoPrioridades(itens)).toEqual({ feitas: 2, puladas: 3, pendentes: 4, meta: 20 });
   });
 
   it("na lista real: ✗ não sobe o contador, ✓ sobe", async () => {

@@ -64,3 +64,62 @@ describe("Prioridades no escuro (O-32)", () => {
     expect(h).toContain("Atendimento atrasado");
   });
 });
+
+describe("20 por dia, todos à mostra (O-34)", () => {
+  const vinte = Array.from({ length: 20 }, (_, i) =>
+    item({
+      posicao: i + 1,
+      deal: deal({ id: `B${String(i).padStart(7, "0")}`, nome: `Lead ${i + 1} · MG Advanced`, score: 90 - i }),
+      marcada: i === 0 ? "feita" : i === 1 ? "pulada" : null,
+    }),
+  );
+
+  it("mostra os 20, sem fila nem 'puxar mais'; contador X de 20", async () => {
+    const h = await html(vinte);
+    for (let i = 1; i <= 20; i++) expect(h).toContain(`Lead ${i} · MG Advanced`);
+    expect(h).not.toContain("Próximos");
+    expect(h).not.toContain("Puxar mais");
+    expect(h).toMatch(/>1<\/span> de 20 feitas/);
+  });
+
+  it("o marcado fica na lista, esmaecido, com o estado e sem os botões", async () => {
+    const h = await html(vinte);
+    expect(h).toContain("opacity-60");
+    expect(h).toContain(">Feito<");
+    expect(h).toContain(">Pulado<");
+    expect(h).not.toContain('aria-label="Feito: Lead 1 · MG Advanced"');
+    expect(h).not.toContain('aria-label="Pular hoje: Lead 2 · MG Advanced"');
+    expect(h).toContain('aria-label="Feito: Lead 3 · MG Advanced"');
+  });
+
+  it("reserva em memória: a lista do dia tem 20 e não anda depois do ✕", async () => {
+    delete process.env.SUPABASE_URL;
+    delete process.env.SUPABASE_SERVICE_ROLE_KEY;
+    process.env.G4_ESCRITA_EM_MEMORIA = "1";
+    (globalThis as { __g4Estado?: unknown }).__g4Estado = undefined;
+    const r = await import("@/server/repositorio");
+    const anna = (await r.listarUsuarios()).find((u) => u.nome === "Anna Snelling")!;
+    const antes = await r.prioridadesDoDia(anna);
+    expect(antes).toHaveLength(20);
+    await r.marcarPrioridade(anna, antes[0]!.deal.id, "pulada");
+    const depois = await r.prioridadesDoDia(anna);
+    expect(depois.map((p) => p.deal.id)).toEqual(antes.map((p) => p.deal.id));
+    expect(depois[0]!.marcada).toBe("pulada");
+  });
+});
+
+describe("ordem dos itens marcados (O-34)", () => {
+  it("os que faltam fazer vêm primeiro; os marcados descem, na ordem da nota", async () => {
+    const lista = [
+      item({ posicao: 1, deal: deal({ id: "M0000001", nome: "Primeiro · MG Advanced" }), marcada: "feita" }),
+      item({ posicao: 2, deal: deal({ id: "M0000002", nome: "Segundo · MG Advanced" }) }),
+      item({ posicao: 3, deal: deal({ id: "M0000003", nome: "Terceiro · MG Advanced" }), marcada: "pulada" }),
+      item({ posicao: 4, deal: deal({ id: "M0000004", nome: "Quarto · MG Advanced" }) }),
+    ];
+    const h = await html(lista);
+    const pos = (t: string) => h.indexOf(t);
+    expect(pos("Segundo")).toBeLessThan(pos("Quarto"));
+    expect(pos("Quarto")).toBeLessThan(pos("Primeiro"));
+    expect(pos("Primeiro")).toBeLessThan(pos("Terceiro"));
+  });
+});

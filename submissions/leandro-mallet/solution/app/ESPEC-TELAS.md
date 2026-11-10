@@ -508,8 +508,8 @@ Ficam fora da lista do dia os deals que já tiveram ✓, ✗ ou contato registra
 **Painel em todas as larguras (O-32):** ≥ 1280 px, a grade 4 × 4; de 1024 a 1279, Prioridades e funil em largura cheia no topo e os 8 números em 4 colunas; abaixo de 1024, Prioridades, números em 2 colunas e funil. Os números grandes usam fonte fluida e nunca quebram linha.
 
 **Como a lista anda:**
-- **5 itens visíveis** e uma **meta do dia de 10** (os dois números ficam em `config_parametros`). A barra "3 de 10 feitas" mostra o avanço.
-- Ao marcar ✓ ou ✗, o item sai com uma animação curta (respeitando "reduzir movimento"), os de baixo sobem e entra o próximo da fila no fim.
+- **Meta do dia de 20, todos à mostra** (O-34, pedido do Leandro; `config_parametros.meta_prioridades_dia`, migration 0032). Não há fila nem "5 por vez". A barra "3 de 20 feitas" mostra o avanço. Listas de hoje montadas com meta menor se completam até 20 na próxima abertura, sem tirar os itens que já estavam.
+- Ao marcar ✓ ou ✗, o item **fica na lista**, esmaecido e com o estado ("Feito" ou "Pulado"); a lista não anda. No bloco azul a lista rola por dentro com o topo fixo; abaixo de 1280 px o bloco cresce.
 - A lista do dia é montada na primeira abertura do dia e fica estável até o dia acabar. Exceção: se a execução de score ativa mudar, os itens ainda não marcados saem (ficam gravados como substituídos) e entram os da ordem nova; os já marcados ficam.
 
 **O que ✓ e ✗ significam [P18]:**
@@ -524,7 +524,7 @@ Ficam fora da lista do dia os deals que já tiveram ✓, ✗ ou contato registra
 - **Pulado várias vezes:** se o mesmo deal for pulado em 3 dias seguidos, o item volta com a pergunta "Pulado 3 vezes. Requalificar ou encerrar?", que abre o modal do deal. **[P18]**
 
 **Quando a lista acaba:**
-- **Meta cumprida** (10 marcados): "Prioridades de hoje feitas: 8 ✓ e 2 ✗." + botão secundário **"Puxar mais 5"**, que continua a fila.
+- **Lista concluída** (todos marcados): "Lista de hoje concluída: 18 ✓ e 2 ✗." no topo da lista, que continua à mostra. Não existe mais "Puxar mais 5".
 - **Não há mais deals na fila** (todos marcados hoje, ou nenhum aberto): "Você passou por todos os seus deals abertos hoje." + "Ir para o Pipeline".
 
 ### 4.6 Estados

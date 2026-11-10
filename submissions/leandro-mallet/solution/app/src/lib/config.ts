@@ -22,8 +22,8 @@ export const CONFIG = {
   limiteLote: 500,
   maxTagsPorDeal: 10,
   segundosDesfazer: 10,
-  prioridadesVisiveis: 5,
-  metaPrioridadesDia: 10,
+  /** Itens das Prioridades do dia, todos à mostra (O-34: 20 por dia, sem fila). */
+  metaPrioridadesDia: 20,
   diasPuladoAlerta: 3,
   fitMinimoFurarFila: 75,
   /** Itens da lista do dia do manager e do admin (config_parametros.prioridades_gestor). Leandro: "só o que pede ação". */
