@@ -10,6 +10,7 @@ const CHAVES: ChaveEtiqueta[] = [
   "contato_ha_dias_min", "contato_ha_dias_max", "sem_contato", "sem_contato_principal", "setores", "portes", "sem_empresa",
   "empresas", "produtos", "series", "vendedores", "managers", "regioes", "acoes_sugeridas", "valor_min", "fechamento_de",
   "fechamento_ate", "tags", "sem_tag", "com_comentario", "contem",
+  "padroes", "compras_min", "com_aberto", "sem_aberto", "receita_min", "subsidiaria", "independente", "bonus_min", "sedes",
 ];
 
 const valor = z.union([z.string().max(120), z.number().finite(), z.boolean(), z.array(z.string().max(120)).max(50)]);

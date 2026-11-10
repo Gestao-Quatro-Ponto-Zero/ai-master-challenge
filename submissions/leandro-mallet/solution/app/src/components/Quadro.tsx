@@ -68,7 +68,7 @@ export function Quadro({ colunas, papel, somenteLeitura, mostrarVendedor }: { co
             onClick={() => setAba(c.estagio)}
             className={`flex-1 rounded-controle px-3 py-2 text-sm font-semibold ${aba === c.estagio ? "bg-marinho text-branco" : "text-texto"}`}
           >
-            {ROTULO_ESTAGIO[c.estagio]} ({c.total})
+            {ROTULO_ESTAGIO[c.estagio]} <span className="font-normal">({c.total})</span>
           </button>
         ))}
       </div>

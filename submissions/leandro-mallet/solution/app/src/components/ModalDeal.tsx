@@ -5,8 +5,9 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { pedir } from "@/lib/cliente";
 import { CONFIG } from "@/lib/config";
 import { dataBR, dinheiro, rotuloSetor, ROTULO_PORTE } from "@/lib/calculos";
-import type { DealDetalhe, EventoLinhaDoTempo, Usuario } from "@/lib/tipos";
+import type { DealDetalhe, EventoLinhaDoTempo, Tag, Usuario } from "@/lib/tipos";
 import { useAvisos } from "./Avisos";
+import { SeloTag } from "./Dialogo";
 import { Esqueleto, Estado } from "./Estado";
 import { SeletorEstagio } from "./Estagio";
 import { BarraNota, IconeDeal } from "./Nota";
@@ -38,6 +39,7 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
   const avisos = useAvisos();
   const [tentativa, setTentativa] = useState(0);
   const [det, setDet] = useState<DealDetalhe | null>(null);
+  const [tags, setTags] = useState<Tag[]>([]);
   const [erro, setErro] = useState<{ texto: string; codigo?: string } | null>(null);
   const [texto, setTexto] = useState("");
   const [enviando, setEnviando] = useState(false);
@@ -53,8 +55,9 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
   useEffect(() => {
     let vivo = true;
     (async () => {
-      const r = await pedir<DealDetalhe>(`/api/deals/${encodeURIComponent(id)}`);
+      const [r, t] = await Promise.all([pedir<DealDetalhe>(`/api/deals/${encodeURIComponent(id)}`), pedir<{ tags: Tag[] }>("/api/tags")]);
       if (!vivo) return;
+      if (t.ok && t.dados) setTags(t.dados.tags);
       if (r.ok && r.dados) {
         setDet(r.dados);
         setErro(null);
@@ -180,6 +183,35 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
                     </button>
                   )}
                 </span>
+              </div>
+              <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
+                {d.tags.map((t) => (
+                  <SeloTag
+                    key={t.id}
+                    tag={t}
+                    onRemover={somenteLeitura ? undefined : () => executar(`/api/deals/${d.id}/tags?tagId=${t.id}`, "DELETE", undefined, `Tag #${t.nome} removida.`)}
+                  />
+                ))}
+                {somenteLeitura ? null : tags.filter((t) => !d.tags.some((x) => x.id === t.id)).length ? (
+                  <select
+                    aria-label="Adicionar tag"
+                    value=""
+                    disabled={enviando}
+                    onChange={(e) => e.target.value && executar(`/api/deals/${d.id}/tags`, "POST", { tagId: Number(e.target.value) }, "Tag aplicada.")}
+                    className="rounded-controle border border-linha-forte bg-fundo px-2 py-1 text-xs"
+                  >
+                    <option value="">+ Tag</option>
+                    {tags
+                      .filter((t) => !d.tags.some((x) => x.id === t.id))
+                      .map((t) => (
+                        <option key={t.id} value={t.id}>
+                          #{t.nome}
+                        </option>
+                      ))}
+                  </select>
+                ) : d.tags.length === 0 ? (
+                  <span className="text-xs text-texto-2">Sem tags. Crie tags pela ação em lote, na tela Leads.</span>
+                ) : null}
               </div>
               {contato ? (
                 <div className="mt-3 flex flex-wrap items-end gap-2">

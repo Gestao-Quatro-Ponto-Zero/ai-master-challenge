@@ -5,7 +5,7 @@ import nextTs from "eslint-config-next/typescript";
 const SOLTO = String.raw`(#[0-9a-fA-F]{3,8}\b|\brgba?\(|\bhsla?\(|text-\[\d|bg-\[#|text-\[#|border-\[#)`;
 
 const config = [
-  { ignores: [".next/**", "node_modules/**", "sample/**", "scripts/**", "data/**", "next-env.d.ts"] },
+  { ignores: [".next/**", "node_modules/**", "scripts/**", "data/**", "next-env.d.ts"] },
   ...next,
   ...nextTs,
   {

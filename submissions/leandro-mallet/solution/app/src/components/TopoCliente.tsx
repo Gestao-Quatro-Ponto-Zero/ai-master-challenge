@@ -6,6 +6,7 @@ import { pedir } from "@/lib/cliente";
 const ABAS = [
   { href: "/painel", rotulo: "Painel" },
   { href: "/pipeline", rotulo: "Pipeline" },
+  { href: "/leads", rotulo: "Leads" },
 ];
 
 export function AbasTopo() {
