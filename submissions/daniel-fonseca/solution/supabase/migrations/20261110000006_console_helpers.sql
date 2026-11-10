@@ -47,3 +47,19 @@ revoke execute on function public.random_holdout_ticket(text) from public, anon,
 revoke execute on function public.nearest_holdout_ticket(bigint) from public, anon, authenticated;
 grant execute on function public.random_holdout_ticket(text) to service_role;
 grant execute on function public.nearest_holdout_ticket(bigint) to service_role;
+
+-- Modo offline do Console (PRD §4.4): classifica um ticket do holdout direto no banco, sem n8n e sem LLM.
+-- Aplicada como migration separada no MCP ("console_offline").
+create or replace function public.classify_holdout_ticket(p_ds2_id integer)
+returns table (category text, confidence double precision, sensitive_share double precision, votes jsonb, similar_cases jsonb)
+language sql
+stable
+set search_path = public, extensions, pg_temp
+as $$
+  select c.* from public.ds2_embeddings e
+  join public.ds2_tickets t on t.id = e.id and t.split = 'test'
+  cross join lateral public.classify_ticket(e.embedding) c
+  where e.id = p_ds2_id
+$$;
+revoke execute on function public.classify_holdout_ticket(integer) from public, anon, authenticated;
+grant execute on function public.classify_holdout_ticket(integer) to service_role;
