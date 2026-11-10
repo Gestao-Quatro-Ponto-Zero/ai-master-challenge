@@ -6,19 +6,12 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { pedir } from "@/lib/cliente";
 import { CONFIG } from "@/lib/config";
 import { dataBR, dinheiro, plural, ROTULO_ESTAGIO, ROTULO_MOTIVO, ROTULO_PORTE, rotuloSetor } from "@/lib/calculos";
+import { HORAS_DESFAZER_LOTE, ROTULO_LOTE, type TipoLote } from "@/lib/lotes";
 import type { CorTag, DealVisao, MotivoPerda, Papel, Tag } from "@/lib/tipos";
 import { useAvisos } from "./Avisos";
 import { botaoNeutro, botaoPrincipal, botaoSecundario, campo, CORES_TAG, Dialogo, ErroFormulario, SeloTag } from "./Dialogo";
 import { BarraNota, IconeDeal } from "./Nota";
 
-type TipoLote = "aplicar_tag" | "remover_tag" | "comentar" | "avancar_estagio" | "encerrar_perdido";
-const ROTULO_LOTE: Record<TipoLote, string> = {
-  aplicar_tag: "Aplicar tag",
-  remover_tag: "Remover tag",
-  comentar: "Comentar",
-  avancar_estagio: "Mover para Em negociação",
-  encerrar_perdido: "Encerrar como perdido",
-};
 const MOTIVOS: MotivoPerda[] = ["preco", "concorrente", "sem_orcamento", "sem_resposta", "outro"];
 
 interface Props {
@@ -286,7 +279,7 @@ export function TabelaLeads({ linhas, total, papel, somenteLeitura, mostrarVende
                 ))}
               </ul>
               <p className="mt-2 text-xs text-texto-2">
-                Os leads em que a ação não se aplica são pulados e contados. Dá para desfazer o lote pelo aviso que aparece em seguida.
+                Os leads em que a ação não se aplica são pulados e contados. Dá para desfazer pelo aviso que aparece em seguida ou, por {HORAS_DESFAZER_LOTE} horas, em Lotes recentes.
               </p>
             </div>
             <ErroFormulario texto={erro} />

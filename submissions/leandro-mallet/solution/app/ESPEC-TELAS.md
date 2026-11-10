@@ -541,7 +541,7 @@ O último contador vem de `acao_repasses`. Ele nasce em 0, porque o dataset não
 **Como funciona:**
 - Uma função pura (`src/lib/interpretar-filtro.ts`), sem IA, que transforma a frase em **etiquetas**. Cada etiqueta é um filtro estruturado.
 - As etiquetas aparecem embaixo do campo ("Entendi assim:"), e cada uma pode ser removida.
-- O que o interpretador não reconhece vira a etiqueta **Contém "…"**, uma busca de texto em produto, empresa, vendedor, id, tag e comentário.
+- O que o interpretador não reconhece vira a etiqueta **Contém "…"**, uma busca de texto em produto, empresa, vendedor, id, tag e comentário. Com mais de uma palavra, o lead precisa ter todas, em qualquer ordem.
 - Maiúsculas, acentos e plural não importam. Os nomes de pessoas aceitam só o primeiro nome quando ele é único no time.
 - As etiquetas fora do escopo do perfil não são geradas: um vendedor que digita "do Darcel" recebe "Contém 'darcel'", sem filtro de vendedor.
 

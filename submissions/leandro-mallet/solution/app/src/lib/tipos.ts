@@ -143,6 +143,21 @@ export interface ContaDetalhe {
   abertos: DealVisao[];
 }
 
+/** Ação em lote das últimas 24 horas, como aparece em "Lotes recentes". */
+export interface LoteRecente {
+  id: number;
+  tipo: string;
+  rotulo: string;
+  autor: string;
+  meu: boolean;
+  criadoEm: string;
+  desfazerAte: string;
+  aplicados: number;
+  pulados: number;
+  desfeitoEm: string | null;
+  desfeitoPor: string | null;
+}
+
 export interface Prioridade {
   posicao: number;
   deal: DealVisao;

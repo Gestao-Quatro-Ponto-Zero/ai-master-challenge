@@ -54,6 +54,7 @@ solution/app/
       Estagio             mudança de estágio (uma implementação para arraste, seletor e modal)
       ModalDeal           linha do tempo, nota, comentários, tags e contato (?deal=ID)
       TabelaLeads         tabela com seleção e ações em lote
+      LotesRecentes       lotes das últimas 24 horas, com "Desfazer este lote"
       NovoLead            cadastro de lead
       Contas              lista das empresas, ficha (?conta=Nome) e cadastro
       Filtros, FiltrosEquipe   filtro livre com etiquetas; seletores de região, manager e vendedor
@@ -62,6 +63,9 @@ solution/app/
     lib/                  funções puras, sem I/O
       tipos.ts, config.ts, calculos.ts, painel.ts, cliente.ts
       desfazer.ts         formato do token do "Desfazer"
+      lotes.ts            rótulos, prazo de 24 horas e quem vê cada lote
+      prioridades.ts      contador das Prioridades do dia (só o ✓ conta como feita)
+      validacao.ts        frase específica para erro de campo na API
       filtro/             etiquetas.ts, interpretar.ts (frase → etiquetas), aplicar.ts
     server/               só roda no servidor (import "server-only")
       banco.ts            cliente do Supabase (service_role só aqui), tradução de erros e correlation_id
@@ -91,12 +95,13 @@ solution/app/
 | `GET` / `POST /api/tags` | listar / criar tag (manager e admin) |
 | `POST /api/prioridades` | ✓ (tipo de atividade e comentário obrigatórios) ou ✗ |
 | `POST /api/prioridades/mais` | puxar mais 5 |
+| `GET /api/lotes` | lotes das últimas 24 horas que o perfil pode desfazer (os próprios; manager: os do time; admin: todos) |
 | `POST /api/lotes` | ação em lote (marcados ou todos os do filtro, até 500) |
 | `GET /api/contas/[nome]` | ficha da empresa |
 | `POST /api/contas` | criar ou editar empresa |
-| `POST /api/desfazer` | desfazer uma mudança ou um lote (token fora do formato = 400, sem chamar o banco) |
+| `POST /api/desfazer` | desfazer uma mudança ou um lote (token fora do formato = 400, sem chamar o banco); no lote, devolve quantas mudanças voltaram e quantas ficaram |
 
-Toda rota de escrita: valida a entrada com zod, tem limite por endereço de rede (60 por minuto, resposta 429 em frase simples), gera o `correlation_id` no servidor e o devolve em `x-correlation-id`, e responde erro sempre como `{ erro, codigo }`.
+Toda rota de escrita: valida a entrada com zod, tem limite por endereço de rede (60 por minuto, resposta 429 em frase simples), gera o `correlation_id` no servidor e o devolve em `x-correlation-id`, e responde erro sempre como `{ erro, codigo }`. Erro de campo vem com a frase do campo ("E-mail inválido…", "Preencha o nome.") e `detalhe.campo`; o valor digitado nunca volta na resposta.
 
 ## Marca visual (DES-01, FE-03)
 
@@ -121,4 +126,4 @@ Toda rota de escrita: valida a entrada com zod, tem limite por endereço de rede
 - Importação de leads por CSV (desenhada em [DESENHO-CRM.md](DESENHO-CRM.md)).
 - Editar o nome do deal e a empresa do deal pelo modal.
 - Cadastrar e editar empresa com o banco ligado (falta a function no banco).
-- Playwright nos caminhos críticos (o Vitest já cobre a reserva, as prioridades, o escopo da ficha da empresa, a classificação dos erros do banco e o token do "Desfazer").
+- Playwright nos caminhos críticos (o Vitest já cobre a reserva, as prioridades, o escopo da ficha da empresa, a classificação dos erros do banco, o token do "Desfazer", o filtro "Contém", o contador das prioridades, o desfazer de lote e as frases de erro de campo).

@@ -1,11 +1,12 @@
 import "server-only";
 // Base das rotas de API: usuário pelo cookie, limite por endereço de rede, correlation_id gerado no
-// servidor, validação com zod e erro sempre em frase simples (nunca erro cru).
+// servidor, validação com zod e erro sempre em frase simples (nunca erro cru). Erro de campo diz qual campo.
 import { randomUUID } from "node:crypto";
 import { NextResponse, type NextRequest } from "next/server";
 import type { z } from "zod";
 import { CONFIG } from "@/lib/config";
 import type { Usuario } from "@/lib/tipos";
+import { fraseDeValidacao, type ErroDeCampo } from "@/lib/validacao";
 import { comCorrelacao } from "./banco";
 import { ErroCRM, type CodigoErro } from "./repositorio";
 import { usuarioAtual } from "./sessao";
@@ -61,8 +62,13 @@ export function rota<T = undefined>(
       if (!opcoes.semUsuario && !usuario) return erro(401, "Escolha um perfil antes de continuar.");
       let corpo = undefined as T;
       if (opcoes.corpo) {
-        const lido = opcoes.corpo.safeParse(await req.json().catch(() => null));
-        if (!lido.success) return erro(400, "Não entendi o pedido. Recarregue a página e tente de novo.");
+        const bruto: unknown = await req.json().catch(() => null);
+        const lido = opcoes.corpo.safeParse(bruto);
+        if (!lido.success) {
+          // Campo conhecido: frase específica ("E-mail inválido…"). O valor digitado nunca volta na resposta.
+          const { frase, campo } = fraseDeValidacao(lido.error.issues as unknown as ErroDeCampo[], bruto);
+          return erro(400, frase, campo ? { campo } : undefined);
+        }
         corpo = lido.data;
       }
       // O correlation_id deste pedido acompanha a escrita no banco e liga o log à auditoria.

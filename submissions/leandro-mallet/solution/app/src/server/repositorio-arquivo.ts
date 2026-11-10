@@ -7,6 +7,7 @@ import { diasEntre, faixaNota, icone as calcIcone, nomePadrao, ROTULO_ESTAGIO, R
 import { atendeConta, atendeDeal } from "@/lib/filtro/aplicar";
 import type { Etiquetas } from "@/lib/filtro/etiquetas";
 import type { Contexto, Modo } from "@/lib/filtro/interpretar";
+import { HORAS_DESFAZER_LOTE, type LoteBruto, type TipoLote } from "@/lib/lotes";
 import { funil, numerosPainel } from "@/lib/painel";
 import type {
   Comentario, ContaDetalhe, ContaVisao, Contato, CorTag, DealDetalhe, DealVisao, Escopo, Estagio,
@@ -29,7 +30,10 @@ interface ComentarioReg { id: number; dealId: string; usuarioId: number; autor: 
 interface DealTagReg { id: number; dealId: string; tagId: number; criadoEm: string; removidaEm: string | null }
 interface EventoReg { dealId: string; data: string; momento: string; tipo: EventoLinhaDoTempo["tipo"]; descricao: string; autor: string }
 interface Desfazer { usuarioId: number; expira: number; aplicar: () => void }
-interface LoteReg { id: number; usuarioId: number; papel: Papel; criadoEm: number; desfeito: boolean; reverter: (() => boolean)[] }
+interface LoteReg {
+  id: number; usuarioId: number; papel: Papel; tipo: TipoLote; criadoEm: number; aplicados: number; pulados: number;
+  desfeito: boolean; desfeitoEm: number | null; desfeitoPorId: number | null; reverter: (() => boolean)[];
+}
 
 interface Estado {
   base: Base;
@@ -666,7 +670,7 @@ export async function removerTag(u: Usuario, dealId: string, tagId: number) {
   return { desfazer: registrarDesfazer(est, u, () => { r.removidaEm = null; }) };
 }
 
-export type TipoLote = "aplicar_tag" | "remover_tag" | "comentar" | "avancar_estagio" | "encerrar_perdido";
+export type { TipoLote };
 
 export async function executarLote(u: Usuario, tipo: TipoLote, ids: string[], p: { tagId?: number; texto?: string; motivo?: MotivoPerda | null }) {
   exigirEscrita();
@@ -677,7 +681,7 @@ export async function executarLote(u: Usuario, tipo: TipoLote, ids: string[], p:
   if ((tipo === "aplicar_tag" || tipo === "remover_tag") && !est.tags.some((t) => t.id === p.tagId)) throw new ErroCRM("GS404", "Tag não encontrada.");
   if (tipo === "comentar" && (!p.texto?.trim() || p.texto.length > 1000 || /<[a-zA-Z/!]/.test(p.texto)))
     throw new ErroCRM("GS400", "Escreva um comentário de 1 a 1.000 caracteres, sem HTML.");
-  const lote: LoteReg = { id: est.seq++, usuarioId: u.id, papel: u.papel, criadoEm: Date.now(), desfeito: false, reverter: [] };
+  const lote: LoteReg = { id: est.seq++, usuarioId: u.id, papel: u.papel, tipo, criadoEm: Date.now(), aplicados: 0, pulados: 0, desfeito: false, desfeitoEm: null, desfeitoPorId: null, reverter: [] };
   let aplicados = 0;
   let pulados = 0;
   for (const id of unicos) {
@@ -709,8 +713,18 @@ export async function executarLote(u: Usuario, tipo: TipoLote, ids: string[], p:
       });
     } else pulados++;
   }
+  Object.assign(lote, { aplicados, pulados });
   est.lotes.set(lote.id, lote);
   return { loteId: lote.id, aplicados, pulados };
+}
+
+/** Lotes guardados em memória (a reserva só tem lotes com G4_ESCRITA_EM_MEMORIA=1). */
+export async function lotesBrutos(): Promise<LoteBruto[]> {
+  const est = await estado();
+  return [...est.lotes.values()].map((l) => ({
+    id: l.id, tipo: l.tipo, usuarioId: l.usuarioId, criadoEm: new Date(l.criadoEm).toISOString(), aplicados: l.aplicados, pulados: l.pulados,
+    desfeitoEm: l.desfeitoEm === null ? null : new Date(l.desfeitoEm).toISOString(), desfeitoPorId: l.desfeitoPorId,
+  }));
 }
 
 export async function desfazerLote(u: Usuario, loteId: number) {
@@ -720,11 +734,11 @@ export async function desfazerLote(u: Usuario, loteId: number) {
   if (!l) throw new ErroCRM("GS404", "Lote não encontrado.");
   if (l.desfeito) throw new ErroCRM("GS422", "Este lote já foi desfeito.");
   if (l.usuarioId !== u.id && u.papel === "vendedor") throw new ErroCRM("GS403", "Só quem aplicou o lote, o manager ou o admin podem desfazer.");
-  if (Date.now() - l.criadoEm > 24 * 3_600_000) throw new ErroCRM("GS422", "O prazo para desfazer este lote (24 h) passou.");
+  if (Date.now() - l.criadoEm > HORAS_DESFAZER_LOTE * 3_600_000) throw new ErroCRM("GS422", "O prazo para desfazer este lote (24 h) passou.");
   let restaurados = 0;
   let pulados = 0;
   for (const r of [...l.reverter].reverse()) if (r()) restaurados++; else pulados++;
-  l.desfeito = true;
+  Object.assign(l, { desfeito: true, desfeitoEm: Date.now(), desfeitoPorId: u.id });
   return { restaurados, pulados };
 }
 

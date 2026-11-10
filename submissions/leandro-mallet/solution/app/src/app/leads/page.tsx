@@ -3,6 +3,7 @@ import { TabelaContas } from "@/components/Contas";
 import { Estado } from "@/components/Estado";
 import { FiltroLivre, Seletor } from "@/components/Filtros";
 import { FiltrosEquipe } from "@/components/FiltrosEquipe";
+import { LotesRecentes } from "@/components/LotesRecentes";
 import { NovoLead } from "@/components/NovoLead";
 import { TabelaLeads } from "@/components/TabelaLeads";
 import { dinheiroCurto, plural } from "@/lib/calculos";
@@ -94,6 +95,7 @@ export default async function Pagina({ searchParams }: { searchParams: Promise<P
         {cabecalho}
         <div className="flex flex-wrap items-center gap-3">
           <FiltrosEquipe filtros={filtros} />
+          {leitura ? null : <LotesRecentes />}
           {leitura ? null : <NovoLead papel={usuario.papel} produtos={produtos} empresas={contexto.empresas} vendedores={contexto.vendedores} />}
         </div>
       </div>

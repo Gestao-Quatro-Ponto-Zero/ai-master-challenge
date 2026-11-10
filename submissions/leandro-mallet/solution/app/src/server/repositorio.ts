@@ -8,8 +8,9 @@ import { CONFIG } from "@/lib/config";
 import { atendeConta, atendeDeal } from "@/lib/filtro/aplicar";
 import type { Etiquetas } from "@/lib/filtro/etiquetas";
 import type { Contexto, Modo } from "@/lib/filtro/interpretar";
+import { lotesRecentesPara } from "@/lib/lotes";
 import { funil, numerosPainel } from "@/lib/painel";
-import type { ContaDetalhe, ContaVisao, CorTag, DealDetalhe, DealVisao, Escopo, Estagio, MotivoPerda, Pagina, Prioridade, Tag, Usuario } from "@/lib/tipos";
+import type { ContaDetalhe, ContaVisao, CorTag, DealDetalhe, DealVisao, Escopo, Estagio, LoteRecente, MotivoPerda, Pagina, Prioridade, Tag, Usuario } from "@/lib/tipos";
 import { bancoAtivo, BancoFora, ErroCRM } from "./banco";
 import * as A from "./repositorio-arquivo";
 import * as B from "./repositorio-banco";
@@ -201,12 +202,16 @@ export const salvarConta = (u: Usuario, d: Parameters<typeof A.salvarConta>[1]) 
   );
 
 /** Desfazer pelo token devolvido na escrita (mudança, ação, comentário, tag ou lote). */
-export const desfazer = (u: Usuario, token: string): Promise<void> =>
-  gravando(
+export const desfazer = (u: Usuario, token: string): Promise<{ restaurados: number; pulados: number } | void> =>
+  gravando<{ restaurados: number; pulados: number } | void>(
     () => B.desfazer(u, token),
     async () => {
       const lote = /^lote:(\d+)$/.exec(token);
-      if (lote) await A.desfazerLote(u, Number(lote[1]));
-      else await A.desfazer(u, token);
+      if (lote) return A.desfazerLote(u, Number(lote[1]));
+      await A.desfazer(u, token);
     },
   );
+
+/** Lotes das últimas 24 horas que o perfil pode desfazer: os próprios, os do time (manager) ou todos (admin). */
+export const lotesRecentes = async (u: Usuario): Promise<LoteRecente[]> =>
+  lotesRecentesPara(await lendo(() => B.lotesBrutos(), () => A.lotesBrutos()), u, await listarUsuarios(), Date.now());

@@ -3,6 +3,12 @@ import { diasEntre, semAcento } from "../calculos";
 import type { ContaVisao, DealVisao } from "../tipos";
 import type { Etiquetas } from "./etiquetas";
 
+/** "Contém": todas as palavras precisam aparecer, em qualquer ordem, sem diferenciar acento nem maiúscula. */
+export function contemTodas(alvo: string, busca: string): boolean {
+  const texto = semAcento(alvo).toLowerCase();
+  return semAcento(busca).toLowerCase().split(/\s+/).filter(Boolean).every((p) => texto.includes(p));
+}
+
 const em = <T,>(lista: T[] | undefined, v: T | null): boolean => !lista || (v !== null && lista.includes(v));
 
 export function atendeDeal(d: DealVisao, e: Etiquetas, hoje: string): boolean {
@@ -37,8 +43,8 @@ export function atendeDeal(d: DealVisao, e: Etiquetas, hoje: string): boolean {
   if (e.sem_tag && d.tags.length > 0) return false;
   if (e.com_comentario && d.qtdComentarios === 0) return false;
   if (e.contem) {
-    const alvo = semAcento([d.id, d.nome, d.produto, d.conta, d.vendedor, d.contato?.nome, ...d.tags.map((t) => t.nome)].filter(Boolean).join(" "));
-    if (!alvo.includes(semAcento(e.contem))) return false;
+    const alvo = [d.id, d.nome, d.produto, d.conta, d.vendedor, d.contato?.nome, ...d.tags.map((t) => t.nome)].filter(Boolean).join(" ");
+    if (!contemTodas(alvo, e.contem)) return false;
   }
   return true;
 }
@@ -56,6 +62,6 @@ export function atendeConta(c: ContaVisao, e: Etiquetas): boolean {
   if (e.bonus_min !== undefined && (c.bonus === null || c.bonus < e.bonus_min)) return false;
   if (!em(e.sedes, c.sede)) return false;
   if (!em(e.empresas, c.nome)) return false;
-  if (e.contem && !semAcento([c.nome, c.setor, c.sede, c.empresaMae].filter(Boolean).join(" ")).includes(semAcento(e.contem))) return false;
+  if (e.contem && !contemTodas([c.nome, c.setor, c.sede, c.empresaMae].filter(Boolean).join(" "), e.contem)) return false;
   return true;
 }

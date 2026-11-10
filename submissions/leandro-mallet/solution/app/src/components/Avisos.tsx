@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useMemo, useRef, useState, type
 import { useRouter } from "next/navigation";
 import { CONFIG } from "@/lib/config";
 import { pedir } from "@/lib/cliente";
+import { fraseLoteDesfeito } from "@/lib/lotes";
 
 interface Aviso {
   id: number;
@@ -56,9 +57,10 @@ export function Avisos({ children }: { children: ReactNode }) {
 
   async function desfazer(a: Aviso) {
     fechar(a.id);
-    const r = await pedir("/api/desfazer", "POST", { token: a.desfazer });
+    const r = await pedir<{ restaurados?: number; pulados?: number }>("/api/desfazer", "POST", { token: a.desfazer });
     if (r.ok) {
-      abrir({ texto: "Desfeito.", tipo: "ok" });
+      const lote = r.dados?.restaurados !== undefined ? { restaurados: r.dados.restaurados, pulados: r.dados.pulados ?? 0 } : null;
+      abrir({ texto: lote ? fraseLoteDesfeito(lote) : "Desfeito.", tipo: "ok" });
       atualizar();
     } else abrir({ texto: r.erro ?? "Não foi possível desfazer.", tipo: "erro", codigo: r.codigo });
   }

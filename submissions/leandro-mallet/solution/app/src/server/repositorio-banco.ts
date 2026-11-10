@@ -2,6 +2,7 @@ import "server-only";
 // Repositório no banco (Supabase). Leitura: view core_deals_visao e tabelas, filtradas pelo perfil.
 // Escrita: só pelas functions do banco, com o usuário do perfil e o correlation_id do servidor.
 import { CONFIG } from "@/lib/config";
+import { HORAS_DESFAZER_LOTE, type LoteBruto, type TipoLote } from "@/lib/lotes";
 import type {
   Comentario, ContaDetalhe, ContaVisao, Contato, CorTag, DealDetalhe, DealVisao, Escopo, Estagio, EventoLinhaDoTempo,
   MotivoPerda, Papel, Porte, Prioridade, Tag, Usuario,
@@ -344,15 +345,28 @@ export async function criarDeal(u: Usuario, d: { produto: string; conta?: string
 }
 
 /** Desfaz pelo token devolvido na escrita: cada tipo chama a function do banco que reverte sem apagar. */
-export async function desfazer(u: Usuario, token: string): Promise<void> {
+export async function desfazer(u: Usuario, token: string): Promise<{ restaurados: number; pulados: number } | void> {
   const [tipo, a, b] = token.split(":");
   if (tipo === "deal" && a) await escrever("core_desfazer_alteracao", u.id, { p_correlation_original: a });
   else if (tipo === "acao" && a) await escrever("acao_desfazer", u.id, { p_acao_id: Number(a) });
   else if (tipo === "comentario" && a) await escrever("acao_restaurar_comentario", u.id, { p_comentario_id: Number(a) });
   else if (tipo === "tagmais" && a && b) await escrever("acao_remover_tag", u.id, { p_opportunity_id: a, p_tag_id: Number(b) });
   else if (tipo === "tagmenos" && a && b) await escrever("acao_aplicar_tag", u.id, { p_opportunity_id: a, p_tag_id: Number(b) });
-  else if (tipo === "lote" && a) await escrever("system_desfazer_lote", u.id, { p_lote_id: Number(a) });
-  else throw new ErroCRM("GS422", "O prazo para desfazer passou.");
+  else if (tipo === "lote" && a) {
+    const { dados } = await escrever<{ restaurados: number; pulados: number }>("system_desfazer_lote", u.id, { p_lote_id: Number(a) });
+    return { restaurados: dados.restaurados, pulados: dados.pulados };
+  } else throw new ErroCRM("GS422", "O prazo para desfazer passou.");
+}
+
+/** Lotes das últimas 24 horas (o prazo do "Desfazer este lote"). O recorte por perfil é feito na fachada. */
+export async function lotesBrutos(): Promise<LoteBruto[]> {
+  const desde = new Date(Date.now() - HORAS_DESFAZER_LOTE * 3_600_000).toISOString();
+  const linhas = await ler<{ id: number; usuario_id: number; tipo: TipoLote; aplicados: number; pulados: number; criado_em: string; desfeito_em: string | null; desfeito_por: number | null }[]>(
+    banco().from("system_lotes").select("id,usuario_id,tipo,aplicados,pulados,criado_em,desfeito_em,desfeito_por").gte("criado_em", desde).order("criado_em", { ascending: false }).limit(200),
+  );
+  return linhas.map((l) => ({
+    id: l.id, tipo: l.tipo, usuarioId: l.usuario_id, criadoEm: l.criado_em, aplicados: l.aplicados, pulados: l.pulados, desfeitoEm: l.desfeito_em, desfeitoPorId: l.desfeito_por,
+  }));
 }
 
 // ---------------------------------------------------------------------------------------------- contas

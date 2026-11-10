@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { EMAIL, TELEFONE } from "@/lib/validacao";
 import { parte, rota } from "@/server/rota";
 import { detalheDeal, salvarContato } from "@/server/repositorio";
 
@@ -6,8 +7,9 @@ const corpo = z.object({
   versao: z.string().nullable(),
   nome: z.string().min(1).max(120),
   cargo: z.string().max(80).nullish(),
-  email: z.string().max(160).nullish(),
-  telefone: z.string().max(25).nullish(),
+  // Mesmas regras do banco; vazio = sem e-mail ou sem telefone.
+  email: z.string().trim().max(160).refine((v) => v === "" || EMAIL.test(v)).nullish(),
+  telefone: z.string().trim().max(25).refine((v) => v === "" || TELEFONE.test(v)).nullish(),
 });
 
 /** Adiciona um contato e o torna o contato principal do deal. */

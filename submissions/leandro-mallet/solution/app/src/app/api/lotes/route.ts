@@ -3,7 +3,10 @@ import { CONFIG } from "@/lib/config";
 import { juntar } from "@/lib/filtro/etiquetas";
 import { lerEtiquetas, lerFiltrosEquipe } from "@/server/parametros";
 import { rota } from "@/server/rota";
-import { buscarDeals, ErroCRM, escopoDe, executarLote } from "@/server/repositorio";
+import { buscarDeals, ErroCRM, escopoDe, executarLote, lotesRecentes } from "@/server/repositorio";
+
+/** Lotes das últimas 24 horas que o perfil pode desfazer (os próprios; o manager vê os do time; o admin, todos). */
+export const GET = rota({}, async ({ usuario }) => ({ lotes: await lotesRecentes(usuario) }));
 
 const corpo = z.object({
   tipo: z.enum(["aplicar_tag", "remover_tag", "comentar", "avancar_estagio", "encerrar_perdido"]),

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { pedir } from "@/lib/cliente";
 import { CONFIG } from "@/lib/config";
 import { dinheiro } from "@/lib/calculos";
+import { resumoPrioridades } from "@/lib/prioridades";
 import type { Papel, Prioridade } from "@/lib/tipos";
 import { useAvisos } from "./Avisos";
 import { BarraNota, IconeDeal } from "./Nota";
@@ -20,10 +21,8 @@ export function Prioridades({ itens, papel, somenteLeitura }: { itens: Prioridad
   const [saindo, setSaindo] = useState<string | null>(null);
 
   const pendentes = itens.filter((i) => !i.marcada);
-  const feitas = itens.filter((i) => i.marcada === "feita").length;
-  const puladas = itens.filter((i) => i.marcada === "pulada").length;
-  const marcadas = itens.length - pendentes.length;
-  const meta = Math.max(CONFIG.metaPrioridadesDia, itens.length);
+  // "Feitas" conta só o ✓; o ✗ (pulada) não sobe o contador.
+  const { feitas, puladas, meta } = resumoPrioridades(itens);
   const visiveis = pendentes.slice(0, CONFIG.prioridadesVisiveis);
   const vendedor = papel === "vendedor";
 
@@ -75,11 +74,12 @@ export function Prioridades({ itens, papel, somenteLeitura }: { itens: Prioridad
       </p>
       <div className="mt-3 flex items-center gap-3 text-sm">
         <span className="whitespace-nowrap font-semibold">
-          {marcadas} de {meta} feitas
+          {feitas} de {meta} feitas
         </span>
-        <div className="h-2 flex-1 overflow-hidden rounded-selo bg-trilho" role="progressbar" aria-valuemin={0} aria-valuemax={meta} aria-valuenow={marcadas} aria-label="Prioridades feitas hoje">
-          <div className="h-full rounded-selo bg-dourado" style={{ width: `${Math.min(100, (marcadas / meta) * 100)}%` }} />
+        <div className="h-2 flex-1 overflow-hidden rounded-selo bg-trilho" role="progressbar" aria-valuemin={0} aria-valuemax={meta} aria-valuenow={feitas} aria-label="Prioridades feitas hoje">
+          <div className="h-full rounded-selo bg-dourado" style={{ width: `${Math.min(100, (feitas / meta) * 100)}%` }} />
         </div>
+        {puladas ? <span className="whitespace-nowrap text-xs text-texto-2">{puladas === 1 ? "1 pulada" : `${puladas} puladas`}</span> : null}
       </div>
 
       {itens.length === 0 ? (
@@ -92,7 +92,7 @@ export function Prioridades({ itens, papel, somenteLeitura }: { itens: Prioridad
       ) : visiveis.length === 0 ? (
         <div className="mt-4 rounded-controle border border-linha bg-fundo px-3 py-4 text-sm">
           <p className="font-semibold">
-            Prioridades de hoje feitas: {feitas} ✓ e {puladas} ✗.
+            Lista de hoje concluída: {feitas} ✓ e {puladas} ✗.
           </p>
           {somenteLeitura ? null : (
             <button onClick={puxarMais} disabled={enviando} className="mt-3 rounded-controle border border-marinho px-3 py-2 font-semibold disabled:opacity-50">
