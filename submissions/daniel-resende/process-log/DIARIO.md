@@ -105,4 +105,21 @@ Início real: 15:43:03. Caixa de tempo: 25 minutos.
 
 ## O que o candidato decidiu
 
-(a preencher com a resposta do Daniel, nas palavras dele)
+### Etapa 1: a regra e a forma do produto (10/11/2026, resposta recebida no chat e registrada às 15:54, do `date`)
+
+A pergunta do construtor: "regra A congelada como está, com essa forma do produto: sim, não ou muda?" A resposta do Daniel, como ele escreveu:
+
+> Sim, com ajustes
+> 1- A forma nova é a que eu quero: vivos, fila para engajar e limpar
+> 2- O que sustenta o produto é a separação entre o que está vivo e o que é para limpar: a janela da regra A, 138 dias e o prazo do trimestre. Foi isso que se confirmou nas datas novas e nos 717 negócios distintos, então é isso que vem primeiro na tela e no README
+> 3- Entre os vivos, a ordem é por valor, com mais dias restantes como desempate. A contagem regressiva aparece, mas não ordena. O README diz que essa ordem não foi confirmada em datas novas e que, com sete preços de tabela, ordenar por valor é quase ordenar por produto
+> 4- Negócio vivo com mais de 90 dias aparece como "esfriando", com a frase da tabela e a data da conta. Informa, não reordena
+> 5- A fila é só uma lista por preço de tabela, e a tela diz que nada mais nos dados a ordena
+> 6- Em "limpar", mostra a evidência e a ação, sem afirmar o motivo
+> 7- A segunda-feira do produto é 01/01/2018, com os dados fechados no domingo 31/12; o dia do prazo ainda conta como vivo
+> 8- Nenhuma porcentagem por negócio
+
+O que o construtor apontou ao receber a resposta, para o próximo prompt (não é decisão dele):
+
+- O ajuste 7 muda uma borda da regra congelada: em `validate.py` o dia do prazo já conta como fora da janela (a conta olha os 90 dias seguintes). Na segunda 01/01/2018 as duas leituras dão os mesmos grupos, porque os prazos de 31/12 já venceram; elas só diferem numa "segunda-feira do passado" que caia exatamente num dia de prazo. O núcleo de scoring precisa implementar a borda como o Daniel decidiu e dizer isso.
+- Os contratos e os fatos de exemplo desta etapa descrevem a forma antiga (focar agora, manter aquecido, deixar ir). Ficam como registro; o próximo prompt os reescreve a partir do `PRODUTO.md` atualizado pelo orquestrador.
