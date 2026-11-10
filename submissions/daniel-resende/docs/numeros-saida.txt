@@ -1,0 +1,58 @@
+== 1. A segunda padrao 2018-01-01 (dados fechados em 2017-12-31) ==
+total: vivos=115 (valor de tabela 235.930); fila=500 (valor de tabela 1.073.986); para limpar=1474 (valor de tabela 3.656.299)
+regional Central: vivos=0 (valor de tabela 0); fila=500 (valor de tabela 1.073.986); para limpar=408 (valor de tabela 824.422)
+regional East: vivos=45 (valor de tabela 97.047); fila=0 (valor de tabela 0); para limpar=388 (valor de tabela 972.539)
+regional West: vivos=70 (valor de tabela 138.883); fila=0 (valor de tabela 0); para limpar=678 (valor de tabela 1.859.338)
+vendedores no total: 35
+vendedores sem nenhum negocio vivo: 18
+vendedores com fila: 10
+vendedores com os tres blocos (vivo, fila e limpar): 0
+
+== 2. A janela ==
+ganho mais demorado conhecido: 138 dias
+fechamentos dentro do prazo (fim do trimestre seguinte ao do engajamento): 6710 de 6711 (1 depois do prazo)
+prazo aplicado pela regra: sim
+
+== 3. A evidencia, em negocios distintos, nos doze cortes ==
+cortes medidos: 12
+negocios distintos postos fora da janela: 717
+  ganhos depois: 0
+  perdidos depois: 1
+  ainda abertos no fim dos dados: 716
+
+== 4. Os tres cortes de confirmacao: top 5 de cada vendedor, 90 dias ==
+(ordenar por valor contra a regra A, medidos por confirm.py/validate.py; so ordem entre vivos, nao confirmada)
+corte 2017-07-08: ordenar por valor = 64.1 ganhos de 150 vagas, valor ganho 396.111; regra A = 69.0 ganhos, valor ganho 432.044
+corte 2017-08-24: ordenar por valor = 43.8 ganhos de 150 vagas, valor ganho 295.729; regra A = 49.0 ganhos, valor ganho 321.094
+corte 2017-09-24: ordenar por valor = 35.3 ganhos de 150 vagas, valor ganho 229.454; regra A = 41.5 ganhos, valor ganho 238.551
+
+== 5. A tabela do tempo em 2017-12-31 (a que a tela usa) ==
+negocios que tiveram tempo de fechar (engajados ate 2017-08-14): 4767
+chegaram abertos aos 0 dias: 4767 negocios; ganhos depois 2256; perdidos depois 1433; nunca fecharam 1078; ganhos em cada 100: 47
+chegaram abertos aos 30 dias: 2873 negocios; ganhos depois 1200; perdidos depois 595; nunca fecharam 1078; ganhos em cada 100: 42
+chegaram abertos aos 60 dias: 2540 negocios; ganhos depois 982; perdidos depois 480; nunca fecharam 1078; ganhos em cada 100: 39
+chegaram abertos aos 90 dias: 1722 negocios; ganhos depois 441; perdidos depois 203; nunca fecharam 1078; ganhos em cada 100: 26
+chegaram abertos aos 120 dias: 1152 negocios; ganhos depois 49; perdidos depois 25; nunca fecharam 1078; ganhos em cada 100: 4
+chegaram abertos aos 138 dias: 1078 negocios; ganhos depois 0; perdidos depois 0; nunca fecharam 1078; ganhos em cada 100: 0
+
+== 6. As segundas do passado: o que aconteceu com cada bloco ate o fim dos dados ==
+segunda 2017-10-02 (dados fechados em 2017-10-01): vivos=1717; para limpar=717
+  vivos: ganhos=568 perdidos=386 ainda abertos=763 valor ganho=1.287.553
+  para limpar: ganhos=0 perdidos=1 ainda abertos=716 valor ganho=0
+segunda 2017-09-04 (dados fechados em 2017-09-03): vivos=1853; para limpar=420
+  vivos: ganhos=626 perdidos=262 ainda abertos=965 valor ganho=1.430.301
+  para limpar: ganhos=0 perdidos=0 ainda abertos=420 valor ganho=0
+segunda 2017-08-07 (dados fechados em 2017-08-06): vivos=1909; para limpar=350
+  vivos: ganhos=701 perdidos=350 ainda abertos=858 valor ganho=1.711.746
+  para limpar: ganhos=0 perdidos=0 ainda abertos=350 valor ganho=0
+segunda 2017-07-03 (dados fechados em 2017-07-02): vivos=1364; para limpar=350
+  vivos: ganhos=614 perdidos=371 ainda abertos=379 valor ganho=1.470.073
+  para limpar: ganhos=0 perdidos=0 ainda abertos=350 valor ganho=0
+segunda 2017-06-05 (dados fechados em 2017-06-04): vivos=1458; para limpar=92
+  vivos: ganhos=669 perdidos=265 ainda abertos=524 valor ganho=1.648.675
+  para limpar: ganhos=0 perdidos=0 ainda abertos=92 valor ganho=0
+
+== 7. Contas e valores ==
+negocios abertos: 2089; sem conta: 1425
+precos de tabela distintos: 7
+pares vizinhos nas listas dos vivos da segunda padrao: 98; com o mesmo valor (o desempate decidiu): 52

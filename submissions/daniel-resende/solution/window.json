@@ -1,0 +1,56 @@
+{
+ "date": "2017-12-31",
+ "longest_win_days": 138,
+ "closings_known": 6711,
+ "closings_after_deadline": 1,
+ "time_table": [
+  {
+   "reached_days": 0,
+   "deals": 4767,
+   "won_after": 2256,
+   "lost_after": 1433,
+   "never_closed": 1078,
+   "won_per_100": 47
+  },
+  {
+   "reached_days": 30,
+   "deals": 2873,
+   "won_after": 1200,
+   "lost_after": 595,
+   "never_closed": 1078,
+   "won_per_100": 42
+  },
+  {
+   "reached_days": 60,
+   "deals": 2540,
+   "won_after": 982,
+   "lost_after": 480,
+   "never_closed": 1078,
+   "won_per_100": 39
+  },
+  {
+   "reached_days": 90,
+   "deals": 1722,
+   "won_after": 441,
+   "lost_after": 203,
+   "never_closed": 1078,
+   "won_per_100": 26
+  },
+  {
+   "reached_days": 120,
+   "deals": 1152,
+   "won_after": 49,
+   "lost_after": 25,
+   "never_closed": 1078,
+   "won_per_100": 4
+  },
+  {
+   "reached_days": 138,
+   "deals": 1078,
+   "won_after": 0,
+   "lost_after": 0,
+   "never_closed": 1078,
+   "won_per_100": 0
+  }
+ ]
+}

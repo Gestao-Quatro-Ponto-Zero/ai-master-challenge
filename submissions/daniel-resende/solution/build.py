@@ -25,6 +25,7 @@ PAST_MONDAYS = [dt.date(2017, 10, 2), dt.date(2017, 9, 4), dt.date(2017, 8, 7),
                 dt.date(2017, 7, 3), dt.date(2017, 6, 5)]
 TABLE_AGES = (0, 30, 60, 90, 120, 138)
 COOLING_AFTER_DAYS = 90
+OPEN_STAGES = ("Prospecting", "Engaging")
 NUMBERS = ("alive", "alive_value", "cooling", "queue", "queue_value", "clean", "clean_value")
 
 
@@ -99,8 +100,11 @@ def build_monday(deals, teams, monday, last_day):
         if dead:
             record["clean_fact"] = "idade" if known["age"] > rules["longest_win"] else "prazo"
         else:
-            left = min(rules["longest_win"] - known["age"], (deadline - monday).days)
-            assert left >= 0
+            left = rules["longest_win"] - known["age"]
+            if rules["use_deadline"]:  # the deadline bounds the window only when the rule applies it
+                left = min(left, (deadline - monday).days)
+            if left < 0:  # an explicit check: `assert` vanishes under python -O
+                raise ValueError(f"negative days_left for {known['id']} on {monday}")
             record.update({
                 "days_left": left, "window_end": (monday + dt.timedelta(days=left)).isoformat(),
                 "cooling": known["age"] > COOLING_AFTER_DAYS,
@@ -201,7 +205,8 @@ def main():
     deals = v.load()
     teams = v.read("sales_teams.csv")
     last_day = max(d[k] for d in deals for k in ("engage", "close") if d[k])
-    assert DEFAULT_MONDAY - dt.timedelta(days=1) == last_day
+    if DEFAULT_MONDAY - dt.timedelta(days=1) != last_day:
+        raise SystemExit(f"the default Monday does not follow the last day of data ({last_day})")
     mondays = []
     for monday in [DEFAULT_MONDAY] + PAST_MONDAYS:
         score = build_monday(deals, teams, monday, last_day)
@@ -221,7 +226,8 @@ def main():
                     for t in sorted(teams, key=lambda t: t["sales_agent"])],
         "evidence": evidence(deals),
         "value_note": {"list_prices": len({d["price"] for d in deals}),
-                       "closed_without_value_on_open_rows": True},
+                       "closed_without_value_on_open_rows": all(
+                           d["close_value"] == "" for d in deals if d["stage"] in OPEN_STAGES)},
     })
     print(f"index.json: segunda padrao {DEFAULT_MONDAY}, vendedor padrao {default_seller}")
 

@@ -93,7 +93,7 @@ Como uma segunda-feira se liga à regra congelada, sem tocar nela:
 | `block` | `vivo`, `fila` ou `limpar` | o bloco. `fila` = etapa Prospecting (sem data nenhuma); `limpar` = fora da janela; `vivo` = o resto |
 | `rank` | inteiro | posição dentro do bloco, na lista do vendedor, a partir de 1 |
 | `product` | texto | nome do catálogo (`GTXPro` do pipeline vira `GTX Pro`) |
-| `account` | texto ou `null` | só para exibir. `null` em 1.425 dos 2.089 abertos: nenhuma tela e nenhum texto pode supor que existe |
+| `account` | texto ou `null` | só para exibir. `null` em 1.425 dos 2.089 abertos: nenhuma tela e nenhum texto pode supor que existe. É o único campo de `validate.LEAK_FIELDS` que aparece num negócio, e nunca entra na regra |
 | `value` | número | **o preço de tabela do produto**: um negócio aberto não tem valor de fechamento (`close_value` vazio em 100% dos abertos). Na tela: "valor de tabela" |
 | `engage_date` | data ou `null` | `null` na fila |
 | `days_open` | inteiro ou `null` | dias entre o engajamento e o fechamento dos dados |
@@ -105,7 +105,7 @@ Como uma segunda-feira se liga à regra congelada, sem tocar nela:
 | `clean_fact` | `prazo`, `idade` ou `null` | só em `limpar`: qual lado da janela o negócio passou. É um fato de calendário, não o motivo de ele estar parado, que os dados não dizem |
 | `play` | texto | o próximo passo, por regra (abaixo) |
 | `flags` | lista | `sem_conta` quando `account` é `null` |
-| `after` | objeto ou `null` | só nas segundas do passado e nunca na fila: `{"result": "ganho" \| "perdido" \| "aberto", "close_date", "close_value", "days_after"}`, com o que aconteceu até o fim dos dados (2017-12-31). `null` na segunda padrão |
+| `after` | objeto ou `null` | só nas segundas do passado e nunca na fila: `{"result": "ganho" \| "perdido" \| "aberto", "close_date", "close_value", "days_after"}`, com o que aconteceu até o fim dos dados (2017-12-31); `days_after` conta a partir do corte (o fechamento dos dados). `null` na segunda padrão |
 
 Numa segunda do passado, `sellers[].after` resume o que aconteceu: `{"alive_won", "alive_lost", "alive_open", "alive_won_value", "clean_won", "clean_lost", "clean_open"}`, e `meta.outcomes_until` é `2017-12-31`.
 
