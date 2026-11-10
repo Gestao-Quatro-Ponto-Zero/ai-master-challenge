@@ -91,9 +91,9 @@
   <small>As duas partes vão de 0 a 100, e o score também. Decisão 29 do registro de decisões.</small>
 </div>
 <ul>
-  <li><b>FIT (70%)</b> mede o encaixe do lead no que o vendedor dono tem fechado melhor nos últimos 3 meses. É por vendedor e fica fixo até a próxima rodada de cálculo.</li>
+  <li><b>FIT (70%)</b> mede o encaixe do lead no que o vendedor dono tem fechado melhor nos últimos 3 meses. É por vendedor, recalculado todo domingo e fixo durante a semana.</li>
   <li><b>HEAT (30%)</b> mede o tempo de atendimento: em que ponto do ciclo o deal está e há quanto tempo ninguém fala com o cliente. Muda todo dia.</li>
-  <li><b>Valor</b> não entra na nota. Aparece no cartão como contexto (ver pergunta P6).</li>
+  <li><b>Valor</b> não entra na nota. Aparece no cartão como contexto (ver pergunta P5).</li>
 </ul>
 <p>Dados: 6.711 deals fechados e 2.089 abertos. "Hoje" é 31/12/2017, o último dia com registro. A janela atual de 3 meses vai de out a dez/2017, pela data de fechamento.</p>
 
@@ -139,8 +139,8 @@
   <li><b>Lead sem nenhuma característica com casos:</b> FIT 50. São 17 deals abertos hoje.</li>
 </ul>
 
-<h3>Rodada de cálculo</h3>
-<p>O FIT é recalculado no 1º dia de cada mês, com os 3 meses fechados anteriores, e fica fixo até a rodada seguinte. Assim o vendedor vê a mesma lógica o mês inteiro.</p>
+<h3>Recálculo semanal</h3>
+<p>O FIT é recalculado <b>todo domingo</b>, com os fechamentos dos 3 meses que terminam naquele domingo. A segunda-feira já abre com a lista priorizada, e o FIT fica fixo a semana inteira. Motivo (decisão do Leandro): a média móvel de 3 meses quase não muda de um dia para o outro. O HEAT continua dinâmico e muda todo dia, porque depende da idade do deal e do último contato. A data de referência do dataset, 31/12/2017, cai num domingo: a janela atual (01/10 a 31/12/2017) é exatamente a desse recálculo.</p>
 <div class="note"><b>Janela de 3 meses</b> (confirmada na decisão 29). Para comparar: cada vendedor fecha 0,73 deal por dia (mediana de 0,72). Em 3 meses, isso dá de 31 a 159 fechados por vendedor, o suficiente para os recortes de 10 casos.</div>
 
 <h3>Distribuição hoje (2.089 abertos)</h3>
@@ -384,9 +384,8 @@
   <li><b>P2.</b> Teto de 40 ativos por vendedor.</li>
   <li><b>P3.</b> Roteamento pela conversão no perfil, com a trava de FIT ≥ 50.</li>
   <li><b>P4.</b> Corte de "alto encaixe" do lead novo (topo da lista e marca de atendimento atrasado): FIT ≥ 60.</li>
-  <li><b>P5.</b> Rodada do FIT: todo dia 1º, com os 3 meses fechados.</li>
-  <li><b>P6.</b> Valor fora da nota. Hoje os exemplos 1 e 3 são MG Special (US$ 55) e ficam acima de deals de US$ 4.821. Valor só como contexto no cartão, ou também como desempate?</li>
-  <li><b>P7.</b> O contrato do arquivo de deals pontuados muda:
+  <li><b>P5.</b> Valor fora da nota. Hoje os exemplos 1 e 3 são MG Special (US$ 55) e ficam acima de deals de US$ 4.821. Valor só como contexto no cartão, ou também como desempate?</li>
+  <li><b>P6.</b> O contrato do arquivo de deals pontuados muda:
     <ul>
       <li><code>components</code> passa a ser <code>{ fit, heat }</code>;</li>
       <li>entra o detalhe do FIT (característica, fechados, desvio);</li>

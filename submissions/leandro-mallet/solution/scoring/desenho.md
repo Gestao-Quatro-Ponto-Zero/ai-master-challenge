@@ -62,7 +62,7 @@ Teste de chance: a diferença entre o maior e o menor win rate dos grupos com 30
 
 | Tabela | Atributo | Resultado | Veredito | Onde aparece |
 |---|---|---|---|---|
-| products | `product` / `sales_price` | Win 60,3%–64,8% (4,5 pts); preço de US$ 55 a US$ 26.768; valor fechado = 97%–100% da tabela (mediana por produto) | Chance geral: ruído. **Entra no FIT** (por vendedor, 3 meses). Valor: contexto (P6) | Detalhe do FIT + valor no cartão |
+| products | `product` / `sales_price` | Win 60,3%–64,8% (4,5 pts); preço de US$ 55 a US$ 26.768; valor fechado = 97%–100% da tabela (mediana por produto) | Chance geral: ruído. **Entra no FIT** (por vendedor, 3 meses). Valor: contexto (P5) | Detalhe do FIT + valor no cartão |
 | products | `series` | 62,7%–63,4% (0,7 pt) | Chance geral: ruído. **Entra no FIT** | Detalhe do FIT |
 | accounts | `sector` | 61,2%–64,8% (3,7 pts) | Chance geral: ruído. **Entra no FIT** | Detalhe do FIT |
 | accounts | `revenue` (tercis) | 63,0%–63,2% (0,2 pt) | Chance geral: ruído. **Entra no FIT** | Detalhe do FIT |
@@ -86,11 +86,11 @@ Teste de chance: a diferença entre o maior e o menor win rate dos grupos com 30
 
 A especificação completa, com as contas, os 3 exemplos reais e as simulações de roteamento, está em [`regra-lead-score.html`](regra-lead-score.html). Abaixo vai só o resumo.
 
-**SCORE = 0,70 × FIT + 0,30 × HEAT** (0 a 100). O valor fica fora da nota e aparece como contexto (pergunta P6).
+**SCORE = 0,70 × FIT + 0,30 × HEAT** (0 a 100). O valor fica fora da nota e aparece como contexto (pergunta P5).
 
 ### FIT (70%): encaixe do lead no ponto forte do vendedor dono
 - Usa 7 características do lead: produto, série, setor, porte por receita, porte por funcionários, empresa e sede. "Tempo de venda" fica fora, porque um lead aberto ainda não tem esse dado.
-- A janela são os 3 meses de fechamentos do vendedor (hoje, out–dez/2017). Recalcula todo dia 1º e fica fixo até a rodada seguinte.
+- A janela são os 3 meses de fechamentos do vendedor (hoje, out–dez/2017). Recalcula todo domingo, com os 3 meses que terminam naquele domingo, para a segunda abrir com a lista priorizada. Fica fixo a semana inteira, porque a média móvel quase não muda de um dia para o outro (decisão do Leandro). O HEAT continua dinâmico. Como 31/12/2017 é um domingo, a janela atual (01/10 a 31/12) é exatamente a desse recálculo.
 - Taxa encolhida de cada característica = (ganhos + 20 × taxa do vendedor) / (fechados + 20). Desvio = taxa encolhida − taxa do vendedor. Característica com menos de 10 fechados vale desvio 0 e fica fora da média.
 - Destaque = a característica de maior taxa encolhida, entre as que têm 10 ou mais fechados.
 - **FIT = 50 + 50 × (média dos desvios do lead) / (desvio do destaque)**, limitado entre 0 e 100.
@@ -175,15 +175,14 @@ Saída: `data/scored/deals_scored.json` + `scoring/validacao.md`. Só serão ger
 
 ## 4. Perguntas em aberto
 
-As decisões 28 e 29 substituíram as antigas D1–D4: a chance por segmento saiu, o valor saiu da nota e o tempo virou HEAT. A janela de 3 meses e as 8 faixas de HEAT estão decididas. Ficam abertas:
+As decisões 28 e 29 substituíram as antigas D1–D4: a chance por segmento saiu, o valor saiu da nota e o tempo virou HEAT. A janela de 3 meses, o recálculo aos domingos e as 8 faixas de HEAT estão decididos. Ficam abertas:
 
 - **P1.** Prospecting sem data no HEAT: 50, o meio da escala (proposta); 100, tratar como lead novo; ou 0, tratar como esquecido.
 - **P2.** Teto de 40 ativos por vendedor.
 - **P3.** Roteamento pela conversão no perfil, com a trava de FIT ≥ 50.
 - **P4.** Corte de "alto encaixe" do lead novo (topo e marca de atendimento atrasado): FIT ≥ 60.
-- **P5.** Rodada do FIT todo dia 1º.
-- **P6.** Valor fora da nota: só contexto no cartão ou também desempate. Hoje deals de US$ 55 ficam acima de deals de US$ 4.821.
-- **P7.** Mudança do contrato:
+- **P5.** Valor fora da nota: só contexto no cartão ou também desempate. Hoje deals de US$ 55 ficam acima de deals de US$ 4.821.
+- **P6.** Mudança do contrato:
   - `components` vira `{ fit, heat }`;
   - entram o detalhe do FIT, a faixa de HEAT e a marca de atendimento atrasado.
 
