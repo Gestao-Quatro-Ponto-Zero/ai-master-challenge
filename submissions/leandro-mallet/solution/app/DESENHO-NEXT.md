@@ -1,6 +1,7 @@
 # Desenho: estrutura do app em Next.js
 
 > Proposta para decisão. Nada disto está construído.
+> Identidade (decisão 12): sem login; escolha de perfil (vendedor, manager ou admin) guardada em cookie. Detalhes em [DESENHO-ACOES.md](DESENHO-ACOES.md).
 > O app atual em HTML/JS (`index.html`, `app.js`, `styles.css`) vira referência de telas e fluxos e vai para `prototipo-html/`.
 
 ## Onde fica o projeto Next
@@ -45,26 +46,26 @@ solution/app/
   prototipo-html/         o app estático atual, como referência
 
   src/
-    middleware.ts         renova a sessão do Supabase; não roda sem credenciais
     app/
-      layout.tsx          topo, abas, filtros, aviso de dados de exemplo
+      layout.tsx          topo (perfil + Trocar perfil), abas por perfil, aviso de dados de exemplo
       globals.css         os mesmos tokens visuais do protótipo (claro e escuro)
-      page.tsx            "Quem é você?" (escolha do vendedor)
-      vendedor/[nome]/page.tsx   Meu dia
-      time/page.tsx              Visão do manager (?regiao=&manager=)
-      deals/page.tsx             Todos os deals (busca, filtros, ordenação)
-      limpeza/page.tsx           Limpeza do pipeline (só com login)
-      entrar/page.tsx            Login com conta de demonstração
+      page.tsx            "Quem é você?": vendedor, manager ou admin, depois o nome
+      vendedor/[nome]/page.tsx   Meu dia (vendedor: o próprio; manager: do time; admin: qualquer um)
+      time/page.tsx              Visão do time (manager) ou geral (admin), com ?regiao=&manager=
+      deals/page.tsx             Todos os deals do perfil (busca, filtros, ordenação)
+      limpeza/page.tsx           Limpeza do pipeline do perfil
       not-found.tsx, error.tsx, loading.tsx   estados vazio, erro e carregando
       api/
+        perfil/route.ts          POST (escolher) e DELETE (trocar perfil)
         acoes/route.ts           GET e POST
-        sessao/route.ts          POST e DELETE
     components/
       BarraScore.tsx      barra dividida pelos componentes (servidor)
       CartaoDeal.tsx      cartão do top 5
       ListaMini.tsx       requalificar / desistir
       TabelaDeals.tsx     tabela com ordenação (navegador)
-      Filtros.tsx         região, manager, vendedor no link (navegador)
+      Filtros.tsx         região, manager, vendedor no link; só os que o perfil permite (navegador)
+      EscolhaPerfil.tsx   os três papéis e a lista de nomes (navegador)
+      PerfilTopo.tsx      quem está usando + Trocar perfil
       DetalheDeal.tsx     painel lateral, aberto por ?deal=ID (navegador)
       BotoesAcao.tsx      Liguei / Requalifiquei / Desisti (navegador)
       Estado.tsx          vazio e erro padronizados
@@ -72,25 +73,27 @@ solution/app/
       contrato.ts         tipos e schema (zod) do deals_scored.json
       selecao.ts          top 5, requalificar, desistir
       agregacoes.ts       números do time e por vendedor
+      perfil.ts           papéis, nomes válidos do dataset, escopo de deals de cada perfil
       permissao.ts        quem pode gravar em qual deal; limite por minuto
       texto.ts            rótulos, dinheiro, datas, plural
       config.ts           registro de ações disponível ou não
     server/               só roda no servidor (import "server-only")
       dados.ts            lê e valida o JSON uma vez; cai no exemplo se faltar
+      perfil.ts           lê e confere o cookie de perfil; redireciona para a escolha se faltar
       supabase.ts         cliente com a service role
-      sessao.ts           sessão por cookie (@supabase/ssr)
       acoes.ts            ler e gravar ações, com as conferências
 
   tests/
     contrato.test.ts      o exemplo e o arquivo oficial passam no schema
     selecao.test.ts       top 5 completa com requalificar; vendedor sem deals
     agregacoes.test.ts
-    permissao.test.ts     vendedor não grava no deal de outro; manager só no time
+    perfil.test.ts        nome inexistente recusado; escopo de vendedor, manager e admin
+    permissao.test.ts     vendedor não grava no deal de outro; manager só no time; lote tudo ou nada
 ```
 
 ## Dependências (mínimas)
 
-- **Produção:** `next`, `react`, `react-dom`, `zod`, `@supabase/supabase-js`, `@supabase/ssr`.
+- **Produção:** `next`, `react`, `react-dom`, `zod`, `@supabase/supabase-js` (só no servidor).
 - **Desenvolvimento:** `typescript`, `@types/node`, `@types/react`, `eslint`, `eslint-config-next`, `vitest`.
 - Sem biblioteca de componentes nem Tailwind: o CSS do protótipo já resolve e mantém a mesma identidade.
 
@@ -107,22 +110,32 @@ solution/app/
 
 | Protótipo (`#hash`) | Next (rota) |
 |---|---|
-| `#dia` sem vendedor | `/` |
+| `#dia` sem vendedor ("Quem é você?") | `/` (agora com vendedor, manager ou admin) |
 | `#dia?vendedor=Anna+Snelling` | `/vendedor/anna-snelling` |
 | `#time?manager=...` | `/time?manager=...` |
 | `#todos?regiao=West` | `/deals?regiao=West` |
 | painel do deal | `?deal=FZWU2I30` em qualquer rota (o link abre o detalhe) |
-| (novo) | `/limpeza`, `/entrar` |
+| (novo) | `/limpeza` |
+
+Tela inicial e abas por perfil:
+
+| Perfil | Abre em | Abas |
+|---|---|---|
+| Vendedor | `/vendedor/<o próprio>` | Meu dia, Meus deals, Limpeza |
+| Manager | `/time?manager=<o próprio>` | Time, Deals do time, Limpeza (o "Meu dia" de cada vendedor abre pelo quadro do time) |
+| Admin | `/time` | Visão geral, Todos os deals, Limpeza |
+
+Um link para fora do escopo do perfil (ex.: vendedor abrindo `/vendedor/outro-nome`) volta para a tela inicial dele.
 
 ## Variáveis de ambiente
 
 | Variável | Onde é usada | Obrigatória? |
 |---|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` | sessão e rotas | Só para registrar ações |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | sessão (cookie) | Só para registrar ações |
+| `SUPABASE_URL` | `src/server/` | Só para registrar ações |
 | `SUPABASE_SERVICE_ROLE_KEY` | `src/server/` | Só para registrar ações |
+| `ACOES_DESDE` | `src/server/acoes.ts` | Não (data de corte da demonstração) |
 
-Sem nenhuma delas, `npm ci && npm run dev` abre o app completo em modo só leitura.
+Nenhuma variável é pública: sem login, o navegador não fala com o Supabase. Sem elas, `npm ci && npm run dev` abre o app completo (perfis, telas e filtros) em modo só leitura.
 
 ## Qualidade
 
@@ -134,4 +147,4 @@ Sem nenhuma delas, `npm ci && npm run dev` abre o app completo em modo só leitu
 
 1. Confirmar `solution/app/` como raiz do projeto Next (recomendado).
 2. Commitar a cópia de `deals_scored.json` dentro do app (recomendado) ou ligar na Vercel a opção de incluir arquivos fora da raiz.
-3. As decisões de identidade e ações de [DESENHO-ACOES.md](DESENHO-ACOES.md).
+3. As decisões em aberto de [DESENHO-ACOES.md](DESENHO-ACOES.md): o admin grava ou só lê, e quem faz a limpeza.
