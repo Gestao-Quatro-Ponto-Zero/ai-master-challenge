@@ -184,3 +184,9 @@ A #5 aplicou 0007–0026 no Supabase, sem erro. Contagem: 29 tabelas, 60 FKs (RE
 
 **Erro de orquestração da #1:** o aviso "não aplicar a 0026 ainda" chegou à #5 depois que ela já tinha aplicado a 0026 original (commit d6c4f12). A #1 já tinha commitado a 0026 ajustada (4017322), o que deixava o repositório diferente do banco. Correção, proposta pela #5: a 0026 do repositório volta à versão aplicada, e o ajuste (teto exato) entra como migration nova, 0027.
 
+## 10/11 — App publicado para validação
+
+- Fatia 1 (perfil, Painel, Pipeline, modal) e fatia 2 (Leads, Contas, lote, tags) publicadas em https://g4-sight.vercel.app pela CLI da Vercel, a partir de uma cópia limpa (sem dependências nem arquivos antigos). Conferido online pela #1: os números do Painel batem (vendedora: 448 leads, 57 em negociação, US$ 95.414, 86,7%), as 85 contas e a receita de US$ 10,01 mi batem, e o console não mostra erro.
+- **Erro da #1:** a #1 apontou um "bug" de contagem nas abas do Pipeline (66/67 contra 55/57). Era leitura errada do print reduzido: o "5" em negrito parecia "6". A #4 conferiu o HTML publicado, que estava certo, e passou o número da aba para peso normal.
+- As escritas ficam em memória nesta versão; a ligação com o banco é a próxima ordem (O-15).
+
