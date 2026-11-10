@@ -1,0 +1,123 @@
+{
+ "config": {
+  "dims": 512,
+  "k": 50,
+  "power": 16,
+  "n_test": 9567
+ },
+ "labels": [
+  "Access",
+  "Administrative rights",
+  "HR Support",
+  "Hardware",
+  "Internal Project",
+  "Miscellaneous",
+  "Purchase",
+  "Storage"
+ ],
+ "matrix": [
+  [
+   1204,
+   5,
+   78,
+   94,
+   8,
+   29,
+   3,
+   4
+  ],
+  [
+   4,
+   239,
+   10,
+   80,
+   1,
+   11,
+   4,
+   3
+  ],
+  [
+   23,
+   1,
+   1911,
+   152,
+   17,
+   63,
+   3,
+   13
+  ],
+  [
+   57,
+   17,
+   221,
+   2277,
+   9,
+   103,
+   26,
+   13
+  ],
+  [
+   5,
+   1,
+   39,
+   34,
+   317,
+   26,
+   0,
+   2
+  ],
+  [
+   27,
+   7,
+   123,
+   150,
+   19,
+   1071,
+   8,
+   7
+  ],
+  [
+   2,
+   2,
+   9,
+   23,
+   1,
+   3,
+   450,
+   3
+  ],
+  [
+   3,
+   4,
+   36,
+   49,
+   2,
+   8,
+   1,
+   452
+  ]
+ ],
+ "rows_are": "categoria real",
+ "cols_are": "categoria prevista",
+ "accuracy": 0.828,
+ "recall": {
+  "Access": 0.8449,
+  "Administrative rights": 0.679,
+  "HR Support": 0.8754,
+  "Hardware": 0.8362,
+  "Internal Project": 0.7476,
+  "Miscellaneous": 0.7585,
+  "Purchase": 0.9128,
+  "Storage": 0.8144
+ },
+ "precision": {
+  "Access": 0.9087,
+  "Administrative rights": 0.8659,
+  "HR Support": 0.7874,
+  "Hardware": 0.7964,
+  "Internal Project": 0.8476,
+  "Miscellaneous": 0.8151,
+  "Purchase": 0.9091,
+  "Storage": 0.9095
+ }
+}

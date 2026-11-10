@@ -1,0 +1,473 @@
+{
+ "repo": "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca",
+ "adrs": [
+  {
+   "number": "0001",
+   "title": "Estrutura do repositório e memória agnóstica de harness",
+   "status": "Aceita",
+   "statusKind": "aceita",
+   "date": "2026-11-09",
+   "origin": "Daniel (requisito: memória persistente entre sessões e harnesses; poder trocar Claude Code ↔ Codex) · IA (desenho)",
+   "originKind": "daniel_ia",
+   "summary": "Toda a memória canônica vive dentro da pasta da submissão, versionada:",
+   "href": "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca/docs/decisions/0001-estrutura-e-memoria.md"
+  },
+  {
+   "number": "0002",
+   "title": "Stack Supabase + Vercel + n8n e isolamento de contas/MCP",
+   "status": "Aceita",
+   "statusKind": "aceita",
+   "date": "2026-11-09",
+   "origin": "Daniel",
+   "originKind": "daniel",
+   "summary": "Supabase (conta nova, plano free): Postgres com dados dos dois datasets, pgvector para RAG, tabelas de fila HITL, notificações e auditoria.",
+   "href": "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca/docs/decisions/0002-stack-e-isolamento.md"
+  },
+  {
+   "number": "0003",
+   "title": "Diagnóstico com o DS1 sintético: cortar, testar, mostrar a incoerência e ainda assim estimar custo",
+   "status": "Aceita (validada pelo Daniel em 2026-11-09, após ajustes dele)",
+   "statusKind": "aceita",
+   "date": "2026-11-09",
+   "origin": "IA (achado de que o DS1 é sintético) · Daniel (como responder a cada pergunta)",
+   "originKind": "ia_daniel",
+   "summary": "Cortes por canal, prioridade, tipo, assunto e produto. Para cada grupo: volume, % sem 1ª resposta, % aguardando cliente, tempo 1ª resposta → resolução (só registros coerentes) e CSAT com IC 95%. Cada diferença entre grupos é testada (p-valor).",
+   "href": "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca/docs/decisions/0003-diagnostico-dataset-sintetico.md"
+  },
+  {
+   "number": "0004",
+   "title": "RAG: similaridade no DS2 + base de soluções validadas alimentada pelo HITL",
+   "status": "Aceita (validada pelo Daniel em 2026-11-09)",
+   "statusKind": "aceita",
+   "date": "2026-11-09",
+   "origin": "Daniel (ideia: inserir problemas num banco vetorial e responder com base em casos parecidos com solução validada) · IA (adaptação aos dados reais)",
+   "originKind": "daniel_ia",
+   "summary": "Dividir o RAG em duas memórias no Supabase (pgvector):",
+   "href": "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca/docs/decisions/0004-rag-adaptado.md"
+  },
+  {
+   "number": "0005",
+   "title": "Política de 3 níveis: automático / revisão humana / só humano",
+   "status": "Aceita (validada pelo Daniel em 2026-11-09)",
+   "statusKind": "aceita",
+   "date": "2026-11-09",
+   "origin": "Daniel (os três níveis e o canal WhatsApp) · IA (critérios e calibração)",
+   "originKind": "daniel_ia",
+   "summary": "Os limiares não são chutados: saem da curva cobertura × precisão do classificador (ADR-0004). Ex.: \"com confiança ≥ 0,9 cobrimos X% dos tickets com Y% de precisão\".",
+   "href": "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca/docs/decisions/0005-tres-niveis-de-automacao.md"
+  },
+  {
+   "number": "0006",
+   "title": "Evitar pausa do Supabase free por inatividade",
+   "status": "Aceita",
+   "statusKind": "aceita",
+   "date": "2026-11-09",
+   "origin": "Daniel (requisito: rotina diária para o projeto não cair) · IA (mecanismo)",
+   "originKind": "daniel_ia",
+   "summary": "Duas rotinas independentes, ambas versionadas na pasta da submissão:",
+   "href": "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca/docs/decisions/0006-keep-alive-supabase.md"
+  },
+  {
+   "number": "0007",
+   "title": "Notificações do nível 3: Slack (n8n) + caixa de mensagens no painel",
+   "status": "Aceita",
+   "statusKind": "aceita",
+   "date": "2026-11-09",
+   "origin": "Daniel",
+   "originKind": "daniel",
+   "summary": "O workflow n8n do nível 3 termina num nó Slack (mensagem para o canal do time de suporte).",
+   "href": "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca/docs/decisions/0007-notificacoes-slack-e-inbox.md"
+  },
+  {
+   "number": "0008",
+   "title": "Console operacional como validador da solução",
+   "status": "Aceita",
+   "statusKind": "aceita",
+   "date": "2026-11-09",
+   "origin": "IA (sugestão) · Daniel (enquadramento)",
+   "originKind": "ia_daniel",
+   "summary": "O app tem duas áreas com papéis diferentes:",
+   "href": "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca/docs/decisions/0008-console-como-validador.md"
+  },
+  {
+   "number": "0009",
+   "title": "Cruzamento DS1 × DS2 sem join",
+   "status": "Aceita (validada pelo Daniel em 2026-11-09)",
+   "statusKind": "aceita",
+   "date": "2026-11-09",
+   "origin": "Daniel (pergunta: dá para relacionar pelo id?) · IA (desenho)",
+   "originKind": "daniel_ia",
+   "summary": "Cada dataset responde ao que o outro não consegue:",
+   "href": "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca/docs/decisions/0009-cruzamento-ds1-ds2.md"
+  },
+  {
+   "number": "0010",
+   "title": "Classificador de produção: RAG por similaridade como classificador único; LLM redige",
+   "status": "Aceita — Daniel escolheu o RAG como classificador principal (2026-11-09); parâmetros recomendados pela IA a partir da medição",
+   "statusKind": "aceita",
+   "date": "2026-11-09",
+   "origin": "IA (avaliação e calibração) · Daniel (decisão: RAG único, por domínio e por ser o caso prático de LLM; aceita perder alguns pontos percentuais)",
+   "originKind": "ia_daniel",
+   "summary": "Classificação = voto ponderado dos 50 tickets mais parecidos no pgvector (512 dims halfvec, HNSW). Roda numa função SQL no Supabase → o n8n só chama, sem modelo em nó de código.",
+   "href": "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca/docs/decisions/0010-classificador-de-producao.md"
+  },
+  {
+   "number": "0011",
+   "title": "Diretrizes para os fluxos n8n",
+   "status": "Aceita",
+   "statusKind": "aceita",
+   "date": "2026-11-09",
+   "origin": "Daniel",
+   "originKind": "daniel",
+   "summary": "Fluxos simples, fáceis de manter por pessoas não técnicas: preferir nós nativos do n8n (Webhook, Supabase/Postgres, OpenAI, If/Switch, Set/Edit Fields, Slack, Schedule). Nó de código só quando não houver alternativa nativa, e com comentário explicando o…",
+   "href": "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca/docs/decisions/0011-diretrizes-n8n.md"
+  },
+  {
+   "number": "0012",
+   "title": "Decisões de construção dos fluxos n8n (nível 1, bloqueio, modelo, idioma, heartbeat)",
+   "status": "Aceita (decisões do Daniel em 2026-11-09; lista de bloqueio adotada a partir da medição)",
+   "statusKind": "aceita",
+   "date": "2026-11-09",
+   "origin": "Daniel (decisões) · IA (medição de falsos positivos e custo)",
+   "originKind": "daniel_ia",
+   "summary": "Nível 1 = LLM adapta a solução validada ao ticket (não envia o texto validado cru). Guarda-corpos: o LLM não acrescenta passo, prazo, promessa nem exceção; se a solução não se aplica (fits: false), o ticket vai para o nível 2. O texto validado de origem…",
+   "href": "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca/docs/decisions/0012-decisoes-de-construcao-n8n.md"
+  },
+  {
+   "number": "0013",
+   "title": "Fluxos n8n com nós nativos do Supabase (no lugar do nó Postgres)",
+   "status": "Aceita (Daniel, 2026-11-10)",
+   "statusKind": "aceita",
+   "date": "2026-11-10",
+   "origin": "Daniel (sugestão: credencial do próprio Supabase, mais simples) · IA (viabilidade, teste da API REST e ajustes)",
+   "originKind": "daniel_ia",
+   "summary": "Leitura e escrita de tabelas (triage_runs, hitl_queue, notifications, validated_resolutions, heartbeat): nó Supabase (create / update / getAll), sem SQL dentro do nó.",
+   "href": "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca/docs/decisions/0013-nos-nativos-supabase.md"
+  },
+  {
+   "number": "0014",
+   "title": "Arquitetura do app: três áreas com toggles, dados do Supabase, construção em frentes paralelas",
+   "status": "Proposta (aguarda a validação do PRD v1.1)",
+   "statusKind": "proposta",
+   "date": "2026-11-10",
+   "origin": "Daniel (estrutura de navegação, enxugamento do dashboard, fonte de dados, sessões paralelas) · IA (questionário, desenho da navegação e da camada de dados)",
+   "originKind": "daniel_ia",
+   "summary": "Três áreas no lugar de oito páginas:",
+   "href": "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca/docs/decisions/0014-arquitetura-do-app.md"
+  }
+ ],
+ "judgment": [
+  {
+   "n": 1,
+   "date": "2026-11-09",
+   "type": "Premissa do brief contestada",
+   "what": "O brief diz ~30K tickets e 3 tipos; o dado tem 8.469 tickets e 5 tipos. wc -l dá 29.808 por causa de quebras de linha nas descrições",
+   "who": "IA (verificação antes de analisar)",
+   "result": "Volume correto registrado em data-findings.md"
+  },
+  {
+   "n": 2,
+   "date": "2026-11-09",
+   "type": "Premissa do brief contestada",
+   "what": "DS1 é sintético (CSAT uniforme, tempos aleatórios, resoluções lorem) — um diagnóstico \"direto\" seria ruído",
+   "who": "IA",
+   "result": "ADR-0003 aguardando decisão do Daniel"
+  },
+  {
+   "n": 3,
+   "date": "2026-11-09",
+   "type": "Ideia humana adaptada",
+   "what": "RAG \"casos parecidos com solução validada\" não é possível direto: DS1 tem resoluções falsas, DS2 não tem resoluções",
+   "who": "IA",
+   "result": "ADR-0004: base de soluções validadas alimentada pelo HITL"
+  },
+  {
+   "n": 4,
+   "date": "2026-11-09",
+   "type": "Julgamento humano",
+   "what": "Isolar MCPs/contas do projeto das contas pessoais; exigir memória portável para o Codex",
+   "who": "Daniel",
+   "result": "ADR-0001 e ADR-0002"
+  },
+  {
+   "n": 5,
+   "date": "2026-11-09",
+   "type": "IA errou",
+   "what": "Ao versionar, a IA rodou git add -f na pasta inteira e arrastou .venv/ e data/ (420 KB de listagem) para o stage",
+   "who": "IA (checagem do stage antes do commit)",
+   "result": "Stage desfeito; criado scripts/git-add.sh que respeita o .gitignore da pasta; regra no AGENTS.md"
+  },
+  {
+   "n": 6,
+   "date": "2026-11-09",
+   "type": "IA errou (comunicação)",
+   "what": "A IA citou a regra do G4 (\"40h não rendem pontos extras\") ao sugerir corte de escopo; a frase foi lida como estimativa da IA para o projeto, e a sugestão de corte não deixava claro que o RAG continuava",
+   "who": "Daniel",
+   "result": "Daniel manteve o escopo e definiu timebox em 2 turnos noturnos; plano por turno em STATE.md"
+  },
+  {
+   "n": 7,
+   "date": "2026-11-09",
+   "type": "Julgamento humano",
+   "what": "Daniel trocou WhatsApp/WAHA por Slack (provável stack do G4) + caixa de mensagens no painel mostrando a mensagem e como seria o envio real",
+   "who": "Daniel",
+   "result": "ADR-0007"
+  },
+  {
+   "n": 8,
+   "date": "2026-11-09",
+   "type": "Julgamento humano",
+   "what": "Daniel reposicionou o console: não é parte do dashboard, é o validador da solução",
+   "who": "Daniel",
+   "result": "ADR-0008"
+  },
+  {
+   "n": 9,
+   "date": "2026-11-09",
+   "type": "Premissa contestada",
+   "what": "Ranking de CSAT por combinação canal×prioridade×tipo mostra 2,29 vs 3,57 — parece achado, mas p=0,50 (ruído)",
+   "who": "IA (teste estatístico)",
+   "result": "Evidência incorporada à ADR-0003"
+  },
+  {
+   "n": 10,
+   "date": "2026-11-09",
+   "type": "Julgamento humano",
+   "what": "Daniel indicou o MCP correto do n8n (VPS) em vez do n8n-local que falhava",
+   "who": "Daniel",
+   "result": "n8n-g4 em escopo local com token; IA sugeriu não versionar a URL/IP da VPS"
+  },
+  {
+   "n": 11,
+   "date": "2026-11-09",
+   "type": "Julgamento humano",
+   "what": "Daniel questionou a redução dos embeddings para 512 (\"para que guardar 200 MB livres?\"). Recalculando com halfvec, 1536 dimensões cabem — a IA tinha escolhido a opção mais conservadora sem medir",
+   "who": "Daniel",
+   "result": "ADR-0004: dimensão decidida por medição (1536 × 512 no holdout), padrão 1536 halfvec"
+  },
+  {
+   "n": 12,
+   "date": "2026-11-09",
+   "type": "Julgamento humano",
+   "what": "Daniel pediu os dois datasets no Supabase antes de decidir o resto, para enxergar os dados ele mesmo",
+   "who": "Daniel",
+   "result": "Migration de tabelas brutas + scripts/load_raw_datasets.py"
+  },
+  {
+   "n": 13,
+   "date": "2026-11-09",
+   "type": "Julgamento humano",
+   "what": "Daniel percebeu que relacionar DS1 e DS2 pelo id não faria sentido (bases de tamanhos e domínios diferentes) e perguntou como cruzá-los",
+   "who": "Daniel",
+   "result": "ADR-0009: cruzamento por papel — DS2 mede a IA, DS1 dimensiona a operação"
+  },
+  {
+   "n": 14,
+   "date": "2026-11-09",
+   "type": "Julgamento humano",
+   "what": "Daniel redesenhou a resposta do diagnóstico: cortar antes de concluir (incluindo assunto e produto); CSAT só entre os respondidos, com a tese do viés de sobrevivência documentada; mostrar a incoerência do dado e, mesmo assim, puxar indicadores de custo",
+   "who": "Daniel",
+   "result": "ADR-0003 reescrita; 02_diagnostic_cuts.py; indicadores rotulados como medido / premissa"
+  },
+  {
+   "n": 15,
+   "date": "2026-11-09",
+   "type": "Ideia humana adaptada",
+   "what": "Daniel pediu \"tempo médio na fila\" e \"tempo médio de ticket humano\": o DS1 não tem data de abertura nem tempo de manuseio, então nenhum dos dois é mensurável",
+   "who": "IA",
+   "result": "Viraram premissas editáveis no dashboard, com fonte; o único tempo medido (1ª resposta → resolução) é mostrado só nos registros coerentes"
+  },
+  {
+   "n": 16,
+   "date": "2026-11-09",
+   "type": "IA errou (técnico)",
+   "what": "O cálculo do R² gerou avisos de overflow do numpy (BLAS do macOS); a IA não aceitou o número de primeira e conferiu com outro método",
+   "who": "IA",
+   "result": "Mesmo resultado (R² 0,021); cálculo trocado para um método sem os avisos"
+  },
+  {
+   "n": 17,
+   "date": "2026-11-09",
+   "type": "IA verificou a própria pesquisa",
+   "what": "Na busca de benchmarks, números muito citados não se confirmaram na fonte primária: \"SQM 697 s\" (o SQM publica 424 s) e \"MetricNet 2024 por canal\" (só em páginas de terceiros); o Gartner só tem o resumo público",
+   "who": "IA",
+   "result": "Só entram no cálculo números lidos na fonte; o Gartner fica como referência de ordem de grandeza"
+  },
+  {
+   "n": 18,
+   "date": "2026-11-09",
+   "type": "Ideia humana adaptada",
+   "what": "\"Tempo médio na fila\" saiu do custo: espera do cliente não consome hora de agente (custa satisfação) e não há benchmark confiável",
+   "who": "IA",
+   "result": "Vira indicador de SLA + recomendação de instrumentação"
+  },
+  {
+   "n": 19,
+   "date": "2026-11-09",
+   "type": "Premissa contestada",
+   "what": "A expectativa (inclusive da IA, na ADR-0004) era que embeddings/RAG seriam o melhor classificador. A medição mostrou o TF-IDF à frente (86,9% × 82,5%)",
+   "who": "IA (medição)",
+   "result": "ADR-0010: RAG vira 2º voto + fonte de casos parecidos"
+  },
+  {
+   "n": 20,
+   "date": "2026-11-09",
+   "type": "Premissa contestada",
+   "what": "O LLM zero-shot acertou 43% e, quando disse ter confiança ≥ 0,9, acertou só 62% — a \"confiança\" que o LLM declara não serve como critério de automação",
+   "who": "IA (medição)",
+   "result": "LLM fica só para redigir; a decisão de nível usa métodos calibrados"
+  },
+  {
+   "n": 21,
+   "date": "2026-11-09",
+   "type": "IA errou",
+   "what": "A precisão por categoria saiu 100% em todas — a IA desconfiou do número e achou um bug no próprio script (comparava a previsão com ela mesma)",
+   "who": "IA",
+   "result": "Corrigido: precisão real de 99–100%"
+  },
+  {
+   "n": 22,
+   "date": "2026-11-09",
+   "type": "Julgamento humano (aplicado)",
+   "what": "1536 × 512 decidido pela regra que o Daniel aprovou (ADR-0004): diferença de −0,4 p.p. no kNN → 512, que cabe na RAM da instância free",
+   "who": "Daniel (regra) + IA (medição)",
+   "result": "512 halfvec; 1536 guardado localmente, reversível"
+  },
+  {
+   "n": 23,
+   "date": "2026-11-09",
+   "type": "Julgamento humano",
+   "what": "Daniel escolheu o RAG como classificador único — mesmo sabendo que o TF-IDF acerta 4 p.p. a mais — por domínio, por ser o caso prático de LLM e pela manutenção mais simples no n8n",
+   "who": "Daniel",
+   "result": "ADR-0010; IA mediu o custo da escolha (nível 1 de 35,9% → 31,2%) e buscou melhorias"
+  },
+  {
+   "n": 24,
+   "date": "2026-11-09",
+   "type": "Premissa contestada",
+   "what": "Busca híbrida e RAG + LLM eram as apostas para subir o RAG; nenhuma superou o voto ajustado (82,8%). O RAG, porém, levou o LLM de 43% para 81%",
+   "who": "IA (medição)",
+   "result": "Fluxo mais simples: voto em SQL; LLM só redige"
+  },
+  {
+   "n": 25,
+   "date": "2026-11-09",
+   "type": "Julgamento humano",
+   "what": "Fluxos n8n simples, com nós nativos, mantidos por não técnicos; rascunho nó a nó validado antes de construir",
+   "who": "Daniel",
+   "result": "ADR-0011"
+  },
+  {
+   "n": 26,
+   "date": "2026-11-09",
+   "type": "Julgamento humano",
+   "what": "Daniel decidiu que o LLM adapta a solução validada no nível 1 (em vez de enviá-la crua) e que só há nível 1 com solução validada da categoria",
+   "who": "Daniel",
+   "result": "ADR-0012; IA acrescentou o guarda-corpo fits (se a solução não se aplica, o ticket desce para o nível 2)"
+  },
+  {
+   "n": 27,
+   "date": "2026-11-09",
+   "type": "Premissa contestada",
+   "what": "Daniel temia falsos positivos na lista de bloqueio. A medição confirmou para a lista que a própria IA propôs: \"administrator\" e \"password\" rebaixariam 21% do nível 1. A lista estreita de RH/jurídico fica em 0,2%",
+   "who": "Daniel (dúvida) + IA (medição)",
+   "result": "Lista estreita adotada; 10_blocklist_eval.py"
+  },
+  {
+   "n": 28,
+   "date": "2026-11-09",
+   "type": "IA verificou a própria pesquisa",
+   "what": "Preço do gpt-5.4-mini conferido na página oficial da OpenAI (e não só em agregadores) antes de estimar o custo com os US$ 5 do Daniel",
+   "who": "IA",
+   "result": "~US$ 0,003 por ticket → ~1.600 tickets; teto de tokens por nó"
+  },
+  {
+   "n": 29,
+   "date": "2026-11-09",
+   "type": "IA pegou armadilha técnica",
+   "what": "O HNSW devolve no máximo ef_search (padrão 40) vizinhos, menos que k=50, e o filtro \"só treino\" descarta ~20% deles. Sem ajuste, o voto no banco divergiria do avaliado",
+   "who": "IA",
+   "result": "ef_search = 100 + iterative_scan na função; concordância de 99,8% com o cálculo exato"
+  },
+  {
+   "n": 30,
+   "date": "2026-11-09",
+   "type": "IA pegou risco de segurança",
+   "what": "Ao criar os workflows, o n8n auto-atribuiu aos webhooks a credencial Waha VPS (chave API) de outro contexto do Daniel (única Header Auth da instância). Se o fluxo fosse ativado assim, a chave do WAHA abriria o webhook do case",
+   "who": "IA (leitura do retorno do MCP)",
+   "result": "Fluxos mantidos inativos; troca pela G4 – Segredo do webhook assim que ela existir; registrado como bloqueio no STATE"
+  },
+  {
+   "n": 31,
+   "date": "2026-11-10",
+   "type": "Julgamento humano",
+   "what": "Daniel sugeriu trocar os nós Postgres por nós nativos do Supabase (uma credencial, fluxo mais legível). A IA confirmou a viabilidade testando a API REST antes de mexer",
+   "who": "Daniel",
+   "result": "ADR-0013; funções do RAG via HTTP Request com credencial Supabase"
+  },
+  {
+   "n": 32,
+   "date": "2026-11-10",
+   "type": "IA errou (pego pelo teste)",
+   "what": "O leitor da saída do LLM supunha texto JSON; o nó OpenAI v2.3 com json_schema entrega objeto. O caminho de segurança desenhado pela própria IA segurou o erro: o ticket foi para revisão humana em vez de responder",
+   "who": "IA (teste ponta a ponta)",
+   "result": "Leitor corrigido nos 3 nós; teste refeito passou"
+  },
+  {
+   "n": 33,
+   "date": "2026-11-10",
+   "type": "IA pegou risco de segurança",
+   "what": "Na recriação, o n8n auto-atribuiu Supabase – padaria-bi a 9 nós: um teste antes da troca teria gravado dados do case no projeto de outro cliente do Daniel",
+   "who": "IA (leitura do retorno do MCP)",
+   "result": "setNodeCredential com IDs G4 antes de qualquer execução; regra registrada na ADR-0013"
+  },
+  {
+   "n": 34,
+   "date": "2026-11-10",
+   "type": "Limite respeitado",
+   "what": "A ativação dos webhooks (endpoint público) foi bloqueada pelo controle de permissões. A IA desfez a ativação parcial e devolveu a decisão ao Daniel",
+   "who": "IA",
+   "result": "Fluxos inativos até o OK"
+  },
+  {
+   "n": 35,
+   "date": "2026-11-10",
+   "type": "Julgamento humano",
+   "what": "Daniel enxugou o app de 8 páginas para 3 áreas com toggles e cortou cerca de 10 elementos do dashboard sugeridos pela IA (painel de confiabilidade, curva com slider, histograma, filtros…): \"poucos gráficos que tragam os insights necessários\"",
+   "who": "Daniel",
+   "result": "PRD v1, ADR-0014"
+  },
+  {
+   "n": 36,
+   "date": "2026-11-10",
+   "type": "Julgamento humano",
+   "what": "Daniel levantou o risco de ataque num app público e pediu login para os avaliadores; a IA mostrou que qualquer credencial no PR (canal único do G4) fica pública e propôs login restrito ao domínio",
+   "who": "Daniel (risco) + IA (opções)",
+   "result": "PRD §13, pendência R1"
+  },
+  {
+   "n": 37,
+   "date": "2026-11-10",
+   "type": "IA errou (achado pela própria IA)",
+   "what": "Ao escrever o script reproduzível das entradas do ROI, a IA viu que os 52,4% de \"autonomia entre não sensíveis\" (ADR-0010) dividiam pelos tickets fora do \"só humano\", o que inflava a taxa. Pelo rótulo real, são 42,2%: a automação total cai de 23% para 18,7%, e a economia de ~R$ 21 mil para ~R$ 17 mil/ano",
+   "who": "IA (script 11_app_summary.py)",
+   "result": "ADR-0010 e data-findings corrigidos; o app usa o número do script"
+  }
+ ],
+ "judgmentHref": "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca/process-log/judgment-log.md",
+ "sessions": [
+  {
+   "name": "Sessão 01",
+   "date": "2026-11-09",
+   "harness": "Claude Code (Opus 5.5, app desktop)",
+   "duration": "~1h"
+  },
+  {
+   "name": "Sessão 02",
+   "date": "2026-11-09",
+   "harness": "Claude Code (Opus 5.5, app desktop, sessão aberta em submissions/daniel-fonseca/)",
+   "duration": "~40 min"
+  }
+ ],
+ "processLogHref": "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca/process-log/process-log.md"
+}
