@@ -201,22 +201,22 @@
 <div class="formula">HEAT = pontos da faixa de idade × fator de contato<small>Respostas do cliente (replies) são um componente previsto, com peso 0 até haver dado.</small></div>
 
 <h3>Faixa de idade</h3>
-<p>O lead mais novo é o mais quente (decisão do Leandro): os pontos caem a cada faixa. A taxa de ganho histórica aparece só como referência e não define os pontos.</p>
+<p>O lead mais novo é o mais quente: os pontos caem a cada faixa. O motivo, nas palavras da decisão: o lead novo precisa ser atendido rápido, principalmente se tiver FIT alto, "em 0 ou 1 dia". A taxa de ganho histórica aparece só como referência e não define os pontos.</p>
 <div class="table-wrap"><table>
   <tr><th>Faixa (dias desde a abertura)</th><th class="r">Pontos</th><th class="r">Abertos hoje</th><th class="r">Fechados com essa duração</th><th class="r">Taxa de ganho deles (referência)</th></tr>
-  <tr class="hl"><td>menos de 1</td><td class="r">100</td><td class="r">0</td><td class="r">0</td><td class="r">—</td></tr>
-  <tr><td>1–6</td><td class="r">85</td><td class="r">0</td><td class="r">1.112</td><td class="r">52,9%</td></tr>
-  <tr><td>7–14</td><td class="r">70</td><td class="r">7</td><td class="r">1.694</td><td class="r">57,2%</td></tr>
-  <tr><td>15–29</td><td class="r">55</td><td class="r">10</td><td class="r">349</td><td class="r">73,1%</td></tr>
-  <tr><td>30–59</td><td class="r">40</td><td class="r">39</td><td class="r">540</td><td class="r">65,6%</td></tr>
-  <tr><td>60–89</td><td class="r">25</td><td class="r">54</td><td class="r">1.600</td><td class="r">66,4%</td></tr>
-  <tr><td>90–179</td><td class="r">10</td><td class="r">746</td><td class="r">1.416</td><td class="r">71,3%</td></tr>
-  <tr><td>180 ou mais</td><td class="r">0</td><td class="r">733</td><td class="r">0</td><td class="r">—</td></tr>
+  <tr class="hl"><td>até 1</td><td class="r">100</td><td class="r">0</td><td class="r">301</td><td class="r">52,5%</td></tr>
+  <tr><td>2–7</td><td class="r">85</td><td class="r">0</td><td class="r">1.112</td><td class="r">53,8%</td></tr>
+  <tr><td>8–15</td><td class="r">70</td><td class="r">7</td><td class="r">1.464</td><td class="r">58,5%</td></tr>
+  <tr><td>16–30</td><td class="r">55</td><td class="r">11</td><td class="r">286</td><td class="r">71,3%</td></tr>
+  <tr><td>31–60</td><td class="r">40</td><td class="r">39</td><td class="r">569</td><td class="r">66,3%</td></tr>
+  <tr><td>61–90</td><td class="r">25</td><td class="r">53</td><td class="r">1.621</td><td class="r">66,5%</td></tr>
+  <tr><td>91–180</td><td class="r">10</td><td class="r">749</td><td class="r">1.358</td><td class="r">71,1%</td></tr>
+  <tr><td>181 ou mais</td><td class="r">0</td><td class="r">730</td><td class="r">0</td><td class="r">—</td></tr>
   <tr><td>Prospecting, sem data</td><td class="r">50 <span class="tag">P1</span></td><td class="r">500</td><td class="r">—</td><td class="r">—</td></tr>
 </table></div>
 <ul>
   <li>Escala simples: começa em 100 e cai 15 pontos por faixa. A última faixa cai de 10 para 0.</li>
-  <li>Os abertos em Engaging somam 1.589 e os fechados, 6.711. Nenhum deal aberto de hoje tem menos de 7 dias (o mais novo tem 9), então as duas primeiras faixas valem para os leads que chegarem a partir do uso do CRM.</li>
+  <li>Os limites são os do Leandro. O dia 16 aparecia em duas faixas ("8 a 16" e "16 a 30") e ficou na 16–30. Os abertos em Engaging somam 1.589 e os fechados, 6.711. Nenhum deal aberto de hoje tem 7 dias ou menos (o mais novo tem 9), então as duas primeiras faixas valem para os leads que chegarem a partir do uso do CRM.</li>
   <li>Na referência, a taxa sobe com a duração: o deal que fecha rápido é, na maioria, perda rápida. Os pontos seguem a decisão do Leandro, não essa taxa. O backtest (seção 7) mostra o efeito.</li>
   <li><b>Alertas no cartão</b> (não mudam os pontos): ícone de risco de esfriar entre 107 e 138 dias e "esfriou: requalificar" acima de 138, que é o deal mais longo que já fechou. O teto de carga do roteamento conta como ativos só os deals em Prospecting ou com até 138 dias.</li>
 </ul>
@@ -280,14 +280,15 @@
 
 <h2>5. Prioridades do dia</h2>
 <ol>
-  <li><b>Lead novo que atende o requisito vem primeiro.</b> "Novo" é o lead atribuído que ainda não teve contato registrado. "Atende o requisito" é ter FIT de 60 ou mais com o dono. Entre vários leads novos, vale o maior score.</li>
+  <li><b>Topo, acima de tudo: lead novo de alto encaixe.</b> Lead aberto há até 1 dia, sem contato registrado e com FIT de 60 ou mais com o dono (P4). Entre vários, vale o maior score. Motivo (decisão do Leandro): a velocidade de atendimento do lead novo de alto encaixe, que precisa ser atendido em 0 ou 1 dia. O dataset não tem dados de contato, então essa regra não tem número histórico que a meça. Ela passa a ser medida com o uso do CRM.</li>
+  <li><b>Atendimento atrasado:</b> se esse lead passa de 1 dia sem contato registrado, ele continua no topo e ganha a marca "atendimento atrasado". A marca aparece na lista do vendedor e na visão do manager, e sai no primeiro contato registrado.</li>
   <li><b>Depois, todos pelo score</b>, do maior para o menor.</li>
   <li><b>Empate</b> (mesmo score inteiro): vem antes o de maior HEAT.</li>
   <li><b>Alertas:</b> o deal com 107 a 138 dias leva o ícone de risco de esfriar. O deal com mais de 138 dias aparece marcado "esfriou: requalificar". Um esfriado com FIT alto ainda pode entrar na lista, porque o FIT pesa 70%, mas vem com o alerta.</li>
   <li>A tela mostra 5 por vez. O ✓ ou ✗ do vendedor faz a lista andar e vai para a linha do tempo (decisão 27).</li>
 </ol>
-<p>No pipeline de hoje, o top 5 dos 27 vendedores com deals abertos soma 135 deals. Desses, 81,5% estão ativos, 37% estão em Prospecting e 9 (6,7%) têm 180 dias ou mais. Há 692 abertos com FIT de 60 ou mais, e 259 deles estão ativos.</p>
-<div class="ask"><b>P4. Requisito do lead novo = FIT ≥ 60?</b> Com 60, a média dos desvios do lead precisa ser de pelo menos 20% do desvio do destaque do vendedor (com destaque de +7 pontos, cerca de +1,4 ponto). Com 50, bastaria o lead não estar abaixo da média do vendedor.</div>
+<p>No pipeline de hoje, o top 5 dos 27 vendedores com deals abertos soma 135 deals. Desses, 81,5% estão ativos, 37% estão em Prospecting e 9 (6,7%) têm 181 dias ou mais. Há 692 abertos com FIT de 60 ou mais, e 259 deles estão ativos.</p>
+<div class="ask"><b>P4. Corte de "alto encaixe" do lead novo = FIT ≥ 60?</b> Com 60, a média dos desvios do lead precisa ser de pelo menos 20% do desvio do destaque do vendedor (com destaque de +7 pontos, cerca de +1,4 ponto). Com 50, bastaria o lead não estar abaixo da média do vendedor.</div>
 
 <h2>6. Explicação para o vendedor e 3 exemplos reais</h2>
 <p>Cada deal mostra de 2 a 3 frases, montadas a partir das contas:</p>
@@ -295,6 +296,7 @@
   <li><b>FIT, ponto forte:</b> <span class="say">"Encaixa no seu destaque: série MG. Você fechou 27 de 39 nos últimos 3 meses (66,6% ajustado; sua média é 61,4%)."</span></li>
   <li><b>FIT, ponto fraco:</b> <span class="say">"Fora do seu forte: neste setor você fecha abaixo da sua média nos últimos 3 meses."</span></li>
   <li><b>Sem empresa:</b> <span class="say">"Sem empresa cadastrada: o encaixe usa só o produto. Identifique a empresa."</span></li>
+  <li><b>Lead novo:</b> <span class="say">"Lead novo com alto encaixe: atenda hoje."</span> · <span class="say">"Atendimento atrasado: lead novo de alto encaixe sem contato há 2 dias."</span></li>
   <li><b>Vendedor sem destaque:</b> <span class="say">"Você não tem um destaque com casos suficientes nos últimos 3 meses. A ordem vem do tempo."</span></li>
   <li><b>HEAT:</b> <span class="say">"Aberto há 38 dias: a nota de tempo cai a cada faixa. Faça contato antes de passar dos 60."</span> · <span class="say">"Parado há 293 dias: nenhum deal fechou depois de 138 dias. Requalifique ou encerre."</span> · <span class="say">"Ainda não começou: sem data de início. O relógio começa no primeiro contato."</span></li>
 </ul>
@@ -381,14 +383,14 @@
   <li><b>P1.</b> Prospecting sem data no HEAT: 50 (proposta), 100 ou 0.</li>
   <li><b>P2.</b> Teto de 40 ativos por vendedor.</li>
   <li><b>P3.</b> Roteamento pela conversão no perfil, com a trava de FIT ≥ 50.</li>
-  <li><b>P4.</b> Requisito do lead novo: FIT ≥ 60.</li>
+  <li><b>P4.</b> Corte de "alto encaixe" do lead novo (topo da lista e marca de atendimento atrasado): FIT ≥ 60.</li>
   <li><b>P5.</b> Rodada do FIT: todo dia 1º, com os 3 meses fechados.</li>
   <li><b>P6.</b> Valor fora da nota. Hoje os exemplos 1 e 3 são MG Special (US$ 55) e ficam acima de deals de US$ 4.821. Valor só como contexto no cartão, ou também como desempate?</li>
   <li><b>P7.</b> O contrato do arquivo de deals pontuados muda:
     <ul>
       <li><code>components</code> passa a ser <code>{ fit, heat }</code>;</li>
       <li>entra o detalhe do FIT (característica, fechados, desvio);</li>
-      <li>entram a faixa de HEAT e os dias sem contato.</li>
+      <li>entram a faixa de HEAT, os dias sem contato e a marca de atendimento atrasado.</li>
     </ul>
     A tela do app precisa disso. O contrato só muda depois do seu sim, com aviso antes.</li>
 </ul>

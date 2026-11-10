@@ -102,21 +102,23 @@ A especificação completa, com as contas, os 3 exemplos reais e as simulações
 
 ### HEAT (30%): tempo de atendimento
 - **HEAT = pontos da faixa de idade × fator de contato.**
-- O lead mais novo é o mais quente (decisão do Leandro). São 8 faixas de dias desde a abertura, com pontos que caem a cada faixa:
+- O lead mais novo é o mais quente: o lead novo precisa ser atendido rápido, principalmente com FIT alto, "em 0 ou 1 dia" (Leandro). São 8 faixas de dias desde a abertura, com pontos que caem a cada faixa:
 
   | Faixa | Pontos | Abertos hoje | Fechados com essa duração | Taxa de ganho (só referência) |
   |---|---|---|---|---|
-  | < 1 | 100 | 0 | 0 | — |
-  | 1–6 | 85 | 0 | 1.112 | 52,9% |
-  | 7–14 | 70 | 7 | 1.694 | 57,2% |
-  | 15–29 | 55 | 10 | 349 | 73,1% |
-  | 30–59 | 40 | 39 | 540 | 65,6% |
-  | 60–89 | 25 | 54 | 1.600 | 66,4% |
-  | 90–179 | 10 | 746 | 1.416 | 71,3% |
-  | ≥ 180 | 0 | 733 | 0 | — |
+  | ≤ 1 | 100 | 0 | 301 | 52,5% |
+  | 2–7 | 85 | 0 | 1.112 | 53,8% |
+  | 8–15 | 70 | 7 | 1.464 | 58,5% |
+  | 16–30 | 55 | 11 | 286 | 71,3% |
+  | 31–60 | 40 | 39 | 569 | 66,3% |
+  | 61–90 | 25 | 53 | 1.621 | 66,5% |
+  | 91–180 | 10 | 749 | 1.358 | 71,1% |
+  | ≥ 181 | 0 | 730 | 0 | — |
   | Prospecting sem data | 50 (P1) | 500 | — | — |
 
-- A taxa de referência sobe com a duração (quem fecha rápido costuma ser perda rápida) e não define os pontos. Nenhum aberto de hoje tem menos de 7 dias: as 2 primeiras faixas valem para leads que chegarem já no CRM.
+- Os limites são os do Leandro. O dia 16 aparecia em "8 a 16" e em "16 a 30" e ficou na faixa 16–30.
+
+- A taxa de referência sobe com a duração (quem fecha rápido costuma ser perda rápida) e não define os pontos. Nenhum aberto de hoje tem 7 dias ou menos (o mais novo tem 9): as 2 primeiras faixas valem para leads que chegarem já no CRM.
 - Os alertas do cartão não mudam os pontos: risco de esfriar de 107 a 138 dias; "esfriou" acima de 138, o deal mais longo que já fechou. O teto do roteamento conta como ativos só os deals em Prospecting ou com até 138 dias.
 - Fator pelo último contato registrado: 0–7 dias = 1,0 · 8–14 = 0,8 · 15–30 = 0,5 · mais de 30 = 0,2. Nos deals do dataset não há ações, então o fator é 1,0.
 - Replies: componente previsto, com peso 0 até haver dado.
@@ -132,13 +134,14 @@ A especificação completa, com as contas, os 3 exemplos reais e as simulações
 - O lead atribuído entra no topo das Prioridades do dia do novo dono.
 
 ### Prioridades do dia
-1. Lead novo (sem contato registrado) com FIT de 60 ou mais vem primeiro.
+1. Topo, acima de tudo: lead novo (aberto há até 1 dia, sem contato registrado) com FIT de 60 ou mais (P4). O motivo é a velocidade de atendimento do lead novo de alto encaixe, que deve ser atendido em 0 ou 1 dia. Não há estatística para isso, porque o dataset não tem dados de contato.
+   - Se esse lead passar de 1 dia sem contato, ele continua no topo e ganha a marca "atendimento atrasado", na lista e na visão do manager.
 2. Depois, todos pelo score.
 3. No empate, vem antes o de maior HEAT.
 4. Os deals em risco e os esfriados aparecem com alerta.
 5. A tela mostra 5 por vez, e o ✓ ou ✗ faz a lista andar (decisão 27).
 
-Hoje, o top 5 dos 27 vendedores com deals abertos soma 135 deals. Desses, 81,5% estão ativos, 37% estão em Prospecting e 9 (6,7%) têm 180 dias ou mais. Os 3 exemplos do HTML ficam com score 62,8, 85,0 e 67,1.
+Hoje, o top 5 dos 27 vendedores com deals abertos soma 135 deals. Desses, 81,5% estão ativos, 37% estão em Prospecting e 9 (6,7%) têm 181 dias ou mais. Os 3 exemplos do HTML ficam com score 62,8, 85,0 e 67,1.
 
 ### Motivos (`reasons`)
 São 2 ou 3 frases montadas a partir das contas. Exemplos:
@@ -177,11 +180,11 @@ As decisões 28 e 29 substituíram as antigas D1–D4: a chance por segmento sai
 - **P1.** Prospecting sem data no HEAT: 50, o meio da escala (proposta); 100, tratar como lead novo; ou 0, tratar como esquecido.
 - **P2.** Teto de 40 ativos por vendedor.
 - **P3.** Roteamento pela conversão no perfil, com a trava de FIT ≥ 50.
-- **P4.** Requisito do lead novo: FIT ≥ 60.
+- **P4.** Corte de "alto encaixe" do lead novo (topo e marca de atendimento atrasado): FIT ≥ 60.
 - **P5.** Rodada do FIT todo dia 1º.
 - **P6.** Valor fora da nota: só contexto no cartão ou também desempate. Hoje deals de US$ 55 ficam acima de deals de US$ 4.821.
 - **P7.** Mudança do contrato:
   - `components` vira `{ fit, heat }`;
-  - entram o detalhe do FIT e a faixa de HEAT.
+  - entram o detalhe do FIT, a faixa de HEAT e a marca de atendimento atrasado.
 
   O contrato só muda depois do sim, com aviso antes à #1 e à #4.
