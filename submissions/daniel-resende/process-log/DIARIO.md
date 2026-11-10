@@ -89,7 +89,7 @@ Ressalva escrita no relatório: o prazo e os 138 dias são regularidades que eu 
 - A hora em que o Daniel começou a preparação e a data do download dos dados.
 - A pergunta "regra A: sim, não ou muda" não chegou a ser respondida: o orquestrador leu o relatório 01, refez as contas e respondeu com o prompt `01z`, que pede três medições antes da decisão.
 
-### 1.6 Fechamento e confirmação (prompt `01z-fechamento-e-confirmacao.md`, 15:43 a 15:50)
+### 1.6 Fechamento e confirmação (prompt `01z-fechamento-e-confirmacao.md`, 15:43 a 15:48)
 
 Início real: 15:43:03. Caixa de tempo: 25 minutos.
 
@@ -101,7 +101,7 @@ Início real: 15:43:03. Caixa de tempo: 25 minutos.
 - **M3.** A tabela que a tela vai dizer no lugar da porcentagem: quem chegou aberto a cada idade e o que aconteceu depois, só com negócios que já tiveram tempo de fechar (escolhidos pela data de engajamento). A forma é estável entre as datas; o nível, não (aos 90 dias: 38, 33 e 26 em cada 100); em 01/07 a tabela ainda não existia.
 - **M4, que o prompt não pedia.** A nova forma do produto ordena os vivos só por valor, e essa ordem nunca tinha sido medida: a regra A ordena por chance x valor. Medi nos doze cortes. "Vivos por valor" ganha de "ordenar por valor" em 12 de 12 e da regra A em 6 de 12. Pôr o mais urgente primeiro piora (9 de 12, e só 3 contra a A); o desempate que funciona é o inverso. Foi vista nos doze cortes de uma vez, então não vale como confirmação.
 - **O que deu errado nesta etapa.** Na primeira saída do `confirm.py` os títulos de duas colunas da M3 saíram colados. Vi lendo a saída. Corrigi só a largura das colunas e conferi com `diff` que as seções M1 e M2 ficaram idênticas à primeira execução.
-- Relatório `relatorios/01z.md` entregue ao Daniel às 15:50, com a pergunta: regra A congelada, com a nova forma do produto: sim, não ou muda.
+- Relatório `relatorios/01z.md` entregue ao Daniel às 15:48, com a pergunta: regra A congelada, com a nova forma do produto: sim, não ou muda.
 
 ## O que o candidato decidiu
 
