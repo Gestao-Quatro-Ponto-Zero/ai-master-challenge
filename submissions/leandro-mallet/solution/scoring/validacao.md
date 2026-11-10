@@ -7,9 +7,10 @@ NOTA = 0,70 × FIT + 0,30 × HEAT + BONUS, de 0 a 120.
 
 | Item | Valor |
 |---|---|
-| Execução ativa | `score_execucoes.id = 7`, versão `lead-score-1.0`, referência 31/12/2017 |
+| Execução ativa | `score_execucoes.id = 9`, versão `lead-score-1.0`, referência 31/12/2017, com os donos depois da redistribuição de domingo |
 | Arquivo de carga | `scoring/carga/score_2017-12-31.json` |
-| sha256 | `f3aab6b5606d0cc2d1f8194e181eb79ca9e61c2f46f7031adf0af57e943e018f` |
+| sha256 | `de9f5962d01a271fc0ddaa4728bea830f242472c0841282b1dbe851d25d59858` |
+| Execução 7 | sha256 `f3aab6b5606d0cc2d1f8194e181eb79ca9e61c2f46f7031adf0af57e943e018f` (donos antes da redistribuição). Os ids 6 e 8 foram gastos pelos ensaios, que não deixaram linha |
 | Execução anterior | `id = 5`, sha256 `73ce4a8934a172fe352c0bf3156d5941ae778cccf888d97c303fe899fee8aa32` (mesmas notas, texto antigo dos motivos). O id 6 foi gasto pelo ensaio, que não deixou linha |
 | Como | Uma transação: `set role system_carga` → `system_iniciar_contexto_sistema` → só INSERT nas 6 tabelas `score_*` → `score_ativar_execucao` → conferências → COMMIT. Antes, um ensaio completo com ROLLBACK |
 | Dono do deal | o atual. Sem redistribuição, sem repasse e nenhuma mudança em `core_deals` |
@@ -28,6 +29,41 @@ Conferências antes do COMMIT, todas aprovadas:
 - nota entre 0 e 89 (dentro de 0–120);
 - 0 deals com dono diferente do atual;
 - execução ativa = a carregada.
+
+## Redistribuição de domingo (31/12/2017) e execução 9
+
+Regra decidida (cenário B, só equilíbrio): entram só os leads abertos sem contato registrado. O limite da semana é ativos ÷ vendedores elegíveis, arredondado para cima. Os pares lead × vendedor são ordenados por FIT, do maior para o menor.
+
+- **Scripts:**
+  - `scoring/redistribuir.py` calcula o plano, só lendo o banco;
+  - `scoring/aplicar_redistribuicao.py` grava pelo papel de carga, com uma chamada de `core_repassar_deal(..., 'redistribuicao', ...)` por troca (versão da migration 0033: sem as travas do repasse, recusa lead com contato).
+  - O plano é refeito com o estado do banco na hora de gravar.
+- **Escopo:** 499 leads sem contato. Dos 500 em Prospecting, 1 ganhou contato nos testes e ficou com o dono.
+- **Elegíveis:** 30 vendedores com fechamentos na janela, inclusive Garret Kinder (35 fechados), Donn Cantrell (73) e Reed Clapper (60). Os 5 sem nenhum deal ficam fora, porque não têm FIT.
+- **Gravação:**
+  - ensaio com ROLLBACK: 475 de 475 sem recusa;
+  - depois, COMMIT: 475 trocas, 0 recusadas, 475 linhas em `acao_reatribuicoes` com o motivo "Redistribuição de domingo." e a linha do tempo de cada lead;
+  - nenhum UPDATE direto e nenhum DELETE;
+  - `core_deals` continua com 8.801 deals (2.089 abertos).
+
+| | Antes | Depois |
+|---|---|---|
+| Leads que mudaram de dono | — | 475 |
+| Ativos por vendedor (com leads) | 6 a 111 (27 vendedores) | 11 a 31 (30 vendedores) |
+| FIT médio dos leads sem contato | 49,5 | 77,8 |
+| Leads sem contato com FIT ≥ 75 | 48 | 265 |
+
+- **Nas pontas:**
+  - Wilburn Farren fica com 11 ativos: sem destaque, FIT 50 para tudo, recebe o que sobra;
+  - Zane Levy fica com 31: já tinha 31 ativos em Engaging, que não mudam.
+- **Sem lead:** só os 5 sem nenhum deal no dataset (Mei-Mei Johns, Elizabeth Anderson, Natalya Ivanova, Carol Thompson, Carl Lin), porque não têm FIT. Garret, Donn e Reed passaram de 0 para 27 ativos.
+- **Execução 9:**
+  - o score foi recalculado com os donos novos;
+  - 2.089 deals, nota de 0 a 89, 0 donos diferentes;
+  - componentes 18.064 (menos que 18.255, porque o FIT do novo dono usa menos características com 10+ fechados);
+  - motivos 6.041;
+  - top 5: 150 deals (30 vendedores), 94,7% ativos, 0 com 181 dias ou mais;
+  - deals com FIT ≥ 75: 509.
 
 ## Execução 7: só o texto dos motivos
 

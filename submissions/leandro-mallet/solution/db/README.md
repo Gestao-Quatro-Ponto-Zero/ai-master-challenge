@@ -13,6 +13,10 @@ Migrations do Postgres (Supabase). Elas saem de `app/ESPEC-TELAS.md` (seção 8)
 | Contexto obrigatório | `migrations/0028_contexto_obrigatorio.sql` | aplicada no Supabase (corrige o achado L2-1 da revisão do lote 2) |
 | Reforço do contexto | `migrations/0029_reforco_contexto.sql` | escrito e validado (PGlite); **falta aplicar**, depois da 0028 (usuário ativo e achados L2-5 e L2-6) |
 | Prioridades pela nota | `migrations/0030_prioridades_pela_nota.sql` | escrita e validada (PGlite: `validar_tudo.mjs`, com e sem dataset, e `validar_0030.mjs`); **falta aplicar**, depois da 0029 |
+| Funil com 5 etapas | `migrations/0031_funil_cinco_etapas.sql` | escrita e validada (`validar_0031.mjs`); aplicação pela #5 (O-31) |
+| 20 prioridades por dia | `migrations/0032_meta_prioridades_20.sql` | escrita e validada (`validar_0032.mjs`); aplicação pela #5 (O-34) |
+| Redistribuição de domingo | `migrations/0033_redistribuicao_de_domingo.sql` | escrita e validada (`validar_0033.mjs`, `validar_tudo.mjs` com e sem dataset, 0030–0032); **falta aplicar** (O-39) |
+| Relógio e rotina diária | `migrations/0034_relogio_e_rotina.sql` | escrita e validada (`validar_0034.mjs`, `validar_tudo.mjs` com e sem dataset, 0030–0033); **falta aplicar** e definir a senha do `g4_rotina` fora do git (O-41) |
 
 **Histórico da 0026:** ela foi aplicada antes de um ajuste pedido pela revisão de segurança. A versão aplicada contava o pedido atual e usava `>`, o que deixava passar um pedido a mais que o teto. O arquivo `0026` no repositório é exatamente o que está no banco. O ajuste (contar só os pedidos anteriores e usar `>=`, para o teto ficar exato) entrou como `0027`, que substitui a função `system_iniciar_contexto`.
 
@@ -46,6 +50,10 @@ Cada arquivo numa transação, rodado pelo dono do schema (`postgres`), na ordem
 | 22 | `0028_contexto_obrigatorio.sql` | o app só grava com o pedido registrado em `system_correlacoes` (mesma transação e mesmo usuário); o registro passa por um gatilho que preenche a origem e confere os limites |
 | 23 | `0029_reforco_contexto.sql` | recusa usuário inativo na auditoria e no registro; só as funções inserem na auditoria, nos eventos e nos pedidos (`SECURITY DEFINER`); o app só lê as notas (`score_*`) |
 | 24 | `0030_prioridades_pela_nota.sql` | Prioridades do dia pela nota para todos os papéis (atendimento atrasado > lead novo com FIT ≥ 75 > nota > HEAT > código, sem valor esperado); a lista guarda a execução usada e, se a execução ativa muda, os itens não marcados são substituídos (`substituida_em`, sem DELETE) e repostos; filtro do manager e do admin no parâmetro `prioridades_gestor`; super hot sem critério de ticket |
+| 25 | `0031_funil_cinco_etapas.sql` | "Ganho" vira "Fechado" no rótulo; ação `contato` (registro de atendimento com tipo e comentário obrigatórios, `acao_registrar_contato`); linha do tempo com o atendimento |
+| 26 | `0032_meta_prioridades_20.sql` | meta do dia = 20; a lista guarda a meta usada (`meta_dia`) e as listas de hoje com meta menor se completam na próxima abertura |
+| 27 | `0033_redistribuicao_de_domingo.sql` | `core_repassar_deal`: as travas do repasse (FIT mínimo, no máximo 3 abaixo do dono, top N) valem só para `repasse_janela`; a redistribuição de domingo é só equilíbrio (deal aberto, sem contato registrado, destino ativo e diferente do dono, motivo "Redistribuição de domingo.", sem penalidade); a linha do tempo mostra os repasses automáticos com o motivo |
+| 28 | `0034_relogio_e_rotina.sql` | relógio que anda (âncoras em `config_parametros`; `system_data_negocio()` = âncora de negócio + dias reais desde a âncora real); papel de login `g4_rotina` (sem senha no arquivo, membro só de `system_carga`); `system_rotina_ja_rodou(dia)` para a rotina diária não rodar duas vezes. **Depois de aplicar:** `alter role g4_rotina password '…'` fora do git e a URL como `DATABASE_URL_ROTINA` nos segredos do app |
 
 ## Segurança
 
@@ -171,3 +179,8 @@ Para regenerar `0006_config_inicial.sql` e `seed/seed_dataset.sql` a partir de `
 python solution/data/clean.py
 python solution/db/gerar_seed.py
 ```
+
+
+## Pendências
+
+- **Trava do dono pelo manager** (decisão 38, desenho do score): o manager poderia travar o dono de um lead para que ele não seja repassado nem redistribuído. Ainda não existe no banco nem na tela, e hoje ninguém trava nada; a 0033 não trata disso. Quando for feita, `core_repassar_deal` precisa recusar o lead travado nas duas origens.

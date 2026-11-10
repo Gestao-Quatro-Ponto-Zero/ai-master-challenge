@@ -142,8 +142,26 @@ def resumo(res: dict) -> dict:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--csv", action="store_true", help="usar data/clean em vez do banco")
+    ap.add_argument("--salvar-entrada", metavar="ARQ", help="grava as linhas lidas (deals, contas, produtos) em JSON")
+    ap.add_argument("--entrada", metavar="ARQ", help="lê as linhas de um JSON gravado por --salvar-entrada")
     args = ap.parse_args()
-    deals, contas, produtos = ler_csv() if args.csv else ler_banco()
+    if args.entrada:
+        e = json.loads(Path(args.entrada).read_text(encoding="utf-8"))
+        deals, contas, produtos = (pd.DataFrame(e[k]) for k in ("deals", "contas", "produtos"))
+    else:
+        deals, contas, produtos = ler_csv() if args.csv else ler_banco()
+    if args.salvar_entrada:
+        def linhas(df):
+            out = df.copy()
+            for c in out.columns:
+                if pd.api.types.is_datetime64_any_dtype(out[c]):
+                    out[c] = out[c].map(lambda x: None if pd.isna(x) else x.isoformat())
+                elif out[c].dtype == object:
+                    out[c] = out[c].map(lambda x: None if x is None or (isinstance(x, float) and pd.isna(x)) else
+                                        (x.isoformat() if hasattr(x, "isoformat") else (float(x) if hasattr(x, "as_tuple") else x)))
+            return json.loads(out.to_json(orient="records", force_ascii=False))
+        Path(args.salvar_entrada).write_text(json.dumps({"deals": linhas(deals), "contas": linhas(contas), "produtos": linhas(produtos)},
+                                                        ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
     d = regra.preparar(deals, contas, produtos)
     res = regra.calcular(d, REFERENCIA)
     carga = montar_carga(res, produtos, "csv" if args.csv else "banco")
