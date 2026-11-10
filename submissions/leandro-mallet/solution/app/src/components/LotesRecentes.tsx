@@ -7,7 +7,8 @@ import { CONFIG } from "@/lib/config";
 import { fraseLoteDesfeito, HORAS_DESFAZER_LOTE } from "@/lib/lotes";
 import type { LoteRecente } from "@/lib/tipos";
 import { useAvisos } from "./Avisos";
-import { botaoNeutro, botaoSecundario, Dialogo, ErroFormulario } from "./Dialogo";
+import { Dialogo, ErroFormulario } from "./Dialogo";
+import { Botao } from "./ui/Botao";
 import { Esqueleto } from "./Estado";
 
 const quando = (iso: string) =>
@@ -51,9 +52,9 @@ export function LotesRecentes() {
 
   return (
     <>
-      <button onClick={abrir} className={botaoNeutro}>
+      <Botao nivel="secundario" icone="desfazer" onClick={abrir}>
         Lotes recentes
-      </button>
+      </Botao>
       {aberto ? (
         <Dialogo titulo={`Lotes das últimas ${HORAS_DESFAZER_LOTE} horas`} largo onFechar={() => setAberto(false)}>
           <p className="text-sm text-texto-2">
@@ -67,19 +68,19 @@ export function LotesRecentes() {
             </div>
           ) : null}
           {erro && lotes === null ? (
-            <button onClick={() => void carregar()} className={`mt-3 ${botaoSecundario}`}>
+            <Botao nivel="primario" onClick={() => void carregar()} className="mt-3">
               Tentar de novo
-            </button>
+            </Botao>
           ) : null}
           {lotes?.length === 0 ? (
-            <p className="mt-3 rounded-controle border border-linha bg-fundo px-3 py-4 text-sm text-texto-2">
+            <p className="mt-3 rounded-controle bg-superficie-2 px-3 py-4 text-sm text-texto-2">
               Nenhuma ação em lote nas últimas {HORAS_DESFAZER_LOTE} horas.
             </p>
           ) : null}
           {lotes?.length ? (
-            <ul className="mt-3 grid gap-2">
+            <ul className="mt-3 divide-y divide-divisoria border-y border-divisoria">
               {lotes.map((l) => (
-                <li key={l.id} className="flex flex-wrap items-center gap-3 rounded-controle border border-linha bg-fundo px-3 py-2 text-sm">
+                <li key={l.id} className="flex flex-wrap items-center gap-3 py-3 text-sm">
                   <div className="min-w-0 flex-1">
                     <p className="font-semibold">
                       {l.rotulo}: {plural(l.aplicados, "lead", "leads")}
@@ -96,17 +97,17 @@ export function LotesRecentes() {
                     </span>
                   ) : confirmando === l.id ? (
                     <span className="flex items-center gap-2">
-                      <button onClick={() => void desfazer(l)} disabled={enviando} className={botaoSecundario}>
-                        {enviando ? "Desfazendo…" : "Confirmar"}
-                      </button>
-                      <button onClick={() => setConfirmando(null)} disabled={enviando} className={botaoNeutro}>
+                      <Botao nivel="secundario" tamanho="compacto" onClick={() => setConfirmando(null)} disabled={enviando}>
                         Cancelar
-                      </button>
+                      </Botao>
+                      <Botao nivel="primario" tamanho="compacto" onClick={() => void desfazer(l)} disabled={enviando}>
+                        {enviando ? "Desfazendo…" : "Confirmar"}
+                      </Botao>
                     </span>
                   ) : (
-                    <button onClick={() => setConfirmando(l.id)} className={botaoSecundario}>
+                    <Botao nivel="secundario" tamanho="compacto" icone="desfazer" onClick={() => setConfirmando(l.id)}>
                       Desfazer este lote
-                    </button>
+                    </Botao>
                   )}
                 </li>
               ))}

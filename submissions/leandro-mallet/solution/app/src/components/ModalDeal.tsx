@@ -11,6 +11,9 @@ import { SeloTag } from "./Dialogo";
 import { Esqueleto, Estado } from "./Estado";
 import { SeletorEstagio } from "./Estagio";
 import { BarraNota, IconeDeal } from "./Nota";
+import { Botao, BotaoIcone } from "./ui/Botao";
+import { AreaTexto, Campo } from "./ui/Campo";
+import { Seletor } from "./ui/Seletor";
 
 const MARCA: Record<EventoLinhaDoTempo["tipo"], string> = {
   aberto: "bg-marinho",
@@ -118,19 +121,19 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
         role="dialog"
         aria-modal="true"
         aria-labelledby="titulo-deal"
-        className="flex max-h-full w-full max-w-5xl animate-entrar flex-col overflow-hidden bg-fundo shadow-modal outline-none sm:rounded-cartao"
+        className="flex max-h-full w-full max-w-5xl animate-entrar flex-col overflow-hidden bg-superficie shadow-modal outline-none sm:rounded-cartao"
         onClick={(e) => e.stopPropagation()}
       >
         {erro ? (
           <div className="p-6">
             <Estado erro titulo="Não foi possível abrir este deal" texto={erro.texto}>
               <div className="flex gap-2">
-                <button onClick={() => setTentativa((t) => t + 1)} className="rounded-controle bg-marinho px-4 py-2 text-sm font-semibold text-branco">
+                <Botao nivel="primario" onClick={() => setTentativa((t) => t + 1)}>
                   Tentar de novo
-                </button>
-                <button onClick={fechar} className="rounded-controle border border-linha-forte px-4 py-2 text-sm font-semibold">
+                </Botao>
+                <Botao nivel="secundario" onClick={fechar}>
                   Fechar
-                </button>
+                </Botao>
               </div>
               {erro.codigo ? <p className="text-xs text-texto-2">Código para suporte: {erro.codigo}</p> : null}
             </Estado>
@@ -146,7 +149,7 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
           </div>
         ) : (
           <>
-            <header className="border-b border-linha bg-marfim px-5 py-4">
+            <header className="border-b border-borda bg-superficie-2 px-5 py-4">
               <div className="flex items-start gap-3">
                 <div className="min-w-0 flex-1">
                   <h2 id="titulo-deal" className="text-xl font-bold break-words">
@@ -157,10 +160,8 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
                     {d.setor ? ` · ${rotuloSetor(d.setor)}${d.porte ? `, ${ROTULO_PORTE[d.porte]}` : ""}` : ""}
                   </p>
                 </div>
-                <IconeDeal icone={d.icone} dias={d.diasDesdeAbertura} comRotulo />
-                <button onClick={fechar} aria-label="Fechar" className="rounded-controle border border-linha-forte px-3 py-1 text-lg leading-none">
-                  ×
-                </button>
+                <IconeDeal icone={d.icone} dias={d.diasDesdeAbertura} />
+                <BotaoIcone icone="x" rotulo="Fechar" onClick={fechar} />
               </div>
               <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
                 <SeletorEstagio deal={d} papel={usuario.papel} desligado={somenteLeitura} />
@@ -180,9 +181,9 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
                   ) : somenteLeitura ? (
                     <span className="text-texto-2">Sem contato</span>
                   ) : (
-                    <button onClick={() => setContato({ nome: "", cargo: "", email: "", telefone: "" })} className="font-semibold text-bronze-escuro underline">
-                      + Adicionar contato
-                    </button>
+                    <Botao nivel="discreto" tamanho="compacto" icone="mais" className="px-0" onClick={() => setContato({ nome: "", cargo: "", email: "", telefone: "" })}>
+                      Adicionar contato
+                    </Botao>
                   )}
                 </span>
               </div>
@@ -195,22 +196,16 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
                   />
                 ))}
                 {somenteLeitura ? null : tags.filter((t) => !d.tags.some((x) => x.id === t.id)).length ? (
-                  <select
-                    aria-label="Adicionar tag"
-                    value=""
-                    disabled={enviando}
-                    onChange={(e) => e.target.value && executar(`/api/deals/${d.id}/tags`, "POST", { tagId: Number(e.target.value) }, "Tag aplicada.")}
-                    className="rounded-controle border border-linha-forte bg-fundo px-2 py-1 text-xs"
-                  >
-                    <option value="">+ Tag</option>
-                    {tags
-                      .filter((t) => !d.tags.some((x) => x.id === t.id))
-                      .map((t) => (
-                        <option key={t.id} value={t.id}>
-                          #{t.nome}
-                        </option>
-                      ))}
-                  </select>
+                  <Seletor
+                    acao
+                    tamanho="compacto"
+                    rotulo="Adicionar tag"
+                    textoVazio="+ Tag"
+                    valor=""
+                    desligado={enviando}
+                    onMudar={(v) => void executar(`/api/deals/${d.id}/tags`, "POST", { tagId: Number(v) }, "Tag aplicada.")}
+                    opcoes={tags.filter((t) => !d.tags.some((x) => x.id === t.id)).map((t) => ({ valor: String(t.id), rotulo: `#${t.nome}` }))}
+                  />
                 ) : d.tags.length === 0 ? (
                   <span className="text-xs text-texto-2">Sem tags. Crie tags pela ação em lote, na tela Leads.</span>
                 ) : null}
@@ -219,26 +214,26 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
                 <div className="mt-3 flex flex-wrap items-end gap-2">
                   <label className="text-xs font-semibold">
                     Nome
-                    <input autoFocus value={contato.nome} maxLength={120} onChange={(e) => setContato({ ...contato, nome: e.target.value })} className="mt-1 block rounded-controle border border-linha-forte px-2 py-1 text-sm font-normal" />
+                    <Campo tamanho="compacto" autoFocus value={contato.nome} maxLength={120} onChange={(e) => setContato({ ...contato, nome: e.target.value })} className="mt-1" />
                   </label>
                   <label className="text-xs font-semibold">
                     Cargo
-                    <input value={contato.cargo} maxLength={80} onChange={(e) => setContato({ ...contato, cargo: e.target.value })} className="mt-1 block rounded-controle border border-linha-forte px-2 py-1 text-sm font-normal" />
+                    <Campo tamanho="compacto" value={contato.cargo} maxLength={80} onChange={(e) => setContato({ ...contato, cargo: e.target.value })} className="mt-1" />
                   </label>
                   <label className="text-xs font-semibold">
                     E-mail (opcional)
-                    <input type="email" value={contato.email} maxLength={160} onChange={(e) => setContato({ ...contato, email: e.target.value })} className="mt-1 block rounded-controle border border-linha-forte px-2 py-1 text-sm font-normal" />
+                    <Campo tamanho="compacto" type="email" value={contato.email} maxLength={160} onChange={(e) => setContato({ ...contato, email: e.target.value })} className="mt-1" />
                   </label>
                   <label className="text-xs font-semibold">
                     Telefone (opcional)
-                    <input type="tel" value={contato.telefone} maxLength={25} onChange={(e) => setContato({ ...contato, telefone: e.target.value })} className="mt-1 block rounded-controle border border-linha-forte px-2 py-1 text-sm font-normal" />
+                    <Campo tamanho="compacto" type="tel" value={contato.telefone} maxLength={25} onChange={(e) => setContato({ ...contato, telefone: e.target.value })} className="mt-1" />
                   </label>
-                  <button onClick={salvarContato} disabled={enviando || !contato.nome.trim()} className="rounded-controle bg-marinho px-3 py-1 text-sm font-semibold text-branco disabled:opacity-50">
-                    Salvar contato
-                  </button>
-                  <button onClick={() => setContato(null)} className="rounded-controle border border-linha-forte px-3 py-1 text-sm">
+                  <Botao nivel="secundario" tamanho="compacto" onClick={() => setContato(null)}>
                     Cancelar
-                  </button>
+                  </Botao>
+                  <Botao nivel="primario" tamanho="compacto" onClick={salvarContato} disabled={enviando || !contato.nome.trim()}>
+                    Salvar contato
+                  </Botao>
                 </div>
               ) : null}
             </header>
@@ -251,10 +246,10 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
                 {det.linhaDoTempo.length === 0 ? (
                   <p className="mt-3 text-sm text-texto-2">Sem registros ainda. O primeiro contato aparece aqui.</p>
                 ) : (
-                  <ol className="mt-3 border-l-2 border-linha-forte pl-4">
+                  <ol className="mt-3 border-l-2 border-borda pl-4">
                     {det.linhaDoTempo.map((e, i) => (
                       <li key={i} className="relative pb-4">
-                        <span className={`absolute top-1 -left-6 h-3 w-3 rounded-selo border-2 border-fundo ${MARCA[e.tipo]}`} aria-hidden />
+                        <span className={`absolute top-1 -left-[1.4rem] h-3 w-3 rounded-selo border-2 border-superficie ${MARCA[e.tipo]}`} aria-hidden />
                         <p className={`text-sm ${e.desfeito ? "text-texto-2 line-through" : ""}`}>{e.descricao}</p>
                         <p className="text-xs text-texto-2">
                           {dataBR(e.data)}
@@ -272,14 +267,9 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
                 {aberto && !somenteLeitura ? (
                   <div className="mt-2 flex flex-wrap gap-2">
                     {(["liguei", "requalifiquei", "desisti"] as const).map((a) => (
-                      <button
-                        key={a}
-                        disabled={enviando}
-                        onClick={() => executar(`/api/deals/${d.id}/acoes`, "POST", { acao: a }, "Ação registrada.")}
-                        className="rounded-controle border border-marinho px-3 py-1 text-sm font-semibold disabled:opacity-50"
-                      >
+                      <Botao key={a} nivel="secundario" tamanho="compacto" disabled={enviando} onClick={() => executar(`/api/deals/${d.id}/acoes`, "POST", { acao: a }, "Ação registrada.")}>
                         {{ liguei: "Liguei", requalifiquei: "Requalifiquei", desisti: "Desisti" }[a]}
-                      </button>
+                      </Botao>
                     ))}
                   </div>
                 ) : null}
@@ -307,9 +297,9 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
                             ["Bônus da empresa", d.bonus],
                           ] as const
                         ).map(([rot, v]) => (
-                          <div key={rot} className="rounded-controle border border-linha px-2 py-2">
+                          <div key={rot} className="rounded-controle bg-superficie-2 px-2 py-2">
                             <dt className="text-xs text-texto-2">{rot}</dt>
-                            <dd className="font-titulo text-lg font-bold">{v ?? "—"}</dd>
+                            <dd className="text-lg font-semibold tabular-nums">{v ?? "—"}</dd>
                           </div>
                         ))}
                       </dl>
@@ -331,28 +321,20 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
                       <label className="sr-only" htmlFor="novo-comentario">
                         Novo comentário
                       </label>
-                      <textarea
-                        id="novo-comentario"
-                        value={texto}
-                        maxLength={1000}
-                        rows={2}
-                        onChange={(e) => setTexto(e.target.value)}
-                        placeholder="Escreva um comentário…"
-                        className="w-full rounded-controle border border-linha-forte px-3 py-2 text-sm"
-                      />
-                      <div className="mt-1 flex justify-end">
-                        <button onClick={postar} disabled={enviando || !texto.trim()} className="rounded-controle border border-marinho px-3 py-1 text-sm font-semibold disabled:opacity-50">
+                      <AreaTexto id="novo-comentario" value={texto} maxLength={1000} rows={2} onChange={(e) => setTexto(e.target.value)} placeholder="Escreva um comentário…" />
+                      <div className="mt-2 flex justify-end">
+                        <Botao nivel="primario" tamanho="compacto" onClick={postar} disabled={enviando || !texto.trim()}>
                           Postar
-                        </button>
+                        </Botao>
                       </div>
                     </div>
                   )}
                   {det.comentarios.length === 0 ? (
                     <p className="mt-2 text-sm text-texto-2">Nenhum comentário ainda.{somenteLeitura ? "" : " Escreva o primeiro."}</p>
                   ) : (
-                    <ul className="mt-2 grid gap-2">
+                    <ul className="mt-2 divide-y divide-divisoria">
                       {det.comentarios.map((c) => (
-                        <li key={c.id} className="rounded-controle border border-linha bg-marfim px-3 py-2">
+                        <li key={c.id} className="py-3">
                           <p className="text-sm whitespace-pre-wrap break-words">{c.texto}</p>
                           <p className="mt-1 flex items-center gap-2 text-xs text-texto-2">
                             <span>
@@ -362,17 +344,17 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
                               apagando === c.id ? (
                                 <span className="flex items-center gap-2" role="group" aria-label="Confirmar apagar">
                                   Apagar este comentário?
-                                  <button onClick={() => apagar(c.id)} className="rounded-controle bg-marinho px-2 py-1 font-semibold text-branco">
-                                    Apagar
-                                  </button>
-                                  <button onClick={() => setApagando(null)} className="rounded-controle border border-linha-forte px-2 py-1">
+                                  <Botao nivel="secundario" tamanho="compacto" onClick={() => setApagando(null)}>
                                     Cancelar
-                                  </button>
+                                  </Botao>
+                                  <Botao nivel="primario" tamanho="compacto" onClick={() => apagar(c.id)}>
+                                    Apagar
+                                  </Botao>
                                 </span>
                               ) : (
-                                <button onClick={() => setApagando(c.id)} className="font-semibold text-bronze-escuro underline">
+                                <Botao nivel="discreto" tamanho="compacto" className="h-6 px-1" onClick={() => setApagando(c.id)}>
                                   Apagar
-                                </button>
+                                </Botao>
                               )
                             ) : null}
                           </p>
@@ -384,7 +366,7 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
               </div>
             </div>
 
-            <footer className="border-t border-linha px-5 py-3 text-xs text-texto-2">
+            <footer className="border-t border-borda px-5 py-3 text-xs text-texto-2">
               <details>
                 <summary className="cursor-pointer">Ver detalhes</summary>
                 <p className="mt-1">

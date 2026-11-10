@@ -8,6 +8,8 @@ import { dataBR, dinheiro, dinheiroCurto, plural, ROTULO_ESTAGIO } from "@/lib/c
 import type { DealVisao, Estagio, Papel } from "@/lib/tipos";
 import { SeletorEstagio, transicoesDe, useMudarEstagio } from "./Estagio";
 import { BarraNota, IconeDeal } from "./Nota";
+import { classeBotao } from "./ui/Botao";
+import { Alternador, classeCartao } from "./ui/Superficie";
 
 export interface Coluna {
   estagio: "Prospecting" | "Engaging";
@@ -59,21 +61,23 @@ export function Quadro({ colunas, papel, somenteLeitura, mostrarVendedor }: { co
 
   return (
     <div>
-      <div className="mb-3 flex gap-1 rounded-controle bg-trilho p-1 md:hidden" role="tablist" aria-label="Estágio">
-        {colunas.map((c) => (
-          <button
-            key={c.estagio}
-            role="tab"
-            aria-selected={aba === c.estagio}
-            onClick={() => setAba(c.estagio)}
-            className={`flex-1 rounded-controle px-3 py-2 text-sm font-semibold ${aba === c.estagio ? "bg-marinho text-branco" : "text-texto"}`}
-          >
-            {ROTULO_ESTAGIO[c.estagio]} <span className="font-normal">({c.total})</span>
-          </button>
-        ))}
-      </div>
+      <Alternador
+        papel="tablist"
+        rotulo="Estágio"
+        valor={aba}
+        onMudar={setAba}
+        className="mb-3 flex w-full md:hidden"
+        opcoes={colunas.map((c) => ({
+          valor: c.estagio,
+          rotulo: (
+            <>
+              {ROTULO_ESTAGIO[c.estagio]} <span className="font-normal">({c.total})</span>
+            </>
+          ),
+        }))}
+      />
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {colunas.map((c) => (
           <section
             key={c.estagio}
@@ -81,10 +85,10 @@ export function Quadro({ colunas, papel, somenteLeitura, mostrarVendedor }: { co
             aria-labelledby={`t-${c.estagio}`}
             {...alvo(c.estagio)}
             className={`rounded-cartao border p-3 ${aba === c.estagio ? "" : "hidden md:block"} ${
-              sobre === c.estagio ? "border-marinho bg-dourado-claro" : aceita(c.estagio) ? "border-dourado bg-marfim" : "border-linha bg-marfim"
+              sobre === c.estagio ? "border-marinho bg-tom-destaque" : aceita(c.estagio) ? "border-marinho bg-superficie-2" : "border-borda bg-superficie-2"
             }`}
           >
-            <header className="mb-3 flex flex-wrap items-baseline justify-between gap-2 border-b-2 border-marinho pb-2">
+            <header className="mb-3 flex flex-wrap items-baseline justify-between gap-2 border-b border-borda pb-2">
               <h2 id={`t-${c.estagio}`} className="text-lg font-bold">
                 {ROTULO_ESTAGIO[c.estagio]}
               </h2>
@@ -95,7 +99,7 @@ export function Quadro({ colunas, papel, somenteLeitura, mostrarVendedor }: { co
             {c.cartoes.length === 0 ? (
               <p className="px-2 py-6 text-center text-sm text-texto-2">Nenhum deal nesta coluna.</p>
             ) : (
-              <ul className="grid gap-2">
+              <ul className="grid grid-cols-1 gap-2">
                 {c.cartoes.map((d) => (
                   <li key={d.id}>
                     <Cartao
@@ -114,7 +118,7 @@ export function Quadro({ colunas, papel, somenteLeitura, mostrarVendedor }: { co
               </ul>
             )}
             {c.total > c.cartoes.length ? (
-              <Link href={maisCartoes(c.estagio, c.cartoes.length)} scroll={false} className="mt-3 block rounded-controle border border-linha-forte px-3 py-2 text-center text-sm font-semibold">
+              <Link href={maisCartoes(c.estagio, c.cartoes.length)} scroll={false} className={classeBotao("secundario", "normal", "mt-3 w-full")}>
                 Mostrar mais ({c.total - c.cartoes.length} restantes)
               </Link>
             ) : null}
@@ -130,13 +134,13 @@ export function Quadro({ colunas, papel, somenteLeitura, mostrarVendedor }: { co
                 key={e}
                 {...alvo(e)}
                 className={`rounded-cartao border-2 border-dashed px-4 py-6 text-center font-titulo text-lg font-bold ${
-                  sobre === e ? "border-marinho bg-dourado text-marinho" : "border-dourado bg-fundo text-marinho"
+                  sobre === e ? "border-marinho bg-tom-destaque text-marinho" : "border-borda-forte bg-superficie text-marinho"
                 }`}
               >
                 Soltar aqui: {ROTULO_ESTAGIO[e]}
               </div>
             ) : (
-              <div key={e} className="rounded-cartao border-2 border-dashed border-linha bg-fundo px-4 py-6 text-center text-sm text-texto-2">
+              <div key={e} className="rounded-cartao border-2 border-dashed border-borda bg-superficie px-4 py-6 text-center text-sm text-texto-2">
                 {ROTULO_ESTAGIO[e]}: primeiro passe por Em negociação
               </div>
             ),
@@ -157,14 +161,14 @@ function Cartao({ d, href, papel, somenteLeitura, mostrarVendedor, onArrastar }:
         onArrastar(true);
       }}
       onDragEnd={() => onArrastar(false)}
-      className={`rounded-cartao border border-linha-forte bg-fundo p-3 shadow-cartao ${somenteLeitura ? "" : "cursor-grab active:cursor-grabbing"}`}
+      className={`${classeCartao} p-3 ${somenteLeitura ? "" : "cursor-grab active:cursor-grabbing"}`}
     >
       <div className="flex items-start gap-2">
         <div className="min-w-0 flex-1">
-          <Link href={href} scroll={false} className="block font-semibold break-words hover:underline">
+          <Link href={href} scroll={false} title={d.nome} className="block truncate font-semibold hover:underline">
             {d.nome}
           </Link>
-          <p className="text-sm text-texto-2">{d.contato ? `${d.contato.nome}${d.contato.cargo ? `, ${d.contato.cargo}` : ""}` : "Sem contato cadastrado"}</p>
+          <p className="truncate text-sm text-texto-2">{d.contato ? `${d.contato.nome}${d.contato.cargo ? `, ${d.contato.cargo}` : ""}` : "Sem contato cadastrado"}</p>
         </div>
         <IconeDeal icone={d.icone} dias={d.diasDesdeAbertura} />
       </div>
@@ -175,7 +179,7 @@ function Cartao({ d, href, papel, somenteLeitura, mostrarVendedor, onArrastar }:
         {d.dataAbertura ? `Aberto em ${dataBR(d.dataAbertura)}${d.diasDesdeAbertura !== null ? ` · ${d.diasDesdeAbertura} dias` : ""}` : "Não iniciado"}
       </p>
       <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-        <span className="text-sm">
+        <span className="text-sm whitespace-nowrap">
           <strong>{dinheiro(d.valorEsperado)}</strong> <span className="text-xs text-texto-2">{d.valorPeloPrecoDeTabela ? "preço de tabela" : "esperado"}</span>
         </span>
         <SeletorEstagio deal={d} papel={papel} desligado={somenteLeitura} />

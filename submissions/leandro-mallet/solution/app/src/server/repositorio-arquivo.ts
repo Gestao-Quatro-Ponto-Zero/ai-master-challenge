@@ -3,7 +3,7 @@ import "server-only";
 // Lê data/base.json. Por padrão é somente leitura; com G4_ESCRITA_EM_MEMORIA=1 aceita escritas em memória
 // (somem ao reiniciar), para rodar o app sem banco. As regras seguem as functions do banco.
 import { CONFIG } from "@/lib/config";
-import { diasEntre, faixaNota, icone as calcIcone, nomePadrao, ROTULO_ESTAGIO, ROTULO_MOTIVO } from "@/lib/calculos";
+import { diasEntre, dinheiro, faixaNota, moedaNoTexto, icone as calcIcone, nomePadrao, ROTULO_ESTAGIO, ROTULO_MOTIVO } from "@/lib/calculos";
 import { atendeConta, atendeDeal } from "@/lib/filtro/aplicar";
 import type { Etiquetas } from "@/lib/filtro/etiquetas";
 import type { Contexto, Modo } from "@/lib/filtro/interpretar";
@@ -266,7 +266,7 @@ export async function detalheDeal(id: string, u: Usuario): Promise<DealDetalhe> 
   const mudouPara = (alvo: string) => eventos.some((e) => e.tipo === "estagio" && e.descricao.endsWith(alvo));
   if (d.dataAbertura && !mudouPara(ROTULO_ESTAGIO.Engaging)) linha.push({ data: d.dataAbertura, momento: null, tipo: "aberto", descricao: "Aberto (entrou em negociação)", autor: null, desfeito: false });
   if ((d.estagio === "Won" || d.estagio === "Lost") && d.closeDate && !eventos.some((e) => e.tipo === "estagio" && e.descricao.includes(`→ ${ROTULO_ESTAGIO[d.estagio]}`)))
-    linha.push({ data: d.closeDate, momento: null, tipo: "fechado", descricao: d.estagio === "Won" ? `Ganho: US$ ${(d.closeValue ?? 0).toLocaleString("pt-BR")}` : "Perdido", autor: null, desfeito: false });
+    linha.push({ data: d.closeDate, momento: null, tipo: "fechado", descricao: d.estagio === "Won" ? `Ganho: ${dinheiro(d.closeValue ?? 0)}` : "Perdido", autor: null, desfeito: false });
   for (const e of eventos) linha.push({ data: e.data, momento: e.momento, tipo: e.tipo, descricao: e.descricao, autor: e.autor, desfeito: false });
   const rotuloAcao: Record<TipoAcao, string> = { liguei: "Liguei", requalifiquei: "Requalifiquei", desisti: "Desisti", prioridade_feita: "Feito na prioridade do dia", prioridade_pulada: "Pulado na prioridade do dia" };
   for (const a of est.acoes.filter((x) => x.dealId === id))
@@ -280,7 +280,7 @@ export async function detalheDeal(id: string, u: Usuario): Promise<DealDetalhe> 
   return {
     deal,
     componentes: nota?.componentes ?? [],
-    motivos: nota?.motivos ?? [],
+    motivos: (nota?.motivos ?? []).map(moedaNoTexto),
     linhaDoTempo: linha,
     comentarios: comentarios
       .map<Comentario>((c) => ({ id: c.id, autorId: c.usuarioId, autor: c.autor, texto: c.texto, data: c.data, criadoEm: c.criadoEm, editado: c.editado }))
@@ -510,7 +510,7 @@ export async function mudarEstagio(
     throw new ErroCRM("GS422", `Mudar de ${ROTULO_ESTAGIO[d.estagio]} para ${ROTULO_ESTAGIO[para]} não é permitido.`);
   }
   tocar(d, u);
-  const sufixo = d.estagio === "Won" ? ` (US$ ${(d.closeValue ?? 0).toLocaleString("pt-BR")})` : d.estagio === "Lost" && d.motivoPerda ? ` (${ROTULO_MOTIVO[d.motivoPerda]})` : "";
+  const sufixo = d.estagio === "Won" ? ` (${dinheiro(d.closeValue ?? 0)})` : d.estagio === "Lost" && d.motivoPerda ? ` (${ROTULO_MOTIVO[d.motivoPerda]})` : "";
   evento(est, u, id, "estagio", `Estágio: ${ROTULO_ESTAGIO[antes.estagio]} → ${ROTULO_ESTAGIO[d.estagio]}${sufixo}`);
   const versaoNova = d.atualizadoEm;
   const token = registrarDesfazer(est, u, () => {

@@ -24,7 +24,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
         <Avisos>
           <Topo usuario={usuario} />
           {somenteLeitura() ? (
-            <p className="border-b border-linha-forte bg-aviso-fundo px-4 py-2 text-center text-sm text-bronze-escuro" role="status">
+            <p className="border-b border-tom-atencao-texto/20 bg-tom-atencao px-4 py-2 text-center text-sm text-tom-atencao-texto" role="status">
               Modo somente leitura: o banco não respondeu e as mudanças estão desligadas agora. Os dados mostrados são da última carga.
             </p>
           ) : null}

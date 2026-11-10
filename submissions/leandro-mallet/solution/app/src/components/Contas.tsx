@@ -4,27 +4,32 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { pedir } from "@/lib/cliente";
-import { dataBR, dinheiro, dinheiroCurto, inteiro, ROTULO_ESTAGIO, ROTULO_PORTE, rotuloSetor, SETORES } from "@/lib/calculos";
+import { dataBR, dinheiro, dinheiroCurto, dinheiroMilhoes, inteiro, SIMBOLO_MOEDA, ROTULO_ESTAGIO, ROTULO_PORTE, rotuloSetor, SETORES } from "@/lib/calculos";
 import type { ContaDetalhe, ContaVisao } from "@/lib/tipos";
 import { useAvisos } from "./Avisos";
-import { botaoNeutro, botaoPrincipal, botaoSecundario, campo, Dialogo, ErroFormulario } from "./Dialogo";
+import { Dialogo, ErroFormulario } from "./Dialogo";
 import { Esqueleto, Estado } from "./Estado";
 import { BarraNota, IconeDeal } from "./Nota";
+import { Botao } from "./ui/Botao";
+import { Campo, classeCampo } from "./ui/Campo";
+import { Etiqueta, type Tom } from "./ui/Etiqueta";
+import { Seletor } from "./ui/Seletor";
+import { classeSuperficie } from "./ui/Superficie";
 
-const PADRAO: Record<NonNullable<ContaVisao["padrao"]>, { rotulo: string; classe: string }> = {
-  na_janela: { rotulo: "Na janela de compra", classe: "bg-dourado text-marinho" },
-  fora_da_janela: { rotulo: "Fora da janela", classe: "border border-linha-forte text-texto" },
-  sem_padrao: { rotulo: "Sem padrão", classe: "bg-trilho text-texto-2" },
+const PADRAO: Record<NonNullable<ContaVisao["padrao"]>, { rotulo: string; tom: Tom }> = {
+  na_janela: { rotulo: "Na janela de compra", tom: "positivo" },
+  fora_da_janela: { rotulo: "Fora da janela", tom: "neutro" },
+  sem_padrao: { rotulo: "Sem padrão", tom: "neutro" },
 };
 
 function SeloPadrao({ c }: { c: ContaVisao }) {
-  if (!c.padrao) return <span className="rounded-selo bg-trilho px-2 py-1 text-xs whitespace-nowrap text-texto-2">Calculado no domingo</span>;
+  if (!c.padrao) return <Etiqueta tom="neutro">Calculado no domingo</Etiqueta>;
   const p = PADRAO[c.padrao];
   return (
-    <span className={`rounded-selo px-2 py-1 text-xs font-semibold whitespace-nowrap ${p.classe}`}>
+    <Etiqueta tom={p.tom}>
       {p.rotulo}
       {c.bonus !== null ? ` · bônus ${c.bonus}` : ""}
-    </span>
+    </Etiqueta>
   );
 }
 
@@ -51,18 +56,18 @@ export function TabelaContas({ contas, empresas, podeEditar }: { contas: ContaVi
     <div className="grid gap-3">
       {somenteLeitura ? null : (
         <div className="flex justify-end">
-          <button onClick={() => setNova(true)} className={botaoPrincipal}>
+          <Botao nivel="primario" icone="mais" onClick={() => setNova(true)}>
             Nova empresa
-          </button>
+          </Botao>
         </div>
       )}
       {contas.length === 0 ? (
         <Estado titulo="Nenhuma empresa com estes filtros" texto="Remova uma etiqueta acima ou limpe os filtros para ver todas as empresas." />
       ) : (
-        <div className="overflow-x-auto rounded-cartao border border-linha bg-fundo shadow-cartao">
+        <div className={`${classeSuperficie} relative overflow-x-auto`}>
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b-2 border-marinho bg-marfim text-left text-xs text-texto-2">
+              <tr className="h-10 border-b border-borda bg-superficie-2 text-left text-xs text-texto-2">
                 <th className="px-3 py-2 font-semibold">Empresa</th>
                 <th className="px-3 py-2 font-semibold">Setor</th>
                 <th className="px-3 py-2 font-semibold">Porte</th>
@@ -75,12 +80,12 @@ export function TabelaContas({ contas, empresas, podeEditar }: { contas: ContaVi
             </thead>
             <tbody>
               {contas.map((c) => (
-                <tr key={c.nome} className="border-b border-linha align-top">
-                  <td className="px-3 py-2">
-                    <Link href={link(c.nome)} scroll={false} className="font-semibold hover:underline">
+                <tr key={c.nome} className="h-14 border-b border-divisoria last:border-0 hover:bg-superficie-2">
+                  <td className="max-w-64 px-3 py-2">
+                    <Link href={link(c.nome)} scroll={false} title={c.nome} className="block truncate font-semibold hover:underline">
                       {c.nome}
                     </Link>
-                    {c.empresaMae ? <span className="block text-xs text-texto-2">do grupo {c.empresaMae}</span> : null}
+                    {c.empresaMae ? <span className="block truncate text-xs text-texto-2">do grupo {c.empresaMae}</span> : null}
                   </td>
                   <td className="px-3 py-2 whitespace-nowrap">{rotuloSetor(c.setor)}</td>
                   <td className="px-3 py-2">{c.porte ? ROTULO_PORTE[c.porte] : "—"}</td>
@@ -144,9 +149,9 @@ function FichaConta({ nome, empresas, somenteLeitura, onFechar }: { nome: string
     <Dialogo titulo={nome} largo onFechar={onFechar}>
       {erro ? (
         <Estado erro titulo="Não foi possível abrir esta empresa" texto={erro}>
-          <button onClick={() => setTentativa((t) => t + 1)} className={botaoPrincipal}>
+          <Botao nivel="primario" onClick={() => setTentativa((t) => t + 1)}>
             Tentar de novo
-          </button>
+          </Botao>
         </Estado>
       ) : !det || !c ? (
         <div className="grid gap-3" aria-busy="true" aria-label="Carregando a empresa">
@@ -166,7 +171,7 @@ function FichaConta({ nome, empresas, somenteLeitura, onFechar }: { nome: string
                     ["Setor", rotuloSetor(c.setor)],
                     ["Porte", c.porte ? ROTULO_PORTE[c.porte] : "—"],
                     ["Funcionários", c.funcionarios !== null ? inteiro(c.funcionarios) : "—"],
-                    ["Receita anual", c.receitaMilhoes !== null ? `US$ ${c.receitaMilhoes.toLocaleString("pt-BR")} mi` : "—"],
+                    ["Receita anual", c.receitaMilhoes !== null ? dinheiroMilhoes(c.receitaMilhoes) : "—"],
                     ["Fundação", c.anoFundacao ?? "—"],
                     ["Sede", c.sede ?? "—"],
                     ["Empresa-mãe", c.empresaMae ?? "Independente"],
@@ -179,9 +184,9 @@ function FichaConta({ nome, empresas, somenteLeitura, onFechar }: { nome: string
                 ))}
               </dl>
               {somenteLeitura ? null : (
-                <button onClick={() => setEditando(true)} className={botaoSecundario}>
+                <Botao nivel="secundario" onClick={() => setEditando(true)}>
                   Editar cadastro
-                </button>
+                </Botao>
               )}
             </div>
           </section>
@@ -199,7 +204,7 @@ function FichaConta({ nome, empresas, somenteLeitura, onFechar }: { nome: string
                   ["Ticket médio", dinheiro(det.ticketMedio)],
                 ] as const
               ).map(([rot, v]) => (
-                <div key={rot} className="rounded-controle border border-linha px-2 py-2">
+                <div key={rot} className="rounded-controle bg-superficie-2 px-2 py-2">
                   <dt className="text-xs text-texto-2">{rot}</dt>
                   <dd className="font-titulo text-lg font-bold">{v}</dd>
                 </div>
@@ -231,7 +236,7 @@ function FichaConta({ nome, empresas, somenteLeitura, onFechar }: { nome: string
                 </p>
                 <table className="mt-3 w-full text-sm">
                   <thead>
-                    <tr className="border-b border-linha-forte text-left text-xs text-texto-2">
+                    <tr className="border-b border-borda text-left text-xs text-texto-2">
                       <th className="py-1 font-semibold">Produto comprado</th>
                       <th className="py-1 text-right font-semibold">Compras</th>
                       <th className="py-1 text-right font-semibold">Receita</th>
@@ -239,7 +244,7 @@ function FichaConta({ nome, empresas, somenteLeitura, onFechar }: { nome: string
                   </thead>
                   <tbody>
                     {det.produtos.map((p) => (
-                      <tr key={p.produto} className="border-b border-linha">
+                      <tr key={p.produto} className="border-b border-divisoria">
                         <td className="py-1">{p.produto}</td>
                         <td className="py-1 text-right">{inteiro(p.compras)}</td>
                         <td className="py-1 text-right">{dinheiro(p.receita)}</td>
@@ -251,7 +256,7 @@ function FichaConta({ nome, empresas, somenteLeitura, onFechar }: { nome: string
             )}
           </section>
 
-          <section aria-labelledby="t-padrao" className="rounded-cartao border border-linha-forte bg-marfim p-4">
+          <section aria-labelledby="t-padrao" className="rounded-cartao bg-superficie-2 p-4">
             <h3 id="t-padrao" className="text-base font-bold">
               Padrão de compra
             </h3>
@@ -288,9 +293,9 @@ function FichaConta({ nome, empresas, somenteLeitura, onFechar }: { nome: string
             {det.abertos.length === 0 ? (
               <p className="mt-2 text-sm text-texto-2">Nenhum deal aberto com esta empresa.</p>
             ) : (
-              <ul className="mt-2 grid gap-2">
+              <ul className="mt-2 divide-y divide-divisoria border-y border-divisoria">
                 {det.abertos.map((d) => (
-                  <li key={d.id} className="flex flex-wrap items-center gap-3 rounded-controle border border-linha px-3 py-2 text-sm">
+                  <li key={d.id} className="flex flex-wrap items-center gap-3 py-2 text-sm">
                     <Link href={linkDeal(d.id)} scroll={false} className="min-w-0 flex-1 font-semibold break-words hover:underline">
                       {d.nome}
                     </Link>
@@ -347,41 +352,40 @@ function FormularioConta({ conta, empresas, onPronto }: { conta?: ContaVisao; em
 
   return (
     <form onSubmit={salvar} className="grid gap-3 sm:grid-cols-2">
-      <label className="text-sm font-semibold sm:col-span-2">
+      <label className="grid gap-1 text-sm font-semibold sm:col-span-2">
         Nome
-        <input value={nome} maxLength={120} disabled={!!conta} onChange={(e) => setNome(e.target.value)} className={`${campo} disabled:bg-trilho`} autoFocus={!conta} />
-        {conta ? <span className="mt-1 block text-xs font-normal text-texto-2">O nome não muda depois de criado.</span> : null}
+        <Campo value={nome} maxLength={120} disabled={!!conta} onChange={(e) => setNome(e.target.value)} autoFocus={!conta} />
+        {conta ? <span className="text-xs font-normal text-texto-2">O nome não muda depois de criado.</span> : null}
       </label>
-      <label className="text-sm font-semibold">
-        Setor
-        <select value={setor} onChange={(e) => setSetor(e.target.value)} className={campo}>
-          <option value="">Não informado</option>
-          {Object.entries(SETORES).map(([en, pt]) => (
-            <option key={en} value={en}>
-              {pt}
-            </option>
-          ))}
-        </select>
-      </label>
-      <label className="text-sm font-semibold">
+      <div className="grid gap-1 text-sm font-semibold">
+        <span aria-hidden>Setor</span>
+        <Seletor
+          rotulo="Setor"
+          valor={setor}
+          onMudar={setSetor}
+          className="w-full font-normal"
+          opcoes={[{ valor: "", rotulo: "Não informado" }, ...Object.entries(SETORES).map(([en, pt]) => ({ valor: en, rotulo: pt }))]}
+        />
+      </div>
+      <label className="grid gap-1 text-sm font-semibold">
         Sede (país)
-        <input value={sede} maxLength={80} onChange={(e) => setSede(e.target.value)} className={campo} />
+        <input value={sede} maxLength={80} onChange={(e) => setSede(e.target.value)} className={classeCampo()} />
       </label>
-      <label className="text-sm font-semibold">
+      <label className="grid gap-1 text-sm font-semibold">
         Funcionários
-        <input inputMode="numeric" value={funcionarios} onChange={(e) => setFuncionarios(e.target.value)} className={campo} />
+        <input inputMode="numeric" value={funcionarios} onChange={(e) => setFuncionarios(e.target.value)} className={classeCampo()} />
       </label>
-      <label className="text-sm font-semibold">
-        Receita anual (US$ milhões)
-        <input inputMode="decimal" value={receita} onChange={(e) => setReceita(e.target.value)} className={campo} />
+      <label className="grid gap-1 text-sm font-semibold">
+        Receita anual ({SIMBOLO_MOEDA} milhões)
+        <input inputMode="decimal" value={receita} onChange={(e) => setReceita(e.target.value)} className={classeCampo()} />
       </label>
-      <label className="text-sm font-semibold">
+      <label className="grid gap-1 text-sm font-semibold">
         Ano de fundação
-        <input inputMode="numeric" value={ano} onChange={(e) => setAno(e.target.value)} className={campo} />
+        <input inputMode="numeric" value={ano} onChange={(e) => setAno(e.target.value)} className={classeCampo()} />
       </label>
-      <label className="text-sm font-semibold">
+      <label className="grid gap-1 text-sm font-semibold">
         Empresa-mãe (opcional)
-        <input list="lista-maes" value={mae} onChange={(e) => setMae(e.target.value)} placeholder="Digite para buscar" className={campo} />
+        <input list="lista-maes" value={mae} onChange={(e) => setMae(e.target.value)} placeholder="Digite para buscar" className={classeCampo()} />
         <datalist id="lista-maes">
           {empresas.map((c) => (
             <option key={c} value={c} />
@@ -391,12 +395,12 @@ function FormularioConta({ conta, empresas, onPronto }: { conta?: ContaVisao; em
       <div className="grid gap-3 sm:col-span-2">
         <ErroFormulario texto={erro} />
         <div className="flex justify-end gap-2">
-          <button type="button" onClick={onPronto} className={botaoNeutro}>
+          <Botao nivel="secundario" onClick={onPronto}>
             Cancelar
-          </button>
-          <button type="submit" disabled={enviando} className={botaoPrincipal}>
+          </Botao>
+          <Botao type="submit" nivel="primario" disabled={enviando}>
             {enviando ? "Salvando…" : conta ? "Salvar cadastro" : "Cadastrar empresa"}
-          </button>
+          </Botao>
         </div>
       </div>
     </form>

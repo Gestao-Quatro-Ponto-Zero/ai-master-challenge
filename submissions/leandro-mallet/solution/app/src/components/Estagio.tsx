@@ -3,9 +3,13 @@
 // Ganho pede o valor; Perdido pede confirmação e o motivo (opcional). Conflito de edição vira frase simples.
 import { createContext, useCallback, useContext, useMemo, useRef, useState, type ReactNode } from "react";
 import { pedir } from "@/lib/cliente";
-import { dinheiro, ROTULO_ESTAGIO, ROTULO_MOTIVO } from "@/lib/calculos";
+import { dinheiro, ROTULO_ESTAGIO, ROTULO_MOTIVO, SIMBOLO_MOEDA } from "@/lib/calculos";
 import type { DealVisao, Estagio, MotivoPerda, Papel } from "@/lib/tipos";
 import { useAvisos } from "./Avisos";
+import { Botao } from "./ui/Botao";
+import { Campo, ErroFormulario } from "./ui/Campo";
+import { Etiqueta } from "./ui/Etiqueta";
+import { Seletor } from "./ui/Seletor";
 
 type DealMinimo = Pick<DealVisao, "id" | "nome" | "estagio" | "preco" | "atualizadoEm">;
 type Mudar = (deal: DealMinimo, para: Estagio) => Promise<boolean>;
@@ -23,7 +27,7 @@ export function transicoesDe(estagio: Estagio, papel: Papel): Estagio[] {
 const MOTIVOS: MotivoPerda[] = ["preco", "concorrente", "sem_orcamento", "sem_resposta", "outro"];
 
 /** Foca o campo ao abrir o diálogo, sem deslocar a página por baixo. */
-const focarSemRolar = (el: HTMLInputElement | HTMLSelectElement | null) => el?.focus({ preventScroll: true });
+const focarSemRolar = (el: HTMLInputElement | null) => el?.focus({ preventScroll: true });
 
 export function ProvedorEstagio({ children }: { children: ReactNode }) {
   const avisos = useAvisos();
@@ -99,7 +103,7 @@ export function ProvedorEstagio({ children }: { children: ReactNode }) {
             role="dialog"
             aria-modal="true"
             aria-labelledby="titulo-estagio"
-            className="w-full max-w-md animate-entrar rounded-cartao bg-fundo p-5 shadow-modal"
+            className="w-full max-w-md animate-entrar rounded-cartao bg-superficie p-5 shadow-modal"
             onClick={(e) => e.stopPropagation()}
           >
             <h2 id="titulo-estagio" className="text-lg font-bold">
@@ -107,47 +111,34 @@ export function ProvedorEstagio({ children }: { children: ReactNode }) {
             </h2>
             <p className="mt-1 text-sm text-texto-2">{pendente.deal.nome}</p>
             {ganho ? (
-              <label className="mt-4 block text-sm font-semibold">
-                Valor de fechamento (US$)
-                <input
-                  ref={focarSemRolar}
-                  inputMode="numeric"
-                  value={valor}
-                  onChange={(e) => setValor(e.target.value.replace(/\D/g, ""))}
-                  className="mt-1 w-full rounded-controle border border-linha-forte px-3 py-2 font-normal"
-                />
-                <span className="mt-1 block text-xs font-normal text-texto-2">Sugestão: o preço de tabela, {dinheiro(pendente.deal.preco)}.</span>
+              <label className="mt-4 grid gap-1 text-sm font-semibold">
+                Valor de fechamento ({SIMBOLO_MOEDA})
+                <Campo ref={focarSemRolar} inputMode="numeric" value={valor} onChange={(e) => setValor(e.target.value.replace(/\D/g, ""))} />
+                <span className="text-xs font-normal text-texto-2">Sugestão: o preço de tabela, {dinheiro(pendente.deal.preco)}.</span>
               </label>
             ) : (
-              <label className="mt-4 block text-sm font-semibold">
-                Motivo da perda (opcional)
-                <select
-                  ref={focarSemRolar}
-                  value={motivo}
-                  onChange={(e) => setMotivo(e.target.value as MotivoPerda | "")}
-                  className="mt-1 w-full rounded-controle border border-linha-forte bg-fundo px-3 py-2 font-normal"
-                >
-                  <option value="">Não informar</option>
-                  {MOTIVOS.map((m) => (
-                    <option key={m} value={m}>
-                      {ROTULO_MOTIVO[m]}
-                    </option>
-                  ))}
-                </select>
-              </label>
+              <div className="mt-4 grid gap-1 text-sm font-semibold">
+                <span aria-hidden>Motivo da perda (opcional)</span>
+                <Seletor
+                  rotulo="Motivo da perda (opcional)"
+                  valor={motivo}
+                  onMudar={(v) => setMotivo(v as MotivoPerda | "")}
+                  autoFoco
+                  className="w-full font-normal"
+                  opcoes={[{ valor: "", rotulo: "Não informar" }, ...MOTIVOS.map((m) => ({ valor: m, rotulo: ROTULO_MOTIVO[m] }))]}
+                />
+              </div>
             )}
-            {erro ? (
-              <p role="alert" className="mt-3 rounded-controle border border-erro bg-erro-fundo px-3 py-2 text-sm text-erro">
-                {erro}
-              </p>
-            ) : null}
+            <div className="mt-3">
+              <ErroFormulario texto={erro} />
+            </div>
             <div className="mt-5 flex justify-end gap-2">
-              <button onClick={() => fechar(false)} className="rounded-controle border border-linha-forte px-4 py-2 text-sm font-semibold">
+              <Botao nivel="secundario" onClick={() => fechar(false)}>
                 Cancelar
-              </button>
-              <button onClick={confirmar} disabled={enviando} className="rounded-controle bg-marinho px-4 py-2 text-sm font-semibold text-branco disabled:opacity-60">
+              </Botao>
+              <Botao nivel="primario" onClick={confirmar} disabled={enviando}>
                 {enviando ? "Salvando…" : ganho ? "Encerrar como ganho" : "Encerrar como perdido"}
-              </button>
+              </Botao>
             </div>
           </div>
         </div>
@@ -160,25 +151,18 @@ export function ProvedorEstagio({ children }: { children: ReactNode }) {
 export function SeletorEstagio({ deal, papel, desligado }: { deal: DealMinimo; papel: Papel; desligado?: boolean }) {
   const mudar = useMudarEstagio();
   const opcoes = transicoesDe(deal.estagio, papel);
-  if (desligado || opcoes.length === 0) return <span className="rounded-selo border border-linha-forte px-2 py-1 text-xs font-semibold">{ROTULO_ESTAGIO[deal.estagio]}</span>;
+  if (desligado || opcoes.length === 0) return <Etiqueta tom="neutro">{ROTULO_ESTAGIO[deal.estagio]}</Etiqueta>;
   const rotulo = (para: Estagio) =>
     deal.estagio === "Won" || deal.estagio === "Lost" ? "Reabrir (Em negociação)" : para === "Lost" && deal.estagio === "Prospecting" ? "Descartar (Perdido)" : `Mover para ${ROTULO_ESTAGIO[para]}`;
   return (
-    <select
-      aria-label={`Estágio de ${deal.nome}`}
-      value=""
-      onClick={(e) => e.stopPropagation()}
-      onChange={(e) => {
-        if (e.target.value) void mudar(deal, e.target.value as Estagio);
-      }}
-      className="max-w-full rounded-controle border border-linha-forte bg-fundo px-2 py-1 text-xs font-semibold"
-    >
-      <option value="">{ROTULO_ESTAGIO[deal.estagio]}</option>
-      {opcoes.map((o) => (
-        <option key={o} value={o}>
-          {rotulo(o)}
-        </option>
-      ))}
-    </select>
+    <Seletor
+      acao
+      tamanho="compacto"
+      rotulo={`Estágio de ${deal.nome}: ${ROTULO_ESTAGIO[deal.estagio]}. Mudar`}
+      textoVazio={ROTULO_ESTAGIO[deal.estagio]}
+      valor=""
+      onMudar={(v) => void mudar(deal, v as Estagio)}
+      opcoes={opcoes.map((o) => ({ valor: o, rotulo: rotulo(o) }))}
+    />
   );
 }

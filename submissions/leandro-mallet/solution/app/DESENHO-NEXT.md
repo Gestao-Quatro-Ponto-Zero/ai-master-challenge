@@ -60,6 +60,15 @@ solution/app/
       Filtros, FiltrosEquipe   filtro livre com etiquetas; seletores de região, manager e vendedor
       Avisos              avisos com "Desfazer" e recarga dos dados
       Dialogo, Estado, Nota    peças comuns (diálogo, selo de tag, vazio/erro/esqueleto, barra da nota, ícone)
+      ui/                 objetos da interface, um conjunto só para todas as telas (O-28):
+        Botao             3 níveis (primário navy, secundário branco com borda neutra, discreto), 40 px ou 32 px
+        Campo             campo e área de texto com a altura do botão; rótulo e erro de formulário
+        Seletor           lista estilizada no lugar do <select> nativo, por teclado; modo ação (estágio, + Tag)
+        Etiqueta          uma forma, tons neutro, atenção, negativo, positivo e destaque
+        BarraNota         barra fina, cor pela faixa, número em Manrope 600 tabular
+        Superficie        painel, lista com divisória, cartão leve, alternador e caixa de marcar
+        Icones            ícones em SVG (sem glifos)
+        CartaoNumero      cartão de número do Painel (O-30): faixa e ícone na cor do grupo, número grande, pílula de variação
     lib/                  funções puras, sem I/O
       tipos.ts, config.ts, calculos.ts, painel.ts, cliente.ts
       desfazer.ts         formato do token do "Desfazer"

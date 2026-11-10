@@ -2,7 +2,7 @@
 // Lê a frase da esquerda para a direita: cada regra que casa "consome" o trecho e vira uma etiqueta;
 // o que sobrar (sem palavras de ligação) vira a etiqueta "Contém".
 import { CONFIG } from "../config";
-import { ROTULO_ICONE, SETORES, semAcento, somarDias } from "../calculos";
+import { dinheiro, ROTULO_ICONE, SETORES, semAcento, somarDias } from "../calculos";
 import type { Estagio, Icone, Papel, Porte } from "../tipos";
 import type { Etiqueta } from "./etiquetas";
 
@@ -79,9 +79,9 @@ export function interpretar(frase: string, ctx: Contexto): Resultado {
     regra(/\b(mais de|acima de|>) ?(\d+) compras\b/, (m) => add({ chave: "compras_min", valor: Number(m[2]) + 1, rotulo: `Compras > ${m[2]}` }));
     regra(/\bsem deals? abertos?\b/, () => add({ chave: "sem_aberto", valor: true, rotulo: "Sem deal aberto" }));
     regra(/\bcom deals? abertos?\b/, () => add({ chave: "com_aberto", valor: true, rotulo: "Com deal aberto" }));
-    regra(/\breceita (acima de|maior que|mais de) (us\$ ?)?([\d.,]+)( mil)?\b/, (m) => {
+    regra(/\breceita (acima de|maior que|mais de) ((?:us|r)\$ ?)?([\d.,]+)( mil)?\b/, (m) => {
       const v = numero(m[3] ?? "0", m[4]);
-      add({ chave: "receita_min", valor: v, rotulo: `Receita ganha ≥ US$ ${v.toLocaleString("pt-BR")}` });
+      add({ chave: "receita_min", valor: v, rotulo: `Receita ganha ≥ ${dinheiro(v)}` });
     });
     regra(/\bsubsidiarias?\b/, () => add({ chave: "subsidiaria", valor: true, rotulo: "Subsidiárias" }));
     regra(/\bindependentes?\b/, () => add({ chave: "independente", valor: true, rotulo: "Independentes" }));
@@ -162,9 +162,9 @@ export function interpretar(frase: string, ctx: Contexto): Resultado {
   }
 
   // Valor
-  regra(/\b(valor )?(acima de|mais de|maior que) (us\$ ?)?([\d.,]+)( mil)?\b/, (m) => {
+  regra(/\b(valor )?(acima de|mais de|maior que) ((?:us|r)\$ ?)?([\d.,]+)( mil)?\b/, (m) => {
     const v = numero(m[4] ?? "0", m[5]);
-    add({ chave: "valor_min", valor: v, rotulo: `Valor ≥ US$ ${v.toLocaleString("pt-BR")}` });
+    add({ chave: "valor_min", valor: v, rotulo: `Valor ≥ ${dinheiro(v)}` });
   });
 
   // Tags e comentários

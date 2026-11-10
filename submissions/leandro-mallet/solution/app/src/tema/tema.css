@@ -24,15 +24,49 @@
   --color-cinza: #6f7c87;
   --color-linha: #ece3d0;
   --color-linha-forte: #e4c993;
-  --color-trilho: #f3ead8;
+  --color-trilho: #e6eaed;
   --color-branco: #ffffff;
   --color-sombra: #001f3514;
   --color-veu: #001f3599;
 
+  /* Objetos da interface (O-28): neutros para borda, superfície e divisória */
+  --color-borda: #d5dbe0;
+  --color-borda-forte: #9aa5ae;
+  --color-divisoria: #e9edf0;
+  --color-superficie: #ffffff;
+  --color-superficie-2: #f6f7f8;
+  --color-cinza-g4: #66727c;
+
+  /* Tons da etiqueta, por significado (fundo + texto com contraste AA) */
+  --color-tom-neutro: #eef1f3;
+  --color-tom-neutro-texto: #3d4a54;
+  --color-tom-atencao: #fff4dc;
+  --color-tom-atencao-texto: #78501d;
+  --color-tom-negativo: #fbefee;
+  --color-tom-negativo-texto: #9b2c2c;
+  --color-tom-positivo: #e7f3ec;
+  --color-tom-positivo-texto: #1e6440;
+  --color-tom-destaque: #f3e6cc;
+  --color-tom-destaque-texto: #001f35;
+
+  /* Painel (O-30): cor de cada grupo de números (faixa lateral, ícone e brilho) */
+  --color-grupo-leads: #001f35;
+  --color-grupo-negociacao: #b9915b;
+  --color-grupo-fechamento: #78501d;
+  /* Cartão de destaque (Total de leads): degradê creme e número dourado com contraste AA para número grande */
+  --color-creme-1: #fffdf8;
+  --color-creme-2: #f6ecd8;
+  --color-numero-dourado: #93692f;
+  /* Funil em tons de dourado; Perdido em cinza */
+  --color-funil-1: #e4c993;
+  --color-funil-2: #c9a96e;
+  --color-funil-3: #a57b41;
+  --color-funil-perdido: #b8c1c8;
+
   /* Faixas da nota (barra do cartão) */
   --color-nota-alta: #001f35;
   --color-nota-media: #a57b41;
-  --color-nota-baixa: #6f7c87;
+  --color-nota-baixa: #9aa5ae;
 
   /* Estados de alerta (não fazem parte da paleta da marca; usados com ícone e texto, nunca só pela cor) */
   --color-erro: #9b2c2c;
@@ -58,13 +92,16 @@
   --text-2xl: 1.75rem;
   --text-3xl: 2.25rem;
   --text-nota: 2rem;
+  --text-numero: 2.5rem;
 
   /* Forma */
   --radius-cartao: 10px;
-  --radius-controle: 6px;
+  --radius-controle: 8px;
+  --radius-numero: 12px;
   --radius-selo: 999px;
   --shadow-cartao: 0 1px 2px var(--color-sombra), 0 6px 16px var(--color-sombra);
   --shadow-modal: 0 18px 48px var(--color-sombra);
+  --shadow-menu: 0 8px 24px var(--color-sombra);
 
   /* Movimento */
   --animate-entrar: entrar 0.18s ease-out;

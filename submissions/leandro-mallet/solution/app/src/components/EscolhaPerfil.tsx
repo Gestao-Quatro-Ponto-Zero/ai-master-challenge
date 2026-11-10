@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { pedir } from "@/lib/cliente";
 import { plural } from "@/lib/calculos";
 import type { Papel, Usuario } from "@/lib/tipos";
+import { ErroFormulario } from "./ui/Campo";
 
 type UsuarioLista = Usuario & { abertos?: number };
 
@@ -50,9 +51,9 @@ export function EscolhaPerfil({ usuarios, destino }: { usuarios: UsuarioLista[];
       <h1 className="text-3xl font-bold">Quem é você?</h1>
       <p className="mt-2 text-texto-2">Escolha o seu perfil para ver o que importa hoje. Não precisa de senha.</p>
       {erro ? (
-        <p role="alert" className="mt-4 rounded-controle border border-erro bg-erro-fundo px-3 py-2 text-sm text-erro">
-          {erro}
-        </p>
+        <div className="mt-4">
+          <ErroFormulario texto={erro} />
+        </div>
       ) : null}
 
       <div className="mt-6 grid gap-3 sm:grid-cols-3">
@@ -62,8 +63,8 @@ export function EscolhaPerfil({ usuarios, destino }: { usuarios: UsuarioLista[];
             onClick={() => escolherPapel(p.papel)}
             aria-pressed={papel === p.papel}
             disabled={entrando !== null}
-            className={`rounded-cartao border px-5 py-4 text-left shadow-cartao ${
-              papel === p.papel ? "border-marinho bg-marinho text-branco" : "border-linha-forte bg-marfim hover:border-marinho"
+            className={`rounded-cartao border px-5 py-4 text-left ${
+              papel === p.papel ? "border-marinho bg-marinho text-branco" : "border-borda bg-superficie hover:border-marinho"
             }`}
           >
             <span className="block font-titulo text-xl font-bold">{p.titulo}</span>
@@ -129,7 +130,7 @@ function BotaoNome({ nome, detalhe, carregando, desligado, onClick }: { nome: st
     <button
       onClick={onClick}
       disabled={desligado}
-      className="flex w-full items-center justify-between gap-3 rounded-controle border border-linha bg-fundo px-3 py-2 text-left hover:border-marinho disabled:opacity-60"
+      className="flex min-h-10 w-full items-center justify-between gap-3 rounded-controle border border-borda bg-superficie px-3 py-2 text-left hover:border-marinho hover:bg-superficie-2 disabled:opacity-60"
     >
       <span className="font-semibold">{carregando ? "Entrando…" : nome}</span>
       <span className="text-xs text-texto-2">{detalhe}</span>

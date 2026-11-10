@@ -18,8 +18,13 @@
     color: var(--color-marinho);
   }
   :focus-visible {
-    outline: 2px solid var(--color-bronze-escuro);
+    outline: 2px solid var(--color-marinho);
     outline-offset: 2px;
+  }
+  /* Títulos e números grandes em Libre Baskerville; o resto em Manrope */
+  h3 {
+    font-family: var(--font-texto);
+    font-weight: 700;
   }
 }
 

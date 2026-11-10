@@ -1,7 +1,7 @@
 "use client";
 // Prioridades do dia: a lista vem da nota; ✓ registra o que foi feito (tipo de atividade e comentário
 // obrigatórios, com o horário salvo) e ✗ pula o deal hoje. Cada marcação vai para a linha do tempo do lead.
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { pedir } from "@/lib/cliente";
 import { CONFIG } from "@/lib/config";
@@ -10,8 +10,14 @@ import { resumoPrioridades } from "@/lib/prioridades";
 import type { Papel, Prioridade } from "@/lib/tipos";
 import { useAvisos } from "./Avisos";
 import { BarraNota, IconeDeal } from "./Nota";
+import { Botao, classeBotao } from "./ui/Botao";
+import { AreaTexto, ErroFormulario } from "./ui/Campo";
+import { Etiqueta } from "./ui/Etiqueta";
+import { Icone } from "./ui/Icones";
+import { Seletor } from "./ui/Seletor";
+import { classeSuperficie, ListaDivisoria } from "./ui/Superficie";
 
-export function Prioridades({ itens, papel, somenteLeitura }: { itens: Prioridade[]; papel: Papel; somenteLeitura: boolean }) {
+export function Prioridades({ itens, papel, somenteLeitura, topo, className = "" }: { itens: Prioridade[]; papel: Papel; somenteLeitura: boolean; topo?: ReactNode; className?: string }) {
   const avisos = useAvisos();
   const [registrando, setRegistrando] = useState<string | null>(null);
   const [tipo, setTipo] = useState("");
@@ -65,10 +71,13 @@ export function Prioridades({ itens, papel, somenteLeitura }: { itens: Prioridad
   }
 
   return (
-    <section aria-labelledby="t-prioridades" className="rounded-cartao border border-linha-forte bg-marfim p-4 shadow-cartao">
-      <h2 id="t-prioridades" className="text-lg font-bold">
-        Prioridades do dia
-      </h2>
+    <section aria-labelledby="t-prioridades" className={`${classeSuperficie} flex flex-col p-4 ${className}`}>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h2 id="t-prioridades" className="text-lg font-bold">
+          Prioridades do dia
+        </h2>
+        {topo}
+      </div>
       <p className="mt-1 text-sm text-texto-2">
         {vendedor ? "Os seus deals que mais valem o contato hoje, pela nota." : "Deals do time que pedem ação: atendimento atrasado, lead novo de encaixe alto e em risco de esfriar."}
       </p>
@@ -76,40 +85,40 @@ export function Prioridades({ itens, papel, somenteLeitura }: { itens: Prioridad
         <span className="whitespace-nowrap font-semibold">
           {feitas} de {meta} feitas
         </span>
-        <div className="h-2 flex-1 overflow-hidden rounded-selo bg-trilho" role="progressbar" aria-valuemin={0} aria-valuemax={meta} aria-valuenow={feitas} aria-label="Prioridades feitas hoje">
+        <div className="h-1.5 flex-1 overflow-hidden rounded-selo bg-trilho" role="progressbar" aria-valuemin={0} aria-valuemax={meta} aria-valuenow={feitas} aria-label="Prioridades feitas hoje">
           <div className="h-full rounded-selo bg-dourado" style={{ width: `${Math.min(100, (feitas / meta) * 100)}%` }} />
         </div>
         {puladas ? <span className="whitespace-nowrap text-xs text-texto-2">{puladas === 1 ? "1 pulada" : `${puladas} puladas`}</span> : null}
       </div>
 
       {itens.length === 0 ? (
-        <p className="mt-4 rounded-controle border border-linha bg-fundo px-3 py-4 text-sm text-texto-2">
+        <p className="mt-4 rounded-controle bg-superficie-2 px-3 py-4 text-sm text-texto-2">
           {vendedor ? "Você não tem deals abertos para priorizar hoje." : "Nenhum deal do time pede ação hoje: sem atendimento atrasado, lead novo de encaixe alto ou deal em risco de esfriar."}{" "}
-          <Link href="/pipeline" className="font-semibold text-bronze-escuro underline">
+          <Link href="/pipeline" className="font-semibold text-marinho underline underline-offset-4">
             Ir para o Pipeline
           </Link>
         </p>
       ) : visiveis.length === 0 ? (
-        <div className="mt-4 rounded-controle border border-linha bg-fundo px-3 py-4 text-sm">
+        <div className="mt-4 rounded-controle bg-superficie-2 px-3 py-4 text-sm">
           <p className="font-semibold">
             Lista de hoje concluída: {feitas} ✓ e {puladas} ✗.
           </p>
           {somenteLeitura ? null : (
-            <button onClick={puxarMais} disabled={enviando} className="mt-3 rounded-controle border border-marinho px-3 py-2 font-semibold disabled:opacity-50">
+            <Botao nivel="primario" onClick={puxarMais} disabled={enviando} icone="mais" className="mt-3">
               Puxar mais 5
-            </button>
+            </Botao>
           )}
         </div>
       ) : (
-        <ol className="mt-4 grid gap-2">
-          {visiveis.map((item, i) => {
+        <ListaDivisoria className="mt-3 min-h-0 flex-1 overflow-y-auto pr-1">
+          {visiveis.map((item) => {
             const d = item.deal;
             const aberto = registrando === d.id;
             return (
-              <li key={d.id} className={`rounded-cartao border border-linha-forte bg-fundo p-3 ${saindo === d.id ? "animate-sair" : ""}`}>
+              <li key={d.id} className={`py-2.5 ${saindo === d.id ? "motion-safe:animate-sair" : ""}`}>
                 <div className="flex items-start gap-2">
                   <div className="min-w-0 flex-1">
-                    <Link href={`/painel?deal=${encodeURIComponent(d.id)}`} scroll={false} className="block font-semibold break-words hover:underline">
+                    <Link href={`/painel?deal=${encodeURIComponent(d.id)}`} scroll={false} title={d.nome} className="block truncate font-semibold hover:underline">
                       {d.nome}
                     </Link>
                     <p className="text-xs text-texto-2">
@@ -119,74 +128,84 @@ export function Prioridades({ itens, papel, somenteLeitura }: { itens: Prioridad
                     </p>
                   </div>
                   {/* Na lista do dia, o ícone só aparece como alerta (em risco ou esfriou); a explicação é o motivo da nota. */}
-                  {d.icone === "em_risco" || d.icone === "esfriou" ? <IconeDeal icone={d.icone} dias={d.diasDesdeAbertura} comRotulo /> : null}
+                  {d.icone === "em_risco" || d.icone === "esfriou" ? <IconeDeal icone={d.icone} dias={d.diasDesdeAbertura} /> : null}
                 </div>
                 {item.atendimentoAtrasado ? (
-                  <p className="mt-2 inline-block rounded-selo bg-aviso-fundo px-2 py-1 text-xs font-semibold text-bronze-escuro">Atendimento atrasado</p>
+                  <p className="mt-2">
+                    <Etiqueta tom="atencao" icone="relogio">
+                      Atendimento atrasado
+                    </Etiqueta>
+                  </p>
                 ) : null}
-                {item.motivo ? <p className="mt-2 text-sm text-texto-2">{item.motivo}</p> : null}
-                <div className="mt-2">
-                  <BarraNota score={d.score} faixa={d.faixaNota} />
-                </div>
+                {item.motivo ? (
+                  <p className="mt-1.5 line-clamp-2 text-sm text-texto-2" title={item.motivo}>
+                    {item.motivo}
+                  </p>
+                ) : null}
                 {item.puladoDiasSeguidos >= CONFIG.diasPuladoAlerta ? (
-                  <p className="mt-2 rounded-controle bg-aviso-fundo px-2 py-1 text-xs text-bronze-escuro">
-                    Pulado {item.puladoDiasSeguidos} dias seguidos. Requalificar ou encerrar?
+                  <p className="mt-2 flex items-center gap-2 text-xs text-tom-atencao-texto">
+                    <Etiqueta tom="atencao" icone="alerta">
+                      Pulado {item.puladoDiasSeguidos} dias seguidos
+                    </Etiqueta>
+                    Requalificar ou encerrar?
                   </p>
                 ) : null}
 
+                {somenteLeitura || aberto ? (
+                  <div className="mt-2">
+                    <BarraNota score={d.score} faixa={d.faixaNota} />
+                  </div>
+                ) : null}
                 {somenteLeitura ? null : aberto ? (
-                  <div className="mt-3 grid gap-2 border-t border-linha pt-3">
-                    <label className="text-xs font-semibold">
-                      O que foi feito
-                      <select value={tipo} onChange={(e) => setTipo(e.target.value)} autoFocus className="mt-1 block w-full rounded-controle border border-linha-forte bg-fundo px-2 py-2 text-sm font-normal">
-                        <option value="">Escolha o tipo de atividade</option>
-                        {CONFIG.tiposAtividade.map((t) => (
-                          <option key={t.codigo} value={t.codigo}>
-                            {t.rotulo}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                    <label className="text-xs font-semibold">
-                      Comentário
-                      <textarea
-                        value={comentario}
-                        maxLength={280}
-                        rows={2}
-                        onChange={(e) => setComentario(e.target.value)}
-                        placeholder="Ex.: pediu a proposta até sexta"
-                        className="mt-1 block w-full rounded-controle border border-linha-forte px-2 py-2 text-sm font-normal"
+                  <div className="mt-3 grid gap-2 rounded-controle bg-superficie-2 p-3">
+                    <div className="grid gap-1">
+                      <span className="text-xs font-semibold" aria-hidden>
+                        O que foi feito
+                      </span>
+                      <Seletor
+                        rotulo="O que foi feito"
+                        valor={tipo}
+                        onMudar={setTipo}
+                        textoVazio="Escolha o tipo de atividade"
+                        autoFoco
+                        className="w-full"
+                        opcoes={CONFIG.tiposAtividade.map((t) => ({ valor: t.codigo, rotulo: t.rotulo }))}
                       />
+                    </div>
+                    <label className="grid gap-1 text-xs font-semibold">
+                      Comentário
+                      <AreaTexto value={comentario} maxLength={280} rows={2} onChange={(e) => setComentario(e.target.value)} placeholder="Ex.: pediu a proposta até sexta" />
                     </label>
                     <p className="text-xs text-texto-2">A data e a hora são salvas junto.</p>
-                    {erro ? (
-                      <p role="alert" className="rounded-controle border border-erro bg-erro-fundo px-2 py-1 text-xs text-erro">
-                        {erro}
-                      </p>
-                    ) : null}
+                    <ErroFormulario texto={erro} />
                     <div className="flex justify-end gap-2">
-                      <button
+                      <Botao
+                        nivel="secundario"
+                        tamanho="compacto"
                         onClick={() => {
                           setRegistrando(null);
                           setTipo("");
                           setComentario("");
                           setErro(null);
                         }}
-                        className="rounded-controle border border-linha-forte px-3 py-2 text-sm"
                       >
                         Cancelar
-                      </button>
-                      <button onClick={() => marcar(d.id, "feita")} disabled={enviando} className="rounded-controle bg-marinho px-3 py-2 text-sm font-semibold text-branco disabled:opacity-50">
+                      </Botao>
+                      <Botao nivel="primario" tamanho="compacto" onClick={() => marcar(d.id, "feita")} disabled={enviando}>
                         {enviando ? "Registrando…" : "Registrar"}
-                      </button>
+                      </Botao>
                     </div>
                   </div>
                 ) : (
-                  <div className="mt-3 flex justify-end gap-2">
-                    <button onClick={() => marcar(d.id, "pulada")} disabled={enviando} className="rounded-controle border border-linha-forte px-3 py-2 text-sm font-semibold disabled:opacity-50">
-                      ✗ Pular hoje
-                    </button>
+                  <div className="mt-2 flex flex-wrap items-center justify-end gap-x-3 gap-y-2">
+                    <div className="min-w-32 flex-1">
+                      <BarraNota score={d.score} faixa={d.faixaNota} />
+                    </div>
+                    <Botao nivel="secundario" tamanho="compacto" icone="x" onClick={() => marcar(d.id, "pulada")} disabled={enviando}>
+                      Pular hoje
+                    </Botao>
                     <button
+                      type="button"
                       onClick={() => {
                         // Sempre limpo: o tipo e o comentário de um item não podem ir para outro deal.
                         setTipo("");
@@ -195,16 +214,17 @@ export function Prioridades({ itens, papel, somenteLeitura }: { itens: Prioridad
                         setErro(null);
                       }}
                       disabled={enviando}
-                      className={`rounded-controle px-3 py-2 text-sm font-semibold disabled:opacity-50 ${i === 0 ? "bg-marinho text-branco" : "border border-marinho"}`}
+                      className={classeBotao("primario", "compacto")}
                     >
-                      ✓ Feito
+                      <Icone nome="check" />
+                      Feito
                     </button>
                   </div>
                 )}
               </li>
             );
           })}
-        </ol>
+        </ListaDivisoria>
       )}
       {pendentes.length > visiveis.length ? <p className="mt-3 text-xs text-texto-2">Próximos: {pendentes.length - visiveis.length} na fila.</p> : null}
     </section>

@@ -85,18 +85,32 @@ export function fraseIcone(i: Icone, dias: number | null): string {
   return `Aberto há ${dias ?? "muitos"} dias, mais que qualquer deal já fechado (${CONFIG.icone.diasMaxRisco}). Requalifique ou encerre.`;
 }
 
-const dinheiroFmt = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+// Moeda: o formatador único do CRM. Os valores do dataset são mostrados em reais, com os mesmos números
+// (decisão do Leandro, adendo à O-30): troca só o símbolo e o formato, sem conversão de câmbio.
+export const SIMBOLO_MOEDA = "R$";
+export const NOME_MOEDA = "reais";
 const inteiroFmt = new Intl.NumberFormat("pt-BR");
 
+/** R$ 5.482 (inteiro, sem centavos). */
 export function dinheiro(v: number | null | undefined): string {
-  return v === null || v === undefined ? "—" : dinheiroFmt.format(v);
+  return v === null || v === undefined ? "—" : `${SIMBOLO_MOEDA} ${inteiroFmt.format(Math.round(v))}`;
 }
 
-/** US$ 1,10 mi / US$ 95 mil / US$ 3.525 */
+/** R$ 1,1 mi / R$ 95 mil / R$ 3.525 */
 export function dinheiroCurto(v: number): string {
-  if (v >= 1_000_000) return `US$ ${(v / 1_000_000).toLocaleString("pt-BR", { maximumFractionDigits: 2 })} mi`;
-  if (v >= 100_000) return `US$ ${Math.round(v / 1000).toLocaleString("pt-BR")} mil`;
+  if (v >= 1_000_000) return `${SIMBOLO_MOEDA} ${(v / 1_000_000).toLocaleString("pt-BR", { maximumFractionDigits: 2 })} mi`;
+  if (v >= 100_000) return `${SIMBOLO_MOEDA} ${Math.round(v / 1000).toLocaleString("pt-BR")} mil`;
   return dinheiro(v);
+}
+
+/** Valor em milhões (receita anual da empresa): R$ 12,5 mi. */
+export function dinheiroMilhoes(v: number): string {
+  return `${SIMBOLO_MOEDA} ${v.toLocaleString("pt-BR")} mi`;
+}
+
+/** Textos que já chegam prontos do banco e do score ("US$ 3300", "US$ 194.957"): passam para o formato do CRM. */
+export function moedaNoTexto(t: string): string {
+  return t.replace(/US\$ ?(\d{1,3}(?:\.\d{3})+|\d+)/g, (_, n: string) => dinheiro(Number(n.replace(/\./g, ""))));
 }
 
 export function inteiro(v: number): string {

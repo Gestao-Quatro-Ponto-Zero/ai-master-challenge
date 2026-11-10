@@ -1,6 +1,7 @@
 import "server-only";
 // Repositório no banco (Supabase). Leitura: view core_deals_visao e tabelas, filtradas pelo perfil.
 // Escrita: só pelas functions do banco, com o usuário do perfil e o correlation_id do servidor.
+import { moedaNoTexto } from "@/lib/calculos";
 import { CONFIG } from "@/lib/config";
 import { HORAS_DESFAZER_LOTE, type LoteBruto, type TipoLote } from "@/lib/lotes";
 import { explicacaoDoItem, grupoPrioridade } from "@/lib/prioridades";
@@ -206,9 +207,9 @@ export async function detalheDeal(id: string, u: Usuario): Promise<DealDetalhe> 
   return {
     deal,
     componentes: comp.map((c) => ({ grupo: c.grupo, nome: c.componente, pontos: Number(c.pontos), maximo: c.maximo === null ? null : Number(c.maximo) })),
-    motivos: motivos.map((m) => m.texto),
+    motivos: motivos.map((m) => moedaNoTexto(m.texto)),
     linhaDoTempo: tempo.map((t) => ({
-      data: t.data_negocio, momento: t.momento, descricao: t.descricao, autor: t.autor, desfeito: t.desfeito,
+      data: t.data_negocio, momento: t.momento, descricao: moedaNoTexto(t.descricao), autor: t.autor, desfeito: t.desfeito,
       tipo: tipos.has(t.tipo as EventoLinhaDoTempo["tipo"]) ? (t.tipo as EventoLinhaDoTempo["tipo"]) : "criado",
     })),
     comentarios: coment.map<Comentario>((c) => ({
@@ -473,7 +474,7 @@ export async function detalheConta(nome: string, noEscopo: (d: DealVisao) => boo
     primeiraCompra: ganhos[0]?.closeDate ?? null,
     ultimaCompra: ganhos.at(-1)?.closeDate ?? null,
     padrao: p
-      ? { intervaloTipicoDias: p.intervalo_tipico_dias, mesHabitual: p.mes_habitual ? (MESES[p.mes_habitual - 1] ?? null) : null, proximaCompra: p.proxima_compra_esperada, explicacao: p.explicacao }
+      ? { intervaloTipicoDias: p.intervalo_tipico_dias, mesHabitual: p.mes_habitual ? (MESES[p.mes_habitual - 1] ?? null) : null, proximaCompra: p.proxima_compra_esperada, explicacao: p.explicacao ? moedaNoTexto(p.explicacao) : null }
       : null,
     // Os totais históricos são da empresa inteira; os deals abertos seguem o escopo do perfil.
     abertos: abertos.filter(noEscopo).sort((a, b) => (b.score ?? -1) - (a.score ?? -1) || (b.valorEsperado ?? 0) - (a.valorEsperado ?? 0)),

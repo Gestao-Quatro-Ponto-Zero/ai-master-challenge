@@ -7,7 +7,7 @@ export default function Carregando() {
       <Esqueleto className="h-10 w-full" />
       <div className="grid gap-4 md:grid-cols-2">
         {[0, 1].map((c) => (
-          <div key={c} className="grid gap-2 rounded-cartao border border-linha bg-marfim p-3">
+          <div key={c} className="grid gap-2 rounded-cartao border border-borda bg-superficie-2 p-3">
             <Esqueleto className="h-6 w-1/2" />
             {[0, 1, 2, 3].map((i) => (
               <Esqueleto key={i} className="h-32" />

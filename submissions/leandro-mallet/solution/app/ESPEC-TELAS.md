@@ -43,7 +43,7 @@ Legenda: **D** = vem do dataset · **C** = calculado · **N** = dado novo do CRM
 | ID do deal | D | `sales_pipeline.opportunity_id` → `core_deals.opportunity_id` | Só em "Ver detalhes". Deal criado no CRM recebe um id de 8 caracteres (A–Z, 0–9), no mesmo formato |
 | Produto | D | `sales_pipeline.product` → `core_deals.produto_nome` → `core_produtos.nome` | "GTXPro" já corrigido para "GTX Pro" na limpeza |
 | Série do produto | D | `products.series` → `core_produtos.serie` | Filtro e modal |
-| Preço de tabela | D | `products.sales_price` → `core_produtos.preco` | Inteiro em dólar (BD-05) |
+| Preço de tabela | D | `products.sales_price` → `core_produtos.preco` | Inteiro (BD-05); mostrado em reais, com os mesmos números (P15) |
 | Empresa | D | `sales_pipeline.account` → `core_deals.conta_nome` | Nula em 1.425 abertos: mostra "Sem empresa" e oferece "Preencher empresa" |
 | Setor | D | `accounts.sector` → `core_contas.setor` | Mostrado em português na tela (ex.: "varejo" para retail); o valor gravado continua o do dataset |
 | Porte | C | faixa de `accounts.employees` → `core_contas.funcionarios`: pequena (até 1.428), média (até 4.540) e grande | Tercis calculados na limpeza. **[P3]** Porte por funcionários (proposta) ou por receita (`accounts.revenue`)? |
@@ -107,7 +107,7 @@ Requisitos do Leandro para esta tela:
 │ [ Filtrar: ex. "nota alta sem contato há 15 dias"                 ]   Ordenar: Nota ▾   [Abrir o próximo deal] │
 │ Entendi assim:  (Nota ≥ 70 ×)  (Sem contato há 15+ dias ×)                     Limpar filtros        │
 ├──────────────────────────────────────────┬──────────────────────────────────────────┤
-│ Prospecção · 18 deals · US$ 24.300       │ Em negociação · 94 deals · US$ 151.200   │
+│ Prospecção · 18 deals · R$ 24.300       │ Em negociação · 94 deals · R$ 151.200   │
 │ ┌ cartão ┐                              │ ┌ cartão ┐                               │
 │ … 50 por coluna · Mostrar mais          │ … 50 por coluna · Mostrar mais           │
 └──────────────────────────────────────────┴──────────────────────────────────────────┘
@@ -127,7 +127,7 @@ Requisitos do Leandro para esta tela:
 │ Maria Souza, Compras        (ou + Adicionar contato)│ ② contato principal
 │ ███████████████░░░░░░  72                          │ ③ barra da nota (cor pela faixa)
 │ Aberto em 14/11/2017 · 47 dias  (ou Não iniciado)  │ ④ data de abertura e idade
-│ US$ 4.821 esperado          [ Em negociação ▾ ]    │ ⑤ valor e seletor de estágio
+│ R$ 4.821 esperado          [ Em negociação ▾ ]    │ ⑤ valor e seletor de estágio
 │ Anna Snelling                       #urgente  +2   │ vendedor (manager e admin) e até 2 tags
 └────────────────────────────────────────────────────┘
 ```
@@ -154,7 +154,7 @@ O que os dados mostram (dados limpos e `analysis/findings.md`):
 
 | Ícone | Critério | Deals abertos que caem nele hoje | Frase ao passar o mouse |
 |---|---|---|---|
-| 🔥 **Super hot** | Em negociação **entre 15 e 106 dias** (passou da janela em que os perdidos caem e está dentro do ciclo de 90% dos ganhos). Sem critério de ticket desde a 0030 (O-24): o valor não entra na nota (decisões 28 e 29) | **150** (7% dos abertos); com o antigo corte de US$ 3.000 eram 66 | "Na fase em que mais deals viram ganho." |
+| 🔥 **Super hot** | Em negociação **entre 15 e 106 dias** (passou da janela em que os perdidos caem e está dentro do ciclo de 90% dos ganhos). Sem critério de ticket desde a 0030 (O-24): o valor não entra na nota (decisões 28 e 29) | **150** (7% dos abertos); com o antigo corte de R$ 3.000 eram 66 | "Na fase em que mais deals viram ganho." |
 | ⚠ **Em risco de esfriar** | Em negociação **entre 107 e 138 dias**: já passou do tempo em que 90% dos ganhos fecharam e se aproxima do maior ciclo já visto | **141** (7% dos abertos) | "Aberto há 120 dias. 90% dos ganhos fecham em até 106 dias." |
 | ❄ **Esfriou** (ícone cinza, mais discreto) | Em negociação **há mais de 138 dias**: mais tempo que qualquer deal já fechado | **1.291** (62% dos abertos) | "Aberto há 210 dias, mais que qualquer deal já fechado (138). Requalifique ou encerre." |
 | sem ícone | Prospecção (sem data de abertura) e negociação com menos de 15 dias | 500 + 7 | — |
@@ -171,7 +171,7 @@ Clicar no cartão abre um modal sobre o Pipeline (`?deal=ID` no link, que abre d
 ```
 ┌ Hottechi · GTX Pro  ✎                                   [🔥 Super hot]      × ┐
 │ Maria Souza, Compras · maria@… · (11) …   ✎   │  Estágio: [ Em negociação ▾ ]   │
-│ Anna Snelling · time de Dustin Brinkmann · Central │  US$ 4.821 esperado         │
+│ Anna Snelling · time de Dustin Brinkmann · Central │  R$ 4.821 esperado         │
 ├───────────────────────────────────────────────┬─────────────────────────────────┤
 │ LINHA DO TEMPO                                │ POR QUE A NOTA É 72              │
 │ ●── 14/11/2017  Aberto (entrou em negociação) │ ███████████████░░░░ 72 (alta)    │
@@ -288,13 +288,13 @@ Regras do Leandro (os números quem fecha é o score, #3):
 ┌ topo ───────────────────────────────────────────────────────────────────────────────┐
 │ [ Filtrar: ex. "varejo grande ganhos em 2017"                     ]   [Importar CSV]  [Novo lead] │
 │ Entendi assim: (Setor: varejo ×) (Porte: grande ×) (Estágio: Ganho ×) (Fechou em 2017 ×)        │
-│ 1.204 leads · US$ 2,1 mi fechados                                                     │
+│ 1.204 leads · R$ 2,1 mi fechados                                                     │
 ├──┬──────────────────────┬──────────────┬───────────────┬──────┬────────────┬────────┬────────┬──────┤
 │☐ │ Lead                 │ Vendedor     │ Estágio       │ Nota │ Valor      │Abertura│ Últ.   │ Tags │
 │  │ nome · contato       │              │               │      │            │        │ contato│ 💬 n │
 ├──┼──────────────────────┼──────────────┼───────────────┼──────┼────────────┼────────┼────────┼──────┤
-│☐ │ Hottechi · GTX Pro   │ Anna Snelling│ Em negociação │ 82   │ US$ 3.064 e│ 14/11  │ há 3 d │ #urg │
-│☐ │ Cancity · MG Special │ Moses Frase  │ Ganho         │  —   │ US$ 55     │ 20/10  │ —      │      │
+│☐ │ Hottechi · GTX Pro   │ Anna Snelling│ Em negociação │ 82   │ R$ 3.064 e│ 14/11  │ há 3 d │ #urg │
+│☐ │ Cancity · MG Special │ Moses Frase  │ Ganho         │  —   │ R$ 55     │ 20/10  │ —      │      │
 └──┴──────────────────────┴──────────────┴───────────────┴──────┴────────────┴────────┴────────┴──────┘
  50 por página · Mostrar mais
  ── ao marcar linhas, sobe uma barra: "12 selecionados · Selecionar os 1.204 do filtro · [Aplicar tag] [Comentar] [Mais ▾]"
@@ -349,7 +349,7 @@ Requisito do Leandro: uma aba **Contas** dentro de Leads, ao lado da lista de le
 | Empresa-mãe | D | `accounts.subsidiary_of` (15 são subsidiárias) |
 | Deals abertos | C | deals abertos da empresa (até 14 hoje) |
 | Compras | C | deals ganhos da empresa (de 23 a 115; mediana 47) |
-| Receita ganha | C | soma de `close_value` dos ganhos (de US$ 51.632 a US$ 341.455) |
+| Receita ganha | C | soma de `close_value` dos ganhos (de R$ 51.632 a R$ 341.455) |
 | Padrão | N | selo **Na janela de compra** / **Fora da janela** / **Sem padrão**, com o bonus atual (0 a 20). Antes da primeira rodada: "Calculado no domingo" |
 
 **Ficha da conta** (modal, no mesmo padrão do modal do deal):
@@ -410,16 +410,16 @@ Requisitos do Leandro para esta tela:
 
 ```
 ┌ topo: G4 Sight · Painel | Pipeline | Leads · Anna Snelling, vendedora · Trocar perfil ───────────────┐
-│ Painel · dados até 31/12/2017                                         (moeda: US$, [P15])           │
+│ Painel · dados até 31/12/2017                                         (moeda: R$, [P15])           │
 ├───────────────────────────────────────────────────────────────────────┬─────────────────────────────┤
 │ ┌Leads novos ┐ ┌Em negociação┐ ┌Fechamentos ┐ ┌Conversão   ┐          │ PRIORIDADES DO DIA          │
 │ │ 0 hoje     │ │ 1.589       │ │ 19 hoje    │ │ 78,7%      │          │ 3 de 10 feitas  ▓▓▓░░░░░░░  │
-│ │ 117 em 30 d│ │ US$ 3,9 mi  │ │ 498 em 30 d│ │ em 30 dias │          │ ┌ Hottechi · GTX Pro    82 ┐│
-│ │ ↓ 57%      │ │             │ │ ↑ 23%      │ │ ↑ 25 p.p. ⓘ│          │ │ ⚠ em risco · US$ 4.821   ││
+│ │ 117 em 30 d│ │ R$ 3,9 mi  │ │ 498 em 30 d│ │ em 30 dias │          │ ┌ Hottechi · GTX Pro    82 ┐│
+│ │ ↓ 57%      │ │             │ │ ↑ 23%      │ │ ↑ 25 p.p. ⓘ│          │ │ ⚠ em risco · R$ 4.821   ││
 │ └────────────┘ └─────────────┘ └────────────┘ └────────────┘          │ │        [✓ Feito] [✗ Pular]││
 │ ┌Receita     ┐ ┌Pipeline     ┐ ┌Total de    ┐ ┌Em risco de ┐          │ └──────────────────────────┘│
 │ │ ganha 30 d │ │ aberto      │ │ leads      │ │ esfriar    │          │ ┌ item 2 ┐                  │
-│ │ US$ 1,10 mi│ │ US$ 4,97 mi │ │ 8.800      │ │ 141        │          │ ┌ item 3 ┐                  │
+│ │ R$ 1,10 mi│ │ R$ 4,97 mi │ │ 8.800      │ │ 141        │          │ ┌ item 3 ┐                  │
 │ │ ↑ 17%      │ │             │ │            │ │            │          │ ┌ item 4 ┐                  │
 │ └────────────┘ └─────────────┘ └────────────┘ └────────────┘          │ ┌ item 5 ┐                  │
 │                                                                       │ Próximos: 5 na fila          │
@@ -454,11 +454,11 @@ Números conferidos nos dados limpos (`data/clean/deals.csv`) para os três perf
 | Cartão | Tipo | Origem e cálculo | Admin (todos) | Manager (Dustin Brinkmann) | Vendedora (Anna Snelling) |
 |---|---|---|---|---|---|
 | **Leads novos**: hoje e 30 dias, com variação | C | deals com `data_abertura` (de `engage_date`) no dia ou na janela, em qualquer estágio de hoje. Os Prospecting não têm data e não entram. Deals criados no CRM entram pela `data_abertura` | 0 hoje · 117 em 30 d · ↓ 57% (275 antes) | 0 · 18 · ↓ 40% | 0 · 7 · ↓ 12% |
-| **Em negociação** | C | `estagio = 'Engaging'`: quantidade e soma do valor | 1.589 · US$ 3,89 mi | 193 · US$ 0,28 mi | 57 · US$ 95 mil |
-| **Fechamentos**: hoje e 30 dias, quantidade e valor, com variação | D | `estagio = 'Won'` com `close_date` no dia ou na janela; valor = soma de `close_value` | 19 (US$ 41.764) hoje · 498 (US$ 1,10 mi) em 30 d · ↑ 23% | 6 · 91 · ↑ 36% | 2 · 26 · ↑ 18% |
+| **Em negociação** | C | `estagio = 'Engaging'`: quantidade e soma do valor | 1.589 · R$ 3,89 mi | 193 · R$ 0,28 mi | 57 · R$ 95 mil |
+| **Fechamentos**: hoje e 30 dias, quantidade e valor, com variação | D | `estagio = 'Won'` com `close_date` no dia ou na janela; valor = soma de `close_value` | 19 (R$ 41.764) hoje · 498 (R$ 1,10 mi) em 30 d · ↑ 23% | 6 · 91 · ↑ 36% | 2 · 26 · ↑ 18% |
 | **Conversão em 30 dias**, com variação em pontos | C | Won ÷ (Won + Lost) com `close_date` na janela | 78,7% · ↑ 25,0 p.p. (53,7% antes) | 86,7% · ↑ 33,9 p.p. | 86,7% · ↑ 33,0 p.p. |
-| **Receita ganha em 30 dias**, com variação | D | soma de `close_value` dos Won na janela (inteiro, BD-05) | US$ 1.101.152 · ↑ 17% | US$ 142.110 · ↑ 49% | US$ 36.454 · ↑ 74% |
-| **Pipeline aberto** (valor) | C | soma de `score_deals.valor_esperado` dos abertos; **até o score existir**, soma do preço de tabela (`core_produtos.preco`), com o rótulo "pelo preço de tabela" | US$ 4.966.215 | US$ 585.616 | US$ 173.259 |
+| **Receita ganha em 30 dias**, com variação | D | soma de `close_value` dos Won na janela (inteiro, BD-05) | R$ 1.101.152 · ↑ 17% | R$ 142.110 · ↑ 49% | R$ 36.454 · ↑ 74% |
+| **Pipeline aberto** (valor) | C | soma de `score_deals.valor_esperado` dos abertos; **até o score existir**, soma do preço de tabela (`core_produtos.preco`), com o rótulo "pelo preço de tabela" | R$ 4.966.215 | R$ 585.616 | R$ 173.259 |
 | **Total de leads** | D | todos os deals do perfil, em qualquer estágio | 8.800 | 1.583 | 448 |
 | **Em risco de esfriar** (no lugar de "atendimentos no momento") | C | deals com o ícone ⚠ da 2.4 (em negociação há 107–138 dias); a linha secundária mostra os "esfriou" | 141 · 1.291 esfriaram | 3 · 190 | 1 · 56 |
 
@@ -472,10 +472,10 @@ Números conferidos nos dados limpos (`data/clean/deals.csv`) para os três perf
 
 | Barra | Quantidade | Valor (admin) | Origem |
 |---|---|---|---|
-| Prospecção | 500 | US$ 1.073.986 (preço de tabela) | `estagio = 'Prospecting'` |
-| Em negociação | 1.589 | US$ 3.892.229 (preço de tabela; depois, valor esperado) | `estagio = 'Engaging'` |
-| Ganho | 4.238 | US$ 10.005.534 (`close_value`) | `estagio = 'Won'` |
-| **Perdido** (separado por uma linha, à parte) | 2.473 | US$ 5.946.468 (preço de tabela do que se perdeu) | `estagio = 'Lost'` |
+| Prospecção | 500 | R$ 1.073.986 (preço de tabela) | `estagio = 'Prospecting'` |
+| Em negociação | 1.589 | R$ 3.892.229 (preço de tabela; depois, valor esperado) | `estagio = 'Engaging'` |
+| Ganho | 4.238 | R$ 10.005.534 (`close_value`) | `estagio = 'Won'` |
+| **Perdido** (separado por uma linha, à parte) | 2.473 | R$ 5.946.468 (preço de tabela do que se perdeu) | `estagio = 'Lost'` |
 
 - **Alternância Quantidade | Valor**, e cada barra mostra o número no fim.
 - Tocar numa barra abre Leads (ou o Pipeline, para os abertos) filtrado naquele estágio.
@@ -656,7 +656,7 @@ Esta seção atualiza o modelo de [DESENHO-ACOES.md](DESENHO-ACOES.md). Segue BD
 | `core_contas` | **muda** | `nome`, `setor`, `ano_fundacao`, `receita_milhoes` numeric (é medida, não dinheiro do CRM), `funcionarios`, `porte` (pequena/media/grande, gravado na carga a partir dos tercis), `pais`, `empresa_mae_nome` FK |
 | `core_deals` | **muda** | as colunas já desenhadas, mais: `nome` (1–120; preenchido na migração); `contato_id` FK `core_contatos`; `motivo_perda` e `motivo_perda_detalhe` (se a [P14] aprovar); `close_value` **int**; `data_abertura` date (= `engage_date` na carga; data do negócio quando passa para Em negociação); `ultimo_contato_em` date (mantida por gatilho); `criado_em` timestamptz (nulo nos 8.800 do dataset); `criado_por` FK `config_usuarios`; `importacao_id` FK `system_importacoes` (nulo fora de importação) |
 | `config_usuarios` | já desenhada | sem mudança |
-| `config_parametros` | já desenhada | novas chaves: `data_referencia`, `faixas_nota`, `limite_lote`, `max_tags_por_deal`, `icone_cortes` (15, 106 e 138 dias; US$ 3.000), `dias_sem_contato_risco` (14), `prioridades_visiveis` (5), `meta_prioridades_dia` (10), `dias_pulado_alerta` (3) |
+| `config_parametros` | já desenhada | novas chaves: `data_referencia`, `faixas_nota`, `limite_lote`, `max_tags_por_deal`, `icone_cortes` (15, 106 e 138 dias; R$ 3.000), `dias_sem_contato_risco` (14), `prioridades_visiveis` (5), `meta_prioridades_dia` (10), `dias_pulado_alerta` (3) |
 | `config_tags` | **nova** | `id`, `nome` (único sem diferenciar maiúsculas), `cor_token` (um dos 6 tokens), `ativa`, `criada_por` FK `config_usuarios`, `criada_em` |
 | `score_execucoes`, `score_deals`, `score_componentes`, `score_motivos` | já desenhadas | `score_deals.valor_esperado` **int** |
 | `acao_registros` | **muda** | as já desenhadas, mais `data_negocio` date (relógio do CRM, [P6]); `acao` passa a aceitar também `prioridade_feita` e `prioridade_pulada` (Painel, 4.5) |
@@ -779,9 +779,9 @@ Todas as de escrita recebem `p_usuario_id` e `p_correlation_id`, fazem `set_conf
 | P10 | Quem pode reabrir deal encerrado? | Manager e admin (já estava em aberto) |
 | P11 | Nome do deal: campo editável preenchido na migração como "Empresa · Produto" (ou "Sem empresa · Produto")? | Sim |
 | P12 | Contato: tabela nova de contatos da empresa, com um contato principal por deal, que nasce vazio ("+ Adicionar contato")? | Sim; o contato pode existir sem empresa enquanto o deal não tiver empresa |
-| P13 | Ícones: super hot (15–106 dias e ticket ≥ US$ 3.000: 66 deals), em risco (107–138 dias: 141) e esfriou (> 138 dias: 1.291, ícone cinza)? Ou um ícone de risco só, juntando os dois últimos (1.432 deals, 69% dos abertos)? | Três ícones, para o alerta de risco continuar raro |
+| P13 | Ícones: super hot (15–106 dias e ticket ≥ R$ 3.000: 66 deals), em risco (107–138 dias: 141) e esfriou (> 138 dias: 1.291, ícone cinza)? Ou um ícone de risco só, juntando os dois últimos (1.432 deals, 69% dos abertos)? | Três ícones, para o alerta de risco continuar raro |
 | P14 | Ao encerrar como Perdido (ou descartar), pedir o motivo? | Sim, lista curta obrigatória (preço, concorrente, sem orçamento, sem resposta, outro + texto) |
-| P15 | "Em reais": o dataset está em dólar, e converter exigiria uma cotação que não existe nos dados. Manter US$? | Manter US$ em todo o CRM; se quiser reais, usar uma cotação fixa declarada em `config_parametros` e mostrar "cotação de referência" na tela |
+| P15 | "Em reais": o dataset está em dólar, e converter exigiria uma cotação que não existe nos dados. Manter US$? | **Decidido pelo Leandro: reais, com os mesmos números, sem conversão.** O CRM mostra "R$" em todas as telas (formatador único `dinheiro` em `src/lib/calculos.ts`) |
 | P16 | Trocar "atendimentos no momento" (não existe no dataset) por "Em risco de esfriar"? | Sim; "Contatos registrados hoje" entra depois, quando houver uso |
 | P17 | Prioridades do dia do manager e do admin: os deals do escopo em risco ou super hot, por valor? | Sim; para o vendedor, a lista vem da nota |
 | P18 | ✓ = "trabalhei hoje" e ✗ = "pulei hoje", sem mudar o deal? O ✓ conta como contato? Alerta depois de 3 dias pulado? | Sim; o ✓ não conta como contato (há "Liguei" no item); alerta depois de 3 dias |

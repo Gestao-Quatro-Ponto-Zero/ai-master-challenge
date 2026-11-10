@@ -34,7 +34,7 @@ export default async function Pagina({ searchParams }: { searchParams: Promise<P
   const total = colunas.reduce((a, c) => a + c.total, 0);
 
   return (
-    <div className="grid gap-4">
+    <div className="grid grid-cols-1 gap-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <h1 className="text-2xl font-bold">Pipeline</h1>
         <FiltrosEquipe filtros={filtros} />

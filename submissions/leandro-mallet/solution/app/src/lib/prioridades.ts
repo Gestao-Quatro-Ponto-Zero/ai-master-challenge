@@ -2,6 +2,7 @@
 // A ordem é a mesma do banco (migration 0030, acao_montar_prioridades), para todos os papéis:
 //   1) atendimento atrasado; 2) lead novo (até 1 dia, sem contato) com FIT >= 75; 3) os demais;
 //   em cada grupo, maior nota, depois maior HEAT, depois o código do deal. O valor esperado não entra.
+import { moedaNoTexto } from "./calculos";
 import { CONFIG } from "./config";
 import type { DealVisao, Prioridade } from "./tipos";
 
@@ -67,5 +68,5 @@ export function entraNaListaDoGestor(d: Pick<DealVisao, "icone">, grupo: 0 | 1 |
 /** Linha de explicação do item: o 1º motivo da nota (score_motivos, ordem 1). */
 export function explicacaoDoItem(motivos: readonly string[] | undefined): string | null {
   const m = motivos?.[0]?.trim();
-  return m ? m : null;
+  return m ? moedaNoTexto(m) : null;
 }

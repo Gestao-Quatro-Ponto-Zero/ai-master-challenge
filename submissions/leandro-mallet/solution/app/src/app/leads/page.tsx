@@ -42,13 +42,13 @@ export default async function Pagina({ searchParams }: { searchParams: Promise<P
   const usuario = await exigirUsuario("/leads");
   const contas = p.aba === "contas";
   const etiquetas = lerEtiquetas(p.f);
-  const aba = (ativa: boolean) => `border-b-2 px-4 py-2 text-sm font-semibold ${ativa ? "border-marinho text-marinho" : "border-fundo text-texto-2 hover:text-marinho"}`;
+  const aba = (ativa: boolean) => `-mb-px flex h-10 items-center border-b-2 px-4 text-sm font-semibold ${ativa ? "border-marinho text-marinho" : "border-transparent text-texto-2 hover:text-marinho"}`;
 
   const cabecalho = (
     <div className="flex flex-wrap items-end justify-between gap-3">
       <div>
         <h1 className="text-2xl font-bold">Leads</h1>
-        <nav aria-label="Abas de Leads" className="mt-2 flex gap-1 border-b border-linha">
+        <nav aria-label="Abas de Leads" className="mt-2 flex gap-1 border-b border-borda">
           <Link href="/leads" aria-current={contas ? undefined : "page"} className={aba(!contas)}>
             Leads
           </Link>
@@ -64,7 +64,7 @@ export default async function Pagina({ searchParams }: { searchParams: Promise<P
     const ordem = ORDENS_CONTAS.find((o) => o.valor === p.ordem)?.valor ?? "receita";
     const [lista, contexto] = await Promise.all([buscarContas(juntar(etiquetas), ordem), contextoFiltro("contas", usuario)]);
     return (
-      <div className="grid gap-4">
+      <div className="grid grid-cols-1 gap-4">
         {cabecalho}
         <div className="flex flex-wrap items-start gap-3">
           <FiltroLivre contexto={contexto} etiquetas={etiquetas} exemplo="varejo com deal aberto" />
@@ -90,7 +90,7 @@ export default async function Pagina({ searchParams }: { searchParams: Promise<P
   const leitura = somenteLeitura();
 
   return (
-    <div className="grid gap-4">
+    <div className="grid grid-cols-1 gap-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         {cabecalho}
         <div className="flex flex-wrap items-center gap-3">

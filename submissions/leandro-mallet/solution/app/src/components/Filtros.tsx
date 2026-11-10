@@ -5,6 +5,10 @@ import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { codificar, type Etiqueta } from "@/lib/filtro/etiquetas";
 import { interpretar, type Contexto } from "@/lib/filtro/interpretar";
+import { Botao } from "./ui/Botao";
+import { Campo } from "./ui/Campo";
+import { EtiquetaRemovivel } from "./ui/Etiqueta";
+import { Seletor as SeletorUi } from "./ui/Seletor";
 
 function useLink() {
   const params = useSearchParams();
@@ -39,62 +43,45 @@ export function FiltroLivre({ contexto, etiquetas, exemplo }: { contexto: Contex
         <label className="sr-only" htmlFor="filtro-livre">
           Filtrar
         </label>
-        <input
-          id="filtro-livre"
-          type="search"
-          value={frase}
-          onChange={(e) => setFrase(e.target.value)}
-          placeholder={`Filtrar: ex. "${exemplo}"`}
-          className="min-w-0 flex-1 rounded-controle border border-linha-forte bg-fundo px-3 py-2 text-sm"
-        />
-        <button type="submit" className="rounded-controle border border-marinho px-3 py-2 text-sm font-semibold">
+        <Campo id="filtro-livre" type="search" value={frase} onChange={(e) => setFrase(e.target.value)} placeholder={`Filtrar: ex. "${exemplo}"`} className="min-w-0 flex-1" />
+        <Botao type="submit" nivel="secundario">
           Filtrar
-        </button>
+        </Botao>
       </form>
       {etiquetas.length ? (
         <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
           <span className="text-texto-2">Entendi assim:</span>
           {etiquetas.map((e, i) => (
-            <span key={`${e.rotulo}-${i}`} className="inline-flex items-center gap-1 rounded-selo border border-dourado bg-marfim py-1 pr-1 pl-3">
+            <EtiquetaRemovivel key={`${e.rotulo}-${i}`} rotuloRemover={`Remover o filtro ${e.rotulo}`} onRemover={() => aplicar(etiquetas.filter((_, j) => j !== i))}>
               {e.rotulo}
-              <button
-                onClick={() => aplicar(etiquetas.filter((_, j) => j !== i))}
-                aria-label={`Remover o filtro ${e.rotulo}`}
-                className="rounded-selo px-2 leading-none font-bold text-bronze-escuro hover:bg-dourado-claro"
-              >
-                ×
-              </button>
-            </span>
+            </EtiquetaRemovivel>
           ))}
-          <button onClick={() => aplicar([])} className="text-bronze-escuro underline">
+          <Botao nivel="discreto" tamanho="compacto" onClick={() => aplicar([])}>
             Limpar filtros
-          </button>
+          </Botao>
         </div>
       ) : null}
     </div>
   );
 }
 
+/** Seletor que grava a escolha no link da página (ordem, região, manager, vendedor). */
 export function Seletor({ nome, rotulo, valor, opcoes, todos }: { nome: string; rotulo: string; valor: string; opcoes: string[] | { valor: string; rotulo: string }[]; todos?: string }) {
   const ir = useLink();
+  const lista = [
+    ...(todos ? [{ valor: "", rotulo: todos }] : []),
+    ...opcoes.map((o) => (typeof o === "string" ? { valor: o, rotulo: o } : o)),
+  ];
   return (
-    <label className="flex items-center gap-2 text-sm text-texto-2">
-      {rotulo}
-      <select
-        value={valor}
-        onChange={(e) => ir({ [nome]: e.target.value || null, ...(nome === "regiao" ? { manager: null, vendedor: null } : nome === "manager" ? { vendedor: null } : {}) })}
-        className="max-w-full rounded-controle border border-linha-forte bg-fundo px-2 py-2 text-sm text-texto"
-      >
-        {todos ? <option value="">{todos}</option> : null}
-        {opcoes.map((o) => {
-          const op = typeof o === "string" ? { valor: o, rotulo: o } : o;
-          return (
-            <option key={op.valor} value={op.valor}>
-              {op.rotulo}
-            </option>
-          );
-        })}
-      </select>
-    </label>
+    <div className="flex min-w-0 items-center gap-2 text-sm text-texto-2">
+      <span aria-hidden>{rotulo}</span>
+      <SeletorUi
+        rotulo={rotulo}
+        valor={valor}
+        opcoes={lista}
+        className="min-w-36"
+        onMudar={(v) => ir({ [nome]: v || null, ...(nome === "regiao" ? { manager: null, vendedor: null } : nome === "manager" ? { vendedor: null } : {}) })}
+      />
+    </div>
   );
 }

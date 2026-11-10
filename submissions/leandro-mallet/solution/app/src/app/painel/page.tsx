@@ -1,9 +1,11 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
 import { FiltrosEquipe } from "@/components/FiltrosEquipe";
 import { Funil } from "@/components/Funil";
 import { Prioridades } from "@/components/Prioridades";
-import { dataBR, dinheiro, dinheiroCurto, inteiro, variacao } from "@/lib/calculos";
+import { CartaoNumero, PilulaVariacao } from "@/components/ui/CartaoNumero";
+import { Etiqueta as EtiquetaUi } from "@/components/ui/Etiqueta";
+import { classeSuperficie } from "@/components/ui/Superficie";
+import { dataBR, dinheiro, dinheiroCurto, inteiro, NOME_MOEDA, variacao } from "@/lib/calculos";
 import { CONFIG } from "@/lib/config";
 import { codificar, type Etiqueta } from "@/lib/filtro/etiquetas";
 import { lerFiltrosEquipe } from "@/server/parametros";
@@ -11,39 +13,6 @@ import { escopoDe, painel, porVendedor, prioridadesDoDia, somenteLeitura } from 
 import { exigirUsuario } from "@/server/sessao";
 
 export const metadata = { title: "Painel" };
-
-function Cartao({ rotulo, valor, linha, selo, sobe, info, href }: { rotulo: string; valor: string; linha?: string; selo?: string | null; sobe?: boolean; info?: string; href?: string }) {
-  const corpo: ReactNode = (
-    <>
-      <p className="text-xs font-semibold text-texto-2">{rotulo}</p>
-      <p className="mt-1 font-titulo text-2xl font-bold break-words">{valor}</p>
-      {linha ? <p className="mt-1 text-sm text-texto-2">{linha}</p> : null}
-      {selo !== undefined ? (
-        <p className={`mt-2 inline-block rounded-selo px-2 py-1 text-xs font-semibold ${selo === null ? "bg-trilho text-texto-2" : sobe ? "bg-marinho text-branco" : "bg-aviso-fundo text-bronze-escuro"}`}>
-          {selo ?? "sem base para comparar"}
-          {selo ? ` vs ${CONFIG.janelaPainelDias} dias antes` : ""}
-        </p>
-      ) : null}
-    </>
-  );
-  return (
-    <div className="rounded-cartao border border-linha bg-fundo p-4 shadow-cartao">
-      {href ? (
-        <Link href={href} className="block hover:underline">
-          {corpo}
-        </Link>
-      ) : (
-        corpo
-      )}
-      {info ? (
-        <details className="mt-2 text-xs text-texto-2">
-          <summary className="cursor-pointer font-semibold text-bronze-escuro">Como ler este número</summary>
-          <p className="mt-1">{info}</p>
-        </details>
-      ) : null}
-    </div>
-  );
-}
 
 const filtro = (e: Etiqueta) => `/pipeline?f=${encodeURIComponent(codificar([e]))}`;
 
@@ -65,60 +34,117 @@ export default async function Pagina({ searchParams }: { searchParams: Promise<{
     ? "Este mês fecha o trimestre. No histórico, os ganhos se concentram no último mês de cada trimestre; compare com o mesmo mês de outro trimestre."
     : undefined;
   const j = CONFIG.janelaPainelDias;
+  // Como no modelo: "18% vs 30d ant."
+  const vs = (v: { texto: string; sobe: boolean } | null) => (v ? { texto: `${v.texto} vs ${j}d ant.`, sobe: v.sobe } : null);
 
   return (
-    <div className="grid gap-5">
+    <div className="grid grid-cols-1 gap-5">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold">Painel</h1>
-          <p className="text-sm text-texto-2">Dados até {dataBR(n.data)}, em dólares.</p>
+          <p className="text-sm text-texto-2">Dados até {dataBR(n.data)}, em {NOME_MOEDA}.</p>
         </div>
         <FiltrosEquipe filtros={filtros} />
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-[1fr_22rem]">
-        <div className="order-2 grid content-start gap-5 lg:order-1">
-          <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
-            <Cartao rotulo="Leads novos" valor={`${inteiro(n.leadsHoje)} hoje`} linha={`${inteiro(n.leadsJanela)} em ${j} dias`} selo={vLeads?.texto ?? null} sobe={vLeads?.sobe} />
-            <Cartao rotulo="Em negociação" valor={inteiro(n.emNegociacao)} linha={dinheiroCurto(n.emNegociacaoValor)} href={filtro({ chave: "estagios", valor: ["Engaging"], rotulo: "Estágio: Em negociação" })} />
-            <Cartao
-              rotulo="Fechamentos"
-              valor={`${inteiro(n.fechamentosHoje)} hoje`}
-              linha={`${inteiro(n.fechamentosJanela)} em ${j} dias · ${dinheiro(n.fechamentosHojeValor)} hoje`}
-              selo={vFech?.texto ?? null}
-              sobe={vFech?.sobe}
-              info={trimestre}
-            />
-            <Cartao
-              rotulo={`Conversão em ${j} dias`}
-              valor={n.conversaoJanela === null ? "—" : `${(n.conversaoJanela * 100).toLocaleString("pt-BR", { maximumFractionDigits: 1 })}%`}
-              linha={`${inteiro(n.fechamentosJanela)} ganhos e ${inteiro(n.perdidosJanela)} perdidos`}
-              selo={pp === null ? null : `${pp >= 0 ? "↑" : "↓"} ${Math.abs(pp).toLocaleString("pt-BR")} p.p.`}
-              sobe={(pp ?? 0) >= 0}
-              info={trimestre}
-            />
-            <Cartao rotulo={`Receita ganha em ${j} dias`} valor={dinheiroCurto(n.receitaJanela)} selo={vRec?.texto ?? null} sobe={vRec?.sobe} />
-            <Cartao rotulo="Pipeline aberto" valor={dinheiroCurto(n.pipelineAbertoValor)} linha={n.pipelinePeloPrecoDeTabela ? "pelo preço de tabela" : "valor esperado"} href="/pipeline" />
-            <Cartao rotulo="Total de leads" valor={inteiro(n.totalLeads)} linha="abertos e fechados" />
-            <Cartao
-              rotulo="Em risco de esfriar"
-              valor={inteiro(n.emRisco)}
-              linha={`${inteiro(n.esfriou)} já esfriaram`}
-              href={filtro({ chave: "icones", valor: ["em_risco"], rotulo: "Ícone: em risco de esfriar" })}
-            />
-          </div>
+      {/* Grade do modelo: 4 colunas × 4 linhas no computador; no celular, Prioridades, números em 2 colunas e funil. */}
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:auto-rows-[minmax(9.5rem,auto)] lg:gap-4">
+        <Prioridades
+          itens={prioridades}
+          papel={usuario.papel}
+          somenteLeitura={somenteLeitura()}
+          className="order-first col-span-2 lg:order-none lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:h-0 lg:min-h-full"
+          topo={
+            <Link href={filtro({ chave: "icones", valor: ["em_risco"], rotulo: "Ícone: em risco de esfriar" })} className="rounded-selo hover:opacity-80" title="Ver os deals em risco de esfriar no Pipeline">
+              <EtiquetaUi tom="atencao" icone="alerta">
+                {inteiro(n.emRisco)} em risco · {inteiro(n.esfriou)} já esfriaram
+              </EtiquetaUi>
+            </Link>
+          }
+        />
 
-          <Funil barras={funil} />
+        <CartaoNumero
+          grupo="negociacao"
+          icone="cifrao"
+          rotulo="Pipeline aberto"
+          valor={dinheiroCurto(n.pipelineAbertoValor)}
+          linha={n.pipelinePeloPrecoDeTabela ? "pelo preço de tabela" : "valor esperado"}
+          href="/pipeline"
+          className="lg:col-start-1 lg:row-start-1"
+        />
+        <CartaoNumero
+          grupo="negociacao"
+          icone="conversa"
+          rotulo="Em negociação"
+          valor={inteiro(n.emNegociacao)}
+          linha={dinheiroCurto(n.emNegociacaoValor)}
+          href={filtro({ chave: "estagios", valor: ["Engaging"], rotulo: "Estágio: Em negociação" })}
+          className="lg:col-start-4 lg:row-start-1"
+        />
+        <CartaoNumero grupo="leads" icone="pessoa-mais" rotulo="Leads hoje" valor={inteiro(n.leadsHoje)} className="lg:col-start-1 lg:row-start-2" />
+        <CartaoNumero
+          grupo="fechamento"
+          icone="check"
+          rotulo="Fechamentos hoje"
+          valor={inteiro(n.fechamentosHoje)}
+          linha={`${dinheiro(n.fechamentosHojeValor)} hoje`}
+          className="lg:col-start-4 lg:row-start-2"
+        />
+        <CartaoNumero
+          grupo="leads"
+          icone="calendario"
+          rotulo={`Leads em ${j} dias`}
+          valor={inteiro(n.leadsJanela)}
+          rodape={<PilulaVariacao variacao={vs(vLeads)} />}
+          className="lg:col-start-1 lg:row-start-3"
+        />
+        <CartaoNumero
+          grupo="fechamento"
+          icone="trofeu"
+          rotulo={`Fechamentos em ${j} dias`}
+          valor={inteiro(n.fechamentosJanela)}
+          linha={`${dinheiroCurto(n.receitaJanela)} em receita ganha`}
+          rodape={
+            <>
+              <PilulaVariacao variacao={vs(vFech)} />
+              <PilulaVariacao variacao={vRec} rotulo="receita" />
+            </>
+          }
+          info={trimestre}
+          className="lg:col-start-4 lg:row-start-3"
+        />
+        <CartaoNumero
+          destaque
+          grupo="leads"
+          icone="pessoas"
+          rotulo="Total de leads"
+          valor={inteiro(n.totalLeads)}
+          linha="abertos e fechados"
+          className="lg:col-start-1 lg:row-start-4"
+        />
+        <CartaoNumero
+          grupo="fechamento"
+          icone="percentual"
+          rotulo={`Conversão em ${j} dias`}
+          valor={n.conversaoJanela === null ? "—" : `${(n.conversaoJanela * 100).toLocaleString("pt-BR", { maximumFractionDigits: 1 })}%`}
+          linha={`${inteiro(n.fechamentosJanela)} ganhos e ${inteiro(n.perdidosJanela)} perdidos`}
+          rodape={<PilulaVariacao variacao={pp === null ? null : { texto: `${Math.abs(pp).toLocaleString("pt-BR")} p.p. vs ${j}d ant.`, sobe: pp >= 0 }} />}
+          info={trimestre}
+          className="lg:col-start-4 lg:row-start-4"
+        />
+
+        <Funil barras={funil} className="order-last col-span-2 lg:order-none lg:col-start-2 lg:row-span-2 lg:row-start-3" />
+      </div>
 
           {time.length ? (
-            <section aria-labelledby="t-time" className="rounded-cartao border border-linha bg-fundo p-4 shadow-cartao">
+            <section aria-labelledby="t-time" className={`${classeSuperficie} p-4`}>
               <h2 id="t-time" className="text-lg font-bold">
                 Por vendedor
               </h2>
               <div className="mt-3 overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b-2 border-marinho text-left text-xs text-texto-2">
+                    <tr className="border-b border-borda text-left text-xs text-texto-2">
                       <th className="py-2 pr-3 font-semibold">Vendedor</th>
                       <th className="px-3 py-2 text-right font-semibold">Abertos</th>
                       <th className="px-3 py-2 text-right font-semibold">Em risco</th>
@@ -129,7 +155,7 @@ export default async function Pagina({ searchParams }: { searchParams: Promise<{
                   </thead>
                   <tbody>
                     {time.map((v) => (
-                      <tr key={v.vendedor} className="border-b border-linha">
+                      <tr key={v.vendedor} className="h-11 border-b border-divisoria last:border-0">
                         <td className="py-2 pr-3">
                           <Link href={`/pipeline?vendedor=${encodeURIComponent(v.vendedor)}`} className="font-semibold hover:underline">
                             {v.vendedor}
@@ -146,15 +172,7 @@ export default async function Pagina({ searchParams }: { searchParams: Promise<{
                 </table>
               </div>
             </section>
-          ) : null}
-        </div>
-
-        <div className="order-1 lg:order-2">
-          <div className="lg:sticky lg:top-4">
-            <Prioridades itens={prioridades} papel={usuario.papel} somenteLeitura={somenteLeitura()} />
-          </div>
-        </div>
-      </div>
+      ) : null}
     </div>
   );
 }

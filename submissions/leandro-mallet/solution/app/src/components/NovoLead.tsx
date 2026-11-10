@@ -6,7 +6,10 @@ import { pedir } from "@/lib/cliente";
 import { dinheiro } from "@/lib/calculos";
 import type { Papel } from "@/lib/tipos";
 import { useAvisos } from "./Avisos";
-import { botaoNeutro, botaoPrincipal, campo, Dialogo, ErroFormulario } from "./Dialogo";
+import { Dialogo, ErroFormulario } from "./Dialogo";
+import { Botao } from "./ui/Botao";
+import { Campo } from "./ui/Campo";
+import { Seletor } from "./ui/Seletor";
 
 interface Props {
   papel: Papel;
@@ -48,26 +51,27 @@ export function NovoLead({ papel, produtos, empresas, vendedores }: Props) {
 
   return (
     <>
-      <button onClick={() => setAberto(true)} className={botaoPrincipal}>
+      <Botao nivel="primario" icone="mais" onClick={() => setAberto(true)}>
         Novo lead
-      </button>
+      </Botao>
       {aberto ? (
         <Dialogo titulo="Novo lead" onFechar={fechar}>
           <form onSubmit={salvar} className="grid gap-3">
-            <label className="text-sm font-semibold">
-              Produto
-              <select value={produto} onChange={(e) => setProduto(e.target.value)} className={campo} autoFocus>
-                <option value="">Escolha o produto</option>
-                {produtos.map((p) => (
-                  <option key={p.nome} value={p.nome}>
-                    {p.nome} ({dinheiro(p.preco)})
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="text-sm font-semibold">
+            <div className="grid gap-1 text-sm font-semibold">
+              <span aria-hidden>Produto</span>
+              <Seletor
+                rotulo="Produto"
+                valor={produto}
+                onMudar={setProduto}
+                textoVazio="Escolha o produto"
+                autoFoco
+                className="w-full font-normal"
+                opcoes={produtos.map((p) => ({ valor: p.nome, rotulo: `${p.nome} (${dinheiro(p.preco)})` }))}
+              />
+            </div>
+            <label className="grid gap-1 text-sm font-semibold">
               Empresa (opcional)
-              <input list="lista-empresas" value={conta} onChange={(e) => setConta(e.target.value)} placeholder="Digite para buscar" className={campo} />
+              <Campo list="lista-empresas" value={conta} onChange={(e) => setConta(e.target.value)} placeholder="Digite para buscar" />
               <datalist id="lista-empresas">
                 {empresas.map((c) => (
                   <option key={c} value={c} />
@@ -75,40 +79,45 @@ export function NovoLead({ papel, produtos, empresas, vendedores }: Props) {
               </datalist>
             </label>
             {papel === "vendedor" ? null : (
-              <label className="text-sm font-semibold">
-                Vendedor
-                <select value={vendedor} onChange={(e) => setVendedor(e.target.value)} className={campo}>
-                  <option value="">Distribuir automaticamente</option>
-                  {vendedores.map((v) => (
-                    <option key={v} value={v}>
-                      {v}
-                    </option>
-                  ))}
-                </select>
-                <span className="mt-1 block text-xs font-normal text-texto-2">
+              <div className="grid gap-1 text-sm font-semibold">
+                <span aria-hidden>Vendedor</span>
+                <Seletor
+                  rotulo="Vendedor"
+                  valor={vendedor}
+                  onMudar={setVendedor}
+                  className="w-full font-normal"
+                  opcoes={[{ valor: "", rotulo: "Distribuir automaticamente" }, ...vendedores.map((v) => ({ valor: v, rotulo: v }))]}
+                />
+                <span className="text-xs font-normal text-texto-2">
                   A distribuição usa o encaixe do lead com cada vendedor. Enquanto a nota não existe, o lead vai para quem tem menos deals abertos.
                 </span>
-              </label>
+              </div>
             )}
-            <label className="text-sm font-semibold">
-              Estágio
-              <select value={estagio} onChange={(e) => setEstagio(e.target.value as "Prospecting" | "Engaging")} className={campo}>
-                <option value="Prospecting">Prospecção</option>
-                <option value="Engaging">Em negociação (abre hoje)</option>
-              </select>
-            </label>
-            <label className="text-sm font-semibold">
+            <div className="grid gap-1 text-sm font-semibold">
+              <span aria-hidden>Estágio</span>
+              <Seletor
+                rotulo="Estágio"
+                valor={estagio}
+                onMudar={(v) => setEstagio(v as "Prospecting" | "Engaging")}
+                className="w-full font-normal"
+                opcoes={[
+                  { valor: "Prospecting", rotulo: "Prospecção" },
+                  { valor: "Engaging", rotulo: "Em negociação (abre hoje)" },
+                ]}
+              />
+            </div>
+            <label className="grid gap-1 text-sm font-semibold">
               Nome do deal (opcional)
-              <input value={nome} maxLength={120} onChange={(e) => setNome(e.target.value)} placeholder="Se vazio: Empresa · Produto" className={campo} />
+              <Campo value={nome} maxLength={120} onChange={(e) => setNome(e.target.value)} placeholder="Se vazio: Empresa · Produto" />
             </label>
             <ErroFormulario texto={erro} />
             <div className="flex justify-end gap-2">
-              <button type="button" onClick={fechar} className={botaoNeutro}>
+              <Botao nivel="secundario" onClick={fechar}>
                 Cancelar
-              </button>
-              <button type="submit" disabled={enviando} className={botaoPrincipal}>
+              </Botao>
+              <Botao type="submit" nivel="primario" disabled={enviando}>
                 {enviando ? "Cadastrando…" : "Cadastrar lead"}
-              </button>
+              </Botao>
             </div>
           </form>
         </Dialogo>

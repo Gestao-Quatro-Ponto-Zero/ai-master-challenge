@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { pedir } from "@/lib/cliente";
+import { Botao } from "./ui/Botao";
 
 const ABAS = [
   { href: "/painel", rotulo: "Painel" },
@@ -20,7 +21,7 @@ export function AbasTopo() {
             key={a.href}
             href={a.href}
             aria-current={ativa ? "page" : undefined}
-            className={`border-b-2 px-3 py-2 text-sm font-semibold ${ativa ? "border-dourado text-branco" : "border-marinho text-dourado-claro hover:text-branco"}`}
+            className={`flex h-10 items-center border-b-2 px-3 text-sm font-semibold ${ativa ? "border-dourado text-branco" : "border-transparent text-dourado-claro hover:text-branco"}`}
           >
             {a.rotulo}
           </Link>
@@ -38,8 +39,8 @@ export function TrocarPerfil() {
     router.refresh();
   }
   return (
-    <button onClick={trocar} className="rounded-controle border border-dourado px-3 py-1 text-sm text-dourado-claro hover:text-branco">
+    <Botao nivel="secundario" tamanho="compacto" onClick={trocar}>
       Trocar perfil
-    </button>
+    </Botao>
   );
 }

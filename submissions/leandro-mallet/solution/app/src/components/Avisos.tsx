@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { CONFIG } from "@/lib/config";
 import { pedir } from "@/lib/cliente";
 import { fraseLoteDesfeito } from "@/lib/lotes";
+import { Botao } from "./ui/Botao";
 
 interface Aviso {
   id: number;
@@ -74,14 +75,14 @@ export function Avisos({ children }: { children: ReactNode }) {
             key={a.id}
             role={a.tipo === "erro" ? "alert" : "status"}
             className={`pointer-events-auto flex max-w-xl animate-entrar items-center gap-3 rounded-cartao px-4 py-3 text-sm shadow-modal ${
-              a.tipo === "erro" ? "border border-erro bg-erro-fundo text-erro" : "bg-marinho text-branco"
+              a.tipo === "erro" ? "border border-tom-negativo-texto/30 bg-tom-negativo text-tom-negativo-texto" : "bg-marinho text-branco"
             }`}
           >
             <span>{a.texto}</span>
             {a.desfazer ? (
-              <button onClick={() => desfazer(a)} className="rounded-controle border border-dourado px-2 py-1 font-semibold text-dourado-claro">
+              <Botao nivel="secundario" tamanho="compacto" icone="desfazer" onClick={() => desfazer(a)}>
                 Desfazer
-              </button>
+              </Botao>
             ) : null}
             {a.codigo ? (
               <details className="text-xs">
