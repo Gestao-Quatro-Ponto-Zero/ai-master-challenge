@@ -166,3 +166,15 @@ Por mensagens que chegaram fora de ordem, a #2 e a #4 escreveram o banco ao mesm
 
 **Segurança:** uma revisão automática apontou, na versão da #2, um limite de gravação contornável (contava correlation_id enviado pelo cliente) e a isenção do usuário "sistema" acessível sem login. A versão escolhida tem o mesmo risco por outro caminho (correlation_id como parâmetro; função de contexto "sistema"). A correção entra antes de qualquer aplicação no banco: correlation_id gerado no servidor, reuso recusado e contexto "sistema" só por um papel de carga separado do app.
 
+## 10/11 — Parada geral, causa dos conflitos e regras de coordenação
+
+**O que deu errado, e foi erro de orquestração da #1:**
+1. A #1 pediu as migrations à #4 e, minutos depois, passou para a #2. A troca ficou na fila da #4, que seguiu escrevendo: duas versões do banco.
+2. A #1 liberou a #5 para aplicar a versão antiga e corrigiu em seguida. A #5 aplicou a versão certa (lote 1 da #2).
+3. Mensagens enfileiradas ou retidas por diferença de modo de permissão fizeram sessões trabalharem com decisões já superadas.
+4. A instalação do app (node_modules, ~310 pacotes) dentro do Google Drive, somada a 5 sessões e validadores, deixou a máquina com ~500 MB livres.
+
+**O que foi feito:** o Leandro parou as sessões. A #1 apagou o node_modules (que se regenera com npm install), moveu as versões antigas do banco para fora do repositório (sem apagar) e commitou o estado (7ab3bec). O lote 1 está no banco e confere: 9 tabelas, 8.800 deals, 85 contas, 43 usuários, 9.006 linhas de auditoria.
+
+**Regras aprovadas (decisão 39):** ordens numeradas com confirmação; dono único por pasta; sequência no mesmo artefato; até 2 sessões pesadas por vez; dependências fora do Drive; mesmo modo de permissão; quadro de status (local).
+
