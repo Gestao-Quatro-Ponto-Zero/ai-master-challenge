@@ -288,6 +288,158 @@ def agent_strengths(pos: pd.DataFrame, summary: dict) -> None:
     }
 
 
+MIN_CELL_WINDOW = 10   # mínimo de deals do recorte na janela de 3 meses
+AGENT_DIMS = {"produto": "product", "serie": "series", "setor": "sector",
+              "funcionarios": "employees_band", "receita": "revenue_band",
+              "empresa": "account", "tempo_venda": "fast_band", "sede": "us_hq"}
+
+
+def agent_momentum(pos: pd.DataFrame, summary: dict) -> None:
+    """Ponto forte do vendedor em média móvel de 3 meses (pela data de fechamento)."""
+    df = pos.copy().reset_index(drop=True)
+    months = pd.period_range(df["close_date"].min(), df["close_date"].max(), freq="M")
+    m_idx = {p: i for i, p in enumerate(months)}
+    df["m"] = df["close_date"].dt.to_period("M").map(m_idx).astype(int)
+    n_m = len(months)
+    agents = sorted(df["sales_agent"].unique())
+    a_idx = {a: i for i, a in enumerate(agents)}
+    deal_a = df["sales_agent"].map(a_idx).to_numpy()
+
+    rows_a, rows_v, rows_d = [], [], []
+    for dname, col in AGENT_DIMS.items():
+        rows_a.append(df["sales_agent"].to_numpy())
+        rows_v.append((dname + " = " + df[col].astype(str)).to_numpy())
+        rows_d.append(np.arange(len(df)))
+    la, lv, ld = np.concatenate(rows_a), np.concatenate(rows_v), np.concatenate(rows_d)
+    cell_codes, cell_names = pd.factorize(pd.Series(la) + " | " + pd.Series(lv))
+    n_cells = len(cell_names)
+    cell_agent = np.array([a_idx[c.split(" | ", 1)[0]] for c in cell_names])
+    l_month = df["m"].to_numpy()[ld]
+    key = cell_codes * n_m + l_month
+    N = np.bincount(key, minlength=n_cells * n_m).reshape(n_cells, n_m).astype(float)
+    AN = np.bincount(deal_a * n_m + df["m"].to_numpy(), minlength=len(agents) * n_m).reshape(len(agents), n_m).astype(float)
+
+    def roll3(x):  # soma da janela que termina em cada mês (m-2..m)
+        c = np.cumsum(x, axis=1)
+        out = c.copy()
+        out[:, 3:] = c[:, 3:] - c[:, :-3]
+        return out
+
+    NW, ANW = roll3(N), roll3(AN)
+    first_full = 2                       # 1ª janela completa termina no 3º mês (mai/2017)
+    y0 = df["won"].to_numpy(int)
+
+    def compute(y):
+        K = np.bincount(key, weights=y[ld], minlength=n_cells * n_m).reshape(n_cells, n_m)
+        AK = np.bincount(deal_a * n_m + df["m"].to_numpy(), weights=y,
+                         minlength=len(agents) * n_m).reshape(len(agents), n_m)
+        KW, AKW = roll3(K), roll3(AK)
+        pa_w = AKW / np.maximum(ANW, 1)
+        shr = (KW + SHRINK_M * pa_w[cell_agent]) / (NW + SHRINK_M)
+        score = np.where(NW >= MIN_CELL_WINDOW, shr, -np.inf)
+        best = np.full((len(agents), n_m), -1)
+        for ai in range(len(agents)):
+            cols = score[cell_agent == ai]
+            ids = np.where(cell_agent == ai)[0]
+            arg = np.argmax(cols, axis=0)
+            ok = np.isfinite(cols[arg, np.arange(n_m)])
+            best[ai] = np.where(ok, ids[arg], -1)
+        # acerto: o forte da janela que termina em m converte acima do vendedor no mês m+1?
+        hits = ties = trials = 0
+        lifts = []
+        for m in range(first_full, n_m - 1):
+            for ai in range(len(agents)):
+                c = best[ai, m]
+                if c < 0 or N[c, m + 1] == 0 or AN[ai, m + 1] == 0:
+                    continue
+                rc = K[c, m + 1] / N[c, m + 1]
+                ra = AK[ai, m + 1] / AN[ai, m + 1]
+                trials += 1
+                hits += rc > ra
+                ties += rc == ra
+                lifts.append(rc - ra)
+        return {"K": K, "AK": AK, "KW": KW, "AKW": AKW, "pa_w": pa_w, "shr": shr, "best": best,
+                "hit_rate": hits / max(trials, 1), "ties": ties, "trials": trials,
+                "mean_lift_next": float(np.mean(lifts)) if lifts else float("nan")}
+
+    obs = compute(y0)
+    rng = np.random.default_rng(SEED)
+    groups = [np.where(deal_a == ai)[0] for ai in range(len(agents))]
+    perm_hit, perm_lift = [], []
+    for _ in range(N_PERM_AGENT):
+        y = y0.copy()
+        for g in groups:
+            y[g] = rng.permutation(y0[g])
+        s = compute(y)
+        perm_hit.append(s["hit_rate"])
+        perm_lift.append(s["mean_lift_next"])
+    perm_hit, perm_lift = np.array(perm_hit), np.array(perm_lift)
+
+    last = n_m - 1
+    cur_rows, series_rows = [], []
+    for ai, a in enumerate(agents):
+        c = obs["best"][ai, last]
+        if c < 0:
+            cur_rows.append({"vendedor": a, "ponto_forte_atual": None})
+            continue
+        lo, hi = wilson(obs["KW"][c, last], NW[c, last])
+        cur_rows.append({
+            "vendedor": a, "janela": f"{months[last - 2]}..{months[last]}",
+            "ponto_forte_atual": cell_names[c].split(" | ", 1)[1],
+            "n_janela": int(NW[c, last]), "ganhos_janela": int(obs["KW"][c, last]),
+            "taxa_janela": obs["KW"][c, last] / NW[c, last] * 100,
+            "ci_low": lo * 100, "ci_high": hi * 100,
+            "taxa_encolhida": obs["shr"][c, last] * 100,
+            "taxa_geral_vendedor_janela": obs["pa_w"][ai, last] * 100,
+            "n_geral_vendedor_janela": int(ANW[ai, last]),
+            "diff_pp": (obs["KW"][c, last] / NW[c, last] - obs["pa_w"][ai, last]) * 100,
+            "diff_encolhida_pp": (obs["shr"][c, last] - obs["pa_w"][ai, last]) * 100,
+            "p_vs_resto_vendedor": _p_2x2(obs["KW"][c, last], NW[c, last],
+                                          obs["AKW"][ai, last] - obs["KW"][c, last], ANW[ai, last] - NW[c, last]),
+            "poucos_casos": NW[c, last] < MIN_N,
+        })
+        for m in range(first_full, n_m):
+            series_rows.append({
+                "vendedor": a, "ponto_forte_atual": cell_names[c].split(" | ", 1)[1],
+                "janela_fim": str(months[m]), "n_recorte": int(NW[c, m]),
+                "taxa_recorte_mm3": obs["KW"][c, m] / NW[c, m] * 100 if NW[c, m] else np.nan,
+                "taxa_recorte_mm3_encolhida": obs["shr"][c, m] * 100,
+                "taxa_vendedor_mm3": obs["pa_w"][ai, m] * 100, "n_vendedor": int(ANW[ai, m]),
+                "forte_da_janela": cell_names[obs["best"][ai, m]].split(" | ", 1)[1] if obs["best"][ai, m] >= 0 else None,
+            })
+    cur = pd.DataFrame(cur_rows)
+    cur["p_bonferroni_30"] = np.minimum(1.0, cur["p_vs_resto_vendedor"] * len(agents))
+    cur.to_csv(TABLES / "agent_strength_current_mm3.csv", index=False, lineterminator="\n")
+    pd.DataFrame(series_rows).to_csv(TABLES / "agent_strength_mm3_series.csv", index=False, lineterminator="\n")
+
+    # quantas vezes o ponto forte troca de um mês para o outro
+    changes = []
+    for ai in range(len(agents)):
+        b = obs["best"][ai, first_full:]
+        changes.append(int((b[1:] != b[:-1]).sum()))
+    summary["agent_momentum"] = {
+        "window": "3 meses pela data de fechamento; janelas terminando de "
+                  f"{months[first_full]} a {months[last]}",
+        "min_cell_window": MIN_CELL_WINDOW, "shrink_m": SHRINK_M,
+        "current_window": f"{months[last - 2]}..{months[last]}",
+        "current_diff_pp_mean": round(float(cur["diff_pp"].mean()), 2),
+        "current_diff_encolhida_pp_mean": round(float(cur["diff_encolhida_pp"].mean()), 2),
+        "current_significant_bonferroni": int((cur["p_bonferroni_30"] < 0.05).sum()),
+        "current_poucos_casos": int(cur["poucos_casos"].sum()),
+        "strength_changes_per_agent_mean": round(float(np.mean(changes)), 2),
+        "strength_changes_max_possible": int(n_m - first_full - 1),
+        "next_month_trials": obs["trials"], "next_month_ties": int(obs["ties"]),
+        "next_month_hit_rate": round(obs["hit_rate"], 4),
+        "next_month_hit_rate_perm_mean": round(float(perm_hit.mean()), 4),
+        "next_month_hit_rate_perm_p95": round(float(np.quantile(perm_hit, .95)), 4),
+        "next_month_hit_p_value_perm": float((np.sum(perm_hit >= obs["hit_rate"]) + 1) / (N_PERM_AGENT + 1)),
+        "next_month_mean_lift_pp": round(obs["mean_lift_next"] * 100, 2),
+        "next_month_mean_lift_perm_mean_pp": round(float(perm_lift.mean()) * 100, 2),
+        "next_month_mean_lift_perm_p95_pp": round(float(np.quantile(perm_lift, .95)) * 100, 2),
+        "next_month_lift_p_value_perm": float((np.sum(perm_lift >= obs["mean_lift_next"]) + 1) / (N_PERM_AGENT + 1)),
+    }
+
+
 # ---------------------------------------------------------------- tabelas
 def win_table(df: pd.DataFrame, by, overall: float) -> pd.DataFrame:
     g = df.groupby(by, observed=True)["won"].agg(n="count", won="sum").reset_index()
@@ -546,6 +698,7 @@ def main() -> None:
     }
 
     agent_strengths(pos, summary)
+    agent_momentum(pos, summary)
 
     # Mês dentro do trimestre (1º, 2º, 3º): regra de calendário do ciclo
     closed["close_month_in_q"] = (closed["close_date"].dt.month - 1) % 3 + 1

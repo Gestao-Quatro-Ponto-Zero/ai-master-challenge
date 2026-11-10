@@ -1075,6 +1075,28 @@
     "agents": 30,
     "strong_confirmed_bonferroni": []
   },
+  "agent_momentum": {
+    "window": "3 meses pela data de fechamento; janelas terminando de 2017-05 a 2017-12",
+    "min_cell_window": 10,
+    "shrink_m": 20,
+    "current_window": "2017-10..2017-12",
+    "current_diff_pp_mean": 16.57,
+    "current_diff_encolhida_pp_mean": 7.23,
+    "current_significant_bonferroni": 0,
+    "current_poucos_casos": 27,
+    "strength_changes_per_agent_mean": 4.8,
+    "strength_changes_max_possible": 7,
+    "next_month_trials": 206,
+    "next_month_ties": 13,
+    "next_month_hit_rate": 0.4563,
+    "next_month_hit_rate_perm_mean": 0.4896,
+    "next_month_hit_rate_perm_p95": 0.5486,
+    "next_month_hit_p_value_perm": 0.8301698301698301,
+    "next_month_mean_lift_pp": -1.09,
+    "next_month_mean_lift_perm_mean_pp": 0.1,
+    "next_month_mean_lift_perm_p95_pp": 2.62,
+    "next_month_lift_p_value_perm": 0.7802197802197802
+  },
   "open": {
     "open": 2089,
     "prospecting": 500,
