@@ -201,7 +201,8 @@ def write(name, payload):
 
 
 def main():
-    sys.stdout.reconfigure(encoding="utf-8")
+    # No stream changes here: other modules call main() with their output redirected
+    # (ai/facts.py builds the files quietly when out/ is missing).
     deals = v.load()
     teams = v.read("sales_teams.csv")
     last_day = max(d[k] for d in deals for k in ("engage", "close") if d[k])
@@ -233,4 +234,5 @@ def main():
 
 
 if __name__ == "__main__":
+    sys.stdout.reconfigure(encoding="utf-8")
     main()
