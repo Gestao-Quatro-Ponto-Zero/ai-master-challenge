@@ -190,3 +190,10 @@ A #5 aplicou 0007–0026 no Supabase, sem erro. Contagem: 29 tabelas, 60 FKs (RE
 - **Erro da #1:** a #1 apontou um "bug" de contagem nas abas do Pipeline (66/67 contra 55/57). Era leitura errada do print reduzido: o "5" em negrito parecia "6". A #4 conferiu o HTML publicado, que estava certo, e passou o número da aba para peso normal.
 - As escritas ficam em memória nesta versão; a ligação com o banco é a próxima ordem (O-15).
 
+## 10/11 — Banco blindado e app ligado ao banco
+
+- 0029 aplicada pela #5 (sha256 3ac678a5…, igual ao commit 799e861): a auditoria e os eventos só são gravados por funções SECURITY DEFINER, usuário inativo é recusado e as notas não aceitam escrita pelo app. Validador: 133 ok. Nenhum achado de segurança aberto no banco.
+- App ligado ao banco (O-15) e com o disjuntor corrigido (O-17, depois de alerta automático: entrada mal formada derrubava o app para somente leitura). 69 testes.
+- Publicado com as variáveis do banco como segredo na Vercel. Verificado online: /api/health com banco ok e fonte banco; Painel com "Fonte: banco de dados".
+- Dados de teste no banco (o banco não apaga): o lead "Teste de persistência" (88UBTBQ8), um comentário, uma tag "teste" e prioridades de teste, criados pela #4 ao validar a ligação.
+
