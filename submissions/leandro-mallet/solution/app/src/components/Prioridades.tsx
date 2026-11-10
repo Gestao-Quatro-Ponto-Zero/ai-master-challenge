@@ -163,6 +163,8 @@ export function Prioridades({ itens, papel, somenteLeitura }: { itens: Prioridad
                       <button
                         onClick={() => {
                           setRegistrando(null);
+                          setTipo("");
+                          setComentario("");
                           setErro(null);
                         }}
                         className="rounded-controle border border-linha-forte px-3 py-2 text-sm"
@@ -181,6 +183,9 @@ export function Prioridades({ itens, papel, somenteLeitura }: { itens: Prioridad
                     </button>
                     <button
                       onClick={() => {
+                        // Sempre limpo: o tipo e o comentário de um item não podem ir para outro deal.
+                        setTipo("");
+                        setComentario("");
                         setRegistrando(d.id);
                         setErro(null);
                       }}

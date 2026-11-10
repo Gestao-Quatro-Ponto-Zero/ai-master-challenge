@@ -8,7 +8,7 @@
 |---|---|
 | Frontend | Next.js 16 (App Router), React 19, TypeScript 5.9 `strict` (com `noUncheckedIndexedAccess`), Tailwind CSS 4 |
 | Backend | Route Handlers no runtime Node.js, zod em toda entrada |
-| Dados | Hoje: arquivos dentro do app (`data/`). Depois: Postgres no Supabase, trocando só `src/server/` |
+| Dados | Postgres no Supabase (`@supabase/supabase-js`, só no servidor); reserva somente leitura em arquivo (`data/`) |
 | Publicação | Vercel, com a raiz em `submissions/leandro-mallet/solution/app` |
 
 ```bash
@@ -63,8 +63,11 @@ solution/app/
       tipos.ts, config.ts, calculos.ts, painel.ts, cliente.ts
       filtro/             etiquetas.ts, interpretar.ts (frase → etiquetas), aplicar.ts
     server/               só roda no servidor (import "server-only")
+      banco.ts            cliente do Supabase (service_role só aqui), tradução de erros e correlation_id
+      repositorio.ts      a única porta das telas: escolhe banco ou reserva e faz as contas das telas
+      repositorio-banco.ts    leitura pela view e pelas tabelas; escrita só pelas functions do banco
+      repositorio-arquivo.ts  reserva em arquivo (somente leitura; memória só com G4_ESCRITA_EM_MEMORIA=1)
       fonte.ts            lê data/base.json e data/deals_scored.json
-      repositorio.ts      a única porta das telas para ler e gravar
       sessao.ts           perfil escolhido (cookie)
       rota.ts             base das rotas: usuário, limite por IP, correlation_id, zod, erro em frase simples
       parametros.ts       lê e valida os filtros do link
@@ -101,15 +104,19 @@ Toda rota de escrita: valida a entrada com zod, tem limite por endereço de rede
 - Tudo sai de `src/tema/tema.css`. Uma regra do ESLint recusa cor ou tamanho de fonte solto fora desse arquivo.
 - Contraste medido sobre branco: o dourado (2,2:1) nunca é cor de texto; o texto secundário usa `#66727c` (4,9:1), um pouco mais escuro que o cinza da marca, para passar no WCAG AA.
 
-## Dados e troca para o banco
+## Dados: banco e reserva
 
-- As telas só falam com `src/server/repositorio.ts`. Ele devolve os mesmos tipos de `src/lib/tipos.ts`, que seguem os nomes das views do banco.
-- Hoje o repositório lê os arquivos e guarda as escritas em memória. Para ligar no banco, troca-se a implementação do repositório pelas views e functions de `solution/db/`; as páginas e os componentes não mudam.
-- `G4_SOMENTE_LEITURA=1` desliga as escritas e mostra a faixa de somente leitura.
+- As telas só falam com `src/server/repositorio.ts`, que devolve os tipos de `src/lib/tipos.ts`.
+- **Leitura no banco:** os deals do perfil vêm da view `core_deals_visao`, com o filtro do escopo aplicado no banco. Os abertos vêm com todas as colunas (ícone, nota, tags); os fechados, só com as colunas básicas, porque são a maioria e não têm ícone nem nota. Filtro, ordenação e números do Painel são calculados no servidor pelas funções puras de `src/lib/`, as mesmas da reserva.
+- **Por que não as functions de leitura do banco:** `core_buscar_deals` leva cerca de 6 s e `core_painel_numeros` passa do tempo limite (8 s) no escopo do admin. Lendo a view direto, o Painel do admin (8.800 deals) abre em 3 a 4 s e o do vendedor em cerca de 1 s.
+- **Escrita:** só pelas functions do banco (`core_mudar_estagio`, `acao_registrar`, `acao_marcar_prioridade`, `system_executar_lote`…), com `p_usuario_id` do perfil e `p_correlation_id` gerado na rota. O "Desfazer" chama a function inversa (`core_desfazer_alteracao`, `acao_desfazer`, `acao_restaurar_comentario`, `system_desfazer_lote`).
+- **Erros do banco:** `GS400`–`GS429` viram a frase simples que o banco devolve; conflito de versão (`GS409`) diz quem alterou. Falha de rede ou tempo esgotado marca o banco como fora por 15 s.
+- **Reserva:** banco fora ou não configurado = leitura de `data/base.json`, faixa de somente leitura e escrita recusada (503).
+- Variáveis: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `G4_ESCRITA_EM_MEMORIA` e `G4_SOMENTE_LEITURA` (ver `.env.example`).
 
 ## Ainda não construído
 
 - Importação de leads por CSV (desenhada em [DESENHO-CRM.md](DESENHO-CRM.md)).
 - Editar o nome do deal e a empresa do deal pelo modal.
-- Testes automatizados (Vitest nas funções puras e Playwright nos caminhos críticos).
-- Ligação com o banco.
+- Cadastrar e editar empresa com o banco ligado (falta a function no banco).
+- Playwright nos caminhos críticos (o Vitest já cobre a reserva, as prioridades e o escopo da ficha da empresa).

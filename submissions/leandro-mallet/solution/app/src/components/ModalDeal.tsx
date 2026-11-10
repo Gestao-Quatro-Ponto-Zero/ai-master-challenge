@@ -43,7 +43,8 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
   const [erro, setErro] = useState<{ texto: string; codigo?: string } | null>(null);
   const [texto, setTexto] = useState("");
   const [enviando, setEnviando] = useState(false);
-  const [contato, setContato] = useState<{ nome: string; cargo: string } | null>(null);
+  const [contato, setContato] = useState<{ nome: string; cargo: string; email: string; telefone: string } | null>(null);
+  const [apagando, setApagando] = useState<number | null>(null);
   const caixa = useRef<HTMLDivElement>(null);
 
   const fechar = useCallback(() => {
@@ -99,13 +100,14 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
   }
 
   async function apagar(comentarioId: number) {
-    if (!window.confirm("Apagar este comentário? Ele some da tela e da linha do tempo.")) return;
+    setApagando(null);
     await executar(`/api/comentarios/${comentarioId}`, "DELETE", undefined, "Comentário apagado.");
   }
 
   async function salvarContato() {
     if (!d || !contato?.nome.trim()) return;
-    if (await executar(`/api/deals/${d.id}/contato`, "POST", { versao: d.atualizadoEm, nome: contato.nome, cargo: contato.cargo || null }, "Contato adicionado.")) setContato(null);
+    const corpo = { versao: d.atualizadoEm, nome: contato.nome, cargo: contato.cargo || null, email: contato.email || null, telefone: contato.telefone || null };
+    if (await executar(`/api/deals/${d.id}/contato`, "POST", corpo, "Contato adicionado.")) setContato(null);
   }
 
   return (
@@ -178,7 +180,7 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
                   ) : somenteLeitura ? (
                     <span className="text-texto-2">Sem contato</span>
                   ) : (
-                    <button onClick={() => setContato({ nome: "", cargo: "" })} className="font-semibold text-bronze-escuro underline">
+                    <button onClick={() => setContato({ nome: "", cargo: "", email: "", telefone: "" })} className="font-semibold text-bronze-escuro underline">
                       + Adicionar contato
                     </button>
                   )}
@@ -222,6 +224,14 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
                   <label className="text-xs font-semibold">
                     Cargo
                     <input value={contato.cargo} maxLength={80} onChange={(e) => setContato({ ...contato, cargo: e.target.value })} className="mt-1 block rounded-controle border border-linha-forte px-2 py-1 text-sm font-normal" />
+                  </label>
+                  <label className="text-xs font-semibold">
+                    E-mail (opcional)
+                    <input type="email" value={contato.email} maxLength={160} onChange={(e) => setContato({ ...contato, email: e.target.value })} className="mt-1 block rounded-controle border border-linha-forte px-2 py-1 text-sm font-normal" />
+                  </label>
+                  <label className="text-xs font-semibold">
+                    Telefone (opcional)
+                    <input type="tel" value={contato.telefone} maxLength={25} onChange={(e) => setContato({ ...contato, telefone: e.target.value })} className="mt-1 block rounded-controle border border-linha-forte px-2 py-1 text-sm font-normal" />
                   </label>
                   <button onClick={salvarContato} disabled={enviando || !contato.nome.trim()} className="rounded-controle bg-marinho px-3 py-1 text-sm font-semibold text-branco disabled:opacity-50">
                     Salvar contato
@@ -285,16 +295,16 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
                   </div>
                   {d.score === null ? (
                     <p className="mt-2 text-sm text-texto-2">
-                      Este deal ainda não tem nota. Ela junta o encaixe com o vendedor (FIT), o tempo de atendimento (HEAT) e o bônus da empresa, e é recalculada todo domingo.
+                      Este deal ainda não tem nota. Ela junta o encaixe do lead com o vendedor, o tempo de atendimento e o bônus da empresa, e é recalculada todo domingo.
                     </p>
                   ) : (
                     <>
                       <dl className="mt-3 grid grid-cols-3 gap-2 text-center text-sm">
                         {(
                           [
-                            ["FIT", d.fit],
-                            ["HEAT", d.heat],
-                            ["Bônus", d.bonus],
+                            ["Encaixe com o vendedor", d.fit],
+                            ["Tempo de atendimento", d.heat],
+                            ["Bônus da empresa", d.bonus],
                           ] as const
                         ).map(([rot, v]) => (
                           <div key={rot} className="rounded-controle border border-linha px-2 py-2">
@@ -349,9 +359,21 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
                               {c.autor} · {dataBR(c.data)} às {hora(c.criadoEm)}
                             </span>
                             {!somenteLeitura && (c.autorId === usuario.id || usuario.papel !== "vendedor") ? (
-                              <button onClick={() => apagar(c.id)} className="font-semibold text-bronze-escuro underline">
-                                Apagar
-                              </button>
+                              apagando === c.id ? (
+                                <span className="flex items-center gap-2" role="group" aria-label="Confirmar apagar">
+                                  Apagar este comentário?
+                                  <button onClick={() => apagar(c.id)} className="rounded-controle bg-marinho px-2 py-1 font-semibold text-branco">
+                                    Apagar
+                                  </button>
+                                  <button onClick={() => setApagando(null)} className="rounded-controle border border-linha-forte px-2 py-1">
+                                    Cancelar
+                                  </button>
+                                </span>
+                              ) : (
+                                <button onClick={() => setApagando(c.id)} className="font-semibold text-bronze-escuro underline">
+                                  Apagar
+                                </button>
+                              )
                             ) : null}
                           </p>
                         </li>

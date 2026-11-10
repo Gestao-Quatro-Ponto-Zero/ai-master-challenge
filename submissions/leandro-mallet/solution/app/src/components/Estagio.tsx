@@ -22,6 +22,9 @@ export function transicoesDe(estagio: Estagio, papel: Papel): Estagio[] {
 
 const MOTIVOS: MotivoPerda[] = ["preco", "concorrente", "sem_orcamento", "sem_resposta", "outro"];
 
+/** Foca o campo ao abrir o diálogo, sem deslocar a página por baixo. */
+const focarSemRolar = (el: HTMLInputElement | HTMLSelectElement | null) => el?.focus({ preventScroll: true });
+
 export function ProvedorEstagio({ children }: { children: ReactNode }) {
   const avisos = useAvisos();
   const [pendente, setPendente] = useState<{ deal: DealMinimo; para: Estagio } | null>(null);
@@ -74,7 +77,7 @@ export function ProvedorEstagio({ children }: { children: ReactNode }) {
     const ganho = pendente.para === "Won";
     const v = Number(valor);
     if (ganho && (!Number.isInteger(v) || v <= 0)) {
-      setErro("Informe o valor de fechamento em dólares, sem centavos.");
+      setErro("Informe o valor de fechamento: um número inteiro maior que zero.");
       return;
     }
     setEnviando(true);
@@ -107,7 +110,7 @@ export function ProvedorEstagio({ children }: { children: ReactNode }) {
               <label className="mt-4 block text-sm font-semibold">
                 Valor de fechamento (US$)
                 <input
-                  autoFocus
+                  ref={focarSemRolar}
                   inputMode="numeric"
                   value={valor}
                   onChange={(e) => setValor(e.target.value.replace(/\D/g, ""))}
@@ -119,7 +122,7 @@ export function ProvedorEstagio({ children }: { children: ReactNode }) {
               <label className="mt-4 block text-sm font-semibold">
                 Motivo da perda (opcional)
                 <select
-                  autoFocus
+                  ref={focarSemRolar}
                   value={motivo}
                   onChange={(e) => setMotivo(e.target.value as MotivoPerda | "")}
                   className="mt-1 w-full rounded-controle border border-linha-forte bg-fundo px-3 py-2 font-normal"

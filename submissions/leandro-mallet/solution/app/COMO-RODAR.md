@@ -12,7 +12,10 @@ npm ci
 npm run dev
 ```
 
-Abra **http://localhost:3010**. Não precisa de banco nem de senha: escolha um perfil (vendedor, manager ou admin) e use.
+Abra **http://localhost:3010** e escolha um perfil (vendedor, manager ou admin). Não há senha.
+
+- **Com o banco:** crie `.env.local` com `SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY` (modelo em `.env.example`). As mudanças ficam gravadas no banco.
+- **Sem o banco:** o app abre com os dados do arquivo, em modo somente leitura. Para experimentar as mudanças sem credenciais, rode com `G4_ESCRITA_EM_MEMORIA=1` (elas somem ao reiniciar).
 
 Para a versão de produção: `npm run build` e depois `npm start`.
 
@@ -34,7 +37,9 @@ Ainda não construído: importação de leads por CSV. A especificação complet
 - O app lê `data/base.json` (8.800 deals, 85 contas, 35 vendedores e 7 produtos), gerado a partir dos CSVs limpos por `npm run dados -- <pasta solution/data>`.
 - Se existir `data/deals_scored.json` (o arquivo de notas do score), o app mostra a nota, o FIT, o HEAT e o bônus. Sem ele, aparece "Sem nota ainda" e as prioridades seguem a ordem: super hot, em risco e maior valor.
 - "Hoje" é 31/12/2017, o último dia com registro no dataset.
-- **Nesta versão, as mudanças ficam em memória no servidor:** ações, comentários, estágios e prioridades somem ao reiniciar o servidor. A ligação com o banco entra depois, só na camada de dados (`src/server/`), sem mexer nas telas.
+- **Com o banco configurado**, o app lê a view `core_deals_visao` e grava só pelas functions do banco, com o usuário do perfil e um código de rastreio gerado no servidor. Cada mudança fica na auditoria.
+- **Se o banco não responder**, o app passa a ler `data/base.json`, mostra a faixa "Modo somente leitura" e desliga os botões de mudança. Volta sozinho quando o banco volta.
+- Cadastrar e editar empresa ainda não tem função no banco: com o banco ligado, esses dois botões ficam escondidos.
 
 ## Organização do código
 
@@ -54,6 +59,7 @@ scripts/               dados.mjs (traz os CSVs limpos) e espelhar-para-drive.ps1
 - Nenhuma fonte de dados vem da URL, e nenhum texto digitado entra na página como HTML.
 - Toda rota de escrita valida a entrada, tem limite por endereço de rede (60 por minuto) e gera o código de rastreio no servidor.
 - O usuário "sistema" nunca é aceito vindo da tela.
+- A chave do banco só existe no servidor (`src/server/banco.ts`, com `import "server-only"`), lida do ambiente. O pacote enviado ao navegador não tem chave, URL nem nome do projeto do banco.
 - Sem login, o perfil organiza a tela e assina as ações, mas não protege nada: qualquer pessoa pode escolher qualquer nome.
 
 ## Checagens
@@ -61,6 +67,7 @@ scripts/               dados.mjs (traz os CSVs limpos) e espelhar-para-drive.ps1
 ```bash
 npm run typecheck
 npm run lint
+npm test
 npm run build
 ```
 

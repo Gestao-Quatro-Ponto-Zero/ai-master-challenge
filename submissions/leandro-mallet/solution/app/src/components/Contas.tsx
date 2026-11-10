@@ -28,7 +28,8 @@ function SeloPadrao({ c }: { c: ContaVisao }) {
   );
 }
 
-export function TabelaContas({ contas, empresas, somenteLeitura }: { contas: ContaVisao[]; empresas: string[]; somenteLeitura: boolean }) {
+export function TabelaContas({ contas, empresas, podeEditar }: { contas: ContaVisao[]; empresas: string[]; podeEditar: boolean }) {
+  const somenteLeitura = !podeEditar;
   const params = useSearchParams();
   const caminho = usePathname();
   const router = useRouter();

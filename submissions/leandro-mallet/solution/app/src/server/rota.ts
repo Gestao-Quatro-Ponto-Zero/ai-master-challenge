@@ -6,10 +6,11 @@ import { NextResponse, type NextRequest } from "next/server";
 import type { z } from "zod";
 import { CONFIG } from "@/lib/config";
 import type { Usuario } from "@/lib/tipos";
+import { comCorrelacao } from "./banco";
 import { ErroCRM, type CodigoErro } from "./repositorio";
 import { usuarioAtual } from "./sessao";
 
-const STATUS: Record<CodigoErro, number> = { GS400: 400, GS401: 401, GS403: 403, GS404: 404, GS409: 409, GS422: 422, GS503: 503 };
+const STATUS: Record<CodigoErro, number> = { GS400: 400, GS401: 401, GS403: 403, GS404: 404, GS405: 405, GS409: 409, GS422: 422, GS429: 429, GS503: 503 };
 
 // Limite por IP em memória (por instância do servidor). O banco tem também um teto global.
 const janelas = new Map<string, number[]>();
@@ -64,7 +65,9 @@ export function rota<T = undefined>(
         if (!lido.success) return erro(400, "Não entendi o pedido. Recarregue a página e tente de novo.");
         corpo = lido.data;
       }
-      return responder(200, (await executar({ usuario: usuario as Usuario, corpo, correlationId, req })) ?? { ok: true });
+      // O correlation_id deste pedido acompanha a escrita no banco e liga o log à auditoria.
+      const resultado = await comCorrelacao(correlationId, () => executar({ usuario: usuario as Usuario, corpo, correlationId, req }));
+      return responder(200, resultado ?? { ok: true });
     } catch (e) {
       if (e instanceof ErroCRM) return erro(STATUS[e.codigo], e.message, e.detalhe);
       console.error(JSON.stringify({ correlation_id: correlationId, erro: e instanceof Error ? e.message : String(e) }));

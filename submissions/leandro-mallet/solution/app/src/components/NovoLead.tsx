@@ -86,7 +86,7 @@ export function NovoLead({ papel, produtos, empresas, vendedores }: Props) {
                   ))}
                 </select>
                 <span className="mt-1 block text-xs font-normal text-texto-2">
-                  A distribuição usa o encaixe com o vendedor (FIT). Enquanto a nota não existe, o lead vai para quem tem menos deals abertos.
+                  A distribuição usa o encaixe do lead com cada vendedor. Enquanto a nota não existe, o lead vai para quem tem menos deals abertos.
                 </span>
               </label>
             )}

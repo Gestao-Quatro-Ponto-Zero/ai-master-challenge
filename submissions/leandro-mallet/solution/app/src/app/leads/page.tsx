@@ -10,7 +10,7 @@ import { CONFIG } from "@/lib/config";
 import { juntar } from "@/lib/filtro/etiquetas";
 import { lerEtiquetas, lerFiltrosEquipe } from "@/server/parametros";
 import {
-  buscarContas, buscarDeals, contextoFiltro, escopoDe, listarProdutos, listarTags, somenteLeitura, type Ordem, type OrdemContas,
+  buscarContas, buscarDeals, contextoFiltro, escopoDe, listarProdutos, listarTags, podeEditarContas, somenteLeitura, type Ordem, type OrdemContas,
 } from "@/server/repositorio";
 import { exigirUsuario } from "@/server/sessao";
 
@@ -41,7 +41,6 @@ export default async function Pagina({ searchParams }: { searchParams: Promise<P
   const usuario = await exigirUsuario("/leads");
   const contas = p.aba === "contas";
   const etiquetas = lerEtiquetas(p.f);
-  const leitura = somenteLeitura();
   const aba = (ativa: boolean) => `border-b-2 px-4 py-2 text-sm font-semibold ${ativa ? "border-marinho text-marinho" : "border-fundo text-texto-2 hover:text-marinho"}`;
 
   const cabecalho = (
@@ -73,7 +72,7 @@ export default async function Pagina({ searchParams }: { searchParams: Promise<P
         <p className="text-sm text-texto-2">
           {plural(lista.length, "empresa", "empresas")} · {dinheiroCurto(lista.reduce((a, c) => a + c.receitaGanha, 0))} em receita ganha
         </p>
-        <TabelaContas contas={lista} empresas={contexto.empresas} somenteLeitura={leitura} />
+        <TabelaContas contas={lista} empresas={contexto.empresas} podeEditar={podeEditarContas()} />
       </div>
     );
   }
@@ -87,6 +86,7 @@ export default async function Pagina({ searchParams }: { searchParams: Promise<P
     listarTags(),
     listarProdutos(),
   ]);
+  const leitura = somenteLeitura();
 
   return (
     <div className="grid gap-4">

@@ -5,7 +5,7 @@ import { ProvedorEstagio } from "@/components/Estagio";
 import { ModalDeal } from "@/components/ModalDeal";
 import { Topo } from "@/components/Topo";
 import { dataBR } from "@/lib/calculos";
-import { dataNegocio, somenteLeitura } from "@/server/repositorio";
+import { dataNegocio, escritaSoEmMemoria, fonteDosDados, somenteLeitura } from "@/server/repositorio";
 import { usuarioAtual } from "@/server/sessao";
 import { libreBaskerville, manrope } from "@/tema/fontes";
 import "./globals.css";
@@ -25,7 +25,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
           <Topo usuario={usuario} />
           {somenteLeitura() ? (
             <p className="border-b border-linha-forte bg-aviso-fundo px-4 py-2 text-center text-sm text-bronze-escuro" role="status">
-              Modo somente leitura: mudanças estão desligadas agora.
+              Modo somente leitura: o banco não respondeu e as mudanças estão desligadas agora. Os dados mostrados são da última carga.
             </p>
           ) : null}
           <ProvedorEstagio>
@@ -37,7 +37,8 @@ export default async function Layout({ children }: { children: ReactNode }) {
             ) : null}
           </ProvedorEstagio>
           <footer className="mx-auto max-w-7xl px-4 pb-8 text-xs text-texto-2 sm:px-6">
-            Dados até {dataBR(dataNegocio())}. Nesta versão de validação, as mudanças ficam guardadas só enquanto o servidor está ligado.
+            Dados até {dataBR(dataNegocio())}. Fonte: {fonteDosDados() === "banco" ? "banco de dados" : "arquivo"}.
+            {escritaSoEmMemoria() ? " Sem banco configurado: as mudanças ficam guardadas só enquanto o servidor está ligado." : ""}
           </footer>
         </Avisos>
       </body>
