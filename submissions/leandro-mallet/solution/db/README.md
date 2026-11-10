@@ -54,14 +54,18 @@ Cada arquivo numa transação, rodado pelo dono do schema (`postgres`), na ordem
 
 | Limite | Conta | Padrão | Erro |
 |---|---|---|---|
-| por usuário | pedidos daquele usuário | mais de 30 por janela | `GS429`: "Muitas mudanças seguidas. Espere alguns segundos." |
-| global (`0026`) | pedidos de todos os usuários do app somados | mais de 300 por janela (`limite_global_escritas`) | `GS429`: "O sistema está recebendo muitas mudanças agora. Tente de novo em alguns segundos." |
+| por usuário | pedidos daquele usuário | no máximo 30 por janela; o 31º é recusado | `GS429`: "Muitas mudanças seguidas. Espere alguns segundos." |
+| global (`0026`) | pedidos de todos os usuários do app somados | no máximo 300 por janela (`limite_global_escritas`); o 301º é recusado | `GS429`: "O sistema está recebendo muitas mudanças agora. Tente de novo em alguns segundos." |
+
+**Limite por endereço de rede (IP): obrigatório.** Ele fica nas rotas do app, que é onde se conhece o IP, e vem **antes** do banco. É o controle principal contra abuso.
+- O teto global do banco é rede de segurança: protege o banco.
+- Se o limite por IP faltar, uma só origem pode esgotar o teto global e travar as escritas de todos os usuários até a janela passar.
 
 **Limitação que continua: não há login (decisões 12 e 15).** Qualquer pessoa escolhe qualquer usuário da tela, **inclusive o admin**, e age como ele.
 - **Sem login, o limite por usuário só organiza o uso:** quem quiser abusar troca de usuário.
-- **A proteção real contra abuso tem duas camadas:**
-  - o teto global no banco (`0026`);
-  - o limite por endereço de rede nas rotas do app (feito no app, não no banco).
+- **Proteção contra abuso, em ordem:**
+  1. limite por IP nas rotas do app (obrigatório);
+  2. teto global no banco (`0026`).
 - A auditoria registra qual usuário foi escolhido em cada escrita.
 - Para uso real, seria preciso login.
 
