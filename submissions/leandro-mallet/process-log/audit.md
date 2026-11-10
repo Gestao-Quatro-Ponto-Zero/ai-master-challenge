@@ -200,5 +200,19 @@ A #5 aplicou 0007–0026 no Supabase, sem erro. Contagem: 29 tabelas, 60 FKs (RE
 - O-19 (#4): N1–N4 corrigidos. Conferido pela #1: 91 testes e checagem de tipos limpos, sem nomes proibidos, fim de linha LF; rota nova GET /api/lotes responde 401 sem perfil. Publicado. Observação aceita: o banco deixa qualquer manager desfazer um lote, e só a tela recorta pelo time. Sem login, a escolha de perfil já dá esse acesso, então não abre nada novo. Diferença registrada: a ESPEC 6.1 pede a lista dos leads pulados ao desfazer, e o banco devolve só a contagem.
 - O-20 (#5): N1–N4 aprovados no ar. Busca por palavras em qualquer ordem; lotes recentes visíveis só para quem aplicou, o manager do time e o admin (outra vendedora do time e o manager de outro time não veem); desfazer informa o que ficou como estava; contador só com ✓; frases de erro por campo, sem devolver o valor digitado. Escritas de teste desfeitas (lotes 1 e 2, tag "teste" removida). Observação R1 (comentário só com espaços dá erro genérico) virou a O-21.
 - O-21 (#4): texto obrigatório só com espaços recusado na rota. Conferido pela #1: 102 testes e checagem de tipos limpos; publicado; no ar, comentário e lote "Comentar" só com espaços → 400 "Preencha o comentário.", sem escrita no banco.
-- Achado da #1 na auditoria: src/server/perfil.ts é um arquivo antigo sem uso, com outro nome de cookie (g4_usuario) e sem a recusa do usuário "sistema". Não está ligado a nenhuma rota, então não há risco no ar, mas é uma armadilha para quem mexer depois. Virou a O-22.- O-22 (#4): perfil.ts sem uso conferido (nenhuma importação) e movido para fora da entrega; tirado do git pela #1. Cookies de teste no servidor local: id do sistema e o cookie antigo recusados (401), perfil válido aceito.
+- Achado da #1 na auditoria: src/server/perfil.ts é um arquivo antigo sem uso, com outro nome de cookie (g4_usuario) e sem a recusa do usuário "sistema". Não está ligado a nenhuma rota, então não há risco no ar, mas é uma armadilha para quem mexer depois. Virou a O-22.
+- O-22 (#4): perfil.ts sem uso conferido (nenhuma importação) e movido para fora da entrega; tirado do git pela #1. Cookies de teste no servidor local: id do sistema e o cookie antigo recusados (401), perfil válido aceito.
 
+## 10/11 — Score calculado e carregado no banco
+
+- O-23 (#3), aprovada pelo Leandro: regra das decisões 28–40 calculada em Python (`scoring/regra.py`, `calcular_score.py`) e carregada pelo papel de carga (`carregar_score.py`), numa transação só de inserção. Antes houve um ensaio completo com ROLLBACK. Execução 5 ativa; arquivo de carga com sha256 73ce4a89…, conferido pela #1.
+- 2.089 deals abertos com nota (500 em Prospecting e 1.589 em Engaging), sem nenhum aberto sem nota e sem mudança de dono. Nota de 0 a 89. BONUS só pelo histórico (0/5/10); a janela de compra vale 0, porque nenhuma empresa passa do teste contra o calendário geral.
+- Conferido pela #1: 11 testes passando. Os 3 exemplos do desenho batem (72,8 / 85,0 / 67,1), assim como a distribuição do FIT e o top 5 (135 deals, 77,8% ativos). Arquivos em LF e sem nomes proibidos. No ar: /api/health ok e notas nos cartões.
+- Diferença conhecida: os 112 deals abertos de uma vendedora variam de 1 a 3 pontos contra o dataset, porque o deal de teste da QA (perdido em 31/12) entra na janela de 3 meses dela.
+- Fora desta carga, como decidido: redistribuição de domingo (P0), repasse e penalidade, mudança de contrato e o backtest contra filas simples.
+- **Achado da #1 no ar:** a lista "Prioridades do dia" não segue a nota (ex.: 46, 55, 50, 41, 44). Há três causas:
+  - a lista de hoje foi montada antes da carga e fica gravada para o dia;
+  - o desempate e a lista do manager e do admin ainda usam o valor do deal e o ícone antigo;
+  - o cartão mostra o rótulo antigo "Super hot… ticket alto" em vez dos motivos da nota.
+
+  As decisões 28 e 29 tiraram o valor da nota e definiram a ordem: lead novo com FIT ≥ 75 no topo, depois a nota, e no empate o HEAT. Virou a O-24.
