@@ -352,6 +352,24 @@ for (let i = 0; i < 32; i++) {
   catch (e) { await db.exec(`rollback`).catch(() => {}); await db.exec(`reset role`); if (e.code === "GS429") bloqueado = i + 1; break; }
 }
 bloqueado === 31 ? ok("limite de escritas do app: o 31º pedido no minuto é recusado (GS429), contado pelo banco") : falha(`limite: bloqueou no pedido ${bloqueado}`);
+
+// 0026: teto global (troca de usuário não fura o teto)
+await db.exec(`begin; select system_iniciar_contexto_sistema('${corr()}');
+  update config_parametros set valor = '40'::jsonb where chave = 'limite_global_escritas'; commit;`);
+const outros = (await q(`select id from config_usuarios where papel = 'vendedor' and nome_exibicao not in ('Zane Levy', 'Anna Snelling') order by id`)).map((r) => r.id);
+let pedidos = 0, globalMsg = null;
+for (let i = 0; i < 60 && !globalMsg; i++) {
+  const uid = outros[i % outros.length];             // no máximo 2 pedidos por usuário: bem abaixo do limite individual
+  try { await db.exec(`set role service_role; begin; select system_iniciar_contexto(${uid}, '${corr()}'); commit; reset role;`); pedidos += 1; }
+  catch (e) { await db.exec(`rollback`).catch(() => {}); await db.exec(`reset role`); if (e.code === "GS429") globalMsg = e.message; else throw e; }
+}
+globalMsg && /muitas mudanças agora/.test(globalMsg)
+  ? ok(`teto global: trocando de usuário, o app é recusado depois de ${pedidos} pedidos (GS429: "${globalMsg}")`)
+  : falha(`teto global não disparou (${pedidos} pedidos)`);
+await db.exec(`set role system_carga; begin; select system_iniciar_contexto_sistema('${corr()}'); commit; reset role;`);
+ok("papel de carga passa mesmo com o teto global atingido");
+await db.exec(`begin; select system_iniciar_contexto_sistema('${corr()}');
+  update config_parametros set valor = '300'::jsonb where chave = 'limite_global_escritas'; commit;`);
 await db.exec(`set role system_carga; begin; select system_iniciar_contexto_sistema('${corr()}');
   insert into core_contas (nome, setor, funcionarios, porte, pais) values ('Carga Teste', 'retail', 10, 'pequena', 'Brazil'); commit; reset role;`);
 const cargaOk = (await q(`select a.papel from system_auditoria a where a.tabela = 'core_contas' and a.registro_id = 'Carga Teste'`))[0];

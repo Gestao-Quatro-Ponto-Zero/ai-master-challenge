@@ -7,7 +7,8 @@ Migrations do Postgres (Supabase). Elas saem de `app/ESPEC-TELAS.md` (seção 8)
 | Parte | Arquivos | Estado |
 |---|---|---|
 | Lote 1 | `migrations/0001`–`0006` + `seed/seed_dataset.sql` | **aplicado** no Supabase em 10/11/2026: 9 tabelas, 8.800 deals, 85 contas, 43 usuários e 9.006 linhas de auditoria. Não alterar: mudanças entram como migrations novas |
-| Lote 2 | `migrations/0007`–`0025` | escrito e validado (PGlite); **falta aplicar** |
+| Lote 2 | `migrations/0007`–`0025` | escrito e validado (PGlite); em aplicação |
+| Complemento de segurança | `migrations/0026_limite_global.sql` | escrito e validado (PGlite); **falta aplicar**, depois da 0025 |
 
 ## Ordem de execução do que falta aplicar
 
@@ -34,6 +35,7 @@ Cada arquivo numa transação, rodado pelo dono do schema (`postgres`), na ordem
 | 17 | `0023_atividades.sql` | **decisão 37**: tipo de atividade e comentário obrigatórios no ✓ |
 | 18 | `0024_roteamento_repasse.sql` | **decisões 35 e 38**: roteamento sem teto, repasse e penalidade |
 | 19 | `0025_permissoes_e_guardas.sql` | proteções das tabelas novas, política do papel de carga e permissões finais |
+| 20 | `0026_limite_global.sql` | **teto global** de pedidos do app por janela (soma de todos os usuários); o papel de carga fica fora |
 
 ## Segurança
 
@@ -48,13 +50,19 @@ Cada arquivo numa transação, rodado pelo dono do schema (`postgres`), na ordem
 - Gerado pelo servidor (na rota, com `crypto.randomUUID()`), nunca aceito do cliente.
 - O banco registra cada um em `system_correlacoes`, com a transação. Reaproveitar um `correlation_id` em outra transação é recusado (`GS400`).
 
-**Limite de escritas.**
-- Contado pelo banco: pedidos (transações) por usuário na janela (`janela_limite_segundos`, 60), lidos de `system_correlacoes`.
-- Vale sempre para o app (padrão: mais de 30 por minuto = `GS429`), e o app não pode desligar a contagem.
+**Limites de escrita.** Os dois são contados pelo banco em `system_correlacoes`, na janela `janela_limite_segundos` (60). Valem sempre para o app, que não consegue desligá-los; o papel de carga fica fora dos dois.
+
+| Limite | Conta | Padrão | Erro |
+|---|---|---|---|
+| por usuário | pedidos daquele usuário | mais de 30 por janela | `GS429`: "Muitas mudanças seguidas. Espere alguns segundos." |
+| global (`0026`) | pedidos de todos os usuários do app somados | mais de 300 por janela (`limite_global_escritas`) | `GS429`: "O sistema está recebendo muitas mudanças agora. Tente de novo em alguns segundos." |
 
 **Limitação que continua: não há login (decisões 12 e 15).** Qualquer pessoa escolhe qualquer usuário da tela, **inclusive o admin**, e age como ele.
+- **Sem login, o limite por usuário só organiza o uso:** quem quiser abusar troca de usuário.
+- **A proteção real contra abuso tem duas camadas:**
+  - o teto global no banco (`0026`);
+  - o limite por endereço de rede nas rotas do app (feito no app, não no banco).
 - A auditoria registra qual usuário foi escolhido em cada escrita.
-- O limite de escritas segura abuso automático.
 - Para uso real, seria preciso login.
 
 ## Regras de negócio no banco (números em `config_parametros`)
@@ -104,7 +112,7 @@ Resultado em 10/11/2026, tudo aprovado:
   | Índices | 103 |
 
   Também: RLS e bloqueio de DELETE e TRUNCATE em todas as tabelas, e nenhuma política fora do papel de carga. `anon` não executa nada; `service_role` não apaga e não executa as funções de carga.
-- **Testes de uso: 69 verificações.**
+- **Testes de uso: 71 verificações** (com a 0026: o teto global recusa o app mesmo trocando de usuário, e o papel de carga passa).
   - Carga, busca, ícones, roteamento, estágios, conflito de versão, desfazer, contato, ações, comentários, tags, lote, importação, prioridades, painel, linha do tempo e bloqueios.
   - ✓ com tipo e comentário (e as recusas sem eles).
   - Segurança: o app não age como sistema; `correlation_id` reaproveitado é recusado; o 31º pedido no minuto é recusado; a carga grava como sistema.
