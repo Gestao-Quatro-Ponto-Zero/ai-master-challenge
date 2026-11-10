@@ -94,6 +94,12 @@ Todos os números abaixo saem de `solution/numbers.py` (`docs/numeros-saida.txt`
 - [A saúde do pipeline para o gestor](process-log/screenshots/09-gestor-1366.png)
 - [O tema escuro](process-log/screenshots/11-tema-escuro-vendedor-1920.png), [uma vendedora sem nenhum negócio no prazo](process-log/screenshots/17-vendedor-sem-negocio-no-prazo-escuro-1366.png) e [uma segunda-feira antiga, ainda sem histórico](process-log/screenshots/14-segunda-sem-historico-1366.png)
 
+### Além do baseline
+
+- O baseline ([process-log/baseline/](process-log/baseline/)), o texto cru do desafio num modelo sem ferramentas, não entregou software: descreveu um app e afirmou tê-lo construído, citando números que não mediu ("AUC 0.63 against 0.49"). Esta entrega roda com um comando, e cada número sai de um script guardado.
+- O score dele usa vendedor, conta, produto e setor; a auditoria mostrou esses campos dentro do ruído (melhor atributo fora da amostra, AUC 0,520) e a conta ausente em 1.425 dos 2.089 negócios abertos.
+- Ele não vê o prazo: 1.291 dos 1.589 negócios em andamento já estão abertos há mais tempo que o ganho mais demorado, 138 dias. Esta entrega é construída sobre esse fato.
+
 ### Recomendações
 
 1. **Encerrar os vencidos.** 1.474 negócios, US$ 3.656.299 de tabela, estão fora do prazo em que algo já foi ganho. Encerrar no CRM, ou reabrir com data nova quando houver fato novo.
@@ -193,7 +199,7 @@ O diário completo, com as horas reais de cada passo, está em [process-log/DIAR
 - `PRODUTO.md`, `CLAUDE.md`, `prompts/` e `relatorios/`, citados dentro dos prompts, são os arquivos de trabalho fora do repositório; o que deles é publicado está em `process-log/` (`produto.md`, `piso.md`, `prompts/`).
 - O plano tinha dois verificadores independentes; rodou um (outra família de modelo). O segundo, uma sessão nova do mesmo modelo, foi cortado por tempo.
 - O verificador examinou o commit `e7f62ab` desta branch; o bloco de processo do README foi preenchido depois dele, e por isso o relatório o lista como pendente.
-- **Tempo real:** o Daniel começou por volta das 13:30 de 10/11/2026; o primeiro prompt ao construtor foi às 15:06; o último commit deste trabalho foi às 19:20, num total de cerca de 5 h 50 min (das 13:30 às 19:20). Os subagentes trabalharam em paralelo ao construtor. Os passos públicos (o envio, o endereço público e o pull request) vêm depois disso.
+- **Tempo real:** o Daniel começou por volta das 13:30 de 10/11/2026; o primeiro prompt ao construtor foi às 15:06; o último commit deste trabalho foi às 19:22, num total de cerca de 5 h 52 min (das 13:30 às 19:22). Os subagentes trabalharam em paralelo ao construtor. O envio e o pull request vêm depois disso.
 
 ---
 
