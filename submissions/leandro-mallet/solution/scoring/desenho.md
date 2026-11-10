@@ -102,8 +102,22 @@ A especificação completa, com as contas, os 3 exemplos reais e as simulações
 
 ### HEAT (30%): tempo de atendimento
 - **HEAT = pontos da faixa de idade × fator de contato.**
-- Faixas: Prospecting sem data = 50 (declarado, não inventa data) · 0–14 dias = 80 · 15–106 = 100 · 107–138 = 30 · mais de 138 = 0.
-- Abertos hoje por faixa: 500 · 7 · 150 · 141 · 1.291.
+- O lead mais novo é o mais quente (decisão do Leandro). São 8 faixas de dias desde a abertura, com pontos que caem a cada faixa:
+
+  | Faixa | Pontos | Abertos hoje | Fechados com essa duração | Taxa de ganho (só referência) |
+  |---|---|---|---|---|
+  | < 1 | 100 | 0 | 0 | — |
+  | 1–6 | 85 | 0 | 1.112 | 52,9% |
+  | 7–14 | 70 | 7 | 1.694 | 57,2% |
+  | 15–29 | 55 | 10 | 349 | 73,1% |
+  | 30–59 | 40 | 39 | 540 | 65,6% |
+  | 60–89 | 25 | 54 | 1.600 | 66,4% |
+  | 90–179 | 10 | 746 | 1.416 | 71,3% |
+  | ≥ 180 | 0 | 733 | 0 | — |
+  | Prospecting sem data | 50 (P1) | 500 | — | — |
+
+- A taxa de referência sobe com a duração (quem fecha rápido costuma ser perda rápida) e não define os pontos. Nenhum aberto de hoje tem menos de 7 dias: as 2 primeiras faixas valem para leads que chegarem já no CRM.
+- Os alertas do cartão não mudam os pontos: risco de esfriar de 107 a 138 dias; "esfriou" acima de 138, o deal mais longo que já fechou. O teto do roteamento conta como ativos só os deals em Prospecting ou com até 138 dias.
 - Fator pelo último contato registrado: 0–7 dias = 1,0 · 8–14 = 0,8 · 15–30 = 0,5 · mais de 30 = 0,2. Nos deals do dataset não há ações, então o fator é 1,0.
 - Replies: componente previsto, com peso 0 até haver dado.
 
@@ -124,7 +138,7 @@ A especificação completa, com as contas, os 3 exemplos reais e as simulações
 4. Os deals em risco e os esfriados aparecem com alerta.
 5. A tela mostra 5 por vez, e o ✓ ou ✗ faz a lista andar (decisão 27).
 
-Hoje, 95% do top 5 de cada vendedor são deals ativos.
+Hoje, o top 5 dos 27 vendedores com deals abertos soma 135 deals. Desses, 81,5% estão ativos, 37% estão em Prospecting e 9 (6,7%) têm 180 dias ou mais. Os 3 exemplos do HTML ficam com score 62,8, 85,0 e 67,1.
 
 ### Motivos (`reasons`)
 São 2 ou 3 frases montadas a partir das contas. Exemplos:
@@ -158,9 +172,9 @@ Saída: `data/scored/deals_scored.json` + `scoring/validacao.md`. Só serão ger
 
 ## 4. Perguntas em aberto
 
-As decisões 28 e 29 substituíram as antigas D1–D4: a chance por segmento saiu, o valor saiu da nota e o tempo virou HEAT. A janela de 3 meses está confirmada. Ficam abertas:
+As decisões 28 e 29 substituíram as antigas D1–D4: a chance por segmento saiu, o valor saiu da nota e o tempo virou HEAT. A janela de 3 meses e as 8 faixas de HEAT estão decididas. Ficam abertas:
 
-- **P1.** Pontos das faixas de HEAT (50 / 80 / 100 / 30 / 0) e do fator de contato (1,0 / 0,8 / 0,5 / 0,2).
+- **P1.** Prospecting sem data no HEAT: 50, o meio da escala (proposta); 100, tratar como lead novo; ou 0, tratar como esquecido.
 - **P2.** Teto de 40 ativos por vendedor.
 - **P3.** Roteamento pela conversão no perfil, com a trava de FIT ≥ 50.
 - **P4.** Requisito do lead novo: FIT ≥ 60.
