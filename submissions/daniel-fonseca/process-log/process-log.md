@@ -213,3 +213,17 @@ A regra de conduta também foi registrada no AGENTS.md.
 5. Fluxo 1: tokens (resposta crua da OpenAI), custo, latência e tempo por etapa gravados em `triage_runs`; republicado e testado pelo webhook nos 3 caminhos (US$ 0,0007–0,0014 por triagem).
 6. `reset_demo.py`: limpou os testes e repovoou com 10 tickets reais do holdout.
 7. App Next.js 16.4.6, depois de ler a documentação local da versão: Cache Components exigem `<Suspense>` para dados dinâmicos e `searchParams`. Tokens Órbita nos dois temas, shell, camada de dados só no servidor, limites de uso, heartbeat e stubs com contrato para a frente B. Conferido no navegador (desktop, mobile e escuro).
+
+### Sessão 02 — parte 8 (10/11 · integração das frentes e produção)
+**Harness:** Claude Code (Opus 5.5), app desktop, sessão base.
+
+**Direcionamento do Daniel:** "Pode fazer" (merge das frentes A e B, build e publicação).
+
+**O que a IA fez:**
+1. Conferiu que cada frente só tocou os próprios arquivos e fez os dois merges sem conflito.
+2. Aplicou os pedidos da Frente A à base: `prebuild` do conteúdo das ADRs, `npm test` e ajustes no `.gitignore`. O `git-add.sh` lê só o `.gitignore` da submissão, por isso o `next-env.d.ts` voltou ao índice no primeiro commit; a IA corrigiu no seguinte com `**/next-env.d.ts`.
+3. Lint, 5 testes do ROI e build ok; varredura de segredos no bundle sem achados.
+4. Viu que os pushes geravam só previews e criou o deploy de produção pelo MCP da Vercel.
+5. Testou ao vivo os 3 caminhos, a fila (aprovação, solução aprendida, 409) e os erros de entrada; conferiu as telas no navegador.
+6. Rodou `reset_demo.py` para deixar a demonstração limpa.
+

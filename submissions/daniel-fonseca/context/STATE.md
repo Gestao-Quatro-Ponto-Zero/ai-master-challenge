@@ -2,10 +2,10 @@
 
 > Atualize ao final de cada sessão. Qualquer agente (Claude Code, Codex…) deve conseguir continuar o trabalho só com este arquivo + AGENTS.md.
 
-**Última atualização:** 2026-11-09 · Sessão 02 · Claude Code (Opus 5.5)
+**Última atualização:** 2026-11-10 · Sessão 02 · Claude Code (Opus 5.5)
 
 ## Fase atual
-**App Vercel: sessão base pronta** (plano aprovado em 10/11; ver `docs/prd/01-prd.md` e a ADR-0014). Próximo: frentes A (Painel + Como foi feito) e B (Console + APIs) em sessões paralelas a partir do commit da base; deploy quando o Daniel liberar o acesso do MCP `vercel-g4` ao time `case-g4`.
+**App Vercel integrado e em produção** (https://triagem-case-ai-master-case-g4.vercel.app). Frentes A e B integradas na `submission/daniel-fonseca` com o OK do Daniel (10/11). Próximo: monitoramento de uso (n8n + tarefa local a cada 2 h), ativar o fluxo 3, exportar os JSON do n8n, README final, vídeo e PR.
 
 ## Timebox (decisão do Daniel)
 No máximo **dois turnos noturnos**: hoje (09/11) e amanhã (10/11), incluindo vídeo e PR. Se terminar hoje, melhor.
@@ -65,7 +65,15 @@ No máximo **dois turnos noturnos**: hoje (09/11) e amanhã (10/11), incluindo v
      - A proteção padrão do time (Vercel Authentication em `all_except_custom_domains`) bloqueava o domínio de produção. A IA mudou para `preview`, conforme a decisão de app público: a produção fica aberta e os previews protegidos.
      - Smoke test: 3 áreas 200; heartbeat 401 sem segredo e 200 com segredo; triage 501 (stub); nenhum segredo nem host do n8n nos 9 chunks do cliente.
    - Erro corrigido: os worktrees das frentes (`.claude/worktrees/`) entraram no commit `26ee06f` como repositórios embutidos (só ponteiros). Saíram no `8afee68`, e `.claude/worktrees/` foi para o `.gitignore`.
-12. Turno 2: app Vercel (dashboard + console + `/api/heartbeat`) + deploy + ativar o fluxo 3 com a URL + vídeo + PR.
+12. ✔ (10/11) **Integração das frentes**, com o OK do Daniel:
+   - merges `7ee7de4` (Frente B: Console Triagem · Fila · Caixa, rotas `/api/triage`, `/api/triage/sample`, `/api/hitl`, `/api/inbox`, `/api/demo/reset`) e `8794b3d` (Frente A: Painel Diagnóstico · ROI · Operação, `lib/roi.ts` com 5 testes, Como foi feito Proposta · Decisões · Condução, `12_painel_extras.py`);
+   - ajustes da base: `prebuild` gera `docs.generated.json` das ADRs e do judgment log; `npm test`; `.gitignore` (`data`/`.venv` sem barra, `*.tsbuildinfo`, `**/next-env.d.ts`);
+   - lint, testes e build ok; nenhum segredo nem host do n8n em `.next/static`.
+   - **Deploy:** os pushes geravam só previews (`target: null`), apesar da branch de produção ajustada antes. A IA criou o deploy de produção pelo MCP (`dpl_FV7YzF2jcCVCLBiERGtRBw9KiEBD`, commit `7a52743`). **Pendente (Daniel):** conferir em Settings → Environments → Production a branch rastreada, para os próximos pushes irem direto à produção.
+   - **Teste ao vivo:** 9 rotas de página 200; heartbeat sem segredo 401; triagem pelo app nos 3 caminhos (Purchase 0,94 → Resposta automática; Hardware 0,62 → Revisão humana; HR Support → Somente humano), com tokens, custo (US$ 0,0006–0,0014) e tempos por etapa em `triage_runs`; texto curto 400; aprovação na fila 200 com solução aprendida #18 e vizinho sugerido (similaridade 0,84); aprovação repetida 409.
+   - `reset_demo.py` rodado: fila com 6, caixa com 2, 2 respostas automáticas. As soluções aprendidas dos testes (#16, #17, #18) ficaram, conforme o script.
+   - Sugestões das frentes para o Daniel decidir: esconder `usage_alert` da caixa pública; vizinho do efeito "aprendeu" filtrado pela categoria aprovada; glossário (PRD §6.1).
+13. Turno 2: app Vercel (dashboard + console + `/api/heartbeat`) + deploy + ativar o fluxo 3 com a URL + vídeo + PR.
 
 ## Perguntas abertas para o Daniel
 - [x] ADR-0010: RAG como classificador único (Daniel). ADR-0011: diretrizes do n8n (Daniel).
@@ -85,5 +93,5 @@ No máximo **dois turnos noturnos**: hoje (09/11) e amanhã (10/11), incluindo v
 |---|---|
 | Repo | https://github.com/danielcoelhof/ai-master-challenge (branch `submission/daniel-fonseca`) |
 | Supabase project ref | `awiphrbtvgapuuebiouw` (sa-east-1) |
-| Vercel project | _pendente_ |
+| Vercel project | `triagem-case-ai-master` (prj_JsF7acFdxYDKOmKzNVG5Lxns7hqY, time case-g4) · https://triagem-case-ai-master-case-g4.vercel.app |
 | n8n | VPS do Daniel — URL em `N8N_BASE_URL` (`.env`), MCP em `/mcp-server/http` (exige token; endpoint respondeu 401 sem token em 09/11) |
