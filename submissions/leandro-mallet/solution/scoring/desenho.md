@@ -56,6 +56,30 @@ Win rate geral: **63,2%** (4.238 Won / 6.711 fechados).
 
 **d) Fim de trimestre (contexto para o manager, fora do score).** Deals encerrados em mar/jun/set/dez ganham 80,7%. Nos outros meses, 52,3%. O volume de fechamentos é parecido em todos os meses: o time registra os ganhos no fim do trimestre e as perdas no meio.
 
+### 1.3 Todos os atributos das 4 tabelas: o que foi testado e onde aparece
+
+Teste de chance: a diferença entre o maior e o menor win rate dos grupos com 30 ou mais deals fechados (6.711 deals). Nenhum atributo fica de fora: o que não entra no score aparece na tela como contexto, com o número, para o vendedor e o manager verem que foi olhado.
+
+| Tabela | Atributo | Resultado | Veredito | Onde aparece |
+|---|---|---|---|---|
+| products | `product` / `sales_price` | Win 60,3%–64,8% (4,5 pts); preço de US$ 55 a US$ 26.768; valor fechado = 97%–100% da tabela (mediana por produto) | Chance: ruído. **Valor: entra no score** | Componente `valor` + motivo |
+| products | `series` | 62,7%–63,4% (0,7 pt) | Ruído | Detalhe do deal |
+| accounts | `sector` | 61,2%–64,8% (3,7 pts) | Ruído | Detalhe do deal: "chance histórica no setor X: 61%, perto da média de 63%" |
+| accounts | `revenue` (tercis) | 63,0%–63,2% (0,2 pt) | Ruído | Detalhe do deal (porte) |
+| accounts | `employees` (tercis) | 62,4%–63,6% (1,2 pt) | Ruído | Detalhe do deal (porte) |
+| accounts | `year_established` (tercis de idade) | 62,6%–64,2% (1,6 pt) | Ruído | Detalhe do deal |
+| accounts | `subsidiary_of` (tem empresa-mãe) | 63,1% × 63,6% (0,6 pt) | Ruído | Detalhe do deal (grupo da conta) |
+| accounts | `office_location` | 56%–75% (19 pts), mas cada país fora dos EUA é **uma conta só**; EUA 63,3% (n=5.555) × resto 62,6% (n=1.156) | Ruído (é o mesmo da conta) | Detalhe do deal |
+| accounts | histórico da conta | 53%–75% (22 pts), desvio 4,8 pts contra 5,4 pts do acaso; win rate passado não prevê o seguinte (quintis 60%–65%, sem ordem) | Ruído | Detalhe do deal: "esta conta: X ganhos em Y, média do time 63%" |
+| sales_teams | `sales_agent` | 55%–70% (15 pts), desvio 3,7 pts contra 3,2 pts do acaso; win rate passado não prevê o seguinte | Ruído | Visão do manager: win rate por vendedor com a faixa do acaso desenhada |
+| sales_teams | `manager` | 62,1%–64,4% (2,3 pts) | Ruído | Filtro + visão do manager |
+| sales_teams | `regional_office` | 62,6%–63,9% (1,4 pt) | Ruído | Filtro + visão do manager |
+| pipeline | `account` vazia | 0 de 6.711 fechados sem conta; 68% dos abertos sem | **D2** | Flag `sem_conta` |
+| pipeline | `engage_date` (idade) | Não muda a chance; muda quando o deal se decide e se ainda está vivo (tabela da seção 1.2) | **Entra no score** | Componente `tempo` + flags |
+| pipeline | `deal_stage` | Prospecting não tem data de engajamento: não há como medir idade | Sem sinal | Aviso "sem dado de idade" |
+| pipeline | `close_date` | Fim de trimestre: 80,7% × 52,3% | Fora do score (não existe para deal aberto) | Visão do manager |
+| pipeline | `close_value` | 99,8% do preço de tabela na mediana | Justifica usar o preço como valor | Motivo do componente `valor` |
+
 ---
 
 ## 2. Proposta de score (0–100)
@@ -120,6 +144,7 @@ Backtest com fotografias no fim de cada mês, de abr a nov/2017. Em cada fotogra
 Intervalo de confiança por bootstrap sobre as 8 fotografias, para não chamar de vitória uma diferença que cabe no acaso.
 
 **Checagens extras:**
+- **Cada atributo da seção 1.3 contra o resultado real:** a mesma tabela regerada pelo script, com o teste no tempo (só o histórico anterior a cada deal) para conta, vendedor, vendedor × produto e região.
 - **Correlação score × preço.** Se passar de ~0,9, o score virou "ordenar por produto caro" e os pesos precisam ser revistos.
 - **Flags:** os deals marcados `parado`/`esfriando` de fato não fecharam?
 - **Hoje:** quantos deals do top 5 "só por valor" de cada vendedor estão parados há mais de 120 dias. É o tempo que o vendedor perderia sem o score.
@@ -131,7 +156,7 @@ Saída: `data/scored/deals_scored.json` (contrato do PLANO-SESSOES, sem mudança
 
 ## 4. Decisões para o Leandro
 
-- **D1 — Chance de ganhar.** Proposta: peso 0, exibida como contexto ("chance histórica: 63%, igual para todo tipo de deal"). Alternativa: peso pequeno (10 pts) com win rate por produto suavizado, sabendo que a diferença é ruído.
+- **D1 — Chance de ganhar.** Proposta: peso 0, exibida como contexto ("chance histórica: 63%, igual para todo tipo de deal"). Alternativa: peso pequeno (10 pts) com win rate por produto suavizado, sabendo que a diferença é ruído. **Nas duas opções**, todos os atributos das 4 tabelas continuam testados e visíveis (seção 1.3): cada um com o número, no detalhe do deal (setor, porte, idade e grupo da conta, histórico da conta, país) ou na visão do manager (vendedor com a faixa do acaso, região, manager, fim de trimestre). A validação (seção 3) publica o teste de cada atributo contra o resultado real. Tirar a chance do score não esconde dado: mostra que ele foi olhado e por que não muda a ordem.
 - **D2 — Deal sem conta (68% do pipeline aberto).** O histórico de win rate da conta não tem sinal, então sai do score em qualquer caso. As duas opções:
 
   | | A. Pontos (conta preenchida = 20) | B. Tarefa, sem mexer na ordem |
