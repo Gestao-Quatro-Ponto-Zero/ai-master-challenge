@@ -1,9 +1,10 @@
-# Desenho: estrutura do app em Next.js
+# Desenho do CRM: estrutura em Next.js
 
 > Proposta para decisão. Nada disto está construído.
+> Decisão 20: este é o CRM do time, com a prioridade embutida no pipeline; o nome definitivo ainda vai ser escolhido. O mínimo de CRM que falta está em [DESENHO-CRM.md](DESENHO-CRM.md).
 > Usuários, operação do pipeline, banco e auditoria em [DESENHO-ACOES.md](DESENHO-ACOES.md) (decisões 15 e 16).
 > Este arquivo segue a stack canônica (decisão 19) e a marca visual do G4 em fundo branco (decisão 18).
-> O app atual em HTML/JS (`index.html`, `app.js`, `styles.css`) vira referência de telas e fluxos e vai para `prototipo-html/`.
+> O protótipo em HTML/JS (`index.html`, `app.js`, `styles.css`), feito quando a ideia era uma ferramenta de priorização, vira referência de telas e fluxos e vai para `prototipo-html/`.
 
 ## Stack
 
@@ -16,7 +17,7 @@
 | Publicação | Vercel |
 | Metas | LCP abaixo de 2 s, JavaScript da primeira carga abaixo de 300 kB gzip, WCAG AA |
 
-## Onde fica o projeto Next
+## Onde fica o projeto
 
 **Recomendado: o próprio `solution/app/` vira o projeto Next.**
 

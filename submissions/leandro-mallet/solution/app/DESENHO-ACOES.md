@@ -1,6 +1,7 @@
-# Desenho: usuários, operação do pipeline e auditoria
+# Desenho do CRM: usuários, operação do pipeline e auditoria
 
 > Proposta para decisão. Nada disto está construído.
+> Decisão 20: este é o CRM do time, o único sistema que o vendedor e o manager usam. A prioridade (score, motivos e ação sugerida) faz parte do pipeline, não é uma ferramenta ao lado. O nome definitivo ainda vai ser escolhido. O mínimo de CRM que falta em relação a este desenho está em [DESENHO-CRM.md](DESENHO-CRM.md).
 > Estrutura de pastas do app em [DESENHO-NEXT.md](DESENHO-NEXT.md).
 
 Decisões do Leandro que este desenho segue:
@@ -12,6 +13,7 @@ Decisões do Leandro que este desenho segue:
 | 14 | DB-01 (prefixo por domínio, snake_case, plural) e DB-02 (chave estrangeira declarada, com índice, `on delete restrict`). |
 | 15 | Tabela `config_usuarios` gerada do dataset: vendedores, managers e um admin. Sem checagem de nome. |
 | 16 | Sistema operacional: insert e update liberados. DELETE, DROP e exclusão em massa continuam proibidos. Toda escrita é auditada (ARQ-05). O servidor não bloqueia por dono do deal. |
+| 20 | O produto é o CRM único do time, com a prioridade embutida no pipeline. |
 
 ## O que cada pessoa faz
 
@@ -51,8 +53,8 @@ Decisões do Leandro que este desenho segue:
 - O rodapé mostra a fonte: "Dados: banco, notas de 31/12/2017" ou "Dados: arquivo (somente leitura)".
 
 **Quem escreve o quê:**
-- **Carga inicial (Python, uma vez):** cria `core_*` a partir dos CSVs limpos, `config_usuarios` a partir do `sales_teams` e a primeira execução de `score_*`. A carga usa `on conflict do nothing` em `core_*`: rodar de novo nunca sobrescreve o que foi editado no app.
-- **Operação (app):** depois da carga, o banco é a fonte da verdade de `core_deals`. O app atualiza estágio, empresa e fechamento, e grava em `acao_registros`.
+- **Migração do CRM antigo (Python, uma vez):** os CSVs do dataset são a exportação do sistema anterior. A carga cria `core_*` a partir deles (já limpos), `config_usuarios` a partir do `sales_teams` e a primeira execução de `score_*`. A carga usa `on conflict do nothing` em `core_*`: rodar de novo nunca sobrescreve o que foi editado no app.
+- **Operação (o CRM):** depois da migração, este banco é o registro oficial do pipeline. O app atualiza estágio, empresa e fechamento, e grava em `acao_registros`.
 - **Nova rodada de score (Python):** lê `core_*` do banco, não dos CSVs, para considerar o que os vendedores mudaram. Grava uma nova `score_execucoes` e troca o ponteiro em `config_parametros`.
 - Um deal alterado depois da última rodada de score mostra o selo "Atualizado depois da nota" até a próxima rodada.
 
@@ -81,7 +83,7 @@ Projeto **G4_AI_Mastering**. Em todas as tabelas:
 ### Tabelas (15)
 
 ```sql
--- core_: dados do CRM
+-- core_: o cadastro do CRM (time, produtos, contas e deals)
 create table core_escritorios (
   nome text primary key                                   -- Central, East, West
 );
