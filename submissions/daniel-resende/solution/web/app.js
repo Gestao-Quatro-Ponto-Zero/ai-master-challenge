@@ -93,8 +93,16 @@
     }
     return scores.get(monday);
   }
+  // Every stored text passes here. A text was written for one Monday, and the index
+  // marks it (ai_texts): on any other Monday it does not exist, and the page shows
+  // the sentence chosen by rule instead.
+  const stored = (id) => {
+    const day = current && index.mondays.find((m) => m.monday === current.meta.monday);
+    if (!texts || !day || !day.ai_texts) return null; // the index marks the only Monday the texts belong to
+    return texts.byId.get(id) || null;
+  };
   const part = (id, name) => {
-    const t = texts && texts.byId.get(id);
+    const t = stored(id);
     return t && t.parts && t.parts[name] && t.parts[name].text ? t.parts[name].text : null;
   };
 
@@ -326,7 +334,7 @@
   function briefButton(sel) {
     const body = part("briefing:" + sel.seller, "body");
     if (!body) return null;
-    const t = texts.byId.get("briefing:" + sel.seller), p = t.provenance || {};
+    const t = stored("briefing:" + sel.seller), p = t.provenance || {};
     const btn = h("button", { type: "button", class: "tp-btn", id: "brief" }, "Copiar resumo");
     btn.addEventListener("click", async () => {
       try { await navigator.clipboard.writeText(body); btn.textContent = "Resumo copiado"; } catch (e) { btn.textContent = "Não copiou: leia abaixo"; }
@@ -437,7 +445,7 @@
     const body = state.manager && !past ? part("manager:" + state.manager, "body") : null;
     let brief = null;
     if (body) {
-      const p = (texts.byId.get("manager:" + state.manager).provenance || {});
+      const p = (stored("manager:" + state.manager).provenance || {});
       brief = withTip(h("button", { type: "button", class: "tp-btn", id: "brief" }, "Resumo do gestor"),
         () => [h("p", { class: "tp-tip-h" }, "Resumo do gestor"), para(body),
           h("p", { class: "tp-tip-id" }, `Redigido por IA${p.model ? " (" + p.model + ")" : ""}; números e nomes preenchidos pelo código.`)]);
@@ -489,7 +497,8 @@
     const dlg = $("how");
     if (!current) return;
     const m = current.meta, w = m.window, t = m.time_table, ev = index.evidence;
-    const any = texts && [...texts.byId.values()][0];
+    const day = index.mondays.find((x) => x.monday === m.monday);
+    const any = texts && day && day.ai_texts ? [...texts.byId.values()][0] : null;
     const prov = any ? any.provenance || {} : null;
     const close = h("button", { type: "button", class: "tp-btn", onclick: () => dlg.close() }, "Fechar");
     dlg.replaceChildren(...[
@@ -516,7 +525,7 @@
       h("h3", {}, "Os textos"),
       para(prov
         ? `O próximo passo de cada negócio é escolhido por regra. A frase que o acompanha, o resumo da segunda e o resumo do gestor foram redigidos por IA (${prov.model || "modelo não registrado"}, em ${prov.generated_on || "data não registrada"}); os números e os nomes são preenchidos pelo código.`
-        : "O próximo passo de cada negócio é escolhido por regra. Os textos de IA não estão carregados: a tela mostra só as frases de regra."),
+        : "O próximo passo de cada negócio é escolhido por regra. Nesta segunda a tela mostra só as frases de regra: os textos de IA foram escritos para outra segunda ou não estão carregados."),
       h("h3", {}, "Os dados"),
       para(`Segunda-feira ${brDate(m.monday)}, com os dados fechados no domingo ${brDate(m.data_closed)}. As idades são contadas nessa data, e o último dia do prazo ainda conta como no prazo.` +
         (m.past ? ` É uma segunda do passado: a tela usa só o que se sabia naquele dia, e “depois” vai até ${brDate(m.outcomes_until)}.` : "")),

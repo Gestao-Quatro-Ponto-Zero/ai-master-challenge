@@ -462,7 +462,12 @@ def check_index():
     if [m.get("monday") for m in data["mondays"]] != want:
         fail(name, None, f"mondays must be {want}, most recent first")
     for m in data["mondays"]:
-        if keys_are(name, m.get("monday"), m, ["monday", "data_closed", "file", "past"], "mondays row"):
+        if keys_are(name, m.get("monday"), m, ["monday", "data_closed", "ai_texts", "file", "past"], "mondays row"):
+            # stored AI texts may show only on the Monday they were written for, and on none without the file
+            texts = HERE / "ai" / "textos.json"
+            own = json.loads(texts.read_text(encoding="utf-8")).get("meta", {}).get("monday") if texts.is_file() else None
+            if m["ai_texts"] is not (m["monday"] == own):
+                fail(name, m["monday"], f"ai_texts must be true only on the Monday of ai/textos.json ({own})")
             if m["file"] != f"score-{m['monday']}.json" or not (OUT / m["file"]).is_file():
                 fail(name, m["monday"], "file missing or misnamed")
             if m["data_closed"] != (day(m["monday"]) - dt.timedelta(days=1)).isoformat():

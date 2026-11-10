@@ -195,6 +195,14 @@ def evidence(deals):
             "source": "docs/confirmacao-saida.txt"}
 
 
+def texts_monday():
+    """The Monday the stored AI texts were written for, or None without the file."""
+    path = HERE / "ai" / "textos.json"
+    if not path.is_file():
+        return None
+    return json.loads(path.read_text(encoding="utf-8")).get("meta", {}).get("monday")
+
+
 def write(name, payload):
     OUT.mkdir(exist_ok=True)
     (OUT / name).write_text(json.dumps(payload, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
@@ -214,6 +222,7 @@ def main():
         name = f"score-{monday.isoformat()}.json"
         write(name, score)
         mondays.append({"monday": monday.isoformat(), "data_closed": score["meta"]["data_closed"],
+                        "ai_texts": monday.isoformat() == texts_monday(),
                         "file": name, "past": score["meta"]["past"]})
         if monday == DEFAULT_MONDAY:
             # no seller has all three blocks on the default Monday: open on the longest living list

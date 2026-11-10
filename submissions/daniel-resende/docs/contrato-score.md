@@ -34,8 +34,8 @@ Como uma segunda-feira se liga à regra congelada, sem tocar nela:
   "default_monday": "2018-01-01",
   "default_seller": "<o vendedor com mais vivos na segunda padrão>",
   "mondays": [
-    {"monday": "2018-01-01", "data_closed": "2017-12-31", "file": "score-2018-01-01.json", "past": false},
-    {"monday": "2017-10-02", "data_closed": "2017-10-01", "file": "score-2017-10-02.json", "past": true}
+    {"monday": "2018-01-01", "data_closed": "2017-12-31", "ai_texts": true, "file": "score-2018-01-01.json", "past": false},
+    {"monday": "2017-10-02", "data_closed": "2017-10-01", "ai_texts": false, "file": "score-2017-10-02.json", "past": true}
   ],
   "sellers": [{"seller": "...", "manager": "...", "region": "..."}],
   "evidence": {"cuts": 12, "distinct_deals_past_window": 717, "won_after": 0, "lost_after": 1,
@@ -43,6 +43,8 @@ Como uma segunda-feira se liga à regra congelada, sem tocar nela:
   "value_note": {"list_prices": 7, "closed_without_value_on_open_rows": true}
 }
 ```
+
+`ai_texts` é `true` só na segunda para a qual os textos de IA foram escritos (a de `meta.monday` em `ai/textos.json`) e `false` em todas quando esse arquivo não existe. A tela só mostra um texto guardado numa segunda marcada; nas outras mostra a frase escolhida por regra. `check_contract.py` reprova outra marcação.
 
 `sellers` traz os 35 de `sales_teams.csv`, em ordem alfabética. `mondays` vem da mais recente para a mais antiga.
 
