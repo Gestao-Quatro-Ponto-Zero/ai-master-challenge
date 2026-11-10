@@ -1,6 +1,7 @@
 # Desenho: registrar ações do vendedor e limpar o pipeline
 
 > Proposta para decisão. Nada disto está construído.
+> Stack (decisão 11): Next.js com TypeScript strict, Postgres no Supabase G4_AI_Mastering e publicação na Vercel. A estrutura de pastas está em [DESENHO-NEXT.md](DESENHO-NEXT.md).
 
 ## O que o vendedor e o manager ganham
 
@@ -13,7 +14,7 @@
 
 | Situação | Comportamento |
 |---|---|
-| Banco fora, não configurado ou projeto pausado | O app funciona como hoje (só leitura, a partir do JSON). Os botões de ação não aparecem, e uma linha discreta avisa "Registro de ações indisponível". |
+| Sem credenciais, banco fora ou projeto pausado | O app funciona só com o `deals_scored.json`. Os botões de ação não aparecem, e uma linha discreta avisa "Registro de ações indisponível". |
 | Banco no ar, sem login | Leitura completa, incluindo as ações já registradas. Os botões aparecem com "Entre para registrar". |
 | Banco no ar, com login | O usuário registra ações no próprio pipeline (vendedor) ou no do time (manager). |
 
@@ -21,7 +22,7 @@ Os avaliadores sempre conseguem abrir e usar a parte de priorização, mesmo que
 
 ## Banco
 
-Projeto Supabase **G4_AI_Mastering**, usado só para este desafio. Variáveis: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` e `SUPABASE_ANON_KEY` (esta só para o login). Localmente elas vêm do `.env` da raiz do clone; na Vercel, das variáveis de ambiente do projeto. O `.env` nunca vai para o git.
+Projeto Supabase **G4_AI_Mastering**, usado só para este desafio. A migração fica em `supabase/migrations/0001_acoes.sql`, dentro da pasta do app.
 
 ```sql
 -- Quem é quem: liga a conta de login a um vendedor ou manager do dataset
@@ -51,58 +52,37 @@ alter table lead_scorer_acoes  enable row level security;
 - O estado atual de cada deal é a última ação registrada para ele.
 - "Desfazer" é um registro novo, não uma remoção. O histórico fica inteiro e serve de auditoria.
 
-## Um código só, local e na Vercel
+## Rotas de API do Next (substituem o servidor.py e as funções Python)
 
-A Vercel roda funções Python sem dependência quando o arquivo em `api/` define uma classe `handler` derivada de `BaseHTTPRequestHandler`. O servidor local reaproveita essas mesmas classes. Nenhuma linha da lógica fica duplicada.
+| Rota | O que faz | Sem credenciais |
+|---|---|---|
+| `GET /api/acoes?vendedor=&manager=` | Lista a última ação de cada deal do filtro | `503 {"disponivel": false}` |
+| `POST /api/acoes` | Registra uma ação `{opportunity_id, acao, nota?}`; aceita lote para a limpeza | `503` |
+| `POST /api/sessao` | Entra com e-mail e senha (Supabase Auth) e grava a sessão em cookie httpOnly | `503` |
+| `DELETE /api/sessao` | Sai | `503` |
 
-```
-solution/                         ← raiz do projeto na Vercel
-  vercel.json                     redireciona "/" para "/app/"
-  api/
-    _supabase.py                  chamadas à REST e ao Auth do Supabase (urllib); lê as variáveis
-    acoes.py                      class handler: GET lista ações, POST registra uma ação
-    sessao.py                     class handler: POST entra (e-mail + senha), devolve o token
-  app/
-    servidor.py                   local: serve os arquivos e repassa /api/* para as classes acima
-    index.html, app.js, ...       iguais nos dois lugares
-  data/scored/deals_scored.json   servido como arquivo estático nos dois lugares
-```
+Como a gravação é conferida, dentro de `src/server/acoes.ts`:
+1. Lê a sessão do cookie (`@supabase/ssr`, chave pública) e confirma o usuário com `auth.getUser()`.
+2. Busca o perfil em `lead_scorer_perfis` com a service role.
+3. Confere a permissão contra o `deals_scored.json`: o deal precisa ser do próprio vendedor ou de alguém do time do manager. Se não for, responde 403.
+4. Confere o limite de gravações por conta por minuto e o tamanho da nota.
+5. Grava com a service role.
 
-O servidor local, inteiro, fica assim:
+Os passos 3 e 4 são funções puras em `src/lib/permissao.ts`, testadas sem banco.
 
-```python
-# app/servidor.py — uso: python app/servidor.py  (a partir de solution/)
-import sys, pathlib
-from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
-RAIZ = pathlib.Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(RAIZ / "api"))
-import acoes, sessao  # as mesmas classes que a Vercel usa
+**Onde ficam as chaves:**
+- `SUPABASE_SERVICE_ROLE_KEY` só existe em `src/server/` (arquivos com `import "server-only"`; o build falha se algum componente do navegador importar um deles).
+- `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY` são públicas por natureza e servem só para a sessão.
+- Localmente as chaves ficam em `.env.local`, na pasta do app (fora do git; há um `.env.example` com os nomes). Na Vercel, ficam nas variáveis de ambiente do projeto.
+- `src/lib/config.ts` diz se o registro de ações está disponível (as três variáveis presentes). Sem elas, as rotas respondem 503 e o middleware de sessão não roda.
 
-ROTAS = {"/api/acoes": acoes.handler, "/api/sessao": sessao.handler}
-
-class Servidor(SimpleHTTPRequestHandler):
-    def __init__(self, *a, **k): super().__init__(*a, directory=str(RAIZ), **k)
-    def _api(self, metodo):
-        h = ROTAS.get(self.path.split("?")[0])
-        if not h: return False
-        getattr(h, metodo)(self); return True
-    def do_GET(self):  self._api("do_GET") or super().do_GET()
-    def do_POST(self): self._api("do_POST") or self.send_error(404)
-
-ThreadingHTTPServer(("127.0.0.1", 8000), Servidor).serve_forever()
-```
-
-- O app chama sempre `../api/acoes` (caminho relativo a `/app/`), que funciona nos dois lugares.
-- Sem as variáveis de ambiente, `GET /api/acoes` responde `503 {"disponivel": false}` e o app entra no modo só leitura.
-- O `python -m http.server` continua funcionando: as rotas `/api` dão 404 e o app fica só leitura.
-- O login também passa pelo servidor (`/api/sessao`). Assim o navegador não precisa de nenhuma configuração do Supabase, e as chaves ficam num lugar só.
-- A função confere o token a cada gravação (`GET /auth/v1/user`), busca o perfil e só aceita ação em deal do próprio vendedor ou de alguém do time do manager. Depois grava com a service role.
+Por que rotas de API e não Server Actions: o contrato fica explícito, é testável com `fetch` e permite a confirmação em lote da limpeza. Os botões chamam as rotas a partir de um componente do navegador.
 
 ## Identidade: três caminhos
 
 | | A. Só escolher o perfil, sem senha | B. Login obrigatório (Supabase Auth) | **C. Ler sem login, gravar com login de demonstração** (recomendado) |
 |---|---|---|---|
-| Como é | O "Quem é você?" de hoje também vale para gravar | Tela de login antes de tudo; contas de vendedor e de manager no README | O app abre como hoje. Para registrar ação, "Entrar" com uma conta de demonstração (botão "Usar conta de demonstração" preenche os dados) |
+| Como é | O "Quem é você?" de hoje também vale para gravar | Tela de login antes de tudo; contas de vendedor e de manager no README | O app abre sem login. Para registrar ação, "Entrar" com uma conta de demonstração (botão "Usar conta de demonstração" preenche os dados) |
 | Avaliação travada? | Nunca | **Sim**, se o Auth ou o projeto estiver fora: o avaliador não vê nada | Nunca: priorização e explicação abrem sem login; só os botões de gravar dependem dele |
 | Quem gravou é confiável? | Não. Qualquer um grava como qualquer um, e "quem não registra ações" vira autodeclaração | Sim | Sim, para as gravações |
 | Endpoint público na Vercel | Aberto: qualquer um com o link grava | Fechado por conta | Fechado por conta |
@@ -117,20 +97,14 @@ Por que C: o critério "dá para rodar seguindo as instruções" não pode depen
 
 **Riscos e como cobrir:**
 - O plano gratuito do Supabase pausa o projeto após 7 dias sem uso. Nesse caso o app fica só leitura e avisa. Antes de enviar a entrega, conferir se o projeto está ativo.
-- Com a senha pública no README, qualquer um grava com essas contas. Para conter isso: limite de gravações por conta por minuto na função, nota com no máximo 280 caracteres, e o reset da demonstração feito pelo filtro de data (mostrar só as ações dos últimos N dias), nunca por DELETE.
-- Token guardado só na aba (`sessionStorage`): fechou a aba, saiu.
+- Com a senha pública no README, qualquer um grava com essas contas. Para conter isso: limite de gravações por conta por minuto, nota com no máximo 280 caracteres, e o reset da demonstração feito pelo filtro de data (mostrar só as ações dos últimos N dias), nunca por DELETE.
 
-## No app (mudanças previstas)
+## Na tela (mudanças previstas)
 
-- `app.js`: ao abrir, tenta `GET ../api/acoes`. Se a resposta for 404, 503 ou a chamada falhar, entra no modo só leitura.
 - O detalhe do deal ganha os botões e a última ação ("Anna ligou em 12/11").
 - Os cartões e as listas mostram um selo com a última ação. Os deals com "Desisti" ficam numa seção recolhida "Encerrados".
 - Ao gravar, a tela mostra "Ação registrada" na hora. Se a gravação falhar, o botão volta e aparece "Não foi possível registrar. Tente de novo."
 - O topo ganha "Entrar" / "Sair" e o nome de quem está conectado.
-
-## Arquivos fora de `app/`
-
-`solution/api/` e `solution/vercel.json` ficam fora da pasta desta sessão: a Vercel exige `api/` na raiz do projeto. Criar só com o ok da #1.
 
 ## Decisões em aberto
 
