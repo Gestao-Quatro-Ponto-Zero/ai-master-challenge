@@ -1,13 +1,14 @@
 import { z } from "zod";
+import { textoObrigatorio, textoOpcional } from "@/lib/validacao";
 import { rota } from "@/server/rota";
 import { criarDeal } from "@/server/repositorio";
 
 const corpo = z.object({
-  produto: z.string().min(1).max(60),
-  conta: z.string().max(120).nullish(),
-  vendedor: z.string().max(120).nullish(),
+  produto: textoObrigatorio(60),
+  conta: textoOpcional(120),
+  vendedor: textoOpcional(120),
   estagio: z.enum(["Prospecting", "Engaging"]),
-  nome: z.string().max(120).nullish(),
+  nome: textoOpcional(120),
 });
 
 /** Novo lead. Sem vendedor informado: o próprio vendedor, ou o roteamento (manager e admin). */

@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { CONFIG } from "@/lib/config";
 import { juntar } from "@/lib/filtro/etiquetas";
+import { exigir } from "@/lib/validacao";
 import { lerEtiquetas, lerFiltrosEquipe } from "@/server/parametros";
 import { rota } from "@/server/rota";
 import { buscarDeals, ErroCRM, escopoDe, executarLote, lotesRecentes } from "@/server/repositorio";
@@ -8,15 +9,20 @@ import { buscarDeals, ErroCRM, escopoDe, executarLote, lotesRecentes } from "@/s
 /** Lotes das últimas 24 horas que o perfil pode desfazer (os próprios; o manager vê os do time; o admin, todos). */
 export const GET = rota({}, async ({ usuario }) => ({ lotes: await lotesRecentes(usuario) }));
 
-const corpo = z.object({
-  tipo: z.enum(["aplicar_tag", "remover_tag", "comentar", "avancar_estagio", "encerrar_perdido"]),
-  ids: z.array(z.string().min(1).max(20)).max(CONFIG.limiteLote).optional(),
-  /** "Selecionar os N do filtro": o servidor refaz a lista com o mesmo filtro, na hora de aplicar. */
-  filtro: z.object({ f: z.string().max(8000).optional(), regiao: z.string().optional(), manager: z.string().optional(), vendedor: z.string().optional() }).optional(),
-  tagId: z.number().int().optional(),
-  texto: z.string().max(1000).optional(),
-  motivo: z.enum(["preco", "concorrente", "sem_orcamento", "sem_resposta", "outro"]).nullish(),
-});
+const corpo = z
+  .object({
+    tipo: z.enum(["aplicar_tag", "remover_tag", "comentar", "avancar_estagio", "encerrar_perdido"]),
+    ids: z.array(z.string().min(1).max(20)).max(CONFIG.limiteLote).optional(),
+    /** "Selecionar os N do filtro": o servidor refaz a lista com o mesmo filtro, na hora de aplicar. */
+    filtro: z.object({ f: z.string().max(8000).optional(), regiao: z.string().optional(), manager: z.string().optional(), vendedor: z.string().optional() }).optional(),
+    tagId: z.number().int().optional(),
+    texto: z.string().trim().max(1000).optional(),
+    motivo: z.enum(["preco", "concorrente", "sem_orcamento", "sem_resposta", "outro"]).nullish(),
+  })
+  // "Comentar" em lote exige o texto; só espaços conta como vazio.
+  .superRefine((c, ctx) => {
+    if (c.tipo === "comentar") exigir(ctx, "texto", c.texto);
+  });
 
 /** Ação em lote sobre os leads marcados ou sobre todos os do filtro (até o limite). */
 export const POST = rota({ escrita: true, corpo }, async ({ usuario, corpo }) => {

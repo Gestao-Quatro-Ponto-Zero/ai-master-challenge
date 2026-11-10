@@ -1,5 +1,16 @@
 // Frase simples para um erro de campo na API. A tela já valida antes; isto cobre quem chama a rota direto.
 // Nunca devolve o valor digitado, só o nome do campo e a regra.
+import { z } from "zod";
+
+/** Texto obrigatório: tira os espaços das pontas ANTES de conferir, para "só espaços" contar como vazio. */
+export const textoObrigatorio = (maximo: number) => z.string().trim().min(1).max(maximo);
+/** Texto opcional, também sem os espaços das pontas ("só espaços" vira vazio). */
+export const textoOpcional = (maximo: number) => z.string().trim().max(maximo).nullish();
+
+/** Marca um campo como faltando dentro de um superRefine (vira "Preencha …" na resposta). */
+export function exigir(ctx: z.RefinementCtx, campo: string, valor: string | null | undefined) {
+  if (!valor) ctx.addIssue({ code: "custom", path: [campo], message: "obrigatório" });
+}
 
 /** Mesmas regras do banco (core_contatos). */
 export const EMAIL = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
@@ -80,7 +91,6 @@ export function fraseDeValidacao(erros: ErroDeCampo[], corpo: unknown): { frase:
     if (vazio) return `Preencha ${rotulo}.`;
     if (campo === "email" && (e.code === "invalid_format" || e.code === "custom")) return "E-mail inválido. Confira o endereço (exemplo: nome@empresa.com).";
     if (campo === "telefone" && (e.code === "invalid_format" || e.code === "custom")) return "Telefone inválido. Use de 6 a 25 caracteres: números, espaço, +, parênteses, ponto ou traço.";
-    if (e.code === "custom" && e.message) return e.message;
     if (e.code === "too_big" && e.origin === "string") return `${maiuscula(rotulo)} pode ter no máximo ${String(e.maximum)} caracteres.`;
     if (e.code === "too_small" && e.origin === "string") return `Preencha ${rotulo}.`;
     if (e.code === "too_big") return `${maiuscula(rotulo)} não pode passar de ${Number(e.maximum).toLocaleString("pt-BR")}.`;

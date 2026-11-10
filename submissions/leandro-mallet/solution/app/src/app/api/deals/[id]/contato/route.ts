@@ -1,12 +1,12 @@
 import { z } from "zod";
-import { EMAIL, TELEFONE } from "@/lib/validacao";
+import { EMAIL, TELEFONE, textoObrigatorio, textoOpcional } from "@/lib/validacao";
 import { parte, rota } from "@/server/rota";
 import { detalheDeal, salvarContato } from "@/server/repositorio";
 
 const corpo = z.object({
   versao: z.string().nullable(),
-  nome: z.string().min(1).max(120),
-  cargo: z.string().max(80).nullish(),
+  nome: textoObrigatorio(120),
+  cargo: textoOpcional(80),
   // Mesmas regras do banco; vazio = sem e-mail ou sem telefone.
   email: z.string().trim().max(160).refine((v) => v === "" || EMAIL.test(v)).nullish(),
   telefone: z.string().trim().max(25).refine((v) => v === "" || TELEFONE.test(v)).nullish(),
