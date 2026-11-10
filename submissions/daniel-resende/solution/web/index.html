@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pipeline da segunda-feira</title>
+</head>
+<body>
+<h1 id="headline">Carregando...</h1>
+<div id="blocks"></div>
+<script>
+// Thin slice: one seller, three blocks, straight from the contract files.
+async function main() {
+  const index = await (await fetch("out/index.json")).json();
+  const score = await (await fetch("out/" + index.mondays[0].file)).json();
+  const s = score.sellers.find(x => x.seller === index.default_seller);
+  const h = s.headline;
+  document.getElementById("headline").textContent =
+    `${s.seller}: você tem ${h.alive} vivos, ${h.queue} na fila, ${h.clean} para limpar`;
+  const list = (title, items, line) => `<h2>${title} (${items.length})</h2><ol>` +
+    items.map(d => `<li>${line(d)}</li>`).join("") + "</ol>";
+  const name = d => `${d.product}${d.account ? " · " + d.account : ""} · valor de tabela US$ ${d.value}`;
+  document.getElementById("blocks").innerHTML =
+    list("Vivos", s.alive, d => `${name(d)} · aberto há ${d.days_open} dias · faltam ${d.days_left}`) +
+    list("Fila para engajar", s.queue, name) +
+    list("Limpar", s.clean, d => `${name(d)} · aberto há ${d.days_open} dias`);
+}
+main();
+</script>
+</body>
+</html>

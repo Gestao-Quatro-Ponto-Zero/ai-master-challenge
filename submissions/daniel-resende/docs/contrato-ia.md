@@ -1,65 +1,62 @@
 # Contrato da camada de IA: o arquivo de textos
 
-Quem escreve: a camada de IA (`solution/ai/generate.py`, a construir). Quem lê: a interface. A camada de IA lê só `solution/out/score.json` (ver `contrato-score.md`). **A interface funciona com este arquivo ausente**: nesse caso mostra as frases de regra (`factors[].reading`) que já vêm no score.
+Segunda versão, para a forma que o Daniel decidiu (vivos, fila, limpar). Quem escreve: `solution/ai/`. Quem lê: a interface. A camada de IA lê só os arquivos do score (`contrato-score.md`), da segunda padrão (2018-01-01).
 
-Princípio: a IA redige; não decide nem calcula. A ordem, o grupo e a jogada vêm do score. Todo número e todo nome num texto é um marcador que o código preenche a partir dos fatos.
+**A interface funciona com o arquivo ausente**: ela o busca ao carregar e, se não vier, mostra as frases de regra que já estão no score. A IA redige; não decide nem calcula. O bloco, a ordem e o próximo passo vêm do score.
 
-## Arquivo
-
-`solution/out/textos.json`, UTF-8, gerado e guardado no repositório (quem avalia não precisa de chave nem de conta).
+## Arquivo: `solution/ai/textos.json` (guardado no git, com a procedência)
 
 ```json
 {
-  "meta": {
-    "score_reference_date": "2017-12-31",
-    "command": "claude -p --model <nome> --setting-sources \"\" --tools \"\" --no-session-persistence --json-schema <schema>",
-    "prompt_file": "solution/ai/prompt.md",
-    "prompt_sha256": "<hash do prompt usado>"
-  },
+  "meta": {"monday": "2018-01-01", "score_file": "score-2018-01-01.json",
+           "prompt_file": "solution/ai/prompt.md", "prompt_sha256": "<hash>",
+           "command": "claude -p --setting-sources \"\" --tools \"\" --no-session-persistence --model <nome> --json-schema <schema> --output-format json"},
   "texts": [
-    {
-      "id": "deal:FZWU2I30:explanation",
-      "kind": "deal_explanation",
-      "target": {"deal_id": "FZWU2I30"},
-      "template": "{product} para {account} está em {group}: aberto há {days_open} dias, dentro do prazo ({deadline}).",
-      "facts": {"product": "GTX Plus Pro", "account": "The New York Inquirer", "group": "focar agora",
-                "days_open": 21, "deadline": "2018-03-31"},
-      "provenance": {"model": "<nome exato do modelo>", "generated_on": "<data do comando date>",
-                     "prompt_sha256": "<hash>", "batch": 1}
-    }
+    {"id": "deal:FZWU2I30", "kind": "deal",
+     "target": {"deal_id": "FZWU2I30", "seller": "Zane Levy"},
+     "parts": {"reason":    {"template": "...{days_open}...", "text": "...21..."},
+               "next_step": {"template": "...", "text": "..."}},
+     "facts": {"product": "GTX Plus Pro", "days_open": 21},
+     "provenance": {"model": "<nome exato>", "generated_on": "<data do comando date>",
+                    "prompt_sha256": "<hash>", "batch": 1}}
   ]
 }
 ```
 
-O `template` acima é só ilustração do formato, escrito à mão; nenhum texto foi gerado nesta etapa.
+`template` é o que o modelo escreveu, com marcadores; `text` é o mesmo texto com os marcadores preenchidos pelo código. A interface mostra `text`.
 
-## Tipos de texto e os fatos que cada um pode citar
+## Três tipos de texto
 
-| `kind` | Alvo | Fatos permitidos (chaves de `facts`) | Dor de `produto.md` |
-|---|---|---|---|
-| `deal_explanation` | um negócio em `focar agora` ou com a jogada `confirmar_esta_semana` | `seller`, `product`, `account` (se houver), `value`, `group`, `play`, `rank`, `list_size`, `engage_date`, `days_open`, `deadline`, `days_to_deadline`, `reference_date`, `window_days`, `longest_win_days`, `closings_total`, `closings_after_deadline`, `group_test_deals`, `group_test_won`, `group_test_won_value` | explicar a posição |
-| `deal_next_step` | o mesmo negócio | os mesmos, mais o rótulo da jogada | próximo passo |
-| `seller_briefing` | um vendedor | `seller`, `reference_date`, contagem e valor por grupo, os cinco primeiros (os fatos de cada um, com sufixo `_1` a `_5`), quantos estão em `confirmar_esta_semana`, quantos em `deixar ir` e o valor deles | briefing de segunda |
-| `manager_view` | um gestor | `manager`, por vendedor: contagem e valor por grupo | onde orientar |
+| `kind` | `id` | `target` | `parts` | Dor de `produto.md` |
+|---|---|---|---|---|
+| `deal` | `deal:<id>` | `deal_id`, `seller` | `reason` (por que este negócio está onde está, uma ou duas frases) e `next_step` (o próximo passo, uma frase) | explicar e indicar o passo. Um por negócio **vivo** |
+| `briefing` | `briefing:<vendedor>` | `seller` | `body` (o briefing de segunda, três a cinco frases, montado dos três blocos) | o briefing. Um por vendedor que tenha algum negócio |
+| `manager` | `manager:<gestor>` | `manager` | `body` (o resumo do gestor, três a cinco frases, só fatos) | a saúde do pipeline. Um por gestor |
 
-`docs/fatos-exemplo.json` traz, para cinco negócios reais, os fatos exatos de `deal_explanation` (escrito por `solution/make_example_facts.py`).
+## Os fatos que cada texto pode citar (chaves de `facts`)
 
-O texto não afirma nenhum julgamento além do grupo e da jogada, que entram como marcadores (`{group}`, `{play}`). Nada de "excelente oportunidade", "alta probabilidade", "cliente estratégico".
+Uma chave só existe quando o fato existe: sem conta, não há `account`; sem tabela na data, não há as chaves `band_*`.
 
-## Marcadores e a conferência
+- `deal`: `seller`, `product`, `account`, `value`, `engage_date`, `days_open`, `days_left`, `window_end`, `block` (sempre `vivo`), `play_label` (o rótulo do próximo passo, do score), `cooling_label` (`esfriando`, só se `cooling`), `rank`, `alive_count`, `longest_win_days`, `band_days`, `band_won_per_100`, `counted_on`, `monday`.
+- `briefing`: `seller`, `monday`, `alive`, `alive_value`, `cooling`, `queue`, `queue_value`, `clean`, `clean_value`, `longest_win_days`, `evidence_deals`, `evidence_won`, e para os até três primeiros vivos `product_1`, `account_1`, `value_1`, `days_left_1` (e `_2`, `_3`).
+- `manager`: `manager`, `region`, `monday`, `sellers`, `sellers_without_alive`, `names_without_alive` (lista), `alive`, `alive_value`, `cooling`, `queue`, `queue_value`, `clean`, `clean_value`, `evidence_deals`, `evidence_won`.
 
-- Marcador: `{chave}`, onde `chave` existe em `facts` daquele texto. O código formata por tipo (dinheiro, data por extenso, inteiro, nome) e preenche. O modelo nunca escreve um número nem um nome.
-- A conferência (`solution/ai/check.py`, roda na geração e nos testes) reprova o texto quando:
-  1. um marcador não resolve em `facts`;
-  2. sobra qualquer dígito fora de um marcador;
-  3. aparece, fora de um marcador, o nome de um vendedor, gestor, conta ou produto do dataset;
-  4. um fato usado não está na lista permitida do `kind`, ou seu valor difere do que está em `score.json` para aquele alvo.
-- Texto reprovado não entra no arquivo: a interface cai na frase de regra. A geração imprime quantos foram reprovados e por quê.
-- A pesquisa (`pesquisa.md`, seção 2) sustenta essa escolha: saída estruturada garante a forma, não a verdade, e citação de fontes falha em boa parte das frases; por isso o número não passa pelo modelo.
+`docs/fatos-exemplo.json` traz os fatos exatos de cinco alvos reais (três negócios vivos, um deles esfriando se houver; um vendedor; um gestor), escritos pelo construtor de fatos (`solution/ai/facts.py`).
+
+## Marcadores e a conferência (`solution/ai/check.py`, um comando)
+
+- Marcador: `{chave}`, com `chave` em `facts` daquele texto. O código formata pelo tipo (dinheiro "US$ 5.482", data "31/03/2018", inteiro, lista "A, B e C") e preenche. O modelo nunca escreve número nem nome.
+- O único julgamento permitido é o que vem nos fatos: o bloco, o rótulo do próximo passo e a marca "esfriando", sempre por marcador.
+- A conferência reprova um texto quando:
+  1. um marcador não existe em `facts`;
+  2. sobra um dígito fora de um marcador;
+  3. aparece fora de marcador o nome de um vendedor, gestor, conta ou produto do dataset;
+  4. aparece um julgamento que não está nos fatos: porcentagem, "chance", "probabilidade", "provável", "garantido", "promissor", "quente", "excelente" e afins (lista no código, com o limite dito: uma lista de palavras não pega tudo);
+  5. `text` não é o `template` preenchido com `facts`, ou falta procedência;
+  6. um fato difere do que está no arquivo do score para aquele alvo.
+- Texto reprovado não entra no arquivo. A geração imprime quantos foram reprovados e por quê.
+- Por que assim (`pesquisa.md`, seção 2): saída estruturada garante a forma, não a verdade; por isso o número não passa pelo modelo.
 
 ## Geração, sem chave de API
 
-- Um script guardado no repositório chama o CLI do Claude Code sem interface, com o modelo nomeado, `--setting-sources ""`, `--tools ""` e `--json-schema`, vários negócios por chamada. O orquestrador mediu essa forma neste laptop em 2026-11-10: cinco itens inventados voltaram como saída estruturada válida em 10 segundos (medição dele, não refeita nesta etapa).
-- Entrada de cada chamada: o prompt fixo (`solution/ai/prompt.md`) e uma lista JSON de `{id, kind, facts}`. Saída exigida pelo schema: lista de `{id, template}`.
-- Procedência por texto: modelo, data (do `date`), hash do prompt, número do lote; os fatos que entraram ficam no próprio registro.
-- Com o Claude Code instalado e logado, um comando regenera tudo (`python solution/ai/generate.py`). Nenhuma chave de API é usada nem aparece em arquivo.
+`python solution/ai/generate.py` chama o CLI do Claude Code sem interface, de um diretório vazio de nome neutro, na forma medida neste laptop: `claude -p --setting-sources "" --tools "" --no-session-persistence --model <nome> --json-schema <schema> --output-format json`, com vários itens por chamada; a resposta vem no campo `structured_output` do envelope. Entrada de cada chamada: o prompt fixo (`solution/ai/prompt.md`) e uma lista de `{id, kind, facts}`. Saída exigida: lista de `{id, parts}` com os `template`. Cinco itens primeiro, lidos pelo construtor; depois todos. Se o plano limitar o uso ou atrasar, a geração para e o produto sai sem os textos.

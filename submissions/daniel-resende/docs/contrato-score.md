@@ -1,96 +1,135 @@
-# Contrato do score: o arquivo que o núcleo de scoring emite
+# Contrato do score: os arquivos que o núcleo emite
 
-Quem escreve: o núcleo de scoring (`solution/score.py`, a construir). Quem lê: a interface e a camada de IA. Os três trabalham ao mesmo tempo a partir deste contrato; nenhum lê o código do outro.
+Segunda versão, reescrita a partir do `PRODUTO.md` que o Daniel decidiu depois da auditoria. A primeira (focar agora, manter aquecido, deixar ir) está no histórico do git.
 
-Todo número citado aqui foi impresso por `solution/validate.py` (saída guardada em `docs/validacao-saida.txt`) ou por `solution/audit.py` (`docs/auditoria-saida.txt`).
+Quem escreve: `solution/build.py`. Quem lê: a interface (`solution/web/`) e a camada de IA (`solution/ai/`). Ninguém lê o código do outro; `solution/check_contract.py` sai com 0 só se todo arquivo emitido obedece a este texto.
 
-## Arquivo
+## A afirmação que o produto sustenta
 
-`solution/out/score.json`, UTF-8, gerado por um comando (`python solution/score.py`), sem ler o relógio do sistema. "Hoje" é a data de referência: a última data presente nos dados (2017-12-31).
+Um negócio em andamento está **vivo** ou é **para limpar**. A fronteira é a janela da regra congelada (`solution/validate.py`, função `is_dead`, intocada: o arquivo tem sha256 `336760fdcc511cde2ad5d28e9437dd0b061a222b18f2f5f03e2a38164abca212`):
+
+- nenhum negócio foi ganho depois de 138 dias aberto (o ganho mais demorado conhecido na data);
+- os fechamentos acontecem até o fim do trimestre seguinte ao do engajamento (o prazo).
+
+Passou de um dos dois, é para limpar. Evidência: nenhum ganho em 717 negócios distintos postos fora da janela nos doze cortes medidos (`docs/confirmacao-saida.txt`). A ordem entre os vivos é secundária e não foi confirmada em datas novas.
+
+## Datas
+
+Um arquivo por segunda-feira. A segunda padrão é **2018-01-01**, com os dados fechados no domingo 2017-12-31. Segundas do passado, fixas: 2017-06-05, 2017-07-03, 2017-08-07, 2017-09-04 e 2017-10-02 (cada uma tem 90 dias de dados depois dela).
+
+Como uma segunda-feira se liga à regra congelada, sem tocar nela:
+
+- **corte = a segunda menos um dia** (o fechamento dos dados, um domingo). O núcleo chama `validate.world_at(deals, corte)`, que apaga tudo o que aconteceu depois, e pontua só com isso.
+- Em `validate.py` um negócio está fora da janela quando `(prazo - corte).days <= 0`. Com o corte no domingo, o negócio está vivo exatamente quando o prazo é a própria segunda ou depois: **o dia do prazo conta como vivo**, como o Daniel decidiu. Nenhuma das seis datas é o último dia de um trimestre.
+- **As idades são contadas na data de fechamento dos dados** (o corte), não na segunda.
+- `days_left` (a contagem regressiva) = o menor entre `138 - days_open` e `(prazo - segunda).days`. Zero quer dizer "hoje é o último dia". É sempre >= 0 num negócio vivo.
+
+## Arquivos em `solution/out/` (gerados, nunca vão para o git)
+
+### `index.json`
+
+```json
+{
+  "written_by": "solution/build.py",
+  "default_monday": "2018-01-01",
+  "default_seller": "<o vendedor com mais vivos na segunda padrão>",
+  "mondays": [
+    {"monday": "2018-01-01", "data_closed": "2017-12-31", "file": "score-2018-01-01.json", "past": false},
+    {"monday": "2017-10-02", "data_closed": "2017-10-01", "file": "score-2017-10-02.json", "past": true}
+  ],
+  "sellers": [{"seller": "...", "manager": "...", "region": "..."}],
+  "evidence": {"cuts": 12, "distinct_deals_past_window": 717, "won_after": 0, "lost_after": 1,
+               "still_open_at_data_end": 716, "source": "docs/confirmacao-saida.txt"},
+  "value_note": {"list_prices": 7, "closed_without_value_on_open_rows": true}
+}
+```
+
+`sellers` traz os 35 de `sales_teams.csv`, em ordem alfabética. `mondays` vem da mais recente para a mais antiga.
+
+### `score-AAAA-MM-DD.json`
 
 ```json
 {
   "meta": {
-    "reference_date": "2017-12-31",
-    "written_by": "solution/score.py",
-    "rule": {"window_days": 90, "alive_min": 0.25,
-             "focus_expected_value_min": 1000, "cool_days": 30},
-    "deadline": {"closings_total": 6711, "closings_after_deadline": 1},
-    "longest_win_days": 138,
-    "group_evidence": {
-      "focar agora":     {"n": 2094, "won": 769,  "lost": 447, "no_outcome": 878,  "won_value": 3609564},
-      "manter aquecido": {"n": 2921, "won": 1015, "lost": 592, "no_outcome": 1314, "won_value": 585105},
-      "deixar ir":       {"n": 1417, "won": 0,    "lost": 1,   "no_outcome": 1416, "won_value": 0}
+    "monday": "2018-01-01", "data_closed": "2017-12-31", "past": false,
+    "window": {"longest_win_days": 138, "deadline_applied": true,
+               "closings_known": 6711, "closings_after_deadline": 1},
+    "cooling_after_days": 90,
+    "time_table": {
+      "exists": true, "counted_on": "2017-12-31", "settled_until": "2017-08-14", "deals": 4767,
+      "rows": [{"reached_days": 0, "deals": 4767, "won_after": 2256, "lost_after": 1433,
+                "never_closed": 1078, "won_per_100": 47}]
     },
-    "curve": [{"days_open": 0, "chance": 0.415}, {"days_open": 15, "chance": 0.412}]
+    "outcomes_until": null
   },
-  "deals": [ { "...": "um registro por negócio aberto, abaixo" } ]
+  "sellers": [
+    {"seller": "...", "manager": "...", "region": "...",
+     "headline": {"alive": 10, "alive_value": 15300.0, "cooling": 0,
+                  "queue": 0, "queue_value": 0.0, "clean": 78, "clean_value": 178048.0},
+     "alive": [ {"...": "negócio"} ], "queue": [], "clean": [],
+     "after": null}
+  ],
+  "team": {
+    "by_seller":  [{"seller": "...", "manager": "...", "region": "...", "sellers": 1, "sellers_without_alive": 0,
+                    "alive": 0, "alive_value": 0.0, "cooling": 0, "queue": 0, "queue_value": 0.0,
+                    "clean": 0, "clean_value": 0.0}],
+    "by_manager": [{"manager": "...", "region": "...", "sellers": 6, "sellers_without_alive": 2, "...": "os mesmos sete números"}],
+    "by_region":  [{"region": "...", "sellers": 12, "sellers_without_alive": 4, "...": "os mesmos sete números"}],
+    "total": {"sellers": 35, "sellers_without_alive": 18, "...": "os mesmos sete números"}
+  }
 }
 ```
 
-## Um registro por negócio aberto (2.089: 1.589 Engaging e 500 Prospecting)
+- `sellers` traz os 35, em ordem alfabética, também os que não têm negócio nenhum (listas vazias).
+- `time_table`: quem chegou aberto a cada idade (0, 30, 60, 90, 120, 138 dias) e o que aconteceu depois, **como se sabia no corte**. Só entram negócios engajados desde o primeiro fechamento registrado e há mais dias que o ganho mais demorado (`settled_until`), escolhidos pela data de engajamento e nunca pelo desfecho. Quando nenhum negócio teve esse tempo, `exists` é `false` e `rows` é `[]`. Os números da data de referência conferem com `docs/confirmacao-saida.txt` (M3, tabela b).
+- Na segunda padrão nenhum vendedor tem os três blocos: a regional Central tem toda a fila (500) e nenhum vivo; East e West têm os vivos (45 e 70) e nenhuma fila. A tela precisa estar certa para os dois casos e para quem não tem nada.
+- `team`: os agregados do gestor, só fatos. Numa segunda do passado os números de fila são 0 em `team` (a fila não existe no passado). "Os sete números" são `alive`, `alive_value`, `cooling`, `queue`, `queue_value`, `clean`, `clean_value`. `sellers_without_alive` conta vendedores sem nenhum vivo.
+
+### Um negócio
 
 | Campo | Tipo | Significado |
 |---|---|---|
 | `id` | texto | `opportunity_id` |
-| `stage` | `Engaging` ou `Prospecting` | etapa no CRM |
-| `seller`, `manager`, `region` | texto | de `sales_teams.csv` (servem aos filtros) |
+| `block` | `vivo`, `fila` ou `limpar` | o bloco. `fila` = etapa Prospecting (sem data nenhuma); `limpar` = fora da janela; `vivo` = o resto |
+| `rank` | inteiro | posição dentro do bloco, na lista do vendedor, a partir de 1 |
 | `product` | texto | nome do catálogo (`GTXPro` do pipeline vira `GTX Pro`) |
-| `account` | texto ou `null` | só para exibir; `null` em 1.425 dos 2.089 abertos. Nunca entra no score |
-| `value` | número | preço de tabela do produto: é o único valor que uma linha aberta tem (`close_value` está vazio em 100% dos abertos; nos ganhos, `close_value` / preço tem mediana 1,00) |
-| `engage_date`, `days_open` | data, inteiro, ou `null` | dias entre o engajamento e a data de referência. `null` em Prospecting |
-| `deadline`, `days_to_deadline` | data, inteiro, ou `null` | fim do trimestre seguinte ao do engajamento; negativo se já passou |
-| `chance` | 0 a 1 ou `null` | regra A: de negócios que chegaram abertos a esta idade, a parcela ganha nos 90 dias seguintes, sem contar nada depois do prazo. É um índice de ordenação, **não** uma probabilidade calibrada (ver "Limites") |
-| `chance_in_30_days` | 0 a 1 ou `null` | a mesma conta se o negócio seguir aberto por mais 30 dias |
-| `dead_reason` | `prazo`, `idade` ou `null` | por que o negócio está em `deixar ir`: o prazo venceu, ou ele está aberto há mais dias que o ganho mais demorado já visto (138) |
-| `expected_value` | número ou `null` | `chance` x `value` |
-| `group` | texto | `focar agora`, `manter aquecido`, `deixar ir` ou `sem data` |
-| `rank`, `list_size` | inteiros | posição dentro da lista do próprio vendedor e tamanho dela |
-| `factors` | lista | os fatores do negócio, cada um com a evidência (abaixo) |
-| `play` | texto | o próximo passo, escolhido por regra (abaixo) |
-| `flags` | lista de texto | `sem_conta` quando `account` é `null` |
+| `account` | texto ou `null` | só para exibir. `null` em 1.425 dos 2.089 abertos: nenhuma tela e nenhum texto pode supor que existe |
+| `value` | número | **o preço de tabela do produto**: um negócio aberto não tem valor de fechamento (`close_value` vazio em 100% dos abertos). Na tela: "valor de tabela" |
+| `engage_date` | data ou `null` | `null` na fila |
+| `days_open` | inteiro ou `null` | dias entre o engajamento e o fechamento dos dados |
+| `deadline` | data ou `null` | fim do trimestre seguinte ao do engajamento |
+| `days_left` | inteiro ou `null` | a contagem regressiva (definição acima). Só nos vivos |
+| `window_end` | data ou `null` | a segunda mais `days_left`: o último dia do negócio dentro da janela. Só nos vivos |
+| `cooling` | booleano | `true` num vivo com `days_open` > 90: aparece como "esfriando". **Informa, não reordena** |
+| `time_sentence` | texto ou `null` | a frase da tabela para a faixa de idade do negócio (a maior idade da tabela que ele já alcançou), montada pelo código: "Cerca de 39 em cada 100 negócios que chegaram abertos aos 60 dias foram ganhos depois (conta de 31/12/2017)." Na faixa de 0 dias: "Cerca de 47 em cada 100 negócios foram ganhos depois de engajados (conta de 31/12/2017)." Sem tabela na data: "Sem histórico suficiente nesta data." Só nos vivos; `null` na fila e em limpar |
+| `clean_fact` | `prazo`, `idade` ou `null` | só em `limpar`: qual lado da janela o negócio passou. É um fato de calendário, não o motivo de ele estar parado, que os dados não dizem |
+| `play` | texto | o próximo passo, por regra (abaixo) |
+| `flags` | lista | `sem_conta` quando `account` é `null` |
+| `after` | objeto ou `null` | só nas segundas do passado e nunca na fila: `{"result": "ganho" \| "perdido" \| "aberto", "close_date", "close_value", "days_after"}`, com o que aconteceu até o fim dos dados (2017-12-31). `null` na segunda padrão |
 
-### Ordem dentro da lista do vendedor
+Numa segunda do passado, `sellers[].after` resume o que aconteceu: `{"alive_won", "alive_lost", "alive_open", "alive_won_value", "clean_won", "clean_lost", "clean_open"}`, e `meta.outcomes_until` é `2017-12-31`.
 
-Primeiro o grupo (`focar agora`, `manter aquecido`, `sem data`, `deixar ir`), depois `expected_value` do maior para o menor, depois `value`, depois `id`. O vendedor é constante dentro da própria lista e por isso não é fator; `seller`, `manager` e `region` só filtram.
+**A fila no passado não existe.** O CRM não guarda a data em que um negócio entrou em Prospecting, então numa segunda do passado `queue` é `[]`, `headline.queue` é `null` e a tela diz que a fila não pode ser reconstruída.
 
-### Os grupos e seus limites (medidos em três cortes: 2017-07-01, 2017-08-16, 2017-10-02)
+### Ordem
 
-`deixar ir` exige evidência positiva de que o negócio não fecha mais; falta de evidência não basta. A primeira versão usava "chance abaixo de 5%" e errou nos cortes de junho, quando a tabela ainda era curta (114 ganhos em 372 negócios postos em `deixar ir`); foi trocada pela regra abaixo.
+- `alive`: `value` do maior para o menor; empate: mais `days_left` primeiro; depois `id`. A contagem regressiva e a marca "esfriando" nunca reordenam. Com sete preços de tabela, ordenar por valor é quase ordenar por produto, e o desempate decide muitas vezes: a tela e o README dizem isso.
+- `queue`: `value` do maior para o menor, depois `id`. Nada mais nos dados ordena a fila, e a tela diz isso.
+- `clean`: `value` do maior para o menor, depois `days_open` do maior para o menor, depois `id`.
 
-| Grupo | Regra | O que aconteceu com os negócios medidos (90 dias) |
+### Próximo passo (`play`), por regra
+
+| `play` | Condição | Na tela |
 |---|---|---|
-| `focar agora` | `chance` >= 0,25 e `expected_value` >= 1.000 | 2.094 negócios, 769 ganhos (36,7%), 86,1% de todo o valor ganho |
-| `manter aquecido` | vivo que não entra em foco | 2.921 negócios, 1.015 ganhos (34,7%), 13,9% do valor ganho: fecha em proporção parecida, mas vale pouco |
-| `deixar ir` | o prazo venceu (`days_to_deadline` <= 0) ou `days_open` > 138 (o ganho mais demorado já visto) | 1.417 negócios, nenhum ganho, 1 perdido; 1.416 seguiam abertos no fim da janela. Em nove cortes: 0 ganhos em 3.192 |
-| `sem data` | `stage` = Prospecting | nenhum corte mede: o negócio não tem data nenhuma. A tela diz isso e não promete nada |
+| `trabalhar` | `block` = `vivo` e não `cooling` | "Trabalhar esta semana" |
+| `confirmar` | `block` = `vivo` e `cooling` | "Confirmar esta semana se segue de pé" |
+| `engajar` | `block` = `fila` | "Engajar e registrar a data" |
+| `encerrar` | `block` = `limpar` | "Encerrar no CRM e tirar da segunda-feira" |
 
-Hoje (2017-12-31): 41 em `focar agora`, 74 em `manter aquecido`, 1.474 em `deixar ir`, 500 `sem data`.
+Jogadas que os dados não sustentam e que por isso não existem: as que dependem de contato, reunião, decisor, concorrente ou desconto (não há registro de atividade); as por produto, setor, porte ou vendedor (ruído, `docs/auditoria-saida.txt` §10.4).
 
-### Fatores (`factors`), sempre os mesmos três, na ordem
+## O que nunca aparece
 
-Cada fator: `{"factor", "reading", "effect", "evidence"}`. `effect` é `a favor`, `contra` ou `neutro`. `reading` é uma frase curta montada por código; `evidence` traz os números que a sustentam.
-
-1. `tempo`: `days_open` contra a curva. Evidência: `{"days_open", "chance", "longest_win_days": 138}`. Nenhum ganho da história levou mais de 138 dias.
-2. `prazo`: `days_to_deadline`. Evidência: `{"deadline", "days_to_deadline", "closings_total": 6711, "closings_after_deadline": 1}`.
-3. `valor`: `value` e `expected_value`. Evidência: `{"value", "expected_value", "focus_expected_value_min": 1000}`.
-
-Em `sem data` a lista traz só `valor` e um fator `sem_data` com `effect` = `neutro`.
-
-### Jogadas (`play`): a primeira condição verdadeira vale
-
-| `play` | Condição | O que os dados sustentam |
-|---|---|---|
-| `qualificar` | `stage` = Prospecting | só que o negócio não tem data; nenhum desfecho medido |
-| `encerrar_ou_requalificar` | `group` = `deixar ir` | nenhum ganho em 1.417 medidos |
-| `confirmar_esta_semana` | vivo hoje e `chance_in_30_days` < 0,25 | **parcial**: no corte de meio de trimestre, 646 negócios, 323 ganhos, 68% deles nos primeiros 30 dias; nos dois cortes de início de trimestre, 265 negócios, 20 ganhos, nenhum nos primeiros 30 dias. Por isso a jogada é confirmar se o negócio está vivo, não "fechar já" |
-| `priorizar` | `group` = `focar agora` | 36,7% de ganho e 86,1% do valor |
-| `toque_leve` | o resto (`manter aquecido`) | 34,7% de ganho, 13,9% do valor |
-
-Jogadas que os dados **não** sustentam, e que por isso não existem: qualquer uma que dependa de contato, reunião, decisor, concorrente ou desconto (não há registro de atividade nem histórico de etapas); jogadas por produto, setor, porte ou vendedor (taxas de ganho dentro do ruído: auditoria §10.4); jogadas por conta (campo vazio em 68,2% dos abertos e em nenhum fechado).
-
-## Limites que quem consome precisa respeitar
-
-- `chance` ordena, mas superestima: nos três cortes, a faixa prevista entre 40% e 55% teve 44,1%, 22,2% e 33,7% de ganho observado. A tela mostra o grupo e o que aconteceu com o grupo no teste, não uma porcentagem com cara de previsão.
-- Campos que nunca entram no score: `close_date`, `close_value`, a etapa final, o tempo até fechar, `account` e tudo o que deriva da conta. `validate.py` prova isso com `assert`.
-- O arquivo é o produto completo sem a camada de IA: a interface funciona só com ele.
+- Nenhuma porcentagem por negócio, e nada que sugira que um negócio vivo fecha mais que outro. A frase da tabela fala de uma faixa de idade, com "cerca de" e a data da conta.
+- Campos que nunca entram na regra: `close_date`, `close_value`, a etapa final, o tempo até fechar, `account` e o que deriva da conta. Numa segunda do passado, `after` é o único lugar em que o futuro aparece, e ele é lido depois de os blocos estarem decididos.
+- Os arquivos são o produto completo sem a camada de IA.
