@@ -186,6 +186,33 @@ Apliquei o método visual do Daniel (skill `visual-tier1`) na interface.
 
 **Conferências depois do refazer:** texto dentro do alvo; 539 conferências dos números da tela, 0 divergências; encaixe sem problemas; acessibilidade sem violações.
 
+### 2.6 A cor e o gráfico da janela (prompt `02w-cor-e-grafico-da-janela.md`, 17:02 a 17:14)
+
+O orquestrador olhou as capturas das 16:59: o texto estava onde devia, mas a cor (branco, cinza, verde escuro e marrom) podia ser de qualquer painel, e a faixa da janela lia como textura, não como gráfico.
+
+**O que mudou.**
+- **Paleta própria.** Página fria e clara com painéis brancos; um acento forte para o que está vivo; uma cor quente de atenção; um negativo claro para o que passou da janela; uma quarta matiz para a fila; tintas neutras para o resto. Cada cor vem com a palavra ou a forma dela (círculo, losango, quadrado, traço).
+- **A janela virou um gráfico.** Colunas finas nas idades da tabela do tempo (0, 30, 60, 90, 120 e 138 dias): de cada 100 negócios que chegaram abertos àquela idade, quantos foram ganhos depois, como se sabia naquela segunda. Cada coluna leva o número em cima, em tinta; um título curto diz de quem é a conta e a data. No mesmo eixo de idade, uma marca por negócio vivo do vendedor, sem número nenhum. De 90 dias até o fim da janela, o fundo de atenção com a palavra "esfriando"; depois do fim, um bloco na cor negativa com a contagem para limpar. Numa segunda sem tabela, as colunas somem e uma linha diz isso. No celular o gráfico vira linhas, uma por idade.
+- **As imagens do gráfico** foram feitas pelo método visual do Daniel.
+- **Uma régua de seis números** sob a manchete, cada um com rótulo de duas palavras e a unidade: vivos e o valor deles, esfriando, fila, para limpar e o valor parado.
+- **A explicação de um negócio abre ao lado da própria linha** e nunca cobre a manchete.
+
+**A paleta** (as quatro cores que carregam significado) foi conferida nos dois temas, inclusive para quem não distingue vermelho de verde.
+
+Um aviso, no claro: a cor de atenção tem contraste de 2,73:1 contra o painel, abaixo de 3:1, e por isso nunca aparece sozinha (vem com a palavra "esfriando" e com o losango).
+
+**O que deu errado, e como percebi.**
+- A minha primeira paleta tinha o laranja de atenção e o vermelho negativo parecidos demais. Troquei as matizes até as quatro cores ficarem bem distintas nos dois temas; no escuro o acento foi ajustado.
+- A explicação aberta mostrava a palavra "null" no fim. Vi na captura do tema escuro e corrigi.
+- Com o gráfico, só cabiam 4 linhas de negócio em 1366 x 768; o gráfico e as linhas ficaram mais baixos e agora cabem 6.
+
+**Conferências automáticas (17:12).**
+- **Gráfico**: a altura de cada coluna bate com o número do arquivo do score: 8 imagens, 48 colunas, 0 divergências.
+- **Texto**: 112 palavras visíveis ao carregar (eram 374; alvo 124), maior frase visível com 14 palavras, página sem rolagem em 1366 x 768 e 1920 x 1080; no celular o primeiro negócio vivo está a 855 px (limite 1.200).
+- **Números da tela**: 599 conferências contra o arquivo do score, 0 divergências.
+- **Encaixe**: sem problemas. **Acessibilidade**: sem violações, nos temas claro e escuro.
+- Não medido: celular real; o escurecimento automático de navegadores de celular.
+
 ## O que o candidato decidiu
 
 ### Etapa 1: a regra e a forma do produto (10/11/2026, resposta recebida no chat e registrada às 15:54, do `date`)

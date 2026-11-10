@@ -48,6 +48,7 @@
   let index = null;
   let texts = null;
   let current = null; // the score on the screen, for the "how it decides" panel
+  let pics = null; // img/janela.json: the background images of the window and the numbers they were drawn from
   const scores = new Map();
   let run = 0; // every render takes a number; a stale one never writes
 
@@ -102,8 +103,8 @@
   // blur, Escape, scroll or a tap elsewhere. The anchor points to it while it is open.
   const tip = { el: null, anchor: null, pinned: false };
   function openTip(anchor, build, pin) {
-    tip.el.replaceChildren(...build().flat(Infinity).filter(Boolean),
-      pin ? h("button", { type: "button", class: "tp-tip-close", onclick: (e) => { e.stopPropagation(); closeTip(); } }, "Fechar") : null);
+    tip.el.replaceChildren(...[build(),
+      pin ? h("button", { type: "button", class: "tp-tip-close", onclick: (e) => { e.stopPropagation(); closeTip(); } }, "Fechar") : null].flat(Infinity).filter(Boolean));
     tip.el.classList.toggle("tp-pinned", !!pin);
     tip.el.hidden = false;
     for (const m of document.querySelectorAll(".tp-m-on")) m.classList.remove("tp-m-on");
@@ -116,10 +117,18 @@
     if (anchor.hasAttribute("data-tip-toggle")) anchor.setAttribute("aria-expanded", "true");
     const a = anchor.getBoundingClientRect(), w = Math.min(430, innerWidth - 24);
     tip.el.style.width = w + "px";
-    const hgt = tip.el.offsetHeight;
-    const left = Math.max(12, Math.min(a.left, innerWidth - w - 12));
-    const below = a.bottom + 8 + hgt <= innerHeight - 8;
-    const top = below ? a.bottom + 8 : Math.max(8, a.top - 8 - hgt);
+    const hgt = tip.el.offsetHeight, head = document.querySelector(".tp-head");
+    const inHead = !!anchor.closest(".tp-head, .tp-bar");
+    const floor = head && !inHead ? head.getBoundingClientRect().bottom + 4 : 8; // never over the headline
+    let left, top;
+    if (innerWidth >= 900 && !inHead) { // beside its own line
+      left = a.right + 10 + w <= innerWidth - 12 ? a.right + 10 : a.left - 10 - w;
+      left = Math.max(12, Math.min(left, innerWidth - w - 12));
+      top = Math.max(floor, Math.min(a.top, innerHeight - 8 - hgt));
+    } else {
+      left = Math.max(12, Math.min(a.left, innerWidth - w - 12));
+      top = a.bottom + 8 + hgt <= innerHeight - 8 || a.top - 8 - hgt < floor ? a.bottom + 8 : a.top - 8 - hgt;
+    }
     tip.el.style.left = left + "px";
     tip.el.style.top = top + "px";
   }
@@ -200,85 +209,85 @@
     ];
   }
 
-  // --- the window, drawn at the pixels of its container -----------------------
+  // --- the window: the chart of the product ---------------------------------------
+  // Columns: of each 100 deals that reached an age still open, how many were won
+  // afterwards, as known on that Monday. Marks: the seller's living deals on the same
+  // axis of age. The picture with depth is a ready file (img/), drawn from the same
+  // numbers; this layer writes every number and every word live, from the score file.
+  const FLAT = { h: 230, x0: 0.05, x1: 0.75, base: 0.652, unit: 0.522 / 70, col: 0.0125, ox: 0, oy: 0, out0: 0.80, out1: 0.955, outH: 0.30 };
+  const isDark = () => document.documentElement.hasAttribute("data-tema");
   function tickTip(row, table) {
     return () => [para(row.reached_days === 0
       ? `Cerca de ${row.won_per_100} em cada 100 negócios foram ganhos depois de engajados.`
       : `Cerca de ${row.won_per_100} em cada 100 negócios que chegaram abertos aos ${row.reached_days} dias foram ganhos depois.`),
-    para(`Conta de ${brDate(table.counted_on)}: ${num(row.deals)} negócios chegaram a essa idade; ${num(row.won_after)} ganhos, ${num(row.lost_after)} perdidos, ${num(row.never_closed)} nunca fecharam.`)];
+    para(`Conta de ${brDate(table.counted_on)}: ${num(row.deals)} negócios chegaram a essa idade; ${num(row.won_after)} ganhos, ${num(row.lost_after)} perdidos, ${num(row.never_closed)} nunca fecharam. É a história de todos os negócios dessa idade, não a chance de um negócio.`)];
   }
-  function drawRuler(svg, score, seller, animate) {
-    const W = Math.max(280, Math.floor(svg.parentNode.getBoundingClientRect().width));
-    const narrow = W < 700;
-    const table = score.meta.time_table;
-    const longest = score.meta.window.longest_win_days;
-    const pad = Math.max(16, Math.round(W * 0.04));
-    const outW = narrow ? 64 : Math.max(150, Math.round(W * 0.14));
-    const x0 = pad + 4, x1 = W - pad - outW;
-    const x = (d) => x0 + (Math.min(d, longest) / longest) * (x1 - x0);
-    const deals = [...seller.alive].sort((a, b) => a.days_open - b.days_open || (a.id < b.id ? -1 : 1));
-    const r = deals.length > 45 ? 4 : 6;
-    const levels = [];
-    const placed = deals.map((d) => {
-      const cx = x(d.days_open);
-      let level = 0;
-      while (levels[level] !== undefined && cx - levels[level] < 2 * r + 2) level += 1;
-      levels[level] = cx;
-      return { d, cx, level };
-    });
-    const top = Math.max(narrow ? 44 : 104, 14 + Math.min(levels.length, 5) * (2 * r + 3));
-    const axisY = top + 4;
-    const H = axisY + 26;
+  const chartTitle = (table) => (table.exists
+    ? `Ganhos depois, em cada 100 que chegaram abertos a cada idade · conta de ${brDate(table.counted_on)}`
+    : "Sem histórico suficiente nesta data: só as idades e os seus negócios.");
+  function picture(score) {
+    // a background image is shown only if it was drawn from exactly the numbers of this score file
+    if (!pics) return null;
+    const table = score.meta.time_table, theme = isDark() ? "escuro" : "claro";
+    if (!table.exists) return pics.empty[theme] || null;
+    const made = pics.mondays[score.meta.monday];
+    const same = made && made.values.length === table.rows.length && table.rows.every((r, i) => r.won_per_100 === made.values[i]);
+    return same ? made[theme] : null;
+  }
+  function drawWindow(svg, score, seller, animate) {
+    const W = Math.max(700, Math.floor(svg.parentNode.getBoundingClientRect().width));
+    const table = score.meta.time_table, longest = score.meta.window.longest_win_days;
+    const pic = picture(score), G = pic ? pics.geometry : FLAT, H = innerHeight < 900 ? 208 : G.h; // every measure below is a fraction of H
+    const X = (age) => (G.x0 + (Math.min(age, longest) / longest) * (G.x1 - G.x0)) * W;
+    const base = G.base * H, unit = G.unit * H, lift = G.oy * H;
     svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
     svg.setAttribute("width", W);
     svg.setAttribute("height", H);
     svg.classList.toggle("tp-still", !animate);
     const cooling = seller.alive.filter((d) => d.cooling).length;
     svg.setAttribute("aria-label",
-      `Janela de ${longest} dias: ${count(seller.alive.length, "negócio vivo", "negócios vivos", "nenhum negócio vivo")}, ` +
-      `${count(cooling, "esfriando", "esfriando", "nenhum esfriando")}, ` +
-      `${count(seller.headline.clean, "fora da janela", "fora da janela", "nenhum fora da janela")}. ` +
-      (table.exists ? "De cada 100 negócios que chegaram abertos a cada idade, cerca de quantos foram ganhos depois: " +
+      `A janela de ${longest} dias. ` + (table.exists ? `De cada 100 negócios que chegaram abertos a cada idade, ganhos depois (conta de ${brDate(table.counted_on)}): ` +
         table.rows.map((row) => `${row.reached_days} dias, ${row.won_per_100}`).join("; ") + ". " : "Sem histórico suficiente nesta data. ") +
-      "A lista de vivos traz os mesmos negócios.");
+      `${count(seller.alive.length, "negócio vivo", "negócios vivos", "Nenhum negócio vivo")}, ${count(cooling, "esfriando", "esfriando", "nenhum esfriando")}; ` +
+      `${num(seller.headline.clean)} fora da janela, para limpar. A lista de vivos traz os mesmos negócios.`);
     const kids = [];
-    // the window itself: light through a window on a floor
-    const dark = document.documentElement.hasAttribute("data-tema");
-    kids.push(s("image", { href: `img/janela-${dark ? "escuro" : "claro"}.webp`, x: x0, y: 4, width: x1 - x0, height: axisY - 4, preserveAspectRatio: "none", "aria-hidden": "true" }));
-    // the zone after 90 days is hatched as well, so it does not depend on the light alone
-    const zx = x(score.meta.cooling_after_days);
-    for (let hx = zx + 6; hx < x1; hx += 9) {
-      kids.push(s("line", { class: "tp-r-hatch", x1: hx, y1: axisY, x2: Math.min(hx + 5, x1), y2: axisY - 5 }));
-    }
-    kids.push(s("text", { x: zx + 8, y: 19, "font-size": 12.5 }, "esfriando"));
-    kids.push(s("text", { class: "tp-r-strong", x: x0 + 6, y: 19, "font-size": 12.5 }, "Janela"));
-    kids.push(s("line", { class: "tp-r-axis", x1: x0, y1: axisY, x2: x1, y2: axisY }));
-    kids.push(s("line", { class: "tp-r-edge", x1: x1, y1: 2, x2: x1, y2: axisY + 8 }));
-    const rows = table.exists ? table.rows : [0, 30, 60, 90, 120, longest].map((a) => ({ reached_days: a }));
-    rows.forEach((row, i) => {
-      const tx = x(row.reached_days), last = row.reached_days === longest;
-      const anchor = row.reached_days === 0 ? "start" : last ? "end" : "middle";
-      kids.push(s("line", { class: "tp-r-tick", x1: tx, y1: axisY, x2: tx, y2: axisY + 6 }));
-      if (narrow && row.reached_days === 120) return; // no room beside the last label
-      kids.push(s("text", { class: "tp-r-strong", x: tx, y: axisY + 20, "text-anchor": anchor, "font-size": 12.5 }, last ? `${row.reached_days} dias` : String(row.reached_days)));
-      if (table.exists) { // the count under each age opens on hover, focus or tap
-        const lo = i ? (tx + x(rows[i - 1].reached_days)) / 2 : x0 - 4, hi = last ? x1 + 4 : (tx + x(rows[i + 1].reached_days)) / 2;
-        const hit = s("rect", { class: "tp-r-hit", x: lo, y: axisY - 2, width: hi - lo, height: 28, tabindex: 0, role: "button",
-          "aria-label": `Idade de ${row.reached_days} dias: o que aconteceu com os negócios que chegaram abertos até ali` });
-        kids.push(withTip(hit, tickTip(row, table)));
+    const blockTop = base - G.outH * H, bx0 = G.out0 * W, bx1 = G.out1 * W;
+    if (pic) {
+      kids.push(s("image", { href: "img/" + pic.file, x: 0, y: 0, width: W, height: H, preserveAspectRatio: "none", "aria-hidden": "true" }));
+    } else { // no background image for these numbers: the same chart, flat, drawn here
+      kids.push(s("rect", { class: "tp-w-zone", x: X(score.meta.cooling_after_days), y: 0, width: X(longest) - X(score.meta.cooling_after_days), height: H }));
+      kids.push(s("rect", { class: "tp-w-block", x: bx0, y: blockTop, width: bx1 - bx0, height: base - blockTop }));
+      kids.push(s("line", { class: "tp-r-axis", x1: G.x0 * W - 12, y1: base, x2: bx1 + 12, y2: base }));
+      if (table.exists) for (const row of table.rows) {
+        kids.push(s("rect", { class: "tp-w-col", x: X(row.reached_days) - (G.col * W) / 2, y: base - row.won_per_100 * unit - (row.won_per_100 ? 0 : 2), width: G.col * W, height: row.won_per_100 * unit + (row.won_per_100 ? 0 : 2) }));
       }
+    }
+    kids.push(s("text", { class: "tp-r-strong", x: G.x0 * W - (G.col * W) / 2, y: 17, "font-size": 13 }, chartTitle(table)));
+    kids.push(s("text", { x: X(score.meta.cooling_after_days) + G.col * W + 6, y: 40, "font-size": 12.5 }, "esfriando"));
+    const ages = table.exists ? table.rows : [0, 30, 60, 90, 120, longest].map((a) => ({ reached_days: a }));
+    ages.forEach((row, i) => {
+      const cx = X(row.reached_days), last = row.reached_days === longest;
+      kids.push(s("text", { class: "tp-r-strong", "data-dado": "", x: cx, y: base + 17, "text-anchor": "middle", "font-size": 12.5 }, last ? `${row.reached_days} dias` : String(row.reached_days)));
+      if (!table.exists) return;
+      // the number of the column, in ink, on top of it
+      kids.push(s("text", { class: "tp-r-num", "data-dado": "", "data-age": row.reached_days, x: cx + (G.ox * W) / 2, y: base - row.won_per_100 * unit - lift - 6, "text-anchor": "middle", "font-size": 14 }, String(row.won_per_100)));
+      const lo = i ? (cx + X(ages[i - 1].reached_days)) / 2 : G.x0 * W - 30, hi = last ? cx + 30 : (cx + X(ages[i + 1].reached_days)) / 2;
+      kids.push(withTip(s("rect", { class: "tp-r-hit", x: lo, y: 24, width: hi - lo, height: base - 2, tabindex: 0, role: "button",
+        "aria-label": `Idade de ${row.reached_days} dias: cerca de ${row.won_per_100} em cada 100 negócios que chegaram abertos até ali foram ganhos depois` }), tickTip(row, table)));
     });
-    const ox = x1 + 10;
-    kids.push(s("text", { class: "tp-r-strong", x: ox, y: 19, "font-size": 12.5 }, `fora: ${num(seller.headline.clean)}`));
-    const cell = 8, perCol = narrow ? 3 : 9, room = Math.floor((W - pad - ox) / cell) * perCol;
-    if (!narrow && seller.headline.clean && seller.headline.clean <= room) {
-      for (let i = 0; i < seller.headline.clean; i += 1) {
-        kids.push(s("rect", { class: "tp-r-out", x: ox + Math.floor(i / perCol) * cell, y: 28 + (i % perCol) * cell, width: 5, height: 5 }));
-      }
-    }
-    placed.forEach(({ d, cx, level }, i) => {
-      if (level > 4) return; // a very long list: the marks beyond five rows stay in the list only
-      const cy = axisY - r - 4 - level * (2 * r + 3);
+    kids.push(s("text", { class: "tp-r-num", "data-dado": "", x: (bx0 + bx1) / 2 + (G.ox * W) / 2, y: blockTop - lift - 6, "text-anchor": "middle", "font-size": 14 }, num(seller.headline.clean)));
+    kids.push(s("text", { class: "tp-r-strong", x: (bx0 + bx1) / 2, y: base + 17, "text-anchor": "middle", "font-size": 12.5 }, "para limpar"));
+    // the living deals: one mark each, on the same axis of age, in a lane in front of the columns
+    const deals = [...seller.alive].sort((a, b) => a.days_open - b.days_open || (a.id < b.id ? -1 : 1));
+    const r = deals.length > 45 ? 4 : 5, laneTop = base + 24, step = 2 * r + 2, maxLevels = Math.max(1, Math.floor((H - laneTop - 2) / step));
+    const levels = [];
+    deals.forEach((d, i) => {
+      const cx = X(d.days_open);
+      let level = 0;
+      while (levels[level] !== undefined && cx - levels[level] < 2 * r + 2) level += 1;
+      levels[level] = cx;
+      if (level >= maxLevels) return; // a very long list: the marks beyond the lane stay in the list only
+      const cy = laneTop + r + level * step;
       const shape = d.cooling
         ? s("path", { d: `M${cx} ${cy - r - 1}L${cx + r + 1} ${cy}L${cx} ${cy + r + 1}L${cx - r - 1} ${cy}Z`, class: "tp-mark tp-m-frio" })
         : s("circle", { cx, cy, r, class: "tp-mark tp-m-vivo" });
@@ -291,6 +300,21 @@
     });
     svg.replaceChildren(...kids);
   }
+  // on a phone the same chart is rows, one per age, drawn here
+  function windowRows(score, seller) {
+    const table = score.meta.time_table, longest = score.meta.window.longest_win_days;
+    const ages = table.exists ? table.rows : [0, 30, 60, 90, 120, longest].map((a) => ({ reached_days: a }));
+    const band = (d) => [...ages].reverse().find((row) => row.reached_days <= d.days_open).reached_days;
+    return h("div", { class: "tp-wrows" },
+      h("p", { class: "tp-wtitle" }, chartTitle(table)),
+      h("ol", {}, ages.map((row) => h("li", { class: "tp-wrow" + (row.reached_days >= score.meta.cooling_after_days ? " tp-wfrio" : "") },
+        h("span", { class: "tp-wage", "data-dado": "" }, `${row.reached_days} dias`),
+        table.exists ? withTip(h("button", { type: "button", class: "tp-wbar", "aria-label": `Idade de ${row.reached_days} dias: cerca de ${row.won_per_100} em cada 100 foram ganhos depois` },
+          h("i", { style: `width:${Math.max(1.5, (row.won_per_100 / 70) * 100).toFixed(1)}%` }), h("b", { "data-dado": "" }, String(row.won_per_100))), tickTip(row, table)) : h("span", { class: "tp-wbar" }),
+        h("span", { class: "tp-wmarks" }, seller.alive.filter((d) => band(d) === row.reached_days).map((d) =>
+          withTip(h("button", { type: "button", class: "tp-wmark" + (d.cooling ? " tp-wm-frio" : ""), "data-id": d.id, "aria-label": `${d.product}, aberto há ${d.days_open} dias` }), () => dealTip(d, table)))))),
+        h("li", { class: "tp-wrow tp-wout" }, h("span", { class: "tp-wage" }, "fora"), h("span", { class: "tp-wbar" }, h("b", { "data-dado": "" }, num(seller.headline.clean))), h("span", { class: "tp-wmarks" }, "para limpar"))));
+  }
   function focusDeal(id) {
     const row = $("deal-" + id);
     if (!row) return;
@@ -299,14 +323,18 @@
     row.focus();
   }
   function windowSection(score, seller, animate) {
-    const svg = s("svg", { class: "tp-ruler", role: "group" }); // a group, not an image: the ages inside it take focus
-    const section = h("section", { class: "tp-window", "aria-label": "A janela" }, svg);
-    let lastW = 0;
+    const section = h("section", { class: "tp-window", "aria-label": "A janela" });
+    let mode = "";
     const draw = (anim) => {
       const wNow = Math.floor(section.getBoundingClientRect().width);
-      if (wNow === lastW || wNow === 0) return;
-      lastW = wNow;
-      drawRuler(svg, score, seller, anim);
+      if (wNow === 0) return;
+      const next = wNow < 700 ? "rows" : "chart:" + wNow;
+      if (next === mode) return;
+      mode = next;
+      if (wNow < 700) { section.replaceChildren(windowRows(score, seller)); return; }
+      const svg = s("svg", { class: "tp-ruler", role: "group" }); // a group, not an image: the ages inside it take focus
+      section.replaceChildren(svg);
+      drawWindow(svg, score, seller, anim);
     };
     requestAnimationFrame(() => draw(animate));
     new ResizeObserver(() => draw(false)).observe(section);
@@ -327,6 +355,16 @@
     if (past) return [`Naquela segunda, ${first} tinha `, alive(""), " e ", clean];
     const queue = h("span", { class: "tp-k-fila" }, hd.queue ? `${num(hd.queue)} na fila` : "nenhum na fila");
     return [`${first}, você tem `, alive(","), " ", queue, " e ", clean];
+  }
+  function kpis(hd, past) {
+    const cell = (cls, label, value, unit) => h("div", { class: "tp-kpi " + cls }, h("dt", {}, label), h("dd", {}, h("b", {}, value), h("span", {}, unit)));
+    return h("dl", { class: "tp-kpis", "data-dado": "" },
+      cell("tp-kv", "Negócios vivos", num(hd.alive), "negócios"),
+      cell("tp-kv", "Valor vivo", num(hd.alive_value), "US$ de tabela"),
+      cell("tp-kf", "Esfriando agora", num(hd.cooling), "negócios"),
+      cell("tp-kq", "Na fila", past ? "–" : num(hd.queue), "negócios"),
+      cell("tp-kl", "Para limpar", num(hd.clean), "negócios"),
+      cell("tp-kl", "Valor parado", num(hd.clean_value), "US$ de tabela"));
   }
   function briefButton(sel) {
     const body = part("briefing:" + sel.seller, "body");
@@ -401,14 +439,14 @@
     const queue = past
       ? panel("tp-fila", "Fila", null, null, h("p", { class: "tp-empty" }, "A fila não pode ser reconstruída no passado."),
         "O CRM não guarda a data em que um negócio entrou na fila; por isso ela não existe numa segunda do passado.")
-      : panel("tp-fila", "Fila para engajar", num(hd.queue), hd.queue ? money(hd.queue_value) : null,
+      : panel("tp-fila", "Fila para engajar", num(hd.queue), null,
         hd.queue ? [cols(null), grouped("fila", sel.queue, meta.window)] : h("p", { class: "tp-empty" }, "Fila vazia."),
         "Negócios ainda sem data de engajamento: o próximo trabalho é engajar e registrar a data. É só uma lista por valor de tabela; nada mais nos dados ordena esses negócios.");
     const cleanList = hd.clean ? h("div", { id: "clean-list", hidden: !shown.clean }, cols(null), grouped("limpar", sel.clean, meta.window)) : null;
     const cleanBtn = hd.clean ? h("button", { type: "button", class: "tp-btn", "aria-expanded": String(!!shown.clean), "aria-controls": "clean-list" }, shown.clean ? "Ocultar lista" : "Ver lista") : null;
     if (cleanBtn) cleanBtn.addEventListener("click", () => { shown.clean = !shown.clean; cleanList.hidden = !shown.clean; cleanBtn.textContent = shown.clean ? "Ocultar lista" : "Ver lista"; cleanBtn.setAttribute("aria-expanded", String(!!shown.clean)); });
     const clean = panel("tp-limpar", "Para limpar", num(hd.clean),
-      hd.clean ? (past ? `depois: ${count(a.clean_won, "ganho", "ganhos", "nenhum ganho")}` : money(hd.clean_value)) : null,
+      hd.clean && past ? `depois: ${count(a.clean_won, "ganho", "ganhos", "nenhum ganho")}` : null,
       hd.clean ? [
         h("p", { class: "tp-evidence" }, `${num(ev.won_after)} ${pl(ev.won_after, "ganho", "ganhos")} em ${num(ev.distinct_deals_past_window)} fora da janela.`),
         h("p", { class: "tp-action" }, h("b", {}, "Ação: "), "encerrar no CRM."), cleanBtn, cleanList,
@@ -420,6 +458,7 @@
         h("h1", { class: "tp-headline" }, sellerHeadline(sel, past)),
         h("div", { class: "tp-head-side" },
           past ? h("p", { class: "tp-past" }, "Segunda do passado: cada linha mostra o que veio depois.") : null, brief)),
+      kpis(hd, past),
       windowSection(score, sel, animate),
       h("div", { class: "tp-blocks" + (hd.alive ? "" : " tp-no-alive") + (hd.queue ? "" : " tp-no-queue") }, alive, queue, clean),
     ];
@@ -549,7 +588,7 @@
     try { saved = localStorage.getItem("tp-tema"); } catch (e) { /* private mode */ }
     setTheme((query.get("tema") || saved) === "escuro", false);
     try {
-      [index, texts] = await Promise.all([getJSON("out/index.json"), loadTexts()]);
+      [index, texts, pics] = await Promise.all([getJSON("out/index.json"), loadTexts(), getJSON("img/janela.json").catch(() => null)]);
     } catch (e) {
       $("app").replaceChildren(h("h1", { class: "tp-headline" }, "Não encontrei os arquivos do score."),
         h("p", { class: "tp-lead" }, "Rode python3 run.py --port 8000 na pasta solution e abra o endereço que ele mostrar."));

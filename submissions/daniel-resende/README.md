@@ -85,12 +85,13 @@ Todos os números abaixo saem de `solution/numbers.py` (`docs/numeros-saida.txt`
 
 **As telas** (capturas em `process-log/screenshots/`):
 
-- [O vendedor na segunda-feira](process-log/screenshots/02-vendedor-segunda-1366.png) e [no celular](process-log/screenshots/04-vendedor-celular-412.png): a manchete, a janela e uma linha por negócio; a página não rola, as listas rolam dentro do próprio painel
+- [O vendedor na segunda-feira](process-log/screenshots/02-vendedor-segunda-1366.png) e [no celular](process-log/screenshots/04-vendedor-celular-412.png): a manchete, seis números, o gráfico da janela e uma linha por negócio; a página não rola, as listas rolam dentro do próprio painel
 - [A explicação de um negócio](process-log/screenshots/05-explicacao-de-um-negocio-1366.png): abre ao passar o mouse, no foco do teclado ou no toque
 - [Como a ferramenta decide](process-log/screenshots/06-como-a-ferramenta-decide-1366.png): todas as notas de método num painel só
-- [Um vendedor que só tem fila](process-log/screenshots/07-vendedor-so-com-fila-1366.png) e [a lista para limpar, aberta a pedido](process-log/screenshots/12-para-limpar-aberto-1366.png)
+- [Um vendedor que só tem fila](process-log/screenshots/07-vendedor-so-com-fila-1366.png) e [a lista para limpar, aberta a pedido](process-log/screenshots/15-para-limpar-aberto-1366.png)
 - [Uma segunda-feira do passado, com o que veio depois](process-log/screenshots/08-segunda-do-passado-1366.png)
 - [A saúde do pipeline para o gestor](process-log/screenshots/09-gestor-1366.png)
+- [O tema escuro](process-log/screenshots/11-tema-escuro-vendedor-1920.png) e [uma segunda-feira antiga, ainda sem histórico](process-log/screenshots/14-segunda-sem-historico-1366.png)
 
 ### Recomendações
 
@@ -109,7 +110,7 @@ Todos os números abaixo saem de `solution/numbers.py` (`docs/numeros-saida.txt`
 - **Valor é preço de tabela**, não receita esperada.
 - **Os textos de IA** existem só para a segunda padrão. A conferência garante números e nomes; contra julgamento indevido ela usa uma lista de palavras, que não pega tudo.
 - **Não medido**: celular real (só emulado) e o escurecimento automático de alguns navegadores de celular.
-- **Fora do escopo**: login, edição do CRM, envio por e-mail ou Slack, previsão de receita. A fonte da interface (Bricolage Grotesque) vai junto, sob a licença OFL (`solution/web/fonts/OFL.txt`).
+- **Fora do escopo**: login, edição do CRM, envio por e-mail ou Slack, previsão de receita. A fonte da interface (Bricolage Grotesque) vai junto, sob a licença OFL (`solution/web/fonts/OFL.txt`). As imagens do gráfico da janela (`solution/web/img/`) são arquivos prontos, um por segunda-feira e por tema.
 
 ---
 
