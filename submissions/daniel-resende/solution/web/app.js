@@ -48,7 +48,7 @@
   let index = null;
   let texts = null;
   let current = null; // the score on the screen, for the "how it decides" panel
-  let pics = null; // img/janela.json: the background images of the window and the numbers they were drawn from
+  let lineReady = false; // whether the background image of the line of time is there
   const scores = new Map();
   let run = 0; // every render takes a number; a stale one never writes
 
@@ -178,7 +178,7 @@
     fillSelect($("f-region"), [["", "Todas"], ...regions.map((r) => [r, r])], state.region);
     fillSelect($("f-manager"), [["", "Todos"], ...managers.map((m) => [m, m])], state.manager);
     fillSelect($("f-seller"), index.sellers.map((x) => [x.seller, x.seller]), state.seller);
-    fillSelect($("f-monday"), index.mondays.map((m) => [m.monday, brDate(m.monday) + (m.past ? " (passado)" : " (atual)")]), state.monday);
+    fillSelect($("f-monday"), index.mondays.map((m) => [m.monday, "segunda " + brDate(m.monday) + (m.past ? " (passado)" : "")]), state.monday);
     $("l-seller").hidden = manager;
     for (const el of document.querySelectorAll(".tp-team-filter")) el.hidden = !manager;
     $("view-seller").setAttribute("aria-pressed", String(!manager));
@@ -209,113 +209,63 @@
     ];
   }
 
-  // --- the window: the chart of the product ---------------------------------------
-  // Columns: of each 100 deals that reached an age still open, how many were won
-  // afterwards, as known on that Monday. Marks: the seller's living deals on the same
-  // axis of age. The picture with depth is a ready file (img/), drawn from the same
-  // numbers; this layer writes every number and every word live, from the score file.
-  const FLAT = { h: 230, x0: 0.05, x1: 0.75, base: 0.652, unit: 0.522 / 70, col: 0.0125, ox: 0, oy: 0, out0: 0.80, out1: 0.955, outH: 0.30 };
+  // --- the window: one line of time ------------------------------------------------
+  // On the left a deal that has just opened, on the right the end of the window; one
+  // mark for each living deal, at its age. No vertical axis, no rate, no column. The
+  // body of the line is a static image; marks and words are live.
+  const LINE = { x0: 0.05, x1: 0.80, y: 0.62, half: 0.085 }; // the same fractions as the background image
   const isDark = () => document.documentElement.hasAttribute("data-tema");
-  function tickTip(row, table) {
-    return () => [para(row.reached_days === 0
-      ? `Cerca de ${row.won_per_100} em cada 100 negócios foram ganhos depois de engajados.`
-      : `Cerca de ${row.won_per_100} em cada 100 negócios que chegaram abertos aos ${row.reached_days} dias foram ganhos depois.`),
-    para(`Conta de ${brDate(table.counted_on)}: ${num(row.deals)} negócios chegaram a essa idade; ${num(row.won_after)} ganhos, ${num(row.lost_after)} perdidos, ${num(row.never_closed)} nunca fecharam. É a história de todos os negócios dessa idade, não a chance de um negócio.`)];
-  }
-  const chartTitle = (table) => (table.exists
-    ? `Ganhos depois, em cada 100 que chegaram abertos a cada idade · conta de ${brDate(table.counted_on)}`
-    : "Sem histórico suficiente nesta data: só as idades e os seus negócios.");
-  function picture(score) {
-    // a background image is shown only if it was drawn from exactly the numbers of this score file
-    if (!pics) return null;
-    const table = score.meta.time_table, theme = isDark() ? "escuro" : "claro";
-    if (!table.exists) return pics.empty[theme] || null;
-    const made = pics.mondays[score.meta.monday];
-    const same = made && made.values.length === table.rows.length && table.rows.every((r, i) => r.won_per_100 === made.values[i]);
-    return same ? made[theme] : null;
-  }
-  function drawWindow(svg, score, seller, animate) {
-    const W = Math.max(700, Math.floor(svg.parentNode.getBoundingClientRect().width));
-    const table = score.meta.time_table, longest = score.meta.window.longest_win_days;
-    const pic = picture(score), G = pic ? pics.geometry : FLAT, H = innerHeight < 900 ? 208 : G.h; // every measure below is a fraction of H
-    const X = (age) => (G.x0 + (Math.min(age, longest) / longest) * (G.x1 - G.x0)) * W;
-    const base = G.base * H, unit = G.unit * H, lift = G.oy * H;
+  function drawLine(svg, score, seller, animate) {
+    const W = Math.max(280, Math.floor(svg.parentNode.getBoundingClientRect().width));
+    const narrow = W < 700, longest = score.meta.window.longest_win_days, cool = score.meta.cooling_after_days;
+    const H = narrow ? 104 : 136, x0 = LINE.x0 * W, x1 = (narrow ? 0.95 : LINE.x1) * W, y = LINE.y * H, half = LINE.half * H;
+    const X = (age) => x0 + (Math.min(age, longest) / longest) * (x1 - x0);
     svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
     svg.setAttribute("width", W);
     svg.setAttribute("height", H);
     svg.classList.toggle("tp-still", !animate);
     const cooling = seller.alive.filter((d) => d.cooling).length;
     svg.setAttribute("aria-label",
-      `A janela de ${longest} dias. ` + (table.exists ? `De cada 100 negócios que chegaram abertos a cada idade, ganhos depois (conta de ${brDate(table.counted_on)}): ` +
-        table.rows.map((row) => `${row.reached_days} dias, ${row.won_per_100}`).join("; ") + ". " : "Sem histórico suficiente nesta data. ") +
-      `${count(seller.alive.length, "negócio vivo", "negócios vivos", "Nenhum negócio vivo")}, ${count(cooling, "esfriando", "esfriando", "nenhum esfriando")}; ` +
-      `${num(seller.headline.clean)} fora da janela, para limpar. A lista de vivos traz os mesmos negócios.`);
+      `A janela, de ${num(0)} a ${longest} dias de aberto: ${count(seller.alive.length, "negócio vivo", "negócios vivos", "nenhum negócio vivo")}, ` +
+      `${count(cooling, "esfriando", "esfriando", "nenhum esfriando")} (depois de ${cool} dias). A lista de vivos traz os mesmos negócios.`);
     const kids = [];
-    const blockTop = base - G.outH * H, bx0 = G.out0 * W, bx1 = G.out1 * W;
-    if (pic) {
-      kids.push(s("image", { href: "img/" + pic.file, x: 0, y: 0, width: W, height: H, preserveAspectRatio: "none", "aria-hidden": "true" }));
-    } else { // no background image for these numbers: the same chart, flat, drawn here
-      kids.push(s("rect", { class: "tp-w-zone", x: X(score.meta.cooling_after_days), y: 0, width: X(longest) - X(score.meta.cooling_after_days), height: H }));
-      kids.push(s("rect", { class: "tp-w-block", x: bx0, y: blockTop, width: bx1 - bx0, height: base - blockTop }));
-      kids.push(s("line", { class: "tp-r-axis", x1: G.x0 * W - 12, y1: base, x2: bx1 + 12, y2: base }));
-      if (table.exists) for (const row of table.rows) {
-        kids.push(s("rect", { class: "tp-w-col", x: X(row.reached_days) - (G.col * W) / 2, y: base - row.won_per_100 * unit - (row.won_per_100 ? 0 : 2), width: G.col * W, height: row.won_per_100 * unit + (row.won_per_100 ? 0 : 2) }));
-      }
+    if (!narrow && lineReady) {
+      kids.push(s("image", { href: `img/janela-${isDark() ? "escuro" : "claro"}.webp`, x: 0, y: 0, width: W, height: H, preserveAspectRatio: "none", "aria-hidden": "true" }));
+    } else { // the same line, flat, drawn here (phone, or the picture is missing)
+      kids.push(s("rect", { class: "tp-l-rail", x: x0, y: y - half, width: x1 - x0, height: 2 * half, rx: half }));
+      kids.push(s("rect", { class: "tp-l-cool", x: X(cool), y: y - half, width: x1 - X(cool), height: 2 * half, rx: half }));
+      kids.push(s("line", { class: "tp-l-end", x1: x1, y1: y - half - 8, x2: x1, y2: y + half + 8 }));
     }
-    kids.push(s("text", { class: "tp-r-strong", x: G.x0 * W - (G.col * W) / 2, y: 17, "font-size": 13 }, chartTitle(table)));
-    kids.push(s("text", { x: X(score.meta.cooling_after_days) + G.col * W + 6, y: 40, "font-size": 12.5 }, "esfriando"));
-    const ages = table.exists ? table.rows : [0, 30, 60, 90, 120, longest].map((a) => ({ reached_days: a }));
-    ages.forEach((row, i) => {
-      const cx = X(row.reached_days), last = row.reached_days === longest;
-      kids.push(s("text", { class: "tp-r-strong", "data-dado": "", x: cx, y: base + 17, "text-anchor": "middle", "font-size": 12.5 }, last ? `${row.reached_days} dias` : String(row.reached_days)));
-      if (!table.exists) return;
-      // the number of the column, in ink, on top of it
-      kids.push(s("text", { class: "tp-r-num", "data-dado": "", "data-age": row.reached_days, x: cx + (G.ox * W) / 2, y: base - row.won_per_100 * unit - lift - 6, "text-anchor": "middle", "font-size": 14 }, String(row.won_per_100)));
-      const lo = i ? (cx + X(ages[i - 1].reached_days)) / 2 : G.x0 * W - 30, hi = last ? cx + 30 : (cx + X(ages[i + 1].reached_days)) / 2;
-      kids.push(withTip(s("rect", { class: "tp-r-hit", x: lo, y: 24, width: hi - lo, height: base - 2, tabindex: 0, role: "button",
-        "aria-label": `Idade de ${row.reached_days} dias: cerca de ${row.won_per_100} em cada 100 negócios que chegaram abertos até ali foram ganhos depois` }), tickTip(row, table)));
-    });
-    kids.push(s("text", { class: "tp-r-num", "data-dado": "", x: (bx0 + bx1) / 2 + (G.ox * W) / 2, y: blockTop - lift - 6, "text-anchor": "middle", "font-size": 14 }, num(seller.headline.clean)));
-    kids.push(s("text", { class: "tp-r-strong", x: (bx0 + bx1) / 2, y: base + 17, "text-anchor": "middle", "font-size": 12.5 }, "para limpar"));
-    // the living deals: one mark each, on the same axis of age, in a lane in front of the columns
+    kids.push(s("text", { x: (X(cool) + x1) / 2, y: y + 4.5, "font-size": 13, "text-anchor": "middle", class: "tp-l-word" }, "esfriando"));
+    kids.push(s("text", { x: x0, y: y + half + 19, "font-size": 12.5, "data-dado": "" }, narrow ? "0" : "0 dias: abriu agora"));
+    kids.push(s("text", { x: X(cool), y: y + half + 19, "font-size": 12.5, "text-anchor": "middle", "data-dado": "" }, String(cool)));
+    kids.push(s("text", { x: x1, y: y + half + 19, "font-size": 12.5, "text-anchor": "end", "data-dado": "" }, narrow ? `${longest} dias` : `${longest} dias: fim da janela`));
+    kids.push(s("text", { x: x0, y: 14, "font-size": 12.5 }, "ponto = negócio vivo"));
     const deals = [...seller.alive].sort((a, b) => a.days_open - b.days_open || (a.id < b.id ? -1 : 1));
-    const r = deals.length > 45 ? 4 : 5, laneTop = base + 24, step = 2 * r + 2, maxLevels = Math.max(1, Math.floor((H - laneTop - 2) / step));
+    // the largest marks that still let every deal sit on the track
+    const levelsFor = (rr) => { const lv = []; for (const d of deals) { const cx = X(d.days_open); let k = 0; while (lv[k] !== undefined && cx - lv[k] < 2 * rr + 2) k += 1; lv[k] = cx; } return lv.length; };
+    const room = (rr) => Math.max(1, Math.floor((y - half - 18) / (2 * rr + 2)));
+    const r = [narrow ? 6 : 8, 6, 5, 4, 3].find((rr) => levelsFor(rr) <= room(rr)) || 3, step = 2 * r + 2, maxLevels = room(r);
     const levels = [];
-    // the lane says in words what its marks are
-    kids.push(s("text", { x: (G.x1 + 0.012) * W, y: laneTop + r + 4, "font-size": 12.5 }, deals.length ? "← seus negócios vivos, pela idade" : "nenhum negócio vivo"));
     deals.forEach((d, i) => {
       const cx = X(d.days_open);
       let level = 0;
       while (levels[level] !== undefined && cx - levels[level] < 2 * r + 2) level += 1;
       levels[level] = cx;
-      if (level >= maxLevels) return; // a very long list: the marks beyond the lane stay in the list only
-      const cy = laneTop + r + level * step;
+      if (level >= maxLevels) return; // a very long list: the marks that do not fit stay in the list only
+      const cy = y - half - 3 - r - level * step;
       const shape = d.cooling
         ? s("path", { d: `M${cx} ${cy - r - 1}L${cx + r + 1} ${cy}L${cx} ${cy + r + 1}L${cx - r - 1} ${cy}Z`, class: "tp-mark tp-m-frio" })
         : s("circle", { cx, cy, r, class: "tp-mark tp-m-vivo" });
       shape.style.setProperty("--i", Math.min(i, 30));
       shape.setAttribute("data-id", d.id);
-      shape.addEventListener("mouseenter", () => { if (!tip.pinned) openTip(shape, () => dealTip(d, table), false); });
+      shape.addEventListener("mouseenter", () => { if (!tip.pinned) openTip(shape, () => dealTip(d, score.meta.time_table), false); });
       shape.addEventListener("mouseleave", () => { if (!tip.pinned && tip.anchor === shape) closeTip(); });
       shape.addEventListener("click", (e) => { e.stopPropagation(); focusDeal(d.id); });
       kids.push(shape);
     });
+    if (!deals.length) kids.push(s("text", { class: "tp-r-strong", x: x0, y: y - half - 12, "font-size": 13 }, "Nenhum negócio vivo na janela."));
     svg.replaceChildren(...kids);
-  }
-  // on a phone the same chart is rows, one per age, drawn here
-  function windowRows(score, seller) {
-    const table = score.meta.time_table, longest = score.meta.window.longest_win_days;
-    const ages = table.exists ? table.rows : [0, 30, 60, 90, 120, longest].map((a) => ({ reached_days: a }));
-    const band = (d) => [...ages].reverse().find((row) => row.reached_days <= d.days_open).reached_days;
-    return h("div", { class: "tp-wrows" },
-      h("p", { class: "tp-wtitle" }, chartTitle(table)),
-      h("ol", {}, ages.map((row) => h("li", { class: "tp-wrow" + (row.reached_days >= score.meta.cooling_after_days ? " tp-wfrio" : "") },
-        h("span", { class: "tp-wage", "data-dado": "" }, `${row.reached_days} dias`),
-        table.exists ? withTip(h("button", { type: "button", class: "tp-wbar", "aria-label": `Idade de ${row.reached_days} dias: cerca de ${row.won_per_100} em cada 100 foram ganhos depois` },
-          h("i", { style: `width:${Math.max(1.5, (row.won_per_100 / 70) * 100).toFixed(1)}%` }), h("b", { "data-dado": "" }, String(row.won_per_100))), tickTip(row, table)) : h("span", { class: "tp-wbar" }),
-        h("span", { class: "tp-wmarks" }, seller.alive.filter((d) => band(d) === row.reached_days).map((d) =>
-          withTip(h("button", { type: "button", class: "tp-wmark" + (d.cooling ? " tp-wm-frio" : ""), "data-id": d.id, "aria-label": `${d.product}, aberto há ${d.days_open} dias` }), () => dealTip(d, table)))))),
-        h("li", { class: "tp-wrow tp-wout" }, h("span", { class: "tp-wage" }, "fora"), h("span", { class: "tp-wbar" }, h("b", { "data-dado": "" }, num(seller.headline.clean))), h("span", { class: "tp-wmarks" }, "para limpar"))));
   }
   function focusDeal(id) {
     const row = $("deal-" + id);
@@ -325,18 +275,18 @@
     row.focus();
   }
   function windowSection(score, seller, animate) {
-    const section = h("section", { class: "tp-window", "aria-label": "A janela" });
-    let mode = "";
+    const svg = s("svg", { class: "tp-ruler", role: "img" });
+    const n = seller.headline.clean;
+    // after the end of the window there is no bar and no block: one line of text that leads to the list
+    const out = h("button", { type: "button", class: "tp-out", id: "out-link" }, n ? `Fora da janela: ${num(n)} para limpar` : "Fora da janela: nada para limpar");
+    out.addEventListener("click", () => { const t = document.querySelector(".tp-limpar .tp-title"); if (t) { t.scrollIntoView({ block: "nearest" }); t.focus(); } });
+    const section = h("section", { class: "tp-window", "aria-label": "A janela" }, svg, out);
+    let lastW = 0;
     const draw = (anim) => {
       const wNow = Math.floor(section.getBoundingClientRect().width);
-      if (wNow === 0) return;
-      const next = wNow < 700 ? "rows" : "chart:" + wNow;
-      if (next === mode) return;
-      mode = next;
-      if (wNow < 700) { section.replaceChildren(windowRows(score, seller)); return; }
-      const svg = s("svg", { class: "tp-ruler", role: "group" }); // a group, not an image: the ages inside it take focus
-      section.replaceChildren(svg);
-      drawWindow(svg, score, seller, anim);
+      if (wNow === lastW || wNow === 0) return;
+      lastW = wNow;
+      drawLine(svg, score, seller, anim);
     };
     requestAnimationFrame(() => draw(animate));
     new ResizeObserver(() => draw(false)).observe(section);
@@ -356,17 +306,16 @@
     const clean = h("span", { class: "tp-k-limpar" }, hd.clean ? `${num(hd.clean)} para limpar` : "nada para limpar", h("i", {}, "."));
     if (past) return [`Naquela segunda, ${first} tinha `, alive(""), " e ", clean];
     const queue = h("span", { class: "tp-k-fila" }, hd.queue ? `${num(hd.queue)} na fila` : "nenhum na fila");
-    return [`${first}, você tem `, alive(","), " ", queue, " e ", clean];
+    return hd.alive ? [`${first}, você tem `, alive(","), " ", queue, " e ", clean] : [`${first}: `, alive(","), " ", queue, " e ", clean];
   }
-  function kpis(hd, past) {
-    const cell = (cls, label, value, unit) => h("div", { class: "tp-kpi " + cls }, h("dt", {}, label), h("dd", {}, h("b", {}, value), h("span", {}, unit)));
+  // only what the headline does not already say: three numbers, the unit said once
+  function kpis(hd) {
+    const cell = (cls, label, value) => h("div", { class: "tp-kpi " + cls }, h("dt", {}, label), h("dd", {}, h("b", {}, value)));
     return h("dl", { class: "tp-kpis", "data-dado": "" },
-      cell("tp-kv", "Negócios vivos", num(hd.alive), "negócios"),
-      cell("tp-kv", "Valor vivo", num(hd.alive_value), "US$ de tabela"),
-      cell("tp-kf", "Esfriando agora", num(hd.cooling), "negócios"),
-      cell("tp-kq", "Na fila", past ? "–" : num(hd.queue), "negócios"),
-      cell("tp-kl", "Para limpar", num(hd.clean), "negócios"),
-      cell("tp-kl", "Valor parado", num(hd.clean_value), "US$ de tabela"));
+      cell("tp-kv", "Valor vivo", num(hd.alive_value)),
+      cell("tp-kf", "Esfriando agora", num(hd.cooling)),
+      cell("tp-kl", "Valor parado", num(hd.clean_value)),
+      h("div", { class: "tp-kpi-unit" }, h("dt", { class: "tp-sr" }, "Unidade"), h("dd", {}, "valores em US$ de tabela")));
   }
   function briefButton(sel) {
     const body = part("briefing:" + sel.seller, "body");
@@ -387,7 +336,8 @@
       h("span", { class: "tp-name" }, h("span", { class: "tp-prod" }, d.product), d.account ? h("span", { class: "tp-acct" }, d.account) : null,
         d.cooling ? h("span", { class: "tp-tag" }, "esfriando") : null),
       h("span", { class: "tp-num tp-c-val" }, num(d.value)),
-      h("span", { class: "tp-num tp-c-days" }, d.days_left === 0 ? "último" : num(d.days_left)),
+      h("span", { class: "tp-c-days" }, h("span", { class: "tp-num" }, d.days_left === 0 ? "último" : num(d.days_left)),
+        h("span", { class: "tp-left" + (d.cooling ? " tp-left-frio" : ""), "aria-hidden": "true" }, h("i", { style: `width:${Math.max(4, (d.days_left / 138) * 100).toFixed(1)}%` }))),
       result ? h("span", { class: "tp-c-after tp-" + d.after.result }, result) : null);
     return h("li", {}, withTip(row, () => dealTip(d, table)));
   }
@@ -421,9 +371,10 @@
   // the title of each block says what the block is, when asked
   function panel(cls, label, n, sum, kids, def) {
     const title = h("button", { type: "button", class: "tp-title" }, label, n === null ? null : h("span", { class: "tp-n" }, n));
+    const hint = { "tp-vivos": "no prazo", "tp-fila": "sem data", "tp-limpar": "fora do prazo" }[cls];
     if (def) withTip(title, () => [h("p", { class: "tp-tip-h" }, label), para(def)]);
     return h("section", { class: "tp-panel " + cls, "aria-label": label },
-      h("header", { class: "tp-panel-head" }, h("h2", {}, title), sum ? h("p", { class: "tp-sum" }, sum) : null),
+      h("header", { class: "tp-panel-head" }, h("h2", {}, title), h("p", { class: "tp-sum" }, sum || hint)),
       kids);
   }
   function renderSeller(score, animate) {
@@ -431,11 +382,11 @@
     const sel = score.sellers.find((x) => x.seller === state.seller);
     const hd = sel.headline, ev = index.evidence, a = sel.after;
     const cols = (third) => h("p", { class: "tp-cols" + (past ? " tp-has-after" : ""), "aria-hidden": "true" },
-      h("span", {}, "Negócio"), h("span", {}, "Tabela, US$"), third ? h("span", {}, third) : null, past && third ? h("span", {}, "Depois") : null);
+      h("span", {}, "Negócio"), h("span", {}, "Preço, US$"), third ? h("span", {}, third) : null, past && third ? h("span", {}, "Depois") : null);
     const alive = panel("tp-vivos", "Vivos", num(hd.alive),
       hd.alive && past ? `depois: ${num(a.alive_won)} ${pl(a.alive_won, "ganho", "ganhos")} · ${num(a.alive_lost)} ${pl(a.alive_lost, "perdido", "perdidos")} · ${num(a.alive_open)} ${pl(a.alive_open, "aberto", "abertos")}` : null,
       hd.alive
-        ? [cols("Restam, dias"), h("ol", { class: "tp-list" }, sel.alive.map((d) => aliveRow(d, meta.time_table, past)))]
+        ? [cols("Dias de prazo"), h("ol", { class: "tp-list" }, sel.alive.map((d) => aliveRow(d, meta.time_table, past)))]
         : h("p", { class: "tp-empty" }, past ? "Nenhum vivo naquela data." : hd.queue ? "Nenhum vivo: comece pela fila." : "Nenhum negócio vivo."),
       `Vivo é o negócio dentro da janela em que negócios já foram ganhos: aberto há no máximo ${meta.window.longest_win_days} dias e antes do fim do trimestre seguinte ao do engajamento. A ordem é por valor de tabela; no empate, mais dias restantes.`);
     const queue = past
@@ -450,7 +401,7 @@
     const clean = panel("tp-limpar", "Para limpar", num(hd.clean),
       hd.clean && past ? `depois: ${count(a.clean_won, "ganho", "ganhos", "nenhum ganho")}` : null,
       hd.clean ? [
-        h("p", { class: "tp-evidence" }, `${num(ev.won_after)} ${pl(ev.won_after, "ganho", "ganhos")} em ${num(ev.distinct_deals_past_window)} fora da janela.`),
+        h("p", { class: "tp-evidence" }, `${count(ev.won_after, "ganho", "ganhos", "Nenhum ganho")} em ${num(ev.distinct_deals_past_window)} casos assim.`),
         h("p", { class: "tp-action" }, h("b", {}, "Ação: "), "encerrar no CRM."), cleanBtn, cleanList,
       ] : h("p", { class: "tp-empty" }, "Nada para limpar."),
       `Negócios fora da janela: abertos há mais de ${meta.window.longest_win_days} dias, ou com o prazo do trimestre vencido. No teste, ${num(ev.won_after)} de ${num(ev.distinct_deals_past_window)} negócios assim ${pl(ev.won_after, "foi ganho", "foram ganhos")} depois. Os dados não dizem por que pararam.`);
@@ -460,7 +411,7 @@
         h("h1", { class: "tp-headline" }, sellerHeadline(sel, past)),
         h("div", { class: "tp-head-side" },
           past ? h("p", { class: "tp-past" }, "Segunda do passado: cada linha mostra o que veio depois.") : null, brief)),
-      kpis(hd, past),
+      kpis(hd),
       windowSection(score, sel, animate),
       h("div", { class: "tp-blocks" + (hd.alive ? "" : " tp-no-alive") + (hd.queue ? "" : " tp-no-queue") }, alive, queue, clean),
     ];
@@ -473,7 +424,6 @@
       : state.region ? team.by_region.find((g) => g.region === state.region) : team.total;
     const label = state.manager ? `O time de ${state.manager}` : state.region ? `A regional ${state.region}` : "O time";
     const rows = team.by_seller.filter((x) => (!state.region || x.region === state.region) && (!state.manager || x.manager === state.manager));
-    const scale = Math.max(1, ...rows.map((x) => Math.max(x.alive_value, x.clean_value)));
     const headline = [`${label} tem `,
       h("span", { class: "tp-k-vivo" }, count(scope.alive, "vivo", "vivos", "nenhum vivo"), h("i", {}, past ? "" : ",")),
       past ? " e " : [" ", h("span", { class: "tp-k-fila" }, scope.queue ? `${num(scope.queue)} na fila` : "nenhum na fila"), " e "],
@@ -490,16 +440,25 @@
       para(`${num(x.clean)} para limpar: ${money(x.clean_value)} de tabela, fora da janela.`),
       past ? null : para(x.queue ? `${num(x.queue)} na fila: ${money(x.queue_value)} de tabela.` : "Nenhum negócio na fila."),
       x.sellers > 1 ? para(`${num(x.sellers_without_alive)} de ${num(x.sellers)} vendedores sem nenhum vivo.`) : null];
-    const bar = (cls, value) => h("span", { class: "tp-bar-track", "aria-hidden": "true" },
-      value ? h("span", { class: "tp-bar-fill " + cls, style: `width:${((value / scale) * 100).toFixed(2)}%` }) : null);
+    const open = (x) => x.alive + (past ? 0 : x.queue) + x.clean;
+    const scale = Math.max(1, ...rows.map(open));
+    const seg = (cls, n) => (n ? h("i", { class: cls, style: `width:${((n / scale) * 100).toFixed(2)}%` }) : null);
     const sellerRow = (x) => {
-      const open = h("button", { type: "button", class: "tp-who", onclick: () => { state.view = "vendedor"; state.seller = x.seller; render(true); } }, x.seller);
-      withTip(open, () => [h("p", { class: "tp-tip-h" }, x.seller), ...facts(x), h("p", { class: "tp-tip-id" }, "Clique para abrir a segunda-feira deste vendedor.")], { click: false });
-      return h("li", { class: "tp-trow" }, open,
-        h("span", { class: "tp-bars" }, bar("tp-b-vivo", x.alive_value), bar("tp-b-limpar", x.clean_value)),
+      const btn = h("button", { type: "button", class: "tp-who", onclick: () => { state.view = "vendedor"; state.seller = x.seller; render(true); } }, x.seller);
+      withTip(btn, () => [h("p", { class: "tp-tip-h" }, x.seller), ...facts(x), h("p", { class: "tp-tip-id" }, "Clique para abrir a segunda-feira deste vendedor.")], { click: false });
+      return h("li", { class: "tp-trow" }, btn,
+        h("span", { class: "tp-three", "aria-hidden": "true" }, seg("tp-3v", x.alive), seg("tp-3q", past ? 0 : x.queue), seg("tp-3l", x.clean)),
         h("span", { class: "tp-num tp-t-n" }, num(x.alive)), h("span", { class: "tp-num tp-t-n" }, past ? "–" : num(x.queue)), h("span", { class: "tp-num tp-t-n" }, num(x.clean)));
     };
     const managers = team.by_manager.filter((m) => (!state.region || m.region === state.region) && (!state.manager || m.manager === state.manager));
+    const group = (m) => {
+      const mine = rows.filter((x) => x.manager === m.manager);
+      const withDeals = mine.filter((x) => open(x) > 0).sort((p, q) => q.alive - p.alive || open(q) - open(p) || (p.seller < q.seller ? -1 : 1));
+      const none = mine.filter((x) => open(x) === 0).map((x) => x.seller).sort();
+      return h("div", { class: "tp-mgr" }, h("h2", { class: "tp-mgr-h" }, `${m.manager} · ${m.region}`),
+        h("ol", {}, withDeals.map(sellerRow)),
+        none.length ? h("p", { class: "tp-none-open" }, `Sem negócios abertos: ${none.join(", ")}.`) : null);
+    };
     const regions = state.manager ? [] : team.by_region.filter((g) => !state.region || g.region === state.region);
     return [
       h("div", { class: "tp-head" }, h("h1", { class: "tp-headline" }, headline),
@@ -512,10 +471,10 @@
         return withTip(b, () => [h("p", { class: "tp-tip-h" }, "Regional " + g.region), ...facts(g)]);
       })) : null,
       h("section", { class: "tp-panel tp-team", "aria-label": "Por vendedor" },
-        h("p", { class: "tp-cols tp-tcols", "aria-hidden": "true" }, h("span", {}, "Vendedor"), h("span", {}, "Valor vivo e valor parado"), h("span", {}, "Vivos"), h("span", {}, "Fila"), h("span", {}, "Limpar")),
-        h("div", { class: "tp-list" }, managers.map((m) => h("div", { class: "tp-mgr" },
-          h("h2", { class: "tp-mgr-h" }, `${m.manager} · ${m.region}`),
-          h("ol", {}, rows.filter((x) => x.manager === m.manager).map(sellerRow)))))),
+        h("p", { class: "tp-cols tp-tcols", "aria-hidden": "true" }, h("span", {}, "Vendedor"),
+          h("span", { class: "tp-key" }, "Negócios abertos: ", h("i", { class: "tp-3v" }), "vivos ", h("i", { class: "tp-3q" }), "na fila ", h("i", { class: "tp-3l" }), "para limpar"),
+          h("span", {}, "Vivos"), h("span", {}, "Fila"), h("span", {}, "Limpar")),
+        h("div", { class: "tp-list" }, managers.map(group))),
     ];
   }
 
@@ -590,7 +549,8 @@
     try { saved = localStorage.getItem("tp-tema"); } catch (e) { /* private mode */ }
     setTheme((query.get("tema") || saved) === "escuro", false);
     try {
-      [index, texts, pics] = await Promise.all([getJSON("out/index.json"), loadTexts(), getJSON("img/janela.json").catch(() => null)]);
+      [index, texts, lineReady] = await Promise.all([getJSON("out/index.json"), loadTexts(),
+        fetch("img/janela-claro.webp", { method: "HEAD" }).then((r) => r.ok).catch(() => false)]);
     } catch (e) {
       $("app").replaceChildren(h("h1", { class: "tp-headline" }, "Não encontrei os arquivos do score."),
         h("p", { class: "tp-lead" }, "Rode python3 run.py --port 8000 na pasta solution e abra o endereço que ele mostrar."));

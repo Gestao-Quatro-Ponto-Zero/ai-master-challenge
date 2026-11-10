@@ -215,6 +215,34 @@ Um aviso, no claro: a cor de atenção tem contraste de 2,73:1 contra o painel, 
 
 **O segundo olhar sobre a cor e o gráfico (prompt `02e`, 17:14).** O revisor que não desenhou leu catorze capturas, nos dois temas. Disse em uma frase o que o gráfico diz ("de cada 100 negócios que chegaram a cada idade, cerca de 47, 42, 39, 26, 4 e 0 foram ganhos depois, com 91 parados num bloco vermelho") e que o tema escuro mantém os mesmos significados. O que mudou por causa dele: a faixa das marcas passou a dizer em palavras o que são ("seus negócios vivos, pela idade"); e a explicação aberta, também no celular, não cobre a manchete. O que ele apontou e eu não mudei, e levo ao Daniel: o bloco vermelho é uma contagem num gráfico de "ganhos em cada 100" e é a maior marca da tela (o prompt pediu o bloco); as marcas dos negócios ao lado das colunas ainda podem ser lidas como chance de cada negócio, embora a posição seja só a idade; "ganho" e "perdido", nas segundas do passado, estão escritos nas variantes de texto das cores de vivo e de negativo. Depois disso: encaixe, acessibilidade, texto (117 palavras) e números da tela (600 conferências) de novo sem problemas, e as capturas refeitas às 17:15.
 
+### 2.7 Simples para quem nunca viu (prompts `02x-simples-para-quem-nunca-viu.md` e `02y-gestor-e-presenca-da-linha.md`, 17:16 a 17:28)
+
+O Daniel olhou as capturas das 17:11 e julgou os gráficos complexos. O critério dele: alguém de quinze anos que nunca viu a ferramenta olha a figura e entende tudo. O orquestrador assumiu o erro de ter pedido um gráfico de estatística (prompt 02w) e mudou o que as figuras mostram. Às 17:21 chegou o 02y, com duas correções ao 02x: a tela do gestor tinha virado uma parede de barras vazias, e a linha do tempo estava tímida.
+
+**O que mudou.**
+- **A figura do vendedor é uma linha do tempo só, a janela.** À esquerda, "0 dias: abriu agora"; à direita, "138 dias: fim da janela"; um ponto por negócio vivo, na idade dele; perto do fim, a zona "esfriando". Depois do fim, nenhuma barra: uma linha de texto, "Fora da janela: N para limpar", que leva ao bloco. Três números na linha, nenhum eixo vertical, nenhuma taxa, nenhuma coluna. A linha ganhou corpo (trilho com volume, luz e sombra suave, pontos maiores com sombra), sem perspectiva.
+- **A tabela do tempo saiu da primeira vista.** Continua em "Como a ferramenta decide" e na explicação de cada negócio.
+- **Cada negócio vivo ganhou uma barra fina do tempo que resta**, nas cores da linha, ao lado do número de dias.
+- **A régua sob a manchete ficou com três números**, o que a manchete não diz: valor vivo, esfriando agora, valor parado, com a unidade uma vez.
+- **O gestor:** uma barra por vendedor em três partes, por número de negócios: vivos, na fila e para limpar (esta num tom quieto). Agrupado por gestor e regional, mais vivos primeiro; quem não tem negócio aberto vira uma linha no fim do grupo.
+- **Cor em doses pequenas:** as áreas grandes ficam neutras; a cor de vivo, de alerta e de fora aparece em pontos, palavras e barras finas.
+- **Palavras para quem chega:** sob o título de cada bloco, "no prazo", "sem data" e "fora do prazo"; colunas "Preço, US$" e "Dias de prazo"; "ponto = negócio vivo"; a segunda-feira no seletor sem a palavra "atual".
+- `docs/pesquisa.md` ganhou a seção 4, com as quatro fontes e o que não teve fonte.
+
+**O teste dos quinze anos** (prompt `02f`): um revisor novo por captura, sem nada além da imagem e da pergunta.
+- **Rodada 1 (17:19),** vendedor, gestor e celular. Os três disseram o que a tela mostra e o que fazer (olhar os vivos pelos dias que restam e encerrar os parados). O do gestor viu "barras cinza vazias" e não soube o que fazer; foi isso que o 02y corrigiu.
+- **Rodada 2 (17:22),** vendedor, gestor e uma vendedora sem nenhum vivo. Os três disseram o que fazer: "olharia a lista dos 12 negócios, veria quais têm menos dias de prazo e encerraria os 91 parados"; "começaria pela fila, falando com os clientes que valem mais, e depois encerraria os 57 no CRM"; e, no gestor, "quase tudo está em para limpar; abriria um vendedor com muitos nessa coluna".
+- **O que continua sem entender, e não foi resolvido:** o vocabulário do negócio (vivos, fila, limpar, CRM, nomes de produtos e de contas, "preço de tabela"). É o vocabulário que o vendedor usa no dia a dia; para quem nunca vendeu, ele explica a si mesmo só pelo título de cada bloco e pela explicação a um gesto. Uma tela que tirasse essas palavras deixaria de ser a ferramenta do vendedor.
+
+**O que deu errado, e como percebi.**
+- Ao trocar as barras do gestor, dei a uma função o mesmo nome de outra usada mais acima; a tela do gestor quebrava ao escolher um gestor no filtro. Uma conferência automática apontou (a manchete não mudava com o filtro).
+- Com muitos negócios vivos, os pontos maiores não cabiam e alguns sumiam da linha (10 pontos para 11 negócios). Agora o tamanho do ponto diminui até todos caberem.
+- A unidade da régua estava numa marcação que a conferência de acessibilidade apontou. Corrigido.
+- Na captura escura de uma vendedora sem vivos, a manchete dizia "você tem nenhum vivo". Corrigido para "Anna: nenhum vivo, 55 na fila e 57 para limpar."
+- A sessão caiu às 17:24, no meio de uma rodada de conferências; retomei às 17:25 e rodei de novo o que não tinha terminado.
+
+**Conferências automáticas (17:27):** 668 conferências dos números da tela, 0 divergências; texto com 117 palavras visíveis ao carregar (alvo 124) e maior frase de 12 palavras; encaixe sem problemas, de 320 a 1920 px, sem rolagem lateral; acessibilidade sem violações, nos temas claro e escuro. Capturas refeitas às 17:27, nos dois temas.
+
 ## O que o candidato decidiu
 
 ### Etapa 1: a regra e a forma do produto (10/11/2026, resposta recebida no chat e registrada às 15:54, do `date`)

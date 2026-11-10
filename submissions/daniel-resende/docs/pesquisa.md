@@ -64,3 +64,14 @@ Início 2026-11-10 15:10:53 -03; fim 2026-11-10 15:14:41 -03 (último `date`; gr
 | Proof-Carrying Numbers (PCN) | arXiv (Solatorio) | https://arxiv.org/abs/2509.06902 | 2025-09-08 |
 
 Acesso a todas: 2026-11-10.
+
+## 4. Figuras que se leem sozinhas (acrescentado em 10/11/2026, prompt 02x)
+
+Fontes lidas pela pesquisa do orquestrador em 10/11/2026; o que cada uma sustenta nesta tela:
+
+- **Posição numa escala comum se lê melhor que comprimento, área ou ângulo.** Heer e Bostock, "Crowdsourcing Graphical Perception", CHI 2010, https://homes.cs.washington.edu/~jheer/files/2010-MTurk-CHI.pdf . Aqui: a figura do vendedor é uma linha do tempo só, e cada negócio vivo é uma marca na posição da idade dele; as barras do gestor têm todas o mesmo comprimento e a mesma origem.
+- **Projetar objetos 3D em duas dimensões distorce o dado; barras 3D parecem mais curtas do que são.** Wilke, "Fundamentals of Data Visualization", capítulo 26, "Don't go 3D", https://clauswilke.com/dataviz/no-3d.html . Aqui: saíram as colunas com volume; nada na tela está em perspectiva nem extrudado.
+- **Mais de uma escala quantitativa no mesmo eixo convida a comparar grandezas que não se comparam.** Few, "Dual-Scaled Axes in Graphs", Perceptual Edge, 2008, https://www.perceptualedge.com/articles/visual_business_intelligence/dual-scaled_axes.pdf . Aqui: saiu o bloco com a contagem "para limpar" ao lado de colunas de "ganhos em cada 100"; a contagem virou uma linha de texto e a tabela do tempo saiu da primeira vista.
+- **Posição e comprimento para quantidades, cor para destacar, sem 3D, leitura rápida com o mínimo de interação.** Laubheimer, Nielsen Norman Group, "Dashboards: Making Charts and Graphs Easier to Understand", 2017, https://www.nngroup.com/articles/dashboards-preattentive/ . Aqui: a cor de vivo, de alerta e de fora aparece só em marcas, palavras e barras finas; as áreas grandes ficam neutras.
+
+**O que não teve fonte:** nenhuma das quatro aprova, pelo nome, profundidade decorativa. Manter a profundidade como luz e sombra que não carregam número nenhum é inferência nossa a partir delas, não uma afirmação delas.
