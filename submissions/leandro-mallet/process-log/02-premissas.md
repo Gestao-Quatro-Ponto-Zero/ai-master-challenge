@@ -2,7 +2,7 @@
 
 **Quando:** 09/11/2026, depois da análise dos dados e antes de construir qualquer coisa.
 **Por quê:** antes de as sessões começarem a programar, eu quis fixar as regras de arquitetura, banco, backend e frontend que todas seguiriam. Minha intenção era que o sistema nascesse com o mesmo padrão de qualidade que uso nos meus produtos, e não com escolhas improvisadas por cada sessão.
-**Decisões registradas:** 11 a 20 e 22, em [decisoes.md](decisoes.md).
+**Decisões registradas:** 11 a 20, 22 e 23, em [decisoes.md](decisoes.md).
 
 ## Como foi, em ordem
 
@@ -12,7 +12,7 @@
 
 3. **Onde a IA errou: premissas inventadas.** Na primeira versão, a IA acrescentou 6 premissas próprias ("regras do desafio", "julgamento visível", "banco opcional", "data de referência fixa", "score explicável", "linguagem do vendedor"). Eu tinha pedido as minhas premissas adaptadas, não premissas novas. **Mandei tirar.** O que elas cobriam já estava no checklist de QA e nos desenhos das sessões. A IA também tinha deixado uma premissa repetida em dois grupos, e ela saiu.
 
-4. **Cortes no que não serve ao desafio (decisões 12, 13 e 17).** Excluí a premissa de multi-tenant (há um cliente só), a de eventos e idempotência, a de "IA recomenda, regra decide" e a de OAuth (não há login).
+4. **Cortes no que não serve ao desafio (decisões 12, 13, 17 e 23).** Excluí a premissa de multi-tenant (há um cliente só), a de eventos e idempotência, a de "IA recomenda, regra decide" e a de OAuth (não há login). No fim, apaguei também as 4 premissas gerais que sobraram (só fatos comprovados, entrega com aceite, segurança e preservação de dados, design antes de expandir), porque não traziam regra concreta de construção. A regra de "inserir e atualizar sim, apagar nunca" foi para a premissa de migrações.
 
 5. **Identidade sem login (decisões 12 e 15).** A IA tinha adaptado a premissa de identidade para login com conta de demonstração. **Decidi que não há login nem senha:** o usuário escolhe o perfil (vendedor, manager ou admin) e, se for vendedor ou manager, o nome. As contas ficam numa tabela de usuários criada a partir do próprio dataset, então não há checagem de nome. O perfil serve para montar as telas e os filtros de cada papel.
 
@@ -28,7 +28,7 @@
 
 ## Resultado
 
-Documento final com 28 premissas, todas com o "como fica no G4 Sight": 12 mantidas do padrão, 9 adaptadas e 7 pedidas por mim (stack de backend, stack de frontend, UI/UX ultra simples, estética como requisito, prefixos de banco, chaves estrangeiras e marca do G4). Depois da minha aprovação, ele vira o arquivo comum que todas as sessões leem antes de construir.
+Documento final com 24 premissas, todas com o "como fica no G4 Sight", em 4 grupos (arquitetura, banco de dados, backend e frontend): as premissas do padrão que ficaram, mantidas ou adaptadas, e 7 pedidas por mim (stack de backend, stack de frontend, UI/UX ultra simples, estética como requisito, prefixos de banco, chaves estrangeiras e marca do G4). Depois da minha aprovação, ele vira o arquivo comum que todas as sessões leem antes de construir.
 
 ## O que foi julgamento meu nesta etapa
 
