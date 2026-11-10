@@ -33,3 +33,34 @@ Ao assumir, a pasta já tinha trabalho das outras sessões, ainda sem auditoria 
 - Data de referência fixa em 2017-12-31, a última `close_date` do arquivo.
 - Correção de nomes: `GTXPro` virou `GTX Pro` (1.480 deals) e o setor `technolgy` foi corrigido (12 contas).
 - Faixas de porte por tercis de receita e de funcionários.
+
+---
+
+## 09/11 — #5 QA: etapa 1 (baseline) e etapa 2 (checklist)
+
+**Entregue:** `solution/qa/baseline.md`, que reconstrói a entrega típica de uma IA só com o brief e traz 12 erros dela medidos nos dados e 20 armadilhas para marcar, e `solution/qa/checklist.md`, o checklist de entrega.
+
+**Conferência:** a #1 recalculou os números de forma independente, com um script próprio sobre `data/raw/`, data de referência 2017-12-31 e o typo de setor e o nome do produto corrigidos.
+
+| Afirmação da #5 | Recalculado pela #1 | Situação |
+|---|---|---|
+| 8.800 deals; 4.238 Won / 2.473 Lost / 1.589 Engaging / 500 Prospecting; win rate 63,2% | Igual | ✅ |
+| Diferença de win rate entre o melhor e o pior grupo: produto 4,8 p.p. | 4,8 (60,0–64,8) | ✅ |
+| Setor 3,6 p.p. | 3,67 → **3,7** | ⚠️ truncado em vez de arredondado |
+| Manager 2,3 p.p. | 2,3 | ✅ |
+| Região 1,3 p.p. | 1,38 → **1,4** | ⚠️ truncado em vez de arredondado |
+| Win rate por quartil de funcionários 64,1 / 61,4 / 63,9 / 63,2 | Igual | ✅ |
+| Abertos sem conta: 1.088/1.589 Engaging, 337/500 Prospecting (68%) | Igual (68,2%) | ✅ |
+| Correlação 1º × 2º semestre: conta −0,08; vendedor 0,36; win rate do vendedor 55,0–70,4%, mínimo de 79 deals | Igual | ✅ |
+| Duração mediana: Lost 14 dias, Won 57; ciclo máximo 138 | Igual | ✅ |
+| Chance de ganhar, para deals que já duraram d dias: 63 / 69 / 71 / 76% (d = 0, 14, 90, 120) | 63,2 / 68,6 / 71,3 com "≥ d"; em 120 dá 75,1 com "≥" e 75,6 com "> 120" | ⚠️ critério de corte não declarado; com "≥", o certo é 75% |
+| 1.291/1.589 Engaging acima de 138 dias (mediana 165) | Igual | ✅ |
+| `close_value` ÷ preço de tabela nos Won: mediana 1,00 (0,66–1,34) | Mediana 1,00, mín–máx 0,66–1,34 | ✅ |
+| Fim de trimestre fecha 78–83% Won contra 49–57% nos outros meses | 78,5–82,8 contra 48,6–56,8 | ✅ |
+| 5 vendedores sem deals | Os mesmos 5 nomes | ✅ |
+
+**Problemas encontrados:**
+1. **Bloqueante:** o item H1 do `checklist.md` cita nominalmente as empresas do candidato que não podem aparecer na entrega, justamente na regra que proíbe citá-las. O commit fica retido, porque o histórico do git vai junto no PR.
+2. Arredondamento de setor (3,7) e região (1,4), e o critério de "depois de d dias" a declarar. Não muda nenhuma conclusão.
+
+**Encaminhamento:** devolvido à #5 para corrigir os três pontos. O commit de `solution/qa/` sai depois da correção.
