@@ -1,0 +1,228 @@
+data de referencia: 2017-12-31; regra importada de validate.py, sem alteracao
+
+== M1. A regra congelada em tres cortes que ela nunca viu ==
+cortes que moldaram a regra A: 2017-06-01, 2017-06-16, 2017-07-01, 2017-07-16, 2017-08-01, 2017-08-16, 2017-09-01, 2017-09-16, 2017-10-02
+cortes de confirmacao (fixados antes de rodar): 2017-07-08, 2017-08-24, 2017-09-24
+medida: top 5 da lista de cada vendedor, ganhos e valor ganho em 90 dias; empates dividem as vagas
+
+  corte 2017-07-08 (janela ate 2017-10-06): 1773 negocios abertos medidos, 756 sem desfecho na janela
+    ordenacao                             ganhos    de   valor ganho
+    ref: ordenar por valor                  64.1   150       396.111
+    ref: taxa geral (ordem qualquer)        63.5   150       143.975
+    A regras (tempo x valor)                69.0   150       432.044
+    regra A GANHA de 'ordenar por valor': +9.1% de valor ganho
+    grupo              negocios  ganhos  perdidos  sem desfecho   valor ganho
+    focar agora             634     279       160           195     1.337.404
+    manter aquecido         789     368       210           211       199.946
+    deixar ir               350       0         0           350             0
+
+  corte 2017-08-24 (janela ate 2017-11-22): 2241 negocios abertos medidos, 1441 sem desfecho na janela
+    ordenacao                             ganhos    de   valor ganho
+    ref: ordenar por valor                  43.8   150       295.729
+    ref: taxa geral (ordem qualquer)        40.1   150        97.347
+    A regras (tempo x valor)                49.0   150       321.094
+    regra A GANHA de 'ordenar por valor': +8.6% de valor ganho
+    grupo              negocios  ganhos  perdidos  sem desfecho   valor ganho
+    focar agora             694     225        98           371     1.067.912
+    manter aquecido        1163     322       155           686       251.421
+    deixar ir               384       0         0           384             0
+
+  corte 2017-09-24 (janela ate 2017-12-23): 2363 negocios abertos medidos, 1511 sem desfecho na janela
+    ordenacao                             ganhos    de   valor ganho
+    ref: ordenar por valor                  35.3   150       229.454
+    ref: taxa geral (ordem qualquer)        35.2   150        82.205
+    A regras (tempo x valor)                41.5   150       238.551
+    regra A GANHA de 'ordenar por valor': +4.0% de valor ganho
+    grupo              negocios  ganhos  perdidos  sem desfecho   valor ganho
+    focar agora             693     211       151           331       972.472
+    manter aquecido        1166     312       178           676       228.941
+    deixar ir               504       0         0           504             0
+
+== M2. Nenhum negocio contado duas vezes ==
+os grupos em cada um dos doze cortes (um mesmo negocio aparece em varios cortes):
+
+  corte 2017-06-01 (moldou a regra)
+    grupo              negocios  ganhos  perdidos  sem desfecho   valor ganho
+    focar agora             562     225        94           243     1.162.555
+    manter aquecido         900     389       136           375       390.649
+    deixar ir                84       0         0            84             0
+
+  corte 2017-06-16 (moldou a regra)
+    grupo              negocios  ganhos  perdidos  sem desfecho   valor ganho
+    focar agora             613     236       120           257     1.204.555
+    manter aquecido         860     334       151           375       239.943
+    deixar ir               109       0         0           109             0
+
+  corte 2017-07-01 (moldou a regra)
+    grupo              negocios  ganhos  perdidos  sem desfecho   valor ganho
+    focar agora             616     262       165           189     1.257.403
+    manter aquecido         740     347       199           194       185.964
+    deixar ir               350       0         0           350             0
+
+  corte 2017-07-08 (so testou a regra)
+    grupo              negocios  ganhos  perdidos  sem desfecho   valor ganho
+    focar agora             634     279       160           195     1.337.404
+    manter aquecido         789     368       210           211       199.946
+    deixar ir               350       0         0           350             0
+
+  corte 2017-07-16 (moldou a regra)
+    grupo              negocios  ganhos  perdidos  sem desfecho   valor ganho
+    focar agora             643     294       166           183     1.400.657
+    manter aquecido         831     381       200           250       207.491
+    deixar ir               350       0         0           350             0
+
+  corte 2017-08-01 (moldou a regra)
+    grupo              negocios  ganhos  perdidos  sem desfecho   valor ganho
+    focar agora             755     297       142           316     1.408.244
+    manter aquecido        1174     411       209           554       316.831
+    deixar ir               350       0         0           350             0
+
+  corte 2017-08-16 (moldou a regra)
+    grupo              negocios  ganhos  perdidos  sem desfecho   valor ganho
+    focar agora             735     257       106           372     1.210.826
+    manter aquecido        1189     342       173           674       234.395
+    deixar ir               350       0         0           350             0
+
+  corte 2017-08-24 (so testou a regra)
+    grupo              negocios  ganhos  perdidos  sem desfecho   valor ganho
+    focar agora             694     225        98           371     1.067.912
+    manter aquecido        1163     322       155           686       251.421
+    deixar ir               384       0         0           384             0
+
+  corte 2017-09-01 (moldou a regra)
+    grupo              negocios  ganhos  perdidos  sem desfecho   valor ganho
+    focar agora             646     204        92           350       954.722
+    manter aquecido        1218     354       146           718       341.264
+    deixar ir               411       0         0           411             0
+
+  corte 2017-09-16 (moldou a regra)
+    grupo              negocios  ganhos  perdidos  sem desfecho   valor ganho
+    focar agora             632     188       125           319       862.351
+    manter aquecido        1226     343       156           727       356.565
+    deixar ir               471       0         0           471             0
+
+  corte 2017-09-24 (so testou a regra)
+    grupo              negocios  ganhos  perdidos  sem desfecho   valor ganho
+    focar agora             693     211       151           331       972.472
+    manter aquecido        1166     312       178           676       228.941
+    deixar ir               504       0         0           504             0
+
+  corte 2017-10-02 (moldou a regra)
+    grupo              negocios  ganhos  perdidos  sem desfecho   valor ganho
+    focar agora             743     250       176           317     1.141.335
+    manter aquecido         992     326       220           446       164.746
+    deixar ir               717       0         1           716             0
+
+  em negocios DISTINTOS, nos doze cortes (o desfecho e o de qualquer momento ate o fim dos dados):
+    grupo              negocios distintos  ganhos depois  perdidos depois  abertos no fim dos dados
+    focar agora                      1982            891              501                       590
+    manter aquecido                  2983           1331              642                      1010
+    deixar ir                         717              0                1                       716
+
+  em negocios DISTINTOS, so nos tres cortes de confirmacao:
+    grupo              negocios distintos  ganhos depois  perdidos depois  abertos no fim dos dados
+    focar agora                      1371            556              332                       483
+    manter aquecido                  1965            756              421                       788
+    deixar ir                         504              0                0                       504
+
+  colocacoes somadas nos doze cortes: focar agora=7966, manter aquecido=12248, deixar ir=4430 (e a soma que conta o mesmo negocio varias vezes)
+  um negocio pode ter passado por mais de um grupo em cortes diferentes, por isso as linhas nao somam o total de negocios
+  negocios postos em 'deixar ir' num corte e depois vistos num grupo vivo: 0
+  SEGURANCA DE 'DEIXAR IR', em negocios distintos: 0 ganhos em 717
+
+== M3. O sinal do tempo nas palavras do vendedor ==
+leitura: 'de cada 100 negocios que chegaram abertos aos N dias, X foram ganhos depois'.
+tratamento dos que nao tiveram tempo de fechar: a tabela (a) os mostra a parte ('abertos ainda c/ tempo'); a tabela (b), que e a que a tela usa, so conta negocios engajados ha mais dias que o ganho mais demorado, escolhidos pela data de engajamento e nunca pelo desfecho.
+
+  como se sabia em 2017-12-31: 7115 negocios engajados desde 2017-03-01 (ficam fora os 1185 engajados antes do 1o fechamento registrado); ganho mais demorado visto ate ai: 138 dias
+    (a) todos os que chegaram abertos a idade; os abertos separados entre os que ja passaram da janela (regra: prazo vencido ou mais velhos que o ganho mais demorado) e os que ainda tinham tempo
+        chegou a  negocios  ganhos  perdidos  abertos fora da janela  abertos ainda c/ tempo
+          0 dias      7115    3530      2209                    1261                     115
+         30 dias      3998    1764       875                    1261                      98
+         60 dias      3456    1440       696                    1261                      59
+         90 dias      2112     599       247                    1261                       5
+        120 dias      1254      62        27                    1165                       0
+        138 dias      1088       0         0                    1088                       0
+     mais de 138      1078       0         0                    1078                       0
+    (b) so os que ja tiveram tempo de fechar: engajados ate 2017-08-14 (4767 negocios; 2348 ficam fora por serem novos demais)
+        chegou a  negocios  ganhos  perdidos  nunca fechou  ganhos em cada 100
+          0 dias      4767    2256      1433          1078                  47
+         30 dias      2873    1200       595          1078                  42
+         60 dias      2540     982       480          1078                  39
+         90 dias      1722     441       203          1078                  26
+        120 dias      1152      49        25          1078                   4
+        138 dias      1078       0         0          1078                   0
+     mais de 138      1078       0         0          1078                   0
+
+  como se sabia em 2017-07-01: 3220 negocios engajados desde 2017-03-01 (ficam fora os 1185 engajados antes do 1o fechamento registrado); ganho mais demorado visto ate ai: 138 dias
+    (a) todos os que chegaram abertos a idade; os abertos separados entre os que ja passaram da janela (regra: prazo vencido ou mais velhos que o ganho mais demorado) e os que ainda tinham tempo
+        chegou a  negocios  ganhos  perdidos  abertos fora da janela  abertos ainda c/ tempo
+          0 dias      3220    1088       639                     137                    1356
+         30 dias      1423     425       175                     137                     686
+         60 dias       775     314       112                     137                     212
+         90 dias       261      94        19                     137                      11
+        120 dias        16       1         0                      15                       0
+        138 dias         0       0         0                       0                       0
+     mais de 138         0       0         0                       0                       0
+    (b) so os que ja tiveram tempo de fechar: engajados ate 2017-02-12 (0 negocios; 3220 ficam fora por serem novos demais)
+        nenhum negocio engajado desde o 1o fechamento tinha tido tempo nessa data: a tabela nao existe
+
+  como se sabia em 2017-08-16: 4818 negocios engajados desde 2017-03-01 (ficam fora os 1185 engajados antes do 1o fechamento registrado); ganho mais demorado visto ate ai: 138 dias
+    (a) todos os que chegaram abertos a idade; os abertos separados entre os que ja passaram da janela (regra: prazo vencido ou mais velhos que o ganho mais demorado) e os que ainda tinham tempo
+        chegou a  negocios  ganhos  perdidos  abertos fora da janela  abertos ainda c/ tempo
+          0 dias      4818    1628      1129                     137                    1924
+         30 dias      2126     607       309                     137                    1073
+         60 dias      1520     459       222                     137                     702
+         90 dias       640     155        58                     137                     290
+        120 dias       224       3         5                     137                      79
+        138 dias       137       0         0                     137                       0
+     mais de 138       130       0         0                     130                       0
+    (b) so os que ja tiveram tempo de fechar: engajados ate 2017-03-30 (755 negocios; 4063 ficam fora por serem novos demais)
+        chegou a  negocios  ganhos  perdidos  nunca fechou  ganhos em cada 100
+          0 dias       755     422       203           130                  56
+         30 dias       546     281       135           130                  51
+         60 dias       475     244       101           130                  51
+         90 dias       242      93        19           130                  38
+        120 dias       131       1         0           130                   1
+        138 dias       130       0         0           130                   0
+     mais de 138       130       0         0           130                   0
+
+  como se sabia em 2017-10-02: 6020 negocios engajados desde 2017-03-01 (ficam fora os 1185 engajados antes do 1o fechamento registrado); ganho mais demorado visto ate ai: 138 dias
+    (a) todos os que chegaram abertos a idade; os abertos separados entre os que ja passaram da janela (regra: prazo vencido ou mais velhos que o ganho mais demorado) e os que ainda tinham tempo
+        chegou a  negocios  ganhos  perdidos  abertos fora da janela  abertos ainda c/ tempo
+          0 dias      6020    2349      1432                     504                    1735
+         30 dias      3189    1105       511                     504                    1069
+         60 dias      2321     885       395                     504                     537
+         90 dias      1015     360       131                     504                      20
+        120 dias       438      24        11                     403                       0
+        138 dias       330       0         0                     330                       0
+     mais de 138       326       0         0                     326                       0
+    (b) so os que ja tiveram tempo de fechar: engajados ate 2017-05-16 (2042 negocios; 3978 ficam fora por serem novos demais)
+        chegou a  negocios  ganhos  perdidos  nunca fechou  ganhos em cada 100
+          0 dias      2042    1040       676           326                  51
+         30 dias      1143     549       268           326                  48
+         60 dias       972     440       206           326                  45
+         90 dias       618     203        89           326                  33
+        120 dias       354      17        11           326                   5
+        138 dias       326       0         0           326                   0
+     mais de 138       326       0         0           326                   0
+
+== M4. A ordem que a nova tela propoe: vivos por valor, 'limpar' por ultimo ==
+a regra A ordena os vivos por chance x valor; a nova forma ordena os vivos so por valor. Esta secao mede essa ordem, que nenhum corte tinha medido. Nada na regra muda.
+valor ganho no top 5 de cada vendedor, 90 dias; dias restantes = o que falta para o negocio sair da janela (ganho mais demorado ou prazo, o que vier antes)
+  corte       papel        ref: ordenar por valo  regra A (chance x val  vivos por valor (empa  vivos por valor, meno  vivos por valor, mais
+  2017-06-01  moldou                     462.087                479.126                479.082                481.576                471.613
+  2017-06-16  moldou                     421.095                461.146                440.467                400.472                468.047
+  2017-07-01  moldou                     387.942                424.750                425.649                384.973                464.974
+  2017-07-08  so testou                  396.111                432.044                433.405                403.885                477.218
+  2017-07-16  moldou                     400.389                470.190                438.589                413.670                484.247
+  2017-08-01  moldou                     344.588                389.116                378.598                382.135                368.816
+  2017-08-16  moldou                     317.671                334.823                352.089                374.126                344.176
+  2017-08-24  so testou                  295.729                321.094                332.247                354.305                337.491
+  2017-09-01  moldou                     238.226                286.684                271.068                285.691                271.112
+  2017-09-16  moldou                     242.992                279.848                275.745                248.314                306.281
+  2017-09-24  so testou                  229.454                238.551                268.063                218.514                317.359
+  2017-10-02  moldou                     230.548                278.378                289.795                237.043                339.917
+  vivos por valor (empates divididos): ganha de 'ordenar por valor' em 12 de 12 cortes; ganha da regra A em 6 de 12
+  vivos por valor, menos dias restantes 1o: ganha de 'ordenar por valor' em 9 de 12 cortes; ganha da regra A em 3 de 12
+  vivos por valor, mais dias restantes 1o: ganha de 'ordenar por valor' em 12 de 12 cortes; ganha da regra A em 9 de 12
