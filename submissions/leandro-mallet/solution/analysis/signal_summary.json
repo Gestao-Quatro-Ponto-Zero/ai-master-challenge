@@ -608,6 +608,448 @@
       }
     ]
   },
+  "fast_lost": {
+    "band_sizes": {
+      "demais (15–100%)": {
+        "deals": 5704,
+        "lost": 1994,
+        "dias_min": 6.0,
+        "dias_max": 138.0
+      },
+      "faixa 1 (0–5%)": {
+        "deals": 336,
+        "lost": 160,
+        "dias_min": 1.0,
+        "dias_max": 2.0
+      },
+      "faixa 2 (5–15%)": {
+        "deals": 671,
+        "lost": 319,
+        "dias_min": 2.0,
+        "dias_max": 6.0
+      }
+    },
+    "boundaries": [
+      {
+        "fronteira": "faixa 1 | faixa 2",
+        "dia": 2,
+        "deals_com_esse_dia": 278,
+        "ficaram_antes": 35,
+        "ficaram_depois": 243
+      },
+      {
+        "fronteira": "faixa 2 | demais",
+        "dia": 6,
+        "deals_com_esse_dia": 204,
+        "ficaram_antes": 99,
+        "ficaram_depois": 105
+      }
+    ],
+    "group_sizes": {
+      "lost_rapidos": 479,
+      "lost_demais": 1994,
+      "won_rapidos": 528,
+      "base_fechados": 6711
+    },
+    "global_tests": {
+      "regional_office | lost_rapidos x lost_demais": {
+        "p_value": 0.29383150766449295,
+        "p_bonferroni": 1.0,
+        "cramers_v": 0.0315
+      },
+      "regional_office | lost_rapidos x won_rapidos": {
+        "p_value": 0.7391193446444259,
+        "p_bonferroni": 1.0,
+        "cramers_v": 0.0245
+      },
+      "regional_office | lost_rapidos x base_fechados": {
+        "p_value": 0.5068339893565161,
+        "p_bonferroni": 1.0,
+        "cramers_v": 0.0142
+      },
+      "manager | lost_rapidos x lost_demais": {
+        "p_value": 0.5274800107586055,
+        "p_bonferroni": 1.0,
+        "cramers_v": 0.041
+      },
+      "manager | lost_rapidos x won_rapidos": {
+        "p_value": 0.9716702476637746,
+        "p_bonferroni": 1.0,
+        "cramers_v": 0.0296
+      },
+      "manager | lost_rapidos x base_fechados": {
+        "p_value": 0.6191839603076212,
+        "p_bonferroni": 1.0,
+        "cramers_v": 0.0229
+      },
+      "close_month | lost_rapidos x lost_demais": {
+        "p_value": 1.5809104919226004e-85,
+        "p_bonferroni": 1.8970925903071206e-84,
+        "cramers_v": 0.4136
+      },
+      "close_month | lost_rapidos x won_rapidos": {
+        "p_value": 5.894526936919716e-07,
+        "p_bonferroni": 7.073432324303659e-06,
+        "cramers_v": 0.2138
+      },
+      "close_month | lost_rapidos x base_fechados": {
+        "p_value": 7.391968535099861e-144,
+        "p_bonferroni": 8.870362242119833e-143,
+        "cramers_v": 0.3219
+      },
+      "engage_month | lost_rapidos x lost_demais": {
+        "p_value": 7.792437034658835e-64,
+        "p_bonferroni": 9.350924441590602e-63,
+        "cramers_v": 0.3646
+      },
+      "engage_month | lost_rapidos x won_rapidos": {
+        "p_value": 0.003180428313412142,
+        "p_bonferroni": 0.0381651397609457,
+        "cramers_v": 0.1621
+      },
+      "engage_month | lost_rapidos x base_fechados": {
+        "p_value": 5.0468775316872005e-80,
+        "p_bonferroni": 6.05625303802464e-79,
+        "cramers_v": 0.2457
+      }
+    },
+    "n_cell_tests": 93,
+    "cells_significant_after_bonferroni": [
+      {
+        "dimensao": "close_month",
+        "valor": 3,
+        "grupo_b": "lost_demais",
+        "pct_a": 1.0438,
+        "pct_b": 5.5667,
+        "diff_pp": -4.5229,
+        "p_bonferroni": 0.0024
+      },
+      {
+        "dimensao": "close_month",
+        "valor": 4,
+        "grupo_b": "lost_demais",
+        "pct_a": 26.5136,
+        "pct_b": 8.7262,
+        "diff_pp": 17.7874,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "close_month",
+        "valor": 5,
+        "grupo_b": "lost_demais",
+        "pct_a": 5.8455,
+        "pct_b": 17.001,
+        "diff_pp": -11.1555,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "close_month",
+        "valor": 6,
+        "grupo_b": "lost_demais",
+        "pct_a": 1.4614,
+        "pct_b": 5.1655,
+        "diff_pp": -3.7041,
+        "p_bonferroni": 0.0385
+      },
+      {
+        "dimensao": "close_month",
+        "valor": 7,
+        "grupo_b": "lost_demais",
+        "pct_a": 25.4697,
+        "pct_b": 9.8796,
+        "diff_pp": 15.5901,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "close_month",
+        "valor": 8,
+        "grupo_b": "lost_demais",
+        "pct_a": 6.0543,
+        "pct_b": 15.5466,
+        "diff_pp": -9.4924,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "close_month",
+        "valor": 9,
+        "grupo_b": "lost_demais",
+        "pct_a": 1.2526,
+        "pct_b": 6.319,
+        "diff_pp": -5.0663,
+        "p_bonferroni": 0.0009
+      },
+      {
+        "dimensao": "close_month",
+        "valor": 10,
+        "grupo_b": "lost_demais",
+        "pct_a": 25.0522,
+        "pct_b": 8.3751,
+        "diff_pp": 16.6771,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "close_month",
+        "valor": 11,
+        "grupo_b": "lost_demais",
+        "pct_a": 6.6806,
+        "pct_b": 16.5496,
+        "diff_pp": -9.8691,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "close_month",
+        "valor": 12,
+        "grupo_b": "lost_demais",
+        "pct_a": 0.6263,
+        "pct_b": 6.8706,
+        "diff_pp": -6.2443,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "close_month",
+        "valor": 6,
+        "grupo_b": "won_rapidos",
+        "pct_a": 1.4614,
+        "pct_b": 5.8712,
+        "diff_pp": -4.4098,
+        "p_bonferroni": 0.0228
+      },
+      {
+        "dimensao": "close_month",
+        "valor": 3,
+        "grupo_b": "base_fechados",
+        "pct_a": 1.0438,
+        "pct_b": 9.6409,
+        "diff_pp": -8.597,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "close_month",
+        "valor": 4,
+        "grupo_b": "base_fechados",
+        "pct_a": 26.5136,
+        "pct_b": 8.7319,
+        "diff_pp": 17.7816,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "close_month",
+        "valor": 5,
+        "grupo_b": "base_fechados",
+        "pct_a": 5.8455,
+        "pct_b": 11.9952,
+        "diff_pp": -6.1497,
+        "p_bonferroni": 0.0016
+      },
+      {
+        "dimensao": "close_month",
+        "valor": 6,
+        "grupo_b": "base_fechados",
+        "pct_a": 1.4614,
+        "pct_b": 9.5515,
+        "diff_pp": -8.0901,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "close_month",
+        "valor": 7,
+        "grupo_b": "base_fechados",
+        "pct_a": 25.4697,
+        "pct_b": 9.3429,
+        "diff_pp": 16.1269,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "close_month",
+        "valor": 8,
+        "grupo_b": "base_fechados",
+        "pct_a": 6.0543,
+        "pct_b": 11.6972,
+        "diff_pp": -5.6429,
+        "p_bonferroni": 0.0062
+      },
+      {
+        "dimensao": "close_month",
+        "valor": 9,
+        "grupo_b": "base_fechados",
+        "pct_a": 1.2526,
+        "pct_b": 9.4621,
+        "diff_pp": -8.2095,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "close_month",
+        "valor": 10,
+        "grupo_b": "base_fechados",
+        "pct_a": 25.0522,
+        "pct_b": 8.4339,
+        "diff_pp": 16.6183,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "close_month",
+        "valor": 12,
+        "grupo_b": "base_fechados",
+        "pct_a": 0.6263,
+        "pct_b": 9.7005,
+        "diff_pp": -9.0742,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "engage_month",
+        "valor": 1,
+        "grupo_b": "lost_demais",
+        "pct_a": 0.0,
+        "pct_b": 3.3099,
+        "diff_pp": -3.3099,
+        "p_bonferroni": 0.0051
+      },
+      {
+        "dimensao": "engage_month",
+        "valor": 2,
+        "grupo_b": "lost_demais",
+        "pct_a": 0.2088,
+        "pct_b": 7.1214,
+        "diff_pp": -6.9126,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "engage_month",
+        "valor": 3,
+        "grupo_b": "lost_demais",
+        "pct_a": 3.3403,
+        "pct_b": 9.9799,
+        "diff_pp": -6.6396,
+        "p_bonferroni": 0.0003
+      },
+      {
+        "dimensao": "engage_month",
+        "valor": 4,
+        "grupo_b": "lost_demais",
+        "pct_a": 24.6347,
+        "pct_b": 10.4313,
+        "diff_pp": 14.2034,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "engage_month",
+        "valor": 6,
+        "grupo_b": "lost_demais",
+        "pct_a": 2.714,
+        "pct_b": 10.7823,
+        "diff_pp": -8.0684,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "engage_month",
+        "valor": 7,
+        "grupo_b": "lost_demais",
+        "pct_a": 25.8873,
+        "pct_b": 11.5848,
+        "diff_pp": 14.3025,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "engage_month",
+        "valor": 9,
+        "grupo_b": "lost_demais",
+        "pct_a": 3.5491,
+        "pct_b": 11.7854,
+        "diff_pp": -8.2363,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "engage_month",
+        "valor": 10,
+        "grupo_b": "lost_demais",
+        "pct_a": 23.382,
+        "pct_b": 9.5787,
+        "diff_pp": 13.8033,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "engage_month",
+        "valor": 1,
+        "grupo_b": "base_fechados",
+        "pct_a": 0.0,
+        "pct_b": 3.6805,
+        "diff_pp": -3.6805,
+        "p_bonferroni": 0.0008
+      },
+      {
+        "dimensao": "engage_month",
+        "valor": 2,
+        "grupo_b": "base_fechados",
+        "pct_a": 0.2088,
+        "pct_b": 6.2584,
+        "diff_pp": -6.0496,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "engage_month",
+        "valor": 3,
+        "grupo_b": "base_fechados",
+        "pct_a": 3.3403,
+        "pct_b": 9.7601,
+        "diff_pp": -6.4198,
+        "p_bonferroni": 0.0001
+      },
+      {
+        "dimensao": "engage_month",
+        "valor": 4,
+        "grupo_b": "base_fechados",
+        "pct_a": 24.6347,
+        "pct_b": 11.2204,
+        "diff_pp": 13.4143,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "engage_month",
+        "valor": 6,
+        "grupo_b": "base_fechados",
+        "pct_a": 2.714,
+        "pct_b": 10.1475,
+        "diff_pp": -7.4335,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "engage_month",
+        "valor": 7,
+        "grupo_b": "base_fechados",
+        "pct_a": 25.8873,
+        "pct_b": 11.8611,
+        "diff_pp": 14.0261,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "engage_month",
+        "valor": 9,
+        "grupo_b": "base_fechados",
+        "pct_a": 3.5491,
+        "pct_b": 10.0879,
+        "diff_pp": -6.5389,
+        "p_bonferroni": 0.0001
+      },
+      {
+        "dimensao": "engage_month",
+        "valor": 10,
+        "grupo_b": "base_fechados",
+        "pct_a": 23.382,
+        "pct_b": 10.5796,
+        "diff_pp": 12.8024,
+        "p_bonferroni": 0.0
+      },
+      {
+        "dimensao": "engage_month",
+        "valor": 12,
+        "grupo_b": "base_fechados",
+        "pct_a": 0.4175,
+        "pct_b": 4.4554,
+        "diff_pp": -4.0378,
+        "p_bonferroni": 0.0008
+      }
+    ]
+  },
   "open": {
     "open": 2089,
     "prospecting": 500,

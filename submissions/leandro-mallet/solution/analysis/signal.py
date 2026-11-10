@@ -288,6 +288,83 @@ def main() -> None:
         "rows": sb.round(2).to_dict(orient="records"),
     }
 
+    # ------------------------------------------------------------ perdas rápidas
+    # Faixas por POSIÇÃO: ordena por duração e desempata por opportunity_id.
+    # Cada deal cai em uma faixa só e os tamanhos batem com o nominal; um mesmo
+    # dia pode ficar dividido entre duas faixas (mostrado em fast_band_boundaries).
+    pos = closed.sort_values(["cycle_days", "opportunity_id"]).reset_index(drop=True)
+    n_cl = len(pos)
+    b1, b2 = round(0.05 * n_cl), round(0.15 * n_cl)
+    pos["fast_band"] = np.select([pos.index < b1, pos.index < b2], ["faixa 1 (0–5%)", "faixa 2 (5–15%)"], "demais (15–100%)")
+    bnd = []
+    for name, cut in [("faixa 1 | faixa 2", b1), ("faixa 2 | demais", b2)]:
+        day = int(pos.loc[cut - 1, "cycle_days"])
+        same = pos[pos["cycle_days"] == day]
+        bnd.append({"fronteira": name, "dia": day,
+                    "deals_com_esse_dia": len(same),
+                    "ficaram_antes": int((same.index < cut).sum()),
+                    "ficaram_depois": int((same.index >= cut).sum())})
+    pd.DataFrame(bnd).to_csv(TABLES / "fast_band_boundaries.csv", index=False, lineterminator="\n")
+    fb = pos.groupby("fast_band").agg(deals=("won", "size"), won=("won", "sum"),
+                                      dias_min=("cycle_days", "min"), dias_max=("cycle_days", "max")).reset_index()
+    fb["lost"] = fb["deals"] - fb["won"]
+    fb["perda_pct"] = fb["lost"] / fb["deals"] * 100
+    fb.to_csv(TABLES / "fast_bands_by_position.csv", index=False, lineterminator="\n")
+
+    pos["close_month"] = pos["close_date"].dt.month
+    pos["engage_month"] = pos["engage_date"].dt.month
+    fast = pos["fast_band"] != "demais (15–100%)"
+    lost = pos["won"] == 0
+    groups = {
+        "lost_rapidos": pos[fast & lost],
+        "lost_demais": pos[~fast & lost],
+        "won_rapidos": pos[fast & ~lost],
+        "base_fechados": pos,
+    }
+    comparisons = [("lost_rapidos", "lost_demais"), ("lost_rapidos", "won_rapidos"), ("lost_rapidos", "base_fechados")]
+    dims = ["regional_office", "manager", "close_month", "engage_month"]
+    n_cells = sum(pos[d].nunique() for d in dims) * len(comparisons)
+    n_global = len(dims) * len(comparisons)
+    rows, glob = [], {}
+    for dim in dims:
+        for a, b in comparisons:
+            ga, gb = groups[a], groups[b]
+            # teste global: a distribuição da dimensão difere entre os dois grupos?
+            if b == "base_fechados":   # A está contido na base: compara A com o resto da base
+                gb_test = pos.drop(ga.index)
+            else:
+                gb_test = gb
+            lab = pd.Series(["A"] * len(ga) + ["B"] * len(gb_test))
+            val = pd.concat([ga[dim], gb_test[dim]]).astype(str).reset_index(drop=True)
+            t = chi2_test(val, (lab == "A").astype(int))
+            glob[f"{dim} | {a} x {b}"] = {"p_value": t["p_value"], "p_bonferroni": min(1.0, t["p_value"] * n_global),
+                                          "cramers_v": t["cramers_v"]}
+            for v in sorted(pos[dim].unique()):
+                ka, na = int((ga[dim] == v).sum()), len(ga)
+                kb, nb = int((gb_test[dim] == v).sum()), len(gb_test)
+                lo, hi = wilson(ka, na)
+                cell = chi2_test(pd.Series(["A"] * na + ["B"] * nb),
+                                 pd.Series([1] * ka + [0] * (na - ka) + [1] * kb + [0] * (nb - kb)))
+                rows.append({
+                    "dimensao": dim, "valor": v, "grupo_a": a, "grupo_b": b,
+                    "n_a": ka, "pct_a": ka / na * 100, "ci_low_a": lo * 100, "ci_high_a": hi * 100,
+                    "n_b": int((gb[dim] == v).sum()), "pct_b": (gb[dim] == v).mean() * 100,
+                    "diff_pp": (ka / na - (gb[dim] == v).mean()) * 100,
+                    "p_value": cell["p_value"], "p_bonferroni": min(1.0, cell["p_value"] * n_cells),
+                    "poucos_casos": ka < MIN_N,
+                })
+    fl = pd.DataFrame(rows)
+    fl.to_csv(TABLES / "fast_lost_patterns.csv", index=False, lineterminator="\n")
+    summary["fast_lost"] = {
+        "band_sizes": fb.set_index("fast_band")[["deals", "lost", "dias_min", "dias_max"]].to_dict(orient="index"),
+        "boundaries": bnd,
+        "group_sizes": {k: int(len(v)) for k, v in groups.items()},
+        "global_tests": glob,
+        "n_cell_tests": n_cells,
+        "cells_significant_after_bonferroni": fl.loc[fl["p_bonferroni"] < 0.05,
+                                                     ["dimensao", "valor", "grupo_b", "pct_a", "pct_b", "diff_pp", "p_bonferroni"]].round(4).to_dict(orient="records"),
+    }
+
     # Mês dentro do trimestre (1º, 2º, 3º): regra de calendário do ciclo
     closed["close_month_in_q"] = (closed["close_date"].dt.month - 1) % 3 + 1
     coh["close_month_in_q"] = (coh["close_date"].dt.month - 1) % 3 + 1
