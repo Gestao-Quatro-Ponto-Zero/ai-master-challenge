@@ -42,7 +42,7 @@ solution/app/
   scripts/
     dados.mjs             copia ../data/scored/deals_scored.json para data/ e confere o formato
   supabase/
-    migrations/0001_acoes.sql
+    migrations/           um arquivo por domínio (DB-01): 0001_core, 0002_score, 0003_config_system, 0004_acao
   prototipo-html/         o app estático atual, como referência
 
   src/
@@ -78,13 +78,17 @@ solution/app/
       texto.ts            rótulos, dinheiro, datas, plural
       config.ts           registro de ações disponível ou não
     server/               só roda no servidor (import "server-only")
-      dados.ts            lê e valida o JSON uma vez; cai no exemplo se faltar
+      fonte.ts            escolhe o modo (banco ou arquivo) e devolve sempre o mesmo tipo Pipeline
+      fonte-banco.ts      lê core_* + score_* da execução ativa (tempo máximo de 3 s)
+      fonte-arquivo.ts    lê e valida o deals_scored.json; cai no exemplo se faltar
       perfil.ts           lê e confere o cookie de perfil; redireciona para a escolha se faltar
       supabase.ts         cliente com a service role
-      acoes.ts            ler e gravar ações, com as conferências
+      acoes.ts            ler e gravar em acao_registros, com as conferências
+      eventos.ts          grava em system_eventos (recusas, quedas para o modo arquivo)
 
   tests/
     contrato.test.ts      o exemplo e o arquivo oficial passam no schema
+    fontes.test.ts        o mesmo conjunto de deals lido pelo banco (simulado) e pelo arquivo dá o mesmo Pipeline
     selecao.test.ts       top 5 completa com requalificar; vendedor sem deals
     agregacoes.test.ts
     perfil.test.ts        nome inexistente recusado; escopo de vendedor, manager e admin
@@ -103,7 +107,8 @@ solution/app/
 - `npm run dados` copia esse arquivo para `app/data/deals_scored.json` e valida o formato com o schema. A cópia é commitada.
 - Por que commitar a cópia: a Vercel publica a partir de `solution/app` e não depende de enxergar a pasta de fora; o build fica previsível.
 - O `prebuild` só avisa se a cópia estiver diferente da origem; ele não falha.
-- Se a cópia não existir, `server/dados.ts` usa `sample/deals_scored.sample.json` e o topo mostra o aviso de dados de exemplo.
+- Se a cópia não existir, `server/fonte-arquivo.ts` usa `sample/deals_scored.sample.json` e o topo mostra o aviso de dados de exemplo.
+- **Dois modos** (detalhe em [DESENHO-ACOES.md](DESENHO-ACOES.md)): com credenciais e banco no ar, deals e notas vêm de `core_*` e `score_*`; sem isso, vêm do arquivo acima. As telas recebem o mesmo tipo `Pipeline` nos dois casos e não sabem de onde ele veio; só o rodapé mostra a fonte.
 - A leitura acontece no servidor. Cada página recebe só o que mostra: o "Meu dia" de um vendedor não manda os 2.089 deals para o navegador.
 
 ## Telas e fluxos (iguais ao protótipo)
@@ -131,11 +136,12 @@ Um link para fora do escopo do perfil (ex.: vendedor abrindo `/vendedor/outro-no
 
 | Variável | Onde é usada | Obrigatória? |
 |---|---|---|
-| `SUPABASE_URL` | `src/server/` | Só para registrar ações |
-| `SUPABASE_SERVICE_ROLE_KEY` | `src/server/` | Só para registrar ações |
-| `ACOES_DESDE` | `src/server/acoes.ts` | Não (data de corte da demonstração) |
+| `SUPABASE_URL` | `src/server/` | Só para o modo banco (ler do banco e registrar ações) |
+| `SUPABASE_SERVICE_ROLE_KEY` | `src/server/` | Só para o modo banco |
 
-Nenhuma variável é pública: sem login, o navegador não fala com o Supabase. Sem elas, `npm ci && npm run dev` abre o app completo (perfis, telas e filtros) em modo só leitura.
+Os parâmetros da demonstração (execução ativa, data de corte das ações, limite por minuto) ficam em `config_parametros`, não em variáveis.
+
+Nenhuma variável é pública: sem login, o navegador não fala com o Supabase. Sem elas, `npm ci && npm run dev` abre o app completo (perfis, telas e filtros) no modo arquivo, só leitura.
 
 ## Qualidade
 
@@ -147,4 +153,4 @@ Nenhuma variável é pública: sem login, o navegador não fala com o Supabase. 
 
 1. Confirmar `solution/app/` como raiz do projeto Next (recomendado).
 2. Commitar a cópia de `deals_scored.json` dentro do app (recomendado) ou ligar na Vercel a opção de incluir arquivos fora da raiz.
-3. As decisões em aberto de [DESENHO-ACOES.md](DESENHO-ACOES.md): o admin grava ou só lê, e quem faz a limpeza.
+3. As decisões em aberto de [DESENHO-ACOES.md](DESENHO-ACOES.md): modo banco, quem carrega `core_*` e `score_*`, onde ficam as migrações, se o admin grava e quem faz a limpeza.
