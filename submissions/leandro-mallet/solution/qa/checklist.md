@@ -91,6 +91,7 @@ Status: ⬜ não verificado · ✅ ok · ❌ falhou (detalhe em `testes.md`).
 | H3 | Fim de linha LF em todos os arquivos de texto | ⬜ |
 | H4 | Sem `node_modules`, `__pycache__`, `.venv` ou arquivos grandes desnecessários versionados | ⬜ |
 | H5 | Data de referência fixa e documentada (dados terminam em 2017-12-31) | ⬜ |
+| H6 | Nenhum nome de empresa ou projeto do candidato nos **chat-exports** (incluindo comandos, buscas e mensagens entre sessões citados nas conversas) nem nas **mensagens de commit** (`git log --format=%B`). Mesma lista de termos de H1, mantida fora do repositório; trocar por termo genérico antes do PR | ⬜ |
 
 ## 9. Critérios do avaliador (comentários públicos do G4)
 
