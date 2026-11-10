@@ -1,8 +1,8 @@
 # Revisão e aplicação — banco, lote 2
 
-**Veredito: pode rodar. 0007–0027 aplicadas em 10/11/2026, sem erro.** Fica um ajuste recomendado (L2-1) para uma próxima migration.
+**Veredito: pode rodar. 0007–0028 aplicadas em 10/11/2026, sem erro.** O L2-1 foi fechado pela 0028. Ficam abertos L2-5 (média: auditoria forjável por inserção direta) e L2-6 (leve), com a correção proposta, para uma próxima migration.
 
-Ordens O-03 (0007–0025, com o acréscimo da 0026) e O-10 (0027). O lote 1 já estava aplicado e não foi reaplicado ([revisao-migrations-lote1.md](revisao-migrations-lote1.md)).
+Ordens O-03 (0007–0025, com o acréscimo da 0026), O-10 (0027) e O-12 (0028). O lote 1 já estava aplicado e não foi reaplicado ([revisao-migrations-lote1.md](revisao-migrations-lote1.md)).
 
 ## Como foi validado e aplicado
 
@@ -34,6 +34,7 @@ Ordens O-03 (0007–0025, com o acréscimo da 0026) e O-10 (0027). O lote 1 já 
 | 0025_permissoes_e_guardas.sql | `e84f6fa828e2853df8d6b53e1493320a2f3462f3266e44438ebdd8bc34a7cbf1` |
 | 0026_limite_global.sql | `ea36c7b605248f5e6f882cc6ec79405fc91f73e4ac3ea49bd2c3abb2619c443a` (commit `d6c4f12`; igual ao do repositório desde `dd5358f`) |
 | 0027_limite_exato.sql | `d3a2f05c426a0d548201ca574a5c6416f1597bce7b5e7336122fd954e0a13a62` (commit `dd5358f`) |
+| 0028_contexto_obrigatorio.sql | `df81c94ef246ad5866f3cc9e84e5c39a2c838b55bf3cb687ae3f99f5b02abdb7` (commit `375cd5f`) |
 
 ### O caso da 0026
 
@@ -82,11 +83,39 @@ A 0026 aplicada já recusava exatamente o 31º pedido por usuário e o 301º no 
 | `system_iniciar_contexto` depois da 0027 | anon e authenticated não executam; service_role e system_carga executam |
 | Depois de todos os testes | `system_correlacoes` com 0 linhas e auditoria com as mesmas 9.019 linhas: nada ficou gravado |
 
+### Depois da 0028 (O-12)
+
+Validador da sessão de dados com a 0028: catálogo ok; testes de uso 122 linhas ok, 0 falha (incluindo atalho, evento sem pedido e registro forjado). No Supabase, cada teste numa transação desfeita:
+
+| Teste | Resultado |
+|---|---|
+| Atalho do L2-1: `service_role` ajusta `app.usuario_id`/`app.correlation_id` direto e faz UPDATE | **recusado, GS401** ("Pedido sem registro") |
+| Evento pela função sem pedido registrado (`service_role`) | recusado, GS401 |
+| Registro forjado direto em `system_correlacoes` para o usuário sistema | recusado, GS403 |
+| Registro forjado com origem, transação e horário falsos | aceito, mas o banco reescreve os três: `do_app` = verdadeiro, transação atual, horário de agora |
+| Registro forjado com o usuário já no limite (30 pedidos antes) | recusado, GS429 |
+| Caminho normal do app (`system_iniciar_contexto` + UPDATE) | aceito; 1 linha de auditoria com o usuário 3, papel vendedor |
+| Papel de carga (contexto sistema + UPDATE) | aceito; auditado como sistema, fora dos limites (`do_app` = falso) |
+| Catálogo | 70 funções com prefixo, 87 gatilhos, 0028 registrada |
+| Restos de teste | `system_correlacoes` 0, `system_eventos` 0, `score_execucoes` 0, auditoria 9.019, nenhum deal alterado |
+
+Testes extras desta rodada, que levaram aos achados L2-5 e L2-6:
+
+| Teste | Resultado |
+|---|---|
+| `service_role` insere linha falsa em `system_auditoria` (ação atribuída a um manager) | **aceito** (desfeito no fim) |
+| `system_carga` insere linha falsa em `system_auditoria` | **aceito** (desfeito no fim) |
+| `service_role` insere em `system_eventos` direto, sem contexto | aceito (desfeito) |
+| `service_role` insere em `score_execucoes` direto, sem contexto | aceito, sem linha de auditoria (desfeito) |
+| Tabelas sem gatilho de auditoria em que a `service_role` insere e altera | `score_componentes`, `score_deals`, `score_execucoes`, `score_fit_vendedores`, `score_motivos`, `score_padroes_conta`, `system_auditoria`, `system_correlacoes`, `system_eventos` |
+
 ## Achados
 
 | # | Gravidade | Achado | Correção proposta |
 |---|---|---|---|
-| L2-1 | **Média** (continua depois da 0027) | A `service_role` pode gravar como um usuário comum ajustando `app.usuario_id` e `app.correlation_id` direto, sem chamar `system_iniciar_contexto`. A escrita passa: a auditoria registra o usuário, mas o pedido não entra em `system_correlacoes`, então pula o limite por usuário, o teto global e a regra de um correlation_id por pedido. Medido: UPDATE aceito, 0 registros de correlação. Só quem tem a chave da service role (o servidor) consegue isso, mas um erro no código do app passaria sem ser barrado | Na 0027, em `system_auditar`, quando o papel for do app, exigir que o `correlation_id` esteja em `system_correlacoes` com a transação atual e o mesmo usuário; senão, recusar (GS401). Assim toda escrita do app passa pelos limites |
+| L2-1 | **Fechado pela 0028** (era média) | A `service_role` podia gravar como um usuário comum ajustando `app.usuario_id` e `app.correlation_id` direto, sem chamar `system_iniciar_contexto`. A escrita passa: a auditoria registra o usuário, mas o pedido não entra em `system_correlacoes`, então pula o limite por usuário, o teto global e a regra de um correlation_id por pedido. Medido: UPDATE aceito, 0 registros de correlação. Só quem tem a chave da service role (o servidor) consegue isso, mas um erro no código do app passaria sem ser barrado | Na 0027, em `system_auditar`, quando o papel for do app, exigir que o `correlation_id` esteja em `system_correlacoes` com a transação atual e o mesmo usuário; senão, recusar (GS401). Assim toda escrita do app passa pelos limites |
 | L2-2 | Informação | `acao_marcar_prioridade` tem duas assinaturas. A antiga, de 5 argumentos, é proposital: chama a nova com o tipo vazio, então um ✓ por ela é recusado e só o ✗ passa | Nenhuma |
 | L2-3 | Informação | A função `rls_auto_enable` (sem prefixo) existe em `public`, mas é do Supabase, não das nossas migrations | Nenhuma; contar só as funções com prefixo |
 | L2-4 | Resolvido | Risco de o ajuste `>` para `>=` baixar o teto para 29/299 | A 0027 trocou também a contagem (só pedidos anteriores); medido: 30/300 aceitos, como pedido |
+| L2-5 | **Média** | A auditoria pode ser forjada: `service_role` e `system_carga` têm INSERT direto em `system_auditoria` e gravam uma linha com qualquer usuário, papel, tabela e conteúdo. Uma ação que não aconteceu pode aparecer na linha do tempo do deal. Hoje só o servidor (chave da service role) e as cargas conseguem isso, mas fere a premissa de auditoria durável (ARQ-04) | Tornar `system_auditar()` e `system_registrar_evento()` `security definer` (dono `postgres`, `search_path` fixo) e revogar INSERT e UPDATE de `system_auditoria` e `system_eventos` para `service_role` e `system_carga`. O gatilho continua gravando; ninguém grava direto. Testar depois: linha forjada recusada (42501) e caminho normal ainda auditado |
+| L2-6 | Leve | A `service_role` insere e altera as 6 tabelas `score_*` direto, sem contexto, sem auditoria e sem limite. Pelo desenho, as notas vêm só da carga em Python (`system_carga`) | Se o app só lê notas (confirmar com as sessões do score e do app): revogar INSERT e UPDATE de `score_*` para `service_role`. Se o app precisar gravar algo, fazer por função com contexto |
