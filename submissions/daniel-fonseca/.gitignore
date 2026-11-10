@@ -24,3 +24,4 @@ node_modules/
 
 # gerado pelo next dev/build
 *.tsbuildinfo
+**/next-env.d.ts
