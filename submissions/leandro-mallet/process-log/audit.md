@@ -96,3 +96,43 @@ Ao assumir, a pasta já tinha trabalho das outras sessões, ainda sem auditoria 
 **Achado da auditoria, levado ao Leandro junto com as decisões:** só **7 dos 1.589 Engaging** abertos têm até 14 dias, e só 18 têm até 30. O único sinal do dataset (as duas primeiras semanas) praticamente não se aplica ao pipeline atual. Na prática, nada nos dados ordena os deals abertos por chance. O que dá para usar é o valor (preço de tabela, ±10%), o estado do deal (dentro ou fora do ciclo histórico) e a qualidade do cadastro (sem conta).
 
 **Resultado:** `data/` e `analysis/` aprovados e commitados. As decisões 1 a 6 do `findings.md` vão ao Leandro antes de a #3 construir o score.
+
+---
+
+## 09/11 — Pesquisa: como o G4 avalia (feita pela #1, a pedido do Leandro)
+
+Leitura pública do repositório oficial, sem login e sem nenhuma interação:
+- 239 PRs, 116 do challenge 003. Nenhum foi mesclado; os fechados foram todos fechados pelos próprios autores.
+- O avaliador comentou em março, com notas de 0 a 10 de um assistente de avaliação por IA. Notas 6,4 / 7,0 / 7,3 ainda não foram aprovadas.
+- Critérios citados nas devolutivas:
+  - "Uso de IA" pesa 30% da nota;
+  - o process log precisa mostrar onde o candidato corrigiu ou redirecionou a IA, e que hipóteses ele tinha antes;
+  - a evidência tem que estar dentro do repositório;
+  - dependências commitadas são bloqueador;
+  - arquivos fora da pasta da submissão fazem a entrega ser devolvida.
+- Desde 24/03 o retorno é por e-mail.
+
+## 09/11 — #5 QA: benchmark dos 10 PRs mais completos do 003
+
+**Entregue:** `solution/qa/benchmark-prs.md`. Os 10 PRs mais completos (ranqueados pela #1 por sinais de completude) foram lidos, e os 8 links publicados foram abertos. O texto está anonimizado (A–J).
+
+**Conferência:**
+
+| Item | Resultado |
+|---|---|
+| Anonimização | ✅ Nenhum nome nem login de candidato. A busca automática só achou a palavra "dias", um falso positivo |
+| Termos proibidos e fim de linha | ✅ Nenhum termo; LF |
+| Deals que fecham no 1º mês do trimestre duram no máximo 13 dias (mediana 7); no 2º e no 3º mês, até 125 e 138 | ✅ Recalculado: 1.779 deals, mediana 7, máximo 13; 68/125; 75/138 |
+| Controlando pelo mês de fechamento, o efeito das 2 semanas some (3º mês: rápidos 86% × lentos 81%) | ✅ |
+| Controlando pelo mês de início, o efeito fica (rápidos × lentos: 50×69, 57×64, 63×69) | ✅ 50×69, **56×63**, 63×69 (diferença de arredondamento) |
+
+**Achado que muda a estratégia:** os cinco achados de dados que tratávamos como diferencial (chance plana, 81% parados, 68% sem conta, data fixa, GTXPro) aparecem em 6 dos 10 concorrentes. A fórmula que a #3 esboçou (valor + curva de idade) é, em essência, a de 3 deles. Daqui em diante, o diferencial precisa vir de três coisas:
+1. a validação, comparando a fila também com "mais novo primeiro", regra que nem os melhores conseguiram superar;
+2. o que a ferramenta faz: o ciclo de ação e a limpeza do pipeline;
+3. o diagnóstico de dados sintéticos, que nenhum dos 10 fez.
+
+**Encaminhamentos:**
+- #5: nota curta no item E do `baseline.md` (a subida até 76% vem do corte de 2016 e do fim de trimestre). Liberada pela #1, porque complementa sem mudar a conclusão.
+- #2: acrescentar ao `findings.md` a regra do 1º mês do trimestre e a distinção entre controlar pelo início e pelo fechamento.
+- #3: incluir "mais novo primeiro" no backtest e rever o componente "conta" (hoje tiraria 20 pontos de 68% do pipeline). As duas coisas vão ao Leandro junto com as decisões pendentes.
+- #4: o `COMO-RODAR.md` precisa acompanhar o desenho final dos componentes.
