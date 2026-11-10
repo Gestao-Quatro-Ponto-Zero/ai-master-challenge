@@ -281,6 +281,8 @@
     const deals = [...seller.alive].sort((a, b) => a.days_open - b.days_open || (a.id < b.id ? -1 : 1));
     const r = deals.length > 45 ? 4 : 5, laneTop = base + 24, step = 2 * r + 2, maxLevels = Math.max(1, Math.floor((H - laneTop - 2) / step));
     const levels = [];
+    // the lane says in words what its marks are
+    kids.push(s("text", { x: (G.x1 + 0.012) * W, y: laneTop + r + 4, "font-size": 12.5 }, deals.length ? "← seus negócios vivos, pela idade" : "nenhum negócio vivo"));
     deals.forEach((d, i) => {
       const cx = X(d.days_open);
       let level = 0;

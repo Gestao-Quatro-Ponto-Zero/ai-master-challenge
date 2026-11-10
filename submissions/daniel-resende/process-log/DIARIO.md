@@ -213,6 +213,8 @@ Um aviso, no claro: a cor de atenção tem contraste de 2,73:1 contra o painel, 
 - **Encaixe**: sem problemas. **Acessibilidade**: sem violações, nos temas claro e escuro.
 - Não medido: celular real; o escurecimento automático de navegadores de celular.
 
+**O segundo olhar sobre a cor e o gráfico (prompt `02e`, 17:14).** O revisor que não desenhou leu catorze capturas, nos dois temas. Disse em uma frase o que o gráfico diz ("de cada 100 negócios que chegaram a cada idade, cerca de 47, 42, 39, 26, 4 e 0 foram ganhos depois, com 91 parados num bloco vermelho") e que o tema escuro mantém os mesmos significados. O que mudou por causa dele: a faixa das marcas passou a dizer em palavras o que são ("seus negócios vivos, pela idade"); e a explicação aberta, também no celular, não cobre a manchete. O que ele apontou e eu não mudei, e levo ao Daniel: o bloco vermelho é uma contagem num gráfico de "ganhos em cada 100" e é a maior marca da tela (o prompt pediu o bloco); as marcas dos negócios ao lado das colunas ainda podem ser lidas como chance de cada negócio, embora a posição seja só a idade; "ganho" e "perdido", nas segundas do passado, estão escritos nas variantes de texto das cores de vivo e de negativo. Depois disso: encaixe, acessibilidade, texto (117 palavras) e números da tela (600 conferências) de novo sem problemas, e as capturas refeitas às 17:15.
+
 ## O que o candidato decidiu
 
 ### Etapa 1: a regra e a forma do produto (10/11/2026, resposta recebida no chat e registrada às 15:54, do `date`)
