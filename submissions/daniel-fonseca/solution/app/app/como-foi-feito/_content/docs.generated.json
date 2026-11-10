@@ -479,6 +479,62 @@
    "what": "A proteção padrão da Vercel bloqueava a produção com login, o que contrariava a decisão de app público. A IA restringiu a proteção aos previews e verificou que nenhum segredo chega ao navegador",
    "who": "IA",
    "result": "Produção pública; previews protegidos"
+  },
+  {
+   "n": 40,
+   "date": "2026-11-10",
+   "type": "Julgamento humano",
+   "what": "Na revisão do app, o Daniel apontou que dois controles segmentados empilhados davam uma experiência ruim e propôs um controle só com subitens. Também pediu Triagem, Fila e Caixa numa tela de conversa, com o Slack simulado só no navegador",
+   "who": "Daniel",
+   "result": "ADR-0015: navegação de um nível e tela Tickets"
+  },
+  {
+   "n": 41,
+   "date": "2026-11-10",
+   "type": "Premissa contestada",
+   "what": "O Daniel leu o gráfico de CSAT como máximo, mínimo e média. A IA corrigiu: o ponto é a média do grupo e a barra é o intervalo de confiança de 95%. Como o CSAT já era uma métrica do gráfico principal, o card saiu",
+   "who": "IA (correção) + Daniel (corte)",
+   "result": "Forest plot e R² fora do Diagnóstico; \"Quem não é medido\" mantido"
+  },
+  {
+   "n": 42,
+   "date": "2026-11-10",
+   "type": "IA pegou risco",
+   "what": "O Daniel pediu para remover o selo de significância. A IA mostrou que ele era a única frase da tela dizendo que o DS1 não tem sinal estatístico. O Daniel escolheu um ícone ⓘ com a frase e o p-valor no hover",
+   "who": "IA",
+   "result": "Informação preservada sem poluir a tela"
+  },
+  {
+   "n": 43,
+   "date": "2026-11-10",
+   "type": "Julgamento humano",
+   "what": "Termos: \"agente\" para IA e \"atendente\" para pessoa, na interface e nos docs, porque \"agente\" ficava ambíguo com a IA",
+   "who": "Daniel",
+   "result": "Troca feita no app e nos docs"
+  },
+  {
+   "n": 44,
+   "date": "2026-11-10",
+   "type": "IA pegou risco",
+   "what": "Com o app público e sem login, uma lista compartilhada mostraria o texto livre de um visitante a outro. A IA propôs um token aleatório por navegador, e o Daniel aceitou. Também propôs que a resposta escrita pelo atendente na Revisão humana não entre na base, para um visitante anônimo não gravar texto que depois é enviado automaticamente a outros",
+   "who": "IA (proposta) + Daniel (decisão)",
+   "result": "client_token em triage_runs; resposta do atendente registrada sem aprendizado"
+  },
+  {
+   "n": 45,
+   "date": "2026-11-10",
+   "type": "Julgamento humano",
+   "what": "A IA sugeriu tirar a nota interna em pt-BR da conversa e manter o resumo só no aviso do Slack. O Daniel voltou atrás e manteve a nota interna",
+   "who": "Daniel",
+   "result": "Nota interna na conversa do Somente humano"
+  },
+  {
+   "n": 46,
+   "date": "2026-11-10",
+   "type": "IA pegou risco",
+   "what": "Nesta sessão do app, os MCPs do projeto (supabase-g4, n8n-g4) não carregaram, e os disponíveis eram das contas pessoais do Daniel. A IA não usou nenhum deles: aplicou a migration pela conexão do .env do G4 (conferindo os 47.837 tickets) e chamou o servidor n8n-g4 pelo token configurado no projeto",
+   "who": "IA",
+   "result": "Isolamento de contas mantido (ADR-0002)"
   }
  ],
  "judgmentHref": "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca/process-log/judgment-log.md",
@@ -494,6 +550,12 @@
    "date": "2026-11-09",
    "harness": "Claude Code (Opus 5.5, app desktop, sessão aberta em submissions/daniel-fonseca/)",
    "duration": "~40 min"
+  },
+  {
+   "name": "Sessão 03",
+   "date": "2026-11-10 (noite)",
+   "harness": "Claude Code (Opus 5.5, app desktop)",
+   "duration": "~3h"
   }
  ],
  "processLogHref": "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca/process-log/process-log.md"
