@@ -1,4 +1,4 @@
-# G4 Sight: especificação das telas Pipeline e Leads
+# G4 Sight: especificação das telas Pipeline, Leads e Painel
 
 > Especificação para aprovação. Nada de código nem de banco. Marco 1 da decisão 25: especificar as telas e derivar delas o modelo de dados.
 > Segue as premissas de desenvolvimento em revisão final (ARQ, BD, BE e FE). Referências: [DESENHO-ACOES.md](DESENHO-ACOES.md) (usuários, escrita e auditoria), [DESENHO-CRM.md](DESENHO-CRM.md) (importação CSV) e [DESENHO-NEXT.md](DESENHO-NEXT.md) (estrutura e marca).
@@ -26,7 +26,7 @@ O que o dataset tem (dados limpos, data de referência 31/12/2017):
 | Setores | 10 (marketing, entertainment, software, technology, services, retail, employment, telecommunications, medical, finance) |
 | Histórico de contatos | **não existe** no dataset |
 
-## 1. Peças comuns às duas telas
+## 1. Peças comuns às telas
 
 ### 1.1 Cartão do deal e linha do lead
 
@@ -75,7 +75,7 @@ Legenda: **D** = vem do dataset · **C** = calculado · **N** = dado novo do CRM
 - Contato, comentário e deal registrados agora ganham duas datas: a **data do negócio** (a data de referência, usada nas contas) e o momento real (usado na auditoria).
 - Sem isso, um contato registrado hoje apareceria "8 anos depois" de todos os outros dados.
 
-### 1.4 O que cada perfil vê (vale para as duas telas)
+### 1.4 O que cada perfil vê (vale para todas as telas)
 
 | | Vendedor | Manager | Admin |
 |---|---|---|---|
@@ -242,7 +242,7 @@ Dois jeitos, **a mesma função auditada** (`core_mudar_estagio`):
 
 ### 2.7 Filtros e ordenação
 
-- **Campo livre** (seção 4) e as etiquetas que ele gera.
+- **Campo livre** (seção 5) e as etiquetas que ele gera.
 - **Atalhos ao lado do campo**, que geram as mesmas etiquetas: Nota (alta, média, baixa), Ícone (super hot, em risco, esfriou), Data de abertura, Último contato, Perfil (setor e porte), Vendedor (só manager e admin).
 - Os filtros ficam no link (`/pipeline?f=...`), para mandar para alguém e para o "Voltar" do navegador.
 - **Ordenação dentro da coluna:** Nota (padrão, maior primeiro), Valor esperado, Dias sem contato, Dias desde a abertura, Data de abertura.
@@ -292,13 +292,13 @@ Dois jeitos, **a mesma função auditada** (`core_mudar_estagio`):
 
 ### 3.3 Filtros e ordenação
 
-- O mesmo campo livre da seção 4. Aqui ele aceita também estágio e resultado (abertos, ganhos, perdidos), data de fechamento, produto, série, tag e "com comentário".
+- O mesmo campo livre da seção 5. Aqui ele aceita também estágio e resultado (abertos, ganhos, perdidos), data de fechamento, produto, série, tag e "com comentário".
 - **Atalhos:** Estágio, Nota, Ícone, Data de abertura, Último contato, Perfil, Vendedor, Tag.
 - **Ordenação por coluna:** Nota, Valor, Abertura, Último contato, Fechamento, Vendedor e Lead (A–Z). Padrão: abertos primeiro, por nota; depois os fechados, do mais recente.
 
 ### 3.4 Funções nesta tela
 
-Cadastro, importação CSV, ações em lote, tags e comentários. Regras na seção 5.
+Cadastro, importação CSV, ações em lote, tags e comentários. Regras na seção 6.
 
 ### 3.5 Estados
 
@@ -311,7 +311,138 @@ Cadastro, importação CSV, ações em lote, tags e comentários. Regras na seç
 | Só leitura | faixa de somente leitura. O arquivo de reserva só tem os abertos, então a tela avisa: "Mostrando só os 2.089 deals abertos; a base completa volta quando o banco voltar." Cadastro, importação, lote, tags e comentários ficam escondidos |
 | Sem permissão | vendedor tentando importar ou aplicar lote fora do que a tela oferece: "Esta ação é feita pelo manager ou pelo admin." |
 
-## 4. Filtro em campo livre: interpretador por regras
+## 4. Tela Painel
+
+Requisitos do Leandro para esta tela:
+- só **dados quantitativos**: números e o funil;
+- o visual da referência adaptado ao tema;
+- os cartões de transferências e reuniões trocados por um bloco **Prioridades do dia**. A pessoa dá ✓ ou ✗, a lista anda, e cada marcação vai para a linha do tempo do lead.
+
+### 4.1 Objetivo e ação principal
+
+- **Objetivo:** em segundos, ver como está o pipeline (números e funil) e trabalhar a lista do dia.
+- **Ação principal (FE-02):** **✓ no primeiro item das Prioridades do dia**. É o único botão em destaque da tela. Os cartões de número não têm botão; tocar num deles abre a tela Leads ou Pipeline já com o filtro correspondente.
+
+### 4.2 Layout
+
+```
+┌ topo: G4 Sight · Painel | Pipeline | Leads · Anna Snelling, vendedora · Trocar perfil ───────────────┐
+│ Painel · dados até 31/12/2017                                         (moeda: US$, [P15])           │
+├───────────────────────────────────────────────────────────────────────┬─────────────────────────────┤
+│ ┌Leads novos ┐ ┌Em negociação┐ ┌Fechamentos ┐ ┌Conversão   ┐          │ PRIORIDADES DO DIA          │
+│ │ 0 hoje     │ │ 1.589       │ │ 19 hoje    │ │ 78,7%      │          │ 3 de 10 feitas  ▓▓▓░░░░░░░  │
+│ │ 117 em 30 d│ │ US$ 3,9 mi  │ │ 498 em 30 d│ │ em 30 dias │          │ ┌ Hottechi · GTX Pro    82 ┐│
+│ │ ↓ 57%      │ │             │ │ ↑ 23%      │ │ ↑ 25 p.p. ⓘ│          │ │ ⚠ em risco · US$ 4.821   ││
+│ └────────────┘ └─────────────┘ └────────────┘ └────────────┘          │ │        [✓ Feito] [✗ Pular]││
+│ ┌Receita     ┐ ┌Pipeline     ┐ ┌Total de    ┐ ┌Em risco de ┐          │ └──────────────────────────┘│
+│ │ ganha 30 d │ │ aberto      │ │ leads      │ │ esfriar    │          │ ┌ item 2 ┐                  │
+│ │ US$ 1,10 mi│ │ US$ 4,97 mi │ │ 8.800      │ │ 141        │          │ ┌ item 3 ┐                  │
+│ │ ↑ 17%      │ │             │ │            │ │            │          │ ┌ item 4 ┐                  │
+│ └────────────┘ └─────────────┘ └────────────┘ └────────────┘          │ ┌ item 5 ┐                  │
+│                                                                       │ Próximos: 5 na fila          │
+│ SITUAÇÃO DO FUNIL                         [Quantidade | Valor]        │                              │
+│ Prospecção     ████████                              500             │                              │
+│ Em negociação  ██████████████████████              1.589             │                              │
+│ Ganho          ███████████████████████████████████ 4.238             │                              │
+│ ─────────                                                             │                              │
+│ Perdido (à parte) ████████████████████             2.473             │                              │
+└───────────────────────────────────────────────────────────────────────┴─────────────────────────────┘
+```
+
+- **À esquerda:** grade de 8 cartões de número (4 por linha no computador, 2 no celular) e, embaixo, o funil.
+- **À direita:** o bloco Prioridades do dia, fixo na rolagem. No celular ele vem **primeiro**, antes dos números, porque é onde está a ação.
+- **Cartão de número:**
+  - ícone do tema;
+  - rótulo curto;
+  - número grande (Libre Baskerville);
+  - linha secundária;
+  - selo de variação "↑ 23% vs 30 dias antes", em marinho quando sobe e em bronze escuro quando cai, sempre com a seta (a cor nunca é a única pista).
+- Só tokens do tema (FE-03). As barras do funil usam marinho (abertos), dourado médio (ganho) e cinza (perdido).
+
+### 4.3 Cartões e origem de cada número
+
+**Janelas:**
+- "hoje" = data de referência (31/12/2017, relógio do CRM, [P6]);
+- "30 dias" = 02/12 a 31/12/2017;
+- "30 dias antes" = 02/11 a 01/12/2017.
+
+Números conferidos nos dados limpos (`data/clean/deals.csv`) para os três perfis de exemplo:
+
+| Cartão | Tipo | Origem e cálculo | Admin (todos) | Manager (Dustin Brinkmann) | Vendedora (Anna Snelling) |
+|---|---|---|---|---|---|
+| **Leads novos**: hoje e 30 dias, com variação | C | deals com `data_abertura` (de `engage_date`) no dia ou na janela, em qualquer estágio de hoje. Os Prospecting não têm data e não entram. Deals criados no CRM entram pela `data_abertura` | 0 hoje · 117 em 30 d · ↓ 57% (275 antes) | 0 · 18 · ↓ 40% | 0 · 7 · ↓ 12% |
+| **Em negociação** | C | `estagio = 'Engaging'`: quantidade e soma do valor | 1.589 · US$ 3,89 mi | 193 · US$ 0,28 mi | 57 · US$ 95 mil |
+| **Fechamentos**: hoje e 30 dias, quantidade e valor, com variação | D | `estagio = 'Won'` com `close_date` no dia ou na janela; valor = soma de `close_value` | 19 (US$ 41.764) hoje · 498 (US$ 1,10 mi) em 30 d · ↑ 23% | 6 · 91 · ↑ 36% | 2 · 26 · ↑ 18% |
+| **Conversão em 30 dias**, com variação em pontos | C | Won ÷ (Won + Lost) com `close_date` na janela | 78,7% · ↑ 25,0 p.p. (53,7% antes) | 86,7% · ↑ 33,9 p.p. | 86,7% · ↑ 33,0 p.p. |
+| **Receita ganha em 30 dias**, com variação | D | soma de `close_value` dos Won na janela (inteiro, BD-05) | US$ 1.101.152 · ↑ 17% | US$ 142.110 · ↑ 49% | US$ 36.454 · ↑ 74% |
+| **Pipeline aberto** (valor) | C | soma de `score_deals.valor_esperado` dos abertos; **até o score existir**, soma do preço de tabela (`core_produtos.preco`), com o rótulo "pelo preço de tabela" | US$ 4.966.215 | US$ 585.616 | US$ 173.259 |
+| **Total de leads** | D | todos os deals do perfil, em qualquer estágio | 8.800 | 1.583 | 448 |
+| **Em risco de esfriar** (no lugar de "atendimentos no momento") | C | deals com o ícone ⚠ da 2.4 (em negociação há 107–138 dias); a linha secundária mostra os "esfriou" | 141 · 1.291 esfriaram | 3 · 190 | 1 · 56 |
+
+**"Atendimentos no momento" sai:** o dataset não tem atendimento nem contato em tempo real. Proposta: trocar por **Em risco de esfriar**, que é medível hoje e leva direto à ação (tocar abre o Pipeline filtrado em "em risco"). Depois que o CRM estiver em uso, dá para acrescentar "Contatos registrados hoje" (de `acao_registros`), que nasce em 0. **[P16]**
+
+**Aviso de calendário (ⓘ no cartão de conversão e no de fechamentos):** dezembro fecha um trimestre. No histórico, os ganhos se concentram no último mês de cada trimestre (padrão do gerador dos dados, `findings.md`), por isso a conversão salta de 53,7% para 78,7%. O ⓘ abre a frase: "Dezembro fecha o trimestre; no histórico, os ganhos se concentram no último mês. Compare com o mesmo mês de outro trimestre." Assim o manager não lê como melhora do time.
+
+**Escopo por perfil:** vendedor vê os números dele, manager os do time e admin tudo, com os filtros de região, manager e vendedor no topo (como no Pipeline). O servidor calcula com o mesmo escopo das outras telas.
+
+### 4.4 Situação do funil
+
+| Barra | Quantidade | Valor (admin) | Origem |
+|---|---|---|---|
+| Prospecção | 500 | US$ 1.073.986 (preço de tabela) | `estagio = 'Prospecting'` |
+| Em negociação | 1.589 | US$ 3.892.229 (preço de tabela; depois, valor esperado) | `estagio = 'Engaging'` |
+| Ganho | 4.238 | US$ 10.005.534 (`close_value`) | `estagio = 'Won'` |
+| **Perdido** (separado por uma linha, à parte) | 2.473 | US$ 5.946.468 (preço de tabela do que se perdeu) | `estagio = 'Lost'` |
+
+- **Alternância Quantidade | Valor**, e cada barra mostra o número no fim.
+- Tocar numa barra abre Leads (ou o Pipeline, para os abertos) filtrado naquele estágio.
+- É a **situação atual da base** (quantos deals estão em cada estágio hoje), não uma coorte. O título diz isso: "Situação do funil hoje".
+- Manager e vendedor veem o funil do próprio escopo (Dustin Brinkmann: 204 · 193 · 747 · 439; Anna Snelling: 55 · 57 · 208 · 128).
+
+### 4.5 Prioridades do dia
+
+**De onde vem a lista:**
+
+| Perfil | Itens | Ordem |
+|---|---|---|
+| Vendedor | os deals abertos dele | maior nota primeiro. **Até o score existir:** super hot, depois em risco, depois o maior preço de tabela |
+| Manager **[P17]** | os deals abertos do time que pedem a ajuda dele: em risco (⚠) e super hot (🔥) | maior valor primeiro; cada item mostra o vendedor |
+| Admin **[P17]** | a mesma regra do manager, para todos os times | maior valor primeiro |
+
+Ficam fora da lista do dia os deals que já tiveram ✓, ✗ ou contato registrado hoje.
+
+**Como a lista anda:**
+- **5 itens visíveis** e uma **meta do dia de 10** (os dois números ficam em `config_parametros`). A barra "3 de 10 feitas" mostra o avanço.
+- Ao marcar ✓ ou ✗, o item sai com uma animação curta (respeitando "reduzir movimento"), os de baixo sobem e entra o próximo da fila no fim.
+- A lista do dia é montada na primeira abertura do dia e fica estável até o dia acabar. Se a nota mudar no meio do dia, a ordem não muda na frente da pessoa.
+
+**O que ✓ e ✗ significam [P18]:**
+
+| Marca | Significa | Grava | Na linha do tempo do lead | Muda o deal? |
+|---|---|---|---|---|
+| ✓ **Feito** | "trabalhei este deal hoje" | `acao_registros` com `acao = 'prioridade_feita'`, `data_negocio` = hoje e nota opcional | "Anna marcou como feito na prioridade do dia" | Não muda estágio. Proposta: **não** conta como contato; para registrar contato, o item tem também "Liguei" |
+| ✗ **Pular** | "não vou trabalhar este deal hoje" | `acao_registros` com `acao = 'prioridade_pulada'` | "Anna pulou na prioridade do dia" | Não descarta nem muda nada. O deal pode voltar amanhã |
+
+- **Para o manager e o admin**, ✓ significa "acompanhei este deal com o vendedor hoje" e ✗, "não vou acompanhar hoje". A gravação e a linha do tempo são as mesmas, com o nome de quem marcou.
+- **Desfazer:** por 10 segundos, "Desfazer" devolve o item ao lugar (update `desfeita_em`). A marcação desfeita aparece riscada na linha do tempo.
+- **Pulado várias vezes:** se o mesmo deal for pulado em 3 dias seguidos, o item volta com a pergunta "Pulado 3 vezes. Requalificar ou encerrar?", que abre o modal do deal. **[P18]**
+
+**Quando a lista acaba:**
+- **Meta cumprida** (10 marcados): "Prioridades de hoje feitas: 8 ✓ e 2 ✗." + botão secundário **"Puxar mais 5"**, que continua a fila.
+- **Não há mais deals na fila** (todos marcados hoje, ou nenhum aberto): "Você passou por todos os seus deals abertos hoje." + "Ir para o Pipeline".
+
+### 4.6 Estados
+
+| Estado | O que aparece |
+|---|---|
+| Carregando | os 8 cartões e o funil com esqueleto do tamanho final; a lista com 5 itens-esqueleto. Os cartões aparecem juntos, não um a um |
+| Vazio (sem deals no escopo) | cartões com 0 e "—" nas variações; funil vazio com "Sem deals ainda. Importe uma planilha ou cadastre um lead em Leads." |
+| Variação sem base | quando a janela anterior é 0: "sem base para comparar" no lugar do selo (nunca "∞%") |
+| Erro | por bloco: se o funil falhar, os cartões continuam. "Não foi possível carregar este bloco. Tentar de novo." O código para suporte fica em "Ver detalhes" |
+| Só leitura (banco fora) | números e funil calculados do arquivo de reserva, que só tem os abertos. Aparecem Em negociação, Pipeline aberto e Em risco; os cartões que dependem de fechados mostram "Disponível quando o banco voltar". A lista de prioridades aparece sem ✓ e ✗ |
+| Sem permissão | sem perfil escolhido: vai para "Quem é você?" e volta |
+
+## 5. Filtro em campo livre: interpretador por regras
 
 **Como funciona:**
 - Uma função pura (`src/lib/interpretar-filtro.ts`), sem IA, que transforma a frase em **etiquetas**. Cada etiqueta é um filtro estruturado.
@@ -361,7 +492,7 @@ Cadastro, importação CSV, ações em lote, tags e comentários. Regras na seç
 - **Sinônimos** (setores em português, regiões, estágios): uma tabela fixa no código, testada frase a frase. A tabela de exemplos acima vira o teste.
 - **Etiquetas → consulta:** o servidor recebe as etiquetas (não a frase), valida com zod e monta a consulta. A frase original vai só para o link.
 
-## 5. Funções e regras
+## 6. Funções e regras
 
 Regras comuns a todas as escritas:
 - passam pelo servidor e por uma função no banco;
@@ -385,7 +516,7 @@ Regras comuns a todas as escritas:
 | **Criar tag** | manager e admin **[P7]** | nome de 1 a 30 caracteres, único sem diferenciar maiúsculas; cor escolhida entre 6 tokens do tema (FE-03, nada de hex) | `config_tags` insert | arquivar a tag (update `ativa = false`) |
 | **Ações em lote** | manager e admin; o vendedor, nos próprios deals **[P8]** | ver abaixo | `system_lotes` + uma linha de auditoria por deal, com o mesmo `correlation_id` | "Desfazer este lote" por 24 h (ver abaixo) |
 
-### 5.1 Ações em lote (tela Leads)
+### 6.1 Ações em lote (tela Leads)
 
 **Seleção:**
 - Marcar linhas, ou **Selecionar os N do filtro**. Neste caso, o servidor recalcula a lista com as mesmas etiquetas na hora de aplicar, para não agir sobre o que o filtro não mostra mais.
@@ -404,18 +535,18 @@ Regras comuns a todas as escritas:
 
 **Desfazer este lote:** durante 24 h, o próprio autor, o manager ou o admin desfaz o lote. A função lê o "antes" da auditoria e devolve cada deal ao estado anterior, desde que ele não tenha mudado depois. Os que mudaram são pulados e listados.
 
-## 6. Estados comuns (FE-06)
+## 7. Estados comuns (FE-06)
 
-Toda tela tem carregando, vazio, erro, só leitura e sem permissão, como nas seções 2.8 e 3.5. Regras gerais:
+Toda tela tem carregando, vazio, erro, só leitura e sem permissão, como nas seções 2.8, 3.5 e 4.6. Regras gerais:
 - Nenhum erro cru: frase simples com o próximo passo. O código para suporte (`correlation_id`) fica em "Ver detalhes".
 - Conflito de versão (duas pessoas no mesmo deal): "Este deal foi alterado por Cara Losch às 14:32. Recarregue para ver a versão atual." (409).
 - Limite de taxa (BE-06): "Muitas mudanças seguidas. Espere alguns segundos e tente de novo."
 
-## 7. O que o banco precisa (derivado destas duas telas)
+## 8. O que o banco precisa (derivado destas três telas)
 
 Esta seção atualiza o modelo de [DESENHO-ACOES.md](DESENHO-ACOES.md). Segue BD-01 (prefixos, snake_case, plural), BD-02 (FK com índice e `on delete restrict`), BD-03 (RLS sem política pública) e BD-05 (dinheiro em inteiro de dólar).
 
-### 7.1 Tabelas
+### 8.1 Tabelas
 
 | Tabela | Situação | Colunas que as telas exigem |
 |---|---|---|
@@ -427,10 +558,11 @@ Esta seção atualiza o modelo de [DESENHO-ACOES.md](DESENHO-ACOES.md). Segue BD
 | `core_contas` | **muda** | `nome`, `setor`, `ano_fundacao`, `receita_milhoes` numeric (é medida, não dinheiro do CRM), `funcionarios`, `porte` (pequena/media/grande, gravado na carga a partir dos tercis), `pais`, `empresa_mae_nome` FK |
 | `core_deals` | **muda** | as colunas já desenhadas, mais: `nome` (1–120; preenchido na migração); `contato_id` FK `core_contatos`; `motivo_perda` e `motivo_perda_detalhe` (se a [P14] aprovar); `close_value` **int**; `data_abertura` date (= `engage_date` na carga; data do negócio quando passa para Em negociação); `ultimo_contato_em` date (mantida por gatilho); `criado_em` timestamptz (nulo nos 8.800 do dataset); `criado_por` FK `config_usuarios`; `importacao_id` FK `system_importacoes` (nulo fora de importação) |
 | `config_usuarios` | já desenhada | sem mudança |
-| `config_parametros` | já desenhada | novas chaves: `data_referencia`, `faixas_nota`, `limite_lote`, `max_tags_por_deal`, `icone_cortes` (15, 106 e 138 dias; US$ 3.000), `dias_sem_contato_risco` (14) |
+| `config_parametros` | já desenhada | novas chaves: `data_referencia`, `faixas_nota`, `limite_lote`, `max_tags_por_deal`, `icone_cortes` (15, 106 e 138 dias; US$ 3.000), `dias_sem_contato_risco` (14), `prioridades_visiveis` (5), `meta_prioridades_dia` (10), `dias_pulado_alerta` (3) |
 | `config_tags` | **nova** | `id`, `nome` (único sem diferenciar maiúsculas), `cor_token` (um dos 6 tokens), `ativa`, `criada_por` FK `config_usuarios`, `criada_em` |
 | `score_execucoes`, `score_deals`, `score_componentes`, `score_motivos` | já desenhadas | `score_deals.valor_esperado` **int** |
-| `acao_registros` | **muda** | as já desenhadas, mais `data_negocio` date (relógio do CRM, [P6]) |
+| `acao_registros` | **muda** | as já desenhadas, mais `data_negocio` date (relógio do CRM, [P6]); `acao` passa a aceitar também `prioridade_feita` e `prioridade_pulada` (Painel, 4.5) |
+| `acao_prioridades` | **nova** | a lista do dia, montada na primeira abertura e estável até o dia acabar: `id`, `usuario_id` FK, `data_negocio`, `posicao`, `opportunity_id` FK, `criado_em`; único (`usuario_id`, `data_negocio`, `opportunity_id`) |
 | `acao_comentarios` | **nova** | `id`, `opportunity_id` FK, `usuario_id` FK, `texto` (1–1.000), `data_negocio`, `criado_em`, `editado_em`, `removido_em`, `removido_por` FK (remoção lógica: "apagar" na tela) |
 | `acao_deal_tags` | **nova** | `id`, `opportunity_id` FK, `tag_id` FK, `usuario_id` FK, `criado_em`, `removida_em`, `removida_por` FK; índice único parcial (`opportunity_id`, `tag_id`) onde `removida_em is null` |
 | `system_auditoria` | já desenhada | mais `lote_id` FK `system_lotes` (nulo fora de lote) |
@@ -438,9 +570,9 @@ Esta seção atualiza o modelo de [DESENHO-ACOES.md](DESENHO-ACOES.md). Segue BD
 | `system_importacoes` | desenhada em DESENHO-CRM | sem mudança |
 | `system_lotes` | **nova** | `id`, `usuario_id` FK, `tipo` (tag, remover_tag, comentario, avancar_estagio, encerrar_perdido), `parametros` jsonb, `etiquetas` jsonb (o filtro usado), `quantidade`, `aplicados`, `pulados`, `correlation_id`, `criado_em`, `desfeito_em`, `desfeito_por` FK |
 
-Total: 21 tabelas: as 15 de DESENHO-ACOES, `system_importacoes` (de DESENHO-CRM) e 5 novas (`core_contatos`, `config_tags`, `acao_comentarios`, `acao_deal_tags`, `system_lotes`).
+Total: 22 tabelas: as 15 de DESENHO-ACOES, `system_importacoes` (de DESENHO-CRM) e 6 novas (`core_contatos`, `config_tags`, `acao_comentarios`, `acao_deal_tags`, `acao_prioridades`, `system_lotes`).
 
-### 7.2 Chaves estrangeiras novas (todas com índice e `on delete restrict`)
+### 8.2 Chaves estrangeiras novas (todas com índice e `on delete restrict`)
 
 | De | Para |
 |---|---|
@@ -457,8 +589,10 @@ Total: 21 tabelas: as 15 de DESENHO-ACOES, `system_importacoes` (de DESENHO-CRM)
 | `acao_deal_tags.usuario_id`, `.removida_por` | `config_usuarios.id` |
 | `system_lotes.usuario_id`, `.desfeito_por` | `config_usuarios.id` |
 | `system_auditoria.lote_id` | `system_lotes.id` |
+| `acao_prioridades.usuario_id` | `config_usuarios.id` |
+| `acao_prioridades.opportunity_id` | `core_deals.opportunity_id` |
 
-### 7.3 Índices para os filtros e as ordenações
+### 8.3 Índices para os filtros e as ordenações
 
 | Índice | Atende |
 |---|---|
@@ -471,16 +605,20 @@ Total: 21 tabelas: as 15 de DESENHO-ACOES, `system_importacoes` (de DESENHO-CRM)
 | `acao_deal_tags (tag_id) where removida_em is null` | filtro por tag |
 | `acao_comentarios (opportunity_id, criado_em desc) where removido_em is null` | quantidade e lista de comentários |
 | `core_contatos (conta_nome)` | contatos da empresa no modal |
+| `acao_prioridades (usuario_id, data_negocio, posicao)` | lista do dia no Painel |
+| `acao_registros (usuario_id, data_negocio)` | "já marcado hoje" e meta do dia |
+| `core_deals (estagio, close_date)` | fechamentos e conversão por janela no Painel |
 | `system_auditoria (tabela, registro_id, criado_em)` | linha do tempo do deal (já desenhado) |
 
 A busca "Contém …" não tem índice de texto: 8.800 linhas cabem numa varredura. Rever acima de 100 mil (pg_trgm).
 
-### 7.4 Views
+### 8.4 Views
 
 - `score_deals_atuais`: as notas da execução ativa (`config_parametros.execucao_ativa`).
-- `core_deals_visao`: o deal com nome, contato principal, equipe, perfil da empresa, nota atual e faixa, ícone (2.4), ação sugerida, marcadores, tags ativas (lista), quantidade de comentários não apagados e "atualizado depois da nota". É a única fonte de leitura das duas telas.
+- `core_painel_janelas`: para um escopo (vendedor, time ou todos) e uma data, os números dos cartões nas janelas de hoje, 30 dias e 30 dias antes. Calculada na consulta, sem tabela de resumo: 8.800 linhas cabem com folga. Rever com materialização se a base crescer muito.
+- `core_deals_visao`: o deal com nome, contato principal, equipe, perfil da empresa, nota atual e faixa, ícone (2.4), ação sugerida, marcadores, tags ativas (lista), quantidade de comentários não apagados e "atualizado depois da nota". É a fonte de leitura do Pipeline e de Leads; o Painel usa as functions de agregação.
 
-### 7.5 Functions
+### 8.5 Functions
 
 Todas as de escrita recebem `p_usuario_id` e `p_correlation_id`, fazem `set_config` para a auditoria e recusam deal inexistente ou fechado quando a regra pede deal aberto.
 
@@ -490,6 +628,10 @@ Todas as de escrita recebem `p_usuario_id` e `p_correlation_id`, fazem `set_conf
 | `core_resumir_colunas(p_etiquetas, p_escopo)` | leitura | cabeçalho das colunas (quantidade e soma do valor esperado) |
 | `core_criar_deal` | escrita | Novo lead |
 | `core_importar_deals` | escrita | Importar CSV |
+| `core_painel_numeros(p_escopo, p_data)` | leitura | os 8 cartões do Painel, com as variações (lê `core_painel_janelas`) |
+| `core_painel_funil(p_escopo)` | leitura | Situação do funil, em quantidade e valor |
+| `acao_prioridades_do_dia(p_usuario_id)` | leitura e escrita | devolve a lista do dia; na primeira chamada do dia, monta e grava em `acao_prioridades` (regra 4.5) |
+| `acao_marcar_prioridade(p_usuario_id, p_correlation_id, p_opportunity_id, p_resultado, p_nota)` | escrita | ✓ ou ✗: grava em `acao_registros` e devolve o próximo item da fila |
 | `core_linha_do_tempo(p_opportunity_id)` | leitura | modal: junta dataset, auditoria, ações e comentários não apagados, em ordem |
 | `core_mudar_estagio(p_opportunity_id, p_versao, p_para, p_valor, p_motivo)` | escrita | arrastar e seletor; aplica a tabela 2.6 |
 | `core_atualizar_deal` | escrita | nome, empresa e contato principal |
@@ -502,18 +644,18 @@ Todas as de escrita recebem `p_usuario_id` e `p_correlation_id`, fazem `set_conf
 | `system_executar_lote(p_tipo, p_parametros, p_ids text[], p_etiquetas)` | escrita | lote; recusa acima do limite |
 | `system_desfazer_lote(p_lote_id)` | escrita | "Desfazer este lote" (24 h) |
 
-### 7.6 Triggers
+### 8.6 Triggers
 
 | Trigger | Em | Faz |
 |---|---|---|
-| `system_auditar` (after insert/update) | `core_deals`, `core_contas`, `core_contatos` (e-mail e telefone mascarados), `config_usuarios`, `config_parametros`, `config_tags`, `acao_registros`, `acao_comentarios`, `acao_deal_tags`, `system_lotes` | grava antes, depois, usuário, papel, momento, `correlation_id` e `lote_id`; recusa a escrita sem usuário ou `correlation_id` |
+| `system_auditar` (after insert/update) | `core_deals`, `core_contas`, `core_contatos` (e-mail e telefone mascarados), `config_usuarios`, `config_parametros`, `config_tags`, `acao_registros`, `acao_comentarios`, `acao_deal_tags`, `acao_prioridades`, `system_lotes` | grava antes, depois, usuário, papel, momento, `correlation_id` e `lote_id`; recusa a escrita sem usuário ou `correlation_id` |
 | `system_bloquear_delete` (before delete) | todas as tabelas | recusa qualquer DELETE (junto com o `revoke delete, truncate`) |
 | `core_marcar_atualizacao` (before update) | `core_deals` | preenche `atualizado_em` e `atualizado_por`; confere a versão enviada (conflito → erro tratado como 409) |
 | `acao_atualizar_ultimo_contato` (after insert/update) | `acao_registros` | recalcula `core_deals.ultimo_contato_em` com o contato mais recente não desfeito |
 | `acao_limitar_tags` (before insert) | `acao_deal_tags` | recusa acima de `max_tags_por_deal` tags ativas no deal |
 | `core_validar_contato` (before insert/update) | `core_deals` | recusa contato de outra empresa: o `conta_nome` do contato tem que ser o do deal ou nulo |
 
-## 8. Perguntas para o Leandro
+## 9. Perguntas para o Leandro
 
 | # | Pergunta | Proposta |
 |---|---|---|
@@ -531,3 +673,7 @@ Todas as de escrita recebem `p_usuario_id` e `p_correlation_id`, fazem `set_conf
 | P12 | Contato: tabela nova de contatos da empresa, com um contato principal por deal, que nasce vazio ("+ Adicionar contato")? | Sim; o contato pode existir sem empresa enquanto o deal não tiver empresa |
 | P13 | Ícones: super hot (15–106 dias e ticket ≥ US$ 3.000: 66 deals), em risco (107–138 dias: 141) e esfriou (> 138 dias: 1.291, ícone cinza)? Ou um ícone de risco só, juntando os dois últimos (1.432 deals, 69% dos abertos)? | Três ícones, para o alerta de risco continuar raro |
 | P14 | Ao encerrar como Perdido (ou descartar), pedir o motivo? | Sim, lista curta obrigatória (preço, concorrente, sem orçamento, sem resposta, outro + texto) |
+| P15 | "Em reais": o dataset está em dólar, e converter exigiria uma cotação que não existe nos dados. Manter US$? | Manter US$ em todo o CRM; se quiser reais, usar uma cotação fixa declarada em `config_parametros` e mostrar "cotação de referência" na tela |
+| P16 | Trocar "atendimentos no momento" (não existe no dataset) por "Em risco de esfriar"? | Sim; "Contatos registrados hoje" entra depois, quando houver uso |
+| P17 | Prioridades do dia do manager e do admin: os deals do escopo em risco ou super hot, por valor? | Sim; para o vendedor, a lista vem da nota |
+| P18 | ✓ = "trabalhei hoje" e ✗ = "pulei hoje", sem mudar o deal? O ✓ conta como contato? Alerta depois de 3 dias pulado? | Sim; o ✓ não conta como contato (há "Liguei" no item); alerta depois de 3 dias |
