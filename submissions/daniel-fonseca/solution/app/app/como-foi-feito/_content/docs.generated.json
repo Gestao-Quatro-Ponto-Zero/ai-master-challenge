@@ -452,6 +452,22 @@
    "what": "Ao escrever o script reproduzível das entradas do ROI, a IA viu que os 52,4% de \"autonomia entre não sensíveis\" (ADR-0010) dividiam pelos tickets fora do \"só humano\", o que inflava a taxa. Pelo rótulo real, são 42,2%: a automação total cai de 23% para 18,7%, e a economia de ~R$ 21 mil para ~R$ 17 mil/ano",
    "who": "IA (script 11_app_summary.py)",
    "result": "ADR-0010 e data-findings corrigidos; o app usa o número do script"
+  },
+  {
+   "n": 38,
+   "date": "2026-11-10",
+   "type": "IA errou",
+   "what": "O git-add.sh incluiu os worktrees das frentes (dentro de .claude/worktrees/) como repositórios embutidos num commit enviado ao fork; só os ponteiros, sem conteúdo",
+   "who": "IA (aviso do git)",
+   "result": "Removidos do índice no commit seguinte; .claude/worktrees/ no .gitignore"
+  },
+  {
+   "n": 39,
+   "date": "2026-11-10",
+   "type": "IA pegou risco",
+   "what": "A proteção padrão da Vercel bloqueava a produção com login, o que contrariava a decisão de app público. A IA restringiu a proteção aos previews e verificou que nenhum segredo chega ao navegador",
+   "who": "IA",
+   "result": "Produção pública; previews protegidos"
   }
  ],
  "judgmentHref": "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca/process-log/judgment-log.md",

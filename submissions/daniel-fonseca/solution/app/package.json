@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node app/como-foi-feito/_content/generate.mjs",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "node --test lib/roi.test.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

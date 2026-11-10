@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# gerado pelo next dev/build (muda entre dev e build)
+next-env.d.ts

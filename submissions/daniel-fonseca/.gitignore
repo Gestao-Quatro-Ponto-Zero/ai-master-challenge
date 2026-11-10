@@ -3,11 +3,11 @@
 .env.*
 !.env.example
 
-# dados brutos (baixar com scripts/download_data.sh)
-data/
+# dados brutos (baixar com scripts/download_data.sh). Sem barra final para casar também com symlinks em worktrees.
+data
 
 # python
-.venv/
+.venv
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
@@ -21,3 +21,6 @@ node_modules/
 .DS_Store
 **/.claude/settings.local.json
 **/.claude/worktrees/
+
+# gerado pelo next dev/build
+*.tsbuildinfo
