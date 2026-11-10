@@ -37,11 +37,13 @@ Segunda versão, para a forma que o Daniel decidiu (vivos, fila, limpar). Quem e
 
 Uma chave só existe quando o fato existe: sem conta, não há `account`; sem tabela na data, não há as chaves `band_*`.
 
-- `deal`: `seller`, `product`, `account`, `value`, `engage_date`, `days_open`, `days_left`, `window_end`, `block` (sempre `vivo`), `play_label` (o rótulo do próximo passo, do score), `cooling_label` (`esfriando`, só se `cooling`), `rank`, `alive_count`, `longest_win_days`, `band_days`, `band_won_per_100`, `counted_on`, `monday`.
-- `briefing`: `seller`, `monday`, `alive`, `alive_value`, `cooling`, `queue`, `queue_value`, `clean`, `clean_value`, `longest_win_days`, `evidence_deals`, `evidence_won`, e para os até três primeiros vivos `product_1`, `account_1`, `value_1`, `days_left_1` (e `_2`, `_3`).
-- `manager`: `manager`, `region`, `monday`, `sellers`, `sellers_without_alive`, `names_without_alive` (lista), `alive`, `alive_value`, `cooling`, `queue`, `queue_value`, `clean`, `clean_value`, `evidence_deals`, `evidence_won`.
+As contagens com substantivo vêm prontas, como frases montadas pelo código com o singular, o plural e o zero certos (`*_phrase`): o modelo não flexiona nada. A frase da tabela do tempo vem inteira do score (`time_sentence`) e o modelo a coloca sem mudar uma palavra, ou a deixa de fora.
 
-`docs/fatos-exemplo.json` traz os fatos exatos de cinco alvos reais (três negócios vivos, um deles esfriando se houver; um vendedor; um gestor), escritos pelo construtor de fatos (`solution/ai/facts.py`).
+- `deal`: `seller`, `product`, `account`, `value`, `engage_date`, `days_open`, `days_open_phrase`, `days_left`, `days_left_phrase`, `window_end`, `block` (sempre `vivo`), `play_label` (o rótulo do próximo passo, do score), `cooling_label` (`esfriando`, só se `cooling`), `rank`, `alive_count`, `longest_win_days`, `time_sentence`, `monday`.
+- `briefing`: `seller`, `monday`, `alive`, `alive_value`, `cooling`, `queue`, `queue_value`, `clean`, `clean_value`, `longest_win_days`, `evidence_deals`, `evidence_won`, `evidence_phrase`, `alive_phrase`, `queue_phrase`, `clean_phrase`, `cooling_phrase`, e para os até três primeiros vivos `product_1`, `account_1`, `value_1`, `days_left_1`, `days_left_phrase_1` (e `_2`, `_3`).
+- `manager`: `manager`, `region`, `monday`, `sellers`, `sellers_without_alive`, `without_alive_phrase`, `names_without_alive` (lista), `alive`, `alive_value`, `cooling`, `queue`, `queue_value`, `clean`, `clean_value`, `alive_phrase`, `queue_phrase`, `clean_phrase`, `cooling_phrase`, `evidence_deals`, `evidence_won`, `evidence_phrase`.
+
+`docs/fatos-exemplo.json` traz os fatos exatos de cinco alvos reais (três negócios vivos, um deles esfriando e um sem conta; um vendedor; um gestor), escritos por `python solution/ai/facts.py --examples`.
 
 ## Marcadores e a conferência (`solution/ai/check.py`, um comando)
 
@@ -52,8 +54,11 @@ Uma chave só existe quando o fato existe: sem conta, não há `account`; sem ta
   2. sobra um dígito fora de um marcador;
   3. aparece fora de marcador o nome de um vendedor, gestor, conta ou produto do dataset;
   4. aparece um julgamento que não está nos fatos: porcentagem, "chance", "probabilidade", "provável", "garantido", "promissor", "quente", "excelente" e afins (lista no código, com o limite dito: uma lista de palavras não pega tudo);
-  5. `text` não é o `template` preenchido com `facts`, ou falta procedência;
-  6. um fato difere do que está no arquivo do score para aquele alvo.
+  5. `text` não é o `template` preenchido com `facts`, ou falta procedência (inclusive se o `prompt.md` mudou depois da geração);
+  6. um fato difere do que está no arquivo do score para aquele alvo;
+  7. português quebrado que já apareceu: "tem nenhum", ou a mesma sequência de três palavras digitada duas vezes no modelo do texto.
+- Uma frase pronta que começa uma frase ganha a maiúscula no preenchimento; a conferência usa o mesmo preenchedor.
+- A procedência traz também `model_requested` (o nome pedido ao CLI); `model` é o que o envelope da resposta registrou.
 - Texto reprovado não entra no arquivo. A geração imprime quantos foram reprovados e por quê.
 - Por que assim (`pesquisa.md`, seção 2): saída estruturada garante a forma, não a verdade; por isso o número não passa pelo modelo.
 
