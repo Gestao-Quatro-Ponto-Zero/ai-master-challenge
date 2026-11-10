@@ -87,13 +87,14 @@
 
 <h2>1. A nota</h2>
 <div class="formula">
-  SCORE = 0,70 × FIT + 0,30 × HEAT
-  <small>As duas partes vão de 0 a 100, e o score também. Decisão 29 do registro de decisões.</small>
+  NOTA = 0,70 × FIT + 0,30 × HEAT + BONUS
+  <small>FIT e HEAT vão de 0 a 100 (decisão 29). O BONUS vai de 0 a 20 e soma por fora, então a nota vai de 0 a 120.</small>
 </div>
 <ul>
   <li><b>FIT (70%)</b> mede o encaixe do lead no que o vendedor dono tem fechado melhor nos últimos 3 meses. É por vendedor, recalculado todo domingo e fixo durante a semana.</li>
   <li><b>HEAT (30%)</b> mede o tempo de atendimento: em que ponto do ciclo o deal está e há quanto tempo ninguém fala com o cliente. Muda todo dia.</li>
-  <li><b>Valor</b> não entra na nota. Aparece no cartão como contexto (ver pergunta P5).</li>
+  <li><b>BONUS (0 a 20)</b> vale para a empresa que compra muito e está no período de comprar. É por empresa e recalculado todo domingo, junto com o FIT (seção 4).</li>
+  <li><b>Valor</b> não entra na nota e aparece no cartão só como contexto. Decisão do Leandro: "nunca se sabe o valor antes de atender". A exceção, a empresa que compra muito e está no período de compra, virou o BONUS.</li>
 </ul>
 <p>Dados: 6.711 deals fechados e 2.089 abertos. "Hoje" é 31/12/2017, o último dia com registro. A janela atual de 3 meses vai de out a dez/2017, pela data de fechamento.</p>
 
@@ -194,7 +195,7 @@
   <p>30 vendedores têm fechamentos na janela. Os outros 5 do time não têm nenhum deal no dataset.</p>
 </details>
 
-<div class="note"><b>O que o histórico diz sobre o FIT:</b> a análise de dados testou se o ponto forte de 3 meses de cada vendedor converte acima da média dele no mês seguinte. Acertou 45,6% das vezes, contra 49% esperados pelo acaso. A decisão 28 manteve o FIT porque, no histórico, o time não tinha nenhuma ferramenta que levasse os leads certos a quem tem o ponto forte. O backtest (seção 7) mede isso de novo e publica o resultado como sair.</div>
+<div class="note"><b>O que o histórico diz sobre o FIT:</b> a análise de dados testou se o ponto forte de 3 meses de cada vendedor converte acima da média dele no mês seguinte. Acertou 45,6% das vezes, contra 49% esperados pelo acaso. A decisão 28 manteve o FIT porque, no histórico, o time não tinha nenhuma ferramenta que levasse os leads certos a quem tem o ponto forte. O backtest (seção 8) mede isso de novo e publica o resultado como sair.</div>
 
 <h2>3. HEAT: tempo de atendimento</h2>
 <p>O HEAT tem duas peças: a <b>faixa de idade</b> do deal, contada desde o início do engajamento, e o <b>fator de contato</b>, que vem do último contato registrado.</p>
@@ -217,7 +218,7 @@
 <ul>
   <li>Escala simples: começa em 100 e cai 15 pontos por faixa. A última faixa cai de 10 para 0.</li>
   <li>Os limites são os do Leandro. O dia 16 aparecia em duas faixas ("8 a 16" e "16 a 30") e ficou na 16–30. Os abertos em Engaging somam 1.589 e os fechados, 6.711. Nenhum deal aberto de hoje tem 7 dias ou menos (o mais novo tem 9), então as duas primeiras faixas valem para os leads que chegarem a partir do uso do CRM.</li>
-  <li>Na referência, a taxa sobe com a duração: o deal que fecha rápido é, na maioria, perda rápida. Os pontos seguem a decisão do Leandro, não essa taxa. O backtest (seção 7) mostra o efeito.</li>
+  <li>Na referência, a taxa sobe com a duração: o deal que fecha rápido é, na maioria, perda rápida. Os pontos seguem a decisão do Leandro, não essa taxa. O backtest (seção 8) mostra o efeito.</li>
   <li><b>Alertas no cartão</b> (não mudam os pontos): ícone de risco de esfriar entre 107 e 138 dias e "esfriou: requalificar" acima de 138, que é o deal mais longo que já fechou. O teto de carga do roteamento conta como ativos só os deals em Prospecting ou com até 138 dias.</li>
 </ul>
 <div class="ask"><b>P1. Prospecting sem data = 50?</b> Os 500 deals em Prospecting não têm data de abertura, e não inventamos uma. A proposta é 50, o meio da escala, declarado como "sem dado de tempo". O relógio começa no primeiro contato registrado. As alternativas: 100 (tratar como lead novo) ou 0 (tratar como esquecido).</div>
@@ -236,7 +237,52 @@
   <li><b>Deals do dataset:</b> não há histórico de ações, então o fator é 1,0 para todos. Não inventamos contato. O fator passa a valer a partir do primeiro dia de uso do CRM.</li>
 </ul>
 
-<h2>4. Roteamento de lead novo</h2>
+<h2>4. BONUS: histórico e janela de compra da empresa</h2>
+<p>O BONUS soma até 20 pontos, por fora do FIT e do HEAT, para a empresa que compra muito e está no período de comprar. É por empresa e é recalculado todo domingo, junto com o FIT, com o histórico até aquele domingo. <b>Deal sem empresa (1.425 dos 2.089 abertos, 68%) recebe BONUS 0</b>, declarado e sem penalidade: o FIT e o HEAT dele não mudam.</p>
+
+<h3>Divisão proposta dos 20 pontos</h3>
+<div class="table-wrap"><table>
+  <tr><th>Parte</th><th class="r">Pontos</th><th>Regra</th></tr>
+  <tr><td>(a) Tamanho do histórico</td><td class="r">0 / 5 / 10</td><td>Receita ganha da empresa até o domingo, em terços das empresas com histórico. Cortes de hoje: até US$ 90.110 = 0; até US$ 127.050 = 5; acima disso = 10. A mediana de compras ganhas por terço é 34, 49,5 e 65.</td></tr>
+  <tr><td>(b1) Janela pela periodicidade</td><td class="r">0 ou 7</td><td>Próxima compra esperada = última compra ganha + intervalo mediano entre as compras ganhas da empresa. Está na janela se essa data cair na semana que começa na segunda, com tolerância de 3 dias para cada lado. <b>Só vale para empresa com intervalo típico de 14 dias ou mais</b>: abaixo disso, a empresa compra quase toda semana e a janela fica sempre aberta.</td></tr>
+  <tr><td>(b2) Época do ano</td><td class="r">0 ou 3</td><td>A semana cai num mês em que a empresa compra 1,5 vez ou mais a média mensal dela. Exige 12 meses de histórico, para que exista uma época do ano.</td></tr>
+</table></div>
+<div class="ask"><b>P6. Divisão do BONUS:</b> 10 para o histórico (terços da receita ganha) + 7 para a periodicidade + 3 para a época?<br>
+<b>P7. Janela de compra:</b> mínimo de 14 dias de intervalo típico e tolerância de 3 dias para cada lado da semana?</div>
+
+<h3>O que os dados mostram</h3>
+<ul>
+  <li><b>Histórico:</b> as 85 empresas têm compras ganhas: de 23 a 115 compras (mediana de 47) e de US$ 51.632 a US$ 341.455 de receita ganha (mediana de US$ 111.533).</li>
+  <li><b>Intervalo entre compras ganhas:</b> o intervalo típico (mediana por empresa) vai de 2 a 11 dias, com mediana de 5. Cada empresa tem alguma compra ganha em 64% das 44 semanas do período (de 36% a 98%).</li>
+  <li><b>Ritmo próprio de compra:</b> não existe. O coeficiente de variação dos intervalos é 0,92 (mediana). Com as compras redistribuídas ao acaso entre as empresas, ele fica em 0,91 (95% dos sorteios entre 0,88 e 0,94).</li>
+  <li><b>Mês habitual por empresa:</b> não se distingue do acaso. O qui-quadrado empresa × mês dá 794, contra 756 em média nos sorteios (p = 0,16). Todas seguem o mesmo calendário, com mais compras ganhas em mar, jun, set e dez (531, 531, 503 e 511, contra 279 a 446 nos outros meses).</li>
+  <li><b>A janela testada no passado:</b> rodei a regra sem o mínimo de 14 dias, domingo a domingo de mai a dez/2017, usando só o histórico até cada domingo.
+    <ul>
+      <li>68% das combinações empresa-semana caem na janela.</li>
+      <li>Empresas na janela compram na semana seguinte 66,4% das vezes; fora dela, 62,4%.</li>
+      <li>Os deals abertos dessas empresas ganham nos 7 dias seguintes 7,5% contra 6,5%. A taxa de ganho final é 67,1% contra 66,0%.</li>
+    </ul>
+    A diferença é pequena e a janela fica aberta quase sempre.</li>
+  <li><b>Tamanho do histórico e chance:</b> a taxa de ganho dos deals por terço de receita é 62,8%, 61,6% e 64,5%. A parte (a) mede o volume da empresa, não a chance do deal.</li>
+  <li><b>Época do ano:</b> o dataset tem 10 meses de fechamentos (mar a dez/2017), menos de um ano. A parte (b2) fica pronta e vale 0 para todos.</li>
+</ul>
+<div class="note"><b>Nestes dados, a janela de compra não se distingue do acaso.</b> Ela fica como regra pronta para dados reais: (b1) para empresas que compram a cada 14 dias ou mais e (b2) a partir de 12 meses de histórico. Hoje nenhuma empresa tem intervalo típico de 14 dias ou mais (o maior é 11), então só a parte (a) pontua. A decisão de usar a janela é do Leandro.</div>
+
+<h3>Efeito no pipeline de hoje</h3>
+<div class="table-wrap"><table>
+  <tr><th></th><th class="r">Proposta (mínimo de 14 dias)</th><th class="r">Sem o mínimo</th></tr>
+  <tr><td>Empresas na janela hoje</td><td class="r">0 de 85</td><td class="r">72 de 85</td></tr>
+  <tr><td>Deals abertos com BONUS</td><td class="r">438 (208 com +5; 230 com +10)</td><td class="r">626 (de +5 a +17)</td></tr>
+  <tr><td>Top 5: deals que mudam (de 135)</td><td class="r">30</td><td class="r">57</td></tr>
+  <tr><td>Top 5: deals com empresa</td><td class="r">22,2% → 38,5%</td><td class="r">22,2% → 58,5%</td></tr>
+  <tr><td>Top 5: deals ativos</td><td class="r">81,5% → 77,8%</td><td class="r">81,5% → 70,4%</td></tr>
+  <tr><td>Top 5: deals com 181 dias ou mais</td><td class="r">9 → 6</td><td class="r">9 → 19</td></tr>
+  <tr><td>Maior nota hoje</td><td class="r">88,8</td><td class="r">88,8</td></tr>
+</table></div>
+<p>Sem o mínimo, o BONUS puxa para o topo deals antigos de empresas grandes: os deals com 181 dias ou mais no top 5 passam de 9 para 19. Com o mínimo, caem para 6. Hoje nenhum deal passa de 100, porque os deals de FIT mais alto são de leads sem empresa.</p>
+<p>Frases no cartão: <span class="say">"Empresa entre as que mais compram: +10."</span> · <span class="say">"Empresa compra com frequência e está na janela de compra: +7."</span> · <span class="say">"Sem empresa cadastrada: sem bônus."</span></p>
+
+<h2>5. Roteamento de lead novo</h2>
 <p>Lead novo vai para o vendedor que mais converte naquele perfil e entra no topo das Prioridades do dia dele, para atendimento imediato.</p>
 <ol>
   <li><b>Conversão de cada vendedor no perfil do lead</b> = taxa dele na janela + média dos desvios nas características do lead com 10+ fechados. É uma taxa em %, comparável entre vendedores. O FIT não serve aqui porque a escala dele é do próprio vendedor.</li>
@@ -250,7 +296,7 @@
   <li><b>Escolha:</b> a maior conversão no perfil. No empate, quem tem menos deals ativos.</li>
   <li><b>Se ninguém passar nas travas:</b> o lead vai para a fila do manager do escritório, que atribui à mão.</li>
   <li><b>Reatribuição:</b> o manager pode trocar o dono a qualquer momento. A troca vai para a linha do tempo do lead (quem trocou, quando, de quem, para quem e o motivo).</li>
-  <li>O lead atribuído entra no <b>topo das Prioridades do dia</b> do novo dono (seção 5).</li>
+  <li>O lead atribuído entra no <b>topo das Prioridades do dia</b> do novo dono (seção 6).</li>
 </ol>
 
 <h3>Teto de 40 ativos</h3>
@@ -278,19 +324,19 @@
   <tr class="off"><td>Versie Hillebrand</td><td class="r">70,8%</td><td class="r">1</td><td class="r">67,2%</td><td class="r">22</td><td class="r">55</td><td>fora: teto e FIT &lt; 50</td></tr>
 </table></div>
 
-<h2>5. Prioridades do dia</h2>
+<h2>6. Prioridades do dia</h2>
 <ol>
-  <li><b>Topo, acima de tudo: lead novo de alto encaixe.</b> Lead aberto há até 1 dia, sem contato registrado e com FIT de 60 ou mais com o dono (P4). Entre vários, vale o maior score. Motivo (decisão do Leandro): a velocidade de atendimento do lead novo de alto encaixe, que precisa ser atendido em 0 ou 1 dia. O dataset não tem dados de contato, então essa regra não tem número histórico que a meça. Ela passa a ser medida com o uso do CRM.</li>
+  <li><b>Topo, acima de tudo: lead novo de alto encaixe.</b> Lead aberto há até 1 dia, sem contato registrado e com FIT de 60 ou mais com o dono (P4). Entre vários, vale a maior nota. Motivo (decisão do Leandro): a velocidade de atendimento do lead novo de alto encaixe, que precisa ser atendido em 0 ou 1 dia. O dataset não tem dados de contato, então essa regra não tem número histórico que a meça. Ela passa a ser medida com o uso do CRM.</li>
   <li><b>Atendimento atrasado:</b> se esse lead passa de 1 dia sem contato registrado, ele continua no topo e ganha a marca "atendimento atrasado". A marca aparece na lista do vendedor e na visão do manager, e sai no primeiro contato registrado.</li>
-  <li><b>Depois, todos pelo score</b>, do maior para o menor.</li>
-  <li><b>Empate</b> (mesmo score inteiro): vem antes o de maior HEAT.</li>
+  <li><b>Depois, todos pela nota</b> (FIT + HEAT + BONUS), da maior para a menor.</li>
+  <li><b>Empate</b> (mesma nota inteira): vem antes o de maior HEAT.</li>
   <li><b>Alertas:</b> o deal com 107 a 138 dias leva o ícone de risco de esfriar. O deal com mais de 138 dias aparece marcado "esfriou: requalificar". Um esfriado com FIT alto ainda pode entrar na lista, porque o FIT pesa 70%, mas vem com o alerta.</li>
   <li>A tela mostra 5 por vez. O ✓ ou ✗ do vendedor faz a lista andar e vai para a linha do tempo (decisão 27).</li>
 </ol>
-<p>No pipeline de hoje, o top 5 dos 27 vendedores com deals abertos soma 135 deals. Desses, 81,5% estão ativos, 37% estão em Prospecting e 9 (6,7%) têm 181 dias ou mais. Há 692 abertos com FIT de 60 ou mais, e 259 deles estão ativos.</p>
+<p>No pipeline de hoje, com o BONUS proposto, o top 5 dos 27 vendedores com deals abertos soma 135 deals. Desses, 77,8% estão ativos, 38,5% têm empresa, 35,6% estão em Prospecting e 6 têm 181 dias ou mais. Há 692 abertos com FIT de 60 ou mais, e 259 deles estão ativos.</p>
 <div class="ask"><b>P4. Corte de "alto encaixe" do lead novo = FIT ≥ 60?</b> Com 60, a média dos desvios do lead precisa ser de pelo menos 20% do desvio do destaque do vendedor (com destaque de +7 pontos, cerca de +1,4 ponto). Com 50, bastaria o lead não estar abaixo da média do vendedor.</div>
 
-<h2>6. Explicação para o vendedor e 3 exemplos reais</h2>
+<h2>7. Explicação para o vendedor e 3 exemplos reais</h2>
 <p>Cada deal mostra de 2 a 3 frases, montadas a partir das contas:</p>
 <ul>
   <li><b>FIT, ponto forte:</b> <span class="say">"Encaixa no seu destaque: série MG. Você fechou 27 de 39 nos últimos 3 meses (66,6% ajustado; sua média é 61,4%)."</span></li>
@@ -316,9 +362,10 @@
       <tr class="off"><td>empresa Kan-code</td><td class="r">3 / 3</td><td class="r">fora (&lt; 10)</td></tr>
     </table></div>
     <p>Média dos desvios = 2,34 · FIT = 50 + 50 × 2,34 ÷ 5,17 = <span class="num">72,6</span><br>
-    HEAT = 40 (faixa 30–59) × 1,0 = <span class="num">40</span><br>
-    SCORE = 0,7 × 72,6 + 0,3 × 40 = <span class="num">62,8</span></p>
-    <p class="say">"Encaixa no seu destaque: série MG (27 de 39 nos últimos 3 meses). Aberto há 38 dias: a nota de tempo já caiu para 40."</p>
+    HEAT = 40 (faixa 31–60) × 1,0 = <span class="num">40</span><br>
+    BONUS = 10 (Kan-code: US$ 341.455 em 115 compras, terço de cima) + 0 (compra a cada 2 dias, abaixo do mínimo da janela) = <span class="num">10</span><br>
+    NOTA = 0,7 × 72,6 + 0,3 × 40 + 10 = <span class="num">72,8</span></p>
+    <p class="say">"Encaixa no seu destaque: série MG (27 de 39 nos últimos 3 meses). Empresa entre as que mais compram: +10. Aberto há 38 dias: a nota de tempo já caiu para 40."</p>
   </div>
   <div class="card">
     <h3>Exemplo 2 · 1HD5JJM3</h3>
@@ -331,7 +378,8 @@
     </table></div>
     <p>Média dos desvios = 8,65 · FIT = 50 + 50 × 8,65 ÷ 8,65 = <span class="num">100</span><br>
     HEAT = 50 (Prospecting sem data, P1) × 1,0 = <span class="num">50</span><br>
-    SCORE = 0,7 × 100 + 0,3 × 50 = <span class="num">85,0</span></p>
+    BONUS = 0 (sem empresa) = <span class="num">0</span><br>
+    NOTA = 0,7 × 100 + 0,3 × 50 + 0 = <span class="num">85,0</span></p>
     <p class="say">"Encaixa no seu destaque: série GTX (27 de 33). Sem empresa: o encaixe usa só o produto, identifique a empresa. Ainda não começou."</p>
   </div>
   <div class="card">
@@ -346,19 +394,20 @@
       <tr class="off"><td>empresa Sumace</td><td class="r">0</td><td class="r">fora</td></tr>
     </table></div>
     <p>Média dos desvios = 4,24 · FIT = 50 + 50 × 4,24 ÷ 4,63 = <span class="num">95,8</span><br>
-    HEAT = 0 (faixa 180 ou mais) × 1,0 = <span class="num">0</span><br>
-    SCORE = 0,7 × 95,8 + 0,3 × 0 = <span class="num">67,1</span></p>
+    HEAT = 0 (faixa 181 ou mais) × 1,0 = <span class="num">0</span><br>
+    BONUS = 0 (Sumace: US$ 59.905 em 23 compras, terço de baixo) + 0 (compra a cada 5 dias) = <span class="num">0</span><br>
+    NOTA = 0,7 × 95,8 + 0,3 × 0 + 0 = <span class="num">67,1</span></p>
     <p class="say">"Encaixa no seu destaque: série MG. Parado há 293 dias: nenhum deal fechou depois de 138. Requalifique ou encerre."</p>
   </div>
 </div>
 <p>Os desvios aparecem arredondados. As contas usam os valores exatos.</p>
 
-<h2>7. Validação</h2>
+<h2>8. Validação</h2>
 <p>É um backtest com fotografias do pipeline no fim de cada mês, de abr a nov/2017. Em cada fotografia, o FIT usa só os 3 meses anteriores e o HEAT usa só a idade naquela data. O resultado é conferido depois.</p>
 <ul>
   <li><b>Filas comparadas:</b>
     <ul>
-      <li>score;</li>
+      <li>nota (FIT + HEAT + BONUS) e, à parte, só FIT + HEAT;</li>
       <li>"por valor" (preço de tabela);</li>
       <li>"mais novo primeiro";</li>
       <li>acaso (média de 1.000 sorteios).</li>
@@ -376,22 +425,24 @@
   <li><b>FIT separado do HEAT:</b> o lead com FIT alto fechou acima da média do vendedor? O teste da análise de dados sugere que não (45,6% de acerto contra 49% do acaso).</li>
   <li><b>Limite do teste:</b> o histórico não mede o efeito da própria ferramenta, que é levar os leads certos a quem tem o ponto forte. Isso só se mede com uso real.</li>
 </ul>
-<div class="note">O resultado é publicado como sair, inclusive se o score perder para "mais novo primeiro" ou para o acaso.</div>
+<div class="note">O resultado é publicado como sair, inclusive se a nota perder para "mais novo primeiro" ou para o acaso.</div>
 
-<h2>8. Perguntas em aberto</h2>
+<h2>9. Perguntas em aberto</h2>
 <ul>
   <li><b>P1.</b> Prospecting sem data no HEAT: 50 (proposta), 100 ou 0.</li>
   <li><b>P2.</b> Teto de 40 ativos por vendedor.</li>
   <li><b>P3.</b> Roteamento pela conversão no perfil, com a trava de FIT ≥ 50.</li>
   <li><b>P4.</b> Corte de "alto encaixe" do lead novo (topo da lista e marca de atendimento atrasado): FIT ≥ 60.</li>
-  <li><b>P5.</b> Valor fora da nota. Hoje os exemplos 1 e 3 são MG Special (US$ 55) e ficam acima de deals de US$ 4.821. Valor só como contexto no cartão, ou também como desempate?</li>
-  <li><b>P6.</b> O contrato do arquivo de deals pontuados muda:
+  <li><b>P5.</b> O contrato do arquivo de deals pontuados muda:
     <ul>
-      <li><code>components</code> passa a ser <code>{ fit, heat }</code>;</li>
+      <li><code>components</code> passa a ser <code>{ fit, heat, bonus }</code>, e <code>score</code> vai de 0 a 120;</li>
       <li>entra o detalhe do FIT (característica, fechados, desvio);</li>
-      <li>entram a faixa de HEAT, os dias sem contato e a marca de atendimento atrasado.</li>
+      <li>entram a faixa de HEAT, os dias sem contato e a marca de atendimento atrasado;</li>
+      <li>entra o detalhe do BONUS (terço do histórico, intervalo típico, próxima compra esperada, na janela ou não).</li>
     </ul>
     A tela do app precisa disso. O contrato só muda depois do seu sim, com aviso antes.</li>
+  <li><b>P6.</b> Divisão do BONUS: 10 (histórico, terços da receita ganha) + 7 (periodicidade) + 3 (época).</li>
+  <li><b>P7.</b> Janela de compra: mínimo de 14 dias de intervalo típico e tolerância de 3 dias para cada lado da semana. Nestes dados ela não se distingue do acaso. Usar ou não é decisão do Leandro.</li>
 </ul>
 
 </main>

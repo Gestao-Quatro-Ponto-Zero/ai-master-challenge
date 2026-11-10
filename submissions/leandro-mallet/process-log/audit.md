@@ -155,3 +155,14 @@ Leitura pública do repositório oficial, sem login e sem nenhuma interação:
 - Ressalva honesta da #2: o efeito das 2 semanas só é forte para quem começou no 1º mês do trimestre (49,7% × 68,9%). No 2º mês não é significativo e no 3º fica no limite. ✅
 - Origem documentada: o dataset é o "CRM Sales Opportunities" da Maven Analytics, de uma empresa fictícia de hardware. Várias contas têm nomes de ficção (Acme Corporation, Bluth Company, Bubba Gump). Com isso, "parecem sintéticos" passa a ser "são fictícios", com duas linhas de prova separadas: a fonte e os padrões medidos. ✅
 - Sem termos proibidos; tudo em LF. ✅
+
+## 10/11 — Banco: duas versões das migrations, decisão da #1
+
+Por mensagens que chegaram fora de ordem, a #2 e a #4 escreveram o banco ao mesmo tempo:
+- #2: 9 migrations, conferidas só por parser (sintaxe, prefixos, FKs), commit 749312e;
+- #4: 18 migrations, validadas executando num Postgres em memória (PGlite, sem conexão externa), com conferência pelo catálogo e 45 testes de uso.
+
+**Decisão da #1:** a base oficial é a versão da #4, porque foi validada por execução e já está alinhada ao app. A #2 passa a mantê-la em solution/db/ e faz em cima dela as próximas migrations. A versão da #2 fica no histórico do git e numa pasta fora do repositório; nada foi apagado.
+
+**Segurança:** uma revisão automática apontou, na versão da #2, um limite de gravação contornável (contava correlation_id enviado pelo cliente) e a isenção do usuário "sistema" acessível sem login. A versão escolhida tem o mesmo risco por outro caminho (correlation_id como parâmetro; função de contexto "sistema"). A correção entra antes de qualquer aplicação no banco: correlation_id gerado no servidor, reuso recusado e contexto "sistema" só por um papel de carga separado do app.
+
