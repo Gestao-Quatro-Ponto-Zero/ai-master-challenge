@@ -125,22 +125,34 @@ A especificação completa, com as contas, os 3 exemplos reais e as simulações
 
 ### BONUS (0 a 20): histórico e janela de compra da empresa
 - Por empresa, recalculado todo domingo junto com o FIT. Deal sem empresa (68% dos abertos): BONUS 0, declarado e sem penalidade.
-- Proposta de divisão (P6):
+- Proposta (P5):
   - **(a) tamanho do histórico, 0/5/10:** terços da receita ganha. Cortes de hoje: US$ 90.110 e US$ 127.050.
-  - **(b1) periodicidade, 0 ou 7:** a próxima compra esperada (última compra ganha + intervalo mediano) cai na semana, com tolerância de 3 dias para cada lado. Só vale para empresa com intervalo típico de 14 dias ou mais (P7).
-  - **(b2) época, 0 ou 3:** a semana cai num mês em que a empresa compra 1,5 vez ou mais a média mensal dela. Exige 12 meses de histórico.
-- O que os dados mostram:
-  - O intervalo típico entre compras ganhas vai de 2 a 11 dias (mediana de 5), e cada empresa tem alguma compra ganha em 64% das semanas.
-  - A regularidade dos intervalos é igual à de compras sorteadas ao acaso: CV de 0,92 contra 0,91 (95% dos sorteios entre 0,88 e 0,94).
-  - O mês por empresa não se distingue do acaso (p = 0,16).
-  - Sem o mínimo de 14 dias, 68% das combinações empresa-semana ficam "na janela". As que estão na janela compram na semana seguinte 66,4% das vezes, contra 62,4% das que estão fora. O deal ganha em 7 dias 7,5% contra 6,5%.
-  - A taxa de ganho por terço de receita é 62,8%, 61,6% e 64,5%.
-  - O dataset tem 10 meses, então a época vale 0.
-- **Nestes dados, a janela não se distingue do acaso.** Fica como regra pronta para dados reais. Hoje só a parte (a) pontua: 438 deals abertos com bônus (208 com +5 e 230 com +10). A decisão de usar é do Leandro.
-- Efeito no top 5 (135 deals):
-  - Com a proposta, mudam 30 deals. Os deals com empresa passam de 22,2% para 38,5%, os ativos de 81,5% para 77,8%, e os de 181 dias ou mais de 9 para 6.
-  - Sem o mínimo de 14 dias, mudam 57. Os deals com empresa vão a 58,5%, os ativos a 70,4%, e os de 181 dias ou mais a 19.
-- Frases no cartão: "Empresa entre as que mais compram: +10." · "Empresa compra com frequência e está na janela de compra: +7." · "Sem empresa cadastrada: sem bônus."
+  - **(b) janela de compra por calendário, 0 ou 10:** a semana cai no período preferido da empresa. Período preferido = aquele em que a empresa compra mais que o calendário geral de todas, além do acaso (permutação, corrigida para o número de empresas). Recorte proposto: semestre (P6).
+- Janela por calendário, medida por empresa contra o calendário geral (2.000 permutações; correção de Bonferroni para 85 empresas, p < 0,00059):
+
+  | Recorte | Participação geral | Teste geral (qui-quadrado; p) | Empresas com preferência (p < 0,05 sem correção) | Depois da correção |
+  |---|---|---|---|---|
+  | Mês do ano (mar–dez/2017) | 6,6% a 12,5% por mês | 794 contra 755 do acaso; 0,16 | 1 (o acaso daria ~4) | 0 |
+  | Mês dentro do trimestre | 20,6% / 30,4% / 49,0% | 193 contra 168; 0,09 | 4 | 0 |
+  | Trimestre (T1 só tem março) | 12,5% / 29,6% / 29,7% / 28,2% | 279 contra 252; 0,11 | 6 | 0 |
+  | Semestre (S1 = mar–jun) | 42,1% / 57,9% | 107 contra 84; 0,037 | 6 | 0 |
+
+  - Nenhum recorte separa empresa nenhuma do calendário geral. O semestre é o único com teste geral abaixo de 0,05, por isso foi o proposto, mas nenhuma empresa sozinha passa da correção.
+  - O "período preferido" bruto (o de maior participação, sem teste) fica espalhado de forma quase igual: trimestre 23 / 21 / 21 / 20; semestre 43 / 42; mês no trimestre 27 / 29 / 29.
+  - Medição anterior, por intervalo entre compras: o intervalo típico vai de 2 a 11 dias (mediana de 5), e a regularidade é igual à do acaso (CV de 0,92 contra 0,91).
+  - A taxa de ganho por terço de receita é 62,8%, 61,6% e 64,5%. A parte (a) mede volume, não chance.
+- **Nestes dados, a janela de compra não se distingue do acaso.** Ela fica como regra pronta para dados reais, de preferência com 2 anos ou mais de histórico, para o período se repetir. Hoje só a parte (a) pontua: 438 deals abertos com bônus (208 com +5 e 230 com +10).
+- Se a janela usasse o período bruto, sem o teste, na semana de 01/01/2018 (+10 para a empresa cujo período preferido contém a semana):
+
+  | Recorte | Empresas na janela | Deals com +10 | Top 5 muda (contra só o histórico) | Top 5 ativos | Top 5 com 181 dias ou mais |
+  |---|---|---|---|---|---|
+  | Trimestre (T1) | 23 | 169 | 21 | 77,8% | 10 |
+  | Semestre (S1) | 43 | 341 | 34 | 71,9% | 19 |
+  | Mês no trimestre (1º) | 27 | 201 | 32 | 73,3% | 13 |
+
+  Sem o teste, o bônus premia empresas escolhidas pelo acaso e puxa deals parados para o topo.
+- Efeito no top 5 (135 deals) com a proposta: mudam 30 deals. Os deals com empresa passam de 22,2% para 38,5%, os ativos de 81,5% para 77,8%, e os de 181 dias ou mais de 9 para 6.
+- Frases no cartão: "Empresa entre as que mais compram: +10." · "Empresa na época de compra: +10." · "Sem empresa cadastrada: sem bônus."
 
 ### Roteamento de lead novo
 - Vai para o vendedor com a maior conversão no perfil do lead (taxa dele + média dos desvios nas características do lead).
@@ -148,13 +160,34 @@ A especificação completa, com as contas, os 3 exemplos reais e as simulações
   - teto de **40 deals ativos** (hoje 7 dos 27 passam disso);
   - pelo menos 1 característica do lead com 10+ fechados do vendedor;
   - FIT do vendedor com o lead de 50 ou mais.
-- Empate: vai para quem tem menos ativos. Se ninguém passar nas travas, vai para a fila do manager.
+- Escolha: a maior conversão no perfil, já descontada a penalidade de quem perdeu lead por repasse. Empate: vai para quem tem menos ativos. Se ninguém passar nas travas, vai para a fila do manager.
 - Reatribuição pelo manager fica registrada na linha do tempo.
 - O lead atribuído entra no topo das Prioridades do dia do novo dono.
 
+### Repasse quando o lead muda de faixa sem contato (decisão do Leandro)
+- **Quando:** o lead muda de faixa do HEAT sem nenhum contato registrado desde que o dono atual o recebeu.
+- **Para quem:** vendedor com FIT até 5 pontos abaixo do FIT do dono, ou maior (P7). Ganha o de maior FIT; no empate, quem tem menos ativos e depois menos penalidade.
+- **Travas:**
+  - o novo dono respeita o teto de 40 ativos e precisa ter destaque e pelo menos 1 característica do lead com 10+ fechados;
+  - no máximo 2 repasses por lead, e depois o lead vai para a fila do manager (P8);
+  - o manager pode travar o dono.
+- **Registro e aviso:** a linha do tempo registra de quem, para quem, quando, o motivo e os dois FITs; os dois vendedores recebem aviso. Frase: "Repassado: sem contato em 2 dias; Elease tem encaixe parecido (100 contra 88)."
+- **Deals do dataset:** não têm histórico de contato, e a falta de registro não prova falta de atendimento. O repasse vale só para leads recebidos depois que o CRM entra em uso.
+- **Se valesse hoje** (corte de 5 pontos, teto de 40):
+  - 2.056 dos 2.089 leads teriam candidato, com mediana de 12 candidatos por lead. Com corte de 3 ou 10 pontos, quase igual.
+  - Pela conversão no perfil, com corte de 1 a 3 pontos percentuais, seriam de 1.948 a 2.016.
+  - Dos 292 leads com FIT de 75 ou mais, 268 teriam candidato.
+- **Leitura:** como os vendedores fecham na mesma proporção, quase sempre existe encaixe "praticamente igual". O repasse vai acontecer sempre que o lead mudar de faixa sem contato, e funciona como pressão para atender. O limite de 2 repasses segura o vai e vem.
+
+### Mini penalidade para quem perde lead por repasse
+- −2 pontos percentuais na conversão usada no roteamento por lead perdido, por 2 semanas, com no máximo −6 (P9).
+- Contador "leads perdidos por falta de atendimento" na visão do manager, da semana e acumulado.
+- Não mexe no FIT, no HEAT nem no BONUS dos deals do vendedor.
+- Exemplo: Hayden recebe com 71,8% contra 67,9% de James. Com 1 lead perdido, Hayden ainda recebe (69,8%). Com 2, o lead vai para James (67,8%).
+
 ### Prioridades do dia
-1. Topo, acima de tudo: lead novo (aberto há até 1 dia, sem contato registrado) com FIT de 60 ou mais (P4). O motivo é a velocidade de atendimento do lead novo de alto encaixe, que deve ser atendido em 0 ou 1 dia. Não há estatística para isso, porque o dataset não tem dados de contato.
-   - Se esse lead passar de 1 dia sem contato, ele continua no topo e ganha a marca "atendimento atrasado", na lista e na visão do manager.
+1. Topo, acima de tudo: lead novo (aberto há até 1 dia, sem contato registrado) com **FIT de 75 ou mais** (decisão do Leandro). Hoje 292 abertos têm FIT de 75 ou mais, 98 deles ativos e 262 sem empresa. O motivo é a velocidade de atendimento do lead novo de alto encaixe, que deve ser atendido em 0 ou 1 dia. Não há estatística para isso, porque o dataset não tem dados de contato.
+   - Se esse lead passar de 1 dia sem contato, ele continua no topo (P10) e ganha a marca "atendimento atrasado", na lista e na visão do manager.
 2. Depois, todos pela nota (FIT + HEAT + BONUS).
 3. No empate, vem antes o de maior HEAT.
 4. Os deals em risco e os esfriados aparecem com alerta.
@@ -194,16 +227,19 @@ Saída: `data/scored/deals_scored.json` + `scoring/validacao.md`. Só serão ger
 
 ## 4. Perguntas em aberto
 
-As decisões 28 e 29 substituíram as antigas D1–D4: a chance por segmento saiu, o valor saiu da nota (decidido) e o tempo virou HEAT. A janela de 3 meses, o recálculo aos domingos, as 8 faixas de HEAT e o BONUS de 0 a 20 estão decididos. Ficam abertas:
+As decisões 28 e 29 substituíram as antigas D1–D4: a chance por segmento saiu, o valor saiu da nota (decidido) e o tempo virou HEAT. A janela de 3 meses, o recálculo aos domingos, as 8 faixas de HEAT e o BONUS de 0 a 20, o corte de FIT 75 para furar a fila, o repasse por mudança de faixa e a mini penalidade estão decididos (os números de cada um seguem abaixo como perguntas). Ficam abertas:
 
 - **P1.** Prospecting sem data no HEAT: 50, o meio da escala (proposta); 100, tratar como lead novo; ou 0, tratar como esquecido.
 - **P2.** Teto de 40 ativos por vendedor.
 - **P3.** Roteamento pela conversão no perfil, com a trava de FIT ≥ 50.
-- **P4.** Corte de "alto encaixe" do lead novo (topo e marca de atendimento atrasado): FIT ≥ 60.
-- **P5.** Mudança do contrato:
+- **P4.** Mudança do contrato:
   - `components` vira `{ fit, heat, bonus }`, e `score` vai de 0 a 120;
-  - entram o detalhe do FIT, a faixa de HEAT, a marca de atendimento atrasado e o detalhe do BONUS.
+  - entram o detalhe do FIT, a faixa de HEAT, a marca de atendimento atrasado, o detalhe do BONUS, os repasses do lead e a trava do manager.
 
   O contrato só muda depois do sim, com aviso antes à #1 e à #4.
-- **P6.** Divisão do BONUS: 10 (histórico) + 7 (periodicidade) + 3 (época).
-- **P7.** Janela de compra: mínimo de 14 dias de intervalo típico e tolerância de 3 dias. Nestes dados ela não se distingue do acaso.
+- **P5.** Divisão do BONUS: 10 (histórico, terços da receita ganha) + 10 (janela de compra por calendário).
+- **P6.** Janela de compra: recorte semestre (o único com teste geral abaixo de 0,05), ou trimestre ou mês do ano, sempre com teste contra o calendário geral. Nestes dados nenhuma empresa tem período preferido além do acaso. Usar ou não é decisão do Leandro.
+- **P7.** "Encaixe praticamente igual" para o repasse: FIT até 5 pontos abaixo do dono.
+- **P8.** Máximo de 2 repasses por lead antes da fila do manager.
+- **P9.** Penalidade: −2 pontos percentuais no roteamento por lead perdido, por 2 semanas, com no máximo −6.
+- **P10.** O lead com "atendimento atrasado" continua no topo até o primeiro contato (proposta) ou desce para a ordem da nota.

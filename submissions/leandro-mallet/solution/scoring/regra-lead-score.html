@@ -6,78 +6,87 @@
 <title>Regra do lead score</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
     --navy: #001f35;
+    --navy-2: #12344d;
     --gold: #c9a96e;        /* só fundo e borda */
     --gold-text: #78501d;   /* texto dourado */
-    --gold-soft: #f6efe2;
+    --gold-soft: #f7f1e6;
     --ink: #1d2a33;
     --muted: #5b6770;
-    --line: #e4e7ea;
+    --line: #e6e8eb;
+    --soft: #f6f8f9;
     --bg: #ffffff;
   }
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
-  body {
-    margin: 0; background: var(--bg); color: var(--ink);
-    font: 15px/1.6 "Manrope", system-ui, sans-serif;
-  }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.55 "Manrope", system-ui, sans-serif; }
   header { background: var(--navy); border-bottom: 4px solid var(--gold); }
-  header h1 {
-    margin: 0 auto; max-width: 980px; padding: 28px 16px;
-    font: 700 28px/1.2 "Libre Baskerville", Georgia, serif; color: #fff;
-  }
-  main { max-width: 980px; margin: 0 auto; padding: 8px 16px 64px; }
-  h2 {
-    font: 700 21px/1.3 "Libre Baskerville", Georgia, serif; color: var(--navy);
-    margin: 44px 0 12px; padding-bottom: 8px; border-bottom: 2px solid var(--gold);
-  }
-  h3 { font: 700 16px/1.4 "Manrope", sans-serif; color: var(--navy); margin: 26px 0 8px; }
-  p, li { max-width: 78ch; }
-  ul, ol { padding-left: 22px; }
+  header h1 { margin: 0 auto; max-width: 1040px; padding: 26px 16px; font: 700 28px/1.2 "Libre Baskerville", Georgia, serif; color: #fff; }
+  main { max-width: 1040px; margin: 0 auto; padding: 24px 16px 64px; }
+
+  .card { border: 1px solid var(--line); border-top: 4px solid var(--gold); border-radius: 6px; padding: 20px 22px; margin: 0 0 22px; background: #fff; }
+  .card h2 { margin: 0 0 4px; font: 700 21px/1.3 "Libre Baskerville", Georgia, serif; color: var(--navy); }
+  .card .lead { margin: 0 0 14px; color: var(--muted); }
+  h3 { font: 700 15px/1.4 "Manrope", sans-serif; color: var(--navy); margin: 20px 0 8px; text-transform: uppercase; letter-spacing: .04em; }
+  p, li { max-width: 80ch; }
+  ul, ol { padding-left: 20px; margin: 8px 0; }
   li { margin: 4px 0; }
-  .num { color: var(--gold-text); font-weight: 700; }
-  .formula {
-    background: var(--gold-soft); border: 1px solid var(--gold); border-left: 6px solid var(--gold);
-    padding: 16px 18px; margin: 16px 0; border-radius: 4px;
-    font: 600 18px/1.5 "Manrope", sans-serif; color: var(--navy);
-  }
-  .formula small { display: block; font-weight: 400; font-size: 14px; color: var(--ink); margin-top: 4px; }
-  .note {
-    border: 1px solid var(--line); border-left: 4px solid var(--navy);
-    padding: 10px 14px; margin: 14px 0; background: #f7f9fa; border-radius: 4px;
-  }
-  .ask {
-    border: 1px solid var(--gold); background: var(--gold-soft);
-    padding: 10px 14px; margin: 14px 0; border-radius: 4px;
-  }
-  .ask b { color: var(--gold-text); }
-  .table-wrap { overflow-x: auto; margin: 12px 0; -webkit-overflow-scrolling: touch; }
+  .num { color: var(--gold-text); font-weight: 800; }
+
+  /* fórmula */
+  .hero { background: var(--navy); color: #fff; border-radius: 6px; padding: 22px; margin-bottom: 22px; border-bottom: 4px solid var(--gold); }
+  .hero .f { font: 700 24px/1.35 "Libre Baskerville", Georgia, serif; }
+  .hero .f small { display: block; font: 500 14px/1.5 "Manrope", sans-serif; color: #c9d3da; margin-top: 4px; }
+  .weights { display: flex; height: 38px; border-radius: 4px; overflow: hidden; margin: 18px 0 8px; border: 1px solid #ffffff33; }
+  .weights div { display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; white-space: nowrap; overflow: hidden; }
+  .w-fit { width: 58.33%; background: #fff; color: var(--navy); }
+  .w-heat { width: 25%; background: var(--gold); color: var(--navy); }
+  .w-bonus { width: 16.67%; background: repeating-linear-gradient(45deg, #ffffff22 0 6px, #ffffff10 6px 12px); color: #fff; border-left: 1px dashed #ffffff66; }
+  .scale { position: relative; height: 16px; font-size: 12px; color: #c9d3da; }
+  .scale span { position: absolute; top: 0; transform: translateX(-50%); }
+  .scale span:first-child { transform: none; }
+  .scale span:last-child { transform: translateX(-100%); }
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 16px; }
+  .facts div { background: #ffffff12; border: 1px solid #ffffff22; border-radius: 4px; padding: 8px 10px; font-size: 13px; color: #dfe6eb; }
+  .facts b { display: block; font-size: 18px; color: #fff; }
+
+  /* tabelas */
+  .tw { overflow-x: auto; margin: 10px 0; -webkit-overflow-scrolling: touch; }
   table { border-collapse: collapse; width: 100%; font-size: 14px; }
   th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
-  th { background: var(--navy); color: #fff; font-weight: 600; white-space: nowrap; }
-  td.r, th.r { text-align: right; white-space: nowrap; }
+  th { background: var(--soft); color: var(--navy); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .03em; border-bottom: 2px solid var(--gold); }
+  td.r, th.r { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
   tr.hl td { background: var(--gold-soft); }
   tr.off td { color: var(--muted); }
-  .tag {
-    display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 12px; font-weight: 600;
-    border: 1px solid var(--gold); background: var(--gold-soft); color: var(--gold-text); white-space: nowrap;
-  }
+  .bar { height: 10px; background: var(--soft); border-radius: 5px; min-width: 70px; }
+  .bar span { display: block; height: 100%; background: var(--navy); border-radius: 5px; }
+
+  .tag { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 12px; font-weight: 700; border: 1px solid var(--gold); background: var(--gold-soft); color: var(--gold-text); white-space: nowrap; }
   .tag.navy { border-color: var(--navy); background: var(--navy); color: #fff; }
-  .tag.grey { border-color: var(--line); background: #f1f3f4; color: var(--muted); }
-  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin: 14px 0; }
-  .card { border: 1px solid var(--line); border-top: 4px solid var(--gold); border-radius: 4px; padding: 14px 16px; }
-  .card h3 { margin-top: 0; }
   .say { font-style: italic; color: var(--navy); }
-  details { margin: 12px 0; border: 1px solid var(--line); border-radius: 4px; padding: 8px 12px; }
-  summary { cursor: pointer; font-weight: 600; color: var(--navy); }
-  code { font-size: 13px; background: #f1f3f4; padding: 1px 5px; border-radius: 3px; }
+  .box { background: var(--soft); border-left: 4px solid var(--navy); border-radius: 4px; padding: 10px 14px; margin: 12px 0; }
+  .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+  .ex { border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; background: #fff; }
+  .ex h4 { margin: 0 0 2px; font: 700 16px/1.3 "Libre Baskerville", Georgia, serif; color: var(--navy); }
+  .ex .who { margin: 0 0 10px; color: var(--muted); font-size: 13px; }
+  .calc { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; font-size: 14px; margin-top: 10px; border-top: 1px solid var(--line); padding-top: 10px; }
+  .calc .tot { font-weight: 800; color: var(--navy); border-top: 2px solid var(--gold); padding-top: 6px; }
+  .calc .v { text-align: right; font-variant-numeric: tabular-nums; }
+  details { margin: 12px 0; }
+  summary { cursor: pointer; font-weight: 700; color: var(--navy); }
+  code { font-size: 13px; background: var(--soft); padding: 1px 5px; border-radius: 3px; }
   @media (max-width: 600px) {
     header h1 { font-size: 22px; padding: 20px 16px; }
-    h2 { font-size: 19px; }
-    .formula { font-size: 16px; }
+    .card { padding: 16px; }
+    .hero .f { font-size: 19px; }
+    table { font-size: 13px; }
+    th, td { padding: 6px 7px; }
+    .weights div { font-size: 10px; letter-spacing: 0; }
+    .bar { min-width: 36px; }
+    .heat th:nth-child(5), .heat td:nth-child(5) { display: none; }
   }
 </style>
 </head>
@@ -85,365 +94,306 @@
 <header><h1>Regra do lead score</h1></header>
 <main>
 
-<h2>1. A nota</h2>
-<div class="formula">
-  NOTA = 0,70 × FIT + 0,30 × HEAT + BONUS
-  <small>FIT e HEAT vão de 0 a 100 (decisão 29). O BONUS vai de 0 a 20 e soma por fora, então a nota vai de 0 a 120.</small>
-</div>
-<ul>
-  <li><b>FIT (70%)</b> mede o encaixe do lead no que o vendedor dono tem fechado melhor nos últimos 3 meses. É por vendedor, recalculado todo domingo e fixo durante a semana.</li>
-  <li><b>HEAT (30%)</b> mede o tempo de atendimento: em que ponto do ciclo o deal está e há quanto tempo ninguém fala com o cliente. Muda todo dia.</li>
-  <li><b>BONUS (0 a 20)</b> vale para a empresa que compra muito e está no período de comprar. É por empresa e recalculado todo domingo, junto com o FIT (seção 4).</li>
-  <li><b>Valor</b> não entra na nota e aparece no cartão só como contexto. Decisão do Leandro: "nunca se sabe o valor antes de atender". A exceção, a empresa que compra muito e está no período de compra, virou o BONUS.</li>
-</ul>
-<p>Dados: 6.711 deals fechados e 2.089 abertos. "Hoje" é 31/12/2017, o último dia com registro. A janela atual de 3 meses vai de out a dez/2017, pela data de fechamento.</p>
+<section class="hero">
+  <div class="f">NOTA = 0,7 × FIT + 0,3 × HEAT + BONUS
+    <small>De 0 a 120. FIT e HEAT vão de 0 a 100; o BONUS soma até 20 por fora.</small>
+  </div>
+  <div class="weights" aria-label="Peso de cada parte na nota">
+    <div class="w-fit">FIT 70</div>
+    <div class="w-heat">HEAT 30</div>
+    <div class="w-bonus">BONUS 20</div>
+  </div>
+  <div class="scale"><span style="left:0">0</span><span style="left:58.33%">70</span><span style="left:83.33%">100</span><span style="left:100%">120</span></div>
+  <div class="facts">
+    <div><b>FIT</b>encaixe do lead no ponto forte do vendedor · recalculado aos domingos</div>
+    <div><b>HEAT</b>tempo desde a abertura e último contato · muda todo dia</div>
+    <div><b>BONUS</b>empresa que compra muito e está na época de comprar · domingos</div>
+    <div><b>Valor</b>fora da nota · aparece no cartão</div>
+  </div>
+</section>
 
-<h2>2. FIT: encaixe do lead no ponto forte do vendedor</h2>
-
-<h3>O que conta</h3>
-<p>Sete características do lead, que formam o "cohort" e o produto:</p>
-<div class="table-wrap"><table>
-  <tr><th>Característica</th><th>De onde vem</th><th>Lead sem empresa</th></tr>
-  <tr><td>Produto</td><td>pipeline</td><td>conhecido</td></tr>
-  <tr><td>Série</td><td>catálogo de produtos</td><td>conhecido</td></tr>
-  <tr><td>Setor</td><td>cadastro da empresa</td><td>sem dado</td></tr>
-  <tr><td>Porte por receita (tercis)</td><td>cadastro da empresa</td><td>sem dado</td></tr>
-  <tr><td>Porte por funcionários (tercis)</td><td>cadastro da empresa</td><td>sem dado</td></tr>
-  <tr><td>Empresa</td><td>pipeline</td><td>sem dado</td></tr>
-  <tr><td>Sede (EUA ou fora)</td><td>cadastro da empresa</td><td>sem dado</td></tr>
-</table></div>
-<p>O "tempo de venda" que a análise de dados também testou fica de fora: um lead aberto ainda não tem esse dado. Por isso, 4 vendedores ganham um ponto forte diferente do que aparece na tabela da análise (Gladys, Rosalina, Violet e Wilburn).</p>
-
-<h3>Cálculo, passo a passo</h3>
-<ol>
-  <li><b>Taxa do vendedor na janela:</b> ganhos ÷ fechados dele nos últimos 3 meses. Hoje vai de 45,7% a 70,8%, com 31 a 159 fechados por vendedor (mediana de 65).</li>
-  <li><b>Taxa encolhida de cada característica:</b> (ganhos + 20 × taxa do vendedor) ÷ (fechados + 20). O "20" puxa recortes pequenos para a média do próprio vendedor, então 9 de 10 não vira 90%. É a mesma regra da análise de dados.</li>
-  <li><b>Desvio:</b> taxa encolhida − taxa do vendedor, em pontos. Característica com <b>menos de 10 fechados</b> na janela vale desvio 0 e não entra na média.</li>
-  <li><b>Destaque do vendedor:</b> a característica de maior taxa encolhida, entre as que têm 10 ou mais fechados. Hoje o desvio do destaque vai de +0,9 a +11,0 pontos (mediana de +7,3).</li>
-  <li><b>FIT</b> = 50 + 50 × (média dos desvios das características do lead com 10+ fechados) ÷ (desvio do destaque), limitado entre 0 e 100.</li>
-</ol>
-<div class="note">
-  <b>Como ler:</b>
-  <ul>
-    <li>FIT 50: o lead está na média do vendedor (ou não há casos para dizer).</li>
-    <li>FIT 100: o lead é tão bom para ele quanto o destaque.</li>
-    <li>Abaixo de 50: o lead cai onde ele vem fechando abaixo da própria média.</li>
-  </ul>
-  A escala é do próprio vendedor: serve para ordenar a lista dele, não para comparar vendedores (para isso, ver o roteamento).
-</div>
-
-<h3>Casos especiais</h3>
-<ul>
-  <li><b>Lead sem empresa (1.425 dos 2.089 abertos, 68%):</b> o FIT usa só produto e série. A falta de empresa não tira ponto. O motivo diz "encaixe calculado só pelo produto" e pede para identificar a empresa. Quando a empresa entra no cadastro, o FIT é recalculado. Com só 1 ou 2 características, o FIT desses leads vai mais aos extremos: o desvio-padrão é de 24,8 pontos, contra 15,5 nos leads com empresa.</li>
-  <li><b>Característica com menos de 10 fechados na janela:</b> desvio 0 e fora da média. Exemplo: Violet tem 5 de 6 no setor software, o que não basta para contar.</li>
-  <li><b>Vendedor sem destaque:</b> se nenhuma característica tem 10+ fechados, ou se o destaque fica a menos de 3 pontos da média dele, o FIT é 50 para todos os leads desse vendedor. A ordem passa a vir só do HEAT, e a tela diz isso. Hoje são 2 vendedores (Wilburn +0,9; Rosalina +2,7), com 81 deals abertos.</li>
-  <li><b>Lead sem nenhuma característica com casos:</b> FIT 50. São 17 deals abertos hoje.</li>
-</ul>
-
-<h3>Recálculo semanal</h3>
-<p>O FIT é recalculado <b>todo domingo</b>, com os fechamentos dos 3 meses que terminam naquele domingo. A segunda-feira já abre com a lista priorizada, e o FIT fica fixo a semana inteira. Motivo (decisão do Leandro): a média móvel de 3 meses quase não muda de um dia para o outro. O HEAT continua dinâmico e muda todo dia, porque depende da idade do deal e do último contato. A data de referência do dataset, 31/12/2017, cai num domingo: a janela atual (01/10 a 31/12/2017) é exatamente a desse recálculo.</p>
-<div class="note"><b>Janela de 3 meses</b> (confirmada na decisão 29). Para comparar: cada vendedor fecha 0,73 deal por dia (mediana de 0,72). Em 3 meses, isso dá de 31 a 159 fechados por vendedor, o suficiente para os recortes de 10 casos.</div>
-
-<h3>Distribuição hoje (2.089 abertos)</h3>
-<div class="table-wrap"><table>
-  <tr><th>FIT</th><th class="r">Deals</th></tr>
-  <tr><td>0–20</td><td class="r">174</td></tr>
-  <tr><td>20–40</td><td class="r">423</td></tr>
-  <tr><td>40–50 (sem contar o 50 exato)</td><td class="r">353</td></tr>
-  <tr><td>exatamente 50 (vendedor sem destaque ou sem casos)</td><td class="r">98</td></tr>
-  <tr><td>50–60</td><td class="r">349</td></tr>
-  <tr><td>60–80</td><td class="r">472</td></tr>
-  <tr><td>80–99,9</td><td class="r">205</td></tr>
-  <tr><td>100</td><td class="r">15</td></tr>
-</table></div>
-
-<details>
-  <summary>Destaque atual de cada vendedor (janela out–dez/2017)</summary>
-  <div class="table-wrap"><table>
-    <tr><th>Vendedor</th><th>Destaque</th><th class="r">Ganhos / fechados</th><th class="r">Taxa encolhida</th><th class="r">Média dele</th><th class="r">Desvio</th></tr>
-    <tr><td>Anna Snelling</td><td>sede fora dos EUA</td><td class="r">16 / 20</td><td class="r">69,4%</td><td class="r">58,8%</td><td class="r">+10,6</td></tr>
-    <tr><td>Boris Faz</td><td>produto GTX Pro</td><td class="r">9 / 10</td><td class="r">75,3%</td><td class="r">68,0%</td><td class="r">+7,3</td></tr>
-    <tr><td>Cassey Cress</td><td>produto GTX Pro</td><td class="r">9 / 10</td><td class="r">68,2%</td><td class="r">57,4%</td><td class="r">+10,9</td></tr>
-    <tr><td>Cecily Lampkin</td><td>produto GTX Plus Basic</td><td class="r">8 / 10</td><td class="r">69,8%</td><td class="r">64,7%</td><td class="r">+5,1</td></tr>
-    <tr><td>Corliss Cosme</td><td>funcionários: pequena</td><td class="r">10 / 13</td><td class="r">67,5%</td><td class="r">61,4%</td><td class="r">+6,1</td></tr>
-    <tr><td>Daniell Hammack</td><td>produto GTX Pro</td><td class="r">11 / 15</td><td class="r">61,1%</td><td class="r">51,9%</td><td class="r">+9,2</td></tr>
-    <tr><td>Darcel Schlecht</td><td>setor marketing</td><td class="r">14 / 17</td><td class="r">69,8%</td><td class="r">59,1%</td><td class="r">+10,7</td></tr>
-    <tr><td>Donn Cantrell</td><td>setor retail</td><td class="r">17 / 24</td><td class="r">61,7%</td><td class="r">50,7%</td><td class="r">+11,0</td></tr>
-    <tr><td>Elease Gluck</td><td>série MG</td><td class="r">16 / 22</td><td class="r">68,5%</td><td class="r">63,9%</td><td class="r">+4,6</td></tr>
-    <tr><td>Garret Kinder</td><td>produto MG Advanced</td><td class="r">6 / 10</td><td class="r">50,5%</td><td class="r">45,7%</td><td class="r">+4,8</td></tr>
-    <tr><td>Gladys Colclough</td><td>produto MG Advanced</td><td class="r">12 / 19</td><td class="r">57,7%</td><td class="r">52,6%</td><td class="r">+5,2</td></tr>
-    <tr><td>Hayden Neloms</td><td>setor retail</td><td class="r">9 / 10</td><td class="r">75,4%</td><td class="r">68,1%</td><td class="r">+7,3</td></tr>
-    <tr><td>James Ascencio</td><td>setor retail</td><td class="r">10 / 13</td><td class="r">71,0%</td><td class="r">67,2%</td><td class="r">+3,8</td></tr>
-    <tr><td>Jonathan Berthelot</td><td>série MG</td><td class="r">11 / 14</td><td class="r">64,6%</td><td class="r">54,8%</td><td class="r">+9,8</td></tr>
-    <tr><td>Kami Bicknell</td><td>funcionários: média</td><td class="r">18 / 23</td><td class="r">71,9%</td><td class="r">64,6%</td><td class="r">+7,3</td></tr>
-    <tr><td>Kary Hendrixson</td><td>setor medical</td><td class="r">10 / 12</td><td class="r">70,5%</td><td class="r">62,7%</td><td class="r">+7,7</td></tr>
-    <tr><td>Lajuana Vencill</td><td>setor medical</td><td class="r">9 / 12</td><td class="r">63,3%</td><td class="r">56,2%</td><td class="r">+7,0</td></tr>
-    <tr><td>Markita Hansen</td><td>receita: média</td><td class="r">11 / 15</td><td class="r">60,4%</td><td class="r">50,7%</td><td class="r">+9,7</td></tr>
-    <tr><td>Marty Freudenburg</td><td>produto GTX Plus Pro</td><td class="r">9 / 11</td><td class="r">64,5%</td><td class="r">54,9%</td><td class="r">+9,5</td></tr>
-    <tr><td>Maureen Marcano</td><td>setor retail</td><td class="r">12 / 14</td><td class="r">74,2%</td><td class="r">66,1%</td><td class="r">+8,1</td></tr>
-    <tr><td>Moses Frase</td><td>série GTX</td><td class="r">27 / 33</td><td class="r">76,6%</td><td class="r">67,9%</td><td class="r">+8,7</td></tr>
-    <tr><td>Niesha Huffines</td><td>receita: grande</td><td class="r">16 / 24</td><td class="r">59,6%</td><td class="r">51,1%</td><td class="r">+8,5</td></tr>
-    <tr><td>Reed Clapper</td><td>produto GTX Pro</td><td class="r">11 / 14</td><td class="r">69,6%</td><td class="r">63,3%</td><td class="r">+6,3</td></tr>
-    <tr class="off"><td>Rosalina Dieter</td><td>receita: média (sem destaque: menos de 3 pontos)</td><td class="r">9 / 12</td><td class="r">70,5%</td><td class="r">67,7%</td><td class="r">+2,7</td></tr>
-    <tr><td>Rosie Papadopoulos</td><td>produto GTX Pro</td><td class="r">9 / 12</td><td class="r">62,7%</td><td class="r">55,3%</td><td class="r">+7,4</td></tr>
-    <tr><td>Versie Hillebrand</td><td>funcionários: pequena</td><td class="r">23 / 28</td><td class="r">77,4%</td><td class="r">70,8%</td><td class="r">+6,6</td></tr>
-    <tr><td>Vicki Laflamme</td><td>produto MG Advanced</td><td class="r">15 / 21</td><td class="r">67,6%</td><td class="r">63,6%</td><td class="r">+4,0</td></tr>
-    <tr><td>Violet Mclelland</td><td>série MG</td><td class="r">27 / 39</td><td class="r">66,6%</td><td class="r">61,4%</td><td class="r">+5,2</td></tr>
-    <tr class="off"><td>Wilburn Farren</td><td>funcionários: grande (sem destaque: menos de 3 pontos)</td><td class="r">11 / 16</td><td class="r">67,6%</td><td class="r">66,7%</td><td class="r">+0,9</td></tr>
-    <tr><td>Zane Levy</td><td>funcionários: média</td><td class="r">15 / 19</td><td class="r">71,4%</td><td class="r">64,2%</td><td class="r">+7,2</td></tr>
+<section class="card">
+  <h2>FIT · encaixe no ponto forte do vendedor</h2>
+  <p class="lead">Quanto o lead se parece com o que o vendedor dono vem fechando melhor nos últimos 3 meses.</p>
+  <h3>Cálculo</h3>
+  <ol>
+    <li><b>Janela:</b> fechamentos do vendedor nos 3 meses que terminam no domingo. Hoje: 01/10 a 31/12/2017.</li>
+    <li><b>Taxa encolhida</b> de cada característica do lead = (ganhos + 20 × taxa do vendedor) ÷ (fechados + 20).</li>
+    <li><b>Desvio</b> = taxa encolhida − taxa do vendedor. Característica com menos de 10 fechados vale 0 e fica fora da média.</li>
+    <li><b>Destaque</b> = a característica de maior taxa encolhida, com 10 ou mais fechados.</li>
+    <li><b>FIT</b> = 50 + 50 × (média dos desvios do lead) ÷ (desvio do destaque), de 0 a 100.</li>
+  </ol>
+  <div class="tw"><table>
+    <tr><th>FIT</th><th>Leitura</th></tr>
+    <tr><td class="r">100</td><td>tão bom quanto o destaque do vendedor</td></tr>
+    <tr><td class="r">50</td><td>na média do vendedor, ou sem casos para dizer</td></tr>
+    <tr><td class="r">0</td><td>onde ele vem fechando abaixo da própria média</td></tr>
   </table></div>
-  <p>30 vendedores têm fechamentos na janela. Os outros 5 do time não têm nenhum deal no dataset.</p>
-</details>
-
-<div class="note"><b>O que o histórico diz sobre o FIT:</b> a análise de dados testou se o ponto forte de 3 meses de cada vendedor converte acima da média dele no mês seguinte. Acertou 45,6% das vezes, contra 49% esperados pelo acaso. A decisão 28 manteve o FIT porque, no histórico, o time não tinha nenhuma ferramenta que levasse os leads certos a quem tem o ponto forte. O backtest (seção 8) mede isso de novo e publica o resultado como sair.</div>
-
-<h2>3. HEAT: tempo de atendimento</h2>
-<p>O HEAT tem duas peças: a <b>faixa de idade</b> do deal, contada desde o início do engajamento, e o <b>fator de contato</b>, que vem do último contato registrado.</p>
-<div class="formula">HEAT = pontos da faixa de idade × fator de contato<small>Respostas do cliente (replies) são um componente previsto, com peso 0 até haver dado.</small></div>
-
-<h3>Faixa de idade</h3>
-<p>O lead mais novo é o mais quente: os pontos caem a cada faixa. O motivo, nas palavras da decisão: o lead novo precisa ser atendido rápido, principalmente se tiver FIT alto, "em 0 ou 1 dia". A taxa de ganho histórica aparece só como referência e não define os pontos.</p>
-<div class="table-wrap"><table>
-  <tr><th>Faixa (dias desde a abertura)</th><th class="r">Pontos</th><th class="r">Abertos hoje</th><th class="r">Fechados com essa duração</th><th class="r">Taxa de ganho deles (referência)</th></tr>
-  <tr class="hl"><td>até 1</td><td class="r">100</td><td class="r">0</td><td class="r">301</td><td class="r">52,5%</td></tr>
-  <tr><td>2–7</td><td class="r">85</td><td class="r">0</td><td class="r">1.112</td><td class="r">53,8%</td></tr>
-  <tr><td>8–15</td><td class="r">70</td><td class="r">7</td><td class="r">1.464</td><td class="r">58,5%</td></tr>
-  <tr><td>16–30</td><td class="r">55</td><td class="r">11</td><td class="r">286</td><td class="r">71,3%</td></tr>
-  <tr><td>31–60</td><td class="r">40</td><td class="r">39</td><td class="r">569</td><td class="r">66,3%</td></tr>
-  <tr><td>61–90</td><td class="r">25</td><td class="r">53</td><td class="r">1.621</td><td class="r">66,5%</td></tr>
-  <tr><td>91–180</td><td class="r">10</td><td class="r">749</td><td class="r">1.358</td><td class="r">71,1%</td></tr>
-  <tr><td>181 ou mais</td><td class="r">0</td><td class="r">730</td><td class="r">0</td><td class="r">—</td></tr>
-  <tr><td>Prospecting, sem data</td><td class="r">50 <span class="tag">P1</span></td><td class="r">500</td><td class="r">—</td><td class="r">—</td></tr>
-</table></div>
-<ul>
-  <li>Escala simples: começa em 100 e cai 15 pontos por faixa. A última faixa cai de 10 para 0.</li>
-  <li>Os limites são os do Leandro. O dia 16 aparecia em duas faixas ("8 a 16" e "16 a 30") e ficou na 16–30. Os abertos em Engaging somam 1.589 e os fechados, 6.711. Nenhum deal aberto de hoje tem 7 dias ou menos (o mais novo tem 9), então as duas primeiras faixas valem para os leads que chegarem a partir do uso do CRM.</li>
-  <li>Na referência, a taxa sobe com a duração: o deal que fecha rápido é, na maioria, perda rápida. Os pontos seguem a decisão do Leandro, não essa taxa. O backtest (seção 8) mostra o efeito.</li>
-  <li><b>Alertas no cartão</b> (não mudam os pontos): ícone de risco de esfriar entre 107 e 138 dias e "esfriou: requalificar" acima de 138, que é o deal mais longo que já fechou. O teto de carga do roteamento conta como ativos só os deals em Prospecting ou com até 138 dias.</li>
-</ul>
-<div class="ask"><b>P1. Prospecting sem data = 50?</b> Os 500 deals em Prospecting não têm data de abertura, e não inventamos uma. A proposta é 50, o meio da escala, declarado como "sem dado de tempo". O relógio começa no primeiro contato registrado. As alternativas: 100 (tratar como lead novo) ou 0 (tratar como esquecido).</div>
-
-<h3>Fator de contato</h3>
-<div class="table-wrap"><table>
-  <tr><th>Dias desde o último contato registrado</th><th class="r">Fator</th></tr>
-  <tr><td>0–7</td><td class="r">1,0</td></tr>
-  <tr><td>8–14</td><td class="r">0,8</td></tr>
-  <tr><td>15–30</td><td class="r">0,5</td></tr>
-  <tr><td>mais de 30</td><td class="r">0,2</td></tr>
-</table></div>
-<ul>
-  <li>"Contato" é uma ação registrada na linha do tempo do deal: ✓ nas Prioridades do dia, comentário ou mudança de estágio.</li>
-  <li>Um lead novo que ainda não teve contato conta os dias desde a atribuição.</li>
-  <li><b>Deals do dataset:</b> não há histórico de ações, então o fator é 1,0 para todos. Não inventamos contato. O fator passa a valer a partir do primeiro dia de uso do CRM.</li>
-</ul>
-
-<h2>4. BONUS: histórico e janela de compra da empresa</h2>
-<p>O BONUS soma até 20 pontos, por fora do FIT e do HEAT, para a empresa que compra muito e está no período de comprar. É por empresa e é recalculado todo domingo, junto com o FIT, com o histórico até aquele domingo. <b>Deal sem empresa (1.425 dos 2.089 abertos, 68%) recebe BONUS 0</b>, declarado e sem penalidade: o FIT e o HEAT dele não mudam.</p>
-
-<h3>Divisão proposta dos 20 pontos</h3>
-<div class="table-wrap"><table>
-  <tr><th>Parte</th><th class="r">Pontos</th><th>Regra</th></tr>
-  <tr><td>(a) Tamanho do histórico</td><td class="r">0 / 5 / 10</td><td>Receita ganha da empresa até o domingo, em terços das empresas com histórico. Cortes de hoje: até US$ 90.110 = 0; até US$ 127.050 = 5; acima disso = 10. A mediana de compras ganhas por terço é 34, 49,5 e 65.</td></tr>
-  <tr><td>(b1) Janela pela periodicidade</td><td class="r">0 ou 7</td><td>Próxima compra esperada = última compra ganha + intervalo mediano entre as compras ganhas da empresa. Está na janela se essa data cair na semana que começa na segunda, com tolerância de 3 dias para cada lado. <b>Só vale para empresa com intervalo típico de 14 dias ou mais</b>: abaixo disso, a empresa compra quase toda semana e a janela fica sempre aberta.</td></tr>
-  <tr><td>(b2) Época do ano</td><td class="r">0 ou 3</td><td>A semana cai num mês em que a empresa compra 1,5 vez ou mais a média mensal dela. Exige 12 meses de histórico, para que exista uma época do ano.</td></tr>
-</table></div>
-<div class="ask"><b>P6. Divisão do BONUS:</b> 10 para o histórico (terços da receita ganha) + 7 para a periodicidade + 3 para a época?<br>
-<b>P7. Janela de compra:</b> mínimo de 14 dias de intervalo típico e tolerância de 3 dias para cada lado da semana?</div>
-
-<h3>O que os dados mostram</h3>
-<ul>
-  <li><b>Histórico:</b> as 85 empresas têm compras ganhas: de 23 a 115 compras (mediana de 47) e de US$ 51.632 a US$ 341.455 de receita ganha (mediana de US$ 111.533).</li>
-  <li><b>Intervalo entre compras ganhas:</b> o intervalo típico (mediana por empresa) vai de 2 a 11 dias, com mediana de 5. Cada empresa tem alguma compra ganha em 64% das 44 semanas do período (de 36% a 98%).</li>
-  <li><b>Ritmo próprio de compra:</b> não existe. O coeficiente de variação dos intervalos é 0,92 (mediana). Com as compras redistribuídas ao acaso entre as empresas, ele fica em 0,91 (95% dos sorteios entre 0,88 e 0,94).</li>
-  <li><b>Mês habitual por empresa:</b> não se distingue do acaso. O qui-quadrado empresa × mês dá 794, contra 756 em média nos sorteios (p = 0,16). Todas seguem o mesmo calendário, com mais compras ganhas em mar, jun, set e dez (531, 531, 503 e 511, contra 279 a 446 nos outros meses).</li>
-  <li><b>A janela testada no passado:</b> rodei a regra sem o mínimo de 14 dias, domingo a domingo de mai a dez/2017, usando só o histórico até cada domingo.
-    <ul>
-      <li>68% das combinações empresa-semana caem na janela.</li>
-      <li>Empresas na janela compram na semana seguinte 66,4% das vezes; fora dela, 62,4%.</li>
-      <li>Os deals abertos dessas empresas ganham nos 7 dias seguintes 7,5% contra 6,5%. A taxa de ganho final é 67,1% contra 66,0%.</li>
-    </ul>
-    A diferença é pequena e a janela fica aberta quase sempre.</li>
-  <li><b>Tamanho do histórico e chance:</b> a taxa de ganho dos deals por terço de receita é 62,8%, 61,6% e 64,5%. A parte (a) mede o volume da empresa, não a chance do deal.</li>
-  <li><b>Época do ano:</b> o dataset tem 10 meses de fechamentos (mar a dez/2017), menos de um ano. A parte (b2) fica pronta e vale 0 para todos.</li>
-</ul>
-<div class="note"><b>Nestes dados, a janela de compra não se distingue do acaso.</b> Ela fica como regra pronta para dados reais: (b1) para empresas que compram a cada 14 dias ou mais e (b2) a partir de 12 meses de histórico. Hoje nenhuma empresa tem intervalo típico de 14 dias ou mais (o maior é 11), então só a parte (a) pontua. A decisão de usar a janela é do Leandro.</div>
-
-<h3>Efeito no pipeline de hoje</h3>
-<div class="table-wrap"><table>
-  <tr><th></th><th class="r">Proposta (mínimo de 14 dias)</th><th class="r">Sem o mínimo</th></tr>
-  <tr><td>Empresas na janela hoje</td><td class="r">0 de 85</td><td class="r">72 de 85</td></tr>
-  <tr><td>Deals abertos com BONUS</td><td class="r">438 (208 com +5; 230 com +10)</td><td class="r">626 (de +5 a +17)</td></tr>
-  <tr><td>Top 5: deals que mudam (de 135)</td><td class="r">30</td><td class="r">57</td></tr>
-  <tr><td>Top 5: deals com empresa</td><td class="r">22,2% → 38,5%</td><td class="r">22,2% → 58,5%</td></tr>
-  <tr><td>Top 5: deals ativos</td><td class="r">81,5% → 77,8%</td><td class="r">81,5% → 70,4%</td></tr>
-  <tr><td>Top 5: deals com 181 dias ou mais</td><td class="r">9 → 6</td><td class="r">9 → 19</td></tr>
-  <tr><td>Maior nota hoje</td><td class="r">88,8</td><td class="r">88,8</td></tr>
-</table></div>
-<p>Sem o mínimo, o BONUS puxa para o topo deals antigos de empresas grandes: os deals com 181 dias ou mais no top 5 passam de 9 para 19. Com o mínimo, caem para 6. Hoje nenhum deal passa de 100, porque os deals de FIT mais alto são de leads sem empresa.</p>
-<p>Frases no cartão: <span class="say">"Empresa entre as que mais compram: +10."</span> · <span class="say">"Empresa compra com frequência e está na janela de compra: +7."</span> · <span class="say">"Sem empresa cadastrada: sem bônus."</span></p>
-
-<h2>5. Roteamento de lead novo</h2>
-<p>Lead novo vai para o vendedor que mais converte naquele perfil e entra no topo das Prioridades do dia dele, para atendimento imediato.</p>
-<ol>
-  <li><b>Conversão de cada vendedor no perfil do lead</b> = taxa dele na janela + média dos desvios nas características do lead com 10+ fechados. É uma taxa em %, comparável entre vendedores. O FIT não serve aqui porque a escala dele é do próprio vendedor.</li>
-  <li><b>Travas:</b> sai da disputa o vendedor que
-    <ul>
-      <li>tem <b>40 ou mais deals ativos</b> (teto de carga; deal esfriado não conta);</li>
-      <li>não tem <b>nenhuma característica do lead com 10+ fechados</b> (mínimo de casos);</li>
-      <li>teria <b>FIT abaixo de 50</b> com esse lead, ou seja, o lead cairia num ponto fraco dele.</li>
-    </ul>
-  </li>
-  <li><b>Escolha:</b> a maior conversão no perfil. No empate, quem tem menos deals ativos.</li>
-  <li><b>Se ninguém passar nas travas:</b> o lead vai para a fila do manager do escritório, que atribui à mão.</li>
-  <li><b>Reatribuição:</b> o manager pode trocar o dono a qualquer momento. A troca vai para a linha do tempo do lead (quem trocou, quando, de quem, para quem e o motivo).</li>
-  <li>O lead atribuído entra no <b>topo das Prioridades do dia</b> do novo dono (seção 6).</li>
-</ol>
-
-<h3>Teto de 40 ativos</h3>
-<p>"Ativo" é deal em Prospecting ou em Engaging com até 138 dias. Hoje cada vendedor tem de 6 a 111 ativos (mediana de 23, p75 de 38,5), e 7 dos 27 vendedores com deals abertos passam de 40. Somando os esfriados, o total aberto por vendedor vai de 31 a 194. O teto ficou perto do p75: com ele, quem já está cheio para de receber até requalificar ou encerrar o que tem.</p>
-<div class="ask"><b>P2. Teto de 40 ativos por vendedor?</b> Com 30, seriam 10 vendedores bloqueados hoje. Com 40, são 7.</div>
-<div class="ask"><b>P3. Critério do roteamento.</b> A decisão diz "vendedor de maior conversão naquele cohort". A proposta usa essa conversão (em %) e soma a trava de FIT ≥ 50. Sem essa trava, um vendedor com taxa geral alta receberia um lead que cai num ponto fraco dele. No exemplo 1 abaixo, Versie tem conversão no perfil de 69,5%, mas FIT de 40.</div>
-
-<h3>Duas simulações com os dados de hoje</h3>
-<p><b>Lead novo com empresa</b> (MG Special, empresa Kan-code: setor software, receita e funcionários grandes, sede nos EUA):</p>
-<div class="table-wrap"><table>
-  <tr><th>Vendedor</th><th class="r">Taxa dele</th><th class="r">Caract. com 10+</th><th class="r">Conversão no perfil</th><th class="r">FIT</th><th class="r">Ativos</th><th>Resultado</th></tr>
-  <tr class="hl"><td>Hayden Neloms</td><td class="r">68,1%</td><td class="r">4</td><td class="r">71,8%</td><td class="r">75</td><td class="r">6</td><td><b>recebe</b></td></tr>
-  <tr class="off"><td>Versie Hillebrand</td><td class="r">70,8%</td><td class="r">5</td><td class="r">69,5%</td><td class="r">40</td><td class="r">55</td><td>fora: teto e FIT &lt; 50</td></tr>
-  <tr><td>James Ascencio</td><td class="r">67,2%</td><td class="r">4</td><td class="r">67,9%</td><td class="r">59</td><td class="r">14</td><td>2º</td></tr>
-  <tr><td>Rosalina Dieter</td><td class="r">67,7%</td><td class="r">5</td><td class="r">67,6%</td><td class="r">50</td><td class="r">16</td><td>3º</td></tr>
-  <tr><td>Cecily Lampkin</td><td class="r">64,7%</td><td class="r">5</td><td class="r">67,3%</td><td class="r">76</td><td class="r">24</td><td>4º</td></tr>
-</table></div>
-<p><b>Lead novo sem empresa</b> (GTX Pro):</p>
-<div class="table-wrap"><table>
-  <tr><th>Vendedor</th><th class="r">Taxa dele</th><th class="r">Caract. com 10+</th><th class="r">Conversão no perfil</th><th class="r">FIT</th><th class="r">Ativos</th><th>Resultado</th></tr>
-  <tr class="hl"><td>Moses Frase</td><td class="r">67,9%</td><td class="r">1</td><td class="r">76,6%</td><td class="r">100</td><td class="r">31</td><td><b>recebe</b></td></tr>
-  <tr><td>Boris Faz</td><td class="r">68,0%</td><td class="r">2</td><td class="r">74,0%</td><td class="r">91</td><td class="r">13</td><td>2º</td></tr>
-  <tr><td>Maureen Marcano</td><td class="r">66,1%</td><td class="r">1</td><td class="r">70,4%</td><td class="r">77</td><td class="r">18</td><td>3º</td></tr>
-  <tr class="off"><td>Rosalina Dieter</td><td class="r">67,7%</td><td class="r">0</td><td class="r">67,7%</td><td class="r">50</td><td class="r">16</td><td>fora: sem casos</td></tr>
-  <tr class="off"><td>Versie Hillebrand</td><td class="r">70,8%</td><td class="r">1</td><td class="r">67,2%</td><td class="r">22</td><td class="r">55</td><td>fora: teto e FIT &lt; 50</td></tr>
-</table></div>
-
-<h2>6. Prioridades do dia</h2>
-<ol>
-  <li><b>Topo, acima de tudo: lead novo de alto encaixe.</b> Lead aberto há até 1 dia, sem contato registrado e com FIT de 60 ou mais com o dono (P4). Entre vários, vale a maior nota. Motivo (decisão do Leandro): a velocidade de atendimento do lead novo de alto encaixe, que precisa ser atendido em 0 ou 1 dia. O dataset não tem dados de contato, então essa regra não tem número histórico que a meça. Ela passa a ser medida com o uso do CRM.</li>
-  <li><b>Atendimento atrasado:</b> se esse lead passa de 1 dia sem contato registrado, ele continua no topo e ganha a marca "atendimento atrasado". A marca aparece na lista do vendedor e na visão do manager, e sai no primeiro contato registrado.</li>
-  <li><b>Depois, todos pela nota</b> (FIT + HEAT + BONUS), da maior para a menor.</li>
-  <li><b>Empate</b> (mesma nota inteira): vem antes o de maior HEAT.</li>
-  <li><b>Alertas:</b> o deal com 107 a 138 dias leva o ícone de risco de esfriar. O deal com mais de 138 dias aparece marcado "esfriou: requalificar". Um esfriado com FIT alto ainda pode entrar na lista, porque o FIT pesa 70%, mas vem com o alerta.</li>
-  <li>A tela mostra 5 por vez. O ✓ ou ✗ do vendedor faz a lista andar e vai para a linha do tempo (decisão 27).</li>
-</ol>
-<p>No pipeline de hoje, com o BONUS proposto, o top 5 dos 27 vendedores com deals abertos soma 135 deals. Desses, 77,8% estão ativos, 38,5% têm empresa, 35,6% estão em Prospecting e 6 têm 181 dias ou mais. Há 692 abertos com FIT de 60 ou mais, e 259 deles estão ativos.</p>
-<div class="ask"><b>P4. Corte de "alto encaixe" do lead novo = FIT ≥ 60?</b> Com 60, a média dos desvios do lead precisa ser de pelo menos 20% do desvio do destaque do vendedor (com destaque de +7 pontos, cerca de +1,4 ponto). Com 50, bastaria o lead não estar abaixo da média do vendedor.</div>
-
-<h2>7. Explicação para o vendedor e 3 exemplos reais</h2>
-<p>Cada deal mostra de 2 a 3 frases, montadas a partir das contas:</p>
-<ul>
-  <li><b>FIT, ponto forte:</b> <span class="say">"Encaixa no seu destaque: série MG. Você fechou 27 de 39 nos últimos 3 meses (66,6% ajustado; sua média é 61,4%)."</span></li>
-  <li><b>FIT, ponto fraco:</b> <span class="say">"Fora do seu forte: neste setor você fecha abaixo da sua média nos últimos 3 meses."</span></li>
-  <li><b>Sem empresa:</b> <span class="say">"Sem empresa cadastrada: o encaixe usa só o produto. Identifique a empresa."</span></li>
-  <li><b>Lead novo:</b> <span class="say">"Lead novo com alto encaixe: atenda hoje."</span> · <span class="say">"Atendimento atrasado: lead novo de alto encaixe sem contato há 2 dias."</span></li>
-  <li><b>Vendedor sem destaque:</b> <span class="say">"Você não tem um destaque com casos suficientes nos últimos 3 meses. A ordem vem do tempo."</span></li>
-  <li><b>HEAT:</b> <span class="say">"Aberto há 38 dias: a nota de tempo cai a cada faixa. Faça contato antes de passar dos 60."</span> · <span class="say">"Parado há 293 dias: nenhum deal fechou depois de 138 dias. Requalifique ou encerre."</span> · <span class="say">"Ainda não começou: sem data de início. O relógio começa no primeiro contato."</span></li>
-</ul>
-
-<div class="cards">
-  <div class="card">
-    <h3>Exemplo 1 · 4ZQTMS3Z</h3>
-    <p>Violet Mclelland · MG Special (US$ 55) · empresa Kan-code · Engaging, dia 38</p>
-    <div class="table-wrap"><table>
-      <tr><th>Característica</th><th class="r">Fechados</th><th class="r">Desvio</th></tr>
-      <tr><td>produto MG Special</td><td class="r">22 / 32</td><td class="r">+4,5</td></tr>
-      <tr class="hl"><td>série MG (destaque)</td><td class="r">27 / 39</td><td class="r">+5,2</td></tr>
-      <tr><td>receita grande</td><td class="r">14 / 22</td><td class="r">+1,2</td></tr>
-      <tr><td>funcionários grande</td><td class="r">11 / 18</td><td class="r">−0,1</td></tr>
-      <tr><td>sede EUA</td><td class="r">32 / 51</td><td class="r">+1,0</td></tr>
-      <tr class="off"><td>setor software</td><td class="r">5 / 6</td><td class="r">fora (&lt; 10)</td></tr>
-      <tr class="off"><td>empresa Kan-code</td><td class="r">3 / 3</td><td class="r">fora (&lt; 10)</td></tr>
+  <h3>Características usadas</h3>
+  <p>Produto, série, setor, porte por receita, porte por funcionários, empresa e sede (EUA ou fora).</p>
+  <h3>Casos especiais</h3>
+  <ul>
+    <li><b>Lead sem empresa</b> (1.425 de 2.089, 68%): usa só produto e série, sem penalidade.</li>
+    <li><b>Vendedor sem destaque</b> (destaque a menos de 3 pontos da média dele): FIT 50 para todos os leads dele. Hoje: 2 vendedores, 81 deals.</li>
+    <li><b>Recálculo:</b> todo domingo. A segunda abre com a lista pronta e o FIT fica fixo a semana toda.</li>
+  </ul>
+  <div class="tw"><table>
+    <tr><th>FIT hoje</th><th class="r">Deals abertos</th></tr>
+    <tr><td>0–20</td><td class="r">174</td></tr>
+    <tr><td>20–40</td><td class="r">423</td></tr>
+    <tr><td>40–50</td><td class="r">353</td></tr>
+    <tr><td>exatamente 50</td><td class="r">98</td></tr>
+    <tr><td>50–60</td><td class="r">349</td></tr>
+    <tr><td>60–75</td><td class="r">400</td></tr>
+    <tr class="hl"><td>75 ou mais</td><td class="r">292</td></tr>
+  </table></div>
+  <details>
+    <summary>Destaque de cada vendedor (out–dez/2017)</summary>
+    <div class="tw"><table>
+      <tr><th>Vendedor</th><th>Destaque</th><th class="r">Ganhos / fechados</th><th class="r">Taxa encolhida</th><th class="r">Média dele</th><th class="r">Desvio</th></tr>
+      <tr><td>Anna Snelling</td><td>sede fora dos EUA</td><td class="r">16 / 20</td><td class="r">69,4%</td><td class="r">58,8%</td><td class="r">+10,6</td></tr>
+      <tr><td>Boris Faz</td><td>produto GTX Pro</td><td class="r">9 / 10</td><td class="r">75,3%</td><td class="r">68,0%</td><td class="r">+7,3</td></tr>
+      <tr><td>Cassey Cress</td><td>produto GTX Pro</td><td class="r">9 / 10</td><td class="r">68,2%</td><td class="r">57,4%</td><td class="r">+10,9</td></tr>
+      <tr><td>Cecily Lampkin</td><td>produto GTX Plus Basic</td><td class="r">8 / 10</td><td class="r">69,8%</td><td class="r">64,7%</td><td class="r">+5,1</td></tr>
+      <tr><td>Corliss Cosme</td><td>funcionários: pequena</td><td class="r">10 / 13</td><td class="r">67,5%</td><td class="r">61,4%</td><td class="r">+6,1</td></tr>
+      <tr><td>Daniell Hammack</td><td>produto GTX Pro</td><td class="r">11 / 15</td><td class="r">61,1%</td><td class="r">51,9%</td><td class="r">+9,2</td></tr>
+      <tr><td>Darcel Schlecht</td><td>setor marketing</td><td class="r">14 / 17</td><td class="r">69,8%</td><td class="r">59,1%</td><td class="r">+10,7</td></tr>
+      <tr><td>Donn Cantrell</td><td>setor retail</td><td class="r">17 / 24</td><td class="r">61,7%</td><td class="r">50,7%</td><td class="r">+11,0</td></tr>
+      <tr><td>Elease Gluck</td><td>série MG</td><td class="r">16 / 22</td><td class="r">68,5%</td><td class="r">63,9%</td><td class="r">+4,6</td></tr>
+      <tr><td>Garret Kinder</td><td>produto MG Advanced</td><td class="r">6 / 10</td><td class="r">50,5%</td><td class="r">45,7%</td><td class="r">+4,8</td></tr>
+      <tr><td>Gladys Colclough</td><td>produto MG Advanced</td><td class="r">12 / 19</td><td class="r">57,7%</td><td class="r">52,6%</td><td class="r">+5,2</td></tr>
+      <tr><td>Hayden Neloms</td><td>setor retail</td><td class="r">9 / 10</td><td class="r">75,4%</td><td class="r">68,1%</td><td class="r">+7,3</td></tr>
+      <tr><td>James Ascencio</td><td>setor retail</td><td class="r">10 / 13</td><td class="r">71,0%</td><td class="r">67,2%</td><td class="r">+3,8</td></tr>
+      <tr><td>Jonathan Berthelot</td><td>série MG</td><td class="r">11 / 14</td><td class="r">64,6%</td><td class="r">54,8%</td><td class="r">+9,8</td></tr>
+      <tr><td>Kami Bicknell</td><td>funcionários: média</td><td class="r">18 / 23</td><td class="r">71,9%</td><td class="r">64,6%</td><td class="r">+7,3</td></tr>
+      <tr><td>Kary Hendrixson</td><td>setor medical</td><td class="r">10 / 12</td><td class="r">70,5%</td><td class="r">62,7%</td><td class="r">+7,7</td></tr>
+      <tr><td>Lajuana Vencill</td><td>setor medical</td><td class="r">9 / 12</td><td class="r">63,3%</td><td class="r">56,2%</td><td class="r">+7,0</td></tr>
+      <tr><td>Markita Hansen</td><td>receita: média</td><td class="r">11 / 15</td><td class="r">60,4%</td><td class="r">50,7%</td><td class="r">+9,7</td></tr>
+      <tr><td>Marty Freudenburg</td><td>produto GTX Plus Pro</td><td class="r">9 / 11</td><td class="r">64,5%</td><td class="r">54,9%</td><td class="r">+9,5</td></tr>
+      <tr><td>Maureen Marcano</td><td>setor retail</td><td class="r">12 / 14</td><td class="r">74,2%</td><td class="r">66,1%</td><td class="r">+8,1</td></tr>
+      <tr><td>Moses Frase</td><td>série GTX</td><td class="r">27 / 33</td><td class="r">76,6%</td><td class="r">67,9%</td><td class="r">+8,7</td></tr>
+      <tr><td>Niesha Huffines</td><td>receita: grande</td><td class="r">16 / 24</td><td class="r">59,6%</td><td class="r">51,1%</td><td class="r">+8,5</td></tr>
+      <tr><td>Reed Clapper</td><td>produto GTX Pro</td><td class="r">11 / 14</td><td class="r">69,6%</td><td class="r">63,3%</td><td class="r">+6,3</td></tr>
+      <tr class="off"><td>Rosalina Dieter</td><td>sem destaque (receita: média)</td><td class="r">9 / 12</td><td class="r">70,5%</td><td class="r">67,7%</td><td class="r">+2,7</td></tr>
+      <tr><td>Rosie Papadopoulos</td><td>produto GTX Pro</td><td class="r">9 / 12</td><td class="r">62,7%</td><td class="r">55,3%</td><td class="r">+7,4</td></tr>
+      <tr><td>Versie Hillebrand</td><td>funcionários: pequena</td><td class="r">23 / 28</td><td class="r">77,4%</td><td class="r">70,8%</td><td class="r">+6,6</td></tr>
+      <tr><td>Vicki Laflamme</td><td>produto MG Advanced</td><td class="r">15 / 21</td><td class="r">67,6%</td><td class="r">63,6%</td><td class="r">+4,0</td></tr>
+      <tr><td>Violet Mclelland</td><td>série MG</td><td class="r">27 / 39</td><td class="r">66,6%</td><td class="r">61,4%</td><td class="r">+5,2</td></tr>
+      <tr class="off"><td>Wilburn Farren</td><td>sem destaque (funcionários: grande)</td><td class="r">11 / 16</td><td class="r">67,6%</td><td class="r">66,7%</td><td class="r">+0,9</td></tr>
+      <tr><td>Zane Levy</td><td>funcionários: média</td><td class="r">15 / 19</td><td class="r">71,4%</td><td class="r">64,2%</td><td class="r">+7,2</td></tr>
     </table></div>
-    <p>Média dos desvios = 2,34 · FIT = 50 + 50 × 2,34 ÷ 5,17 = <span class="num">72,6</span><br>
-    HEAT = 40 (faixa 31–60) × 1,0 = <span class="num">40</span><br>
-    BONUS = 10 (Kan-code: US$ 341.455 em 115 compras, terço de cima) + 0 (compra a cada 2 dias, abaixo do mínimo da janela) = <span class="num">10</span><br>
-    NOTA = 0,7 × 72,6 + 0,3 × 40 + 10 = <span class="num">72,8</span></p>
-    <p class="say">"Encaixa no seu destaque: série MG (27 de 39 nos últimos 3 meses). Empresa entre as que mais compram: +10. Aberto há 38 dias: a nota de tempo já caiu para 40."</p>
-  </div>
-  <div class="card">
-    <h3>Exemplo 2 · 1HD5JJM3</h3>
-    <p>Moses Frase · GTX Plus Basic (US$ 1.096) · sem empresa · Prospecting</p>
-    <div class="table-wrap"><table>
-      <tr><th>Característica</th><th class="r">Fechados</th><th class="r">Desvio</th></tr>
-      <tr class="hl"><td>série GTX (destaque)</td><td class="r">27 / 33</td><td class="r">+8,7</td></tr>
-      <tr class="off"><td>produto GTX Plus Basic</td><td class="r">7 / 9</td><td class="r">fora (&lt; 10)</td></tr>
-      <tr class="off"><td>setor, porte, empresa, sede</td><td class="r">—</td><td class="r">sem dado</td></tr>
-    </table></div>
-    <p>Média dos desvios = 8,65 · FIT = 50 + 50 × 8,65 ÷ 8,65 = <span class="num">100</span><br>
-    HEAT = 50 (Prospecting sem data, P1) × 1,0 = <span class="num">50</span><br>
-    BONUS = 0 (sem empresa) = <span class="num">0</span><br>
-    NOTA = 0,7 × 100 + 0,3 × 50 + 0 = <span class="num">85,0</span></p>
-    <p class="say">"Encaixa no seu destaque: série GTX (27 de 33). Sem empresa: o encaixe usa só o produto, identifique a empresa. Ainda não começou."</p>
-  </div>
-  <div class="card">
-    <h3>Exemplo 3 · F5I33E1I</h3>
-    <p>Elease Gluck · MG Special (US$ 55) · empresa Sumace · Engaging, dia 293</p>
-    <div class="table-wrap"><table>
-      <tr><th>Característica</th><th class="r">Fechados</th><th class="r">Desvio</th></tr>
-      <tr><td>produto MG Special</td><td class="r">11 / 15</td><td class="r">+4,0</td></tr>
-      <tr class="hl"><td>série MG (destaque)</td><td class="r">16 / 22</td><td class="r">+4,6</td></tr>
-      <tr><td>receita pequena</td><td class="r">11 / 15</td><td class="r">+4,0</td></tr>
-      <tr class="off"><td>setor retail · funcionários pequena · sede fora</td><td class="r">9 · 8 · 2</td><td class="r">fora (&lt; 10)</td></tr>
-      <tr class="off"><td>empresa Sumace</td><td class="r">0</td><td class="r">fora</td></tr>
-    </table></div>
-    <p>Média dos desvios = 4,24 · FIT = 50 + 50 × 4,24 ÷ 4,63 = <span class="num">95,8</span><br>
-    HEAT = 0 (faixa 181 ou mais) × 1,0 = <span class="num">0</span><br>
-    BONUS = 0 (Sumace: US$ 59.905 em 23 compras, terço de baixo) + 0 (compra a cada 5 dias) = <span class="num">0</span><br>
-    NOTA = 0,7 × 95,8 + 0,3 × 0 + 0 = <span class="num">67,1</span></p>
-    <p class="say">"Encaixa no seu destaque: série MG. Parado há 293 dias: nenhum deal fechou depois de 138. Requalifique ou encerre."</p>
-  </div>
-</div>
-<p>Os desvios aparecem arredondados. As contas usam os valores exatos.</p>
+  </details>
+</section>
 
-<h2>8. Validação</h2>
-<p>É um backtest com fotografias do pipeline no fim de cada mês, de abr a nov/2017. Em cada fotografia, o FIT usa só os 3 meses anteriores e o HEAT usa só a idade naquela data. O resultado é conferido depois.</p>
-<ul>
-  <li><b>Filas comparadas:</b>
-    <ul>
-      <li>nota (FIT + HEAT + BONUS) e, à parte, só FIT + HEAT;</li>
-      <li>"por valor" (preço de tabela);</li>
-      <li>"mais novo primeiro";</li>
-      <li>acaso (média de 1.000 sorteios).</li>
-    </ul>
-  </li>
-  <li><b>Medidas no top 5 de cada vendedor e no top 20%:</b>
-    <ul>
-      <li>taxa de ganho;</li>
-      <li>deals decididos nos 30 dias seguintes;</li>
-      <li>deals que nunca fecharam;</li>
-      <li>valor ganho em 90 dias.</li>
-    </ul>
-    O intervalo de confiança é por bootstrap.
-  </li>
-  <li><b>FIT separado do HEAT:</b> o lead com FIT alto fechou acima da média do vendedor? O teste da análise de dados sugere que não (45,6% de acerto contra 49% do acaso).</li>
-  <li><b>Limite do teste:</b> o histórico não mede o efeito da própria ferramenta, que é levar os leads certos a quem tem o ponto forte. Isso só se mede com uso real.</li>
-</ul>
-<div class="note">O resultado é publicado como sair, inclusive se a nota perder para "mais novo primeiro" ou para o acaso.</div>
+<section class="card">
+  <h2>HEAT · tempo de atendimento</h2>
+  <p class="lead">O lead mais novo é o mais quente. Os pontos caem a cada faixa de dias desde a abertura.</p>
+  <div class="box">HEAT = pontos da faixa × fator de contato</div>
+  <div class="tw"><table class="heat">
+    <tr><th>Dias</th><th class="r">Pontos</th><th></th><th class="r">Abertos</th><th class="r">Ganho*</th></tr>
+    <tr><td>até 1</td><td class="r">100</td><td><div class="bar"><span style="width:100%"></span></div></td><td class="r">0</td><td class="r">52,5%</td></tr>
+    <tr><td>2–7</td><td class="r">85</td><td><div class="bar"><span style="width:85%"></span></div></td><td class="r">0</td><td class="r">53,8%</td></tr>
+    <tr><td>8–15</td><td class="r">70</td><td><div class="bar"><span style="width:70%"></span></div></td><td class="r">7</td><td class="r">58,5%</td></tr>
+    <tr><td>16–30</td><td class="r">55</td><td><div class="bar"><span style="width:55%"></span></div></td><td class="r">11</td><td class="r">71,3%</td></tr>
+    <tr><td>31–60</td><td class="r">40</td><td><div class="bar"><span style="width:40%"></span></div></td><td class="r">39</td><td class="r">66,3%</td></tr>
+    <tr><td>61–90</td><td class="r">25</td><td><div class="bar"><span style="width:25%"></span></div></td><td class="r">53</td><td class="r">66,5%</td></tr>
+    <tr><td>91–180</td><td class="r">10</td><td><div class="bar"><span style="width:10%"></span></div></td><td class="r">749</td><td class="r">71,1%</td></tr>
+    <tr><td>181 ou mais</td><td class="r">0</td><td><div class="bar"></div></td><td class="r">730</td><td class="r">—</td></tr>
+    <tr class="off"><td>Prospecting, sem data</td><td class="r">50</td><td><div class="bar"><span style="width:50%"></span></div></td><td class="r">500</td><td class="r">—</td></tr>
+  </table></div>
+  <p style="font-size:13px;color:var(--muted)">Dias desde a abertura. * Taxa de ganho dos 6.711 fechados com essa duração. É só referência e não define os pontos.</p>
+  <div class="grid2">
+    <div>
+      <h3>Fator de contato</h3>
+      <div class="tw"><table>
+        <tr><th>Dias desde o último contato</th><th class="r">Fator</th></tr>
+        <tr><td>0–7</td><td class="r">1,0</td></tr>
+        <tr><td>8–14</td><td class="r">0,8</td></tr>
+        <tr><td>15–30</td><td class="r">0,5</td></tr>
+        <tr><td>mais de 30</td><td class="r">0,2</td></tr>
+      </table></div>
+      <p style="font-size:13px;color:var(--muted)">Os deals do dataset não têm histórico de contato, então o fator é 1,0 para todos. Os replies do cliente entram com peso 0 até existir dado.</p>
+    </div>
+    <div>
+      <h3>Alertas no cartão</h3>
+      <ul>
+        <li><span class="tag">risco de esfriar</span> de 107 a 138 dias</li>
+        <li><span class="tag">esfriou: requalificar</span> acima de 138 dias, o deal mais longo que já fechou</li>
+      </ul>
+      <p>Os alertas não mudam os pontos.</p>
+    </div>
+  </div>
+</section>
 
-<h2>9. Perguntas em aberto</h2>
-<ul>
-  <li><b>P1.</b> Prospecting sem data no HEAT: 50 (proposta), 100 ou 0.</li>
-  <li><b>P2.</b> Teto de 40 ativos por vendedor.</li>
-  <li><b>P3.</b> Roteamento pela conversão no perfil, com a trava de FIT ≥ 50.</li>
-  <li><b>P4.</b> Corte de "alto encaixe" do lead novo (topo da lista e marca de atendimento atrasado): FIT ≥ 60.</li>
-  <li><b>P5.</b> O contrato do arquivo de deals pontuados muda:
-    <ul>
-      <li><code>components</code> passa a ser <code>{ fit, heat, bonus }</code>, e <code>score</code> vai de 0 a 120;</li>
-      <li>entra o detalhe do FIT (característica, fechados, desvio);</li>
-      <li>entram a faixa de HEAT, os dias sem contato e a marca de atendimento atrasado;</li>
-      <li>entra o detalhe do BONUS (terço do histórico, intervalo típico, próxima compra esperada, na janela ou não).</li>
-    </ul>
-    A tela do app precisa disso. O contrato só muda depois do seu sim, com aviso antes.</li>
-  <li><b>P6.</b> Divisão do BONUS: 10 (histórico, terços da receita ganha) + 7 (periodicidade) + 3 (época).</li>
-  <li><b>P7.</b> Janela de compra: mínimo de 14 dias de intervalo típico e tolerância de 3 dias para cada lado da semana. Nestes dados ela não se distingue do acaso. Usar ou não é decisão do Leandro.</li>
-</ul>
+<section class="card">
+  <h2>BONUS · empresa que compra muito, na época de comprar</h2>
+  <p class="lead">Até 20 pontos, por empresa, recalculados aos domingos. Deal sem empresa recebe 0, sem penalidade.</p>
+  <div class="tw"><table>
+    <tr><th>Parte</th><th class="r">Pontos</th><th>Regra</th></tr>
+    <tr><td>Tamanho do histórico</td><td class="r">0 / 5 / 10</td><td>Terços da receita ganha das empresas. Cortes de hoje: até US$ 90.110 vale 0; até US$ 127.050 vale 5; acima disso, 10.</td></tr>
+    <tr><td>Janela de compra</td><td class="r">0 / 10</td><td>A semana cai no semestre em que a empresa compra mais que o calendário geral, além do acaso (permutação, corrigida para o número de empresas).</td></tr>
+  </table></div>
+  <h3>Janela de compra nos dados</h3>
+  <div class="tw"><table>
+    <tr><th>Recorte</th><th class="r">p geral</th><th class="r">Empresas*</th></tr>
+    <tr><td>Mês do ano (mar–dez/2017)</td><td class="r">0,16</td><td class="r">0 de 85</td></tr>
+    <tr><td>Mês dentro do trimestre</td><td class="r">0,09</td><td class="r">0 de 85</td></tr>
+    <tr><td>Trimestre</td><td class="r">0,11</td><td class="r">0 de 85</td></tr>
+    <tr class="hl"><td>Semestre</td><td class="r">0,037</td><td class="r">0 de 85</td></tr>
+  </table></div>
+  <p style="font-size:13px;color:var(--muted)">* Empresas com preferência acima do calendário geral, depois da correção para 85 empresas (2.000 permutações). O semestre é o recorte que mais separa no teste geral.</p>
+  <div class="box">Hoje nenhuma empresa tem janela de compra, então só o histórico pontua: <span class="num">438</span> deals abertos ganham bônus (208 com +5 e 230 com +10). Nenhuma nota passa de 100. A maior é 88,8.</div>
+  <p>Frases no cartão: <span class="say">"Empresa entre as que mais compram: +10."</span> · <span class="say">"Empresa na época de compra: +10."</span> · <span class="say">"Sem empresa cadastrada: sem bônus."</span></p>
+</section>
+
+<section class="card">
+  <h2>Prioridades do dia</h2>
+  <p class="lead">A lista que o vendedor abre na segunda-feira.</p>
+  <ol>
+    <li><b>Topo:</b> lead novo, aberto há até 1 dia, sem contato registrado e com FIT 75 ou mais com o dono. Lead novo de alto encaixe é atendido em 0 ou 1 dia.</li>
+    <li><b>Atendimento atrasado:</b> passou de 1 dia sem contato, o lead continua no topo com a marca <span class="tag">atendimento atrasado</span>, na lista e na visão do manager. A marca sai no primeiro contato.</li>
+    <li><b>Depois:</b> todos pela nota, da maior para a menor.</li>
+    <li><b>Empate:</b> vem antes o de maior HEAT.</li>
+    <li><b>Ritmo:</b> 5 por vez. O ✓ ou ✗ faz a lista andar e vai para a linha do tempo do lead.</li>
+  </ol>
+  <div class="tw"><table>
+    <tr><th>Top 5 de hoje (27 vendedores, 135 deals)</th><th class="r">Valor</th></tr>
+    <tr><td>Deals ativos (Prospecting ou até 138 dias)</td><td class="r">77,8%</td></tr>
+    <tr><td>Com empresa</td><td class="r">38,5%</td></tr>
+    <tr><td>Em Prospecting</td><td class="r">35,6%</td></tr>
+    <tr><td>Com 181 dias ou mais</td><td class="r">6</td></tr>
+    <tr><td>Abertos com FIT 75 ou mais (ativos)</td><td class="r">292 (98)</td></tr>
+  </table></div>
+</section>
+
+<section class="card">
+  <h2>Roteamento e repasse</h2>
+  <p class="lead">Lead novo vai para quem mais converte naquele perfil. Lead sem atendimento muda de dono.</p>
+  <h3>Roteamento do lead novo</h3>
+  <ol>
+    <li><b>Conversão no perfil</b> de cada vendedor = taxa dele nos 3 meses + média dos desvios nas características do lead.</li>
+    <li><b>Ficam de fora:</b> quem tem 40 ou mais deals ativos; quem não tem nenhuma característica do lead com 10+ fechados; quem teria FIT abaixo de 50 com o lead.</li>
+    <li><b>Recebe:</b> a maior conversão, já descontada a penalidade. No empate, quem tem menos ativos.</li>
+    <li><b>Ninguém passa:</b> o lead vai para a fila do manager.</li>
+    <li><b>O manager</b> pode reatribuir ou travar o dono. Fica tudo na linha do tempo.</li>
+  </ol>
+  <div class="grid2">
+    <div>
+      <p><b>Lead com empresa</b> (MG Special, Kan-code)</p>
+      <div class="tw"><table>
+        <tr><th>Vendedor</th><th class="r">Conversão</th><th class="r">FIT</th><th class="r">Ativos</th></tr>
+        <tr class="hl"><td>Hayden Neloms · <b>recebe</b></td><td class="r">71,8%</td><td class="r">75</td><td class="r">6</td></tr>
+        <tr class="off"><td>Versie Hillebrand · fora</td><td class="r">69,5%</td><td class="r">40</td><td class="r">55</td></tr>
+        <tr><td>James Ascencio</td><td class="r">67,9%</td><td class="r">59</td><td class="r">14</td></tr>
+        <tr><td>Rosalina Dieter</td><td class="r">67,6%</td><td class="r">50</td><td class="r">16</td></tr>
+      </table></div>
+    </div>
+    <div>
+      <p><b>Lead sem empresa</b> (GTX Pro)</p>
+      <div class="tw"><table>
+        <tr><th>Vendedor</th><th class="r">Conversão</th><th class="r">FIT</th><th class="r">Ativos</th></tr>
+        <tr class="hl"><td>Moses Frase · <b>recebe</b></td><td class="r">76,6%</td><td class="r">100</td><td class="r">31</td></tr>
+        <tr><td>Boris Faz</td><td class="r">74,0%</td><td class="r">91</td><td class="r">13</td></tr>
+        <tr><td>Maureen Marcano</td><td class="r">70,4%</td><td class="r">77</td><td class="r">18</td></tr>
+        <tr class="off"><td>Versie Hillebrand · fora</td><td class="r">67,2%</td><td class="r">22</td><td class="r">55</td></tr>
+      </table></div>
+    </div>
+  </div>
+
+  <h3>Repasse por falta de atendimento</h3>
+  <ul>
+    <li><b>Quando:</b> o lead muda de faixa do HEAT sem nenhum contato desde que o dono atual o recebeu.</li>
+    <li><b>Para quem:</b> o vendedor de maior FIT entre os que têm FIT de até 5 pontos abaixo do dono, ou maior. No empate, quem tem menos ativos.</li>
+    <li><b>Travas:</b> teto de 40 ativos; no máximo 2 repasses por lead, e depois fila do manager; o manager pode travar o dono.</li>
+    <li><b>Aviso:</b> os dois vendedores são avisados, e o repasse vai para a linha do tempo. <span class="say">"Repassado: sem contato em 2 dias; Elease tem encaixe parecido."</span></li>
+    <li><b>Vale para</b> leads recebidos no CRM. Os deals do dataset não têm histórico de contato.</li>
+  </ul>
+  <div class="box">Se valesse hoje: <span class="num">2.056</span> de 2.089 leads teriam candidato, com mediana de 12 por lead. Como os vendedores fecham na mesma proporção nestes dados, o repasse acontece sempre que o lead muda de faixa sem contato.</div>
+
+  <h3>Mini penalidade</h3>
+  <ul>
+    <li>−2 pontos percentuais na conversão do roteamento por lead perdido, por 2 semanas, com no máximo −6.</li>
+    <li>Contador "leads perdidos por falta de atendimento" na visão do manager.</li>
+    <li>A nota dos deals do vendedor não muda.</li>
+  </ul>
+  <p>Exemplo: Hayden recebe com 71,8% contra 67,9% de James. Com 1 lead perdido, ainda recebe (69,8%). Com 2, o lead vai para James (67,8%).</p>
+</section>
+
+<section class="card">
+  <h2>Exemplos com a conta</h2>
+  <p class="lead">Três deals reais do pipeline de hoje.</p>
+  <div class="grid2">
+    <div class="ex">
+      <h4>4ZQTMS3Z</h4>
+      <p class="who">Violet Mclelland · MG Special · Kan-code · dia 38</p>
+      <div class="tw"><table>
+        <tr><th>Característica</th><th class="r">Fechados</th><th class="r">Desvio</th></tr>
+        <tr><td>produto MG Special</td><td class="r">22 / 32</td><td class="r">+4,5</td></tr>
+        <tr class="hl"><td>série MG (destaque)</td><td class="r">27 / 39</td><td class="r">+5,2</td></tr>
+        <tr><td>receita grande</td><td class="r">14 / 22</td><td class="r">+1,2</td></tr>
+        <tr><td>funcionários grande</td><td class="r">11 / 18</td><td class="r">−0,1</td></tr>
+        <tr><td>sede EUA</td><td class="r">32 / 51</td><td class="r">+1,0</td></tr>
+        <tr class="off"><td>setor, empresa</td><td class="r">&lt; 10</td><td class="r">fora</td></tr>
+      </table></div>
+      <div class="calc">
+        <span>FIT = 50 + 50 × 2,34 ÷ 5,17</span><span class="v">72,6</span>
+        <span>HEAT (31–60 dias)</span><span class="v">40</span>
+        <span>BONUS (terço de cima)</span><span class="v">+10</span>
+        <span class="tot">NOTA = 0,7 × 72,6 + 0,3 × 40 + 10</span><span class="v tot">72,8</span>
+      </div>
+      <p class="say">"Encaixa no seu destaque: série MG. Empresa entre as que mais compram: +10."</p>
+    </div>
+    <div class="ex">
+      <h4>1HD5JJM3</h4>
+      <p class="who">Moses Frase · GTX Plus Basic · sem empresa · Prospecting</p>
+      <div class="tw"><table>
+        <tr><th>Característica</th><th class="r">Fechados</th><th class="r">Desvio</th></tr>
+        <tr class="hl"><td>série GTX (destaque)</td><td class="r">27 / 33</td><td class="r">+8,7</td></tr>
+        <tr class="off"><td>produto GTX Plus Basic</td><td class="r">7 / 9</td><td class="r">fora</td></tr>
+        <tr class="off"><td>dados da empresa</td><td class="r">—</td><td class="r">sem dado</td></tr>
+      </table></div>
+      <div class="calc">
+        <span>FIT = 50 + 50 × 8,65 ÷ 8,65</span><span class="v">100</span>
+        <span>HEAT (Prospecting, sem data)</span><span class="v">50</span>
+        <span>BONUS (sem empresa)</span><span class="v">0</span>
+        <span class="tot">NOTA = 0,7 × 100 + 0,3 × 50 + 0</span><span class="v tot">85,0</span>
+      </div>
+      <p class="say">"Encaixa no seu destaque: série GTX. Identifique a empresa."</p>
+    </div>
+    <div class="ex">
+      <h4>F5I33E1I</h4>
+      <p class="who">Elease Gluck · MG Special · Sumace · dia 293</p>
+      <div class="tw"><table>
+        <tr><th>Característica</th><th class="r">Fechados</th><th class="r">Desvio</th></tr>
+        <tr><td>produto MG Special</td><td class="r">11 / 15</td><td class="r">+4,0</td></tr>
+        <tr class="hl"><td>série MG (destaque)</td><td class="r">16 / 22</td><td class="r">+4,6</td></tr>
+        <tr><td>receita pequena</td><td class="r">11 / 15</td><td class="r">+4,0</td></tr>
+        <tr class="off"><td>setor, funcionários, sede, empresa</td><td class="r">&lt; 10</td><td class="r">fora</td></tr>
+      </table></div>
+      <div class="calc">
+        <span>FIT = 50 + 50 × 4,24 ÷ 4,63</span><span class="v">95,8</span>
+        <span>HEAT (181 dias ou mais)</span><span class="v">0</span>
+        <span>BONUS (terço de baixo)</span><span class="v">0</span>
+        <span class="tot">NOTA = 0,7 × 95,8 + 0,3 × 0 + 0</span><span class="v tot">67,1</span>
+      </div>
+      <p class="say">"Encaixa no seu destaque: série MG. Parado há 293 dias: requalifique ou encerre."</p>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Validação</h2>
+  <p class="lead">Backtest com o pipeline fotografado no fim de cada mês, de abr a nov/2017, usando só o que se sabia em cada data.</p>
+  <div class="tw"><table>
+    <tr><th>Filas comparadas</th><th>Medidas (top 5 por vendedor e top 20%)</th></tr>
+    <tr><td>nota completa · só FIT + HEAT · por valor · mais novo primeiro · acaso (1.000 sorteios)</td><td>taxa de ganho · decididos em 30 dias · nunca fecharam · valor ganho em 90 dias · intervalo por bootstrap</td></tr>
+  </table></div>
+  <ul>
+    <li>O ponto forte de 3 meses acertou o mês seguinte 45,6% das vezes, contra 49% do acaso.</li>
+    <li>O histórico não mede o efeito da ferramenta, que é levar o lead certo a quem tem o ponto forte.</li>
+    <li>O resultado é publicado como sair, inclusive se a nota perder para "mais novo primeiro" ou para o acaso.</li>
+  </ul>
+</section>
 
 </main>
 </body>
