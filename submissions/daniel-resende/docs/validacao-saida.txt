@@ -32,8 +32,8 @@ regra A: de cada 100 negocios que chegaram abertos a esta idade, quantos foram g
     90 dias:  47.7%   (chegaram abertos a essa idade: 256)
    100 dias:  30.6%   (chegaram abertos a essa idade: 136)
    110 dias:  14.4%   (chegaram abertos a essa idade: 63)
-   120 dias:   0.0%   (chegaram abertos a essa idade: 11)
-   130 dias:   0.0%   (chegaram abertos a essa idade: 0)
+   120 dias:  46.9%   (chegaram abertos a essa idade: 11)
+   130 dias:  46.9%   (chegaram abertos a essa idade: 0)
    140 dias:   0.0%   (chegaram abertos a essa idade: 0)
 listas: 30 vendedores, tamanho min=19 mediana=50 max=120
 -- top 5 da lista de cada vendedor (empates dividem as vagas) --
@@ -64,15 +64,16 @@ listas: 30 vendedores, tamanho min=19 mediana=50 max=120
     faixa  25%- 40%: n=   27 previsto= 39.0% observado= 25.9%
     faixa  40%- 55%: n=  818 previsto= 48.3% observado= 37.8%
     faixa  55%-100%: n=  861 previsto= 63.0% observado= 34.0%
--- os tres grupos pela regra A (deixar ir: chance < 5%; focar agora: chance >= 25% e chance x valor >= 1000; manter aquecido: o resto) --
+-- os tres grupos pela regra A (deixar ir: passou do prazo ou e mais velho que o ganho mais demorado ja visto, 138 dias;
+   focar agora: chance >= 25% e chance x valor >= 1000; manter aquecido: o resto) --
   grupo                  n  ganhos  perdidos  sem desf.  % ganho   valor ganho  valor de tabela
   focar agora          616     262       165        189    42.5%     1.257.403        2.988.554
   manter aquecido      740     347       199        194    46.9%       185.964          406.631
   deixar ir            350       0         0        350     0.0%             0          866.050
     manter aquecido / vivo de valor baixo: n=740 ganhos=347
 -- esfriando: vivo hoje (chance >= 25%), mas abaixo disso se seguir aberto por mais 30 dias --
-  esfriando          n=   85 ganhos em 90 dias=   8 dos quais nos primeiros 30 dias=   0 (0%)
-  vivo, sem pressa   n= 1271 ganhos em 90 dias= 601 dos quais nos primeiros 30 dias=  75 (12%)
+  esfriando          n=   56 ganhos em 90 dias=   5 dos quais nos primeiros 30 dias=   0 (0%)
+  vivo, sem pressa   n= 1300 ganhos em 90 dias= 604 dos quais nos primeiros 30 dias=  75 (12%)
   'deixar ir' ate o fim dos dados (2017-12-31): ganhos=0 perdidos=0 ainda abertos=350 de 350
 
 ==== CORTE 2017-08-16 (desfecho observado ate 2017-11-14, 90 dias) ====
@@ -128,17 +129,18 @@ listas: 30 vendedores, tamanho min=21 mediana=74 max=162
     faixa  25%- 40%: n= 1032 previsto= 33.4% observado= 18.0%
     faixa  40%- 55%: n=  664 previsto= 47.4% observado= 31.0%
     faixa  55%-100%: n=  571 previsto= 62.1% observado= 36.3%
--- os tres grupos pela regra A (deixar ir: chance < 5%; focar agora: chance >= 25% e chance x valor >= 1000; manter aquecido: o resto) --
+-- os tres grupos pela regra A (deixar ir: passou do prazo ou e mais velho que o ganho mais demorado ja visto, 138 dias;
+   focar agora: chance >= 25% e chance x valor >= 1000; manter aquecido: o resto) --
   grupo                  n  ganhos  perdidos  sem desf.  % ganho   valor ganho  valor de tabela
   focar agora          735     257       106        372    35.0%     1.210.826        3.490.058
-  manter aquecido     1077     339       170        568    31.5%       227.911          832.016
-  deixar ir            462       3         3        456     0.6%         6.484        1.169.296
-    manter aquecido / esfriando (chance 5-25%): n=123 ganhos=34
+  manter aquecido     1189     342       173        674    28.8%       234.395        1.135.262
+  deixar ir            350       0         0        350     0.0%             0          866.050
+    manter aquecido / chance abaixo de 25%: n=235 ganhos=37
     manter aquecido / vivo de valor baixo: n=954 ganhos=305
 -- esfriando: vivo hoje (chance >= 25%), mas abaixo disso se seguir aberto por mais 30 dias --
   esfriando          n=  646 ganhos em 90 dias= 323 dos quais nos primeiros 30 dias= 221 (68%)
   vivo, sem pressa   n= 1043 ganhos em 90 dias= 239 dos quais nos primeiros 30 dias= 113 (47%)
-  'deixar ir' ate o fim dos dados (2017-12-31): ganhos=3 perdidos=3 ainda abertos=456 de 462
+  'deixar ir' ate o fim dos dados (2017-12-31): ganhos=0 perdidos=0 ainda abertos=350 de 350
 
 ==== CORTE 2017-10-02 (desfecho observado ate 2017-12-31, 90 dias) ====
 aprende de 5 fotos passadas (2017-03-06, 2017-04-05, 2017-05-05, 2017-06-04, 2017-07-04), 4700 linhas, todas com janela encerrada ate o corte (candidatos B e C)
@@ -193,7 +195,8 @@ listas: 30 vendedores, tamanho min=18 mediana=77 max=157
     faixa  25%- 40%: n=  655 previsto= 35.2% observado= 37.9%
     faixa  40%- 55%: n=  334 previsto= 44.6% observado= 33.2%
     faixa  55%-100%: n=  732 previsto= 61.2% observado= 29.6%
--- os tres grupos pela regra A (deixar ir: chance < 5%; focar agora: chance >= 25% e chance x valor >= 1000; manter aquecido: o resto) --
+-- os tres grupos pela regra A (deixar ir: passou do prazo ou e mais velho que o ganho mais demorado ja visto, 138 dias;
+   focar agora: chance >= 25% e chance x valor >= 1000; manter aquecido: o resto) --
   grupo                  n  ganhos  perdidos  sem desf.  % ganho   valor ganho  valor de tabela
   focar agora          743     250       176        317    33.6%     1.141.335        3.443.164
   manter aquecido      992     326       220        446    32.9%       164.746          528.113
@@ -214,8 +217,24 @@ listas: 30 vendedores, tamanho min=18 mediana=77 max=157
   A' regras, so a chance                       72.5 de 150       187.242         70.5 de 150       166.698         63.0 de 150       124.006
 -- os tres grupos, somando os 3 cortes --
   focar agora        n= 2094 ganhos=  769 (36.7%) perdidos=  447 sem desfecho=  878 valor ganho=3.609.564 (86.1% do total)
-  manter aquecido    n= 2809 ganhos= 1012 (36.0%) perdidos=  589 sem desfecho= 1208 valor ganho=578.621 (13.8% do total)
-  deixar ir          n= 1529 ganhos=    3 (0.2%) perdidos=    4 sem desfecho= 1522 valor ganho=6.484 (0.2% do total)
+  manter aquecido    n= 2921 ganhos= 1015 (34.7%) perdidos=  592 sem desfecho= 1314 valor ganho=585.105 (13.9% do total)
+  deixar ir          n= 1417 ganhos=    0 (0.0%) perdidos=    1 sem desfecho= 1416 valor ganho=0 (0.0% do total)
+
+== 7b. Robustez: os mesmos numeros em mais seis cortes (top 5 por vendedor, valor ganho) ==
+  corte         ref: ordenar por valor  A regras (tempo x valo  B pontos (tempo+produt   C regressao logistica   deixar ir: ganhos/n
+  2017-06-01                   462.087                 479.126                 462.087                 313.050                  0/84
+  2017-06-16                   421.095                 461.146                 421.095                 487.619                 0/109
+  2017-07-01                   387.942                 424.750                 369.383                 319.855                 0/350
+  2017-07-16                   400.389                 470.190                 436.946                 459.605                 0/350
+  2017-08-01                   344.588                 389.116                 426.776                 294.128                 0/350
+  2017-08-16                   317.671                 334.823                 405.193                 394.838                 0/350
+  2017-09-01                   238.226                 286.684                 256.775                 197.390                 0/411
+  2017-09-16                   242.992                 279.848                 196.820                 260.095                 0/471
+  2017-10-02                   230.548                 278.378                 295.237                 284.303                 0/717
+  A regras (tempo x valor): ganha de 'ordenar por valor' em 9 de 9 cortes
+  B pontos (tempo+produto+vendedor): ganha de 'ordenar por valor' em 5 de 9 cortes
+  C regressao logistica: ganha de 'ordenar por valor' em 5 de 9 cortes
+  'deixar ir' nos 9 cortes: 0 ganhos em 3192 negocios-corte (0.00%); as janelas se sobrepoem, o mesmo negocio conta em mais de um corte
 
 == 8. Hoje (2017-12-31): a regra A aplicada aos abertos ==
 regra A: de cada 100 negocios que chegaram abertos a esta idade, quantos foram ganhos nos 90 dias seguintes
@@ -239,5 +258,6 @@ regra A: de cada 100 negocios que chegaram abertos a esta idade, quantos foram g
   deixar ir          n= 1474  valor de tabela=3.656.299
   esfriando hoje (vivos que caem abaixo de 25% em 30 dias): 53
   'focar agora' por vendedor: min=0 mediana=1 max=6 (27 vendedores com Engaging aberto)
+  vivos (focar agora + manter aquecido) por vendedor: min=0 mediana=5 max=12; vendedores sem nenhum vivo: 10 de 27; sem nenhum em 'focar agora': 13 de 27
   idade dos Engaging abertos hoje: min=9 mediana=165 max=423; o ganho mais demorado da historia levou 138 dias; abertos hoje mais velhos que isso: 1291 de 1589
   Prospecting: 500 negocios sem data nenhuma: nao podem ser postos no tempo, nenhum corte os mede; ficam fora dos tres grupos e a tela diz isso.

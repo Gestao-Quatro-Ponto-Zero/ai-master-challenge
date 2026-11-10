@@ -8,8 +8,10 @@ happened to them in the HORIZON days after C.
 Run from anywhere:  python submissions/daniel-resende/solution/validate.py
 Standard library only. The system clock is never read.
 """
+import contextlib
 import csv
 import datetime as dt
+import io
 import math
 import sys
 from collections import Counter, defaultdict
@@ -29,8 +31,11 @@ SHRINK = 50  # pseudo-observations pulling a small segment towards the base rate
 
 # Group thresholds on the learned chance (see section 6 for what they deliver).
 ALIVE_MIN = 0.25  # chance >= 25%: the deal is alive
-DROP_MAX = 0.05  # "deixar ir": chance < 5%
 FOCUS_EV_MIN = 1000.0  # "focar agora": alive and chance x list price >= 1,000
+# Extra cuts, reported only in the robustness table (section 7b): every half month
+# in which both a learning window and a 90-day outcome window fit inside the data.
+EXTRA_CUTS = [dt.date(2017, 6, 1), dt.date(2017, 6, 16), dt.date(2017, 7, 16),
+              dt.date(2017, 8, 1), dt.date(2017, 9, 1), dt.date(2017, 9, 16)]
 COOL_DAYS = 30  # "esfriando": alive today, below ALIVE_MIN if still open in 30 days
 DEADLINE_MAX_LATE = 0.01  # the quarter deadline is applied only if <= 1% of past closings broke it
 
@@ -186,7 +191,18 @@ def fit_rules(world, cut):
     return {"at_risk": at_risk, "won": won, "lost": lost, "n": len(cohort),
             "max_seen": max(at_risk) if at_risk else 0, "first_close": first_close,
             "closed": len(closed), "late": late, "cut": cut,
-            "use_deadline": late <= DEADLINE_MAX_LATE * len(closed)}
+            "use_deadline": late <= DEADLINE_MAX_LATE * len(closed),
+            "longest_win": max(((w["close"] - w["engage"]).days for w in closed if w["won"]),
+                               default=None)}
+
+
+def is_dead(model, known, ahead=0):
+    """Positive evidence that a deal no longer closes: it is older than the slowest
+    win ever seen, or its quarter deadline has run out. Lack of evidence is not this."""
+    if model["longest_win"] is not None and known["age"] + ahead > model["longest_win"]:
+        return True
+    return (model["use_deadline"] and "engage" in known
+            and (deadline(known["engage"]) - model["cut"]).days - ahead <= 0)
 
 
 def chance_rules(model, known, _rates=None, horizon=HORIZON, ahead=0):
@@ -195,15 +211,21 @@ def chance_rules(model, known, _rates=None, horizon=HORIZON, ahead=0):
     `ahead` asks the same question as if the deal were still open that many days
     from now (used to tell which live deals are about to go cold).
     """
+    if is_dead(model, known, ahead):
+        return 0.0
     alive, chance = 1.0, 0.0
     age = known["age"] + ahead
+    if age and model["at_risk"][age + 1] < MIN_AT_RISK:
+        # nobody was seen reaching this age yet: no evidence either way, so the
+        # deal is treated as an average one (the chance of a deal on day 0)
+        return chance_rules(model, {"age": 0}, horizon=horizon)
     if model["use_deadline"] and "engage" in known:
         # no win is counted after the deal's quarter deadline: the past shows none
         horizon = min(horizon, (deadline(known["engage"]) - model["cut"]).days - ahead)
     for t in range(age + 1, age + horizon + 1):
         n = model["at_risk"][t]
         if n < MIN_AT_RISK:
-            break  # nobody was ever seen this old: no evidence that it still closes
+            break  # the table ends here; what is counted so far is a lower bound
         chance += alive * model["won"][t] / n
         alive *= 1 - (model["won"][t] + model["lost"][t]) / n
     return chance
@@ -345,8 +367,9 @@ def print_curve(rules):
               f" {rules['at_risk'][a + 1]})")
 
 
-def group_of(chance, price):
-    if chance < DROP_MAX:
+def group_of(model, known, chance):
+    price = known["price"]
+    if is_dead(model, known):
         return "deixar ir"
     if chance >= ALIVE_MIN and chance * price >= FOCUS_EV_MIN:
         return "focar agora"
@@ -435,17 +458,18 @@ def run_cut(deals, cut, last_day):
                 obs = sum(1 for i in ids if result[i] == "ganho") / len(ids)
                 print(f"    faixa {lo:4.0%}-{min(hi, 1):4.0%}: n={len(ids):5d} previsto={pred:6.1%} observado={obs:6.1%}")
 
-    print(f"-- os tres grupos pela regra A (deixar ir: chance < {DROP_MAX:.0%}; focar agora: chance >="
-          f" {ALIVE_MIN:.0%} e chance x valor >= {FOCUS_EV_MIN:.0f}; manter aquecido: o resto) --")
+    print(f"-- os tres grupos pela regra A (deixar ir: passou do prazo ou e mais velho que o ganho mais"
+          f" demorado ja visto, {rules['longest_win']} dias;\n   focar agora: chance >= {ALIVE_MIN:.0%} e"
+          f" chance x valor >= {FOCUS_EV_MIN:.0f}; manter aquecido: o resto) --")
     print(f"  {'grupo':<18}{'n':>6}{'ganhos':>8}{'perdidos':>10}{'sem desf.':>11}{'% ganho':>9}"
           f"{'valor ganho':>14}{'valor de tabela':>17}")
     groups = defaultdict(list)
     for k in scored:
-        groups[group_of(chances["A regras (tempo x valor)"][k["id"]], k["price"])].append(k)
+        groups[group_of(rules, k, chances["A regras (tempo x valor)"][k["id"]])].append(k)
     warm = Counter("vivo de valor baixo" if chances["A regras (tempo x valor)"][k["id"]] >= ALIVE_MIN
-                   else "esfriando (chance 5-25%)" for k in groups["manter aquecido"])
+                   else "chance abaixo de 25%" for k in groups["manter aquecido"])
     warm_won = Counter("vivo de valor baixo" if chances["A regras (tempo x valor)"][k["id"]] >= ALIVE_MIN
-                       else "esfriando (chance 5-25%)" for k in groups["manter aquecido"]
+                       else "chance abaixo de 25%" for k in groups["manter aquecido"]
                        if result[k["id"]] == "ganho")
     group_stats = {}
     for g in ("focar agora", "manter aquecido", "deixar ir"):
@@ -538,12 +562,37 @@ def main():
               f" perdidos={st['lost']:5d} sem desfecho={st['no_outcome']:5d}"
               f" valor ganho={money(st['won_value'])} ({st['won_value'] / all_won_value:.1%} do total)")
 
+    print("\n== 7b. Robustez: os mesmos numeros em mais seis cortes (top 5 por vendedor, valor ganho) ==")
+    names = ["ref: ordenar por valor", "A regras (tempo x valor)", "B pontos (tempo+produto+vendedor)",
+             "C regressao logistica"]
+    print(f"  {'corte':<12}" + "".join(f"{n[:22]:>24}" for n in names) + f"{'deixar ir: ganhos/n':>22}")
+    wins_over_value = Counter()
+    every = []
+    for cut in sorted(CUTS + EXTRA_CUTS):
+        if cut in CUTS:
+            summary, _, stats = summaries[CUTS.index(cut)]
+        else:
+            with contextlib.redirect_stdout(io.StringIO()):
+                summary, _, stats = run_cut(deals, cut, last_day)
+        every.append(stats)
+        values = [summary[(n, 5)][2] for n in names]
+        for n, value in zip(names[1:], values[1:]):
+            wins_over_value[n] += value > values[0]
+        print(f"  {str(cut):<12}" + "".join(f"{money(x):>24}" for x in values)
+              + f"{str(stats['deixar ir']['won']) + '/' + str(stats['deixar ir']['n']):>22}")
+    for n in names[1:]:
+        print(f"  {n}: ganha de 'ordenar por valor' em {wins_over_value[n]} de {len(every)} cortes")
+    dropped_n = sum(st["deixar ir"]["n"] for st in every)
+    dropped_won = sum(st["deixar ir"]["won"] for st in every)
+    print(f"  'deixar ir' nos {len(every)} cortes: {dropped_won} ganhos em {dropped_n} negocios-corte"
+          f" ({dropped_won / dropped_n:.2%}); as janelas se sobrepoem, o mesmo negocio conta em mais de um corte")
+
     print(f"\n== 8. Hoje ({last_day}): a regra A aplicada aos abertos ==")
     world = world_at(deals, last_day)
     rules = fit_rules(world, last_day)
     print_curve(rules)
     today = open_at(world, last_day)
-    group = {k["id"]: group_of(chance_rules(rules, k), k["price"]) for k in today}
+    group = {k["id"]: group_of(rules, k, chance_rules(rules, k)) for k in today}
     groups = Counter(group.values())
     for g in ("focar agora", "manter aquecido", "deixar ir"):
         value = sum(k["price"] for k in today if group[k["id"]] == g)
@@ -556,6 +605,12 @@ def main():
     focus = sorted(per_seller[s] for s in sellers)
     print(f"  'focar agora' por vendedor: min={focus[0]} mediana={focus[len(focus) // 2]} max={focus[-1]}"
           f" ({len(sellers)} vendedores com Engaging aberto)")
+    alive_by = Counter(k["seller"] for k in today if group[k["id"]] != "deixar ir")
+    alive = sorted(alive_by[s] for s in sellers)
+    print(f"  vivos (focar agora + manter aquecido) por vendedor: min={alive[0]}"
+          f" mediana={alive[len(alive) // 2]} max={alive[-1]}; vendedores sem nenhum vivo:"
+          f" {sum(a == 0 for a in alive)} de {len(sellers)}; sem nenhum em 'focar agora':"
+          f" {sum(f == 0 for f in focus)} de {len(sellers)}")
     ages = sorted(k["age"] for k in today)
     oldest_won = max((d["close"] - d["engage"]).days for d in deals if d["stage"] == "Won")
     print(f"  idade dos Engaging abertos hoje: min={ages[0]} mediana={ages[len(ages) // 2]} max={ages[-1]};"
