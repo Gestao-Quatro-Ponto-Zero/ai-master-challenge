@@ -107,8 +107,12 @@ semIndice.length ? falha(`FK sem índice: ${semIndice.map((f) => `${f.tabela}.${
 const semRls = await q(`select relname from pg_class c join pg_namespace n on n.oid = c.relnamespace
   where n.nspname = 'public' and c.relkind = 'r' and not c.relrowsecurity`);
 semRls.length ? falha(`sem RLS: ${semRls.map((t) => t.relname)}`) : ok("RLS ligado em todas as tabelas");
-const politicas = await q(`select count(*)::int as n from pg_policies where schemaname = 'public'`);
-politicas[0].n === 0 ? ok("nenhuma política pública de RLS") : falha(`${politicas[0].n} políticas de RLS`);
+const politicas = await q(`select count(*)::int as n from pg_policies where schemaname = 'public' and roles <> array['system_carga']::name[]`);
+politicas[0].n === 0 ? ok("nenhuma política de RLS fora do papel de carga (nenhuma para anon, authenticated ou service_role)") : falha(`${politicas[0].n} políticas de RLS fora do papel de carga`);
+const execCarga = await q(`select string_agg(p.proname, ', ') as f from pg_proc p join pg_namespace n on n.oid = p.pronamespace
+  where n.nspname = 'public' and p.proname in ('system_iniciar_contexto_sistema', 'score_ativar_execucao', 'config_gerar_usuarios', 'core_repassar_deal')
+    and has_function_privilege('service_role', p.oid, 'execute')`);
+execCarga[0].f === null ? ok("service_role não executa as funções de carga (contexto sistema, score, usuários, repasse)") : falha(`service_role executa: ${execCarga[0].f}`);
 
 const semBloqueio = await q(`select c.relname from pg_class c join pg_namespace n on n.oid = c.relnamespace
   where n.nspname = 'public' and c.relkind = 'r'
@@ -304,7 +308,15 @@ imp.aceitas === 1 && reimp.aceitas === 0 && reimp.ja_existiam === 2 ? ok("import
 // Prioridades do dia
 const lista = await fn("acao_prioridades_do_dia", [anna, corr()]);
 lista.length > 0 && lista[0].opportunity_id ? ok(`prioridades da vendedora: ${lista.length} itens, 1º ${lista[0].opportunity_id} (nota ${lista[0].score})`) : falha("prioridades");
-await fn("acao_marcar_prioridade", [anna, corr(), lista[0].opportunity_id, "feita", null]);
+// Decisão 37: ✓ exige tipo de atividade e comentário
+await esperaErro("✓ sem tipo de atividade (assinatura antiga)", () => fn("acao_marcar_prioridade", [anna, corr(), lista[0].opportunity_id, "feita", null]), "GS400");
+await esperaErro("✓ sem comentário", () => fn("acao_marcar_prioridade", [anna, corr(), lista[0].opportunity_id, "feita", "ligacao", " "]), "GS400");
+await esperaErro("✓ com tipo inexistente", () => fn("acao_marcar_prioridade", [anna, corr(), lista[0].opportunity_id, "feita", "telepatia", "ok"]), "GS400");
+const feita = (await fn("acao_marcar_prioridade", [anna, corr(), lista[0].opportunity_id, "feita", "ligacao", "Falei com Compras; pediu proposta."]))[0];
+feita.tipo_atividade === "ligacao" && feita.prioridade_id && feita.nota && feita.criado_em
+  ? ok("✓ grava tipo, comentário, item da lista e horário real") : falha(`✓: ${JSON.stringify(feita)}`);
+const ucFeita = (await q(`select ultimo_contato_em from core_deals where opportunity_id = $1`, [lista[0].opportunity_id]))[0].ultimo_contato_em;
+ucFeita ? ok("✓ com atividade atualiza o último contato") : falha("✓ não atualizou o último contato");
 const depois = await fn("acao_prioridades_do_dia", [anna, corr()]);
 depois.find((i) => i.opportunity_id === lista[0].opportunity_id).marcada === "feita" ? ok("✓ marcado como feita") : falha("marcar prioridade");
 await esperaErro("marcar o mesmo item de novo", () => fn("acao_marcar_prioridade", [anna, corr(), lista[0].opportunity_id, "pulada", null]), "GS422");
@@ -320,6 +332,55 @@ const tempo = await fn("core_linha_do_tempo", ["AAAA0001"]);
 const tipos = tempo.map((t) => t.tipo);
 tipos.includes("aberto") && tipos.includes("acao") && tipos.includes("comentario") && tipos.includes("tag")
   ? ok(`linha do tempo: ${tipos.join(", ")}`) : falha(`linha do tempo: ${tipos}`);
+
+// Correção de segurança (0022): papel de carga, correlation_id e limite de escritas
+await esperaErro("app (service_role) chama o contexto sistema",
+  () => db.exec(`set role service_role; select system_iniciar_contexto_sistema(gen_random_uuid());`), "42501");
+await db.exec(`reset role`);
+await esperaErro("app (service_role) escolhe o usuário sistema",
+  () => db.exec(`set role service_role; begin; select system_iniciar_contexto(1, gen_random_uuid()); commit;`), "GS403");
+await db.exec(`rollback`).catch(() => {}); await db.exec(`reset role`);
+const cReuso = corr();
+await db.exec(`begin; select system_iniciar_contexto(${anna}, '${cReuso}'); commit;`);
+await esperaErro("correlation_id reaproveitado em outra transação",
+  () => db.exec(`begin; select system_iniciar_contexto(${anna}, '${cReuso}'); commit;`), "GS400");
+await db.exec(`rollback`).catch(() => {});
+const zane = await usuario("vendedor", "Zane Levy");
+let bloqueado = 0;
+for (let i = 0; i < 32; i++) {
+  try { await db.exec(`set role service_role; begin; select system_iniciar_contexto(${zane}, '${corr()}'); commit; reset role;`); }
+  catch (e) { await db.exec(`rollback`).catch(() => {}); await db.exec(`reset role`); if (e.code === "GS429") bloqueado = i + 1; break; }
+}
+bloqueado === 31 ? ok("limite de escritas do app: o 31º pedido no minuto é recusado (GS429), contado pelo banco") : falha(`limite: bloqueou no pedido ${bloqueado}`);
+await db.exec(`set role system_carga; begin; select system_iniciar_contexto_sistema('${corr()}');
+  insert into core_contas (nome, setor, funcionarios, porte, pais) values ('Carga Teste', 'retail', 10, 'pequena', 'Brazil'); commit; reset role;`);
+const cargaOk = (await q(`select a.papel from system_auditoria a where a.tabela = 'core_contas' and a.registro_id = 'Carga Teste'`))[0];
+cargaOk && cargaOk.papel === "sistema" ? ok("papel de carga grava como sistema, com auditoria") : falha(`carga: ${JSON.stringify(cargaOk)}`);
+
+// Decisão 38: repasse e penalidade (só o papel de carga)
+const exAtiva = (await q(`select score_execucao_ativa() as e`))[0].e;
+const repassa = (args) => db.exec(`set role system_carga; begin; select core_repassar_deal('${corr()}', ${args}); commit; reset role;`);
+const falhaRepasse = async (rotulo, args, cod) => {
+  await esperaErro(rotulo, () => repassa(args), cod);
+  await db.exec(`rollback`).catch(() => {}); await db.exec(`reset role`);
+};
+await falhaRepasse("repasse com FIT do novo abaixo de 75", `'AAAA0004', 'Anna Snelling', 'repasse_janela', ${exAtiva}, 80::smallint, 74::smallint, 1::smallint`, "GS422");
+await falhaRepasse("repasse com FIT do novo mais de 3 pontos abaixo do dono", `'AAAA0004', 'Anna Snelling', 'repasse_janela', ${exAtiva}, 80::smallint, 76::smallint, 1::smallint`, "GS422");
+await falhaRepasse("repasse fora do top 5", `'AAAA0004', 'Anna Snelling', 'repasse_janela', ${exAtiva}, 80::smallint, 78::smallint, 6::smallint`, "GS422");
+await esperaErro("app (service_role) chama o repasse",
+  () => db.exec(`set role service_role; select core_repassar_deal(gen_random_uuid(), 'AAAA0004', 'Anna Snelling', 'repasse_janela', null, 80::smallint, 78::smallint, 1::smallint);`), "42501");
+await db.exec(`reset role`);
+await db.exec(`begin; select system_iniciar_contexto_sistema('${corr()}');
+  update config_parametros set valor = '{"pontos": 5, "dias": 7}'::jsonb where chave = 'penalidade_roteamento'; commit;`);
+await repassa(`'AAAA0004', 'Anna Snelling', 'repasse_janela', ${exAtiva}, 80::smallint, 78::smallint, 2::smallint, 'em_risco'`);
+const rep = (await q(`select d.vendedor_nome, r.origem, r.de_vendedor, (select count(*)::int from system_penalidades p where p.reatribuicao_id = r.id) as pen,
+  core_penalidade_ativa(r.de_vendedor) as pontos
+  from core_deals d join acao_reatribuicoes r on r.opportunity_id = d.opportunity_id where d.opportunity_id = 'AAAA0004' order by r.id desc limit 1`))[0];
+rep.vendedor_nome === "Anna Snelling" && rep.origem === "repasse_janela" && rep.pen === 1 && Number(rep.pontos) === 5
+  ? ok(`repasse de janela: lead foi de ${rep.de_vendedor} para Anna; ${rep.de_vendedor} leva 5 pontos de penalidade por 7 dias`)
+  : falha(`repasse: ${JSON.stringify(rep)}`);
+const teto = (await q(`select (valor ->> 'teto_abertos') as t from config_parametros where chave = 'roteamento'`))[0].t;
+teto === null ? ok("roteamento sem teto de abertos (decisão 38)") : falha(`teto: ${teto}`);
 
 // Decisão 33: bonus de 0 a 20 e nota até 120; padrão de compra por conta
 await db.transaction(async (tx) => {

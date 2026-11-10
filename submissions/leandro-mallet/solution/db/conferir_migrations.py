@@ -98,6 +98,9 @@ def main() -> int:
                 for cmd in s.cmds or ():
                     if isinstance(cmd.def_, ast.Constraint):
                         registrar_constraint(s.relation.relname, cmd.def_, None, arq.name)
+                    elif isinstance(cmd.def_, ast.ColumnDef):          # add column ... references
+                        for c in cmd.def_.constraints or ():
+                            registrar_constraint(s.relation.relname, c, cmd.def_.colname, arq.name)
             elif isinstance(s, ast.IndexStmt):
                 n_indices_explicitos += 1
                 if not PREFIXO.match(s.idxname or ""):
