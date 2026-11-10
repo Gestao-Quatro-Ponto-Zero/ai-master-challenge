@@ -196,4 +196,5 @@ A #5 aplicou 0007–0026 no Supabase, sem erro. Contagem: 29 tabelas, 60 FKs (RE
 - App ligado ao banco (O-15) e com o disjuntor corrigido (O-17, depois de alerta automático: entrada mal formada derrubava o app para somente leitura). 69 testes.
 - Publicado com as variáveis do banco como segredo na Vercel. Verificado online: /api/health com banco ok e fonte banco; Painel com "Fonte: banco de dados".
 - Dados de teste no banco (o banco não apaga): o lead "Teste de persistência" (88UBTBQ8), um comentário, uma tag "teste" e prioridades de teste, criados pela #4 ao validar a ligação.
+- Teste online das escritas (O-18, #5): aprovado. ✓/✗, estágio (Ganho com valor, Perdido), comentário, contato, tag e lote com Desfazer gravam e persistem depois de recarregar e de ~7 minutos. Números do Painel batem com o banco nos 3 perfis. 15 entradas mal formadas e 5 tokens de desfazer ruins → 400, sem derrubar o app. Escritas feitas só em leads de teste, menos um ✓ num lead real da lista da vendedora de teste (registrado no relatório). Conferido pela #1: relatório, 7 prints e /api/health. Achados leves N1–N4 viraram a O-19 da #4.
 
