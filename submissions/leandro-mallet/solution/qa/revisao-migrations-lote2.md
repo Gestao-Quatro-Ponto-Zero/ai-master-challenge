@@ -1,8 +1,8 @@
 # Revisão e aplicação — banco, lote 2
 
-**Veredito: pode rodar. 0007–0028 aplicadas em 10/11/2026, sem erro.** O L2-1 foi fechado pela 0028. Ficam abertos L2-5 (média: auditoria forjável por inserção direta) e L2-6 (leve), com a correção proposta, para uma próxima migration.
+**Veredito: pode rodar. 0007–0029 aplicadas em 10/11/2026, sem erro.** L2-1 fechado pela 0028; L2-5 e L2-6 fechados pela 0029. Nenhum achado aberto.
 
-Ordens O-03 (0007–0025, com o acréscimo da 0026), O-10 (0027) e O-12 (0028). O lote 1 já estava aplicado e não foi reaplicado ([revisao-migrations-lote1.md](revisao-migrations-lote1.md)).
+Ordens O-03 (0007–0025, com o acréscimo da 0026), O-10 (0027), O-12 (0028) e O-16 (0029). O lote 1 já estava aplicado e não foi reaplicado ([revisao-migrations-lote1.md](revisao-migrations-lote1.md)).
 
 ## Como foi validado e aplicado
 
@@ -35,6 +35,7 @@ Ordens O-03 (0007–0025, com o acréscimo da 0026), O-10 (0027) e O-12 (0028). 
 | 0026_limite_global.sql | `ea36c7b605248f5e6f882cc6ec79405fc91f73e4ac3ea49bd2c3abb2619c443a` (commit `d6c4f12`; igual ao do repositório desde `dd5358f`) |
 | 0027_limite_exato.sql | `d3a2f05c426a0d548201ca574a5c6416f1597bce7b5e7336122fd954e0a13a62` (commit `dd5358f`) |
 | 0028_contexto_obrigatorio.sql | `df81c94ef246ad5866f3cc9e84e5c39a2c838b55bf3cb687ae3f99f5b02abdb7` (commit `375cd5f`) |
+| 0029_reforco_contexto.sql | `3ac678a551539f77dd22850ef75d4127bd74f2a300ac2e53ff7a82cc5d1bb54f` (aplicada antes do commit, a partir da pasta de trabalho; o commit precisa ter este mesmo hash) |
 
 ### O caso da 0026
 
@@ -109,6 +110,36 @@ Testes extras desta rodada, que levaram aos achados L2-5 e L2-6:
 | `service_role` insere em `score_execucoes` direto, sem contexto | aceito, sem linha de auditoria (desfeito) |
 | Tabelas sem gatilho de auditoria em que a `service_role` insere e altera | `score_componentes`, `score_deals`, `score_execucoes`, `score_fit_vendedores`, `score_motivos`, `score_padroes_conta`, `system_auditoria`, `system_correlacoes`, `system_eventos` |
 
+### Depois da 0029 (O-16)
+
+**Conferência antes de aplicar** (a 0029 ainda não estava no git; o arquivo da pasta de trabalho foi copiado e o hash conferido de novo na hora de aplicar):
+
+| Pedido | Coberto? |
+|---|---|
+| 1. Usuário inexistente ou inativo recusado (GS401) em `system_correlacoes_conferir` (pedido do app) e em `system_auditar` | ✅ |
+| 2. L2-5: `system_auditar` e `system_registrar_evento` SECURITY DEFINER, dono `postgres`, `search_path` fixo; sem INSERT/UPDATE em `system_auditoria` e `system_eventos` para `service_role` e `system_carga`; sem INSERT direto em `system_correlacoes` pela `service_role` | ✅ e, além disso, as outras 4 funções que gravam nessas tabelas também viraram SECURITY DEFINER. Como dentro delas `current_user` passa a ser o dono, a 0029 também faz `system_eh_papel_do_app` olhar o papel ativo da sessão (`SET ROLE`), que é como o Supabase troca para `service_role` |
+| 3. L2-6: sem INSERT/UPDATE em `score_*` para `service_role`, com SELECT mantido; a carga continua gravando | ✅ |
+| 4. Testes no validador | ✅ 11 novos; total 133 linhas ok, 0 falha (as 122 anteriores continuam passando) |
+| 5. Compatibilidade com o app (commit `4ff100f`) | ✅ o app chama 19 funções e lê 17 tabelas ou views, todas existentes no banco e permitidas à `service_role` depois da 0029. Nenhuma função chamada pelo app grava direto nas tabelas que perderam permissão: nas migrations, toda gravação em `system_auditoria`, `system_eventos` e `system_correlacoes` está dentro das 6 funções SECURITY DEFINER, e nenhuma grava em `score_*` |
+
+**Testes no Supabase depois de aplicar** (cada um numa transação desfeita):
+
+| Teste | Resultado |
+|---|---|
+| Linha forjada na auditoria pela `service_role` / pelo `system_carga` | **recusado, 42501** / **recusado, 42501** |
+| Evento e registro de pedido inseridos direto pela `service_role` | recusado, 42501 |
+| Caminho normal do app (`system_iniciar_contexto` + UPDATE) | aceito; 1 linha de auditoria (usuário 3, vendedor), pedido com `do_app` verdadeiro |
+| Função de escrita do app (`acao_comentar` como `service_role`) | aceito e auditado |
+| Usuário inativo pelo caminho do app | recusado, GS401 |
+| Usuário inativo gravando com o contexto ajustado à mão | recusado, GS401 |
+| `service_role`: INSERT em `score_execucoes`, UPDATE em `score_deals` | recusado, 42501 |
+| `service_role`: SELECT em `score_deals` | permitido |
+| Carga (`system_carga`): grava `score_execucoes`, ativa a execução (evento `carga_score` pela função) e faz UPDATE com contexto sistema | aceito; auditado como sistema |
+| Catálogo | 70 funções, 87 gatilhos; as 6 funções SECURITY DEFINER com dono `postgres` e `search_path=public, pg_temp` |
+| Restos dos meus testes | nenhum: usuários inativos 0, deals alterados 0, `score_execucoes` 0 |
+
+**Registros que já estavam no banco e não são destes testes:** entre 05:50 e 05:55 UTC de 10/11 (antes da 0029, aplicada às 06:00), o app gravou no banco: 12 pedidos em `system_correlacoes` (origem app; usuários 2, 3, 5 e 38), 1 evento `lote_aplicado`, 35 linhas de auditoria e 1 comentário ("Comentário de teste de persistência", deal `88UBTBQ8`). Pelo horário e pelo texto, são os testes da sessão do app depois de ligá-lo ao banco (O-15). Não foram apagados (regra do projeto); o reset da demonstração por data cuida deles.
+
 ## Achados
 
 | # | Gravidade | Achado | Correção proposta |
@@ -117,5 +148,5 @@ Testes extras desta rodada, que levaram aos achados L2-5 e L2-6:
 | L2-2 | Informação | `acao_marcar_prioridade` tem duas assinaturas. A antiga, de 5 argumentos, é proposital: chama a nova com o tipo vazio, então um ✓ por ela é recusado e só o ✗ passa | Nenhuma |
 | L2-3 | Informação | A função `rls_auto_enable` (sem prefixo) existe em `public`, mas é do Supabase, não das nossas migrations | Nenhuma; contar só as funções com prefixo |
 | L2-4 | Resolvido | Risco de o ajuste `>` para `>=` baixar o teto para 29/299 | A 0027 trocou também a contagem (só pedidos anteriores); medido: 30/300 aceitos, como pedido |
-| L2-5 | **Média** | A auditoria pode ser forjada: `service_role` e `system_carga` têm INSERT direto em `system_auditoria` e gravam uma linha com qualquer usuário, papel, tabela e conteúdo. Uma ação que não aconteceu pode aparecer na linha do tempo do deal. Hoje só o servidor (chave da service role) e as cargas conseguem isso, mas fere a premissa de auditoria durável (ARQ-04) | Tornar `system_auditar()` e `system_registrar_evento()` `security definer` (dono `postgres`, `search_path` fixo) e revogar INSERT e UPDATE de `system_auditoria` e `system_eventos` para `service_role` e `system_carga`. O gatilho continua gravando; ninguém grava direto. Testar depois: linha forjada recusada (42501) e caminho normal ainda auditado |
-| L2-6 | Leve | A `service_role` insere e altera as 6 tabelas `score_*` direto, sem contexto, sem auditoria e sem limite. Pelo desenho, as notas vêm só da carga em Python (`system_carga`) | Se o app só lê notas (confirmar com as sessões do score e do app): revogar INSERT e UPDATE de `score_*` para `service_role`. Se o app precisar gravar algo, fazer por função com contexto |
+| L2-5 | **Fechado pela 0029** (era média) | A auditoria podia ser forjada: `service_role` e `system_carga` têm INSERT direto em `system_auditoria` e gravam uma linha com qualquer usuário, papel, tabela e conteúdo. Uma ação que não aconteceu pode aparecer na linha do tempo do deal. Hoje só o servidor (chave da service role) e as cargas conseguem isso, mas fere a premissa de auditoria durável (ARQ-04) | Tornar `system_auditar()` e `system_registrar_evento()` `security definer` (dono `postgres`, `search_path` fixo) e revogar INSERT e UPDATE de `system_auditoria` e `system_eventos` para `service_role` e `system_carga`. O gatilho continua gravando; ninguém grava direto. Testar depois: linha forjada recusada (42501) e caminho normal ainda auditado |
+| L2-6 | **Fechado pela 0029** (era leve) | A `service_role` inseria e alterava as 6 tabelas `score_*` direto, sem contexto, sem auditoria e sem limite. Pelo desenho, as notas vêm só da carga em Python (`system_carga`) | Se o app só lê notas (confirmar com as sessões do score e do app): revogar INSERT e UPDATE de `score_*` para `service_role`. Se o app precisar gravar algo, fazer por função com contexto |

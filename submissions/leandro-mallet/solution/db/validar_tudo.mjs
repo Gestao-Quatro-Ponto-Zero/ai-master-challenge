@@ -383,10 +383,58 @@ await esperaErro("atalho: app registra evento sem pedido registrado",
     select set_config('app.usuario_id', '${anna}', true), set_config('app.correlation_id', '${corr()}', true);
     select system_registrar_evento('teste_atalho'); commit;`), "GS401");
 await limpa();
-await esperaErro("registro forjado direto em system_correlacoes passa pelos limites (usuário já no limite)",
+// 0029: inserção direta nas três tabelas é proibida para o app (só as funções gravam)
+await esperaErro("INSERT direto do service_role em system_correlacoes",
   () => db.exec(`set role service_role; begin;
-    insert into system_correlacoes (correlation_id, usuario_id, transacao, do_app) values ('${corr()}', ${zane}, 0, false); commit;`), "GS429");
+    insert into system_correlacoes (correlation_id, usuario_id, transacao, do_app) values ('${corr()}', ${zane}, 0, false); commit;`), "42501");
 await limpa();
+await esperaErro("INSERT direto do service_role em system_eventos",
+  () => db.exec(`set role service_role; begin; insert into system_eventos (tipo) values ('forjado'); commit;`), "42501");
+await limpa();
+await esperaErro("INSERT direto do service_role em system_auditoria",
+  () => db.exec(`set role service_role; begin; insert into system_auditoria (tabela, registro_id, operacao, depois, usuario_id, papel, correlation_id, data_negocio)
+    values ('core_deals', 'X', 'insert', '{}'::jsonb, ${anna}, 'vendedor', '${corr()}', current_date); commit;`), "42501");
+await limpa();
+// L2-5: nem a carga forja auditoria ou eventos
+await esperaErro("L2-5: system_carga forja linha de auditoria atribuindo ação a um manager",
+  () => db.exec(`set role system_carga; begin; insert into system_auditoria (tabela, registro_id, operacao, depois, usuario_id, papel, correlation_id, data_negocio)
+    values ('core_deals', 'AAAA0001', 'update', '{}'::jsonb, ${dustin}, 'manager', '${corr()}', current_date); commit;`), "42501");
+await limpa();
+await esperaErro("L2-5: system_carga insere evento direto",
+  () => db.exec(`set role system_carga; begin; insert into system_eventos (tipo) values ('forjado'); commit;`), "42501");
+await limpa();
+// L2-6: o app só lê as notas; a carga grava
+await esperaErro("L2-6: service_role insere execução de score",
+  () => db.exec(`set role service_role; begin; insert into score_execucoes (reference_date, gerado_em, versao, arquivo_sha256)
+    values ('2017-12-31', now(), 'app', repeat('d', 64)); commit;`), "42501");
+await limpa();
+await esperaErro("L2-6: service_role altera nota",
+  () => db.exec(`set role service_role; begin; update score_deals set score = 99 where opportunity_id = 'AAAA0001'; commit;`), "42501");
+await limpa();
+await db.exec(`set role service_role`);
+const lidasApp = (await q(`select count(*)::int as n from score_deals`))[0].n;
+await db.exec(`reset role`);
+lidasApp > 0 ? ok(`L2-6: service_role continua lendo as notas (${lidasApp})`) : falha("L2-6: service_role não lê as notas");
+const execAntes = (await q(`select score_execucao_ativa() as e`))[0].e;
+await db.exec(`set role system_carga; begin; select system_iniciar_contexto_sistema('${corr()}');
+  insert into score_execucoes (reference_date, gerado_em, versao, arquivo_sha256) values ('2017-12-31', now(), 'carga', repeat('e', 64));
+  select score_ativar_execucao('${corr()}'::uuid, (select max(id) from score_execucoes)); commit; reset role;`).catch(async (e) => { await limpa(); throw e; });
+const evCarga = (await q(`select count(*)::int as n from system_eventos where tipo = 'carga_score'`))[0].n;
+evCarga > 0 ? ok("L2-6: system_carga grava a execução de score e a ativa (evento carga_score pela função)") : falha("carga do score");
+// devolve a execução de teste original como ativa, para os testes seguintes
+await db.exec(`set role system_carga; begin; select score_ativar_execucao('${corr()}'::uuid, ${execAntes}); commit; reset role;`);
+
+// 0029: usuário inativo recusado também na auditoria e no registro do pedido
+const inativo = await usuario("vendedor", "Wilburn Farren");
+await db.exec(`begin; select system_iniciar_contexto_sistema('${corr()}'); update config_usuarios set ativo = false where id = ${inativo}; commit;`);
+await esperaErro("usuário inativo: app pelo caminho normal",
+  () => db.exec(`set role service_role; begin; select system_iniciar_contexto(${inativo}, '${corr()}'); commit;`), "GS401");
+await limpa();
+await esperaErro("usuário inativo: auditoria recusa a gravação mesmo com o contexto ajustado à mão",
+  () => db.exec(`begin; select set_config('app.usuario_id', '${inativo}', true), set_config('app.correlation_id', '${corr()}', true);
+    update core_deals set nome = 'inativo' where opportunity_id = 'AAAA0002'; commit;`), "GS401");
+await limpa();
+await db.exec(`begin; select system_iniciar_contexto_sistema('${corr()}'); update config_usuarios set ativo = true where id = ${inativo}; commit;`);
 const hayden = await usuario("vendedor", "Hayden Neloms");
 const cNormal = corr();
 await db.exec(`set role service_role; begin; select system_iniciar_contexto(${hayden}, '${cNormal}');
