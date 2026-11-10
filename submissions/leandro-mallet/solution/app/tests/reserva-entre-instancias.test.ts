@@ -35,7 +35,7 @@ describe("reserva em arquivo com várias instâncias do servidor", () => {
     const { colunasPipeline, escopoDe, mudarEstagio } = await repo();
     const anna = await usuario("vendedor", "Anna Snelling");
     const colunas = await colunasPipeline(escopoDe(anna), {}, "nota", 5);
-    const deal = colunas.find((c) => c.estagio === "Engaging")?.cartoes[0];
+    const deal = colunas.find((c) => c.etapa === "negociacao")?.cartoes[0];
     expect(deal).toBeDefined();
 
     novaInstancia();
@@ -46,7 +46,7 @@ describe("reserva em arquivo com várias instâncias do servidor", () => {
   it("B2: versão realmente antiga continua dando conflito (409)", async () => {
     const { colunasPipeline, escopoDe, mudarEstagio } = await repo();
     const anna = await usuario("vendedor", "Anna Snelling");
-    const deal = (await colunasPipeline(escopoDe(anna), {}, "nota", 5)).find((c) => c.estagio === "Prospecting")!.cartoes[0]!;
+    const deal = (await colunasPipeline(escopoDe(anna), {}, "nota", 5)).find((c) => c.etapa === "novo")!.cartoes[0]!;
     await mudarEstagio(anna, deal.id, deal.atualizadoEm, "Engaging");
     await expect(mudarEstagio(anna, deal.id, deal.atualizadoEm, "Lost")).rejects.toMatchObject({ codigo: "GS409" });
   });

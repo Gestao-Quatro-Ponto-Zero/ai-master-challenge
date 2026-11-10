@@ -49,7 +49,7 @@ Legenda: **D** = vem do dataset · **C** = calculado · **N** = dado novo do CRM
 | Porte | C | faixa de `accounts.employees` → `core_contas.funcionarios`: pequena (até 1.428), média (até 4.540) e grande | Tercis calculados na limpeza. **[P3]** Porte por funcionários (proposta) ou por receita (`accounts.revenue`)? |
 | Vendedor | D | `sales_pipeline.sales_agent` → `core_deals.vendedor_nome` | |
 | Manager e região | D | `sales_teams.manager`, `sales_teams.regional_office` → `core_vendedores.manager_nome` → `core_managers.escritorio_nome` | |
-| Estágio | D | `sales_pipeline.deal_stage` → `core_deals.estagio` | Na tela: Prospecção, Em negociação, Ganho e Perdido |
+| Estágio | D | `sales_pipeline.deal_stage` → `core_deals.estagio` | Na tela (O-31): Novo lead, Atendimento (Prospecting sem e com contato registrado), Em negociação, Fechado e Perdido |
 | Data de abertura | D/N | `sales_pipeline.engage_date` (o início da negociação, pela definição do dataset) → `core_deals.data_abertura`. No CRM: a data em que o deal passa para Em negociação | Os 500 Prospecting ficam sem data e mostram "Não iniciado". **[P4]** |
 | Dias desde a abertura | C | `data_referencia − data_abertura` | "Não iniciado" quando não há abertura |
 | Ícone (super hot, em risco, esfriou) | C | estágio, dias desde a abertura e preço de tabela, com os cortes de `config_parametros` | Critérios e contagens em 2.4. **[P13]** |
@@ -114,10 +114,12 @@ Requisitos do Leandro para esta tela:
    ao arrastar um cartão aparecem à direita duas áreas: [Ganho] [Perdido]
 ```
 
-- Duas colunas: **Prospecção** e **Em negociação**. O cabeçalho de cada uma mostra a quantidade e a soma do valor esperado no filtro.
-- Até 50 cartões por coluna, na ordem escolhida, e "Mostrar mais" de 50 em 50. Em negociação chega a 1.589 deals para o admin.
-- Ganho e Perdido não são colunas: são áreas de soltar que aparecem durante o arraste.
-- **Celular:** as colunas viram duas abas (Prospecção | Em negociação), e o estágio muda pelo seletor do cartão.
+- **Atualizado (O-31, decisão do Leandro): cinco colunas, uma por etapa:** **Novo lead**, **Atendimento**, **Em negociação**, **Fechado** e **Perdido**. O desenho acima é o de antes.
+  - O banco continua com 4 estágios. Novo lead e Atendimento são o `Prospecting` sem e com contato registrado (`core_deals.ultimo_contato_em`); a separação é feita no app.
+  - O primeiro contato registrado (Liguei, Requalifiquei, ✓ com tipo que conta como contato, ou o registro de atendimento) leva o lead para Atendimento sozinho.
+  - O cabeçalho de cada coluna mostra a quantidade e a soma do valor (abertos: valor esperado; Fechado: valor de fechamento; Perdido: preço de tabela).
+- Até 50 cartões por coluna, na ordem escolhida, e "Mostrar mais" de 50 em 50.
+- **Celular:** as colunas viram abas que rolam para o lado, e a etapa muda pelo controle do cartão.
 
 ### 2.3 Cartão do deal
 
@@ -221,8 +223,10 @@ Clicar no cartão abre um modal sobre o Pipeline (`?deal=ID` no link, que abre d
 ### 2.6 Mudança de estágio
 
 Dois jeitos, **a mesma função auditada** (`core_mudar_estagio`):
-1. **Arrastar** o cartão entre as colunas ou para as áreas Ganho e Perdido.
-2. **Trocar no seletor** do cartão ou do modal, que só oferece as transições válidas.
+1. **Arrastar** o cartão entre as cinco colunas.
+2. **Trocar no controle** do cartão ou do modal, que só oferece as transições válidas.
+
+**Atendimento (O-31):** soltar um Novo lead em Atendimento (ou escolher "Registrar atendimento") abre o registro do contato, com tipo de atividade e comentário obrigatórios (`acao_registrar_contato`, migration 0031). Gravado o contato, o deal aparece em Atendimento; sem contato, não entra. Não existe voltar de Atendimento para Novo lead: o contato não se desfaz (só o "Desfazer" dos primeiros segundos). Na tabela abaixo, "Prospecção" vale para Novo lead e Atendimento, e "Ganho" passou a se chamar **Fechado**.
 
 | De → Para | Permitido | O que pede |
 |---|---|---|
@@ -470,12 +474,13 @@ Números conferidos nos dados limpos (`data/clean/deals.csv`) para os três perf
 
 ### 4.4 Situação do funil
 
-| Barra | Quantidade | Valor (admin) | Origem |
+| Barra (O-31) | Quantidade | Valor | Origem |
 |---|---|---|---|
-| Prospecção | 500 | R$ 1.073.986 (preço de tabela) | `estagio = 'Prospecting'` |
-| Em negociação | 1.589 | R$ 3.892.229 (preço de tabela; depois, valor esperado) | `estagio = 'Engaging'` |
-| Ganho | 4.238 | R$ 10.005.534 (`close_value`) | `estagio = 'Won'` |
-| **Perdido** (separado por uma linha, à parte) | 2.473 | R$ 5.946.468 (preço de tabela do que se perdeu) | `estagio = 'Lost'` |
+| Novo lead | 500 (dataset) | valor esperado | `estagio = 'Prospecting'` e sem contato registrado |
+| Atendimento | 0 no dataset; enche com o uso | valor esperado | `estagio = 'Prospecting'` e com contato registrado |
+| Em negociação | 1.589 | valor esperado | `estagio = 'Engaging'` |
+| Fechado | 4.238 | `close_value` | `estagio = 'Won'` |
+| **Perdido** (em cinza, separado por uma linha, à parte) | 2.473 | preço de tabela do que se perdeu | `estagio = 'Lost'` |
 
 - **Alternância Quantidade | Valor**, e cada barra mostra o número no fim.
 - Tocar numa barra abre Leads (ou o Pipeline, para os abertos) filtrado naquele estágio.
@@ -497,6 +502,10 @@ Números conferidos nos dados limpos (`data/clean/deals.csv`) para os três perf
 **Cartão:** a linha de explicação é o 1º motivo da nota (`score_motivos`, ordem 1). O ícone aparece só como alerta (em risco, esfriou); o atendimento atrasado tem marca própria.
 
 Ficam fora da lista do dia os deals que já tiveram ✓, ✗ ou contato registrado hoje.
+
+**Visual (O-32):** bloco escuro no padrão do deck (degradê navy, texto claro, contador e nota em dourado). Cada lead ocupa uma linha (nome · produto, nota em dourado, ✕ e ✓ em pílula) e uma linha pequena embaixo (valor, há quantos dias e o alerta). O motivo da nota não aparece aberto: clicar no lead abre o deal na parte "Por que a nota é N", com FIT, HEAT e BONUS, os pontos de cada componente e todos os motivos. ✓ e ✕ não abrem o deal. O topo (título, alerta de risco e contador) fica fixo e a lista rola embaixo; no computador aparecem pelo menos 2 itens inteiros.
+
+**Painel em todas as larguras (O-32):** ≥ 1280 px, a grade 4 × 4; de 1024 a 1279, Prioridades e funil em largura cheia no topo e os 8 números em 4 colunas; abaixo de 1024, Prioridades, números em 2 colunas e funil. Os números grandes usam fonte fluida e nunca quebram linha.
 
 **Como a lista anda:**
 - **5 itens visíveis** e uma **meta do dia de 10** (os dois números ficam em `config_parametros`). A barra "3 de 10 feitas" mostra o avanço.
@@ -579,7 +588,8 @@ O último contador vem de `acao_repasses`. Ele nasce em 0, porque o dataset não
 | `para focar` · `requalificar` · `desistir` | Ação sugerida: … |
 | `abertos` · `ganhos` · `perdidos` | Estágio (só Leads) |
 | `prospecção` · `em negociação` | Estágio: … |
-| `ganhos em 2017` · `fechou em março` | Estágio: Ganho + Fechamento em … (só Leads) |
+| `fechados em 2017` · `ganhos em 2017` · `fechou em março` | Estágio: Fechado + Fechamento em … (só Leads) |
+| `novo lead` · `novos leads` · `atendimento` · `em atendimento` | Estágio: Novo lead / Atendimento (O-31) |
 | `valor acima de 3000` · `mais de 5 mil` | Valor esperado ≥ 3.000 / ≥ 5.000 |
 | `#urgente` · `tag urgente` · `sem tag` | Tag: urgente / Sem tag |
 | `com comentário` | Tem comentário |

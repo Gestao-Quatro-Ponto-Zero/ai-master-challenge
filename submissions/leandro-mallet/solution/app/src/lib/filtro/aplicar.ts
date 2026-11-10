@@ -1,5 +1,6 @@
 // Aplica as etiquetas a um deal ou a uma conta. Mesma regra de core_atende_etiquetas no banco.
 import { diasEntre, semAcento } from "../calculos";
+import { etapaDe } from "../etapas";
 import type { ContaVisao, DealVisao } from "../tipos";
 import type { Etiquetas } from "./etiquetas";
 
@@ -14,6 +15,7 @@ const em = <T,>(lista: T[] | undefined, v: T | null): boolean => !lista || (v !=
 export function atendeDeal(d: DealVisao, e: Etiquetas, hoje: string): boolean {
   const semContatoHa = d.ultimoContato ? diasEntre(d.ultimoContato, hoje) : null;
   if (!em(e.estagios, d.estagio)) return false;
+  if (!em(e.etapas, etapaDe(d))) return false;
   if (e.nota_min !== undefined && (d.score === null || d.score < e.nota_min)) return false;
   if (e.nota_max !== undefined && (d.score === null || d.score > e.nota_max)) return false;
   if (e.sem_nota && d.score !== null) return false;

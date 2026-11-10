@@ -3,6 +3,7 @@
 // o que sobrar (sem palavras de ligação) vira a etiqueta "Contém".
 import { CONFIG } from "../config";
 import { dinheiro, ROTULO_ICONE, SETORES, semAcento, somarDias } from "../calculos";
+import { ROTULO_ETAPA, type Etapa } from "../etapas";
 import type { Estagio, Icone, Papel, Porte } from "../tipos";
 import type { Etiqueta } from "./etiquetas";
 
@@ -135,7 +136,7 @@ export function interpretar(frase: string, ctx: Contexto): Resultado {
       add({ chave: "fechamento_ate", valor: ate, rotulo: `até ${br(ate)}` });
     });
     regra(/\b(ganhos?|perdidos?|fechados?|fechou) em (\d{4})\b/, (m) => {
-      if ((m[1] ?? "").startsWith("ganho")) add({ chave: "estagios", valor: ["Won"], rotulo: "Estágio: Ganho" });
+      if (/^(ganho|fechado)/.test(m[1] ?? "")) add({ chave: "estagios", valor: ["Won"], rotulo: "Estágio: Fechado" });
       if ((m[1] ?? "").startsWith("perdido")) add({ chave: "estagios", valor: ["Lost"], rotulo: "Estágio: Perdido" });
       add({ chave: "fechamento_de", valor: `${m[2]}-01-01`, rotulo: `Fechou de 01/01/${m[2]}` });
       add({ chave: "fechamento_ate", valor: `${m[2]}-12-31`, rotulo: `até 31/12/${m[2]}` });
@@ -152,12 +153,16 @@ export function interpretar(frase: string, ctx: Contexto): Resultado {
   regra(/\bdesistir\b/, () => add({ chave: "acoes_sugeridas", valor: ["desistir"], rotulo: "Ação sugerida: desistir" }));
 
   // Estágios
+  // Etapas da tela (O-31): Novo lead, Atendimento, Em negociação, Fechado, Perdido.
   const estagio = (e: Estagio[], r: string) => add({ chave: "estagios", valor: e, rotulo: `Estágio: ${r}` });
-  regra(/\b(prospeccao|prospecting)\b/, () => estagio(["Prospecting"], "Prospecção"));
+  const etapa = (e: Etapa) => add({ chave: "etapas", valor: [e], rotulo: `Estágio: ${ROTULO_ETAPA[e]}` });
+  regra(/\b(novos? leads?|leads? novos?)\b/, () => etapa("novo"));
+  regra(/\b(em )?atendimento\b/, () => etapa("atendimento"));
+  regra(/\b(prospeccao|prospecting)\b/, () => estagio(["Prospecting"], "Novo lead ou atendimento"));
   regra(/\b(em negociacao|negociando|engaging)\b/, () => estagio(["Engaging"], "Em negociação"));
   if (ctx.modo === "leads") {
     regra(/\babertos\b/, () => estagio(["Prospecting", "Engaging"], "abertos"));
-    regra(/\b(ganhos?|won)\b/, () => estagio(["Won"], "Ganho"));
+    regra(/\b(fechados?|ganhos?|won)\b/, () => estagio(["Won"], "Fechado"));
     regra(/\b(perdidos?|lost)\b/, () => estagio(["Lost"], "Perdido"));
   }
 

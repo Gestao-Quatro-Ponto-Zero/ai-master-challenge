@@ -7,6 +7,7 @@ import { diasEntre, dinheiro, faixaNota, moedaNoTexto, icone as calcIcone, nomeP
 import { atendeConta, atendeDeal } from "@/lib/filtro/aplicar";
 import type { Etiquetas } from "@/lib/filtro/etiquetas";
 import type { Contexto, Modo } from "@/lib/filtro/interpretar";
+import { rotularLinhaDoTempo } from "@/lib/etapas";
 import { HORAS_DESFAZER_LOTE, type LoteBruto, type TipoLote } from "@/lib/lotes";
 import { funil, numerosPainel } from "@/lib/painel";
 import { compararPrioridade, entraNaListaDoGestor, explicacaoDoItem, grupoPrioridade, type ItemOrdem } from "@/lib/prioridades";
@@ -266,13 +267,16 @@ export async function detalheDeal(id: string, u: Usuario): Promise<DealDetalhe> 
   const mudouPara = (alvo: string) => eventos.some((e) => e.tipo === "estagio" && e.descricao.endsWith(alvo));
   if (d.dataAbertura && !mudouPara(ROTULO_ESTAGIO.Engaging)) linha.push({ data: d.dataAbertura, momento: null, tipo: "aberto", descricao: "Aberto (entrou em negociação)", autor: null, desfeito: false });
   if ((d.estagio === "Won" || d.estagio === "Lost") && d.closeDate && !eventos.some((e) => e.tipo === "estagio" && e.descricao.includes(`→ ${ROTULO_ESTAGIO[d.estagio]}`)))
-    linha.push({ data: d.closeDate, momento: null, tipo: "fechado", descricao: d.estagio === "Won" ? `Ganho: ${dinheiro(d.closeValue ?? 0)}` : "Perdido", autor: null, desfeito: false });
+    linha.push({ data: d.closeDate, momento: null, tipo: "fechado", descricao: d.estagio === "Won" ? `Fechado: ${dinheiro(d.closeValue ?? 0)}` : "Perdido", autor: null, desfeito: false });
   for (const e of eventos) linha.push({ data: e.data, momento: e.momento, tipo: e.tipo, descricao: e.descricao, autor: e.autor, desfeito: false });
-  const rotuloAcao: Record<TipoAcao, string> = { liguei: "Liguei", requalifiquei: "Requalifiquei", desisti: "Desisti", prioridade_feita: "Feito na prioridade do dia", prioridade_pulada: "Pulado na prioridade do dia" };
+  const rotuloAcao: Record<TipoAcao, string> = { liguei: "Liguei", requalifiquei: "Requalifiquei", desisti: "Desisti", prioridade_feita: "Feito na prioridade do dia", prioridade_pulada: "Pulado na prioridade do dia", contato: "Atendimento" };
+  const tipoRotulo = (c: string | null) => CONFIG.tiposAtividade.find((t) => t.codigo === c)?.rotulo ?? c ?? "";
   for (const a of est.acoes.filter((x) => x.dealId === id))
     linha.push({
       data: a.data, momento: a.criadoEm, tipo: "acao", autor: a.autor, desfeito: !!a.desfeitaEm,
-      descricao: (a.tipoAtividade ? `${CONFIG.tiposAtividade.find((t) => t.codigo === a.tipoAtividade)?.rotulo ?? a.tipoAtividade} (prioridade do dia)` : rotuloAcao[a.acao]) + (a.nota ? ` — "${a.nota}"` : ""),
+      descricao:
+        (a.acao === "contato" ? `Atendimento: ${tipoRotulo(a.tipoAtividade)}` : a.tipoAtividade ? `${tipoRotulo(a.tipoAtividade)} (prioridade do dia)` : rotuloAcao[a.acao]) +
+        (a.nota ? ` — "${a.nota}"` : ""),
     });
   const comentarios = est.comentarios.filter((c) => c.dealId === id && !c.removidoEm);
   for (const c of comentarios) linha.push({ data: c.data, momento: c.criadoEm, tipo: "comentario", descricao: c.texto + (c.editado ? " (editado)" : ""), autor: c.autor, desfeito: false });
@@ -281,7 +285,7 @@ export async function detalheDeal(id: string, u: Usuario): Promise<DealDetalhe> 
     deal,
     componentes: nota?.componentes ?? [],
     motivos: (nota?.motivos ?? []).map(moedaNoTexto),
-    linhaDoTempo: linha,
+    linhaDoTempo: rotularLinhaDoTempo(linha),
     comentarios: comentarios
       .map<Comentario>((c) => ({ id: c.id, autorId: c.usuarioId, autor: c.autor, texto: c.texto, data: c.data, criadoEm: c.criadoEm, editado: c.editado }))
       .sort((a, b) => b.criadoEm.localeCompare(a.criadoEm)),
@@ -589,9 +593,29 @@ export async function registrarAcao(u: Usuario, dealId: string, acao: "liguei" |
 function recalcularContato(est: Estado, d: DealEstado) {
   const contaComoContato = (a: AcaoReg) =>
     (CONFIG.acoesContato as readonly string[]).includes(a.acao) ||
-    (a.acao === "prioridade_feita" && !!CONFIG.tiposAtividade.find((t) => t.codigo === a.tipoAtividade)?.contaComoContato);
+    ((a.acao === "prioridade_feita" || a.acao === "contato") && !!CONFIG.tiposAtividade.find((t) => t.codigo === a.tipoAtividade)?.contaComoContato);
   const contatos = est.acoes.filter((a) => a.dealId === d.id && !a.desfeitaEm && contaComoContato(a));
   d.ultimoContatoCrm = contatos.map((a) => a.data).sort().at(-1) ?? null;
+}
+
+/** Registro de atendimento (O-31): tipo que conta como contato e comentário obrigatórios; deal aberto. */
+export async function registrarAtendimento(u: Usuario, dealId: string, tipoAtividade: string, comentario: string) {
+  exigirEscrita();
+  const est = await estado();
+  const d = travar(est, dealId);
+  if (!ABERTOS.includes(d.estagio)) throw new ErroCRM("GS422", "Só é possível registrar atendimento em deal aberto.");
+  if (!CONFIG.tiposAtividade.some((t) => t.codigo === tipoAtividade && t.contaComoContato)) throw new ErroCRM("GS400", "Escolha o tipo de atividade.");
+  const nota = comentario.trim();
+  if (!nota) throw new ErroCRM("GS400", "Escreva um comentário sobre o que foi feito.");
+  if (nota.length > 280) throw new ErroCRM("GS400", "Comentário de até 280 caracteres, sem HTML.");
+  const r: AcaoReg = { id: est.seq++, dealId, usuarioId: u.id, autor: u.nome, acao: "contato", tipoAtividade, nota, data: dataNegocio(), criadoEm: agoraIso(), diaReal: diaReal(), desfeitaEm: null };
+  est.acoes.push(r);
+  recalcularContato(est, d);
+  const token = registrarDesfazer(est, u, () => {
+    r.desfeitaEm = agoraIso();
+    recalcularContato(est, d);
+  });
+  return { desfazer: token };
 }
 
 export async function comentar(u: Usuario, dealId: string, texto: string) {

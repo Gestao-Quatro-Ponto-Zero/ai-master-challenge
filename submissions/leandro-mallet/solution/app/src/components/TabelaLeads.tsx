@@ -5,7 +5,8 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { pedir } from "@/lib/cliente";
 import { CONFIG } from "@/lib/config";
-import { dataBR, dinheiro, plural, ROTULO_ESTAGIO, ROTULO_MOTIVO, ROTULO_PORTE, rotuloSetor } from "@/lib/calculos";
+import { dataBR, dinheiro, plural, ROTULO_MOTIVO, ROTULO_PORTE, rotuloSetor } from "@/lib/calculos";
+import { rotuloDoDeal } from "@/lib/etapas";
 import { HORAS_DESFAZER_LOTE, ROTULO_LOTE, type TipoLote } from "@/lib/lotes";
 import type { CorTag, DealVisao, MotivoPerda, Papel, Tag } from "@/lib/tipos";
 import { useAvisos } from "./Avisos";
@@ -204,7 +205,7 @@ export function TabelaLeads({ linhas, total, papel, somenteLeitura, mostrarVende
                   </td>
                   {mostrarVendedor ? <td className="truncate px-3" title={d.vendedor}>{d.vendedor}</td> : null}
                   <td className="px-3 whitespace-nowrap">
-                    {ROTULO_ESTAGIO[d.estagio]}
+                    {rotuloDoDeal(d)}
                     {d.motivoPerda ? <span className="block truncate text-xs text-texto-2">{ROTULO_MOTIVO[d.motivoPerda]}</span> : null}
                     {d.icone ? (
                       <span className="mt-0.5 block">

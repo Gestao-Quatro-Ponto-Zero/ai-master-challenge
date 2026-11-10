@@ -74,7 +74,7 @@ export function CartaoNumero({ rotulo, valor, grupo, icone, linha, rodape, info,
         </span>
         <p className={`min-w-0 text-xs font-semibold text-texto-2 ${info ? "pr-7" : ""}`}>{rotulo}</p>
       </div>
-      <p className={`mt-2.5 font-texto text-2xl leading-none font-bold tabular-nums break-words lg:text-numero ${destaque ? "text-numero-dourado" : "text-marinho"}`}>{valor}</p>
+      <p className={`mt-2.5 font-texto text-numero leading-none font-bold whitespace-nowrap tabular-nums ${destaque ? "text-numero-dourado" : "text-marinho"}`}>{valor}</p>
       {linha ? <p className="mt-1.5 truncate text-sm text-texto-2" title={linha}>{linha}</p> : null}
     </>
   );

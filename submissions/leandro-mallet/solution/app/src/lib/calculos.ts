@@ -33,7 +33,7 @@ export function icone(estagio: Estagio, dias: number | null, preco: number, dias
 export const ROTULO_ESTAGIO: Record<Estagio, string> = {
   Prospecting: "Prospecção",
   Engaging: "Em negociação",
-  Won: "Ganho",
+  Won: "Fechado",
   Lost: "Perdido",
 };
 
@@ -110,7 +110,7 @@ export function dinheiroMilhoes(v: number): string {
 
 /** Textos que já chegam prontos do banco e do score ("US$ 3300", "US$ 194.957"): passam para o formato do CRM. */
 export function moedaNoTexto(t: string): string {
-  return t.replace(/US\$ ?(\d{1,3}(?:\.\d{3})+|\d+)/g, (_, n: string) => dinheiro(Number(n.replace(/\./g, ""))));
+  return t.replace(/(?:US|R)\$ ?(\d{1,3}(?:\.\d{3})+|\d+)/g, (_, n: string) => dinheiro(Number(n.replace(/\./g, ""))));
 }
 
 export function inteiro(v: number): string {

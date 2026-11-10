@@ -28,6 +28,11 @@
   }
 }
 
+/* Fundo do bloco escuro (O-32): o mesmo degradê do deck. Fica aqui porque o Tailwind não monta este degradê por tokens. */
+.fundo-escuro {
+  background: radial-gradient(ellipse at 92% 18%, var(--color-escuro-1), var(--color-escuro-2) 58%, var(--color-escuro-3));
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -100,7 +100,8 @@ describe("cartão de número do Painel (O-30)", () => {
     const { CartaoNumero } = await import("@/components/ui/CartaoNumero");
     const leads = html(createElement(CartaoNumero, { grupo: "leads", icone: "pessoas", rotulo: "Leads hoje", valor: "8" }));
     expect(leads).toContain("bg-grupo-leads");
-    expect(leads).toContain("lg:text-numero");
+    expect(leads).toContain("text-numero");
+    expect(leads).toContain("whitespace-nowrap");
     expect(leads).toContain("font-bold");
     expect(leads).toContain("rounded-numero");
     expect(html(createElement(CartaoNumero, { grupo: "fechamento", icone: "trofeu", rotulo: "Fechamentos", valor: "2" }))).toContain("bg-grupo-fechamento");

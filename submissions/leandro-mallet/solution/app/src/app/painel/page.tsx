@@ -47,13 +47,16 @@ export default async function Pagina({ searchParams }: { searchParams: Promise<{
         <FiltrosEquipe filtros={filtros} />
       </div>
 
-      {/* Grade do modelo: 4 colunas × 4 linhas no computador; no celular, Prioridades, números em 2 colunas e funil. */}
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:auto-rows-[minmax(9.5rem,auto)] lg:gap-4">
+      {/* Grade responsiva (O-32):
+          ≥ 1280: a grade 4 × 4 do modelo (Prioridades e funil no meio);
+          1024–1279: Prioridades e funil em largura cheia no topo e os 8 números em 4 colunas embaixo;
+          < 1024: Prioridades, números em 2 colunas e funil. */}
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4 xl:auto-rows-[minmax(9.5rem,auto)]">
         <Prioridades
           itens={prioridades}
           papel={usuario.papel}
           somenteLeitura={somenteLeitura()}
-          className="order-first col-span-2 lg:order-none lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:h-0 lg:min-h-full"
+          className="order-1 col-span-2 max-h-[34rem] lg:col-span-4 xl:order-none xl:col-span-2 xl:col-start-2 xl:row-span-2 xl:row-start-1 xl:h-0 xl:max-h-none xl:min-h-full"
           topo={
             <Link href={filtro({ chave: "icones", valor: ["em_risco"], rotulo: "Ícone: em risco de esfriar" })} className="rounded-selo hover:opacity-80" title="Ver os deals em risco de esfriar no Pipeline">
               <EtiquetaUi tom="atencao" icone="alerta">
@@ -70,7 +73,7 @@ export default async function Pagina({ searchParams }: { searchParams: Promise<{
           valor={dinheiroCurto(n.pipelineAbertoValor)}
           linha={n.pipelinePeloPrecoDeTabela ? "pelo preço de tabela" : "valor esperado"}
           href="/pipeline"
-          className="lg:col-start-1 lg:row-start-1"
+          className="order-2 lg:order-3 xl:order-none xl:col-start-1 xl:row-start-1"
         />
         <CartaoNumero
           grupo="negociacao"
@@ -79,16 +82,16 @@ export default async function Pagina({ searchParams }: { searchParams: Promise<{
           valor={inteiro(n.emNegociacao)}
           linha={dinheiroCurto(n.emNegociacaoValor)}
           href={filtro({ chave: "estagios", valor: ["Engaging"], rotulo: "Estágio: Em negociação" })}
-          className="lg:col-start-4 lg:row-start-1"
+          className="order-2 lg:order-3 xl:order-none xl:col-start-4 xl:row-start-1"
         />
-        <CartaoNumero grupo="leads" icone="pessoa-mais" rotulo="Leads hoje" valor={inteiro(n.leadsHoje)} className="lg:col-start-1 lg:row-start-2" />
+        <CartaoNumero grupo="leads" icone="pessoa-mais" rotulo="Leads hoje" valor={inteiro(n.leadsHoje)} className="order-2 lg:order-3 xl:order-none xl:col-start-1 xl:row-start-2" />
         <CartaoNumero
           grupo="fechamento"
           icone="check"
           rotulo="Fechamentos hoje"
           valor={inteiro(n.fechamentosHoje)}
           linha={`${dinheiro(n.fechamentosHojeValor)} hoje`}
-          className="lg:col-start-4 lg:row-start-2"
+          className="order-2 lg:order-3 xl:order-none xl:col-start-4 xl:row-start-2"
         />
         <CartaoNumero
           grupo="leads"
@@ -96,7 +99,7 @@ export default async function Pagina({ searchParams }: { searchParams: Promise<{
           rotulo={`Leads em ${j} dias`}
           valor={inteiro(n.leadsJanela)}
           rodape={<PilulaVariacao variacao={vs(vLeads)} />}
-          className="lg:col-start-1 lg:row-start-3"
+          className="order-2 lg:order-3 xl:order-none xl:col-start-1 xl:row-start-3"
         />
         <CartaoNumero
           grupo="fechamento"
@@ -111,7 +114,7 @@ export default async function Pagina({ searchParams }: { searchParams: Promise<{
             </>
           }
           info={trimestre}
-          className="lg:col-start-4 lg:row-start-3"
+          className="order-2 lg:order-3 xl:order-none xl:col-start-4 xl:row-start-3"
         />
         <CartaoNumero
           destaque
@@ -120,20 +123,20 @@ export default async function Pagina({ searchParams }: { searchParams: Promise<{
           rotulo="Total de leads"
           valor={inteiro(n.totalLeads)}
           linha="abertos e fechados"
-          className="lg:col-start-1 lg:row-start-4"
+          className="order-2 lg:order-3 xl:order-none xl:col-start-1 xl:row-start-4"
         />
         <CartaoNumero
           grupo="fechamento"
           icone="percentual"
           rotulo={`Conversão em ${j} dias`}
           valor={n.conversaoJanela === null ? "—" : `${(n.conversaoJanela * 100).toLocaleString("pt-BR", { maximumFractionDigits: 1 })}%`}
-          linha={`${inteiro(n.fechamentosJanela)} ganhos e ${inteiro(n.perdidosJanela)} perdidos`}
+          linha={`${inteiro(n.fechamentosJanela)} fechados e ${inteiro(n.perdidosJanela)} perdidos`}
           rodape={<PilulaVariacao variacao={pp === null ? null : { texto: `${Math.abs(pp).toLocaleString("pt-BR")} p.p. vs ${j}d ant.`, sobe: pp >= 0 }} />}
           info={trimestre}
-          className="lg:col-start-4 lg:row-start-4"
+          className="order-2 lg:order-3 xl:order-none xl:col-start-4 xl:row-start-4"
         />
 
-        <Funil barras={funil} className="order-last col-span-2 lg:order-none lg:col-start-2 lg:row-span-2 lg:row-start-3" />
+        <Funil barras={funil} className="order-3 col-span-2 lg:order-2 lg:col-span-4 xl:order-none xl:col-span-2 xl:col-start-2 xl:row-span-2 xl:row-start-3" />
       </div>
 
           {time.length ? (

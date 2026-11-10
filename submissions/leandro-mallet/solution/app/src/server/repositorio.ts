@@ -9,7 +9,8 @@ import { atendeConta, atendeDeal } from "@/lib/filtro/aplicar";
 import type { Etiquetas } from "@/lib/filtro/etiquetas";
 import type { Contexto, Modo } from "@/lib/filtro/interpretar";
 import { lotesRecentesPara } from "@/lib/lotes";
-import { funil, numerosPainel } from "@/lib/painel";
+import { ETAPAS, etapaDe } from "@/lib/etapas";
+import { funil, numerosPainel, valorNaEtapa } from "@/lib/painel";
 import type { ContaDetalhe, ContaVisao, CorTag, DealDetalhe, DealVisao, Escopo, Estagio, LoteRecente, MotivoPerda, Pagina, Prioridade, Tag, Usuario } from "@/lib/tipos";
 import { bancoAtivo, BancoFora, ErroCRM } from "./banco";
 import * as A from "./repositorio-arquivo";
@@ -81,10 +82,11 @@ export async function buscarDeals(e: Escopo, et: Etiquetas, ordem: A.Ordem, offs
 
 export async function colunasPipeline(e: Escopo, et: Etiquetas, ordem: A.Ordem, limite: number) {
   const hoje = dataNegocio();
-  const abertos = (await deals(e, true)).filter((d) => atendeDeal(d, et, hoje));
-  return (["Prospecting", "Engaging"] as const).map((estagio) => {
-    const l = A.ordenar(abertos.filter((d) => d.estagio === estagio), ordem);
-    return { estagio, total: l.length, valor: l.reduce((a, d) => a + (d.valorEsperado ?? 0), 0), cartoes: l.slice(0, limite) };
+  const lista = (await deals(e)).filter((d) => atendeDeal(d, et, hoje));
+  // Cinco colunas (O-31): Novo lead e Atendimento são o Prospecting sem e com contato registrado.
+  return ETAPAS.map((etapa) => {
+    const l = A.ordenar(lista.filter((d) => etapaDe(d) === etapa), ordem);
+    return { etapa, total: l.length, valor: l.reduce((a, d) => a + valorNaEtapa(d), 0), cartoes: l.slice(0, limite) };
   });
 }
 
@@ -180,6 +182,10 @@ export const salvarContato = (u: Usuario, dados: { id?: number; conta: string | 
 
 export const registrarAcao = (u: Usuario, dealId: string, acao: "liguei" | "requalifiquei" | "desisti", nota?: string | null) =>
   gravando<{ desfazer: string | null }>(() => B.registrarAcao(u, dealId, acao, nota), () => A.registrarAcao(u, dealId, acao, nota));
+
+/** Registro de atendimento (O-31): o primeiro contato leva o lead de Novo lead para Atendimento. */
+export const registrarAtendimento = (u: Usuario, dealId: string, tipoAtividade: string, comentario: string) =>
+  gravando<{ desfazer: string | null }>(() => B.registrarAtendimento(u, dealId, tipoAtividade, comentario), () => A.registrarAtendimento(u, dealId, tipoAtividade, comentario));
 
 export const comentar = (u: Usuario, dealId: string, texto: string) => gravando(() => B.comentar(u, dealId, texto), () => A.comentar(u, dealId, texto));
 export const removerComentario = (u: Usuario, id: number) => gravando<{ desfazer: string | null }>(() => B.removerComentario(u, id), () => A.removerComentario(u, id));

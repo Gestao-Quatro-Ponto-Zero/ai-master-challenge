@@ -1,18 +1,20 @@
 "use client";
-// Quadro do Pipeline: duas colunas (Prospecção e Em negociação), cartões e mudança de estágio por arraste
-// ou pelo seletor do cartão. Ganho e Perdido são áreas de soltar que aparecem durante o arraste.
+// Quadro do Pipeline (O-31): cinco colunas, uma por etapa (Novo lead, Atendimento, Em negociação, Fechado,
+// Perdido). Mudança de etapa por arraste ou pelo controle do cartão. Soltar em Atendimento abre o registro
+// do contato; em Fechado, o valor; em Perdido, o motivo.
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { dataBR, dinheiro, dinheiroCurto, plural, ROTULO_ESTAGIO } from "@/lib/calculos";
-import type { DealVisao, Estagio, Papel } from "@/lib/tipos";
+import { dataBR, dinheiro, dinheiroCurto, plural } from "@/lib/calculos";
+import { ROTULO_ETAPA, type Etapa } from "@/lib/etapas";
+import type { DealVisao, Papel } from "@/lib/tipos";
 import { SeletorEstagio, transicoesDe, useMudarEstagio } from "./Estagio";
 import { BarraNota, IconeDeal } from "./Nota";
 import { classeBotao } from "./ui/Botao";
-import { Alternador, classeCartao } from "./ui/Superficie";
+import { classeCartao } from "./ui/Superficie";
 
 export interface Coluna {
-  estagio: "Prospecting" | "Engaging";
+  etapa: Etapa;
   total: number;
   valor: number;
   cartoes: DealVisao[];
@@ -23,30 +25,30 @@ export function Quadro({ colunas, papel, somenteLeitura, mostrarVendedor }: { co
   const params = useSearchParams();
   const caminho = usePathname();
   const [arrastando, setArrastando] = useState<DealVisao | null>(null);
-  const [sobre, setSobre] = useState<Estagio | null>(null);
-  const [aba, setAba] = useState<Coluna["estagio"]>("Engaging");
+  const [sobre, setSobre] = useState<Etapa | null>(null);
+  const [aba, setAba] = useState<Etapa>("negociacao");
 
   const linkDeal = (id: string) => {
     const p = new URLSearchParams(params.toString());
     p.set("deal", id);
     return `${caminho}?${p}`;
   };
-  const maisCartoes = (estagio: string, mostrados: number) => {
+  const maisCartoes = (etapa: string, mostrados: number) => {
     const p = new URLSearchParams(params.toString());
     p.set("n", String(mostrados + 50));
     p.delete("deal");
-    return `${caminho}?${p}#col-${estagio}`;
+    return `${caminho}?${p}#col-${etapa}`;
   };
-  const aceita = (para: Estagio) => !!arrastando && transicoesDe(arrastando.estagio, papel).includes(para);
+  const aceita = (para: Etapa) => !!arrastando && transicoesDe(arrastando, papel).includes(para);
 
-  function soltar(para: Estagio) {
+  function soltar(para: Etapa) {
     const d = arrastando;
     setArrastando(null);
     setSobre(null);
-    if (d && transicoesDe(d.estagio, papel).includes(para)) void mudar(d, para);
+    if (d && transicoesDe(d, papel).includes(para)) void mudar(d, para);
   }
 
-  const alvo = (para: Estagio) => ({
+  const alvo = (para: Etapa) => ({
     onDragOver: (e: React.DragEvent) => {
       if (!aceita(para)) return;
       e.preventDefault();
@@ -61,43 +63,45 @@ export function Quadro({ colunas, papel, somenteLeitura, mostrarVendedor }: { co
 
   return (
     <div>
-      <Alternador
-        papel="tablist"
-        rotulo="Estágio"
-        valor={aba}
-        onMudar={setAba}
-        className="mb-3 flex w-full md:hidden"
-        opcoes={colunas.map((c) => ({
-          valor: c.estagio,
-          rotulo: (
-            <>
-              {ROTULO_ESTAGIO[c.estagio]} <span className="font-normal">({c.total})</span>
-            </>
-          ),
-        }))}
-      />
+      {/* Celular: uma coluna por vez, escolhida nestas abas (rolam para o lado se não couberem). */}
+      <div role="tablist" aria-label="Etapa" className="mb-3 flex gap-1 overflow-x-auto rounded-controle border border-borda bg-superficie-2 p-1 md:hidden">
+        {colunas.map((c) => (
+          <button
+            key={c.etapa}
+            type="button"
+            role="tab"
+            aria-selected={aba === c.etapa}
+            onClick={() => setAba(c.etapa)}
+            className={`h-8 shrink-0 rounded-controle px-3 text-sm font-semibold whitespace-nowrap ${aba === c.etapa ? "bg-superficie text-marinho shadow-menu" : "text-texto-2"}`}
+          >
+            {ROTULO_ETAPA[c.etapa]} <span className="font-normal">({c.total})</span>
+          </button>
+        ))}
+      </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-5">
         {colunas.map((c) => (
           <section
-            key={c.estagio}
-            id={`col-${c.estagio}`}
-            aria-labelledby={`t-${c.estagio}`}
-            {...alvo(c.estagio)}
-            className={`rounded-cartao border p-3 ${aba === c.estagio ? "" : "hidden md:block"} ${
-              sobre === c.estagio ? "border-marinho bg-tom-destaque" : aceita(c.estagio) ? "border-marinho bg-superficie-2" : "border-borda bg-superficie-2"
+            key={c.etapa}
+            id={`col-${c.etapa}`}
+            aria-labelledby={`t-${c.etapa}`}
+            {...alvo(c.etapa)}
+            className={`min-w-0 rounded-cartao border p-2.5 ${aba === c.etapa ? "" : "hidden md:block"} ${
+              sobre === c.etapa ? "border-marinho bg-tom-destaque" : aceita(c.etapa) ? "border-marinho border-dashed bg-superficie-2" : "border-borda bg-superficie-2"
             }`}
           >
-            <header className="mb-3 flex flex-wrap items-baseline justify-between gap-2 border-b border-borda pb-2">
-              <h2 id={`t-${c.estagio}`} className="text-lg font-bold">
-                {ROTULO_ESTAGIO[c.estagio]}
+            <header className="mb-2.5 border-b border-borda pb-2">
+              <h2 id={`t-${c.etapa}`} className="text-base font-bold">
+                {ROTULO_ETAPA[c.etapa]}
               </h2>
-              <p className="text-sm text-texto-2">
+              <p className="text-xs text-texto-2">
                 {plural(c.total, "deal", "deals")} · {dinheiroCurto(c.valor)}
               </p>
             </header>
             {c.cartoes.length === 0 ? (
-              <p className="px-2 py-6 text-center text-sm text-texto-2">Nenhum deal nesta coluna.</p>
+              <p className="px-2 py-6 text-center text-sm text-texto-2">
+                {c.etapa === "atendimento" ? "Nenhum lead em atendimento. Registre o contato de um novo lead para trazê-lo para cá." : "Nenhum deal nesta coluna."}
+              </p>
             ) : (
               <ul className="grid grid-cols-1 gap-2">
                 {c.cartoes.map((d) => (
@@ -118,40 +122,19 @@ export function Quadro({ colunas, papel, somenteLeitura, mostrarVendedor }: { co
               </ul>
             )}
             {c.total > c.cartoes.length ? (
-              <Link href={maisCartoes(c.estagio, c.cartoes.length)} scroll={false} className={classeBotao("secundario", "normal", "mt-3 w-full")}>
+              <Link href={maisCartoes(c.etapa, c.cartoes.length)} scroll={false} className={classeBotao("secundario", "compacto", "mt-2.5 w-full")}>
                 Mostrar mais ({c.total - c.cartoes.length} restantes)
               </Link>
             ) : null}
           </section>
         ))}
       </div>
-
-      {arrastando ? (
-        <div className="fixed inset-x-0 bottom-0 z-20 grid grid-cols-2 gap-3 bg-veu p-4" aria-label="Encerrar o deal">
-          {(["Won", "Lost"] as const).map((e) =>
-            aceita(e) ? (
-              <div
-                key={e}
-                {...alvo(e)}
-                className={`rounded-cartao border-2 border-dashed px-4 py-6 text-center font-titulo text-lg font-bold ${
-                  sobre === e ? "border-marinho bg-tom-destaque text-marinho" : "border-borda-forte bg-superficie text-marinho"
-                }`}
-              >
-                Soltar aqui: {ROTULO_ESTAGIO[e]}
-              </div>
-            ) : (
-              <div key={e} className="rounded-cartao border-2 border-dashed border-borda bg-superficie px-4 py-6 text-center text-sm text-texto-2">
-                {ROTULO_ESTAGIO[e]}: primeiro passe por Em negociação
-              </div>
-            ),
-          )}
-        </div>
-      ) : null}
     </div>
   );
 }
 
 function Cartao({ d, href, papel, somenteLeitura, mostrarVendedor, onArrastar }: { d: DealVisao; href: string; papel: Papel; somenteLeitura: boolean; mostrarVendedor: boolean; onArrastar: (ativo: boolean) => void }) {
+  const aberto = d.estagio === "Prospecting" || d.estagio === "Engaging";
   return (
     <article
       draggable={!somenteLeitura}
@@ -170,17 +153,30 @@ function Cartao({ d, href, papel, somenteLeitura, mostrarVendedor, onArrastar }:
           </Link>
           <p className="truncate text-sm text-texto-2">{d.contato ? `${d.contato.nome}${d.contato.cargo ? `, ${d.contato.cargo}` : ""}` : "Sem contato cadastrado"}</p>
         </div>
-        <IconeDeal icone={d.icone} dias={d.diasDesdeAbertura} />
       </div>
-      <div className="mt-2">
-        <BarraNota score={d.score} faixa={d.faixaNota} />
-      </div>
-      <p className="mt-2 text-sm text-texto-2">
-        {d.dataAbertura ? `Aberto em ${dataBR(d.dataAbertura)}${d.diasDesdeAbertura !== null ? ` · ${d.diasDesdeAbertura} dias` : ""}` : "Não iniciado"}
+      {d.icone ? (
+        <div className="mt-1.5">
+          <IconeDeal icone={d.icone} dias={d.diasDesdeAbertura} />
+        </div>
+      ) : null}
+      {aberto ? (
+        <div className="mt-2">
+          <BarraNota score={d.score} faixa={d.faixaNota} />
+        </div>
+      ) : null}
+      <p className="mt-2 truncate text-sm text-texto-2">
+        {aberto
+          ? d.dataAbertura
+            ? `Aberto em ${dataBR(d.dataAbertura)}${d.diasDesdeAbertura !== null ? ` · ${d.diasDesdeAbertura} dias` : ""}`
+            : "Não iniciado"
+          : d.closeDate
+            ? `Encerrado em ${dataBR(d.closeDate)}`
+            : "Encerrado"}
       </p>
       <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
         <span className="text-sm whitespace-nowrap">
-          <strong>{dinheiro(d.valorEsperado)}</strong> <span className="text-xs text-texto-2">{d.valorPeloPrecoDeTabela ? "preço de tabela" : "esperado"}</span>
+          <strong>{dinheiro(aberto ? d.valorEsperado : d.estagio === "Won" ? d.closeValue : d.preco)}</strong>{" "}
+          <span className="text-xs text-texto-2">{aberto ? (d.valorPeloPrecoDeTabela ? "preço de tabela" : "esperado") : d.estagio === "Won" ? "fechamento" : "preço de tabela"}</span>
         </span>
         <SeletorEstagio deal={d} papel={papel} desligado={somenteLeitura} />
       </div>

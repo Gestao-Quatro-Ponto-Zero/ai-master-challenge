@@ -1,6 +1,8 @@
 "use client";
-// Prioridades do dia: a lista vem da nota; ✓ registra o que foi feito (tipo de atividade e comentário
-// obrigatórios, com o horário salvo) e ✗ pula o deal hoje. Cada marcação vai para a linha do tempo do lead.
+// Prioridades do dia (O-32): bloco escuro no padrão do deck. Cada lead em uma linha (nome · produto, nota em
+// dourado, ✕ e ✓), com uma linha pequena embaixo (valor, dias e alerta). Clicar no lead abre o deal na parte
+// "Por que a nota é N" (FIT, HEAT, BONUS, pontos e motivos). ✓ registra o que foi feito (tipo de atividade e
+// comentário obrigatórios, com o horário salvo) e ✕ pula o deal hoje. Cada marcação vai para a linha do tempo.
 import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { pedir } from "@/lib/cliente";
@@ -9,13 +11,21 @@ import { dinheiro } from "@/lib/calculos";
 import { resumoPrioridades } from "@/lib/prioridades";
 import type { Papel, Prioridade } from "@/lib/tipos";
 import { useAvisos } from "./Avisos";
-import { BarraNota, IconeDeal } from "./Nota";
-import { Botao, classeBotao } from "./ui/Botao";
+import { IconeDeal } from "./Nota";
+import { Botao } from "./ui/Botao";
 import { AreaTexto, ErroFormulario } from "./ui/Campo";
 import { Etiqueta } from "./ui/Etiqueta";
 import { Icone } from "./ui/Icones";
 import { Seletor } from "./ui/Seletor";
-import { classeSuperficie, ListaDivisoria } from "./ui/Superficie";
+
+// Botões no escuro: ✓ em pílula dourada cheia (texto navy); ✕ em pílula com borda dourada (texto claro).
+const BOTAO_FEITO =
+  "inline-flex h-8 shrink-0 items-center justify-center gap-1.5 rounded-selo bg-ouro px-3 text-sm font-semibold text-escuro-2 hover:bg-dourado-claro disabled:opacity-50";
+const BOTAO_PULAR =
+  "inline-flex h-8 shrink-0 items-center justify-center gap-1.5 rounded-selo border border-fio-ouro px-3 text-sm font-semibold text-claro hover:bg-claro/10 disabled:opacity-50";
+
+/** "Empresa · Produto": o nome padrão já traz o produto; um nome próprio ganha o produto ao lado. */
+const nomeComProduto = (nome: string, produto: string) => (nome.includes(produto) ? nome : `${nome} · ${produto}`);
 
 export function Prioridades({ itens, papel, somenteLeitura, topo, className = "" }: { itens: Prioridade[]; papel: Papel; somenteLeitura: boolean; topo?: ReactNode; className?: string }) {
   const avisos = useAvisos();
@@ -71,93 +81,117 @@ export function Prioridades({ itens, papel, somenteLeitura, topo, className = ""
   }
 
   return (
-    <section aria-labelledby="t-prioridades" className={`${classeSuperficie} flex flex-col p-4 ${className}`}>
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 id="t-prioridades" className="text-lg font-bold">
-          Prioridades do dia
-        </h2>
-        {topo}
-      </div>
-      <p className="mt-1 text-sm text-texto-2">
-        {vendedor ? "Os seus deals que mais valem o contato hoje, pela nota." : "Deals do time que pedem ação: atendimento atrasado, lead novo de encaixe alto e em risco de esfriar."}
-      </p>
-      <div className="mt-3 flex items-center gap-3 text-sm">
-        <span className="whitespace-nowrap font-semibold">
-          {feitas} de {meta} feitas
-        </span>
-        <div className="h-1.5 flex-1 overflow-hidden rounded-selo bg-trilho" role="progressbar" aria-valuemin={0} aria-valuemax={meta} aria-valuenow={feitas} aria-label="Prioridades feitas hoje">
-          <div className="h-full rounded-selo bg-dourado" style={{ width: `${Math.min(100, (feitas / meta) * 100)}%` }} />
+    <section
+      aria-labelledby="t-prioridades"
+      className={`fundo-escuro flex flex-col rounded-cartao border border-escuro-1 p-4 text-claro-2 [&_*:focus-visible]:outline-ouro ${className}`}
+    >
+      {/* Topo fixo: título, alerta e o contador; a lista rola embaixo. */}
+      <div className="shrink-0">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h2 id="t-prioridades" className="text-lg font-bold text-claro">
+            Prioridades do dia
+          </h2>
+          {topo}
         </div>
-        {puladas ? <span className="whitespace-nowrap text-xs text-texto-2">{puladas === 1 ? "1 pulada" : `${puladas} puladas`}</span> : null}
+        <p className="mt-1 text-sm text-claro-2">
+          {vendedor ? "Os seus deals que mais valem o contato hoje, pela nota." : "Deals do time que pedem ação: atendimento atrasado, lead novo de encaixe alto e em risco de esfriar."}
+        </p>
+        <div className="mt-3 flex items-center gap-3 text-sm">
+          <span className="font-semibold whitespace-nowrap text-claro">
+            <span className="text-ouro tabular-nums">{feitas}</span> de {meta} feitas
+          </span>
+          <div className="h-1.5 flex-1 overflow-hidden rounded-selo bg-trilho-escuro" role="progressbar" aria-valuemin={0} aria-valuemax={meta} aria-valuenow={feitas} aria-label="Prioridades feitas hoje">
+            <div className="h-full rounded-selo bg-ouro" style={{ width: `${Math.min(100, (feitas / meta) * 100)}%` }} />
+          </div>
+          {puladas ? <span className="text-xs whitespace-nowrap text-claro-3">{puladas === 1 ? "1 pulada" : `${puladas} puladas`}</span> : null}
+        </div>
       </div>
 
       {itens.length === 0 ? (
-        <p className="mt-4 rounded-controle bg-superficie-2 px-3 py-4 text-sm text-texto-2">
+        <p className="mt-4 border-t border-fio-ouro pt-4 text-sm text-claro-2">
           {vendedor ? "Você não tem deals abertos para priorizar hoje." : "Nenhum deal do time pede ação hoje: sem atendimento atrasado, lead novo de encaixe alto ou deal em risco de esfriar."}{" "}
-          <Link href="/pipeline" className="font-semibold text-marinho underline underline-offset-4">
+          <Link href="/pipeline" className="font-semibold text-ouro underline underline-offset-4">
             Ir para o Pipeline
           </Link>
         </p>
       ) : visiveis.length === 0 ? (
-        <div className="mt-4 rounded-controle bg-superficie-2 px-3 py-4 text-sm">
-          <p className="font-semibold">
+        <div className="mt-4 border-t border-fio-ouro pt-4 text-sm">
+          <p className="font-semibold text-claro">
             Lista de hoje concluída: {feitas} ✓ e {puladas} ✗.
           </p>
           {somenteLeitura ? null : (
-            <Botao nivel="primario" onClick={puxarMais} disabled={enviando} icone="mais" className="mt-3">
+            <button type="button" onClick={puxarMais} disabled={enviando} className={`${BOTAO_FEITO} mt-3`}>
+              <Icone nome="mais" />
               Puxar mais 5
-            </Botao>
+            </button>
           )}
         </div>
       ) : (
-        <ListaDivisoria className="mt-3 min-h-0 flex-1 overflow-y-auto pr-1">
+        <ol className="mt-3 min-h-0 flex-1 overflow-y-auto pr-1">
           {visiveis.map((item) => {
             const d = item.deal;
             const aberto = registrando === d.id;
+            const porque = d.score === null ? "Ver o deal" : `Ver por que a nota é ${d.score}`;
             return (
-              <li key={d.id} className={`py-2.5 ${saindo === d.id ? "motion-safe:animate-sair" : ""}`}>
-                <div className="flex items-start gap-2">
-                  <div className="min-w-0 flex-1">
-                    <Link href={`/painel?deal=${encodeURIComponent(d.id)}`} scroll={false} title={d.nome} className="block truncate font-semibold hover:underline">
-                      {d.nome}
-                    </Link>
-                    <p className="text-xs text-texto-2">
-                      {vendedor ? "" : `${d.vendedor} · `}
-                      {dinheiro(d.valorEsperado)}
-                      {d.diasDesdeAbertura !== null ? ` · aberto há ${d.diasDesdeAbertura} dias` : " · não iniciado"}
-                    </p>
-                  </div>
-                  {/* Na lista do dia, o ícone só aparece como alerta (em risco ou esfriou); a explicação é o motivo da nota. */}
-                  {d.icone === "em_risco" || d.icone === "esfriou" ? <IconeDeal icone={d.icone} dias={d.diasDesdeAbertura} /> : null}
+              <li key={d.id} className={`border-t border-fio-ouro py-2.5 ${saindo === d.id ? "motion-safe:animate-sair" : ""}`}>
+                <div className="flex items-center gap-2">
+                  {/* Clicar no lead abre o racional da nota; os botões ✕ e ✓ ficam fora do link. */}
+                  <Link
+                    href={`/painel?deal=${encodeURIComponent(d.id)}&secao=nota`}
+                    scroll={false}
+                    title={item.motivo ? `${porque}. ${item.motivo}` : porque}
+                    className="group flex min-w-0 flex-1 items-center gap-2 rounded-controle"
+                  >
+                    <span className="min-w-0 flex-1 truncate font-semibold text-claro group-hover:underline">{nomeComProduto(d.nome, d.produto)}</span>
+                    <span className="shrink-0 text-lg leading-none font-bold text-ouro tabular-nums" aria-label={d.score === null ? "Sem nota" : `Nota ${d.score}`}>
+                      {d.score ?? "—"}
+                    </span>
+                  </Link>
+                  {somenteLeitura || aberto ? null : (
+                    <>
+                      <button type="button" onClick={() => marcar(d.id, "pulada")} disabled={enviando} aria-label={`Pular hoje: ${d.nome}`} title="Pular hoje" className={BOTAO_PULAR}>
+                        <Icone nome="x" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          // Sempre limpo: o tipo e o comentário de um item não podem ir para outro deal.
+                          setTipo("");
+                          setComentario("");
+                          setRegistrando(d.id);
+                          setErro(null);
+                        }}
+                        disabled={enviando}
+                        aria-label={`Feito: ${d.nome}`}
+                        title="Feito"
+                        className={BOTAO_FEITO}
+                      >
+                        <Icone nome="check" />
+                      </button>
+                    </>
+                  )}
                 </div>
-                {item.atendimentoAtrasado ? (
-                  <p className="mt-2">
+                <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-claro-3">
+                  <span className="tabular-nums">
+                    {vendedor ? "" : `${d.vendedor} · `}
+                    {dinheiro(d.valorEsperado)}
+                    {d.diasDesdeAbertura !== null ? ` · há ${d.diasDesdeAbertura} dias` : " · não iniciado"}
+                  </span>
+                  {d.icone === "em_risco" || d.icone === "esfriou" ? <IconeDeal icone={d.icone} dias={d.diasDesdeAbertura} /> : null}
+                  {item.atendimentoAtrasado ? (
                     <Etiqueta tom="atencao" icone="relogio">
                       Atendimento atrasado
                     </Etiqueta>
-                  </p>
-                ) : null}
-                {item.motivo ? (
-                  <p className="mt-1.5 line-clamp-2 text-sm text-texto-2" title={item.motivo}>
-                    {item.motivo}
-                  </p>
-                ) : null}
-                {item.puladoDiasSeguidos >= CONFIG.diasPuladoAlerta ? (
-                  <p className="mt-2 flex items-center gap-2 text-xs text-tom-atencao-texto">
-                    <Etiqueta tom="atencao" icone="alerta">
+                  ) : null}
+                  {item.puladoDiasSeguidos >= CONFIG.diasPuladoAlerta ? (
+                    <Etiqueta tom="atencao" icone="alerta" title="Requalificar ou encerrar?">
                       Pulado {item.puladoDiasSeguidos} dias seguidos
                     </Etiqueta>
-                    Requalificar ou encerrar?
-                  </p>
-                ) : null}
+                  ) : null}
+                </div>
 
-                {somenteLeitura || aberto ? (
-                  <div className="mt-2">
-                    <BarraNota score={d.score} faixa={d.faixaNota} />
-                  </div>
-                ) : null}
-                {somenteLeitura ? null : aberto ? (
-                  <div className="mt-3 grid gap-2 rounded-controle bg-superficie-2 p-3">
+                {somenteLeitura || !aberto ? null : (
+                  <div className="mt-3 grid gap-2 rounded-controle bg-superficie p-3 text-texto">
                     <div className="grid gap-1">
                       <span className="text-xs font-semibold" aria-hidden>
                         O que foi feito
@@ -196,37 +230,13 @@ export function Prioridades({ itens, papel, somenteLeitura, topo, className = ""
                       </Botao>
                     </div>
                   </div>
-                ) : (
-                  <div className="mt-2 flex flex-wrap items-center justify-end gap-x-3 gap-y-2">
-                    <div className="min-w-32 flex-1">
-                      <BarraNota score={d.score} faixa={d.faixaNota} />
-                    </div>
-                    <Botao nivel="secundario" tamanho="compacto" icone="x" onClick={() => marcar(d.id, "pulada")} disabled={enviando}>
-                      Pular hoje
-                    </Botao>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        // Sempre limpo: o tipo e o comentário de um item não podem ir para outro deal.
-                        setTipo("");
-                        setComentario("");
-                        setRegistrando(d.id);
-                        setErro(null);
-                      }}
-                      disabled={enviando}
-                      className={classeBotao("primario", "compacto")}
-                    >
-                      <Icone nome="check" />
-                      Feito
-                    </button>
-                  </div>
                 )}
               </li>
             );
           })}
-        </ListaDivisoria>
+        </ol>
       )}
-      {pendentes.length > visiveis.length ? <p className="mt-3 text-xs text-texto-2">Próximos: {pendentes.length - visiveis.length} na fila.</p> : null}
+      {pendentes.length > visiveis.length ? <p className="mt-2 shrink-0 text-xs text-claro-3">Próximos: {pendentes.length - visiveis.length} na fila.</p> : null}
     </section>
   );
 }

@@ -6,7 +6,7 @@ import type { Usuario } from "@/lib/tipos";
 import { listarEquipe } from "./repositorio";
 
 const CHAVES: ChaveEtiqueta[] = [
-  "estagios", "nota_min", "nota_max", "sem_nota", "icones", "abertura_de", "abertura_ate", "sem_abertura", "dias_aberto_min",
+  "estagios", "etapas", "nota_min", "nota_max", "sem_nota", "icones", "abertura_de", "abertura_ate", "sem_abertura", "dias_aberto_min",
   "contato_ha_dias_min", "contato_ha_dias_max", "sem_contato", "sem_contato_principal", "setores", "portes", "sem_empresa",
   "empresas", "produtos", "series", "vendedores", "managers", "regioes", "acoes_sugeridas", "valor_min", "fechamento_de",
   "fechamento_ate", "tags", "sem_tag", "com_comentario", "contem",

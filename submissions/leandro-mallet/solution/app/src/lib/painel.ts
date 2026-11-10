@@ -1,7 +1,8 @@
 // Números do Painel (ESPEC-TELAS 4.3 e 4.4). Função pura sobre os deals do escopo.
 import { CONFIG } from "./config";
 import { somarDias } from "./calculos";
-import type { DealVisao, Estagio } from "./tipos";
+import { ETAPAS, etapaDe, type Etapa } from "./etapas";
+import type { DealVisao } from "./tipos";
 
 export interface NumerosPainel {
   data: string;
@@ -72,16 +73,22 @@ export function numerosPainel(deals: DealVisao[], hoje: string): NumerosPainel {
 }
 
 export interface BarraFunil {
-  estagio: Estagio;
+  etapa: Etapa;
   quantidade: number;
   valor: number;
 }
 
+/** Valor do deal na etapa: aberto pelo valor esperado; fechado pelo valor de fechamento; perdido pelo preço de tabela. */
+export function valorNaEtapa(d: DealVisao): number {
+  if (d.estagio === "Won") return d.closeValue ?? 0;
+  if (d.estagio === "Lost") return d.preco;
+  return d.valorEsperado ?? 0;
+}
+
+/** Funil em 5 etapas (O-31): Novo lead, Atendimento, Em negociação, Fechado e Perdido. */
 export function funil(deals: DealVisao[]): BarraFunil[] {
-  const ordem: Estagio[] = ["Prospecting", "Engaging", "Won", "Lost"];
-  return ordem.map((e) => {
-    const l = deals.filter((d) => d.estagio === e);
-    const valor = l.reduce((a, d) => a + (e === "Won" ? (d.closeValue ?? 0) : e === "Lost" ? d.preco : (d.valorEsperado ?? 0)), 0);
-    return { estagio: e, quantidade: l.length, valor };
+  return ETAPAS.map((etapa) => {
+    const l = deals.filter((d) => etapaDe(d) === etapa);
+    return { etapa, quantidade: l.length, valor: l.reduce((a, d) => a + valorNaEtapa(d), 0) };
   });
 }

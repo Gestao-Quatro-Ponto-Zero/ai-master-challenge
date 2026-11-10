@@ -4,7 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { pedir } from "@/lib/cliente";
-import { dataBR, dinheiro, dinheiroCurto, dinheiroMilhoes, inteiro, SIMBOLO_MOEDA, ROTULO_ESTAGIO, ROTULO_PORTE, rotuloSetor, SETORES } from "@/lib/calculos";
+import { dataBR, dinheiro, dinheiroCurto, dinheiroMilhoes, inteiro, SIMBOLO_MOEDA, ROTULO_PORTE, rotuloSetor, SETORES } from "@/lib/calculos";
+import { rotuloDoDeal } from "@/lib/etapas";
 import type { ContaDetalhe, ContaVisao } from "@/lib/tipos";
 import { useAvisos } from "./Avisos";
 import { Dialogo, ErroFormulario } from "./Dialogo";
@@ -300,7 +301,7 @@ function FichaConta({ nome, empresas, somenteLeitura, onFechar }: { nome: string
                       {d.nome}
                     </Link>
                     <span className="text-texto-2">
-                      {ROTULO_ESTAGIO[d.estagio]} · {d.vendedor}
+                      {rotuloDoDeal(d)} · {d.vendedor}
                     </span>
                     <span className="w-32">
                       <BarraNota score={d.score} faixa={d.faixaNota} />

@@ -2,6 +2,7 @@ import "server-only";
 // Repositório no banco (Supabase). Leitura: view core_deals_visao e tabelas, filtradas pelo perfil.
 // Escrita: só pelas functions do banco, com o usuário do perfil e o correlation_id do servidor.
 import { moedaNoTexto } from "@/lib/calculos";
+import { rotularLinhaDoTempo } from "@/lib/etapas";
 import { CONFIG } from "@/lib/config";
 import { HORAS_DESFAZER_LOTE, type LoteBruto, type TipoLote } from "@/lib/lotes";
 import { explicacaoDoItem, grupoPrioridade } from "@/lib/prioridades";
@@ -208,10 +209,10 @@ export async function detalheDeal(id: string, u: Usuario): Promise<DealDetalhe> 
     deal,
     componentes: comp.map((c) => ({ grupo: c.grupo, nome: c.componente, pontos: Number(c.pontos), maximo: c.maximo === null ? null : Number(c.maximo) })),
     motivos: motivos.map((m) => moedaNoTexto(m.texto)),
-    linhaDoTempo: tempo.map((t) => ({
+    linhaDoTempo: rotularLinhaDoTempo(tempo.map((t) => ({
       data: t.data_negocio, momento: t.momento, descricao: moedaNoTexto(t.descricao), autor: t.autor, desfeito: t.desfeito,
       tipo: tipos.has(t.tipo as EventoLinhaDoTempo["tipo"]) ? (t.tipo as EventoLinhaDoTempo["tipo"]) : "criado",
-    })),
+    }))),
     comentarios: coment.map<Comentario>((c) => ({
       id: c.id, autorId: c.usuario_id, autor: nomes.get(c.usuario_id) ?? "—", texto: c.texto, data: c.data_negocio, criadoEm: c.criado_em, editado: !!c.editado_em,
     })),
@@ -324,6 +325,11 @@ export async function salvarContato(u: Usuario, dados: { id?: number; conta: str
 
 export async function registrarAcao(u: Usuario, dealId: string, acao: "liguei" | "requalifiquei" | "desisti", nota?: string | null) {
   const { dados } = await escrever<{ id: number }>("acao_registrar", u.id, { p_opportunity_id: dealId, p_acao: acao, p_nota: nota ?? null });
+  return { desfazer: `acao:${dados.id}` };
+}
+
+export async function registrarAtendimento(u: Usuario, dealId: string, tipoAtividade: string, comentario: string) {
+  const { dados } = await escrever<{ id: number }>("acao_registrar_contato", u.id, { p_opportunity_id: dealId, p_tipo_atividade: tipoAtividade, p_comentario: comentario });
   return { desfazer: `acao:${dados.id}` };
 }
 

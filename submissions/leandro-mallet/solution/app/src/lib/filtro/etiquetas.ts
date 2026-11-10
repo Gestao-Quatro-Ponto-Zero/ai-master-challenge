@@ -1,9 +1,12 @@
 // Etiquetas: o filtro estruturado que o campo livre gera e que o servidor aplica.
 // As chaves seguem os parâmetros de core_buscar_deals no banco.
+import type { Etapa } from "../etapas";
 import type { AcaoSugerida, Estagio, Icone, Porte } from "../tipos";
 
 export interface Etiquetas {
   estagios?: Estagio[];
+  /** Etapa da tela (O-31): Novo lead e Atendimento separam o Prospecting pelo contato registrado. */
+  etapas?: Etapa[];
   nota_min?: number;
   nota_max?: number;
   sem_nota?: boolean;

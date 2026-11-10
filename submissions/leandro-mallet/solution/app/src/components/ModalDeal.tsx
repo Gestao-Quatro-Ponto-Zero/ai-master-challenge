@@ -53,6 +53,7 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
   const fechar = useCallback(() => {
     const p = new URLSearchParams(params.toString());
     p.delete("deal");
+    p.delete("secao");
     router.replace(p.size ? `${caminho}?${p}` : caminho, { scroll: false });
   }, [params, caminho, router]);
 
@@ -84,6 +85,10 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
   }, [fechar]);
 
   const d = det?.deal.id === id ? det.deal : null;
+  const secao = params.get("secao");
+  useEffect(() => {
+    if (d && secao === "nota") document.getElementById("t-nota")?.scrollIntoView({ block: "start" });
+  }, [d, secao]);
   const aberto = d ? d.estagio === "Prospecting" || d.estagio === "Engaging" : false;
 
   async function executar(url: string, metodo: "POST" | "DELETE", corpo: unknown, feito: string) {
@@ -289,19 +294,42 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
                     </p>
                   ) : (
                     <>
-                      <dl className="mt-3 grid grid-cols-3 gap-2 text-center text-sm">
+                      <p className="mt-2 text-sm text-texto-2">A nota soma 70% do encaixe com o vendedor (FIT), 30% do tempo de atendimento (HEAT) e o bônus da empresa (BONUS, de 0 a 20).</p>
+                      <dl className="mt-3 grid grid-cols-3 gap-2 text-sm">
                         {(
                           [
-                            ["Encaixe com o vendedor", d.fit],
-                            ["Tempo de atendimento", d.heat],
-                            ["Bônus da empresa", d.bonus],
+                            ["fit", "FIT", "Encaixe com o vendedor", d.fit],
+                            ["heat", "HEAT", "Tempo de atendimento", d.heat],
+                            ["bonus", "BONUS", "Bônus da empresa", d.bonus],
                           ] as const
-                        ).map(([rot, v]) => (
-                          <div key={rot} className="rounded-controle bg-superficie-2 px-2 py-2">
-                            <dt className="text-xs text-texto-2">{rot}</dt>
-                            <dd className="text-lg font-semibold tabular-nums">{v ?? "—"}</dd>
-                          </div>
-                        ))}
+                        ).map(([grupo, sigla, rot, v]) => {
+                          const partes = det.componentes.filter((c) => c.grupo === grupo);
+                          return (
+                            <div key={grupo} className="rounded-controle bg-superficie-2 px-2 py-2">
+                              <dt className="text-center text-xs text-texto-2">
+                                <span className="font-semibold text-marinho">{sigla}</span> · {rot}
+                              </dt>
+                              <dd className="text-center text-lg font-semibold tabular-nums">{v ?? "—"}</dd>
+                              {partes.length ? (
+                                <dd>
+                                  <ul className="mt-1 grid gap-0.5 border-t border-divisoria pt-1 text-xs text-texto-2">
+                                    {partes.map((c) => (
+                                      <li key={c.nome} className="flex justify-between gap-2">
+                                        <span className="min-w-0 truncate" title={c.nome}>
+                                          {c.nome}
+                                        </span>
+                                        <span className="shrink-0 tabular-nums">
+                                          {c.pontos.toLocaleString("pt-BR", { maximumFractionDigits: 1 })}
+                                          {c.maximo !== null ? `/${c.maximo.toLocaleString("pt-BR", { maximumFractionDigits: 1 })}` : ""}
+                                        </span>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </dd>
+                              ) : null}
+                            </div>
+                          );
+                        })}
                       </dl>
                       <ul className="mt-3 list-disc pl-5 text-sm">
                         {det.motivos.map((m, i) => (

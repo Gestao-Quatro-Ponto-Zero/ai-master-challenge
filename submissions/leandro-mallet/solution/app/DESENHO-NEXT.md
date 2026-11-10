@@ -74,6 +74,7 @@ solution/app/
       desfazer.ts         formato do token do "Desfazer"
       lotes.ts            rótulos, prazo de 24 horas e quem vê cada lote
       prioridades.ts      contador e ordem das Prioridades do dia (a mesma da 0030) e a explicação do item
+      etapas.ts           as 5 etapas da tela (O-31): Novo lead e Atendimento = Prospecting sem e com contato
       validacao.ts        frase específica para erro de campo na API
       filtro/             etiquetas.ts, interpretar.ts (frase → etiquetas), aplicar.ts
     server/               só roda no servidor (import "server-only")
