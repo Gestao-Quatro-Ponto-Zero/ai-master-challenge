@@ -1,0 +1,607 @@
+AUDITORIA DOS DADOS - Lead Scorer (desafio 003)
+Fonte: submissions/daniel-resende/solution/data/*.csv. Nenhuma data de relogio do sistema e usada.
+
+== 1. Linhas e chaves por tabela ==
+accounts        linhas=   85 colunas=['account', 'sector', 'year_established', 'revenue', 'employees', 'office_location', 'subsidiary_of']
+                chave=account: distintas=85 vazias=0 duplicadas=0 -> UNICA
+products        linhas=    7 colunas=['product', 'series', 'sales_price']
+                chave=product: distintas=7 vazias=0 duplicadas=0 -> UNICA
+sales_teams     linhas=   35 colunas=['sales_agent', 'manager', 'regional_office']
+                chave=sales_agent: distintas=35 vazias=0 duplicadas=0 -> UNICA
+sales_pipeline  linhas= 8800 colunas=['opportunity_id', 'sales_agent', 'product', 'account', 'deal_stage', 'engage_date', 'close_date', 'close_value']
+                chave=opportunity_id: distintas=8800 vazias=0 duplicadas=0 -> UNICA
+Chave composta a conferir: sales_teams.sales_agent distintos por manager: {'Dustin Brinkmann': 5, 'Melvin Marxen': 6, 'Cara Losch': 6, 'Rocco Neubert': 6, 'Celia Rouche': 6, 'Summer Sewald': 6}
+
+== 2. Chaves que nao casam (pipeline x accounts, products, sales_teams) ==
+-- pipeline.product x products.product (valores exatos)
+   'GTX Basic'          linhas= 1866 casa
+   'MG Special'         linhas= 1651 casa
+   'GTXPro'             linhas= 1480 NAO CASA
+   'MG Advanced'        linhas= 1412 casa
+   'GTX Plus Basic'     linhas= 1383 casa
+   'GTX Plus Pro'       linhas=  968 casa
+   'GTK 500'            linhas=   40 casa
+   produtos do catalogo sem nenhuma linha no pipeline: ['GTX Pro']
+   NORMALIZACAO aplicada (ignorar espacos e caixa, so se casar de forma unica com o catalogo): {'GTXPro': 'GTX Pro'}
+   apos normalizar, produtos sem casamento: nenhum
+   produtos do catalogo sem linha no pipeline apos normalizar: nenhum
+-- pipeline.account x accounts.account
+   valores distintos de conta no pipeline=86; sem casamento=1; linhas sem casamento=1425 de 8800
+   '': 1425 linhas; por estagio {'Engaging': 1088, 'Prospecting': 337}
+   (conta vazia = sem conta; nao e corrigida, fica como 'sem conta')
+   contas de accounts.csv sem nenhuma linha no pipeline: nenhuma
+   contas de accounts.csv que colidem ao ignorar caixa/espacos: nenhuma
+-- pipeline.sales_agent x sales_teams.sales_agent
+   vendedores distintos no pipeline=30; sem casamento em sales_teams=0 
+   vendedores de sales_teams SEM nenhum deal no pipeline: 5 -> ['Carl Lin', 'Carol Thompson', 'Elizabeth Anderson', 'Mei-Mei Johns', 'Natalya Ivanova']
+      Carl Lin: manager=Summer Sewald regiao=West
+      Carol Thompson: manager=Celia Rouche regiao=West
+      Elizabeth Anderson: manager=Cara Losch regiao=East
+      Mei-Mei Johns: manager=Melvin Marxen regiao=Central
+      Natalya Ivanova: manager=Rocco Neubert regiao=East
+   nomes de vendedores que colidem ao ignorar caixa/espacos: nenhum
+   managers x regioes em sales_teams: {('Dustin Brinkmann', 'Central'): 5, ('Melvin Marxen', 'Central'): 6, ('Cara Losch', 'East'): 6, ('Rocco Neubert', 'East'): 6, ('Celia Rouche', 'West'): 6, ('Summer Sewald', 'West'): 6}
+
+== 3. Valores ausentes por coluna, e por coluna x deal_stage ==
+deal_stage (linhas): {'Prospecting': 500, 'Engaging': 1589, 'Won': 4238, 'Lost': 2473}
+accounts.subsidiary_of: vazios=70 de 85
+(colunas de accounts/products/sales_teams nao listadas acima nao tem vazios, exceto o que consta acima)
+
+coluna                  total      Prospecting         Engaging              Won             Lost
+opportunity_id       0/ 8800      0/  500(  0%)     0/ 1589(  0%)     0/ 4238(  0%)     0/ 2473(  0%)
+sales_agent          0/ 8800      0/  500(  0%)     0/ 1589(  0%)     0/ 4238(  0%)     0/ 2473(  0%)
+product              0/ 8800      0/  500(  0%)     0/ 1589(  0%)     0/ 4238(  0%)     0/ 2473(  0%)
+account           1425/ 8800    337/  500( 67%)  1088/ 1589( 68%)     0/ 4238(  0%)     0/ 2473(  0%)
+deal_stage           0/ 8800      0/  500(  0%)     0/ 1589(  0%)     0/ 4238(  0%)     0/ 2473(  0%)
+engage_date        500/ 8800    500/  500(100%)     0/ 1589(  0%)     0/ 4238(  0%)     0/ 2473(  0%)
+close_date        2089/ 8800    500/  500(100%)  1589/ 1589(100%)     0/ 4238(  0%)     0/ 2473(  0%)
+close_value       2089/ 8800    500/  500(100%)  1589/ 1589(100%)     0/ 4238(  0%)     0/ 2473(  0%)
+(celula = vazios/linhas do estagio)
+
+== 4. O que cada estagio significa nos dados ==
+Campos preenchidos por estagio (n preenchidos / n do estagio):
+   Prospecting  n=  500 account=163 engage_date=0 close_date=0 close_value=0
+   Engaging     n= 1589 account=501 engage_date=1589 close_date=0 close_value=0
+   Won          n= 4238 account=4238 engage_date=4238 close_date=4238 close_value=4238
+   Lost         n= 2473 account=2473 engage_date=2473 close_date=2473 close_value=2473
+
+close_value em linha ABERTA (Prospecting e Engaging):
+   Prospecting: valores distintos de close_value (bruto) = {'': 500}
+   Engaging: valores distintos de close_value (bruto) = {'': 1589}
+
+close_value em Lost:
+   valores distintos = {'0': 2473}
+
+close_value em Won: distribuicao de close_value / sales_price do produto
+   Won n=4238; close_value: n=4238 min=38 p25=518 mediana=1117 p75=4430 p90=5284 max=30288
+   razao: n=4238 min=0.657 p25=0.929 mediana=0.998 p75=1.063 p90=1.124 max=1.342
+   razao == 1: 65 (  1.5%); < 1: 2133; > 1: 2040
+   por produto (n, mediana da razao, min, max):
+      MG Special      preco=    55 n= 793 mediana=1.000 min=0.691 max=1.309
+      GTX Basic       preco=   550 n= 915 mediana=0.995 min=0.664 max=1.302
+      GTX Plus Basic  preco=  1096 n= 653 mediana=0.988 min=0.686 max=1.254
+      MG Advanced     preco=  3393 n= 654 mediana=0.997 min=0.730 max=1.313
+      GTX Pro         preco=  4821 n= 729 mediana=1.001 min=0.657 max=1.279
+      GTX Plus Pro    preco=  5482 n= 479 mediana=1.004 min=0.676 max=1.342
+      GTK 500         preco= 26768 n=  15 mediana=0.967 min=0.887 max=1.132
+
+Consistencia: fechados com close_date < engage_date = 0; abertos com close_date preenchida = 0; fechados sem engage_date = 0
+
+== 5. Datas ==
+engage_date: min=2016-10-20 max=2017-12-27 (n=8300)
+close_date : min=2017-03-01 max=2017-12-31 (n=6711)
+DATA DE REFERENCIA (ultima data presente nos dados) = 2017-12-31
+Maior engage_date entre abertos Engaging = 2017-12-22; maior close_date = 2017-12-31
+
+mes       engajados  fechados    Won   Lost
+2016-10           7         0      0      0
+2016-11         115         0      0      0
+2016-12         236         0      0      0
+2017-01         312         0      0      0
+2017-02         515         0      0      0
+2017-03         792       647    531    116
+2017-04         874       586    285    301
+2017-05         722       805    438    367
+2017-06         792       641    531    110
+2017-07        1198       627    308    319
+2017-08         793       785    446    339
+2017-09         779       635    503    132
+2017-10         761       566    279    287
+2017-11         283       768    406    362
+2017-12         121       651    511    140
+
+Taxa de vitoria por mes de FECHAMENTO (so descreve; o mes de fechamento nao e conhecido com o deal aberto):
+   2017-03:    82% (n=647); 2017-04:    49% (n=586); 2017-05:    54% (n=805); 2017-06:    83% (n=641); 2017-07:    49% (n=627); 2017-08:    57% (n=785); 2017-09:    79% (n=635); 2017-10:    49% (n=566); 2017-11:    53% (n=768); 2017-12:    78% (n=651)
+TRUNCAMENTO A ESQUERDA: nenhum fechamento antes de 2017-03-01. Fechados engajados antes dessa data: n=972, duracao n=972 min=5 p25=75 mediana=92 p75=108 p90=121 max=138; vit= 72.8%.
+   Esses negocios so aparecem se ficaram abertos ate marco/2017 (duracao longa): a janela seleciona quem demorou. O inicio da serie nao e comparavel com o resto.
+Idade dos Engaging abertos na data de referencia (dias): n=1589 min=9 p25=148 mediana=165 p75=263 p90=319 max=423
+Tempo ate fechar (dias, close - engage):
+   Won : n=4238 min=1 p25=9 mediana=57 p75=88 p90=106 max=138
+   Lost: n=2473 min=1 p25=7 mediana=14 p75=79 p90=100 max=138
+   Won: 100.0% levaram mais de 0 dias; duracao 0 dias: 0
+   Lost: 100.0% levaram mais de 0 dias; duracao 0 dias: 0
+Engaging abertos por faixa de idade vs. maior duracao de Won/Lost:
+   maior duracao entre fechados = 138 dias; Engaging com idade > 138: 1291; > p90 de Won (106): 1432; > p90 de Lost (100): 1454
+   idade 0-30: 18
+   idade 31-60: 39
+   idade 61-90: 53
+   idade 91-120: 103
+   idade 121-180: 646
+   idade 181-365: 677
+   idade 366-+: 53
+
+== 6. Conhecido com o deal aberto versus so depois de fechar (vazamento) ==
+Coluna por coluna: onde esta preenchida (n preenchidos por estagio) e veredito de uso no score de um deal ABERTO.
+   opportunity_id  preenchidos {'Prospecting': 500, 'Engaging': 1589, 'Won': 4238, 'Lost': 2473} -> identificador; nao informa; fora do score
+   sales_agent     preenchidos {'Prospecting': 500, 'Engaging': 1589, 'Won': 4238, 'Lost': 2473} -> CONHECIDO aberto (vendedor atribuido)
+   product         preenchidos {'Prospecting': 500, 'Engaging': 1589, 'Won': 4238, 'Lost': 2473} -> CONHECIDO aberto
+   account         preenchidos {'Prospecting': 163, 'Engaging': 501, 'Won': 4238, 'Lost': 2473} -> CONHECIDO aberto SE preenchida (ver vazios por estagio)
+   deal_stage      preenchidos {'Prospecting': 500, 'Engaging': 1589, 'Won': 4238, 'Lost': 2473} -> CONHECIDO aberto, mas Prospecting/Engaging so diz 'aberto'; Won/Lost e o alvo (vazamento se usado)
+   engage_date     preenchidos {'Prospecting': 0, 'Engaging': 1589, 'Won': 4238, 'Lost': 2473} -> CONHECIDO aberto SO em Engaging (Prospecting nao tem)
+   close_date      preenchidos {'Prospecting': 0, 'Engaging': 0, 'Won': 4238, 'Lost': 2473} -> SO APOS fechar (vazamento: vazia em aberto)
+   close_value     preenchidos {'Prospecting': 0, 'Engaging': 0, 'Won': 4238, 'Lost': 2473} -> SO APOS fechar (vazamento: vazia em aberto; 0 em Lost denuncia o alvo)
+   ATENCAO: conta vazia em 1425 de 2089 abertos ( 68.2%) e em 0 de 6711 fechados: conta vazia e propriedade do estagio aberto, nao do desfecho. Nenhum modelo treinado nos fechados viu um deal sem conta; atributos de conta nao existem para esses abertos.
+   Derivados dos dados da conta/produto/time (setor, receita, funcionarios, local, subsidiaria, serie, preco, manager, regiao):
+      CONHECIDOS aberto, desde que o deal tenha conta/produto/vendedor casados (secao 2). Sao atributos atuais, nao do dia do engage;
+      accounts.csv nao tem data de snapshot, entao nao da para provar que valem 'no momento' (limite honesto).
+   Derivados de historico (negocios fechados ANTES do engage da conta ou do vendedor, secao 7): conhecidos aberto se contados so com close_date < engage_date.
+   Duracao (close - engage) e idade em aberto: duracao so existe apos fechar; a idade em aberto e conhecida (REF - engage).
+
+== 7. Taxa de vitoria e tempo ate fechar por segmento (Won / (Won + Lost), com n) ==
+Cada linha: n = Won+Lost; vit = Won/n; IC95 = Wilson; dias = mediana (q1-q3) de close-engage dos fechados do grupo;
+dias W / dias L = mediana so de Won / so de Lost. Teste: qui-quadrado Won/Lost x grupo (grupos com n<20 fora);
+'ACIMA do ruido' = p<0,001 e V de Cramer>=0,05; V mede a forca (0 = nada, 1 = tudo).
+Taxa geral: Won=4238 Lost=2473 n=6711 vit= 63.2% IC95=(62.0, 64.3)
+Faixas de receita (US$ mi, quartis das 85 contas): <497 | <1224 | <2741 | >=2741
+Faixas de funcionarios (quartis das contas): <1179 | <2769 | <5595 | >=5595
+
+-- 7.1 Produto
+   grupo                                  n     vit          IC95      dias(q1-q3)    dW    dL
+   GTK 500                               25  60.0% [   41%,   77%]    59 (14-92)    69    28
+   GTX Basic                           1436  63.7% [   61%,   66%]    50 (9-87)    61    14
+   GTX Plus Basic                      1051  62.1% [   59%,   65%]    48 (9-88)    56    34
+   GTX Plus Pro                         745  64.3% [   61%,   68%]    38 (8-82)    57    12
+   GTX Pro                             1147  63.6% [   61%,   66%]    37 (8-83)    47    14
+   MG Advanced                         1084  60.3% [   57%,   63%]    43 (8-84)    58    12
+   MG Special                          1223  64.8% [   62%,   67%]    49 (9-85)    57    17
+   spread (grupos n>=20): vit min= 60.0% max= 64.8% amplitude=  4.8%
+   qui2=6.5 gl=6 p=0.37 V=0.031 (grupos usados=7, fora por n<20=0, n=6711) -> dentro do ruido
+
+-- 7.2 Serie
+   grupo                                  n     vit          IC95      dias(q1-q3)    dW    dL
+   GTK                                   25  60.0% [   41%,   77%]    59 (14-92)    69    28
+   GTX                                 4379  63.4% [   62%,   65%]    45 (8-85)    56    14
+   MG                                  2307  62.7% [   61%,   65%]    45 (8-85)    57    13
+   spread (grupos n>=20): vit min= 60.0% max= 63.4% amplitude=  3.4%
+   qui2=0.4 gl=2 p=0.82 V=0.008 (grupos usados=3, fora por n<20=0, n=6711) -> dentro do ruido
+
+-- 7.3 Setor da conta
+   grupo                                  n     vit          IC95      dias(q1-q3)    dW    dL
+   retail                              1267  63.1% [   60%,   66%]    49 (8-86)    58    18
+   technolgy                           1058  63.4% [   60%,   66%]    44 (8-85)    55    12
+   medical                              950  62.3% [   59%,   65%]    39 (9-83)    59    12
+   software                             704  63.9% [   60%,   67%]    48 (9-86)    56    20
+   marketing                            623  64.8% [   61%,   68%]    43 (8-82)    50    14
+   finance                              613  61.2% [   57%,   65%]    43 (8-83)    59    14
+   telecommunications                   456  62.5% [   58%,   67%]    45 (9-86)    62    14
+   entertainment                        402  64.7% [   60%,   69%]    48 (9-86)    48    50
+   services                             352  63.4% [   58%,   68%]    46 (8-83)    60    11
+   employment                           286  62.6% [   57%,   68%]    50 (8-82)    60    14
+   spread (grupos n>=20): vit min= 61.2% max= 64.8% amplitude=  3.7%
+   qui2=2.8 gl=9 p=0.97 V=0.021 (grupos usados=10, fora por n<20=0, n=6711) -> dentro do ruido
+
+-- 7.4 Receita da conta (faixa)
+   grupo                                  n     vit          IC95      dias(q1-q3)    dW    dL
+   Q1 menor receita                    1288  64.4% [   62%,   67%]    47 (9-84)    58    13
+   Q2                                  1437  61.2% [   59%,   64%]    38 (8-83)    51    14
+   Q3                                  1767  64.6% [   62%,   67%]    48 (9-86)    60    15
+   Q4 maior receita                    2219  62.5% [   60%,   64%]    47 (8-85)    58    13
+   spread (grupos n>=20): vit min= 61.2% max= 64.6% amplitude=  3.3%
+   qui2=5.1 gl=3 p=0.16 V=0.028 (grupos usados=4, fora por n<20=0, n=6711) -> dentro do ruido
+
+-- 7.5 Funcionarios da conta (faixa)
+   grupo                                  n     vit          IC95      dias(q1-q3)    dW    dL
+   Q1 menos func.                      1335  64.0% [   61%,   67%]    47 (8-85)    59    13
+   Q2                                  1554  61.2% [   59%,   64%]    44 (8-84)    55    15
+   Q3                                  1627  65.1% [   63%,   67%]    43 (9-84)    53    15
+   Q4 mais func.                       2195  62.6% [   61%,   65%]    49 (8-86)    59    14
+   spread (grupos n>=20): vit min= 61.2% max= 65.1% amplitude=  3.9%
+   qui2=6.0 gl=3 p=0.11 V=0.030 (grupos usados=4, fora por n<20=0, n=6711) -> dentro do ruido
+
+-- 7.6 Sede da conta (office_location)
+   grupo                                  n     vit          IC95      dias(q1-q3)    dW    dL
+   United States                       5555  63.3% [   62%,   65%]    45 (8-85)    57    14
+   Korea                                193  57.5% [   50%,   64%]    52 (8-83)    61    11
+   Belgium                              104  60.6% [   51%,   69%]    42 (7-82)    71     8
+   Panama                               100  75.0% [   66%,   82%]    66 (9-91)    71    61
+   Italy                                 87  62.1% [   52%,   72%]    29 (8-84)    30    12
+   Kenya                                 86  61.6% [   51%,   71%]    12 (8-80)    12    16
+   Norway                                85  58.8% [   48%,   69%]    18 (8-86)    63    10
+   Philipines                            85  58.8% [   48%,   69%]    50 (8-87)    58    12
+   Jordan                                81  64.2% [   53%,   74%]    39 (8-88)    52    13
+   Japan                                 75  61.3% [   50%,   72%]    54 (8-86)    70    18
+   Poland                                68  66.2% [   54%,   76%]    16 (6-72)    17    15
+   Brazil                                52  61.5% [   48%,   74%]    40 (9-75)    60    10
+   Germany                               51  72.5% [   59%,   83%]    31 (8-78)    49     8
+   China                                 48  68.8% [   55%,   80%]    16 (7-85)    19    13
+   Romania                               41  56.1% [   41%,   70%]    58 (9-84)    19    82
+   spread (grupos n>=20): vit min= 56.1% max= 75.0% amplitude= 18.9%
+   qui2=14.4 gl=14 p=0.42 V=0.046 (grupos usados=15, fora por n<20=0, n=6711) -> dentro do ruido
+
+-- 7.7 Subsidiaria ou nao
+   grupo                                  n     vit          IC95      dias(q1-q3)    dW    dL
+   independente                        5551  63.1% [   62%,   64%]    44 (8-85)    56    13
+   subsidiaria                         1160  63.6% [   61%,   66%]    56 (9-86)    61    24
+   spread (grupos n>=20): vit min= 63.1% max= 63.6% amplitude=  0.6%
+   qui2=0.1 gl=1 p=0.71 V=0.004 (grupos usados=2, fora por n<20=0, n=6711) -> dentro do ruido
+
+-- 7.8 Vendedor
+   grupo                                  n     vit          IC95      dias(q1-q3)    dW    dL
+   Darcel Schlecht                      553  63.1% [   59%,   67%]    32 (8-83)    48    11
+   Vicki Laflamme                       347  63.7% [   59%,   69%]    41 (8-84)    63    10
+   Anna Snelling                        336  61.9% [   57%,   67%]    56 (9-84)    60    45
+   Kary Hendrixson                      335  62.4% [   57%,   67%]    52 (9-83)    60    36
+   Donn Cantrell                        275  57.5% [   52%,   63%]    51 (9-84)    58    19
+   Kami Bicknell                        272  64.0% [   58%,   69%]    40 (7-85)    49    32
+   Jonathan Berthelot                   264  64.8% [   59%,   70%]    54 (8-88)    56    42
+   Versie Hillebrand                    264  66.7% [   61%,   72%]    34 (8-89)    49    12
+   Cassey Cress                         261  62.5% [   56%,   68%]    32 (9-85)    43    15
+   Zane Levy                            261  61.7% [   56%,   67%]    27 (8-80)    53    12
+   Reed Clapper                         237  65.4% [   59%,   71%]    16 (8-86)    39    12
+   Gladys Colclough                     232  58.2% [   52%,   64%]    50 (8-88)    62    13
+   Lajuana Vencill                      231  55.0% [   49%,   61%]    61 (9-89)    72    14
+   Corliss Cosme                        229  65.5% [   59%,   71%]    36 (8-86)    56    14
+   Markita Hansen                       227  57.3% [   51%,   64%]    49 (8-84)    65    11
+   Maureen Marcano                      213  70.0% [   63%,   76%]    57 (10-85)    60    16
+   James Ascencio                       206  65.5% [   59%,   72%]    52 (9-86)    60    42
+   Moses Frase                          195  66.2% [   59%,   72%]    66 (10-92)    78    14
+   Marty Freudenburg                    194  62.9% [   56%,   69%]    30 (8-85)    46    12
+   Violet Mclelland                     193  63.2% [   56%,   70%]    57 (8-90)    71    16
+   Daniell Hammack                      187  61.0% [   54%,   68%]    30 (8-82)    43    18
+   Niesha Huffines                      175  60.0% [   53%,   67%]    49 (10-92)    50    36
+   Cecily Lampkin                       160  66.9% [   59%,   74%]    15 (9-74)    18    11
+   Boris Faz                            153  66.0% [   58%,   73%]    19 (8-77)    45    12
+   Hayden Neloms                        152  70.4% [   63%,   77%]    18 (7-89)    54    10
+   Elease Gluck                         126  63.5% [   55%,   71%]    22 (9-84)    18    62
+   Garret Kinder                        123  61.0% [   52%,   69%]    52 (10-84)    59    27
+   Rosie Papadopoulos                   121  64.5% [   56%,   72%]    37 (9-82)    35    42
+   Rosalina Dieter                      110  65.5% [   56%,   74%]    56 (8-81)    64    14
+   Wilburn Farren                        79  69.6% [   59%,   79%]    58 (8-90)    66    14
+   spread (grupos n>=20): vit min= 55.0% max= 70.4% amplitude= 15.4%
+   qui2=33.3 gl=29 p=0.26 V=0.070 (grupos usados=30, fora por n<20=0, n=6711) -> dentro do ruido
+
+-- 7.9 Manager
+   grupo                                  n     vit          IC95      dias(q1-q3)    dW    dL
+   Cara Losch                           745  64.4% [   61%,   68%]    47 (8-88)    58    17
+   Celia Rouche                         962  63.4% [   60%,   66%]    43 (8-84)    61    11
+   Dustin Brinkmann                    1186  63.0% [   60%,   66%]    51 (9-87)    63    13
+   Melvin Marxen                       1418  62.2% [   60%,   65%]    45 (8-86)    52    14
+   Rocco Neubert                       1113  62.1% [   59%,   65%]    33 (8-84)    45    14
+   Summer Sewald                       1287  64.3% [   62%,   67%]    49 (8-83)    57    19
+   spread (grupos n>=20): vit min= 62.1% max= 64.4% amplitude=  2.3%
+   qui2=2.4 gl=5 p=0.79 V=0.019 (grupos usados=6, fora por n<20=0, n=6711) -> dentro do ruido
+
+-- 7.10 Escritorio regional
+   grupo                                  n     vit          IC95      dias(q1-q3)    dW    dL
+   Central                             2604  62.6% [   61%,   64%]    48 (8-86)    58    13
+   East                                1858  63.0% [   61%,   65%]    39 (8-85)    52    15
+   West                                2249  63.9% [   62%,   66%]    47 (8-84)    59    14
+   spread (grupos n>=20): vit min= 62.6% max= 63.9% amplitude=  1.4%
+   qui2=1.0 gl=2 p=0.6 V=0.012 (grupos usados=3, fora por n<20=0, n=6711) -> dentro do ruido
+
+-- 7.11 Trimestre do engage
+   grupo                                  n     vit          IC95      dias(q1-q3)    dW    dL
+   2016-T4                              305  82.0% [   77%,   86%]    98 (87-111)    98    97
+   2017-T1                             1322  67.9% [   65%,   70%]    76 (47-96)    76    75
+   2017-T2                             2022  61.6% [   59%,   64%]    22 (8-83)    49    12
+   2017-T3                             2012  60.0% [   58%,   62%]    32 (8-82)    49    13
+   2017-T4                             1050  60.7% [   58%,   64%]     9 (5-18)    10     8
+   spread (grupos n>=20): vit min= 60.0% max= 82.0% amplitude= 22.0%
+   qui2=72.8 gl=4 p=5.8e-15 V=0.104 (grupos usados=5, fora por n<20=0, n=6711) -> ACIMA do ruido
+
+-- 7.12 Historico: n de negocios fechados ANTES da conta
+   grupo                                  n     vit          IC95      dias(q1-q3)    dW    dL
+   0                                   1079  72.6% [   70%,   75%]    91 (73-107)    91    91
+   1-2                                  158  70.9% [   63%,   77%]    67 (13-84)    67    67
+   11+                                 4723  61.1% [   60%,   62%]    15 (7-77)    21    11
+   3-5                                  260  65.4% [   59%,   71%]    52 (9-79)    64    12
+   6-10                                 491  58.9% [   54%,   63%]    11 (7-67)    14    10
+   spread (grupos n>=20): vit min= 58.9% max= 72.6% amplitude= 13.7%
+   qui2=58.5 gl=4 p=6.1e-12 V=0.093 (grupos usados=5, fora por n<20=0, n=6711) -> ACIMA do ruido
+
+-- 7.13 Historico: taxa de vitoria ANTERIOR da conta
+   grupo                                  n     vit          IC95      dias(q1-q3)    dW    dL
+   50-60%                              1384  62.5% [   60%,   65%]    16 (8-78)    27    11
+   60-70%                              2468  60.6% [   59%,   63%]    15 (8-74)    19    11
+   <50%                                 149  73.8% [   66%,   80%]    65 (10-88)    66    61
+   >=70%                               1631  60.3% [   58%,   63%]    15 (7-77)    42    11
+   sem historico                       1079  72.6% [   70%,   75%]    91 (73-107)    91    91
+   spread (grupos n>=20): vit min= 60.3% max= 73.8% amplitude= 13.5%
+   qui2=61.0 gl=4 p=1.7e-12 V=0.095 (grupos usados=5, fora por n<20=0, n=6711) -> ACIMA do ruido
+
+-- 7.14 Historico: n de negocios fechados ANTES do vendedor
+   grupo                                  n     vit          IC95      dias(q1-q3)    dW    dL
+   0                                   1024  72.9% [   70%,   75%]    92 (74-107)    92    92
+   1-9                                  256  68.8% [   63%,   74%]    68 (16-84)    69    68
+   10-29                                694  62.8% [   59%,   66%]    14 (7-72)    50    10
+   100+                                2761  61.1% [   59%,   63%]    14 (7-73)    17    11
+   30-99                               1976  60.3% [   58%,   62%]    17 (8-82)    37    12
+   spread (grupos n>=20): vit min= 60.3% max= 72.9% amplitude= 12.5%
+   qui2=56.5 gl=4 p=1.6e-11 V=0.092 (grupos usados=5, fora por n<20=0, n=6711) -> ACIMA do ruido
+
+-- 7.15 Historico: taxa de vitoria ANTERIOR do vendedor
+   grupo                                  n     vit          IC95      dias(q1-q3)    dW    dL
+   50-60%                               657  59.5% [   56%,   63%]    21 (8-82)    51    11
+   60-70%                              3737  61.6% [   60%,   63%]    15 (7-76)    18    12
+   <50%                                  27  59.3% [   41%,   75%]    78 (15-90)    72    82
+   >=70%                               1266  61.8% [   59%,   64%]    18 (8-76)    52    11
+   sem historico                       1024  72.9% [   70%,   75%]    92 (74-107)    92    92
+   spread (grupos n>=20): vit min= 59.3% max= 72.9% amplitude= 13.6%
+   qui2=50.1 gl=4 p=3.5e-10 V=0.086 (grupos usados=5, fora por n<20=0, n=6711) -> ACIMA do ruido
+
+-- 7.x Duracao: o tempo ate fechar separa Won de Lost?
+   Won : n=4238 min=1 p25=9 mediana=57 p75=88 p90=106 max=138
+   Lost: n=2473 min=1 p25=7 mediana=14 p75=79 p90=100 max=138
+   AUC (duracao como escore de Lost; so existe apos fechar, usado aqui apenas para descrever): 0.422
+
+-- 7.y Historico: cobertura (deals cujo historico anterior existe)
+   conta: fechados com 0 negocios anteriores = 1079; sem conta = 0; com >=1 anterior = 5632 de 6711
+   vendedor: fechados com 0 negocios anteriores = 1024; sem vendedor = 0; com >=1 anterior = 5687 de 6711
+   Historico = so negocios com close_date ESTRITAMENTE antes do engage_date do negocio.
+   CUIDADO: o historico so conta fechamentos a partir da primeira close_date (truncamento a esquerda, secao 5). Quem tem 'zero anteriores' e
+   o deal engajado no inicio da janela, que so aparece se demorou muito (duracao ~90 dias). O 'efeito' de 7.11 e 7.12 a 7.15 (vit ~72% sem historico)
+   e artefato da janela, nao sinal: fora da amostra a AUC desses atributos e ~0,50 (secao 10.4). Nao usar como fator.
+
+== 8. A pergunta do esfriamento, sem vazamento ==
+Entre negocios COM desfecho: dos que ainda estavam abertos com idade a (dias depois do engage; duracao > a),
+que parcela foi ganha e quantos dias ainda restavam (duracao - a). Prospecting nao entra (sem engage_date).
+   a  ainda abertos n    Won   Lost     vit          IC95  resta med    q1    q3    rW    rL | Engaging abertos c/ idade>a
+   0             6711   4238   2473  63.2% [   62%,   64%]         45     8    85    57    14 | 1589
+  15             3834   2625   1209  68.5% [   67%,   70%]         66    48    83    67    64 | 1582
+  30             3548   2421   1127  68.2% [   67%,   70%]         53    37    70    54    51 | 1571
+  45             3353   2294   1059  68.4% [   67%,   70%]         40    25    56    41    38 | 1558
+  60             2979   2044    935  68.6% [   67%,   70%]         28    16    42    29    27 | 1532
+  90             1358    966    392  71.1% [   69%,   73%]         14     7    24    13    14 | 1479
+ 120              193    146     47  75.6% [   69%,   81%]          6     3    11     6     5 | 1376
+ 150                0      0      0    -   [-,-]          -     -     -     -     - | 1152
+ 180                0      0      0    -   [-,-]          -     -     -     -     - | 730
+ 210                0      0      0    -   [-,-]          -     -     -     -     - | 612
+(rW / rL = mediana dos dias que restavam, so Won / so Lost)
+
+SUPORTE: o maior tempo ate fechar visto e 138 dias. Engaging abertos com idade <= 138: 298 de 1589 ( 18.8%); com idade > 138: 1291 ( 81.2%), idade mediana 165.
+   Para esses ultimos nao existe um unico caso fechado comparavel: nada nos dados diz o que lhes acontece (abandonados? ainda vivos?).
+   Leitura da tabela: entre os que seguem abertos, a parcela ganha SOBE com a idade (perdas sao rapidas: mediana Lost 14 dias vs Won 57),
+   entao, dentro do suporte, 'ficar aberto mais tempo' nao reduz a chance; o que a tabela mede e a duracao restante, nao o esfriamento.
+
+Mesma tabela restrita a coorte que ja teve tempo de fechar (engage_date <= REF - H), para reduzir o vies de censura:
+  H=120: engage <= 2017-09-02; fechados=5024 abertos(Engaging)=1378 (abertos/total da coorte =  21.5%)
+     a=  0: n= 5024 vit= 63.8%
+     a= 30: n= 2933 vit= 68.4%
+     a= 60: n= 2531 vit= 68.5%
+     a= 90: n= 1264 vit= 70.3%
+     a=120: n=  193 vit= 75.6%
+  H=240: engage <= 2017-05-05; fechados=2466 abertos(Engaging)=492 (abertos/total da coorte =  16.6%)
+     a=  0: n= 2466 vit= 65.9%
+     a= 30: n= 1599 vit= 71.0%
+     a= 60: n= 1376 vit= 71.4%
+     a= 90: n=  729 vit= 71.9%
+     a=120: n=  121 vit= 76.0%
+
+Censura: Engaging abertos (sem desfecho) no fim dos dados e seu efeito possivel nos numeros acima.
+   Engaging abertos=1589 de 8300 negocios engajados ( 19.1%).
+   Por mes de engage, parcela ainda aberta:
+      2016-10: engajados=    7 ainda abertos=   0 (  0.0%)
+      2016-11: engajados=  115 ainda abertos=  13 ( 11.3%)
+      2016-12: engajados=  236 ainda abertos=  40 ( 16.9%)
+      2017-01: engajados=  312 ainda abertos=  65 ( 20.8%)
+      2017-02: engajados=  515 ainda abertos=  95 ( 18.4%)
+      2017-03: engajados=  792 ainda abertos= 137 ( 17.3%)
+      2017-04: engajados=  874 ainda abertos= 121 ( 13.8%)
+      2017-05: engajados=  722 ainda abertos= 134 ( 18.6%)
+      2017-06: engajados=  792 ainda abertos= 111 ( 14.0%)
+      2017-07: engajados= 1198 ainda abertos= 402 ( 33.6%)
+      2017-08: engajados=  793 ainda abertos= 254 ( 32.0%)
+      2017-09: engajados=  779 ainda abertos= 102 ( 13.1%)
+      2017-10: engajados=  761 ainda abertos=  58 (  7.6%)
+      2017-11: engajados=  283 ainda abertos=  39 ( 13.8%)
+      2017-12: engajados=  121 ainda abertos=  18 ( 14.9%)
+   Limites: se TODOS os Engaging abertos com idade > a virassem Won (ou todos Lost), a parcela ganha entre os 'ainda abertos em a' seria:
+      a  vit observada  se todos Lost   se todos Won   movimento max (pp)
+      0          63.2%          51.1%          70.2%                 12.1
+     30          68.2%          47.3%          78.0%                 20.9
+     60          68.6%          45.3%          79.3%                 23.3
+     90          71.1%          34.1%          86.2%                 37.1
+    120          75.6%           9.3%          97.0%                 66.3
+    150            -              -              -                      -
+   Leitura: os limites sao extremos (todos os abertos com um unico desfecho), nao uma estimativa. O vies real depende de os
+   abertos serem diferentes dos fechados; os dados nao permitem medir isso. Na coorte antiga (H acima) a censura e menor.
+
+-- 8 (2a tabela). Entre TODOS os deals ainda abertos na idade a, mantendo os que nunca fecham:
+   Coorte: engage_date >= 2017-03-01 (primeiro fechamento registrado; coorte de partida fora) e engage_date + a + 90 <= 2017-12-31.
+   Aberto na idade a = (fechou com duracao > a) ou (ainda aberto na data de referencia). Janela: dias (a, a+90].
+      a      n  ganhos<=90d  perdidos<=90d  abertos apos 90d  chance ganhar 90d          IC95  chance perder  sem desfecho
+      0   6020         2326           1582              2112              38.6% [   37%,   40%]          26.3%         35.1%
+     15   3668         1405            711              1552              38.3% [   37%,   40%]          19.4%         42.3%
+     30   3189         1288            647              1254              40.4% [   39%,   42%]          20.3%         39.3%
+     45   2818         1147            564              1107              40.7% [   39%,   43%]          20.0%         39.3%
+     60   2321          926            437               958              39.9% [   38%,   42%]          18.8%         41.3%
+     75   1501          640            275               586              42.6% [   40%,   45%]          18.3%         39.0%
+     90   1015          361            134               520              35.6% [   33%,   39%]          13.2%         51.2%
+    100    743          187             72               484              25.2% [   22%,   28%]           9.7%         65.1%
+    110    559           84             35               440              15.0% [   12%,   18%]           6.3%         78.7%
+    120    438           24             11               403               5.5% [    4%,    8%]           2.5%         92.0%
+    130    377            5              3               369               1.3% [    1%,    3%]           0.8%         97.9%
+    140    322            0              0               322               0.0% [    0%,    1%]           0.0%        100.0%
+   Leitura: com idade crescente a chance de ganhar nos proximos 90 dias cai porque as idades altas se enchem de deals que nunca fecham.
+
+== 8b. O prazo do trimestre (fim do trimestre seguinte ao do engage) ==
+Fechados dentro do prazo (close_date <= fim do trimestre seguinte ao do engage): 6710 de 6711 (100.0%); depois: 1 (  0.0%)
+   Won: dentro=4238 depois=0
+   Lost: dentro=2472 depois=1
+   Maior atraso entre fechados: 32 dias apos o prazo
+Engaging abertos na data de referencia 2017-12-31: ja passaram do proprio prazo = 716; ainda dentro do prazo = 873 (de 1589)
+
+== 9. Os deals abertos hoje (na data de referencia) ==
+Data de referencia = 2017-12-31. Aberto = Prospecting + Engaging. Preco de lista = products.sales_price (close_value esta vazio em aberto).
+Abertos: 2089; por estagio: {'Engaging': 1589, 'Prospecting': 500}
+
+Tamanho da lista aberta por vendedor (os 35 de sales_teams, incluindo os sem deal): n=35 min=0 p25=35 mediana=65 p75=85 p90=101 max=194
+Vendedores sem nenhum deal aberto: 8  -> ['Carl Lin', 'Carol Thompson', 'Donn Cantrell', 'Elizabeth Anderson', 'Garret Kinder', 'Mei-Mei Johns', 'Natalya Ivanova', 'Reed Clapper']
+Vendedores com lista aberta < 5: 8; com Engaging abertos < 5: 8
+Lista so de Engaging por vendedor: n=35 min=0 p25=24 mediana=43 p75=72 p90=87 max=104
+
+vendedor               manager              reg      abertos  Prosp  Engag idade med Eng  valor lista (US$)
+Darcel Schlecht        Melvin Marxen        Central      194    111     83           157            656,040
+Anna Snelling          Dustin Brinkmann     Central      112     55     57           157            173,259
+Vicki Laflamme         Celia Rouche         West         104      0    104           220            227,326
+Kary Hendrixson        Summer Sewald        West         103      0    103           224            276,517
+Versie Hillebrand      Dustin Brinkmann     Central       97     54     43           155            101,409
+Kami Bicknell          Summer Sewald        West          90      0     90           218            190,990
+Zane Levy              Summer Sewald        West          88      0     88           193            193,348
+Marty Freudenburg      Melvin Marxen        Central       87     54     33           154            229,445
+Cassey Cress           Rocco Neubert        East          85      0     85           201            220,860
+Gladys Colclough       Melvin Marxen        Central       85     49     36           157            192,142
+Corliss Cosme          Cara Losch           East          81      0     81           225            216,840
+Jonathan Berthelot     Melvin Marxen        Central       81     48     33           157            127,420
+Lajuana Vencill        Dustin Brinkmann     Central       80     40     40           156            116,039
+Markita Hansen         Celia Rouche         West          79      0     79           236            282,756
+Daniell Hammack        Rocco Neubert        East          72      0     72           200            209,320
+Maureen Marcano        Summer Sewald        West          72      0     72           227            140,225
+Violet Mclelland       Cara Losch           East          68      0     68           204             80,150
+Moses Frase            Dustin Brinkmann     Central       65     31     34           158            108,161
+Niesha Huffines        Melvin Marxen        Central       64     34     30           154            107,745
+James Ascencio         Summer Sewald        West          61      0     61           221            192,216
+Boris Faz              Rocco Neubert        East          57      0     57           217            143,456
+Elease Gluck           Celia Rouche         West          51      0     51           228            251,649
+Hayden Neloms          Celia Rouche         West          50      0     50           230            123,530
+Rosalina Dieter        Celia Rouche         West          50      0     50           202            119,664
+Cecily Lampkin         Dustin Brinkmann     Central       43     24     19           159             86,748
+Rosie Papadopoulos     Cara Losch           East          39      0     39           202            116,685
+Wilburn Farren         Cara Losch           East          31      0     31           231             82,275
+Carl Lin               Summer Sewald        West           0      0      0             -                  0
+Carol Thompson         Celia Rouche         West           0      0      0             -                  0
+Donn Cantrell          Rocco Neubert        East           0      0      0             -                  0
+Elizabeth Anderson     Cara Losch           East           0      0      0             -                  0
+Garret Kinder          Cara Losch           East           0      0      0             -                  0
+Mei-Mei Johns          Melvin Marxen        Central        0      0      0             -                  0
+Natalya Ivanova        Rocco Neubert        East           0      0      0             -                  0
+Reed Clapper           Rocco Neubert        East           0      0      0             -                  0
+
+Valor de lista aberto total = US$ 4,966,215 (Engaging: US$ 3,892,229; Prospecting: US$ 1,073,986)
+Valor de lista aberto por vendedor: n=35 min=0 p25=81212 mediana=123530 p75=201334 p90=242767 max=656040
+
+manager              reg       vend  abertos  Engag idade med Eng  valor lista (US$)
+Dustin Brinkmann     Central      5      397    193           156            585,616
+Melvin Marxen        Central      5      511    215           157          1,312,792
+Cara Losch           East         4      219    219           216            495,950
+Rocco Neubert        East         3      214    214           203            573,636
+Celia Rouche         West         5      334    334           225          1,004,925
+Summer Sewald        West         5      414    414           216            993,296
+
+regiao      abertos  Engag  valor lista (US$)
+Central         908    408          1,898,408
+East            433    433          1,069,586
+West            748    748          1,998,221
+
+Prospecting por regiao: {'Central': 500, 'East': 0, 'West': 0}; vendedores com Prospecting: 10
+Engaging abertos com idade <= maior duracao de fechados, por regiao: {'Central': 5, 'East': 107, 'West': 186}
+Linhas abertas a que falta algo que um escore precisaria:
+   sem conta              Prospecting : 337 de 500
+   sem conta              Engaging    : 1088 de 1589
+   conta que nao casa     Prospecting : 0 de 500
+   conta que nao casa     Engaging    : 0 de 1589
+   sem engage_date        Prospecting : 500 de 500
+   sem engage_date        Engaging    : 0 de 1589
+   sem produto casado     Prospecting : 0 de 500
+   sem produto casado     Engaging    : 0 de 1589
+   sem vendedor casado    Prospecting : 0 de 500
+   sem vendedor casado    Engaging    : 0 de 1589
+   abertos com conta + engage_date + produto + vendedor: 501 de 2089 (Engaging completos: 501 de 1589)
+   Prospecting completos (conta, produto, vendedor; sem engage_date por definicao): 163 de 500
+   Todo atributo derivado depende do casamento; accounts sem preenchimento: {'subsidiary_of': 70}
+
+== 10. Cada suposicao do PRODUTO.md, testada ==
+10.1 'Sao 35 vendedores e cada um tem lista aberta para um top cinco' -> PARCIAL
+     vendedores em sales_teams=35; com algum deal no pipeline=30; com >=5 abertos=27; com >=5 Engaging abertos (os que tem engage_date)=27; sem deal=5.
+     lista aberta por vendedor (35): n=35 min=0 p25=35 mediana=65 p75=85 p90=101 max=194
+
+10.2 'Ordenar por valor nao resolve' (preco de lista x taxa de vitoria)
+     MG Special      preco=      55 n= 1223 vit= 64.8% IC95=[   62%,   67%]
+     GTX Basic       preco=     550 n= 1436 vit= 63.7% IC95=[   61%,   66%]
+     GTX Plus Basic  preco=    1096 n= 1051 vit= 62.1% IC95=[   59%,   65%]
+     MG Advanced     preco=    3393 n= 1084 vit= 60.3% IC95=[   57%,   63%]
+     GTX Pro         preco=    4821 n= 1147 vit= 63.6% IC95=[   61%,   66%]
+     GTX Plus Pro    preco=    5482 n=  745 vit= 64.3% IC95=[   61%,   68%]
+     GTK 500         preco=   26768 n=   25 vit= 60.0% IC95=[   41%,   77%]
+     Spearman(preco, vit) entre os 7 produtos = -0.54
+     por terco de preco dos deals fechados: barato: n=2659 vit= 64.2%; caro: n=1917 vit= 63.8%; medio: n=2135 vit= 61.2%
+     Spearman(preco, preco x taxa) entre produtos = 1.00; valor esperado por produto (US$): MG Special=36, GTX Basic=350, GTX Plus Basic=681, MG Advanced=2,047, GTX Pro=3,064, GTX Plus Pro=3,525, GTK 500=16,061
+     Top 5 por preco x top 5 por preco x taxa do produto, nos 27 vendedores com >=5 abertos: 0 de 135 posicoes mudam (  0.0%).
+     Taxa entre produtos: amplitude=  4.8%, qui2 p=0.37 V=0.031. -> NAO SUSTENTA
+     Leitura: a taxa e plana entre produtos (dentro do ruido), entao a chance por produto nao reordena a lista: ordenar por valor e
+     equivalente a ordenar por valor esperado por produto. Entre deals vivos a ordem por valor e a ordem certa.
+     Segunda metade: Engaging abertos mais velhos que a maior duracao de qualquer fechado (138 dias): 1291 de 1589 ( 81.2%); carregam US$ 3,198,664 de US$ 3,892,229 de lista Engaging ( 82.2%) e  64.4% da lista aberta total (US$ 4,966,215).
+     A ordem por valor ignora quais deals ja passaram do ponto de fechar.
+     -> PARCIAL: entre deals vivos a ordem por valor e a ordem certa (taxa plana por produto); sobre a lista aberta inteira nao e.
+
+10.3 'O tempo no funil reduz a chance' (secao 8)
+     idade>  0: n= 6711 vit= 63.2% IC95=[   62%,   64%]
+     idade> 30: n= 3548 vit= 68.2% IC95=[   67%,   70%]
+     idade> 60: n= 2979 vit= 68.6% IC95=[   67%,   70%]
+     idade> 90: n= 1358 vit= 71.1% IC95=[   69%,   73%]
+     idade>120: n=  193 vit= 75.6% IC95=[   69%,   81%]
+     Vista 1, entre deals que FECHAM (secao 8, 1a tabela): 0 -> 90 dias:  63.2% ->  71.1% -> NAO SUSTENTA
+     Vista 2, entre TODOS os abertos na idade a, chance de ganhar nos 90 dias seguintes (secao 8, 2a tabela): a=0: 38.6% (n=6020); a=30: 40.4% (n=3189); a=60: 39.9% (n=2321); a=90: 35.6% (n=1015); a=120: 5.5% (n=438); a=140: 0.0% (n=322)
+     Chance de ganhar em 90 dias:  38.6% (a=0) ->  35.6% (a=90) ->   0.0% (a=140); nao cai alem do IC.
+     VEREDITO 10.3: PARCIAL. Entre deals que fecham, a idade nao reduz a parcela ganha; entre todos os abertos, a chance de ganhar nos proximos 90 dias
+     cai com a idade, porque as idades altas se enchem de deals que nunca fecham.
+     Ressalva: a censura (secao 8) pode mover estes numeros ate os limites ali impressos.
+     Tambem: 1432 Engaging abertos ja passaram do p90 do tempo dos Won (106 dias): candidatos reais a 'esfriando'.
+
+10.4 'Ha algo conhecido em aberto que separa ganhos de perdidos, e com que forca'
+     Teste fora da amostra: aprende a taxa de cada grupo nos fechados com close_date <= corte; avalia nos fechados DEPOIS,
+     usando so atributos conhecidos no engage. AUC 0,5 = nada; 1,0 = perfeito. (Aproximacao: o corte e por close_date.)
+     corte = 2017-08-02; treino n=3357 teste n=3354; taxa treino= 63.2% teste= 63.1%
+     atributo                              AUC  V (todos)         p veredito-ruido
+     product                             0.501      0.031      0.37 dentro do ruido
+     series                              0.505      0.008      0.82 dentro do ruido
+     sector_l                            0.500      0.021      0.97 dentro do ruido
+     rev_band                            0.499      0.028      0.16 dentro do ruido
+     emp_band                            0.520      0.030      0.11 dentro do ruido
+     office                              0.510      0.046      0.42 dentro do ruido
+     subs                                0.503      0.004      0.71 dentro do ruido
+     sales_agent                         0.512      0.070      0.26 dentro do ruido
+     manager                             0.482      0.019      0.79 dentro do ruido
+     region                              0.480      0.012       0.6 dentro do ruido
+     acc_n_band                          0.497      0.093   6.1e-12 ACIMA do ruido
+     acc_wr_band                         0.507      0.095   1.7e-12 ACIMA do ruido
+     sel_n_band                          0.513      0.092   1.6e-11 ACIMA do ruido
+     sel_wr_band                         0.511      0.086   3.5e-10 ACIMA do ruido
+     prod_sector                         0.503      0.085      0.84 dentro do ruido
+     media simples das taxas encolhidas de ['product', 'sector_l', 'rev_band', 'sales_agent', 'acc_wr_band', 'sel_wr_band']: AUC = 0.522
+     melhor atributo isolado AUC=0.520; combinacao simples AUC=0.522 -> NAO SUSTENTA (limiares fixos: >=0,60 sustenta, 0,55-0,60 parcial)
+
+10.5 'Ha casos parecidos suficientes (produto x setor) para dizer o que fecha e o que nao fecha'
+     celulas com n>= 10: 60 de 69 possiveis (7 produtos x 10 setores = 70); cobrem 6686 de 6711 fechados ( 99.6%)
+     celulas com n>= 30: 59 de 69 possiveis (7 produtos x 10 setores = 70); cobrem 6664 de 6711 fechados ( 99.3%)
+     celulas com n>=100: 31 de 69 possiveis (7 produtos x 10 setores = 70); cobrem 4803 de 6711 fechados ( 71.6%)
+     tamanho das celulas: n=69 min=2 p25=55 mediana=85 p75=137 p90=191 max=266
+     taxa de vitoria entre celulas n>=30: qui2=47.3 gl=58 p=0.84 V=0.084 -> dentro do ruido
+     3 menores e 3 maiores taxas (celulas n>=30): MG Advanced x services  52.0% n=50; GTX Pro x employment  54.5% n=55; MG Advanced x medical  57.3% n=164 | MG Advanced x entertainment  71.2% n=73; GTX Pro x services  71.9% n=64; MG Special x telecommunications  72.9% n=85
+     -> NAO SUSTENTA (celulas existem, mas as taxas nao diferem alem do ruido)
+
+10.6 'As tres perguntas do gestor se respondem com estas colunas'
+     (a) pipeline parado: idade dos Engaging abertos por vendedor; 'parado' = idade > p90 do tempo dos Won (106 dias).
+         parados no total = 1432 de 1589 Engaging abertos ( 90.1%); parcela parada por vendedor (>=5 Engaging): n=27 min=77 p25=86 mediana=89 p75=100 p90=100 max=100 (%)
+         vendedores diferem na parcela parada? qui2=72.8 gl=26 p=2.6e-06 -> ACIMA do ruido
+     (b) insiste no que nao fecha: parcela da carteira aberta dos vendedores em produto x setor de taxa historica baixa.
+         celula 'de baixa taxa' = n>=30 e taxa <= p25 das celulas ( 59.8%); 15 celulas.
+         parcela por vendedor (>=5 abertos): n=26 min=16 p25=24 mediana=28 p75=31 p90=41 max=48 (%)
+         vendedores diferem? qui2=18.4 gl=25 p=0.82 -> dentro do ruido
+         Alternativa: o vendedor tem taxa propria abaixo da media? (secao 7.8): dentro do ruido
+     (c) onde esta o valor do time: soma do preco de lista dos abertos por manager/regiao (secao 9): pode ser respondida (e fato da tabela).
+         Ressalva: e preco de lista; close_value de Won difere do preco (secao 4); valor esperado exige a taxa por segmento (secao 7).
+         (a) ressalva:  90.1% dos Engaging abertos passam do p90 dos Won; o limiar nao discrimina (secao 8, suporte).
+     Veredito: (a) responde so em fato bruto (idade), sem diferenca provada entre vendedores; (b) responde so em fato bruto, sem diferenca provada entre vendedores; (c) sustenta como fato de lista -> PARCIAL
+
+== FIM ==

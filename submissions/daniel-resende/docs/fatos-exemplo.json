@@ -1,0 +1,154 @@
+[
+  {
+    "id": "deal:GWOOPZE8",
+    "kind": "deal",
+    "target": {
+      "deal_id": "GWOOPZE8",
+      "seller": "Cassey Cress"
+    },
+    "facts": {
+      "seller": "Cassey Cress",
+      "product": "GTX Plus Basic",
+      "account": "Cheers",
+      "value": 1096.0,
+      "engage_date": "2017-10-01",
+      "days_open": 91,
+      "days_open_phrase": "aberto há 91 dias",
+      "days_left": 47,
+      "days_left_phrase": "faltam 47 dias de prazo",
+      "window_end": "2018-02-17",
+      "block": "no prazo",
+      "play_label": "Confirmar esta semana se segue de pé",
+      "cooling_label": "com o prazo acabando",
+      "rank": 6,
+      "alive_count": 8,
+      "longest_win_days": 138,
+      "time_sentence": "Cerca de 26 em cada 100 negócios que chegaram abertos aos 90 dias foram ganhos depois (conta de 31/12/2017).",
+      "monday": "2018-01-01"
+    }
+  },
+  {
+    "id": "deal:NGTVHTFH",
+    "kind": "deal",
+    "target": {
+      "deal_id": "NGTVHTFH",
+      "seller": "Boris Faz"
+    },
+    "facts": {
+      "seller": "Boris Faz",
+      "product": "GTX Pro",
+      "value": 4821.0,
+      "engage_date": "2017-12-19",
+      "days_open": 12,
+      "days_open_phrase": "aberto há 12 dias",
+      "days_left": 89,
+      "days_left_phrase": "faltam 89 dias de prazo",
+      "window_end": "2018-03-31",
+      "block": "no prazo",
+      "play_label": "Trabalhar esta semana",
+      "rank": 2,
+      "alive_count": 5,
+      "longest_win_days": 138,
+      "time_sentence": "Cerca de 47 em cada 100 negócios foram ganhos depois de engajados (conta de 31/12/2017).",
+      "monday": "2018-01-01"
+    }
+  },
+  {
+    "id": "deal:I5VHXAWW",
+    "kind": "deal",
+    "target": {
+      "deal_id": "I5VHXAWW",
+      "seller": "Boris Faz"
+    },
+    "facts": {
+      "seller": "Boris Faz",
+      "product": "GTX Plus Pro",
+      "account": "Bluth Company",
+      "value": 5482.0,
+      "engage_date": "2017-11-06",
+      "days_open": 55,
+      "days_open_phrase": "aberto há 55 dias",
+      "days_left": 83,
+      "days_left_phrase": "faltam 83 dias de prazo",
+      "window_end": "2018-03-25",
+      "block": "no prazo",
+      "play_label": "Trabalhar esta semana",
+      "rank": 1,
+      "alive_count": 5,
+      "longest_win_days": 138,
+      "time_sentence": "Cerca de 42 em cada 100 negócios que chegaram abertos aos 30 dias foram ganhos depois (conta de 31/12/2017).",
+      "monday": "2018-01-01"
+    }
+  },
+  {
+    "id": "briefing:Boris Faz",
+    "kind": "briefing",
+    "target": {
+      "seller": "Boris Faz"
+    },
+    "facts": {
+      "seller": "Boris Faz",
+      "monday": "2018-01-01",
+      "alive": 5,
+      "alive_value": 17639.0,
+      "cooling": 0,
+      "queue": 0,
+      "queue_value": 0.0,
+      "clean": 52,
+      "clean_value": 125817.0,
+      "longest_win_days": 138,
+      "evidence_deals": 717,
+      "evidence_won": 0,
+      "evidence_phrase": "nenhum dos 717 negócios distintos que venceram foi ganho depois",
+      "alive_phrase": "5 negócios no prazo",
+      "queue_phrase": "nenhum negócio para iniciar",
+      "clean_phrase": "52 negócios vencidos",
+      "product_1": "GTX Plus Pro",
+      "account_1": "Bluth Company",
+      "value_1": 5482.0,
+      "days_left_1": 83,
+      "days_left_phrase_1": "faltam 83 dias de prazo",
+      "product_2": "GTX Pro",
+      "value_2": 4821.0,
+      "days_left_2": 89,
+      "days_left_phrase_2": "faltam 89 dias de prazo",
+      "product_3": "MG Advanced",
+      "value_3": 3393.0,
+      "days_left_3": 89,
+      "days_left_phrase_3": "faltam 89 dias de prazo"
+    }
+  },
+  {
+    "id": "manager:Cara Losch",
+    "kind": "manager",
+    "target": {
+      "manager": "Cara Losch"
+    },
+    "facts": {
+      "manager": "Cara Losch",
+      "region": "East",
+      "monday": "2018-01-01",
+      "sellers": 6,
+      "sellers_without_alive": 2,
+      "names_without_alive": [
+        "Elizabeth Anderson",
+        "Garret Kinder"
+      ],
+      "without_alive_phrase": "2 de 6 vendedores sem nenhum negócio no prazo",
+      "alive": 24,
+      "alive_value": 46147.0,
+      "cooling": 1,
+      "queue": 0,
+      "queue_value": 0.0,
+      "clean": 195,
+      "clean_value": 449803.0,
+      "alive_phrase": "24 negócios no prazo",
+      "queue_phrase": "nenhum negócio para iniciar",
+      "clean_phrase": "195 negócios vencidos",
+      "cooling_phrase": "1 com o prazo acabando",
+      "evidence_deals": 717,
+      "evidence_won": 0,
+      "evidence_phrase": "nenhum dos 717 negócios distintos que venceram foi ganho depois"
+    }
+  }
+]

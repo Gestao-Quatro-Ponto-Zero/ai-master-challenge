@@ -1,0 +1,263 @@
+== 1. O que um negocio aberto carrega ==
+negocios abertos: 2089 (Engaging=1589, Prospecting=500)
+abertos com close_value preenchido: 0 | com close_date: 0 | sem engage_date: 500 | sem account: 1425
+fechados sem account: 0 de 6711
+Won: close_value / preco de tabela -> p05=0.83 mediana=1.00 p95=1.16 (n=4238)
+=> 'valor' de um negocio aberto = preco de tabela do produto (unico valor que a linha aberta tem)
+data de referencia (ultima data nos dados): 2017-12-31
+produto renomeado para casar com products.csv: {'GTXPro': 'GTX Pro'}
+
+== 2. Campos que vazariam o desfecho e a prova ==
+vazam (nunca entram no score): ['account', 'close_date', 'close_value', 'days_to_close', 'deal_stage', 'employees', 'office_location', 'outcome', 'revenue', 'sector', 'subsidiary_of']
+o score recebe apenas: ['age', 'engage', 'id', 'manager', 'price', 'product', 'region', 'seller', 'series']
+prova: world_at() apaga todo evento posterior ao corte antes de qualquer score e afirma (assert) que nao sobra data futura; open_at() afirma que so os campos acima saem.
+
+== 3 a 6. Comparacao em tres cortes ==
+
+==== CORTE 2017-07-01 (desfecho observado ate 2017-09-29, 90 dias) ====
+aprende de 2 fotos passadas (2017-03-03, 2017-04-02), 800 linhas, todas com janela encerrada ate o corte (candidatos B e C)
+negocios abertos (Engaging) no corte: 1706
+desfecho na janela: ganho=609 perdido=364 sem desfecho=733 (destes, 723 seguem abertos no fim dos dados em 2017-12-31 e 10 fecharam depois da janela)
+taxa geral de ganho na janela (todos os abertos): 35.7%; so entre os que tiveram desfecho: 62.6%
+regra A: de cada 100 negocios que chegaram abertos a esta idade, quantos foram ganhos nos 90 dias seguintes
+  (tabela de vida com 3220 negocios engajados desde 2017-03-01, o 1o fechamento registrado; idade maxima ja vista: 122 dias)
+  prazo: dos 2699 fechamentos conhecidos nesta data, 0 ocorreram depois do fim do trimestre seguinte ao do engajamento -> prazo aplicado: sim
+  curva so pela idade (antes de aplicar o prazo):
+     0 dias:  46.9%   (chegaram abertos a essa idade: 3180)
+    15 dias:  54.5%   (chegaram abertos a essa idade: 1785)
+    30 dias:  59.7%   (chegaram abertos a essa idade: 1402)
+    45 dias:  59.7%   (chegaram abertos a essa idade: 1094)
+    60 dias:  58.9%   (chegaram abertos a essa idade: 767)
+    75 dias:  55.7%   (chegaram abertos a essa idade: 464)
+    90 dias:  47.7%   (chegaram abertos a essa idade: 256)
+   100 dias:  30.6%   (chegaram abertos a essa idade: 136)
+   110 dias:  14.4%   (chegaram abertos a essa idade: 63)
+   120 dias:  46.9%   (chegaram abertos a essa idade: 11)
+   130 dias:  46.9%   (chegaram abertos a essa idade: 0)
+   140 dias:   0.0%   (chegaram abertos a essa idade: 0)
+listas: 30 vendedores, tamanho min=19 mediana=50 max=120
+-- top 5 da lista de cada vendedor (empates dividem as vagas) --
+  ordenacao                             ganhos    de  acerto   valor ganho  vend. melhor que valor
+  ref: ordenar por valor                  62.1   150   41.4%       387.942                       -
+  ref: taxa geral (ordem qualquer)        61.4   150   41.0%       137.715                    2/30
+  A regras (tempo x valor)                67.0   150   44.7%       424.750                   17/30
+  B pontos (tempo+produto+vendedor)       58.5   150   39.0%       369.383                   10/30
+  C regressao logistica                   46.0   150   30.7%       319.855                    6/30
+  A' regras, so a chance                  72.5   150   48.3%       187.242                    6/30
+-- top 10 da lista de cada vendedor (empates dividem as vagas) --
+  ordenacao                             ganhos    de  acerto   valor ganho  vend. melhor que valor
+  ref: ordenar por valor                 122.2   300   40.7%       649.736                       -
+  ref: taxa geral (ordem qualquer)       122.9   300   41.0%       275.430                    1/30
+  A regras (tempo x valor)               137.7   300   45.9%       717.097                   17/30
+  B pontos (tempo+produto+vendedor)      121.7   300   40.6%       644.740                   10/30
+  C regressao logistica                  101.7   300   33.9%       551.889                    4/30
+  A' regras, so a chance                 150.1   300   50.0%       362.756                    4/30
+-- previsto x observado (chance de ganhar em 90 dias), por faixa --
+  A regras (tempo x valor)
+    faixa   0%-  5%: n=  350 previsto=  0.0% observado=  0.0%
+    faixa  40%- 55%: n=  490 previsto= 51.0% observado= 44.1%
+    faixa  55%-100%: n=  866 previsto= 58.6% observado= 45.4%
+  B pontos (tempo+produto+vendedor)
+    faixa  40%- 55%: n= 1505 previsto= 47.9% observado= 33.3%
+    faixa  55%-100%: n=  201 previsto= 56.8% observado= 53.7%
+  C regressao logistica
+    faixa  25%- 40%: n=   27 previsto= 39.0% observado= 25.9%
+    faixa  40%- 55%: n=  818 previsto= 48.3% observado= 37.8%
+    faixa  55%-100%: n=  861 previsto= 63.0% observado= 34.0%
+-- os tres grupos pela regra A (deixar ir: passou do prazo ou e mais velho que o ganho mais demorado ja visto, 138 dias;
+   focar agora: chance >= 25% e chance x valor >= 1000; manter aquecido: o resto) --
+  grupo                  n  ganhos  perdidos  sem desf.  % ganho   valor ganho  valor de tabela
+  focar agora          616     262       165        189    42.5%     1.257.403        2.988.554
+  manter aquecido      740     347       199        194    46.9%       185.964          406.631
+  deixar ir            350       0         0        350     0.0%             0          866.050
+    manter aquecido / vivo de valor baixo: n=740 ganhos=347
+-- esfriando: vivo hoje (chance >= 25%), mas abaixo disso se seguir aberto por mais 30 dias --
+  esfriando          n=   56 ganhos em 90 dias=   5 dos quais nos primeiros 30 dias=   0 (0%)
+  vivo, sem pressa   n= 1300 ganhos em 90 dias= 604 dos quais nos primeiros 30 dias=  75 (12%)
+  'deixar ir' ate o fim dos dados (2017-12-31): ganhos=0 perdidos=0 ainda abertos=350 de 350
+
+==== CORTE 2017-08-16 (desfecho observado ate 2017-11-14, 90 dias) ====
+aprende de 3 fotos passadas (2017-03-19, 2017-04-18, 2017-05-18), 2485 linhas, todas com janela encerrada ate o corte (candidatos B e C)
+negocios abertos (Engaging) no corte: 2274
+desfecho na janela: ganho=599 perdido=279 sem desfecho=1396 (destes, 1303 seguem abertos no fim dos dados em 2017-12-31 e 93 fecharam depois da janela)
+taxa geral de ganho na janela (todos os abertos): 26.3%; so entre os que tiveram desfecho: 68.2%
+regra A: de cada 100 negocios que chegaram abertos a esta idade, quantos foram ganhos nos 90 dias seguintes
+  (tabela de vida com 4818 negocios engajados desde 2017-03-01, o 1o fechamento registrado; idade maxima ja vista: 168 dias)
+  prazo: dos 3729 fechamentos conhecidos nesta data, 0 ocorreram depois do fim do trimestre seguinte ao do engajamento -> prazo aplicado: sim
+  curva so pela idade (antes de aplicar o prazo):
+     0 dias:  39.7%   (chegaram abertos a essa idade: 4806)
+    15 dias:  41.7%   (chegaram abertos a essa idade: 2689)
+    30 dias:  44.9%   (chegaram abertos a essa idade: 2107)
+    45 dias:  44.9%   (chegaram abertos a essa idade: 1873)
+    60 dias:  42.9%   (chegaram abertos a essa idade: 1505)
+    75 dias:  38.3%   (chegaram abertos a essa idade: 1037)
+    90 dias:  29.9%   (chegaram abertos a essa idade: 627)
+   100 dias:  18.4%   (chegaram abertos a essa idade: 411)
+   110 dias:   7.2%   (chegaram abertos a essa idade: 285)
+   120 dias:   1.4%   (chegaram abertos a essa idade: 215)
+   130 dias:   0.0%   (chegaram abertos a essa idade: 171)
+   140 dias:   0.0%   (chegaram abertos a essa idade: 125)
+listas: 30 vendedores, tamanho min=21 mediana=74 max=162
+-- top 5 da lista de cada vendedor (empates dividem as vagas) --
+  ordenacao                             ganhos    de  acerto   valor ganho  vend. melhor que valor
+  ref: ordenar por valor                  47.4   150   31.6%       317.671                       -
+  ref: taxa geral (ordem qualquer)        42.7   150   28.5%       102.988                    4/30
+  A regras (tempo x valor)                53.0   150   35.3%       334.823                   16/30
+  B pontos (tempo+produto+vendedor)       67.7   150   45.1%       405.193                   16/30
+  C regressao logistica                   65.2   150   43.4%       394.838                   17/30
+  A' regras, so a chance                  70.5   150   47.0%       166.698                    7/30
+-- top 10 da lista de cada vendedor (empates dividem as vagas) --
+  ordenacao                             ganhos    de  acerto   valor ganho  vend. melhor que valor
+  ref: ordenar por valor                  92.1   300   30.7%       529.665                       -
+  ref: taxa geral (ordem qualquer)        85.5   300   28.5%       205.977                    2/30
+  A regras (tempo x valor)               104.0   300   34.7%       573.420                   17/30
+  B pontos (tempo+produto+vendedor)      122.9   300   41.0%       658.558                   21/30
+  C regressao logistica                  120.0   300   40.0%       646.510                   19/30
+  A' regras, so a chance                 112.4   300   37.5%       276.971                    6/30
+-- previsto x observado (chance de ganhar em 90 dias), por faixa --
+  A regras (tempo x valor)
+    faixa   0%-  5%: n=  462 previsto=  0.3% observado=  0.6%
+    faixa   5%- 25%: n=  123 previsto= 16.2% observado= 27.6%
+    faixa  25%- 40%: n=  697 previsto= 35.4% observado= 49.1%
+    faixa  40%- 55%: n=  992 previsto= 42.9% observado= 22.2%
+  B pontos (tempo+produto+vendedor)
+    faixa  25%- 40%: n=  618 previsto= 36.8% observado= 16.8%
+    faixa  40%- 55%: n= 1186 previsto= 46.4% observado= 25.5%
+    faixa  55%-100%: n=  470 previsto= 59.9% observado= 40.9%
+  C regressao logistica
+    faixa   5%- 25%: n=    7 previsto= 23.2% observado=  0.0%
+    faixa  25%- 40%: n= 1032 previsto= 33.4% observado= 18.0%
+    faixa  40%- 55%: n=  664 previsto= 47.4% observado= 31.0%
+    faixa  55%-100%: n=  571 previsto= 62.1% observado= 36.3%
+-- os tres grupos pela regra A (deixar ir: passou do prazo ou e mais velho que o ganho mais demorado ja visto, 138 dias;
+   focar agora: chance >= 25% e chance x valor >= 1000; manter aquecido: o resto) --
+  grupo                  n  ganhos  perdidos  sem desf.  % ganho   valor ganho  valor de tabela
+  focar agora          735     257       106        372    35.0%     1.210.826        3.490.058
+  manter aquecido     1189     342       173        674    28.8%       234.395        1.135.262
+  deixar ir            350       0         0        350     0.0%             0          866.050
+    manter aquecido / chance abaixo de 25%: n=235 ganhos=37
+    manter aquecido / vivo de valor baixo: n=954 ganhos=305
+-- esfriando: vivo hoje (chance >= 25%), mas abaixo disso se seguir aberto por mais 30 dias --
+  esfriando          n=  646 ganhos em 90 dias= 323 dos quais nos primeiros 30 dias= 221 (68%)
+  vivo, sem pressa   n= 1043 ganhos em 90 dias= 239 dos quais nos primeiros 30 dias= 113 (47%)
+  'deixar ir' ate o fim dos dados (2017-12-31): ganhos=0 perdidos=0 ainda abertos=350 de 350
+
+==== CORTE 2017-10-02 (desfecho observado ate 2017-12-31, 90 dias) ====
+aprende de 5 fotos passadas (2017-03-06, 2017-04-05, 2017-05-05, 2017-06-04, 2017-07-04), 4700 linhas, todas com janela encerrada ate o corte (candidatos B e C)
+negocios abertos (Engaging) no corte: 2452
+desfecho na janela: ganho=576 perdido=397 sem desfecho=1479 (destes, 1479 seguem abertos no fim dos dados em 2017-12-31 e 0 fecharam depois da janela)
+taxa geral de ganho na janela (todos os abertos): 23.5%; so entre os que tiveram desfecho: 59.2%
+regra A: de cada 100 negocios que chegaram abertos a esta idade, quantos foram ganhos nos 90 dias seguintes
+  (tabela de vida com 6020 negocios engajados desde 2017-03-01, o 1o fechamento registrado; idade maxima ja vista: 215 dias)
+  prazo: dos 4753 fechamentos conhecidos nesta data, 0 ocorreram depois do fim do trimestre seguinte ao do engajamento -> prazo aplicado: sim
+  curva so pela idade (antes de aplicar o prazo):
+     0 dias:  41.6%   (chegaram abertos a essa idade: 5987)
+    15 dias:  46.0%   (chegaram abertos a essa idade: 3647)
+    30 dias:  50.2%   (chegaram abertos a essa idade: 3171)
+    45 dias:  51.3%   (chegaram abertos a essa idade: 2806)
+    60 dias:  49.9%   (chegaram abertos a essa idade: 2298)
+    75 dias:  46.3%   (chegaram abertos a essa idade: 1479)
+    90 dias:  38.2%   (chegaram abertos a essa idade: 1011)
+   100 dias:  27.2%   (chegaram abertos a essa idade: 739)
+   110 dias:  16.0%   (chegaram abertos a essa idade: 555)
+   120 dias:   5.8%   (chegaram abertos a essa idade: 434)
+   130 dias:   1.4%   (chegaram abertos a essa idade: 372)
+   140 dias:   0.0%   (chegaram abertos a essa idade: 317)
+listas: 30 vendedores, tamanho min=18 mediana=77 max=157
+-- top 5 da lista de cada vendedor (empates dividem as vagas) --
+  ordenacao                             ganhos    de  acerto   valor ganho  vend. melhor que valor
+  ref: ordenar por valor                  38.4   150   25.6%       230.548                       -
+  ref: taxa geral (ordem qualquer)        37.8   150   25.2%        88.396                    4/30
+  A regras (tempo x valor)                48.0   150   32.0%       278.378                   15/30
+  B pontos (tempo+produto+vendedor)       50.5   150   33.6%       295.237                   15/30
+  C regressao logistica                   50.0   150   33.3%       284.303                   13/30
+  A' regras, so a chance                  63.0   150   42.0%       124.006                    9/30
+-- top 10 da lista de cada vendedor (empates dividem as vagas) --
+  ordenacao                             ganhos    de  acerto   valor ganho  vend. melhor que valor
+  ref: ordenar por valor                  74.2   300   24.7%       401.385                       -
+  ref: taxa geral (ordem qualquer)        75.6   300   25.2%       176.791                    3/30
+  A regras (tempo x valor)               102.5   300   34.2%       519.774                   19/30
+  B pontos (tempo+produto+vendedor)      107.2   300   35.7%       557.812                   22/30
+  C regressao logistica                  106.5   300   35.5%       547.420                   23/30
+  A' regras, so a chance                 125.0   300   41.7%       296.526                    9/30
+-- previsto x observado (chance de ganhar em 90 dias), por faixa --
+  A regras (tempo x valor)
+    faixa   0%-  5%: n=  717 previsto=  0.0% observado=  0.0%
+    faixa  25%- 40%: n=   27 previsto= 36.7% observado=  3.7%
+    faixa  40%- 55%: n= 1708 previsto= 47.8% observado= 33.7%
+  B pontos (tempo+produto+vendedor)
+    faixa   5%- 25%: n=  635 previsto= 20.5% observado=  0.2%
+    faixa  25%- 40%: n=  740 previsto= 34.6% observado= 33.5%
+    faixa  40%- 55%: n=  527 previsto= 48.5% observado= 24.1%
+    faixa  55%-100%: n=  550 previsto= 60.0% observado= 36.4%
+  C regressao logistica
+    faixa   5%- 25%: n=  731 previsto=  8.1% observado=  0.0%
+    faixa  25%- 40%: n=  655 previsto= 35.2% observado= 37.9%
+    faixa  40%- 55%: n=  334 previsto= 44.6% observado= 33.2%
+    faixa  55%-100%: n=  732 previsto= 61.2% observado= 29.6%
+-- os tres grupos pela regra A (deixar ir: passou do prazo ou e mais velho que o ganho mais demorado ja visto, 138 dias;
+   focar agora: chance >= 25% e chance x valor >= 1000; manter aquecido: o resto) --
+  grupo                  n  ganhos  perdidos  sem desf.  % ganho   valor ganho  valor de tabela
+  focar agora          743     250       176        317    33.6%     1.141.335        3.443.164
+  manter aquecido      992     326       220        446    32.9%       164.746          528.113
+  deixar ir            717       0         1        716     0.0%             0        1.907.153
+    manter aquecido / vivo de valor baixo: n=992 ganhos=326
+-- esfriando: vivo hoje (chance >= 25%), mas abaixo disso se seguir aberto por mais 30 dias --
+  esfriando          n=  209 ganhos em 90 dias=  15 dos quais nos primeiros 30 dias=   0 (0%)
+  vivo, sem pressa   n= 1526 ganhos em 90 dias= 561 dos quais nos primeiros 30 dias=  61 (11%)
+  'deixar ir' ate o fim dos dados (2017-12-31): ganhos=0 perdidos=1 ainda abertos=716 de 717
+
+== 7. Resumo dos cortes (top 5 por vendedor) ==
+  ordenacao                              ganhos 2017-07-01   valor ganho   ganhos 2017-08-16   valor ganho   ganhos 2017-10-02   valor ganho
+  ref: ordenar por valor                       62.1 de 150       387.942         47.4 de 150       317.671         38.4 de 150       230.548
+  ref: taxa geral (ordem qualquer)             61.4 de 150       137.715         42.7 de 150       102.988         37.8 de 150        88.396
+  A regras (tempo x valor)                     67.0 de 150       424.750         53.0 de 150       334.823         48.0 de 150       278.378
+  B pontos (tempo+produto+vendedor)            58.5 de 150       369.383         67.7 de 150       405.193         50.5 de 150       295.237
+  C regressao logistica                        46.0 de 150       319.855         65.2 de 150       394.838         50.0 de 150       284.303
+  A' regras, so a chance                       72.5 de 150       187.242         70.5 de 150       166.698         63.0 de 150       124.006
+-- os tres grupos, somando os 3 cortes --
+  focar agora        n= 2094 ganhos=  769 (36.7%) perdidos=  447 sem desfecho=  878 valor ganho=3.609.564 (86.1% do total)
+  manter aquecido    n= 2921 ganhos= 1015 (34.7%) perdidos=  592 sem desfecho= 1314 valor ganho=585.105 (13.9% do total)
+  deixar ir          n= 1417 ganhos=    0 (0.0%) perdidos=    1 sem desfecho= 1416 valor ganho=0 (0.0% do total)
+
+== 7b. Robustez: os mesmos numeros em mais seis cortes (top 5 por vendedor, valor ganho) ==
+  corte         ref: ordenar por valor  A regras (tempo x valo  B pontos (tempo+produt   C regressao logistica   deixar ir: ganhos/n
+  2017-06-01                   462.087                 479.126                 462.087                 313.050                  0/84
+  2017-06-16                   421.095                 461.146                 421.095                 487.619                 0/109
+  2017-07-01                   387.942                 424.750                 369.383                 319.855                 0/350
+  2017-07-16                   400.389                 470.190                 436.946                 459.605                 0/350
+  2017-08-01                   344.588                 389.116                 426.776                 294.128                 0/350
+  2017-08-16                   317.671                 334.823                 405.193                 394.838                 0/350
+  2017-09-01                   238.226                 286.684                 256.775                 197.390                 0/411
+  2017-09-16                   242.992                 279.848                 196.820                 260.095                 0/471
+  2017-10-02                   230.548                 278.378                 295.237                 284.303                 0/717
+  A regras (tempo x valor): ganha de 'ordenar por valor' em 9 de 9 cortes
+  B pontos (tempo+produto+vendedor): ganha de 'ordenar por valor' em 5 de 9 cortes
+  C regressao logistica: ganha de 'ordenar por valor' em 5 de 9 cortes
+  'deixar ir' nos 9 cortes: 0 ganhos em 3192 negocios-corte (0.00%); as janelas se sobrepoem, o mesmo negocio conta em mais de um corte
+
+== 8. Hoje (2017-12-31): a regra A aplicada aos abertos ==
+regra A: de cada 100 negocios que chegaram abertos a esta idade, quantos foram ganhos nos 90 dias seguintes
+  (tabela de vida com 7115 negocios engajados desde 2017-03-01, o 1o fechamento registrado; idade maxima ja vista: 305 dias)
+  prazo: dos 6711 fechamentos conhecidos nesta data, 1 ocorreram depois do fim do trimestre seguinte ao do engajamento -> prazo aplicado: sim
+  curva so pela idade (antes de aplicar o prazo):
+     0 dias:  41.5%   (chegaram abertos a essa idade: 7115)
+    15 dias:  41.2%   (chegaram abertos a essa idade: 4269)
+    30 dias:  43.7%   (chegaram abertos a essa idade: 3997)
+    45 dias:  44.5%   (chegaram abertos a essa idade: 3814)
+    60 dias:  42.7%   (chegaram abertos a essa idade: 3455)
+    75 dias:  38.1%   (chegaram abertos a essa idade: 2807)
+    90 dias:  29.1%   (chegaram abertos a essa idade: 2112)
+   100 dias:  19.8%   (chegaram abertos a essa idade: 1722)
+   110 dias:  11.9%   (chegaram abertos a essa idade: 1448)
+   120 dias:   5.1%   (chegaram abertos a essa idade: 1252)
+   130 dias:   1.3%   (chegaram abertos a essa idade: 1137)
+   140 dias:   0.0%   (chegaram abertos a essa idade: 1047)
+  focar agora        n=   41  valor de tabela=195.491
+  manter aquecido    n=   74  valor de tabela=40.439
+  deixar ir          n= 1474  valor de tabela=3.656.299
+  esfriando hoje (vivos que caem abaixo de 25% em 30 dias): 53
+  'focar agora' por vendedor: min=0 mediana=1 max=6 (27 vendedores com Engaging aberto)
+  vivos (focar agora + manter aquecido) por vendedor: min=0 mediana=5 max=12; vendedores sem nenhum vivo: 10 de 27; sem nenhum em 'focar agora': 13 de 27
+  idade dos Engaging abertos hoje: min=9 mediana=165 max=423; o ganho mais demorado da historia levou 138 dias; abertos hoje mais velhos que isso: 1291 de 1589
+  Prospecting: 500 negocios sem data nenhuma: nao podem ser postos no tempo, nenhum corte os mede; ficam fora dos tres grupos e a tela diz isso.

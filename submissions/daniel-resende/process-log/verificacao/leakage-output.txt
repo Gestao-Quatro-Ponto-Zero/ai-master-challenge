@@ -1,0 +1,4 @@
+Future close date/value/final stage/time-to-close mutated: 1973 rows; accounts mutated: 8800
+Block/rank/play unchanged for 2017-10-02
+Synthetic exact quarter deadline Monday 2018-12-31 [('alive', 101, '2018-12-31', 0)]
+Synthetic exact quarter deadline Monday 2019-01-07 [('clean', 108, '2018-12-31', None)]

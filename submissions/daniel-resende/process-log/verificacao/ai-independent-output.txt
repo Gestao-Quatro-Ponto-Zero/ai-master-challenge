@@ -1,0 +1,112 @@
+independent AI check: 148 targets 263 parts 1374 placeholders; facts/render/digits/provenance OK
+kinds: {'deal': 115, 'briefing': 27, 'manager': 6}
+
+SAMPLE deal:I5VHXAWW claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+reason: O negócio de GTX Plus Pro com Bluth Company está aberto há 55 dias, e faltam 83 dias de prazo. O fim do prazo é 25/03/2018. Cerca de 42 em cada 100 negócios que chegaram abertos aos 30 dias foram ganhos depois (conta de 31/12/2017).
+next_step: Trabalhar esta semana, porque o negócio vale US$ 5.482 de tabela e faltam 83 dias de prazo.
+
+SAMPLE deal:RDHTQLNI claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+reason: O negócio de GTX Plus Pro está aberto há 10 dias, e faltam 89 dias de prazo. O fim do prazo é 31/03/2018. Cerca de 47 em cada 100 negócios foram ganhos depois de engajados (conta de 31/12/2017).
+next_step: Trabalhar esta semana, porque o negócio vale US$ 5.482 de tabela e faltam 89 dias de prazo.
+
+SAMPLE deal:GWOOPZE8 claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+reason: O negócio de GTX Plus Basic com Cheers está aberto há 91 dias, e faltam 47 dias de prazo. O fim do prazo é 17/02/2018. Ele está com o prazo acabando. Cerca de 26 em cada 100 negócios que chegaram abertos aos 90 dias foram ganhos depois (conta de 31/12/2017).
+next_step: Confirmar esta semana se segue de pé, porque está com o prazo acabando e faltam 47 dias de prazo.
+
+SAMPLE deal:0CR37ETK claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+reason: Este negócio de MG Advanced está no prazo: está aberto há 56 dias e faltam 82 dias de prazo. O fim do prazo é 24/03/2018. Cerca de 42 em cada 100 negócios que chegaram abertos aos 30 dias foram ganhos depois (conta de 31/12/2017).
+next_step: Trabalhar esta semana, porque o negócio vale US$ 3.393 de tabela e faltam 82 dias de prazo.
+
+SAMPLE deal:S7UVZXM3 claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+reason: Este negócio de MG Special está no prazo: está aberto há 68 dias e faltam 70 dias de prazo. O fim do prazo é 12/03/2018. Cerca de 39 em cada 100 negócios que chegaram abertos aos 60 dias foram ganhos depois (conta de 31/12/2017).
+next_step: Trabalhar esta semana, porque o negócio vale US$ 55 de tabela e faltam 70 dias de prazo.
+
+SAMPLE deal:0N11U6L3 claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+reason: Negócio de GTX Plus Basic, aberto há 62 dias, e o prazo termina em 18/03/2018. Cerca de 39 em cada 100 negócios que chegaram abertos aos 60 dias foram ganhos depois (conta de 31/12/2017).
+next_step: Trabalhar esta semana, porque o negócio vale US$ 1.096 de tabela e faltam 76 dias de prazo.
+
+SAMPLE deal:DB801ISB claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+reason: Negócio de MG Special, aberto há 9 dias, e o prazo termina em 31/03/2018. Cerca de 47 em cada 100 negócios foram ganhos depois de engajados (conta de 31/12/2017).
+next_step: Trabalhar esta semana, porque o negócio vale US$ 55 de tabela e faltam 89 dias de prazo.
+
+SAMPLE deal:W5FH95XO claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+reason: Negócio de MG Special, aberto há 62 dias, e o prazo termina em 18/03/2018. Cerca de 39 em cada 100 negócios que chegaram abertos aos 60 dias foram ganhos depois (conta de 31/12/2017).
+next_step: Trabalhar esta semana, porque o negócio vale US$ 55 de tabela e faltam 76 dias de prazo.
+
+SAMPLE deal:BZGJ44FH claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+reason: O negócio de GTX Pro está no prazo e aberto há 73 dias. O prazo termina em 07/03/2018, e faltam 65 dias de prazo.
+next_step: Trabalhar esta semana, porque o negócio vale US$ 4.821 de tabela e faltam 65 dias de prazo.
+
+SAMPLE deal:LC93MVYP claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+reason: O negócio de GTX Basic está no prazo e aberto há 30 dias. O prazo termina em 31/03/2018, e faltam 89 dias de prazo.
+next_step: Trabalhar esta semana, porque o negócio vale US$ 550 de tabela e faltam 89 dias de prazo.
+
+SAMPLE deal:D55HTKRU claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+reason: O GTX Pro está no prazo: aberto há 37 dias e faltam 89 dias de prazo, com fim do prazo em 31/03/2018. Cerca de 42 em cada 100 negócios que chegaram abertos aos 30 dias foram ganhos depois (conta de 31/12/2017).
+next_step: Trabalhar esta semana, porque o negócio vale US$ 4.821 de tabela e faltam 89 dias de prazo.
+
+SAMPLE deal:VL8YNHD7 claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+reason: O GTX Plus Basic está no prazo: aberto há 23 dias e faltam 89 dias de prazo, com fim do prazo em 31/03/2018. Cerca de 47 em cada 100 negócios foram ganhos depois de engajados (conta de 31/12/2017).
+next_step: Trabalhar esta semana, porque o negócio vale US$ 1.096 de tabela e faltam 89 dias de prazo.
+
+SAMPLE deal:MYD4PBM9 claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+reason: Negócio de GTX Basic, aberto há 89 dias. O prazo termina em 19/02/2018 e faltam 49 dias de prazo. Cerca de 39 em cada 100 negócios que chegaram abertos aos 60 dias foram ganhos depois (conta de 31/12/2017).
+next_step: Trabalhar esta semana: o negócio vale US$ 550 de tabela e faltam 49 dias de prazo.
+
+SAMPLE deal:NGG8O0JX claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+reason: Negócio de GTX Basic, aberto há 79 dias. O prazo termina em 01/03/2018 e faltam 59 dias de prazo. Cerca de 39 em cada 100 negócios que chegaram abertos aos 60 dias foram ganhos depois (conta de 31/12/2017).
+next_step: Trabalhar esta semana: o negócio vale US$ 550 de tabela e faltam 59 dias de prazo.
+
+SAMPLE deal:O691ZXXH claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+reason: Negócio de MG Special, aberto há 84 dias. O prazo termina em 24/02/2018 e faltam 54 dias de prazo. Cerca de 39 em cada 100 negócios que chegaram abertos aos 60 dias foram ganhos depois (conta de 31/12/2017).
+next_step: Trabalhar esta semana: o negócio vale US$ 55 de tabela e faltam 54 dias de prazo.
+
+SAMPLE deal:G1W97XZA claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+reason: O negócio de GTX Plus Basic está no prazo: aberto há 48 dias e faltam 89 dias de prazo. O fim do prazo é 31/03/2018. Cerca de 42 em cada 100 negócios que chegaram abertos aos 30 dias foram ganhos depois (conta de 31/12/2017).
+next_step: Trabalhar esta semana, porque o negócio vale US$ 1.096 de tabela e faltam 89 dias de prazo.
+
+SAMPLE deal:7S8SLZDY claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+reason: O negócio de MG Special está no prazo: aberto há 34 dias e faltam 89 dias de prazo. O fim do prazo é 31/03/2018. Cerca de 42 em cada 100 negócios que chegaram abertos aos 30 dias foram ganhos depois (conta de 31/12/2017).
+next_step: Trabalhar esta semana, porque o negócio vale US$ 55 de tabela e faltam 89 dias de prazo.
+
+SAMPLE deal:X7MN9ROG claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+reason: O negócio de GTX Plus Pro está no prazo: aberto há 69 dias e faltam 69 dias de prazo, com fim do prazo em 11/03/2018. Cerca de 39 em cada 100 negócios que chegaram abertos aos 60 dias foram ganhos depois (conta de 31/12/2017).
+next_step: Trabalhar esta semana, pois o negócio vale US$ 5.482 de tabela e faltam 69 dias de prazo.
+
+SAMPLE deal:PV3TH2FF claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+reason: O negócio de MG Special está no prazo: aberto há 38 dias e faltam 89 dias de prazo, com fim do prazo em 31/03/2018. Cerca de 42 em cada 100 negócios que chegaram abertos aos 30 dias foram ganhos depois (conta de 31/12/2017).
+next_step: Trabalhar esta semana, pois o negócio vale US$ 55 de tabela e faltam 89 dias de prazo.
+
+SAMPLE deal:PQ84ANKD claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+reason: O negócio de MG Special está no prazo: aberto há 41 dias e faltam 89 dias de prazo, com fim do prazo em 31/03/2018. Cerca de 42 em cada 100 negócios que chegaram abertos aos 30 dias foram ganhos depois (conta de 31/12/2017).
+next_step: Trabalhar esta semana, pois o negócio vale US$ 55 de tabela e faltam 89 dias de prazo.
+
+SAMPLE briefing:Anna Snelling claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+body: Sua segunda, Anna Snelling: nenhum negócio no prazo, 55 negócios para iniciar e 57 negócios vencidos. Comece pelos negócios para iniciar. Nos vencidos, nenhum dos 717 negócios distintos que venceram foi ganho depois; a ação é encerrar no CRM os negócios vencidos.
+
+SAMPLE briefing:Corliss Cosme claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+body: Sua segunda, Corliss Cosme: 8 negócios no prazo, nenhum negócio para iniciar e 73 negócios vencidos. Os negócios no prazo somam US$ 16.002 de tabela. Comece por GTX Plus Pro, US$ 5.482, faltam 89 dias de prazo; depois GTX Pro, US$ 4.821, faltam 84 dias de prazo; e MG Advanced, US$ 3.393, faltam 82 dias de prazo. Nos vencidos, nenhum dos 717 negócios distintos que venceram foi ganho depois; a ação é encerrar no CRM os negócios vencidos.
+
+SAMPLE briefing:Gladys Colclough claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+body: Sua segunda, Gladys Colclough: nenhum negócio no prazo, 49 negócios para iniciar e 36 negócios vencidos. Comece pelos negócios para iniciar. Sobre os vencidos: nenhum dos 717 negócios distintos que venceram foi ganho depois, então a ação é encerrar no CRM os negócios vencidos.
+
+SAMPLE briefing:Kami Bicknell claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+body: Sua segunda, Kami Bicknell: 10 negócios no prazo, nenhum negócio para iniciar e 80 negócios vencidos. Os negócios no prazo somam US$ 20.117 de tabela. Comece por GTX Plus Pro, de US$ 5.482 de tabela, em que faltam 74 dias de prazo. Depois vêm GTX Pro, de US$ 4.821, em que faltam 65 dias de prazo, e GTX Pro, de US$ 4.821, em que faltam 63 dias de prazo. Sobre os vencidos: nenhum dos 717 negócios distintos que venceram foi ganho depois, então a ação é encerrar no CRM os negócios vencidos.
+
+SAMPLE briefing:Marty Freudenburg claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+body: Sua segunda, Marty Freudenburg: nenhum negócio no prazo, 54 negócios para iniciar e 33 negócios vencidos. Comece pelos negócios para iniciar. Sobre os vencidos: nenhum dos 717 negócios distintos que venceram foi ganho depois. Por isso, a ação é encerrar no CRM os negócios vencidos.
+
+SAMPLE briefing:Rosalina Dieter claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+body: Sua segunda, Rosalina Dieter: 5 negócios no prazo, nenhum negócio para iniciar e 45 negócios vencidos. Os negócios no prazo somam US$ 4.108 de tabela. Comece por MG Advanced da conta Zoomit, de US$ 3.393 de tabela, faltam 57 dias de prazo; depois GTX Basic, de US$ 550, faltam 68 dias de prazo; e MG Special, de US$ 55, faltam 89 dias de prazo. Sobre os vencidos: nenhum dos 717 negócios distintos que venceram foi ganho depois. Por isso, a ação é encerrar no CRM os negócios vencidos.
+
+SAMPLE briefing:Violet Mclelland claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+body: Sua segunda, Violet Mclelland: 8 negócios no prazo, nenhum negócio para iniciar e 60 negócios vencidos. Os negócios no prazo somam US$ 1.976 de tabela. Comece por GTX Plus Basic (US$ 1.096, faltam 62 dias de prazo), depois GTX Basic (US$ 550, faltam 62 dias de prazo) e MG Special (US$ 55, faltam 89 dias de prazo). Nenhum dos 717 negócios distintos que venceram foi ganho depois, então a ação é encerrar no CRM os negócios vencidos.
+
+SAMPLE manager:Cara Losch claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+body: Gestor: Cara Losch, região East. Há 2 de 6 vendedores sem nenhum negócio no prazo: Elizabeth Anderson e Garret Kinder. Time: 24 negócios no prazo, nenhum negócio para iniciar e 195 negócios vencidos. Os negócios no prazo somam US$ 46.147 de tabela, e 1 com o prazo acabando. Além disso, nenhum dos 717 negócios distintos que venceram foi ganho depois.
+
+SAMPLE manager:Dustin Brinkmann claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+body: Gestor: Dustin Brinkmann, região Central. Há 5 de 5 vendedores sem nenhum negócio no prazo: Anna Snelling, Cecily Lampkin, Lajuana Vencill, Moses Frase e Versie Hillebrand. Time: nenhum negócio no prazo, 204 negócios para iniciar e 193 negócios vencidos. Além disso, nenhum dos 717 negócios distintos que venceram foi ganho depois.
+
+SAMPLE manager:Rocco Neubert claude-haiku-5-5, claude-sonnet-5-5 2026-11-10
+body: Gestor: Rocco Neubert, região East. Há 3 de 6 vendedores sem nenhum negócio no prazo: Donn Cantrell, Natalya Ivanova e Reed Clapper. Time: 21 negócios no prazo, nenhum negócio para iniciar e 193 negócios vencidos. Os negócios no prazo somam US$ 50.900 de tabela, e 3 com o prazo acabando. Além disso, nenhum dos 717 negócios distintos que venceram foi ganho depois.
