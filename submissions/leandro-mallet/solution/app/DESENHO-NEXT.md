@@ -57,6 +57,11 @@ Fundo branco. As cores da marca vão nos menus, botões, abas, selos, gráficos 
   --color-texto-2:        #66727c;   /* ver "Contraste" abaixo */
   --color-linha:          #e4c993;
 
+  /* Faixas da nota (barra do cartão) */
+  --color-nota-alta:      #001f35;   /* nota >= 70 */
+  --color-nota-media:     #a57b41;   /* 40 a 69 */
+  --color-nota-baixa:     #6f7c87;   /* < 40 */
+
   /* Componentes do score (barra e detalhe) */
   --color-comp-chance:    #001f35;
   --color-comp-valor:     #a57b41;
