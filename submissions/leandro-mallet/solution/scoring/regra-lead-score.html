@@ -271,21 +271,23 @@
   <p class="lead">A carga fica equilibrada entre os vendedores e, dentro disso, cada lead vai para quem tem mais chance de fechar.</p>
 
   <h3>Recálculo de domingo: distribuição equilibrada</h3>
+  <p>Entram <b>só os leads sem contato registrado</b>. Os deals com contato ficam com o dono e só mudam pela regra de repasse.</p>
   <ol>
-    <li><b>Limite da semana</b> = leads ativos ÷ vendedores, arredondado para cima. Hoje: 798 ativos ÷ 30 = <span class="num">27</span>. Os deals esfriados são divididos à parte, com o mesmo método (hoje, 44 por vendedor).</li>
+    <li><b>Limite da semana</b> = leads ativos ÷ vendedores, arredondado para cima. Hoje: 798 ativos ÷ 30 = <span class="num">27</span>.</li>
     <li><b>Ordem:</b> todos os pares lead × vendedor, do maior FIT para o menor.</li>
-    <li><b>Atribuição:</b> cada lead vai para o primeiro vendedor da ordem que ainda está abaixo do limite.</li>
+    <li><b>Atribuição:</b> cada lead vai para o primeiro vendedor da ordem que ainda está abaixo do limite, contando os ativos que ele já tem.</li>
     <li>O manager pode travar o dono de um lead. Lead travado fica fora da redistribuição.</li>
   </ol>
   <div class="tw"><table>
-    <tr><th>Simulação hoje</th><th class="r">Antes</th><th class="r">Todos</th><th class="r">Sem contato*</th></tr>
-    <tr><td>Leads redistribuídos</td><td class="r">—</td><td class="r">2.089</td><td class="r">500</td></tr>
-    <tr><td>Mudam de dono</td><td class="r">—</td><td class="r">2.026</td><td class="r">482</td></tr>
-    <tr><td>Ativos por vendedor</td><td class="r">0 a 111</td><td class="r">15 a 27</td><td class="r">17 a 31</td></tr>
-    <tr><td>Abertos por vendedor</td><td class="r">0 a 194</td><td class="r">36 a 71</td><td class="r">27 a 110</td></tr>
-    <tr class="hl"><td>FIT médio do dono, deals ativos</td><td class="r">50,3</td><td class="r">75,8</td><td class="r">68,1</td></tr>
+    <tr><th>Simulação hoje</th><th class="r">Antes</th><th class="r">Depois</th></tr>
+    <tr><td>Leads sem contato redistribuídos</td><td class="r">—</td><td class="r">500</td></tr>
+    <tr><td>Mudam de dono</td><td class="r">—</td><td class="r">482</td></tr>
+    <tr><td>Vendedores que recebem</td><td class="r">—</td><td class="r">29</td></tr>
+    <tr><td>Ativos por vendedor</td><td class="r">0 a 111</td><td class="r">17 a 31</td></tr>
+    <tr class="hl"><td>FIT médio dos 500</td><td class="r">49,5</td><td class="r">77,8</td></tr>
+    <tr><td>FIT médio do dono (ativos)</td><td class="r">50,3</td><td class="r">68,1</td></tr>
   </table></div>
-  <p style="font-size:13px;color:var(--muted)">Todos = redistribui todos os abertos. * Sem contato = só os deals sem contato registrado; nos dados, é o deal em Prospecting: o engajamento já é um contato registrado. São considerados os 30 vendedores com fechamentos nos últimos 3 meses.</p>
+  <p style="font-size:13px;color:var(--muted)">Nos dados, o lead sem contato é o deal em Prospecting: o engajamento já é um contato registrado. São considerados os 30 vendedores com fechamentos nos últimos 3 meses.</p>
 
   <h3>Lead novo durante a semana</h3>
   <ol>
@@ -320,7 +322,7 @@
 
   <h3>Repasse</h3>
   <ul>
-    <li><b>Quando:</b> o lead muda de faixa do HEAT sem nenhum contato desde que o dono atual o recebeu.</li>
+    <li><b>Quando:</b> o lead muda de faixa do HEAT sem nenhum contato desde que o dono atual o recebeu. É também o único caminho para um deal com contato mudar de dono.</li>
     <li><b>Só repassa se as três condições valem para o novo vendedor:</b>
       <ol>
         <li>o lead entra no top 5 das prioridades dele, pela nota com ele;</li>

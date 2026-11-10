@@ -156,28 +156,30 @@ A especificação completa, com as contas, os 3 exemplos reais e as simulações
 
 ### Recálculo de domingo: distribuição equilibrada (sem teto fixo)
 Decisão do Leandro: "o recálculo sempre divide igual entre vendedores... calculando qual vendedor tem mais chance de fechar aquele lead... mas ponderando pela quantidade de leads de cada um".
+- **Escopo (decidido, cenário B):** entram só os leads sem contato registrado. Hoje são os 500 em Prospecting, porque o engajamento já é um contato. Os deals com contato ficam com o dono e só mudam pela regra de repasse.
 - **Método (atribuição gulosa com limite):**
-  - limite da semana = leads ativos ÷ vendedores, arredondado para cima (hoje 798 ÷ 30 = 27);
-  - os esfriados são divididos à parte, com o mesmo método (limite de 44);
+  - limite da semana = leads ativos ÷ vendedores, arredondado para cima (hoje 798 ÷ 30 = 27), contando os ativos que cada vendedor já tem;
   - os pares lead × vendedor são ordenados do maior FIT para o menor, e cada lead vai para o primeiro vendedor abaixo do limite;
   - lead travado pelo manager fica fora.
-- Por que ativos e esfriados à parte: equilibrando só o total, alguns vendedores ficavam com 0 deals ativos (só esfriados). Com a divisão separada, cada um fica com 15 a 27 ativos.
-- Considera os 30 vendedores com fechamentos nos últimos 3 meses. Os 5 sem nenhum deal no dataset ficam fora, porque não têm FIT.
-- **Pendente com o Leandro: redistribuir todos os abertos ou só os sem contato registrado** (nos dados, "sem contato" = Prospecting, porque o engajamento já é um contato):
+- Considera os 30 vendedores com fechamentos nos últimos 3 meses. Os 5 sem nenhum deal no dataset ficam fora, porque não têm FIT. Os 2 sem destaque (FIT 50 para tudo) entram e recebem os leads que sobram.
+- **Resultado hoje:**
+  - 482 dos 500 mudam de dono, e 29 vendedores recebem;
+  - ativos por vendedor passam de 0–111 para 17–31;
+  - o FIT médio dos 500 vai de 49,5 para 77,8, e o dos ativos de 50,3 para 68,1;
+  - os leads com FIT do dono ≥ 75 entre os 500 passam de 48 para 269.
+- Comparação que embasou a decisão: redistribuir todos os abertos (cenário A) trocaria o dono de 2.026 dos 2.089 deals toda semana. Ficaria com ativos de 15 a 27 por vendedor e FIT médio dos ativos de 75,8.
 
-  | | Antes | A. Todos os abertos | B. Só os sem contato |
-  |---|---|---|---|
-  | Leads redistribuídos | — | 2.089 | 500 |
-  | Mudam de dono | — | 2.026 (97%) | 482 |
-  | Ativos por vendedor | 0 a 111 | 15 a 27 | 17 a 31 |
-  | Abertos por vendedor | 0 a 194 | 36 a 71 | 27 a 110 |
-  | FIT médio do dono, todos os abertos | 51,0 | 76,1 | 57,8 |
-  | FIT médio do dono, ativos | 50,3 | 75,8 | 68,1 |
-  | Deals com FIT do dono ≥ 75 (ativos) | 292 (98) | 1.080 (403) | 513 (319) |
+**Pergunta da #2 (P0, para o Leandro): a redistribuição de domingo obedece às travas do repasse (FIT ≥ 75, no máximo 3 pontos abaixo do dono, top 5 do novo vendedor) ou só à regra de equilíbrio?** Nos 500 de hoje:
 
-  No B, os 500 Prospecting vão de FIT médio 49,5 para 77,8, e 29 vendedores recebem.
-  - A troca quase todos os donos toda semana. B mexe só nos leads que ninguém atendeu e deixa o Engaging com quem já está.
-- Os 2 vendedores sem destaque (FIT 50 para tudo) entram na divisão e recebem os leads que sobram depois dos de maior FIT.
+| | Só equilíbrio (proposta) | Com as travas do repasse |
+|---|---|---|
+| Mudam de dono | 482 | 233 |
+| Sem vendedor permitido (ficam com o dono atual) | 0 | 95 |
+| Ativos por vendedor | 17 a 31 | 0 a 59 |
+| FIT médio dos 500 | 49,5 → 77,8 | 49,5 → 70,0 |
+| Leads com FIT do dono ≥ 75 | 48 → 269 | 48 → 268 |
+
+Proposta: só equilíbrio. As travas existem para não tirar de um vendedor um lead que ele já trabalhou. O lead sem contato não tem esse trabalho a proteger. Com as travas, 95 leads ficam presos com o dono atual e a carga volta a ficar desigual (0 a 59), enquanto os leads de FIT alto são praticamente os mesmos (268 contra 269).
 
 ### Lead novo durante a semana
 - Vai para o vendedor com a maior conversão no perfil do lead (taxa dele + média dos desvios nas características do lead), já descontada a penalidade.
@@ -199,7 +201,6 @@ Decisão do Leandro: "o recálculo sempre divide igual entre vendedores... calcu
 - Travas: no máximo 2 repasses por lead, e depois fila do manager (P5); o manager pode travar o dono.
 - Registro e aviso: a linha do tempo registra de quem, para quem, quando, o motivo e os dois FITs; os dois vendedores recebem aviso.
 - **Se valesse hoje:** 873 leads atendem às três condições (536 ativos), com mediana de 2 candidatos. Sem a condição (a), seriam 1.813. Exemplo: W1XRTUT2 (MG Special, Finhigh), de Versie Hillebrand (FIT 74,4) para Kami Bicknell (FIT 75,8), com nota 68,1 com Kami, acima do 5º da lista dela (60,2).
-- Na redistribuição A, 1.014 das 2.026 trocas também atendem a (b) e (c).
 - Deals do dataset: não têm histórico de contato. Repasse por mudança de faixa só para leads recebidos no CRM.
 
 ### Mini penalidade para quem perde lead por repasse
@@ -256,14 +257,14 @@ As decisões 28 e 29 substituíram as antigas D1–D4: a chance por segmento sai
 - o BONUS de 0 a 20;
 - FIT 75 para furar a fila;
 - o atendimento atrasado fica no topo até o contato ou o repasse;
-- a distribuição equilibrada sem teto fixo;
+- a distribuição equilibrada sem teto fixo, só com os leads sem contato registrado (cenário B);
 - o repasse só para o top 5 do novo vendedor, com FIT ≥ 75 e no máximo 3 pontos abaixo do dono;
 - a mini penalidade;
 - o ✓ com tipo, comentário e horário.
 
 Ficam abertas:
 
-- **P0 (pendente com o Leandro).** O recálculo de domingo redistribui todos os abertos (A) ou só os sem contato registrado (B)? Números na seção "Recálculo de domingo".
+- **P0.** A redistribuição de domingo obedece às travas do repasse ou só à regra de equilíbrio (proposta: só equilíbrio)? Números na seção "Recálculo de domingo".
 - **P1.** Trava de FIT ≥ 50 para o lead novo no roteamento.
 - **P2.** Mudança do contrato:
   - `components` vira `{ fit, heat, bonus }`, e `score` vai de 0 a 120;
