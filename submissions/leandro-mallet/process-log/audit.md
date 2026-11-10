@@ -64,3 +64,10 @@ Ao assumir, a pasta já tinha trabalho das outras sessões, ainda sem auditoria 
 2. Arredondamento de setor (3,7) e região (1,4), e o critério de "depois de d dias" a declarar. Não muda nenhuma conclusão.
 
 **Encaminhamento:** devolvido à #5 para corrigir os três pontos. O commit de `solution/qa/` sai depois da correção.
+
+**Retorno da #5 (conferido):**
+1. H1 reescrito de forma genérica. A busca por nomes de empresas, projetos e e-mails nos dois arquivos deu zero ocorrências, e os dois estão em LF. ✅
+2. Setor 3,7 p.p. e região 1,4 p.p., com nota de que a diferença é calculada antes de arredondar. ✅
+3. **A #1 errou neste ponto.** A #5 já usava o mesmo corte estrito (ciclo > d) nos quatro pontos, então o 76% (75,6) estava coerente. A #1 tinha comparado com "≥ d". A #5 declarou o corte e mostrou as duas versões: > d = 63,2 / 68,7 / 71,1 / 75,6%; ≥ d = 63,2 / 68,6 / 71,3 / 75,1%. A #1 conferiu: o ciclo mínimo é 1 dia, por isso d = 0 dá o mesmo nas duas. ✅
+
+**Resultado:** `solution/qa/` aprovado e commitado.
