@@ -5,7 +5,8 @@ export const CONFIG = {
   dataReferencia: "2017-12-31",
   fusoHorario: "America/Sao_Paulo",
   faixasNota: { alta: 70, media: 40 },
-  icone: { diasMinQuente: 15, diasMaxQuente: 106, diasMaxRisco: 138, precoMinQuente: 3000 },
+  /** precoMinQuente null = super hot sem critério de ticket (O-24). */
+  icone: { diasMinQuente: 15, diasMaxQuente: 106, diasMaxRisco: 138, precoMinQuente: null as number | null },
   diasSemContatoRisco: 14,
   acoesContato: ["liguei", "requalifiquei"] as const,
   /** Tipos de atividade do ✓ nas Prioridades do dia (decisão 37); mesma lista de config_tipos_atividade. */
@@ -25,6 +26,8 @@ export const CONFIG = {
   metaPrioridadesDia: 10,
   diasPuladoAlerta: 3,
   fitMinimoFurarFila: 75,
+  /** Itens da lista do dia do manager e do admin (config_parametros.prioridades_gestor). Leandro: "só o que pede ação". */
+  prioridadesGestor: "atencao" as "icone" | "atencao" | "todos",
   janelaPainelDias: 30,
   papeisReabrir: ["manager", "admin"] as const,
   papeisImportacao: ["manager", "admin"] as const,

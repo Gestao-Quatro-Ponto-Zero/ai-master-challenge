@@ -12,6 +12,7 @@ Migrations do Postgres (Supabase). Elas saem de `app/ESPEC-TELAS.md` (seção 8)
 | Teto exato | `migrations/0027_limite_exato.sql` | **aplicado** no Supabase |
 | Contexto obrigatório | `migrations/0028_contexto_obrigatorio.sql` | aplicada no Supabase (corrige o achado L2-1 da revisão do lote 2) |
 | Reforço do contexto | `migrations/0029_reforco_contexto.sql` | escrito e validado (PGlite); **falta aplicar**, depois da 0028 (usuário ativo e achados L2-5 e L2-6) |
+| Prioridades pela nota | `migrations/0030_prioridades_pela_nota.sql` | escrita e validada (PGlite: `validar_tudo.mjs`, com e sem dataset, e `validar_0030.mjs`); **falta aplicar**, depois da 0029 |
 
 **Histórico da 0026:** ela foi aplicada antes de um ajuste pedido pela revisão de segurança. A versão aplicada contava o pedido atual e usava `>`, o que deixava passar um pedido a mais que o teto. O arquivo `0026` no repositório é exatamente o que está no banco. O ajuste (contar só os pedidos anteriores e usar `>=`, para o teto ficar exato) entrou como `0027`, que substitui a função `system_iniciar_contexto`.
 
@@ -44,6 +45,7 @@ Cada arquivo numa transação, rodado pelo dono do schema (`postgres`), na ordem
 | 21 | `0027_limite_exato.sql` | tetos exatos (no máximo 30 por usuário e 300 no total por janela); limite por IP nas rotas do app é obrigatório |
 | 22 | `0028_contexto_obrigatorio.sql` | o app só grava com o pedido registrado em `system_correlacoes` (mesma transação e mesmo usuário); o registro passa por um gatilho que preenche a origem e confere os limites |
 | 23 | `0029_reforco_contexto.sql` | recusa usuário inativo na auditoria e no registro; só as funções inserem na auditoria, nos eventos e nos pedidos (`SECURITY DEFINER`); o app só lê as notas (`score_*`) |
+| 24 | `0030_prioridades_pela_nota.sql` | Prioridades do dia pela nota para todos os papéis (atendimento atrasado > lead novo com FIT ≥ 75 > nota > HEAT > código, sem valor esperado); a lista guarda a execução usada e, se a execução ativa muda, os itens não marcados são substituídos (`substituida_em`, sem DELETE) e repostos; filtro do manager e do admin no parâmetro `prioridades_gestor`; super hot sem critério de ticket |
 
 ## Segurança
 

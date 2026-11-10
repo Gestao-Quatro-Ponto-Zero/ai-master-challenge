@@ -26,7 +26,7 @@ export function icone(estagio: Estagio, dias: number | null, preco: number, dias
   if (dias > c.diasMaxRisco) return "esfriou";
   if (dias > c.diasMaxQuente) return "em_risco";
   if (diasSemContato !== null && diasSemContato >= CONFIG.diasSemContatoRisco) return "em_risco";
-  if (dias >= c.diasMinQuente && preco >= c.precoMinQuente) return "super_hot";
+  if (dias >= c.diasMinQuente && (c.precoMinQuente === null || preco >= c.precoMinQuente)) return "super_hot";
   return null;
 }
 
@@ -77,7 +77,7 @@ export function nomePadrao(conta: string | null, produto: string): string {
 
 /** Frase do ícone, mostrada ao passar o mouse e lida pelo leitor de tela. */
 export function fraseIcone(i: Icone, dias: number | null): string {
-  if (i === "super_hot") return "Na fase em que mais deals viram ganho, com ticket alto.";
+  if (i === "super_hot") return "Na fase em que mais deals viram ganho.";
   if (i === "em_risco")
     return dias !== null && dias > CONFIG.icone.diasMaxQuente
       ? `Aberto há ${dias} dias. 90% dos ganhos fecham em até ${CONFIG.icone.diasMaxQuente} dias.`

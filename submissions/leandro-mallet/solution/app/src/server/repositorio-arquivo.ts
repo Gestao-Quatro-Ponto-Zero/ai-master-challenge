@@ -9,6 +9,7 @@ import type { Etiquetas } from "@/lib/filtro/etiquetas";
 import type { Contexto, Modo } from "@/lib/filtro/interpretar";
 import { HORAS_DESFAZER_LOTE, type LoteBruto, type TipoLote } from "@/lib/lotes";
 import { funil, numerosPainel } from "@/lib/painel";
+import { compararPrioridade, entraNaListaDoGestor, explicacaoDoItem, grupoPrioridade, type ItemOrdem } from "@/lib/prioridades";
 import type {
   Comentario, ContaDetalhe, ContaVisao, Contato, CorTag, DealDetalhe, DealVisao, Escopo, Estagio,
   EventoLinhaDoTempo, MotivoPerda, Pagina, Papel, Porte, Prioridade, Tag, TipoAcao, Usuario,
@@ -320,23 +321,17 @@ function candidatosPrioridade(est: Estado, u: Usuario, jaNaLista: Set<string>): 
   const idx = indices(est);
   const hoje = diaReal();
   const tocadosHoje = new Set(est.acoes.filter((a) => a.usuarioId === u.id && a.diaReal === hoje && !a.desfeitaEm).map((a) => a.dealId));
-  const lista: DealVisao[] = [];
+  const lista: (DealVisao & ItemOrdem)[] = [];
   for (const d of est.deals.values()) {
     if (!ABERTOS.includes(d.estagio) || jaNaLista.has(d.id) || tocadosHoje.has(d.id)) continue;
-    const v = visao(est, d, idx);
+    const v = { ...visao(est, d, idx), comContato: !!d.ultimoContatoCrm };
     const ok =
       u.papel === "vendedor" ? v.vendedor === u.vendedor
-      : u.papel === "manager" ? v.manager === u.manager && (v.icone === "super_hot" || v.icone === "em_risco")
-      : v.icone === "super_hot" || v.icone === "em_risco";
+      : (u.papel !== "manager" || v.manager === u.manager) && entraNaListaDoGestor(v, grupoPrioridade(v, hoje), CONFIG.prioridadesGestor);
     if (ok) lista.push(v);
   }
-  const furaFila = (d: DealVisao) => (d.criadoEm?.startsWith(hoje) && (d.fit ?? 0) >= CONFIG.fitMinimoFurarFila ? 0 : 1);
-  return lista.sort((a, b) =>
-    furaFila(a) - furaFila(b) ||
-    (u.papel === "vendedor"
-      ? (b.score ?? -1) - (a.score ?? -1) || rankIcone(a) - rankIcone(b) || (b.valorEsperado ?? 0) - (a.valorEsperado ?? 0)
-      : (b.valorEsperado ?? 0) - (a.valorEsperado ?? 0) || (b.score ?? -1) - (a.score ?? -1)) ||
-    a.id.localeCompare(b.id));
+  // Mesma ordem do banco (0030) para todos os papéis: atrasado, lead novo com FIT alto, nota, HEAT, código.
+  return lista.sort((a, b) => compararPrioridade(a, b, hoje));
 }
 
 async function montarPrioridades(u: Usuario, qtd: number) {
@@ -361,7 +356,12 @@ export async function prioridadesDoDia(u: Usuario): Promise<Prioridade[]> {
     const ultima = minhas.filter((a) => a.diaReal === hoje).at(-1);
     const marcada = !ultima ? null : ultima.acao === "prioridade_feita" ? "feita" : ultima.acao === "prioridade_pulada" ? "pulada" : "contato";
     const diasPulado = new Set(minhas.filter((a) => a.acao === "prioridade_pulada" && diasEntre(a.diaReal, hoje) < CONFIG.diasPuladoAlerta).map((a) => a.diaReal)).size;
-    return [{ posicao: i + 1, deal: visao(est, d, idx), marcada, puladoDiasSeguidos: diasPulado } as Prioridade];
+    const v = visao(est, d, idx);
+    return [{
+      posicao: i + 1, deal: v, marcada, puladoDiasSeguidos: diasPulado,
+      motivo: explicacaoDoItem(est.base.notas.get(id)?.motivos),
+      atendimentoAtrasado: grupoPrioridade({ ...v, comContato: !!d.ultimoContatoCrm }, hoje) === 0,
+    } satisfies Prioridade];
   });
 }
 

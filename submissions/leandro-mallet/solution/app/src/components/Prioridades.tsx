@@ -70,7 +70,7 @@ export function Prioridades({ itens, papel, somenteLeitura }: { itens: Prioridad
         Prioridades do dia
       </h2>
       <p className="mt-1 text-sm text-texto-2">
-        {vendedor ? "Os seus deals que mais valem o contato hoje." : "Deals do time em risco ou super hot, para acompanhar com o vendedor."}
+        {vendedor ? "Os seus deals que mais valem o contato hoje, pela nota." : "Deals do time que pedem ação: atendimento atrasado, lead novo de encaixe alto e em risco de esfriar."}
       </p>
       <div className="mt-3 flex items-center gap-3 text-sm">
         <span className="whitespace-nowrap font-semibold">
@@ -84,7 +84,7 @@ export function Prioridades({ itens, papel, somenteLeitura }: { itens: Prioridad
 
       {itens.length === 0 ? (
         <p className="mt-4 rounded-controle border border-linha bg-fundo px-3 py-4 text-sm text-texto-2">
-          {vendedor ? "Você não tem deals abertos para priorizar hoje." : "Nenhum deal do time em risco ou super hot hoje."}{" "}
+          {vendedor ? "Você não tem deals abertos para priorizar hoje." : "Nenhum deal do time pede ação hoje: sem atendimento atrasado, lead novo de encaixe alto ou deal em risco de esfriar."}{" "}
           <Link href="/pipeline" className="font-semibold text-bronze-escuro underline">
             Ir para o Pipeline
           </Link>
@@ -118,8 +118,13 @@ export function Prioridades({ itens, papel, somenteLeitura }: { itens: Prioridad
                       {d.diasDesdeAbertura !== null ? ` · aberto há ${d.diasDesdeAbertura} dias` : " · não iniciado"}
                     </p>
                   </div>
-                  <IconeDeal icone={d.icone} dias={d.diasDesdeAbertura} />
+                  {/* Na lista do dia, o ícone só aparece como alerta (em risco ou esfriou); a explicação é o motivo da nota. */}
+                  {d.icone === "em_risco" || d.icone === "esfriou" ? <IconeDeal icone={d.icone} dias={d.diasDesdeAbertura} comRotulo /> : null}
                 </div>
+                {item.atendimentoAtrasado ? (
+                  <p className="mt-2 inline-block rounded-selo bg-aviso-fundo px-2 py-1 text-xs font-semibold text-bronze-escuro">Atendimento atrasado</p>
+                ) : null}
+                {item.motivo ? <p className="mt-2 text-sm text-texto-2">{item.motivo}</p> : null}
                 <div className="mt-2">
                   <BarraNota score={d.score} faixa={d.faixaNota} />
                 </div>

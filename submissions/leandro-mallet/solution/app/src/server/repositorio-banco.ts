@@ -3,6 +3,7 @@ import "server-only";
 // Escrita: só pelas functions do banco, com o usuário do perfil e o correlation_id do servidor.
 import { CONFIG } from "@/lib/config";
 import { HORAS_DESFAZER_LOTE, type LoteBruto, type TipoLote } from "@/lib/lotes";
+import { explicacaoDoItem, grupoPrioridade } from "@/lib/prioridades";
 import type {
   Comentario, ContaDetalhe, ContaVisao, Contato, CorTag, DealDetalhe, DealVisao, Escopo, Estagio, EventoLinhaDoTempo,
   MotivoPerda, Papel, Porte, Prioridade, Tag, Usuario,
@@ -253,10 +254,32 @@ export async function contadoresDoTime(): Promise<{ feitas: Map<number, number>;
 interface LinhaPrioridade { posicao: number; opportunity_id: string; marcada: "feita" | "pulada" | "contato" | null; pulado_dias_seguidos: number | null }
 
 async function montarLista(linhas: LinhaPrioridade[]): Promise<Prioridade[]> {
-  const deals = new Map((await dealsPorIds(linhas.map((l) => l.opportunity_id))).map((d) => [d.id, d]));
+  const db = banco();
+  const ids = linhas.map((l) => l.opportunity_id);
+  if (ids.length === 0) return [];
+  const [lista, execucao, contatos] = await Promise.all([
+    dealsPorIds(ids),
+    ler<{ valor: unknown }[]>(db.from("config_parametros").select("valor").eq("chave", "execucao_ativa")),
+    ler<{ opportunity_id: string; ultimo_contato_em: string | null }[]>(db.from("core_deals").select("opportunity_id,ultimo_contato_em").in("opportunity_id", ids)),
+  ]);
+  const exec = Number(execucao[0]?.valor);
+  // A linha de explicação do cartão é o 1º motivo da nota da execução ativa.
+  const motivos = Number.isFinite(exec) && exec > 0
+    ? await ler<{ opportunity_id: string; texto: string }[]>(
+        db.from("score_motivos").select("opportunity_id,texto").eq("execucao_id", exec).eq("ordem", 1).in("opportunity_id", ids))
+    : [];
+  const motivo = new Map(motivos.map((m) => [m.opportunity_id, m.texto]));
+  const comContato = new Set(contatos.filter((c) => c.ultimo_contato_em).map((c) => c.opportunity_id));
+  const deals = new Map(lista.map((d) => [d.id, d]));
+  const hoje = new Date().toLocaleDateString("sv-SE", { timeZone: CONFIG.fusoHorario });
   return linhas.flatMap((l) => {
     const deal = deals.get(l.opportunity_id);
-    return deal ? [{ posicao: l.posicao, deal, marcada: l.marcada, puladoDiasSeguidos: l.pulado_dias_seguidos ?? 0 }] : [];
+    if (!deal) return [];
+    const grupo = grupoPrioridade({ ...deal, comContato: comContato.has(deal.id) }, hoje);
+    return [{
+      posicao: l.posicao, deal, marcada: l.marcada, puladoDiasSeguidos: l.pulado_dias_seguidos ?? 0,
+      motivo: explicacaoDoItem(motivo.has(deal.id) ? [motivo.get(deal.id)!] : []), atendimentoAtrasado: grupo === 0,
+    }];
   });
 }
 

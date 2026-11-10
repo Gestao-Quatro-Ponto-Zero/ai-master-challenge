@@ -216,3 +216,14 @@ A #5 aplicou 0007–0026 no Supabase, sem erro. Contagem: 29 tabelas, 60 FKs (RE
   - o cartão mostra o rótulo antigo "Super hot… ticket alto" em vez dos motivos da nota.
 
   As decisões 28 e 29 tiraram o valor da nota e definiram a ordem: lead novo com FIT ≥ 75 no topo, depois a nota, e no empate o HEAT. Virou a O-24.
+- O-24 e O-25 (#4): a lista do dia passou a seguir a nota, com a migration 0030 e o app. A ordem vale para todos: atendimento atrasado, lead novo com FIT ≥ 75 sem contato, nota, HEAT no empate. O valor do deal saiu da ordem.
+  - Quando a execução de score muda, a lista do dia se refaz. Os itens não marcados são marcados como substituídos, sem DELETE.
+  - O cartão mostra o 1º motivo da nota.
+  - A lista do manager e do admin mostra só o que pede ação (decisão 42).
+  - O "super hot" continua, porque o ícone é decisão do Leandro (26), mas perdeu o critério de ticket (≥ US$ 3.000), que tinha vindo de uma proposta. Os abertos super hot passaram de 66 para 150.
+  - Conferido pela #1: 115 testes e tsc limpos; sha256 da 0030 8741e6f4…; nada destrutivo.
+- O-26 (#5): 0030 revisada, validada (134 ok sem dataset; 21 ok no validador próprio) e aplicada com o mesmo sha256. Ficaram 75 funções, 106 índices e 61 FKs. Sem achado de segurança e sem dado perdido.
+- Publicado e conferido no ar pela #1:
+  - a lista de uma vendedora saiu de 46, 55, 50, 41, 44 para 55, 55, 55, 54, 54, com o motivo da nota em cada item e o lead mais recente antes no empate;
+  - a lista de um manager mostra só os deals do time em risco de esfriar, pela nota.
+- **Achado da #1 no ar:** dois problemas no texto dos motivos. Aparecem "receita media" (sem acento) e "funcionários pequena". E a frase "seu destaque" aparece também na tela do manager, onde o destaque é do vendedor. Virou a O-27.

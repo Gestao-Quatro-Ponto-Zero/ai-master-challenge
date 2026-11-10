@@ -163,6 +163,10 @@ export interface Prioridade {
   deal: DealVisao;
   marcada: "feita" | "pulada" | "contato" | null;
   puladoDiasSeguidos: number;
+  /** 1º motivo da nota (score_motivos, ordem 1): a linha de explicação do cartão. */
+  motivo: string | null;
+  /** Lead novo de FIT alto que passou de 1 dia sem contato. */
+  atendimentoAtrasado: boolean;
 }
 
 export interface Escopo {

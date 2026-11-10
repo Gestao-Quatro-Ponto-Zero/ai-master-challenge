@@ -64,7 +64,7 @@ solution/app/
       tipos.ts, config.ts, calculos.ts, painel.ts, cliente.ts
       desfazer.ts         formato do token do "Desfazer"
       lotes.ts            rótulos, prazo de 24 horas e quem vê cada lote
-      prioridades.ts      contador das Prioridades do dia (só o ✓ conta como feita)
+      prioridades.ts      contador e ordem das Prioridades do dia (a mesma da 0030) e a explicação do item
       validacao.ts        frase específica para erro de campo na API
       filtro/             etiquetas.ts, interpretar.ts (frase → etiquetas), aplicar.ts
     server/               só roda no servidor (import "server-only")
@@ -126,4 +126,4 @@ Toda rota de escrita: valida a entrada com zod, tem limite por endereço de rede
 - Importação de leads por CSV (desenhada em [DESENHO-CRM.md](DESENHO-CRM.md)).
 - Editar o nome do deal e a empresa do deal pelo modal.
 - Cadastrar e editar empresa com o banco ligado (falta a function no banco).
-- Playwright nos caminhos críticos (o Vitest já cobre a reserva, as prioridades, o escopo da ficha da empresa, a classificação dos erros do banco, o token do "Desfazer", o filtro "Contém", o contador das prioridades, o desfazer de lote e as frases de erro de campo).
+- Playwright nos caminhos críticos (o Vitest já cobre a reserva, as prioridades, o escopo da ficha da empresa, a classificação dos erros do banco, o token do "Desfazer", o filtro "Contém", o contador e a ordem das prioridades, o cartão da lista do dia, o desfazer de lote e as frases de erro de campo).

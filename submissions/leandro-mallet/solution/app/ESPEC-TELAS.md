@@ -154,14 +154,14 @@ O que os dados mostram (dados limpos e `analysis/findings.md`):
 
 | Ícone | Critério | Deals abertos que caem nele hoje | Frase ao passar o mouse |
 |---|---|---|---|
-| 🔥 **Super hot** | Em negociação **entre 15 e 106 dias** (passou da janela em que os perdidos caem e está dentro do ciclo de 90% dos ganhos) **e** produto com preço de tabela **≥ US$ 3.000** (GTX Pro, GTX Plus Pro, MG Advanced, GTK 500) | **66** (3% dos abertos). Sem a condição de valor seriam 150 | "Na fase em que mais deals viram ganho, com ticket alto." |
+| 🔥 **Super hot** | Em negociação **entre 15 e 106 dias** (passou da janela em que os perdidos caem e está dentro do ciclo de 90% dos ganhos). Sem critério de ticket desde a 0030 (O-24): o valor não entra na nota (decisões 28 e 29) | **150** (7% dos abertos); com o antigo corte de US$ 3.000 eram 66 | "Na fase em que mais deals viram ganho." |
 | ⚠ **Em risco de esfriar** | Em negociação **entre 107 e 138 dias**: já passou do tempo em que 90% dos ganhos fecharam e se aproxima do maior ciclo já visto | **141** (7% dos abertos) | "Aberto há 120 dias. 90% dos ganhos fecham em até 106 dias." |
 | ❄ **Esfriou** (ícone cinza, mais discreto) | Em negociação **há mais de 138 dias**: mais tempo que qualquer deal já fechado | **1.291** (62% dos abertos) | "Aberto há 210 dias, mais que qualquer deal já fechado (138). Requalifique ou encerre." |
 | sem ícone | Prospecção (sem data de abertura) e negociação com menos de 15 dias | 500 + 7 | — |
 
 - **Por que três ícones e não dois:** se o "em risco" incluísse os parados há mais de 138 dias, ele apareceria em 69% dos cartões e deixaria de chamar atenção. Separar o "esfriou" mantém o alerta raro e útil. **[P13]** decide se fica assim ou se os dois viram um só.
 - **Depois que o CRM estiver em uso:** "sem contato registrado há 14 dias ou mais" também passa a contar como risco. O número 14 vem da janela dos perdidos, mas o dataset não tem contatos para medir esse critério; ele fica como parâmetro em `config_parametros`.
-- **Quando o score for decidido:** o super hot pode passar a usar a nota (ex.: ≥ 80 dentro da janela). Os cortes (15, 106, 138 dias e US$ 3.000) ficam em `config_parametros`.
+- Os cortes (15, 106 e 138 dias) ficam em `config_parametros.icone_cortes`; `preco_min_quente` = null (sem ticket).
 - O cálculo dos ícones fica no servidor (`core_deals_visao`), não na tela.
 
 ### 2.5 Modal do deal (uma tela só)
@@ -488,16 +488,20 @@ Números conferidos nos dados limpos (`data/clean/deals.csv`) para os três perf
 
 | Perfil | Itens | Ordem |
 |---|---|---|
-| Vendedor | os deals abertos dele | maior nota primeiro. **Até o score existir:** super hot, depois em risco, depois o maior preço de tabela |
-| Manager **[P17]** | os deals abertos do time que pedem a ajuda dele: em risco (⚠) e super hot (🔥) | maior valor primeiro; cada item mostra o vendedor |
-| Admin **[P17]** | a mesma regra do manager, para todos os times | maior valor primeiro |
+| Vendedor | os deals abertos dele | a ordem abaixo |
+| Manager **[P17]** | os deals abertos do time, pelo parâmetro `prioridades_gestor`: `atencao`, "só o que pede ação" (decisão do Leandro): atendimento atrasado, lead novo com FIT ≥ 75 e em risco de esfriar ⚠. O super hot não entra | a ordem abaixo; cada item mostra o vendedor |
+| Admin **[P17]** | a mesma regra do manager, para todos os times | a ordem abaixo |
+
+**Ordem (a mesma para todos, migration 0030):** 1) no topo, o lead novo (criado no CRM há até 1 dia, sem contato) com FIT ≥ 75, e acima de tudo os marcados "atendimento atrasado"; 2) depois, pela nota; 3) no empate, maior HEAT; 4) por fim, o código do deal. O valor esperado não entra.
+
+**Cartão:** a linha de explicação é o 1º motivo da nota (`score_motivos`, ordem 1). O ícone aparece só como alerta (em risco, esfriou); o atendimento atrasado tem marca própria.
 
 Ficam fora da lista do dia os deals que já tiveram ✓, ✗ ou contato registrado hoje.
 
 **Como a lista anda:**
 - **5 itens visíveis** e uma **meta do dia de 10** (os dois números ficam em `config_parametros`). A barra "3 de 10 feitas" mostra o avanço.
 - Ao marcar ✓ ou ✗, o item sai com uma animação curta (respeitando "reduzir movimento"), os de baixo sobem e entra o próximo da fila no fim.
-- A lista do dia é montada na primeira abertura do dia e fica estável até o dia acabar. Se a nota mudar no meio do dia, a ordem não muda na frente da pessoa.
+- A lista do dia é montada na primeira abertura do dia e fica estável até o dia acabar. Exceção: se a execução de score ativa mudar, os itens ainda não marcados saem (ficam gravados como substituídos) e entram os da ordem nova; os já marcados ficam.
 
 **O que ✓ e ✗ significam [P18]:**
 
