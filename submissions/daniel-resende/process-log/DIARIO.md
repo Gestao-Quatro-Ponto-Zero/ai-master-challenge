@@ -103,6 +103,55 @@ Início real: 15:43:03. Caixa de tempo: 25 minutos.
 - **O que deu errado nesta etapa.** Na primeira saída do `confirm.py` os títulos de duas colunas da M3 saíram colados. Vi lendo a saída. Corrigi só a largura das colunas e conferi com `diff` que as seções M1 e M2 ficaram idênticas à primeira execução.
 - Relatório `relatorios/01z.md` entregue ao Daniel às 15:48, com a pergunta: regra A congelada, com a nova forma do produto: sim, não ou muda.
 
+## Etapa 2: construção em paralelo (prompt `02-construcao-em-paralelo.md`)
+
+Início real: 16:06:36. Caixa de tempo: 90 minutos. O `PRODUTO.md` novo, escrito pelo orquestrador a partir da decisão do Daniel, foi copiado para `process-log/produto.md`; a página aprovada antes dos dados ficou em `produto-v1-antes-dos-dados.md`. O screenshot da decisão entrou como `screenshots/01-decisao-do-score.png`.
+
+### 2.1 Contratos e fatia fina (16:08 a 16:12, do construtor)
+
+- `docs/contrato-score.md` e `docs/contrato-ia.md` reescritos para a forma nova: um arquivo por segunda-feira, o corte na véspera (assim a regra congelada dá a leitura do Daniel, com o dia do prazo contando como vivo, sem tocar em `validate.py`), os três blocos, a contagem regressiva, a frase da tabela do tempo, os agregados do gestor.
+- A fatia: `solution/build.py`, `solution/run.py` e uma página simples. Commit `f72e17e` às 16:12, com a manchete de um vendedor já na página.
+- **O que saiu diferente do plano:** o prompt pedia a fatia só da data padrão e o `build.py` completo como entrega do subconstrutor do núcleo. Como o código de uma data e o das seis é o mesmo, escrevi o `build.py` inteiro na fatia. O subconstrutor do núcleo passou a revisar e endurecer esse arquivo, em vez de escrevê-lo.
+- **O que deu errado:** o `build.py` quebrou na primeira execução (`max()` de lista vazia) porque eu supus que algum vendedor teria os três blocos. Nenhum tem: a regional Central tem toda a fila (500) e nenhum vivo; East e West têm os vivos (45 e 70) e nenhuma fila. Virou fato do contrato e do README.
+
+### 2.2 Dois subconstrutores em paralelo (lançados às 16:12; prompts `02a`, `02b`, `02b2`, `02b3`)
+
+**Núcleo (16:12 a 16:18).** `check_contract.py`, `numbers.py` (saída em `docs/numeros-saida.txt`), `drift.py` com `window.json`, e 8 testes em linhas reais. Mudou três coisas no `build.py` sem mudar a forma: os `assert` viraram erros explícitos, a contagem regressiva só usa o prazo quando a regra o aplica, e um valor que eu tinha deixado fixo passou a ser calculado. Apontou duas frases do contrato que não diziam tudo (o campo `account` aparece para exibir embora esteja na lista dos que vazam; de onde se conta `days_after`); corrigi o contrato. Conferi por comando antes do commit: `check_contract.py` com saída 0, 20 testes OK, `numbers.py` idêntico ao arquivo guardado, `drift.py` "janela estável".
+
+**Camada de IA (16:12 a 16:26, três rodadas).** Geração pelo CLI sem interface, de um diretório vazio, sem chave de API; modelo pedido `sonnet` (o envelope registra `claude-sonnet-5-5` e, em alguns lotes, também `claude-haiku-5-5`; não sabemos por que o segundo aparece, e a procedência guarda os dois nomes).
+1. Cinco textos primeiro, lidos por mim. Estavam presos aos fatos e ruins para um vendedor: o plural era digitado pelo modelo ("1 negócios vivos" aconteceria), os zeros liam mal ("Sua fila está em 0") e o próximo passo não dizia nada ("Jogada da semana: ..."). Correção (`02b2`): as contagens com substantivo passaram a ser frases montadas pelo código, com singular, plural e zero; a frase da tabela do tempo vem inteira do score; o próximo passo diz o passo e o fato que leva a ele.
+2. Na tela apareceram mais três defeitos: frase começando em minúscula depois de ponto, "você tem nenhum negócio vivo" e rótulo repetindo a frase. Correção (`02b3`), com regras novas na conferência e teste para cada uma.
+3. Na regeneração, 9 briefings foram recusados pela regra nova de sequência repetida; o subconstrutor estreitou a regra (uma lista de três negócios repete palavras preenchidas de forma legítima) e gerou os 9. Estado final: 148 textos (115 negócios vivos, 27 briefings, 6 gestores), `check.py` com saída 0, 12 testes.
+- O subconstrutor não conseguiu apagar `make_example_facts.py` (o comando foi negado a ele). Era um arquivo meu, da forma antiga, e eu mesmo o removi com `git rm`.
+- Defeitos de redação que ficaram: o resumo do gestor abre duas frases com "Time"; "Na janela, nenhum dos 717..." soa estranho. Estão ditos no relatório.
+
+### 2.3 A interface (16:12 a 16:37, do construtor, com a skill `visual-tier1`)
+
+Apliquei o método visual do Daniel (skill `visual-tier1`) na interface.
+
+**Desenho da tela.** Âncora: a janela de 138 dias, o fato que sustenta o produto. A tela é uma régua do tempo: cada negócio vivo é uma marca na idade em que está, a zona depois dos 90 dias é a de quem esfria, e depois da borda fica a pilha do que é para limpar. Sob cada idade da régua vai a conta "cerca de X em cada 100". Uma família tipográfica (Bricolage Grotesque, embutida, licença OFL). Cor por função (vivo, esfriando, fila, limpar), sempre com rótulo ou forma além da cor. Claro por padrão, escuro no botão.
+
+**O que deu errado, e como percebi.**
+- Matei o processo errado ao encerrar o servidor da fatia e ele ficou vivo na porta 8765; percebi quando o servidor novo falhou com "Address already in use". Identifiquei o processo como meu e o encerrei.
+- Sem o arquivo de textos, a página registrava um erro 404. O `run.py` passou a responder "nenhum texto".
+- A manchete do gestor saiu com "[object HTMLSpanElement]" na primeira vez que a tela abriu: uma lista aninhada que eu não achatava. Corrigido, e uma conferência automática passou a cobrir esse erro em todas as telas.
+- Uma conferência automática de encaixe apontou 148 problemas na primeira rodada: o link de pular navegação fora da tela, uma lista escondida que se sobrepunha a outro texto, rótulos que quebravam de linha em cima de outros e duas anotações da régua colidindo. Corrigi a página em cada caso. Uma nota recolhível (`details`) também se sobrepunha às linhas; troquei por um botão simples.
+
+**O segundo olhar (prompt `02c`, 16:29 a 16:30).** Um subagente que não desenhou a tela recebeu nove capturas, sem a minha justificativa. O que ele apontou e o que mudou:
+- o primeiro negócio ficava abaixo da dobra, no desktop e no celular → cabeçalho e régua mais baixos, o briefing recolhido no celular, a conta por idade atrás de um botão no celular;
+- cada negócio repetia os mesmos fatos num parágrafo → linha enxuta (produto, conta, valor, contagem regressiva, próximo passo) e o porquê atrás de "Por quê?";
+- "cerca de 39 em cada 100" dentro de cada negócio parece chance do negócio → a frase saiu da face do cartão, fica no "Por quê?" com o aviso de que vale para todos os negócios daquela idade; a régua diz que a posição não é ordem nem chance;
+- 91 linhas iguais em "para limpar" pareciam despejo de dados → uma linha por produto, que abre os negócios dela; cada negócio ganhou o ID do CRM, sem o qual o vendedor não o acharia;
+- blocos vazios pareciam inacabados → o bloco de trabalho do vendedor ocupa a coluna larga e os outros dois dividem o trilho ao lado;
+- os termos não eram definidos → cada bloco abre com uma linha dizendo o que é; duas colunas quase sempre zeradas saíram da tabela do gestor.
+- Ele preferiu a composição empilhada; a que ficou como padrão (coluna larga e trilho) nasceu dessa crítica. A empilhada continua em `?comp=pilha` para o Daniel comparar.
+
+**Conferências automáticas (16:36).** Encaixe: sem problemas, da largura de 320 a 1920 px, sem rolagem lateral. Acessibilidade (WCAG 2.2 A/AA): 0 violações, nos temas claro e escuro. Números da tela contra os arquivos do contrato: 496 conferências, 0 divergências. Sem erro no console. Não medido: celular real e o escurecimento automático de navegadores de celular.
+
+### 2.4 Integração (16:37 a 16:40)
+
+`run.py` é o comando único; o README ganhou a metade técnica (como rodar, a lógica nas palavras do vendedor, os resultados com os números de `numbers.py`, as limitações). Testado também com o Python 3.14 do sistema.
+
 ## O que o candidato decidiu
 
 ### Etapa 1: a regra e a forma do produto (10/11/2026, resposta recebida no chat e registrada às 15:54, do `date`)
