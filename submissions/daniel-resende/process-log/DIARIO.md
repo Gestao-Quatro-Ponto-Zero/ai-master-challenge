@@ -275,6 +275,17 @@ O Daniel usou o app e escreveu, como ele disse:
 - O tempo real no README vai até 18:57; não é o número final, que o último passo escreve.
 - A seção "O que eu adicionei que a IA sozinha não faria" foi escrita a partir do diário e o Daniel a lê antes de qualquer envio.
 
+### 4b. As correções da verificação independente (prompts `04b-correcoes-da-verificacao.md` e `04b2-dois-acrescimos.md`, 19:13 a 19:20)
+
+O verificador (Codex CLI, outra família de modelo, num clone limpo do commit `e7f62ab`) recalculou com código próprio os números do README e todos se mantiveram. Achou quatro problemas. Cada um foi reproduzido antes da correção.
+
+1. **Bloqueia: numa segunda do passado, a explicação usava fatos de janeiro.** Reproduzido: os cinco negócios de 02/10/2017 (`GWOOPZE8`, `EM1BA4EK`, `GXIVJQPG`, `MG1YUTUE`, `QNB3SCN9`) têm 0 dias em aberto, 138 restantes e o passo "trabalhar", mas têm texto guardado escrito para 01/01/2018 ("aberto há 91 dias"). Causa: a página buscava o texto de um negócio só pelo identificador, sem olhar para qual segunda ele foi escrito. Correção: o índice marca a única segunda dos textos (nenhuma, sem o arquivo); toda leitura de texto guardado passa por essa marca, e nas outras segundas a tela mostra a frase da regra, sem dizer que foi redigida por IA. `check_contract.py` reprova outra marcação; um teste novo cobre o arquivo presente e ausente. Na tela: 17 conferências nos cinco negócios e na segunda padrão, 0 achados; com a página anterior, 10 achados.
+2. **Corrige: a linha do tempo chamava 138 dias de "fim do prazo".** Reproduzido: 34 dos 115 negócios no prazo vencem antes, no fim do trimestre (`numbers.py`); `NGTVHTFH` tem 12 dias em aberto e 89 restantes. Causa: a figura é desenhada pela idade, mas o rótulo falava do prazo de cada negócio. Correção: o eixo diz "dias em aberto", o fim diz "138 dias: o mais longo já ganho", e o topo diz "ponto = negócio no prazo · os dias restantes de cada um estão na lista"; o texto para leitor de tela, o painel de método e as limitações do README dizem o mesmo. A barra de cada linha passou a usar a escala do arquivo do score, não um 138 digitado. Na tela: 5 conferências, 0 achados (para `NGTVHTFH`, 89 na linha e na barra; nada diz 126).
+3. **Corrige: na tabela de comandos, `confirm.py` estava sem `python3` e sem o caminho.** Corrigido; os nove comandos da tabela rodaram como escritos, da raiz, todos com saída 0.
+4. **Observação: com a porta ocupada, o comando de execução terminava num traceback.** Causa: ele montava tudo antes de ocupar a porta e não tratava o erro. Agora ocupa a porta primeiro e, se ela estiver em uso, diz isso numa linha e sai com 1.
+
+A verificação foi publicada sem alteração em `process-log/verificacao/` (relatório, programas e saídas). As capturas com as palavras novas foram refeitas com os mesmos nomes. Os 148 textos de IA não foram gerados de novo: estão certos para a segunda deles.
+
 ## O que o candidato decidiu
 
 ### Etapa 1: a regra e a forma do produto (10/11/2026, resposta recebida no chat e registrada às 15:54, do `date`)

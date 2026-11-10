@@ -24,7 +24,7 @@ Precisa só de Python (testado com 3.12 e 3.14; nada para instalar, `requirement
 python3 submissions/daniel-resende/solution/run.py --port 8000
 ```
 
-O comando recalcula tudo a partir dos quatro CSVs e abre em **http://127.0.0.1:8000/**. Não precisa de chave de API nem de conta: os textos de IA já vêm gerados no repositório, e a tela funciona igual sem eles.
+O comando recalcula tudo a partir dos quatro CSVs e abre em **http://127.0.0.1:8000/**; se a porta 8000 estiver ocupada, ele diz isso numa linha e basta trocar o número em `--port`. Não precisa de chave de API nem de conta: os textos de IA já vêm gerados no repositório, e a tela funciona igual sem eles.
 
 Outros comandos, todos da raiz e todos só com Python:
 
@@ -35,7 +35,8 @@ Outros comandos, todos da raiz e todos só com Python:
 | `python3 -m unittest discover -s submissions/daniel-resende/solution/tests` | os testes, em linhas reais do dataset |
 | `python3 submissions/daniel-resende/solution/numbers.py` | imprime cada número citado neste README (saída guardada em `docs/numeros-saida.txt`) |
 | `python3 submissions/daniel-resende/solution/drift.py` | relatório de desvio: diz se o prazo mudou em relação ao guardado em `solution/window.json` |
-| `python3 submissions/daniel-resende/solution/validate.py` e `confirm.py` | a validação da regra, sem vazamento, e a confirmação em datas novas |
+| `python3 submissions/daniel-resende/solution/validate.py` | a validação da regra, sem vazamento |
+| `python3 submissions/daniel-resende/solution/confirm.py` | a confirmação da regra congelada em datas novas |
 | `python3 submissions/daniel-resende/solution/ai/check.py` | confere os 148 textos de IA guardados |
 | `python3 submissions/daniel-resende/solution/ai/generate.py` | regenera os textos (só este precisa do Claude Code instalado e logado; não usa chave de API) |
 
@@ -104,6 +105,7 @@ Todos os números abaixo saem de `solution/numbers.py` (`docs/numeros-saida.txt`
 
 - **O prazo é uma regularidade deste dataset.** Os 138 dias e o prazo do trimestre foram vistos nos dados inteiros antes de a regra ser escrita. `drift.py` avisa quando eles mudarem.
 - **A ordem entre os negócios no prazo não foi confirmada** em datas novas, e é quase ordem por produto.
+- **138 dias é o mais longo já ganho, não o prazo de todos:** 34 dos 115 negócios no prazo vencem antes, no fim do trimestre; os dias restantes de cada um estão na lista.
 - **A frase "cerca de X em cada 100"** descreve uma faixa de idade, não um negócio, e o nível muda com a data da conta (aos 90 dias: 38 em agosto, 33 em outubro, 26 em dezembro; `docs/confirmacao-saida.txt`). Nas duas segundas mais antigas a conta ainda não existe, e a tela diz isso.
 - **A lista para iniciar não é medida por nada**: sem data, nenhum teste alcança esses negócios, e ela não pode ser reconstruída no passado.
 - **"Vencidos" não diz o motivo.** Os dados não distinguem negócio abandonado de negócio que ninguém atualizou no CRM.
@@ -158,25 +160,31 @@ O diário completo, com as horas reais de cada passo, está em [process-log/DIAR
 
 ### Onde a IA errou e como corrigi
 
-- **O tempo "não reduz a chance":** foi o primeiro veredito da auditoria, porque ela contava só negócios que fecharam. Percebi porque a validação mostrava o contrário; refeita com os que nunca fecham, a chance cai com a idade.
-- **A primeira regra perdia para ordenar por valor:** negócios anteriores ao primeiro fechamento registrado inflavam as idades. A causa apareceu cruzando mês de engajamento com mês de fechamento.
-- **O primeiro grupo "deixar ir" deixava passar ganhos:** tratava falta de evidência como evidência. Percebi rodando mais datas de corte; passou a exigir prazo vencido ou idade acima do ganho mais demorado.
-- **A primeira execução do baseline** partiu de uma pasta cujo nome lembrava o projeto. Percebi lendo a resposta e rodei de novo de uma pasta neutra; as duas ficaram guardadas.
+- **O tempo "não reduz a chance":** foi o primeiro veredito da auditoria, porque ela contava só negócios que fecharam. O próprio construtor pegou o erro quando a validação mostrou o contrário; refeita com os negócios que nunca fecham, a chance cai com a idade.
+- **A primeira regra perdia para "ordenar por valor":** negócios anteriores ao primeiro fechamento registrado inflavam as idades. O construtor achou a causa cruzando o mês de engajamento com o mês de fechamento.
+- **O primeiro grupo "deixar ir" deixava passar ganhos:** tratava falta de evidência como evidência. Apareceu ao rodar mais datas de corte; a regra passou a exigir prazo vencido ou idade acima do ganho mais demorado.
+- **A primeira execução do baseline** partiu de uma pasta cujo nome lembrava o projeto. O construtor percebeu lendo a resposta e rodou de novo de uma pasta neutra; as duas ficaram guardadas.
 - **A tabela que contava o mesmo negócio várias vezes:** somava datas de corte sobrepostas. Quem apontou foi o orquestrador; a segurança passou a ser medida em negócios distintos.
-- **O gráfico de uma estatística**, que ninguém lia em dez segundos: o prompt do próprio orquestrador o tinha pedido. O Daniel julgou complexo; virou uma linha do tempo.
-- **Palavras que um vendedor não usa** ("vivos", "fila", "para limpar"): o Daniel trocou por "no prazo", "para iniciar", "vencidos".
+- **O gráfico de uma estatística, que ninguém lia em dez segundos:** tinha sido pedido pelo prompt do próprio orquestrador. Eu julguei complexo e ele virou uma linha do tempo.
+- **Palavras que um vendedor não usa** ("vivos", "fila", "para limpar"): eu troquei por "no prazo", "para iniciar" e "vencidos".
 - **A conferência dos textos de IA quebrava num clone limpo:** achada pelo orquestrador; corrigida, com um teste que roda a conferência sem os arquivos montados.
-- **O que o verificador independente achou:** completado no último passo.
+- **O que o verificador independente achou** (Codex CLI, outra família de modelo, num clone limpo; [relatório](process-log/verificacao/relatorio.md)). Recalculou com código próprio, a partir dos quatro CSVs, os números do README: o prazo de 138 dias, os 6.710 de 6.711 fechamentos dentro do trimestre, os 717 negócios distintos vencidos sem nenhum ganho, os totais da segunda padrão, a tabela por idade e os empates de valor; todos se mantiveram. Achou quatro problemas, todos corrigidos:
+  - **Bloqueia:** numa segunda do passado, cinco negócios de 02/10/2017 mostravam a explicação escrita para janeiro ("aberto há 91 dias"). Agora os textos de IA só aparecem na segunda para a qual foram escritos; nas outras, a frase da regra.
+  - **Corrige:** a linha do tempo chamava 138 dias de "fim do prazo". Agora diz "dias em aberto" e "o mais longo já ganho", e aponta para os dias restantes de cada negócio na lista.
+  - **Corrige:** na tabela de comandos, `confirm.py` estava sem `python3` e sem o caminho. Agora está completo.
+  - **Observação:** com a porta ocupada, o comando de execução terminava num traceback. Agora diz isso numa linha e sai com 1.
+  - O que ele não pôde determinar: não viu a página renderizada num navegador e não confirmou uma geração nova pelo modelo.
 
 ### O que eu adicionei que a IA sozinha não faria
 
-- Recusei o primeiro plano por ser pequeno demais e fixei a regra: as regras do teste são o piso, o produto é o teto.
-- Exigi IA dentro do produto sem nenhuma chave de API.
-- Escolhi o jeito de trabalhar: um orquestrador que nunca constrói, construtores em paralelo, um verificador independente de outra família de modelo, e a meta de tempo.
-- Quando a auditoria contradisse a primeira página do produto, decidi o score e a forma nova; as duas páginas estão no process log.
-- Julguei as primeiras telas pesadas de texto e os gráficos complexos, e fixei a régua: alguém de quinze anos tem de entender a figura.
+- Recusei o primeiro plano por ser pequeno demais e fixei a regra do trabalho: as regras do teste são o piso, o produto é o teto.
+- Aprovei IA dentro do produto com uma condição minha: nenhuma chave de API, nem minha nem de quem for avaliar.
+- Escolhi o jeito de trabalhar: um orquestrador que nunca constrói, construtores em paralelo e um verificador independente de outra família de modelo. Fixei também uma meta de tempo, que não foi cumprida; o tempo real está neste README.
+- Quando a auditoria contradisse a primeira página do produto, aprovei a regra congelada e a forma nova. As duas páginas estão no process log.
+- Julguei as primeiras telas pesadas de texto e os gráficos complexos, e fixei a régua: alguém de quinze anos, que nunca viu a ferramenta, tem de entender a figura.
+- Troquei o modelo do construtor no meio do trabalho, quando o visual não chegava ao meu padrão.
 - Troquei as palavras da ferramenta pelas que um vendedor usa.
-- Usei o app e pedi que o link dos vencidos abrisse a lista.
+- Usei o app como vendedor e pedi que o link dos vencidos abrisse a lista.
 - Aprovei cada passo público.
 
 ### Como ler este process log
@@ -184,7 +192,8 @@ O diário completo, com as horas reais de cada passo, está em [process-log/DIAR
 - O process log foi organizado antes da publicação: os scripts e as instruções da ferramenta particular do candidato ficaram de fora, sete cópias de prompts são trechos marcados na primeira linha, e os caminhos da máquina foram trocados. Os hashes de commit citados nos prompts e no diário são do histórico local anterior a isso; a regra congelada é `solution/validate.py`, com sha256 `336760fdcc511cde2ad5d28e9437dd0b061a222b18f2f5f03e2a38164abca212`.
 - `PRODUTO.md`, `CLAUDE.md`, `prompts/` e `relatorios/`, citados dentro dos prompts, são os arquivos de trabalho fora do repositório; o que deles é publicado está em `process-log/` (`produto.md`, `piso.md`, `prompts/`).
 - O plano tinha dois verificadores independentes; rodou um (outra família de modelo). O segundo, uma sessão nova do mesmo modelo, foi cortado por tempo.
-- **Tempo real:** o Daniel começou por volta das 13:30 de 10/11/2026; o primeiro prompt ao construtor foi às 15:06; este README foi fechado às 18:57, e esse não é o número final, que o último passo escreve. Os subagentes trabalharam em paralelo ao construtor.
+- O verificador examinou o commit `e7f62ab` desta branch; o bloco de processo do README foi preenchido depois dele, e por isso o relatório o lista como pendente.
+- **Tempo real:** o Daniel começou por volta das 13:30 de 10/11/2026; o primeiro prompt ao construtor foi às 15:06; o último commit deste trabalho foi às 19:20, num total de cerca de 5 h 50 min (das 13:30 às 19:20). Os subagentes trabalharam em paralelo ao construtor. Os passos públicos (o envio, o endereço público e o pull request) vêm depois disso.
 
 ---
 
@@ -194,7 +203,7 @@ O diário completo, com as horas reais de cada passo, está em [process-log/DIAR
 - [ ] Screen recording do workflow
 - [ ] Chat exports
 - [x] Git history: um commit por passo, cada um dizendo o que provou
-- [x] Outro: o diário ([process-log/DIARIO.md](process-log/DIARIO.md)), cada prompt ([process-log/prompts/](process-log/prompts/)), o baseline ([process-log/baseline/](process-log/baseline/)) e o relatório da verificação (acrescentado no último passo)
+- [x] Outro: o diário ([process-log/DIARIO.md](process-log/DIARIO.md)), cada prompt ([process-log/prompts/](process-log/prompts/)), o baseline ([process-log/baseline/](process-log/baseline/)) e a verificação independente ([process-log/verificacao/relatorio.md](process-log/verificacao/relatorio.md), com os programas e as saídas do verificador)
 
 ---
 

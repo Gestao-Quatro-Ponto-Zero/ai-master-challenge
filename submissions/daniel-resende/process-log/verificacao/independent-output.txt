@@ -1,0 +1,75 @@
+csv_rows 8800 accounts 85 products 7 teams 35
+longest_win 138
+late_closings 1 of 6711 [('Q7C5MJ4W', 'Lost', '2017-06-30', '2017-11-01')]
+cut 2017-06-01 known_max 138 open 1546 dead 84 outcomes {'Engaging': 84}
+cut 2017-06-16 known_max 138 open 1582 dead 109 outcomes {'Engaging': 109}
+cut 2017-07-01 known_max 138 open 1706 dead 350 outcomes {'Engaging': 350}
+cut 2017-07-08 known_max 138 open 1773 dead 350 outcomes {'Engaging': 350}
+cut 2017-07-16 known_max 138 open 1824 dead 350 outcomes {'Engaging': 350}
+cut 2017-08-01 known_max 138 open 2279 dead 350 outcomes {'Engaging': 350}
+cut 2017-08-16 known_max 138 open 2274 dead 350 outcomes {'Engaging': 350}
+cut 2017-08-24 known_max 138 open 2241 dead 384 outcomes {'Engaging': 384}
+cut 2017-09-01 known_max 138 open 2275 dead 411 outcomes {'Engaging': 411}
+cut 2017-09-16 known_max 138 open 2329 dead 471 outcomes {'Engaging': 471}
+cut 2017-09-24 known_max 138 open 2363 dead 504 outcomes {'Engaging': 504}
+cut 2017-10-02 known_max 138 open 2452 dead 717 outcomes {'Engaging': 716, 'Lost': 1}
+all12 DISTINCT 717 outcomes {'Engaging': 716, 'Lost': 1}
+cut 2017-07-08 known_max 138 open 1773 dead 350 outcomes {'Engaging': 350}
+cut 2017-08-24 known_max 138 open 2241 dead 384 outcomes {'Engaging': 384}
+cut 2017-09-24 known_max 138 open 2363 dead 504 outcomes {'Engaging': 504}
+confirmation3 DISTINCT 504 outcomes {'Engaging': 504}
+default alive 115 value 235930
+default queue 500 value 1073986
+default clean 1474 value 3656299
+open_without_account 1425 of 2089
+alive_without_account 80
+queue_no_engage_date 500 of 500
+sellers_without_alive 18
+region Central ('alive', 0) ('queue', 500) ('clean', 408)
+region East ('alive', 45) ('queue', 0) ('clean', 388)
+region West ('alive', 70) ('queue', 0) ('clean', 678)
+prices 7 adjacent_pairs 98 ties 52
+life_table 2017-08-16 pool 755
+ age 0 reached 755 wins 422 per100 56
+ age 30 reached 546 wins 281 per100 51
+ age 60 reached 475 wins 244 per100 51
+ age 90 reached 242 wins 93 per100 38
+ age 120 reached 131 wins 1 per100 1
+ age 138 reached 130 wins 0 per100 0
+life_table 2017-10-02 pool 2042
+ age 0 reached 2042 wins 1040 per100 51
+ age 30 reached 1143 wins 549 per100 48
+ age 60 reached 972 wins 440 per100 45
+ age 90 reached 618 wins 203 per100 33
+ age 120 reached 354 wins 17 per100 5
+ age 138 reached 326 wins 0 per100 0
+life_table 2017-12-31 pool 4767
+ age 0 reached 4767 wins 2256 per100 47
+ age 30 reached 2873 wins 1200 per100 42
+ age 60 reached 2540 wins 982 per100 39
+ age 90 reached 1722 wins 441 per100 26
+ age 120 reached 1152 wins 49 per100 4
+ age 138 reached 1078 wins 0 per100 0
+compare_emitted 2017-06-05 open 1550 clean 92 mismatches 0 []
+totals_and_alive_order_ok 2017-06-05
+deadline_is_monday 2017-06-05 1 [('James Ascencio', '0OESOJNN', 138, '2017-06-05')]
+compare_emitted 2017-07-03 open 1714 clean 350 mismatches 0 []
+totals_and_alive_order_ok 2017-07-03
+deadline_is_monday 2017-07-03 0 []
+compare_emitted 2017-08-07 open 2259 clean 350 mismatches 0 []
+totals_and_alive_order_ok 2017-08-07
+deadline_is_monday 2017-08-07 0 []
+compare_emitted 2017-09-04 open 2273 clean 420 mismatches 0 []
+totals_and_alive_order_ok 2017-09-04
+deadline_is_monday 2017-09-04 9 [('Elease Gluck', 'DJMPI9TO', 138, '2017-09-04'), ('James Ascencio', 'U6XJRWV8', 138, '2017-09-04'), ('Kary Hendrixson', 'BYF6ABTZ', 138, '2017-09-04'), ('Maureen Marcano', 'K8LRZ95S', 138, '2017-09-04'), ('Rosie Papadopoulos', 'Q8BZ3PC9', 138, '2017-09-04')]
+compare_emitted 2017-10-02 open 2434 clean 717 mismatches 0 []
+totals_and_alive_order_ok 2017-10-02
+deadline_is_monday 2017-10-02 0 []
+compare_emitted 2018-01-01 open 1589 clean 1474 mismatches 0 []
+totals_and_alive_order_ok 2018-01-01
+deadline_is_monday 2018-01-01 0 []
+no_alive [('Anna Snelling', 0, 55, 57), ('Carl Lin', 0, 0, 0), ('Carol Thompson', 0, 0, 0), ('Cecily Lampkin', 0, 24, 19), ('Darcel Schlecht', 0, 111, 83), ('Donn Cantrell', 0, 0, 0), ('Elizabeth Anderson', 0, 0, 0), ('Garret Kinder', 0, 0, 0), ('Gladys Colclough', 0, 49, 36), ('Jonathan Berthelot', 0, 48, 33), ('Lajuana Vencill', 0, 40, 40), ('Marty Freudenburg', 0, 54, 33), ('Mei-Mei Johns', 0, 0, 0), ('Moses Frase', 0, 31, 34), ('Natalya Ivanova', 0, 0, 0), ('Niesha Huffines', 0, 34, 30), ('Reed Clapper', 0, 0, 0), ('Versie Hillebrand', 0, 54, 43)]
+nothing_to_start [('Boris Faz', 5, 0, 52), ('Carl Lin', 0, 0, 0), ('Carol Thompson', 0, 0, 0), ('Cassey Cress', 8, 0, 77), ('Corliss Cosme', 8, 0, 73), ('Daniell Hammack', 8, 0, 64), ('Donn Cantrell', 0, 0, 0), ('Elease Gluck', 5, 0, 46), ('Elizabeth Anderson', 0, 0, 0), ('Garret Kinder', 0, 0, 0), ('Hayden Neloms', 2, 0, 48), ('James Ascencio', 3, 0, 58), ('Kami Bicknell', 10, 0, 80), ('Kary Hendrixson', 12, 0, 91), ('Markita Hansen', 11, 0, 68), ('Maureen Marcano', 6, 0, 66), ('Mei-Mei Johns', 0, 0, 0), ('Natalya Ivanova', 0, 0, 0), ('Reed Clapper', 0, 0, 0), ('Rosalina Dieter', 5, 0, 45), ('Rosie Papadopoulos', 2, 0, 37), ('Vicki Laflamme', 6, 0, 98), ('Violet Mclelland', 8, 0, 60), ('Wilburn Farren', 6, 0, 25), ('Zane Levy', 10, 0, 78)]
+neither [('Carl Lin', 0, 0, 0), ('Carol Thompson', 0, 0, 0), ('Donn Cantrell', 0, 0, 0), ('Elizabeth Anderson', 0, 0, 0), ('Garret Kinder', 0, 0, 0), ('Mei-Mei Johns', 0, 0, 0), ('Natalya Ivanova', 0, 0, 0), ('Reed Clapper', 0, 0, 0)]
+no_deals [('Carl Lin', 0, 0, 0), ('Carol Thompson', 0, 0, 0), ('Donn Cantrell', 0, 0, 0), ('Elizabeth Anderson', 0, 0, 0), ('Garret Kinder', 0, 0, 0), ('Mei-Mei Johns', 0, 0, 0), ('Natalya Ivanova', 0, 0, 0), ('Reed Clapper', 0, 0, 0)]
+independent checks complete

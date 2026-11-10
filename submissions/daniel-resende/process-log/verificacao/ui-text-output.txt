@@ -1,0 +1,43 @@
+
+SELLER Kary Hendrixson
+Kary, você tem  12 negócios no prazo ,   nenhum para iniciar  e  91 vencidos . Copiar resumo
+Dentro do prazo 32.551 Prazo acabando 0 Vencido 243.966 Unidade valores em US$ de tabela; prazo acabando em negócios
+ 91 vencidos
+No prazo 12  Negócio Preço, US$ Dias restantes GTX Plus Pro Rangreen 5.482 69  GTX Pro Newex 4.821 89  GTX Pro Conecom 4.821 89  GTX Pro Zencorporation 4.821 81  GTX Pro 4.821 51  MG Advanced 3.393 65  GTX Plus Basic 1.096 89  GTX Plus Basic Warephase 1.096 89  GTX Basic Golddex 550 83  GTX Basic Xx-holding 550 74  GTX Basic Hottechi 550 59  GTX Basic 550 49  Para iniciar 0 sem data Nenhum negócio para iniciar. Vencidos 91  Nenhum ganho em 717 casos assim. Ação:  encerrar no CRM. Ver lista 
+
+SELLER Anna Snelling
+Anna:  nenhum negócio no prazo ,   55 para iniciar  e  57 vencidos . Copiar resumo
+Dentro do prazo 0 Prazo acabando 0 Vencido 95.414 Unidade valores em US$ de tabela; prazo acabando em negócios
+ 57 vencidos
+No prazo 0  Nenhum no prazo: comece pelos negócios para iniciar. Para iniciar 55 sem data Negócio Preço, US$ GTX Plus Pro × 5 27.410  MG Advanced × 12 40.716  GTX Plus Basic × 4 4.384  GTX Basic × 7 3.850  MG Special × 27 1.485  Vencidos 57  Nenhum ganho em 717 casos assim. Ação:  encerrar no CRM. Ver lista 
+
+SELLER Carl Lin
+Carl, seu pipeline está limpo: nenhum negócio no prazo, nenhum para iniciar e nenhum vencido. 
+Dentro do prazo 0 Prazo acabando 0 Vencido 0 Unidade valores em US$ de tabela; prazo acabando em negócios
+ nenhum vencido
+No prazo 0  Nenhum negócio no prazo. Para iniciar 0 sem data Nenhum negócio para iniciar. Vencidos 0  Nenhum vencido.
+
+BORIS_TIMELINE_LABELS    prazo acabando abriu agora 90 fim do prazo: 138 dias ponto = negócio no prazo     
+QUARTER_TRUNCATES_MAX_AGE 34 of115
+BORIS_NGTVHTFH {"id":"NGTVHTFH","block":"vivo","rank":2,"product":"GTX Pro","account":null,"value":4821,"engage_date":"2017-12-19","days_open":12,"deadline":"2018-03-31","days_left":89,"window_end":"2018-03-31","cooling":false,"time_sentence":"Cerca de 47 em cada 100 negócios foram ganhos depois de engajados (conta de 31/12/2017).","clean_fact":null,"play":"trabalhar","flags":["sem_conta"],"after":null}
+
+HISTORICAL_AI_OVERLAP [{"seller":"Cassey Cress","id":"GWOOPZE8","past_age":0,"ai_age":91,"past_play":"trabalhar","ai_play":"Confirmar esta semana se segue de pé"},{"seller":"Cassey Cress","id":"EM1BA4EK","past_age":0,"ai_age":91,"past_play":"trabalhar","ai_play":"Confirmar esta semana se segue de pé"},{"seller":"Daniell Hammack","id":"GXIVJQPG","past_age":0,"ai_age":91,"past_play":"trabalhar","ai_play":"Confirmar esta semana se segue de pé"},{"seller":"Markita Hansen","id":"MG1YUTUE","past_age":0,"ai_age":91,"past_play":"trabalhar","ai_play":"Confirmar esta semana se segue de pé"},{"seller":"Wilburn Farren","id":"QNB3SCN9","past_age":0,"ai_age":91,"past_play":"trabalhar","ai_play":"Confirmar esta semana se segue de pé"}]
+
+PAST_TOOLTIP_WITH_AI GWOOPZE8
+GTX Plus Basic  · Cheers
+Próximo passo:  Confirmar esta semana se segue de pé, porque está com o prazo acabando e faltam 47 dias de prazo.
+Aberto há 0 dias; 138 dias restantes no prazo, até 17/02/2018.
+O negócio de GTX Plus Basic com Cheers está aberto há 91 dias, e faltam 47 dias de prazo. O fim do prazo é 17/02/2018. Ele está com o prazo acabando. Cerca de 26 em cada 100 negócios que chegaram abertos aos 90 dias foram ganhos depois (conta de 31/12/2017).
+Cerca de 51 em cada 100 negócios foram ganhos depois de engajados (conta de 01/10/2017).  Vale para todos os negócios que chegaram a essa idade; não é a chance deste negócio.
+US$ 1.096 é o valor de tabela: o preço de lista do produto, porque negócio aberto não tem valor de fechamento.
+Depois: seguia aberto no fim dos dados.
+ID GWOOPZE8 · frase do próximo passo redigida por IA
+
+PAST_TOOLTIP_WITHOUT_AI GWOOPZE8
+GTX Plus Basic  · Cheers
+Próximo passo:  Trabalhar esta semana.
+Aberto há 0 dias; 138 dias restantes no prazo, até 17/02/2018.
+Cerca de 51 em cada 100 negócios foram ganhos depois de engajados (conta de 01/10/2017).  Vale para todos os negócios que chegaram a essa idade; não é a chance deste negócio.
+US$ 1.096 é o valor de tabela: o preço de lista do produto, porque negócio aberto não tem valor de fechamento.
+Depois: seguia aberto no fim dos dados.
+ID GWOOPZE8
