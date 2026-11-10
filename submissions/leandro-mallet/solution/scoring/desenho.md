@@ -1,6 +1,6 @@
-# Desenho do score (proposta para decisão)
+# Desenho do score
 
-Status: **proposta** — os pontos marcados com **[DECIDIR]** esperam a escolha do Leandro.
+Status: **regra decidida pelo Leandro (decisões 28 e 29)**, com as perguntas da seção 4 em aberto. A seção 1 é o diagnóstico dos dados que embasou a regra.
 Data de referência ("hoje"): **2017-12-31**, último dia com registro no dataset.
 Números medidos sobre `data/raw/` com as regras de limpeza de `data/clean.py`. O script de validação vai reproduzir todos eles.
 
@@ -58,114 +58,116 @@ Win rate geral: **63,2%** (4.238 Won / 6.711 fechados).
 
 ### 1.3 Todos os atributos das 4 tabelas: o que foi testado e onde aparece
 
-Teste de chance: a diferença entre o maior e o menor win rate dos grupos com 30 ou mais deals fechados (6.711 deals). Nenhum atributo fica de fora: o que não entra no score aparece na tela como contexto, com o número, para o vendedor e o manager verem que foi olhado.
+Teste de chance: a diferença entre o maior e o menor win rate dos grupos com 30 ou mais deals fechados (6.711 deals). Nenhum atributo fica de fora: o que não entra na nota aparece na tela como contexto, com o número, para o vendedor e o manager verem que foi olhado.
 
 | Tabela | Atributo | Resultado | Veredito | Onde aparece |
 |---|---|---|---|---|
-| products | `product` / `sales_price` | Win 60,3%–64,8% (4,5 pts); preço de US$ 55 a US$ 26.768; valor fechado = 97%–100% da tabela (mediana por produto) | Chance: ruído. **Valor: entra no score** | Componente `valor` + motivo |
-| products | `series` | 62,7%–63,4% (0,7 pt) | Ruído | Detalhe do deal |
-| accounts | `sector` | 61,2%–64,8% (3,7 pts) | Ruído | Detalhe do deal: "chance histórica no setor X: 61%, perto da média de 63%" |
-| accounts | `revenue` (tercis) | 63,0%–63,2% (0,2 pt) | Ruído | Detalhe do deal (porte) |
-| accounts | `employees` (tercis) | 62,4%–63,6% (1,2 pt) | Ruído | Detalhe do deal (porte) |
+| products | `product` / `sales_price` | Win 60,3%–64,8% (4,5 pts); preço de US$ 55 a US$ 26.768; valor fechado = 97%–100% da tabela (mediana por produto) | Chance geral: ruído. **Entra no FIT** (por vendedor, 3 meses). Valor: contexto (P6) | Detalhe do FIT + valor no cartão |
+| products | `series` | 62,7%–63,4% (0,7 pt) | Chance geral: ruído. **Entra no FIT** | Detalhe do FIT |
+| accounts | `sector` | 61,2%–64,8% (3,7 pts) | Chance geral: ruído. **Entra no FIT** | Detalhe do FIT |
+| accounts | `revenue` (tercis) | 63,0%–63,2% (0,2 pt) | Chance geral: ruído. **Entra no FIT** | Detalhe do FIT |
+| accounts | `employees` (tercis) | 62,4%–63,6% (1,2 pt) | Chance geral: ruído. **Entra no FIT** | Detalhe do FIT |
 | accounts | `year_established` (tercis de idade) | 62,6%–64,2% (1,6 pt) | Ruído | Detalhe do deal |
 | accounts | `subsidiary_of` (tem empresa-mãe) | 63,1% × 63,6% (0,6 pt) | Ruído | Detalhe do deal (grupo da conta) |
-| accounts | `office_location` | 56%–75% (19 pts), mas cada país fora dos EUA é **uma conta só**; EUA 63,3% (n=5.555) × resto 62,6% (n=1.156) | Ruído (é o mesmo da conta) | Detalhe do deal |
-| accounts | histórico da conta | 53%–75% (22 pts), desvio 4,8 pts contra 5,4 pts do acaso; win rate passado não prevê o seguinte (quintis 60%–65%, sem ordem) | Ruído | Detalhe do deal: "esta conta: X ganhos em Y, média do time 63%" |
+| accounts | `office_location` | 56%–75% (19 pts), mas cada país fora dos EUA é **uma conta só**; EUA 63,3% (n=5.555) × resto 62,6% (n=1.156) | Ruído (é o mesmo da conta). **Entra no FIT** como sede EUA × fora | Detalhe do FIT |
+| accounts | histórico da conta | 53%–75% (22 pts), desvio 4,8 pts contra 5,4 pts do acaso; win rate passado não prevê o seguinte (quintis 60%–65%, sem ordem) | Ruído. **Entra no FIT** como empresa (só com 10+ fechados do vendedor na janela) | Detalhe do FIT |
 | sales_teams | `sales_agent` | 55%–70% (15 pts), desvio 3,7 pts contra 3,2 pts do acaso; win rate passado não prevê o seguinte | Ruído | Visão do manager: win rate por vendedor com a faixa do acaso desenhada |
 | sales_teams | `manager` | 62,1%–64,4% (2,3 pts) | Ruído | Filtro + visão do manager |
 | sales_teams | `regional_office` | 62,6%–63,9% (1,4 pt) | Ruído | Filtro + visão do manager |
-| pipeline | `account` vazia | 0 de 6.711 fechados sem conta; 68% dos abertos sem | **D2** | Flag `sem_conta` |
-| pipeline | `engage_date` (idade) | Não muda a chance; muda quando o deal se decide e se ainda está vivo (tabela da seção 1.2) | **Entra no score** | Componente `tempo` + flags |
-| pipeline | `deal_stage` | Prospecting não tem data de engajamento: não há como medir idade | Sem sinal | Aviso "sem dado de idade" |
+| pipeline | `account` vazia | 0 de 6.711 fechados sem conta; 68% dos abertos sem | Sem penalidade: o FIT usa só produto e série | Flag `sem_conta` + tarefa |
+| pipeline | `engage_date` (idade) | Não muda a chance; muda quando o deal se decide e se ainda está vivo (tabela da seção 1.2) | **Entra no score** | Componente HEAT + alertas |
+| pipeline | `deal_stage` | Prospecting não tem data de engajamento: não há como medir idade | Sem sinal | HEAT 50 declarado "sem dado de tempo" |
 | pipeline | `close_date` | Fim de trimestre: 80,7% × 52,3% | Fora do score (não existe para deal aberto) | Visão do manager |
-| pipeline | `close_value` | 99,8% do preço de tabela na mediana | Justifica usar o preço como valor | Motivo do componente `valor` |
+| pipeline | `close_value` | 99,8% do preço de tabela na mediana | Justifica usar o preço como valor | Valor no cartão |
 
 ---
 
-## 2. Proposta de score (0–100)
+## 2. Regra decidida (decisões 28 e 29)
 
-Ideia central: **o score não finge prever quem ganha.** Ele organiza a semana do vendedor com três perguntas que os dados respondem:
-1. **Quanto vale?**
-2. **Está na hora de decidir ou já morreu?**
-3. **O deal está qualificado?**
+A especificação completa, com as contas, os 3 exemplos reais e as simulações de roteamento, está em [`regra-lead-score.html`](regra-lead-score.html). Abaixo vai só o resumo.
 
-Soma de componentes visíveis, para o vendedor ver de onde vem cada ponto:
+**SCORE = 0,70 × FIT + 0,30 × HEAT** (0 a 100). O valor fica fora da nota e aparece como contexto (pergunta P6).
 
-| Componente (chave no contrato) | Pontos | Regra | Por quê |
-|---|---|---|---|
-| `valor` | 0–45 | `45 × (ln preço − ln 55) / (ln 26.768 − ln 55)`, sobre o preço de tabela do produto | O valor fechado ≈ preço de tabela. A escala log impede que o GTK 500 esmague todo o resto: GTX Basic ≈ 17, MG Advanced ≈ 30, GTX Pro ≈ 32, GTK 500 = 45 |
-| `tempo` | 0–35 | `35 × (taxa de resolução em 30 dias da faixa de idade) / (taxa da melhor faixa)`, curva calculada pelas fotografias do histórico. Acima de 120 dias = 0. Prospecting (sem data de engajamento) usa a faixa 0–14 | Põe no topo o que está na janela de decisão (46–90 dias) e zera o que a história diz que não fecha mais |
-| `conta` | 0 ou 20 **[DECIDIR D2]** | Opção A: 20 se a conta está preenchida. Opção B: não pontua, vira tarefa (ver D2) | Nenhum deal fechado está sem conta, mas isso pode ser artefato do gerador dos dados |
-| `chance` | 0 (só exibida) | Win rate histórico **[DECIDIR]** | Ver D1 |
+### FIT (70%): encaixe do lead no ponto forte do vendedor dono
+- Usa 7 características do lead: produto, série, setor, porte por receita, porte por funcionários, empresa e sede. "Tempo de venda" fica fora, porque um lead aberto ainda não tem esse dado.
+- A janela são os 3 meses de fechamentos do vendedor (hoje, out–dez/2017). Recalcula todo dia 1º e fica fixo até a rodada seguinte.
+- Taxa encolhida de cada característica = (ganhos + 20 × taxa do vendedor) / (fechados + 20). Desvio = taxa encolhida − taxa do vendedor. Característica com menos de 10 fechados vale desvio 0 e fica fora da média.
+- Destaque = a característica de maior taxa encolhida, entre as que têm 10 ou mais fechados.
+- **FIT = 50 + 50 × (média dos desvios do lead) / (desvio do destaque)**, limitado entre 0 e 100.
+  - 50 = na média do vendedor; 100 = tão bom quanto o destaque.
+- Casos especiais:
+  - **Lead sem empresa (68%):** usa só produto e série, sem penalidade.
+  - **Vendedor sem destaque** (nenhuma característica com 10+ fechados, ou destaque a menos de 3 pontos da média dele): FIT 50 para todos os leads dele. Hoje são 2 vendedores, com 81 deals.
+- Distribuição hoje: 15 deals em 100, 86 em 0 e 98 exatamente em 50.
 
-Pontuação máxima: GTK 500, conta preenchida, 76–90 dias = 100.
+### HEAT (30%): tempo de atendimento
+- **HEAT = pontos da faixa de idade × fator de contato.**
+- Faixas: Prospecting sem data = 50 (declarado, não inventa data) · 0–14 dias = 80 · 15–106 = 100 · 107–138 = 30 · mais de 138 = 0.
+- Abertos hoje por faixa: 500 · 7 · 150 · 141 · 1.291.
+- Fator pelo último contato registrado: 0–7 dias = 1,0 · 8–14 = 0,8 · 15–30 = 0,5 · mais de 30 = 0,2. Nos deals do dataset não há ações, então o fator é 1,0.
+- Replies: componente previsto, com peso 0 até haver dado.
 
-### Flags
-- `esfriando`: Engaging com 91–120 dias (dali em diante, 2 em cada 3 não fecham).
-- `parado`: Engaging com mais de 120 dias (≥ 97% não fecharam).
-- `sem_conta`: conta vazia.
-- `sem_data`: Prospecting, sem data de engajamento.
+### Roteamento de lead novo
+- Vai para o vendedor com a maior conversão no perfil do lead (taxa dele + média dos desvios nas características do lead).
+- Travas:
+  - teto de **40 deals ativos** (hoje 7 dos 27 passam disso);
+  - pelo menos 1 característica do lead com 10+ fechados do vendedor;
+  - FIT do vendedor com o lead de 50 ou mais.
+- Empate: vai para quem tem menos ativos. Se ninguém passar nas travas, vai para a fila do manager.
+- Reatribuição pelo manager fica registrada na linha do tempo.
+- O lead atribuído entra no topo das Prioridades do dia do novo dono.
 
-### Ação
-| Ação | Regra **[DECIDIR D4]** | Deals hoje (aprox.) |
-|---|---|---|
-| `desistir` | Engaging com mais de 276 dias (o dobro do deal mais longo que já fechou) | 340 |
-| `requalificar` | `parado` até 276 dias; com D2 = A, também `sem_conta` | ~950 (D2 = B) a ~1.400 (D2 = A) |
-| `focar` | O resto, ordenado pelo score; com D2 = B, o deal sem conta fica aqui com a tarefa de cadastro | ~250 (D2 = A) a ~800 (D2 = B) |
+### Prioridades do dia
+1. Lead novo (sem contato registrado) com FIT de 60 ou mais vem primeiro.
+2. Depois, todos pelo score.
+3. No empate, vem antes o de maior HEAT.
+4. Os deals em risco e os esfriados aparecem com alerta.
+5. A tela mostra 5 por vez, e o ✓ ou ✗ faz a lista andar (decisão 27).
 
-O app mostra o top 5 de `focar` por vendedor e a lista de requalificar/desistir. Na mediana, cada vendedor tem 23 deals vivos e 79 abertos no total.
+Hoje, 95% do top 5 de cada vendedor são deals ativos.
 
-### Motivos (`reasons`): 2 ou 3 frases montadas a partir dos componentes
-- "Produto GTX Pro (US$ 4.821): um dos 3 mais valiosos do catálogo."
-- "Está no dia 82: nesta fase, 48% dos deals se resolvem no próximo mês."
-- "Parado há 165 dias: nenhum deal desta idade fechou até hoje."
-- "Conta não preenchida: nenhum deal fechou sem conta. Identifique o cliente."
+### Motivos (`reasons`)
+São 2 ou 3 frases montadas a partir das contas. Exemplos:
+- "Encaixa no seu destaque: série MG (27 de 39 nos últimos 3 meses)."
+- "Sem empresa cadastrada: o encaixe usa só o produto. Identifique a empresa."
+- "Parado há 293 dias: nenhum deal fechou depois de 138. Requalifique ou encerre."
 
 ---
 
 ## 3. Como vamos validar (`scoring/validacao.md`)
 
-Valor em log mais uma curva de idade é uma fórmula simples, e qualquer um que olhe os dados chega perto dela. O que tem de sustentar o score é a validação. Por isso ela compara a fila com regras simples que um vendedor usaria sem ferramenta, e **o resultado é publicado como sair, inclusive se o score perder**.
+Backtest com fotografias no fim de cada mês, de abr a nov/2017. Em cada fotografia, o FIT usa só os 3 meses anteriores e o HEAT só a idade naquela data. **O resultado é publicado como sair, inclusive se o score perder.**
 
-Backtest com fotografias no fim de cada mês, de abr a nov/2017. Em cada fotografia, o score usa **só** o que se sabia naquela data (curva de idade e preços), e o resultado é conferido depois.
+**Filas comparadas:** score, "por valor" (preço de tabela), "mais novo primeiro" e acaso (média de 1.000 sorteios).
 
-**Filas comparadas** (mesmos deals, mesma fotografia):
-- **Score** proposto.
-- **Por valor**: preço de tabela, do maior para o menor.
-- **Mais novo primeiro**: menor idade desde o engajamento.
-- **Acaso**: ordem aleatória (média de 1.000 sorteios).
-
-**Medidas**, para cada fila, sobre o top 20% e o top 5 por vendedor:
-1. **Valor ganho capturado:** fatia do valor ganho nos 90 dias seguintes que estava no topo da fila.
-2. **Deals que se decidem:** taxa de resolução (Won ou Lost) nos 30 dias seguintes.
-3. **Deals mortos no topo:** fatia do topo que nunca fechou até 31/12/2017.
-4. **Win rate** do topo, publicado como sai (esperado: igual em todas as filas, porque a chance é plana).
-
-Intervalo de confiança por bootstrap sobre as 8 fotografias, para não chamar de vitória uma diferença que cabe no acaso.
+**Medidas** no top 5 de cada vendedor e no top 20%, com intervalo de confiança por bootstrap:
+- taxa de ganho;
+- deals decididos nos 30 dias seguintes;
+- deals que nunca fecharam;
+- valor ganho em 90 dias.
 
 **Checagens extras:**
-- **Cada atributo da seção 1.3 contra o resultado real:** a mesma tabela regerada pelo script, com o teste no tempo (só o histórico anterior a cada deal) para conta, vendedor, vendedor × produto e região.
-- **Correlação score × preço.** Se passar de ~0,9, o score virou "ordenar por produto caro" e os pesos precisam ser revistos.
-- **Flags:** os deals marcados `parado`/`esfriando` de fato não fecharam?
-- **Hoje:** quantos deals do top 5 "só por valor" de cada vendedor estão parados há mais de 120 dias. É o tempo que o vendedor perderia sem o score.
-- **Prospecting (500 deals, sem data de engajamento):** não há sinal de idade para eles. A tela vai dizer isso em vez de dar uma nota de tempo inventada.
+- **FIT sozinho:** o lead com FIT alto fechou acima da média do vendedor? A análise de dados já indica que não (o ponto forte de 3 meses acerta o mês seguinte 45,6% das vezes, contra 49% do acaso).
+- **Limite:** o histórico não mede o efeito da ferramenta em levar os leads certos a quem tem o ponto forte. A decisão 28 se apoia justamente nisso, e esse efeito só se mede com uso real.
+- **Cada atributo da seção 1.3** contra o resultado real, regerado pelo script.
+- **Prospecting (500 deals):** HEAT declarado como "sem dado de tempo".
 
-Saída: `data/scored/deals_scored.json` (contrato do PLANO-SESSOES, sem mudança de chaves) + `scoring/validacao.md` com as tabelas.
+Saída: `data/scored/deals_scored.json` + `scoring/validacao.md`. Só serão gerados depois das respostas às perguntas abaixo.
 
 ---
 
-## 4. Decisões para o Leandro
+## 4. Perguntas em aberto
 
-- **D1 — Chance de ganhar.** Proposta: peso 0, exibida como contexto ("chance histórica: 63%, igual para todo tipo de deal"). Alternativa: peso pequeno (10 pts) com win rate por produto suavizado, sabendo que a diferença é ruído. **Nas duas opções**, todos os atributos das 4 tabelas continuam testados e visíveis (seção 1.3): cada um com o número, no detalhe do deal (setor, porte, idade e grupo da conta, histórico da conta, país) ou na visão do manager (vendedor com a faixa do acaso, região, manager, fim de trimestre). A validação (seção 3) publica o teste de cada atributo contra o resultado real. Tirar a chance do score não esconde dado: mostra que ele foi olhado e por que não muda a ordem.
-- **D2 — Deal sem conta (68% do pipeline aberto).** O histórico de win rate da conta não tem sinal, então sai do score em qualquer caso. As duas opções:
+As decisões 28 e 29 substituíram as antigas D1–D4: a chance por segmento saiu, o valor saiu da nota e o tempo virou HEAT. A janela de 3 meses está confirmada. Ficam abertas:
 
-  | | A. Pontos (conta preenchida = 20) | B. Tarefa, sem mexer na ordem |
-  |---|---|---|
-  | Como funciona | `conta` vale 0 ou 20 no score | `conta` não pontua; flag `sem_conta` e tarefa "identificar o cliente" ao lado do deal |
-  | Efeito na fila | 1.425 dos 2.089 abertos perdem 20 pontos e caem na fila | A ordem vem só de valor e tempo; deal sem conta continua podendo ser foco |
-  | Base | Nenhum dos 6.711 deals fechados está sem conta | Os dados não dizem por que só os abertos estão sem conta, e isso pode ser regra do gerador, não do processo de venda |
-  | Risco | Punir a ordem por um campo que talvez seja só cadastro atrasado | Deixar no topo um deal que talvez não esteja qualificado |
+- **P1.** Pontos das faixas de HEAT (50 / 80 / 100 / 30 / 0) e do fator de contato (1,0 / 0,8 / 0,5 / 0,2).
+- **P2.** Teto de 40 ativos por vendedor.
+- **P3.** Roteamento pela conversão no perfil, com a trava de FIT ≥ 50.
+- **P4.** Requisito do lead novo: FIT ≥ 60.
+- **P5.** Rodada do FIT todo dia 1º.
+- **P6.** Valor fora da nota: só contexto no cartão ou também desempate. Hoje deals de US$ 55 ficam acima de deals de US$ 4.821.
+- **P7.** Mudança do contrato:
+  - `components` vira `{ fit, heat }`;
+  - entram o detalhe do FIT e a faixa de HEAT.
 
-  Nas duas opções a chave `conta` continua no contrato (na B, vale 0 para todos e o app mostra a tarefa), então o app não muda.
-- **D3 — Pesos.** Proposta com D2 = A: valor 45, tempo 35, conta 20. Com D2 = B: valor 55, tempo 45.
-- **D4 — Cortes de ação.** Proposta: `parado` acima de 120 dias → requalificar; acima de 276 dias → desistir.
+  O contrato só muda depois do sim, com aviso antes à #1 e à #4.
