@@ -1,9 +1,14 @@
 import type { Metadata } from "next"
 import { Suspense } from "react"
 
+import { getHoldoutById, getInbox, getQueue } from "@/app/console/_data"
+import { ConsoleSkeleton } from "@/components/console/console-skeleton"
+import { InboxView } from "@/components/console/inbox-view"
+import { QueueView } from "@/components/console/queue-view"
+import { TriageView } from "@/components/console/triage-view"
 import { PageHeader } from "@/components/shared/page-header"
-import { PlaceholderView } from "@/components/shared/placeholder-view"
 import { ViewToggle, ViewToggleFallback } from "@/components/shared/view-toggle"
+import { env } from "@/lib/env"
 import { CONSOLE_VIEWS, readView } from "@/lib/views"
 
 export const metadata: Metadata = { title: "Console" }
@@ -16,16 +21,29 @@ export default function ConsolePage({ searchParams }: PageProps<"/console">) {
           <ViewToggle param="aba" options={[...CONSOLE_VIEWS]} defaultValue="triagem" label="Aba do console" />
         </Suspense>
       </PageHeader>
-      <Suspense fallback={null}>
+      <Suspense fallback={<ConsoleSkeleton />}>
         <ConsoleView searchParams={searchParams} />
       </Suspense>
     </>
   )
 }
 
+const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v)
+
 async function ConsoleView({ searchParams }: { searchParams: PageProps<"/console">["searchParams"] }) {
-  const view = readView((await searchParams).aba, CONSOLE_VIEWS)
-  if (view === "fila") return <PlaceholderView owner="Frente B" title="Fila de revisão humana" items={["Lista + detalhe", "Rascunho editável e checagens", "Aprovar · Editar e aprovar · Rejeitar", "Efeito 'aprendeu'"]} />
-  if (view === "caixa") return <PlaceholderView owner="Frente B" title="Caixa de mensagens" items={["Slack simulado", "Filtro Tickets · Sistema", "Marcar como lida e assumir"]} />
-  return <PlaceholderView owner="Frente B" title="Triagem" items={["Sortear do holdout ou escrever em inglês", "Caminho, confiança, votos, 5 casos parecidos", "Etapas com tempos, rótulo real, histórico", "Modo offline"]} />
+  const sp = await searchParams
+  const view = readView(sp.aba, CONSOLE_VIEWS)
+  const item = Number(first(sp.item)) || null
+
+  if (view === "fila") {
+    const queue = await getQueue()
+    return <QueueView pending={queue.pending} decided={queue.decided} initialId={item} />
+  }
+  if (view === "caixa") {
+    const inbox = await getInbox()
+    return <InboxView items={inbox} initialId={item} />
+  }
+  const ds2 = Number(first(sp.ds2))
+  const initialTicket = ds2 ? await getHoldoutById(ds2) : null
+  return <TriageView key={initialTicket?.id ?? "novo"} freeTextEnabled={env.freeTextEnabled()} initialTicket={initialTicket} learned={first(sp.origem) === "aprendeu"} />
 }
