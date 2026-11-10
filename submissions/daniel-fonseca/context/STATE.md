@@ -59,7 +59,8 @@ No máximo **dois turnos noturnos**: hoje (09/11) e amanhã (10/11), incluindo v
    - `solution/app` com Next 16.4.6 (Cache Components), tokens Órbita, shell (top bar + barra mobile + toggles na URL + tema escuro), camada de dados no servidor, limites de uso, `/api/heartbeat` completo, stubs de `/api/triage`, `/api/hitl` e `/api/demo/reset`, `vercel.json` (gru1 + cron 12:00 UTC).
    - Build, lint e smoke test locais ok.
    - **Correção:** ponte do ROI de 23% → **18,7%** (~R$ 17 mil/ano; judgment #37).
-   - ⏳ Projeto Vercel não criado: o MCP `vercel-g4` recebe 403 no time `case-g4` até o Daniel aprovar o link de acesso.
+   - ✔ Projeto Vercel `triagem-case-ai-master` (prj_JsF7acFdxYDKOmKzNVG5Lxns7hqY, time case-g4) ligado ao fork, root `submissions/daniel-fonseca/solution/app`, Next.js, Node 24, funções em gru1. Variáveis importadas pelo Daniel via arquivo local (os segredos não passaram pela conversa; arquivo apagado em seguida).
+   - Frentes A e B pausaram no limite de uso e foram retomadas por mensagem em 10/11.
 12. Turno 2: app Vercel (dashboard + console + `/api/heartbeat`) + deploy + ativar o fluxo 3 com a URL + vídeo + PR.
 
 ## Perguntas abertas para o Daniel
