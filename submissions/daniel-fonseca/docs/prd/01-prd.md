@@ -72,7 +72,7 @@ Princípio: **poucos gráficos, cada um com uma conclusão escrita no topo** (he
    - custo/hora (R$ 21,30, CAGED);
    - % de casos com autonomia da IA. Padrão: **medido no DS2**, com opção de ajuste manual.
 2. **Frase de resultado (dourado no valor):** "Nos casos em que a IA teria autonomia, a economia seria de aproximadamente **R$ X por ano**." Logo abaixo: Y horas/ano · Z agentes em tempo integral liberados · custo por ticket de R$ 3,05 → R$ W.
-3. **Composição do cálculo:** uma linha de "fórmula legível" com os valores atuais, por exemplo "30.000 tickets × 44% elegíveis × 52% com autonomia × 8,6 min × R$ 21,30/h".
+3. **Composição do cálculo:** uma linha de "fórmula legível" com os valores atuais, por exemplo "30.000 tickets × 44,4% elegíveis × 42,2% com autonomia × 8,6 min × R$ 21,30/h" (≈ R$ 17 mil/ano; valores de `app_summary.json`).
 4. Sem a nomenclatura "nível 1/2/3"; ver seção 5.
 5. A economia oficial considera **só os casos com autonomia** (C13 sem cenário de ganho na revisão humana).
 

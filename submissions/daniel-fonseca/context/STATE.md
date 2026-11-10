@@ -5,7 +5,7 @@
 **Última atualização:** 2026-11-09 · Sessão 02 · Claude Code (Opus 5.5)
 
 ## Fase atual
-**Fluxos n8n 1 e 2 ATIVOS e testados em produção** (403 sem header, 200 com header, 400, 409). Próximo: exportar os JSON → Turno 2: app Vercel (dashboard + console + `/api/heartbeat`), depois ativar o fluxo 3.
+**App Vercel: sessão base pronta** (plano aprovado em 10/11; ver `docs/prd/01-prd.md` e a ADR-0014). Próximo: frentes A (Painel + Como foi feito) e B (Console + APIs) em sessões paralelas a partir do commit da base; deploy quando o Daniel liberar o acesso do MCP `vercel-g4` ao time `case-g4`.
 
 ## Timebox (decisão do Daniel)
 No máximo **dois turnos noturnos**: hoje (09/11) e amanhã (10/11), incluindo vídeo e PR. Se terminar hoje, melhor.
@@ -50,7 +50,17 @@ No máximo **dois turnos noturnos**: hoje (09/11) e amanhã (10/11), incluindo v
 10. ✔ (10/11) Daniel autorizou; fluxos 1 e 2 publicados. Webhook de produção testado: sem header ou com header errado 403; header certo 200 (triagem #6, nível 1, 3,5 s); texto vazio 400; HITL sem header 403; item já decidido 409.
    - Próximo: exportar os JSON para `solution/n8n/` (o Daniel pediu para fazer depois do app).
 11a. (10/11) **PRD do app Vercel em construção colaborativa**: questionário da rodada 1 em `docs/prd/00-questionario.md` (≈ 90 perguntas com sugestão da IA, ★ nas que mudam escopo). ✔ Daniel respondeu → **PRD v1 em `docs/prd/01-prd.md`** + ADR-0014 (Proposta). Rodada 2 resolvida (10/11): **sem login**, com limites de uso e rotina de monitoramento que só alerta (PRD §8.1); Condução objetiva + ideação/estrutura do projeto no Claude Code; R2–R7 aceitas. **Construção NÃO iniciada (instrução do Daniel).** Pendências R8–R11 (canal e frequência dos alertas, limites, duração).
-11. Turno 2: app Vercel (dashboard + console + `/api/heartbeat`) + deploy + ativar o fluxo 3 com a URL + vídeo + PR.
+11. ✔ (10/11) Base do app:
+   - commit `b893d65` (sessões 01–02) e push no fork;
+   - migration `…0005_app` (`usage_events`, `usage_alert`, colunas de custo/tempo em `triage_runs`, tabelas `analysis_*`, views `v_ds1_status` e `v_ops_summary`);
+   - `11_app_summary.py` + `load_analysis.py`;
+   - fluxo 1 gravando tokens, custo e tempos (republicado e testado nos 3 caminhos);
+   - `reset_demo.py` (fila com 6, caixa com 2, 2 automáticas);
+   - `solution/app` com Next 16.4.6 (Cache Components), tokens Órbita, shell (top bar + barra mobile + toggles na URL + tema escuro), camada de dados no servidor, limites de uso, `/api/heartbeat` completo, stubs de `/api/triage`, `/api/hitl` e `/api/demo/reset`, `vercel.json` (gru1 + cron 12:00 UTC).
+   - Build, lint e smoke test locais ok.
+   - **Correção:** ponte do ROI de 23% → **18,7%** (~R$ 17 mil/ano; judgment #37).
+   - ⏳ Projeto Vercel não criado: o MCP `vercel-g4` recebe 403 no time `case-g4` até o Daniel aprovar o link de acesso.
+12. Turno 2: app Vercel (dashboard + console + `/api/heartbeat`) + deploy + ativar o fluxo 3 com a URL + vídeo + PR.
 
 ## Perguntas abertas para o Daniel
 - [x] ADR-0010: RAG como classificador único (Daniel). ADR-0011: diretrizes do n8n (Daniel).

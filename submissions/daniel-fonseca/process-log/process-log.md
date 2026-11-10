@@ -193,3 +193,23 @@ A IA especificou no PRD (§8 e §8.1):
 - uma camada determinística no n8n (a cada 15 min) e uma rotina do Claude que lê os logs da Vercel, do Supabase e do n8n e só resume e alerta.
 
 A regra de conduta também foi registrada no AGENTS.md.
+
+### Sessão 02 — parte 7 (10/11 · plano aprovado e base do app)
+
+**Direcionamento do Daniel:**
+- R8: os alertas de uso só simulados como Slack;
+- R9: rotina a cada 2 h, reportando nesta sessão, como tarefa agendada local;
+- R11: ativa até ele mandar desligar;
+- commit e push no fork liberados; deploy pela integração com o GitHub;
+- limpar e repovoar os dados de demonstração;
+- alterar o fluxo 1 em produção, com teste;
+- escopo do plano: só o app.
+
+**O que a IA fez:**
+1. Commit `b893d65` das sessões 01–02 (com checagem de segredos e da URL da VPS) e push no fork.
+2. Ao criar o projeto na Vercel, o MCP `vercel-g4` recebeu 403 no time `case-g4`. A IA gerou o link de autorização para o Daniel e seguiu com o resto.
+3. Migration `app`. Novo script `11_app_summary.py`, com os p-valores por métrica, a armadilha do ranking, o R² e as entradas do ROI. Também o `load_analysis.py`, que publica no Supabase os resultados da análise.
+4. **Achou um erro próprio:** a ponte do ROI na ADR-0010 usava um denominador que inflava a autonomia (52,4% → 42,2%). Corrigiu a ADR, o data-findings e o PRD, e registrou no judgment log (#37).
+5. Fluxo 1: tokens (resposta crua da OpenAI), custo, latência e tempo por etapa gravados em `triage_runs`; republicado e testado pelo webhook nos 3 caminhos (US$ 0,0007–0,0014 por triagem).
+6. `reset_demo.py`: limpou os testes e repovoou com 10 tickets reais do holdout.
+7. App Next.js 16.4.6, depois de ler a documentação local da versão: Cache Components exigem `<Suspense>` para dados dinâmicos e `searchParams`. Tokens Órbita nos dois temas, shell, camada de dados só no servidor, limites de uso, heartbeat e stubs com contrato para a frente B. Conferido no navegador (desktop, mobile e escuro).

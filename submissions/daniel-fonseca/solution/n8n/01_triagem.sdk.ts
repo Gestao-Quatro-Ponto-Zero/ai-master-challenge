@@ -33,7 +33,8 @@ const prepararTicket = node({
           { id: 'ticket_text', name: 'ticket_text', value: expr('{{ String($json.body?.ticket_text ?? $json.ticket_text ?? "").trim() }}'), type: 'string' },
           { id: 'source', name: 'source', value: expr('{{ $json.body?.source ?? $json.source ?? "console" }}'), type: 'string' },
           { id: 'ds2_id', name: 'ds2_id', value: expr('{{ $json.body?.ds2_id ?? $json.ds2_id ?? null }}'), type: 'number' },
-          { id: 'requested_by', name: 'requested_by', value: expr('{{ $json.body?.requested_by ?? "console" }}'), type: 'string' }
+          { id: 'requested_by', name: 'requested_by', value: expr('{{ $json.body?.requested_by ?? "console" }}'), type: 'string' },
+          { id: 't0', name: 't0', value: expr('{{ $now.toMillis() }}'), type: 'number' }
         ]
       },
       options: { ignoreConversionErrors: true }
@@ -174,7 +175,8 @@ const reunirDados = node({
           { id: 'limiar_humano', name: 'limiar_humano', value: 0.5, type: 'number' },
           { id: 'limiar_sensivel', name: 'limiar_sensivel', value: 0.3, type: 'number' },
           { id: 'categorias_sensiveis', name: 'categorias_sensiveis', value: expr('{{ ["HR Support", "Administrative rights"] }}'), type: 'array' },
-          { id: 'termos_bloqueio', name: 'termos_bloqueio', value: expr('{{ ["salary", "payroll", "bonus", "termination", "dismissal", "resignation", "lawsuit", "legal", "harassment", "sick leave", "maternity"] }}'), type: 'array' }
+          { id: 'termos_bloqueio', name: 'termos_bloqueio', value: expr('{{ ["salary", "payroll", "bonus", "termination", "dismissal", "resignation", "lawsuit", "legal", "harassment", "sick leave", "maternity"] }}'), type: 'array' },
+          { id: 't_class', name: 't_class', value: expr('{{ $now.toMillis() }}'), type: 'number' }
         ]
       },
       options: { ignoreConversionErrors: true }
@@ -303,7 +305,7 @@ const adaptarSolucao = node({
           { type: 'text', role: 'user', content: expr('Ticket:\n{{ $("Aplicar política de 3 níveis").item.json.ticket_text }}\n\nCategory: {{ $("Aplicar política de 3 níveis").item.json.category }}\n\nValidated solution:\n{{ $("Aplicar política de 3 níveis").item.json.resolutions[0].resolution_text }}') }
         ]
       },
-      simplify: true,
+      simplify: false,
       options: {
         instructions: 'You are an IT service desk agent. Adapt the VALIDATED SOLUTION to the customer ticket.\nRules:\n1. Use only the steps, conditions and information that are in the validated solution. Never add new steps, deadlines, promises, exceptions, links or contacts.\n2. You may reorder, shorten and personalize the wording so it addresses this ticket.\n3. Write the reply in the same language as the ticket.\n4. If the validated solution does not address what the ticket asks for, set fits to false, leave response_text empty and explain why in reason (in Brazilian Portuguese).\nReturn only the JSON object.',
         maxTokens: 900,
@@ -331,7 +333,8 @@ const lerAdaptacao = node({
       includeOtherFields: false,
       assignments: {
         assignments: [
-          { id: 'llm', name: 'llm', value: expr('{{ (() => { const j = $json; const c = Array.isArray(j.output) ? j.output.flatMap(o => o.content ?? []).find(x => x.type === "output_text") : null; const t = c ? c.text : (j.output_text ?? j.text ?? j.output); if (t && typeof t === "object") return t; try { return JSON.parse(t); } catch (e) { return { response_text: "", fits: false, reason: "Resposta do LLM fora do formato" }; } })() }}'), type: 'object' }
+          { id: 'llm', name: 'llm', value: expr('{{ (() => { const j = $json; const c = Array.isArray(j.output) ? j.output.flatMap(o => o.content ?? []).find(x => x.type === "output_text") : null; const t = c ? c.text : (j.output_text ?? j.text ?? j.output); if (t && typeof t === "object") return t; try { return JSON.parse(t); } catch (e) { return { response_text: "", fits: false, reason: "Resposta do LLM fora do formato" }; } })() }}'), type: 'object' },
+          { id: 'usage', name: 'usage', value: expr('{{ $json.usage ?? {} }}'), type: 'object' }
         ]
       },
       options: {}
@@ -375,7 +378,12 @@ const marcarRespondido = node({
           { fieldId: 'status', fieldValue: 'auto_answered' },
           { fieldId: 'response_text', fieldValue: expr('{{ $json.llm.response_text }}') },
           { fieldId: 'resolution_id', fieldValue: expr('{{ $("Aplicar política de 3 níveis").item.json.resolutions[0].id }}') },
-          { fieldId: 'updated_at', fieldValue: expr('{{ $now.toISO() }}') }
+          { fieldId: 'updated_at', fieldValue: expr('{{ $now.toISO() }}') },
+          { fieldId: 'tokens_in', fieldValue: expr('{{ ($("Gerar embedding (OpenAI)").item.json.usage?.total_tokens ?? 0) + ["Ler resposta adaptada", "Ler rascunho", "Montar mensagem de alerta"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.input_tokens ?? 0), 0) }}') },
+          { fieldId: 'tokens_out', fieldValue: expr('{{ ["Ler resposta adaptada", "Ler rascunho", "Montar mensagem de alerta"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.output_tokens ?? 0), 0) }}') },
+          { fieldId: 'cost_usd', fieldValue: expr('{{ Math.round(($("Gerar embedding (OpenAI)").item.json.usage?.total_tokens ?? 0) * 0.02 + ["Ler resposta adaptada", "Ler rascunho", "Montar mensagem de alerta"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.input_tokens ?? 0), 0) * 0.75 + ["Ler resposta adaptada", "Ler rascunho", "Montar mensagem de alerta"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.output_tokens ?? 0), 0) * 4.5) / 1000000 }}') },
+          { fieldId: 'latency_ms', fieldValue: expr('{{ $now.toMillis() - $("Preparar ticket").item.json.t0 }}') },
+          { fieldId: 'step_ms', fieldValue: expr('{{ ({ classificacao: $("Reunir resultado e limiares").item.json.t_class - $("Preparar ticket").item.json.t0, redacao: $now.toMillis() - $("Reunir resultado e limiares").item.json.t_class }) }}') }
         ]
       }
     },
@@ -401,7 +409,7 @@ const redigirRascunho = node({
           { type: 'text', role: 'user', content: expr('Ticket:\n{{ $("Aplicar política de 3 níveis").item.json.ticket_text }}\n\nPredicted category: {{ $("Aplicar política de 3 níveis").item.json.category }} (confidence {{ $("Aplicar política de 3 níveis").item.json.confidence.toFixed(2) }})\n\nValidated solutions for this category:\n{{ $("Aplicar política de 3 níveis").item.json.resolutions.length ? $("Aplicar política de 3 níveis").item.json.resolutions.map((r, i) => (i + 1) + ". " + r.resolution_text).join("\\n") : "(none yet)" }}\n\nMost similar past tickets (context only, they have no resolution):\n{{ $("Aplicar política de 3 níveis").item.json.similar_cases.map(c => "- [" + c.category + ", sim " + c.similarity + "] " + c.snippet).join("\\n") }}') }
         ]
       },
-      simplify: true,
+      simplify: false,
       options: {
         instructions: 'You are an IT service desk agent drafting a reply that a HUMAN agent will review before sending.\nRules:\n1. Base the draft on the validated solutions when they apply. Similar past tickets only show what kind of request this is; they contain no answers.\n2. Never invent policies, deadlines, promises or exceptions. When information is missing, ask the customer for it.\n3. Write the draft in the same language as the ticket.\n4. In checks, list 2 to 4 items, in Brazilian Portuguese, that the reviewer must verify before sending.\nReturn only the JSON object.',
         maxTokens: 1200,
@@ -429,7 +437,8 @@ const lerRascunho = node({
       includeOtherFields: false,
       assignments: {
         assignments: [
-          { id: 'llm', name: 'llm', value: expr('{{ (() => { const j = $json; const c = Array.isArray(j.output) ? j.output.flatMap(o => o.content ?? []).find(x => x.type === "output_text") : null; const t = c ? c.text : (j.output_text ?? j.text ?? j.output); if (t && typeof t === "object") return t; try { return JSON.parse(t); } catch (e) { return { draft: String(t ?? ""), checks: ["Resposta do LLM fora do formato: revisar com atenção"] }; } })() }}'), type: 'object' }
+          { id: 'llm', name: 'llm', value: expr('{{ (() => { const j = $json; const c = Array.isArray(j.output) ? j.output.flatMap(o => o.content ?? []).find(x => x.type === "output_text") : null; const t = c ? c.text : (j.output_text ?? j.text ?? j.output); if (t && typeof t === "object") return t; try { return JSON.parse(t); } catch (e) { return { draft: String(t ?? ""), checks: ["Resposta do LLM fora do formato: revisar com atenção"] }; } })() }}'), type: 'object' },
+          { id: 'usage', name: 'usage', value: expr('{{ $json.usage ?? {} }}'), type: 'object' }
         ]
       },
       options: {}
@@ -496,7 +505,12 @@ const marcarRevisao = node({
           { fieldId: 'status', fieldValue: 'pending_review' },
           { fieldId: 'level', fieldValue: expr('{{ 2 }}') },
           { fieldId: 'level_reason', fieldValue: expr('{{ $("Aplicar política de 3 níveis").item.json.level === 1 ? $("Aplicar política de 3 níveis").item.json.level_reason + " → solução validada não se aplica ao ticket" : $("Aplicar política de 3 níveis").item.json.level_reason }}') },
-          { fieldId: 'updated_at', fieldValue: expr('{{ $now.toISO() }}') }
+          { fieldId: 'updated_at', fieldValue: expr('{{ $now.toISO() }}') },
+          { fieldId: 'tokens_in', fieldValue: expr('{{ ($("Gerar embedding (OpenAI)").item.json.usage?.total_tokens ?? 0) + ["Ler resposta adaptada", "Ler rascunho", "Montar mensagem de alerta"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.input_tokens ?? 0), 0) }}') },
+          { fieldId: 'tokens_out', fieldValue: expr('{{ ["Ler resposta adaptada", "Ler rascunho", "Montar mensagem de alerta"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.output_tokens ?? 0), 0) }}') },
+          { fieldId: 'cost_usd', fieldValue: expr('{{ Math.round(($("Gerar embedding (OpenAI)").item.json.usage?.total_tokens ?? 0) * 0.02 + ["Ler resposta adaptada", "Ler rascunho", "Montar mensagem de alerta"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.input_tokens ?? 0), 0) * 0.75 + ["Ler resposta adaptada", "Ler rascunho", "Montar mensagem de alerta"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.output_tokens ?? 0), 0) * 4.5) / 1000000 }}') },
+          { fieldId: 'latency_ms', fieldValue: expr('{{ $now.toMillis() - $("Preparar ticket").item.json.t0 }}') },
+          { fieldId: 'step_ms', fieldValue: expr('{{ ({ classificacao: $("Reunir resultado e limiares").item.json.t_class - $("Preparar ticket").item.json.t0, redacao: $now.toMillis() - $("Reunir resultado e limiares").item.json.t_class }) }}') }
         ]
       }
     },
@@ -522,7 +536,7 @@ const resumirHumano = node({
           { type: 'text', role: 'user', content: expr('Ticket:\n{{ $("Aplicar política de 3 níveis").item.json.ticket_text }}\n\nPredicted category: {{ $("Aplicar política de 3 níveis").item.json.category }}\nWhy it must be handled only by a human: {{ $("Aplicar política de 3 níveis").item.json.level_reason }}') }
         ]
       },
-      simplify: true,
+      simplify: false,
       options: {
         instructions: 'You triage support tickets that must be handled ONLY by a human. Do NOT write any reply to the customer.\nWrite in Brazilian Portuguese:\n- summary: 2 to 3 sentences on what the person needs;\n- risk_signals: sensitive aspects (HR, legal, personal data, access privileges, urgency); empty list if none;\n- suggested_owner: the team that should handle it.\nReturn only the JSON object.',
         maxTokens: 700,
@@ -551,7 +565,8 @@ const montarAlerta = node({
       assignments: {
         assignments: [
           { id: 'llm', name: 'llm', value: expr('{{ (() => { const j = $json; const c = Array.isArray(j.output) ? j.output.flatMap(o => o.content ?? []).find(x => x.type === "output_text") : null; const t = c ? c.text : (j.output_text ?? j.text ?? j.output); if (t && typeof t === "object") return t; try { return JSON.parse(t); } catch (e) { return { summary: String(t ?? ""), risk_signals: [], suggested_owner: "Suporte" }; } })() }}'), type: 'object' },
-          { id: 'title', name: 'title', value: expr('{{ "Ticket só para humano · " + $("Aplicar política de 3 níveis").item.json.category + " · triagem #" + $("Registrar triagem").item.json.id }}'), type: 'string' }
+          { id: 'title', name: 'title', value: expr('{{ "Ticket só para humano · " + $("Aplicar política de 3 níveis").item.json.category + " · triagem #" + $("Registrar triagem").item.json.id }}'), type: 'string' },
+          { id: 'usage', name: 'usage', value: expr('{{ $json.usage ?? {} }}'), type: 'object' }
         ]
       },
       options: {}
@@ -641,7 +656,12 @@ const marcarAguardando = node({
         fieldValues: [
           { fieldId: 'status', fieldValue: 'awaiting_human' },
           { fieldId: 'level', fieldValue: expr('{{ 3 }}') },
-          { fieldId: 'updated_at', fieldValue: expr('{{ $now.toISO() }}') }
+          { fieldId: 'updated_at', fieldValue: expr('{{ $now.toISO() }}') },
+          { fieldId: 'tokens_in', fieldValue: expr('{{ ($("Gerar embedding (OpenAI)").item.json.usage?.total_tokens ?? 0) + ["Ler resposta adaptada", "Ler rascunho", "Montar mensagem de alerta"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.input_tokens ?? 0), 0) }}') },
+          { fieldId: 'tokens_out', fieldValue: expr('{{ ["Ler resposta adaptada", "Ler rascunho", "Montar mensagem de alerta"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.output_tokens ?? 0), 0) }}') },
+          { fieldId: 'cost_usd', fieldValue: expr('{{ Math.round(($("Gerar embedding (OpenAI)").item.json.usage?.total_tokens ?? 0) * 0.02 + ["Ler resposta adaptada", "Ler rascunho", "Montar mensagem de alerta"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.input_tokens ?? 0), 0) * 0.75 + ["Ler resposta adaptada", "Ler rascunho", "Montar mensagem de alerta"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.output_tokens ?? 0), 0) * 4.5) / 1000000 }}') },
+          { fieldId: 'latency_ms', fieldValue: expr('{{ $now.toMillis() - $("Preparar ticket").item.json.t0 }}') },
+          { fieldId: 'step_ms', fieldValue: expr('{{ ({ classificacao: $("Reunir resultado e limiares").item.json.t_class - $("Preparar ticket").item.json.t0, redacao: $now.toMillis() - $("Reunir resultado e limiares").item.json.t_class }) }}') }
         ]
       }
     },

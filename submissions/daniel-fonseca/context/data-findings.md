@@ -66,10 +66,10 @@ O CSAT só existe para os 32,7% de tickets fechados. Os 67,3% sem resposta ou pa
 - **TF-IDF compacto (20 mil termos):** 86,5% — cabe num JSON de ~1,4 MB.
 - **Concordância TF-IDF × kNN 512, ambos ≥ 0,8:** cobertura 49,8%, precisão 99,2%. Discordância em 17% (TF-IDF acerta só 57% delas).
 - **3 níveis no holdout (ADR-0010):** automático 35,9% (99,2%) · revisão 30,1% · só humano 34,0%. 11 sensíveis escapariam para o automático (0,32% dele).
-- **Ponte para o DS1:** ≈ 24% de automação total → ~1.040 h e ~R$ 22 mil/ano (só nível 1, mão de obra direta).
+- **Ponte para o DS1 (versão TF-IDF + RAG, descartada):** ≈ 24% de automação total (mesmo erro de denominador corrigido em 10/11).
 
 - **Melhorando o RAG (`06`, `07`, `08`):** ajuste do voto (k=50, peso sim¹⁶) → 82,8% em 512 dims (+0,7 p.p.) e 83,3% em 1536. Busca híbrida (semântica + palavras-chave, RRF) → 82,8%, sem ganho. **RAG + LLM** (o LLM vê os 15 casos parecidos) → 80,8% na amostra de 400, contra 43,2% do LLM sozinho e 80,8% do voto na mesma amostra. Quando LLM e voto discordam (15%), ambos acertam só 39%.
-- **Política RAG único (ADR-0010):** confiança ≥ 0,9 → 44,0% de cobertura com 98,7%; com as regras de sensibilidade: nível 1 31,2% (98,8%) · nível 2 28,4% · nível 3 40,5%. 15 sensíveis escapariam para o nível 1. Ponte para o DS1 ≈ 23% de automação, ~1.000 h e ~R$ 21 mil/ano.
+- **Política RAG único (ADR-0010):** confiança ≥ 0,9 → 44,0% de cobertura com 98,7%; com as regras de sensibilidade: nível 1 31,2% (98,8%) · nível 2 28,4% · nível 3 40,5%. 15 sensíveis escapariam para o nível 1. Ponte para o DS1 (corrigida em 10/11): 44,4% elegíveis × 42,2% de autonomia entre não sensíveis ≈ **18,7%** de automação, ~810 h e ~R$ 17 mil/ano (`11_app_summary.py`); o valor anterior, 23%, usava um denominador errado.
 
 ### RAG no banco (`solution/analysis/09_db_rag_validation.py` → `output/db_rag_validation.json`, sessão 02)
 - `classify_ticket` (pgvector HNSW, halfvec 512, só vizinhos de treino) em 500 tickets de teste (seed 42): **80,4%**, contra **80,2%** do cálculo exato local nos mesmos tickets. Concordância de categoria 99,8% e de nível 99,6%; maior diferença de confiança 0,11 (busca aproximada + halfvec). A amostra fica abaixo dos 82,8% do holdout inteiro por variação amostral (erro-padrão ≈ 1,8 p.p.).
@@ -81,6 +81,12 @@ O CSAT só existe para os 32,7% de tickets fechados. Os 67,3% sem resposta ou pa
 - Lista estreita de RH/jurídico (11 termos): 6 falsos positivos em 2.983 tickets do nível 1 (0,2%); pega 1 dos 15 sensíveis que escapam.
 - Lista ampla (+ administrator, password, contract, leaver, absence, admin rights): 637 falsos positivos (21,4%). "administrator" sozinho gera 421.
 - Os 15 escapes têm pouco conteúdo sensível (ex.: "very slow access to various sites" rotulado HR Support) → provável ruído de rótulo do DS2.
+
+### Números do app (`solution/analysis/11_app_summary.py` → `output/app_summary.json`, 10/11)
+- p-valor por dimensão e métrica (qui-quadrado do status para % sem resposta e % aguardando; Kruskal-Wallis para tempo e CSAT): nenhum < 0,05.
+- Armadilha do ranking: 80 combinações canal × prioridade × tipo; pior Phone/High/Refund 2,29 (n = 31), melhor Email/High/Product inquiry 3,57 (n = 35); p conjunto = 0,50.
+- ROI: 44,4% do DS1 elegível (fora reembolso, cancelamento e Critical) × 42,2% de autonomia entre não sensíveis no holdout (precisão 98,8%) = **18,7%** de automação total.
+- Fluxo 1 em produção (10/11): US$ 0,0007–0,0014 por triagem; latência total 2,5–5 s.
 
 ## Estimativas técnicas derivadas (a confirmar na implementação)
 

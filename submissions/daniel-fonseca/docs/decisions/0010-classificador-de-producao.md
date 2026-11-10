@@ -32,7 +32,8 @@ Regra: **nível 3** se a categoria prevista é sensível (HR Support, Administra
 
 - **Custo da escolha pelo RAG único:** o nível 1 cai de 35,9% (TF-IDF + RAG) para 31,2% dos tickets, com precisão praticamente igual (98,8% × 99,2%).
 - **Risco residual:** 15 tickets realmente sensíveis (0,5% do nível 1) cairiam no automático. Mitigação: auditoria amostral do nível 1 + lista de palavras de bloqueio antes do envio.
-- **Ponte para o DS1 (ADR-0009):** 44,4% elegíveis × 52,4% de nível 1 entre não sensíveis ≈ **23% de automação total** → ~7.000 tickets, ~1.000 h e ~R$ 21 mil por ano só no nível 1, só em mão de obra direta.
+- **Ponte para o DS1 (ADR-0009), corrigida em 2026-11-10:** 44,4% elegíveis × **42,2%** de nível 1 entre os tickets de categoria não sensível (rótulo real) ≈ **18,7% de automação total** → ~5.600 tickets, ~810 h e ~R$ 17 mil por ano só no nível 1, só em mão de obra direta. Fonte: `solution/analysis/11_app_summary.py` → `output/app_summary.json`.
+  - *Erro corrigido:* a versão anterior usava 52,4%, que dividia o nível 1 pelos tickets que não foram para "só humano". Esse denominador exclui também os casos de baixa confiança e infla a taxa (judgment log #37).
 
 ## Possível melhoria não testada
 `text-embedding-3-large` (~US$ 0,30 para recarregar o DS2) pode render alguns pontos no RAG. Fica como experimento opcional.

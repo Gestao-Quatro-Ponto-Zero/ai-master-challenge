@@ -1,0 +1,190 @@
+{
+ "overview": {
+  "n": 8469,
+  "pct_open": 0.3329,
+  "pct_pending": 0.3402,
+  "pct_closed": 0.327,
+  "n_closed": 2769,
+  "pct_coherent_closed": 0.507,
+  "hours_mean_coherent": 7.58,
+  "hours_median_coherent": 6.34,
+  "hours_p90_coherent": 16.0,
+  "csat_mean": 2.991,
+  "csat_ci_low": 2.939,
+  "csat_ci_high": 3.044
+ },
+ "tests": [
+  {
+   "dimension": "canal",
+   "metric": "pct_open",
+   "p_value": 0.771,
+   "significant": false,
+   "test": "qui-quadrado (status)"
+  },
+  {
+   "dimension": "canal",
+   "metric": "pct_pending",
+   "p_value": 0.771,
+   "significant": false,
+   "test": "qui-quadrado (status)"
+  },
+  {
+   "dimension": "canal",
+   "metric": "hours_median_coherent",
+   "p_value": 0.7907,
+   "significant": false,
+   "test": "Kruskal-Wallis"
+  },
+  {
+   "dimension": "canal",
+   "metric": "csat_mean",
+   "p_value": 0.2785,
+   "significant": false,
+   "test": "Kruskal-Wallis"
+  },
+  {
+   "dimension": "prioridade",
+   "metric": "pct_open",
+   "p_value": 0.227,
+   "significant": false,
+   "test": "qui-quadrado (status)"
+  },
+  {
+   "dimension": "prioridade",
+   "metric": "pct_pending",
+   "p_value": 0.227,
+   "significant": false,
+   "test": "qui-quadrado (status)"
+  },
+  {
+   "dimension": "prioridade",
+   "metric": "hours_median_coherent",
+   "p_value": 0.0909,
+   "significant": false,
+   "test": "Kruskal-Wallis"
+  },
+  {
+   "dimension": "prioridade",
+   "metric": "csat_mean",
+   "p_value": 0.6287,
+   "significant": false,
+   "test": "Kruskal-Wallis"
+  },
+  {
+   "dimension": "tipo",
+   "metric": "pct_open",
+   "p_value": 0.3394,
+   "significant": false,
+   "test": "qui-quadrado (status)"
+  },
+  {
+   "dimension": "tipo",
+   "metric": "pct_pending",
+   "p_value": 0.3394,
+   "significant": false,
+   "test": "qui-quadrado (status)"
+  },
+  {
+   "dimension": "tipo",
+   "metric": "hours_median_coherent",
+   "p_value": 0.1604,
+   "significant": false,
+   "test": "Kruskal-Wallis"
+  },
+  {
+   "dimension": "tipo",
+   "metric": "csat_mean",
+   "p_value": 0.6993,
+   "significant": false,
+   "test": "Kruskal-Wallis"
+  },
+  {
+   "dimension": "assunto",
+   "metric": "pct_open",
+   "p_value": 0.1574,
+   "significant": false,
+   "test": "qui-quadrado (status)"
+  },
+  {
+   "dimension": "assunto",
+   "metric": "pct_pending",
+   "p_value": 0.1574,
+   "significant": false,
+   "test": "qui-quadrado (status)"
+  },
+  {
+   "dimension": "assunto",
+   "metric": "hours_median_coherent",
+   "p_value": 0.7998,
+   "significant": false,
+   "test": "Kruskal-Wallis"
+  },
+  {
+   "dimension": "assunto",
+   "metric": "csat_mean",
+   "p_value": 0.8066,
+   "significant": false,
+   "test": "Kruskal-Wallis"
+  },
+  {
+   "dimension": "produto",
+   "metric": "pct_open",
+   "p_value": 0.6628,
+   "significant": false,
+   "test": "qui-quadrado (status)"
+  },
+  {
+   "dimension": "produto",
+   "metric": "pct_pending",
+   "p_value": 0.6628,
+   "significant": false,
+   "test": "qui-quadrado (status)"
+  },
+  {
+   "dimension": "produto",
+   "metric": "hours_median_coherent",
+   "p_value": 0.0762,
+   "significant": false,
+   "test": "Kruskal-Wallis"
+  },
+  {
+   "dimension": "produto",
+   "metric": "csat_mean",
+   "p_value": 0.6674,
+   "significant": false,
+   "test": "Kruskal-Wallis"
+  }
+ ],
+ "ranking_trap": {
+  "n_combinations": 80,
+  "p_value": 0.5,
+  "worst": {
+   "canal": "Phone",
+   "prioridade": "High",
+   "tipo": "Refund request",
+   "csat": 2.29,
+   "n": 31
+  },
+  "best": {
+   "canal": "Email",
+   "prioridade": "High",
+   "tipo": "Product inquiry",
+   "csat": 3.57,
+   "n": 35
+  }
+ },
+ "csat_model": {
+  "k": 70,
+  "r2": 0.0208,
+  "r2_adj": -0.0046
+ },
+ "roi_inputs": {
+  "ds1_eligible_share": 0.444,
+  "ds1_eligible_rule": "fora: Refund request, Cancellation request e prioridade Critical (sempre humano)",
+  "ds2_autonomy_share_all": 0.3118,
+  "ds2_autonomy_share_non_sensitive": 0.4221,
+  "ds2_autonomy_precision": 0.9883,
+  "autonomy_rule": "confiança ≥ 0,9, categoria não sensível, < 30% dos votos em categoria sensível",
+  "total_autonomy_share": 0.1874
+ }
+}
