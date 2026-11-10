@@ -42,8 +42,8 @@ def plural(n, one, many, zero=None):
 
 def days_left_phrase(n):
     if n == 0:
-        return "é o último dia na janela"
-    return "falta 1 dia na janela" if n == 1 else f"faltam {n} dias na janela"
+        return "é o último dia do prazo"
+    return "falta 1 dia de prazo" if n == 1 else f"faltam {n} dias de prazo"
 
 
 def days_open_phrase(n):
@@ -52,18 +52,18 @@ def days_open_phrase(n):
 
 def evidence_phrase(deals, won):
     if won == 0:
-        return f"nenhum dos {deals} negócios distintos que saíram da janela foi ganho"
+        return f"nenhum dos {deals} negócios distintos que venceram foi ganho depois"
     verb = "foi ganho" if won == 1 else "foram ganhos"
-    return f"{won} dos {deals} negócios distintos que saíram da janela {verb}"
+    return f"{won} dos {deals} negócios distintos que venceram {verb} depois"
 
 
 def phrases(c):
     """Counted phrases of alive/queue/clean/cooling, built by code, never by the model."""
-    p = {"alive_phrase": plural(c["alive"], "negócio vivo", "negócios vivos", "nenhum negócio vivo"),
-         "queue_phrase": plural(c["queue"], "negócio na fila", "negócios na fila", "nenhum negócio na fila"),
-         "clean_phrase": plural(c["clean"], "negócio para limpar", "negócios para limpar", "nada para limpar")}
+    p = {"alive_phrase": plural(c["alive"], "negócio no prazo", "negócios no prazo", "nenhum negócio no prazo"),
+         "queue_phrase": plural(c["queue"], "negócio para iniciar", "negócios para iniciar", "nenhum negócio para iniciar"),
+         "clean_phrase": plural(c["clean"], "negócio vencido", "negócios vencidos", "nenhum negócio vencido")}
     if c["cooling"] > 0:
-        p["cooling_phrase"] = f"{c['cooling']} esfriando"
+        p["cooling_phrase"] = f"{c['cooling']} com o prazo acabando"
     return p
 
 
@@ -86,10 +86,10 @@ def deal_facts(score, seller, deal):
     f.update(value=deal["value"], engage_date=deal["engage_date"],
              days_open=deal["days_open"], days_open_phrase=days_open_phrase(deal["days_open"]),
              days_left=deal["days_left"], days_left_phrase=days_left_phrase(deal["days_left"]),
-             window_end=deal["window_end"], block=deal["block"],
+             window_end=deal["window_end"], block={"vivo": "no prazo", "fila": "para iniciar", "limpar": "vencido"}[deal["block"]],
              play_label=PLAY_LABEL[deal["play"]])
     if deal["cooling"]:
-        f["cooling_label"] = "esfriando"
+        f["cooling_label"] = "com o prazo acabando"
     f.update(rank=deal["rank"], alive_count=seller["headline"]["alive"],
              longest_win_days=score["meta"]["window"]["longest_win_days"])
     if deal.get("time_sentence"):
@@ -130,8 +130,8 @@ def manager_facts(score, index, m):
     if names:
         f["names_without_alive"] = names
     n, w = m["sellers"], m["sellers_without_alive"]
-    f["without_alive_phrase"] = ("nenhum vendedor sem negócio vivo" if w == 0 else
-                                 f"{w} de {n} vendedores sem nenhum negócio vivo")
+    f["without_alive_phrase"] = ("nenhum vendedor sem negócio no prazo" if w == 0 else
+                                 f"{w} de {n} vendedores sem nenhum negócio no prazo")
     f.update(counts(m))
     f.update(phrases(m))
     f.update(evidence_deals=ev["distinct_deals_past_window"], evidence_won=ev["won_after"],

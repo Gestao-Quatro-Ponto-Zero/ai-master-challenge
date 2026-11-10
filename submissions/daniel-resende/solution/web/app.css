@@ -21,8 +21,8 @@
   --ink-3: oklch(0.46 0.03 255);
   --line: oklch(0.86 0.018 245);
   --vivo: oklch(0.60 0.15 182);    /* alive: the one strong accent */
-  --frio: oklch(0.70 0.15 78);     /* attention: cooling */
-  --limpar: oklch(0.56 0.21 25);   /* negative: past the window, to clean, lost */
+  --frio: oklch(0.77 0.10 32);     /* attention: the deadline is running out, a light red */
+  --limpar: oklch(0.48 0.19 22);   /* negative: past the deadline, lost */
   --fila: oklch(0.52 0.18 285);    /* the queue */
   --focus: oklch(0.50 0.20 265);
   --tip-bg: oklch(0.25 0.03 255);
@@ -48,8 +48,8 @@
   --ink-3: oklch(0.79 0.014 255);
   --line: oklch(0.36 0.02 250);
   --vivo: oklch(0.64 0.15 182);
-  --frio: oklch(0.66 0.14 86);
-  --limpar: oklch(0.54 0.19 20);
+  --frio: oklch(0.66 0.13 32);
+  --limpar: oklch(0.48 0.19 22);
   --fila: oklch(0.62 0.18 285);
   --focus: oklch(0.80 0.14 265);
   --tip-bg: oklch(0.93 0.008 255);
@@ -107,7 +107,7 @@ button, select { font: inherit; color: inherit; }
 /* --- headline -------------------------------------------------------------- */
 .tp-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px; padding: 12px var(--gap) 8px; }
 .tp-headline {
-  font-size: clamp(1.5rem, 2.7vw, 2.5rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.2;
+  font-size: clamp(1.4rem, 2.25vw, 2.4rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.2;
   text-wrap: balance; font-variant-numeric: proportional-nums; min-width: 0;
 }
 main > .tp-headline { padding: 40px var(--gap); }
@@ -165,8 +165,8 @@ main > .tp-headline { padding: 40px var(--gap); }
 .tp-limpar .tp-btn { align-self: flex-start; margin-top: 10px; }
 #clean-list { display: flex; flex-direction: column; min-height: 0; flex: 1 1 auto; margin-top: 4px; }
 
-.tp-cols, .tp-row { display: grid; grid-template-columns: minmax(0, 1fr) 5.4rem 5.4rem; gap: 0 12px; align-items: center; }
-.tp-cols.tp-has-after, .tp-row.tp-has-after { grid-template-columns: minmax(0, 1fr) 5.4rem 5.4rem 4.4rem; }
+.tp-cols, .tp-row { display: grid; grid-template-columns: minmax(0, 1fr) 5.4rem 7rem; gap: 0 12px; align-items: center; }
+.tp-cols.tp-has-after, .tp-row.tp-has-after { grid-template-columns: minmax(0, 1fr) 5.4rem 7rem 4.4rem; }
 .tp-cols { margin-top: 8px; padding: 0 8px 4px; font-size: 0.8rem; color: var(--ink-3); border-bottom: 1px solid var(--ink-3); }
 .tp-cols span + span { text-align: right; }
 .tp-list { min-height: 0; }

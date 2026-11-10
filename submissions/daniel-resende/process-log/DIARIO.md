@@ -243,6 +243,22 @@ O Daniel olhou as capturas das 17:11 e julgou os gráficos complexos. O critéri
 
 **Conferências automáticas (17:27):** 668 conferências dos números da tela, 0 divergências; texto com 117 palavras visíveis ao carregar (alvo 124) e maior frase de 12 palavras; encaixe sem problemas, de 320 a 1920 px, sem rolagem lateral; acessibilidade sem violações, nos temas claro e escuro. Capturas refeitas às 17:27, nos dois temas.
 
+### 2.8 O que o candidato achou usando (resposta no chat às 17:42; trocas até 17:49)
+
+O Daniel usou o app e escreveu, como ele disse:
+
+> Gostei das cores, pode manter. O que eu quero mudar agora são as palavras, que estão difíceis pra quem vai usar. Troca em todas as telas, nos textos e no resumo. Vivos passa a ser no prazo. Na fila passa a ser para iniciar. Para limpar passa a ser vencidos. Valor vivo passa a ser dentro do prazo e valor parado passa a ser vencido. Janela vira prazo, dias de prazo vira dias restantes e copiar briefing vira copiar resumo. A manchete do vendedor fica assim: Kary, você tem 12 negócios no prazo, nenhum para iniciar e 91 vencidos. A do gestor fica: O time tem 115 negócios no prazo, 500 para iniciar e 1.474 vencidos. Os três números de cima passam a se chamar dentro do prazo, prazo acabando e vencido. Na linha do tempo o começo é abriu agora, o fim é fim do prazo e do lado fica 91 vencidos. Onde hoje está esfriando o nome muda pra prazo acabando e a cor muda também. Em vez do amarelo eu quero um vermelho mais claro nesse trecho. Nessa primeira página não tem um vermelho bem colocado, os quadradinhos vermelhos de vencido estão discretos demais, então tem espaço pro prazo acabando entrar num vermelho mais leve, sem brigar com o vermelho dos vencidos. A explicação de por que um negócio é vencido continua no como a ferramenta decide, não na tela principal. Gera de novo os textos de IA com essas palavras e tira capturas novas. O orquestrador vai ajustar a conferência que procurava para limpar na manchete, ela passa a procurar vencidos.
+
+**O que mudou.**
+- As palavras, em todas as telas, nas explicações, no painel "Como a ferramenta decide" e no README: no prazo, para iniciar, vencidos, dentro do prazo, prazo acabando, vencido, prazo, dias restantes, copiar resumo. As manchetes ficaram exatamente como ele escreveu.
+- A linha do tempo: "abriu agora", "fim do prazo: 138 dias", e ao lado "91 vencidos". O trecho "prazo acabando" ficou num vermelho claro; o vermelho dos vencidos ficou mais fundo, para os dois não brigarem. Os dois vermelhos ficaram bem distintos nos dois temas.
+- A explicação de por que um negócio é vencido saiu da tela principal: o título do bloco "Vencidos" só aponta para "Como a ferramenta decide", onde ela está.
+- Os 148 textos de IA foram gerados de novo com essas palavras (103 s, 0 recusados, nenhuma palavra antiga). A conferência dos textos passa com 0 falhas.
+- Uma conferência automática procura as palavras antigas em todas as telas: 704 conferências, 0 achados.
+- O nome interno dos blocos nos arquivos do score (vivo, fila, limpar) não mudou: é o contrato entre os módulos e não aparece na tela.
+
+**Conferências automáticas (17:48):** números da tela sem divergências; texto com 112 palavras visíveis (alvo 124); encaixe e acessibilidade sem problemas nos dois temas. Capturas refeitas às 17:48.
+
 ## O que o candidato decidiu
 
 ### Etapa 1: a regra e a forma do produto (10/11/2026, resposta recebida no chat e registrada às 15:54, do `date`)

@@ -196,11 +196,11 @@
   function dealTip(d, table) {
     const reason = part("deal:" + d.id, "reason");
     const step = part("deal:" + d.id, "next_step");
-    const left = d.days_left === 0 ? "último dia na janela" : `${num(d.days_left)} ${pl(d.days_left, "dia restante", "dias restantes")} na janela`;
+    const left = d.days_left === 0 ? "último dia do prazo" : `${num(d.days_left)} ${pl(d.days_left, "dia restante", "dias restantes")} no prazo`;
     return [
       h("p", { class: "tp-tip-h" }, d.product, d.account ? " · " + d.account : " · sem conta registrada"),
       para(h("b", {}, "Próximo passo: "), step || PLAY[d.play]),
-      para(`Aberto há ${num(d.days_open)} ${pl(d.days_open, "dia", "dias")}; ${left}, até ${brDate(d.window_end)}.` + (d.cooling ? " Esfriando: aberto há mais de 90 dias." : "")),
+      para(`Aberto há ${num(d.days_open)} ${pl(d.days_open, "dia", "dias")}; ${left}, até ${brDate(d.window_end)}.` + (d.cooling ? " Prazo acabando: aberto há mais de 90 dias." : "")),
       reason && !reason.includes(d.time_sentence) ? para(reason) : null,
       para(d.time_sentence, table.exists ? " Vale para todos os negócios que chegaram a essa idade; não é a chance deste negócio." : ""),
       para(`${money(d.value)} é o valor de tabela: o preço de lista do produto, porque negócio aberto não tem valor de fechamento.`),
@@ -226,8 +226,8 @@
     svg.classList.toggle("tp-still", !animate);
     const cooling = seller.alive.filter((d) => d.cooling).length;
     svg.setAttribute("aria-label",
-      `A janela, de ${num(0)} a ${longest} dias de aberto: ${count(seller.alive.length, "negócio vivo", "negócios vivos", "nenhum negócio vivo")}, ` +
-      `${count(cooling, "esfriando", "esfriando", "nenhum esfriando")} (depois de ${cool} dias). A lista de vivos traz os mesmos negócios.`);
+      `O prazo, de ${num(0)} a ${longest} dias de aberto: ${count(seller.alive.length, "negócio no prazo", "negócios no prazo", "nenhum negócio no prazo")}, ` +
+      `${count(cooling, "com prazo acabando", "com prazo acabando", "nenhum com prazo acabando")} (depois de ${cool} dias). A lista "No prazo" traz os mesmos negócios.`);
     const kids = [];
     if (!narrow && lineReady) {
       kids.push(s("image", { href: `img/janela-${isDark() ? "escuro" : "claro"}.webp`, x: 0, y: 0, width: W, height: H, preserveAspectRatio: "none", "aria-hidden": "true" }));
@@ -236,11 +236,11 @@
       kids.push(s("rect", { class: "tp-l-cool", x: X(cool), y: y - half, width: x1 - X(cool), height: 2 * half, rx: half }));
       kids.push(s("line", { class: "tp-l-end", x1: x1, y1: y - half - 8, x2: x1, y2: y + half + 8 }));
     }
-    kids.push(s("text", { x: (X(cool) + x1) / 2, y: y + 4.5, "font-size": 13, "text-anchor": "middle", class: "tp-l-word" }, "esfriando"));
-    kids.push(s("text", { x: x0, y: y + half + 19, "font-size": 12.5, "data-dado": "" }, narrow ? "0" : "0 dias: abriu agora"));
+    kids.push(s("text", { x: (X(cool) + x1) / 2, y: y + 4.5, "font-size": 13, "text-anchor": "middle", class: "tp-l-word" }, "prazo acabando"));
+    kids.push(s("text", { x: x0, y: y + half + 19, "font-size": 12.5, "data-dado": "" }, narrow ? "0" : "abriu agora"));
     kids.push(s("text", { x: X(cool), y: y + half + 19, "font-size": 12.5, "text-anchor": "middle", "data-dado": "" }, String(cool)));
-    kids.push(s("text", { x: x1, y: y + half + 19, "font-size": 12.5, "text-anchor": "end", "data-dado": "" }, narrow ? `${longest} dias` : `${longest} dias: fim da janela`));
-    kids.push(s("text", { x: x0, y: 14, "font-size": 12.5 }, "ponto = negócio vivo"));
+    kids.push(s("text", { x: x1, y: y + half + 19, "font-size": 12.5, "text-anchor": "end", "data-dado": "" }, narrow ? `${longest} dias` : `fim do prazo: ${longest} dias`));
+    kids.push(s("text", { x: x0, y: 14, "font-size": 12.5 }, "ponto = negócio no prazo"));
     const deals = [...seller.alive].sort((a, b) => a.days_open - b.days_open || (a.id < b.id ? -1 : 1));
     // the largest marks that still let every deal sit on the track
     const levelsFor = (rr) => { const lv = []; for (const d of deals) { const cx = X(d.days_open); let k = 0; while (lv[k] !== undefined && cx - lv[k] < 2 * rr + 2) k += 1; lv[k] = cx; } return lv.length; };
@@ -264,7 +264,7 @@
       shape.addEventListener("click", (e) => { e.stopPropagation(); focusDeal(d.id); });
       kids.push(shape);
     });
-    if (!deals.length) kids.push(s("text", { class: "tp-r-strong", x: x0, y: y - half - 12, "font-size": 13 }, "Nenhum negócio vivo na janela."));
+    if (!deals.length) kids.push(s("text", { class: "tp-r-strong", x: x0, y: y - half - 12, "font-size": 13 }, "Nenhum negócio no prazo."));
     svg.replaceChildren(...kids);
   }
   function focusDeal(id) {
@@ -278,9 +278,9 @@
     const svg = s("svg", { class: "tp-ruler", role: "img" });
     const n = seller.headline.clean;
     // after the end of the window there is no bar and no block: one line of text that leads to the list
-    const out = h("button", { type: "button", class: "tp-out", id: "out-link" }, n ? `Fora da janela: ${num(n)} para limpar` : "Fora da janela: nada para limpar");
+    const out = h("button", { type: "button", class: "tp-out", id: "out-link" }, n ? `${num(n)} ${pl(n, "vencido", "vencidos")}` : "nenhum vencido");
     out.addEventListener("click", () => { const t = document.querySelector(".tp-limpar .tp-title"); if (t) { t.scrollIntoView({ block: "nearest" }); t.focus(); } });
-    const section = h("section", { class: "tp-window", "aria-label": "A janela" }, svg, out);
+    const section = h("section", { class: "tp-window", "aria-label": "O prazo" }, svg, out);
     let lastW = 0;
     const draw = (anim) => {
       const wNow = Math.floor(section.getBoundingClientRect().width);
@@ -298,35 +298,35 @@
     const hd = sel.headline;
     const first = sel.seller.split(" ")[0];
     if (!hd.alive && !hd.queue && !hd.clean) {
-      return [past ? `Naquela segunda o pipeline de ${first} estava limpo: nenhum vivo e nada para limpar.`
-        : `${first}, seu pipeline está limpo: nenhum vivo, nada na fila e nada para limpar.`];
+      return [past ? `Naquela segunda o pipeline de ${first} estava limpo: nenhum negócio no prazo e nenhum vencido.`
+        : `${first}, seu pipeline está limpo: nenhum negócio no prazo, nenhum para iniciar e nenhum vencido.`];
     }
     // the punctuation rides inside the coloured chunk so a line never starts with a comma
-    const alive = (tail) => h("span", { class: "tp-k-vivo" }, count(hd.alive, "vivo", "vivos", "nenhum vivo"), h("i", {}, tail));
-    const clean = h("span", { class: "tp-k-limpar" }, hd.clean ? `${num(hd.clean)} para limpar` : "nada para limpar", h("i", {}, "."));
+    const alive = (tail) => h("span", { class: "tp-k-vivo" }, count(hd.alive, "negócio no prazo", "negócios no prazo", "nenhum negócio no prazo"), h("i", {}, tail));
+    const clean = h("span", { class: "tp-k-limpar" }, hd.clean ? `${num(hd.clean)} ${pl(hd.clean, "vencido", "vencidos")}` : "nenhum vencido", h("i", {}, "."));
     if (past) return [`Naquela segunda, ${first} tinha `, alive(""), " e ", clean];
-    const queue = h("span", { class: "tp-k-fila" }, hd.queue ? `${num(hd.queue)} na fila` : "nenhum na fila");
+    const queue = h("span", { class: "tp-k-fila" }, hd.queue ? `${num(hd.queue)} para iniciar` : "nenhum para iniciar");
     return hd.alive ? [`${first}, você tem `, alive(","), " ", queue, " e ", clean] : [`${first}: `, alive(","), " ", queue, " e ", clean];
   }
   // only what the headline does not already say: three numbers, the unit said once
   function kpis(hd) {
     const cell = (cls, label, value) => h("div", { class: "tp-kpi " + cls }, h("dt", {}, label), h("dd", {}, h("b", {}, value)));
     return h("dl", { class: "tp-kpis", "data-dado": "" },
-      cell("tp-kv", "Valor vivo", num(hd.alive_value)),
-      cell("tp-kf", "Esfriando agora", num(hd.cooling)),
-      cell("tp-kl", "Valor parado", num(hd.clean_value)),
-      h("div", { class: "tp-kpi-unit" }, h("dt", { class: "tp-sr" }, "Unidade"), h("dd", {}, "valores em US$ de tabela")));
+      cell("tp-kv", "Dentro do prazo", num(hd.alive_value)),
+      cell("tp-kf", "Prazo acabando", num(hd.cooling)),
+      cell("tp-kl", "Vencido", num(hd.clean_value)),
+      h("div", { class: "tp-kpi-unit" }, h("dt", { class: "tp-sr" }, "Unidade"), h("dd", {}, "valores em US$ de tabela; prazo acabando em negócios")));
   }
   function briefButton(sel) {
     const body = part("briefing:" + sel.seller, "body");
     if (!body) return null;
     const t = texts.byId.get("briefing:" + sel.seller), p = t.provenance || {};
-    const btn = h("button", { type: "button", class: "tp-btn", id: "brief" }, "Copiar briefing");
+    const btn = h("button", { type: "button", class: "tp-btn", id: "brief" }, "Copiar resumo");
     btn.addEventListener("click", async () => {
-      try { await navigator.clipboard.writeText(body); btn.textContent = "Briefing copiado"; } catch (e) { btn.textContent = "Não copiou: leia abaixo"; }
+      try { await navigator.clipboard.writeText(body); btn.textContent = "Resumo copiado"; } catch (e) { btn.textContent = "Não copiou: leia abaixo"; }
       openTip(btn, build, true);
     });
-    const build = () => [h("p", { class: "tp-tip-h" }, "Briefing de segunda"), para(body),
+    const build = () => [h("p", { class: "tp-tip-h" }, "Resumo da segunda"), para(body),
       h("p", { class: "tp-tip-id" }, `Redigido por IA${p.model ? " (" + p.model + ")" : ""}; números e nomes preenchidos pelo código.`)];
     return withTip(btn, build, { click: false });
   }
@@ -334,7 +334,7 @@
     const result = d.after ? { ganho: "ganho", perdido: "perdido", aberto: "aberto" }[d.after.result] : null;
     const row = h("button", { type: "button", class: "tp-row tp-alive" + (past ? " tp-has-after" : ""), id: "deal-" + d.id },
       h("span", { class: "tp-name" }, h("span", { class: "tp-prod" }, d.product), d.account ? h("span", { class: "tp-acct" }, d.account) : null,
-        d.cooling ? h("span", { class: "tp-tag" }, "esfriando") : null),
+        d.cooling ? h("span", { class: "tp-tag" }, "prazo acabando") : null),
       h("span", { class: "tp-num tp-c-val" }, num(d.value)),
       h("span", { class: "tp-c-days" }, h("span", { class: "tp-num" }, d.days_left === 0 ? "último" : num(d.days_left)),
         h("span", { class: "tp-left" + (d.cooling ? " tp-left-frio" : ""), "aria-hidden": "true" }, h("i", { style: `width:${Math.max(4, (d.days_left / 138) * 100).toFixed(1)}%` }))),
@@ -371,7 +371,7 @@
   // the title of each block says what the block is, when asked
   function panel(cls, label, n, sum, kids, def) {
     const title = h("button", { type: "button", class: "tp-title" }, label, n === null ? null : h("span", { class: "tp-n" }, n));
-    const hint = { "tp-vivos": "no prazo", "tp-fila": "sem data", "tp-limpar": "fora do prazo" }[cls];
+    const hint = { "tp-fila": "sem data" }[cls];
     if (def) withTip(title, () => [h("p", { class: "tp-tip-h" }, label), para(def)]);
     return h("section", { class: "tp-panel " + cls, "aria-label": label },
       h("header", { class: "tp-panel-head" }, h("h2", {}, title), h("p", { class: "tp-sum" }, sum || hint)),
@@ -383,28 +383,28 @@
     const hd = sel.headline, ev = index.evidence, a = sel.after;
     const cols = (third) => h("p", { class: "tp-cols" + (past ? " tp-has-after" : ""), "aria-hidden": "true" },
       h("span", {}, "Negócio"), h("span", {}, "Preço, US$"), third ? h("span", {}, third) : null, past && third ? h("span", {}, "Depois") : null);
-    const alive = panel("tp-vivos", "Vivos", num(hd.alive),
+    const alive = panel("tp-vivos", "No prazo", num(hd.alive),
       hd.alive && past ? `depois: ${num(a.alive_won)} ${pl(a.alive_won, "ganho", "ganhos")} · ${num(a.alive_lost)} ${pl(a.alive_lost, "perdido", "perdidos")} · ${num(a.alive_open)} ${pl(a.alive_open, "aberto", "abertos")}` : null,
       hd.alive
-        ? [cols("Dias de prazo"), h("ol", { class: "tp-list" }, sel.alive.map((d) => aliveRow(d, meta.time_table, past)))]
-        : h("p", { class: "tp-empty" }, past ? "Nenhum vivo naquela data." : hd.queue ? "Nenhum vivo: comece pela fila." : "Nenhum negócio vivo."),
-      `Vivo é o negócio dentro da janela em que negócios já foram ganhos: aberto há no máximo ${meta.window.longest_win_days} dias e antes do fim do trimestre seguinte ao do engajamento. A ordem é por valor de tabela; no empate, mais dias restantes.`);
+        ? [cols("Dias restantes"), h("ol", { class: "tp-list" }, sel.alive.map((d) => aliveRow(d, meta.time_table, past)))]
+        : h("p", { class: "tp-empty" }, past ? "Nenhum negócio no prazo naquela data." : hd.queue ? "Nenhum no prazo: comece pelos negócios para iniciar." : "Nenhum negócio no prazo."),
+      `Negócios dentro do prazo em que negócios já foram ganhos: abertos há no máximo ${meta.window.longest_win_days} dias e antes do fim do trimestre seguinte ao do engajamento. A ordem é por valor de tabela; no empate, mais dias restantes.`);
     const queue = past
-      ? panel("tp-fila", "Fila", null, null, h("p", { class: "tp-empty" }, "A fila não pode ser reconstruída no passado."),
-        "O CRM não guarda a data em que um negócio entrou na fila; por isso ela não existe numa segunda do passado.")
-      : panel("tp-fila", "Fila para engajar", num(hd.queue), null,
-        hd.queue ? [cols(null), grouped("fila", sel.queue, meta.window)] : h("p", { class: "tp-empty" }, "Fila vazia."),
-        "Negócios ainda sem data de engajamento: o próximo trabalho é engajar e registrar a data. É só uma lista por valor de tabela; nada mais nos dados ordena esses negócios.");
+      ? panel("tp-fila", "Para iniciar", null, null, h("p", { class: "tp-empty" }, "Não dá para reconstruir esta lista no passado."),
+        "O CRM não guarda a data em que um negócio entrou; por isso a lista para iniciar não existe numa segunda do passado.")
+      : panel("tp-fila", "Para iniciar", num(hd.queue), null,
+        hd.queue ? [cols(null), grouped("fila", sel.queue, meta.window)] : h("p", { class: "tp-empty" }, "Nenhum negócio para iniciar."),
+        "Negócios ainda sem data de início: o próximo trabalho é iniciar e registrar a data. É só uma lista por valor de tabela; nada mais nos dados ordena esses negócios.");
     const cleanList = hd.clean ? h("div", { id: "clean-list", hidden: !shown.clean }, cols(null), grouped("limpar", sel.clean, meta.window)) : null;
     const cleanBtn = hd.clean ? h("button", { type: "button", class: "tp-btn", "aria-expanded": String(!!shown.clean), "aria-controls": "clean-list" }, shown.clean ? "Ocultar lista" : "Ver lista") : null;
     if (cleanBtn) cleanBtn.addEventListener("click", () => { shown.clean = !shown.clean; cleanList.hidden = !shown.clean; cleanBtn.textContent = shown.clean ? "Ocultar lista" : "Ver lista"; cleanBtn.setAttribute("aria-expanded", String(!!shown.clean)); });
-    const clean = panel("tp-limpar", "Para limpar", num(hd.clean),
+    const clean = panel("tp-limpar", "Vencidos", num(hd.clean),
       hd.clean && past ? `depois: ${count(a.clean_won, "ganho", "ganhos", "nenhum ganho")}` : null,
       hd.clean ? [
         h("p", { class: "tp-evidence" }, `${count(ev.won_after, "ganho", "ganhos", "Nenhum ganho")} em ${num(ev.distinct_deals_past_window)} casos assim.`),
         h("p", { class: "tp-action" }, h("b", {}, "Ação: "), "encerrar no CRM."), cleanBtn, cleanList,
-      ] : h("p", { class: "tp-empty" }, "Nada para limpar."),
-      `Negócios fora da janela: abertos há mais de ${meta.window.longest_win_days} dias, ou com o prazo do trimestre vencido. No teste, ${num(ev.won_after)} de ${num(ev.distinct_deals_past_window)} negócios assim ${pl(ev.won_after, "foi ganho", "foram ganhos")} depois. Os dados não dizem por que pararam.`);
+      ] : h("p", { class: "tp-empty" }, "Nenhum vencido."),
+      "Negócios que passaram do prazo. Por que estão vencidos: em “Como a ferramenta decide”.");
     const brief = past ? null : briefButton(sel);
     return [
       h("div", { class: "tp-head" },
@@ -425,9 +425,9 @@
     const label = state.manager ? `O time de ${state.manager}` : state.region ? `A regional ${state.region}` : "O time";
     const rows = team.by_seller.filter((x) => (!state.region || x.region === state.region) && (!state.manager || x.manager === state.manager));
     const headline = [`${label} tem `,
-      h("span", { class: "tp-k-vivo" }, count(scope.alive, "vivo", "vivos", "nenhum vivo"), h("i", {}, past ? "" : ",")),
-      past ? " e " : [" ", h("span", { class: "tp-k-fila" }, scope.queue ? `${num(scope.queue)} na fila` : "nenhum na fila"), " e "],
-      h("span", { class: "tp-k-limpar" }, scope.clean ? `${num(scope.clean)} para limpar` : "nada para limpar", h("i", {}, "."))];
+      h("span", { class: "tp-k-vivo" }, count(scope.alive, "negócio no prazo", "negócios no prazo", "nenhum negócio no prazo"), h("i", {}, past ? "" : ",")),
+      past ? " e " : [" ", h("span", { class: "tp-k-fila" }, scope.queue ? `${num(scope.queue)} para iniciar` : "nenhum para iniciar"), " e "],
+      h("span", { class: "tp-k-limpar" }, scope.clean ? `${num(scope.clean)} ${pl(scope.clean, "vencido", "vencidos")}` : "nenhum vencido", h("i", {}, "."))];
     const body = state.manager && !past ? part("manager:" + state.manager, "body") : null;
     let brief = null;
     if (body) {
@@ -436,10 +436,10 @@
         () => [h("p", { class: "tp-tip-h" }, "Resumo do gestor"), para(body),
           h("p", { class: "tp-tip-id" }, `Redigido por IA${p.model ? " (" + p.model + ")" : ""}; números e nomes preenchidos pelo código.`)]);
     }
-    const facts = (x) => [para(`${count(x.alive, "negócio vivo", "negócios vivos", "Nenhum negócio vivo")}: ${money(x.alive_value)} de tabela` + (x.cooling ? `, ${num(x.cooling)} esfriando.` : ".")),
-      para(`${num(x.clean)} para limpar: ${money(x.clean_value)} de tabela, fora da janela.`),
-      past ? null : para(x.queue ? `${num(x.queue)} na fila: ${money(x.queue_value)} de tabela.` : "Nenhum negócio na fila."),
-      x.sellers > 1 ? para(`${num(x.sellers_without_alive)} de ${num(x.sellers)} vendedores sem nenhum vivo.`) : null];
+    const facts = (x) => [para(`${count(x.alive, "negócio no prazo", "negócios no prazo", "Nenhum negócio no prazo")}: ${money(x.alive_value)} de tabela` + (x.cooling ? `, ${num(x.cooling)} com prazo acabando.` : ".")),
+      para(`${num(x.clean)} ${pl(x.clean, "vencido", "vencidos")}: ${money(x.clean_value)} de tabela.`),
+      past ? null : para(x.queue ? `${num(x.queue)} para iniciar: ${money(x.queue_value)} de tabela.` : "Nenhum negócio para iniciar."),
+      x.sellers > 1 ? para(`${num(x.sellers_without_alive)} de ${num(x.sellers)} vendedores sem nenhum negócio no prazo.`) : null];
     const open = (x) => x.alive + (past ? 0 : x.queue) + x.clean;
     const scale = Math.max(1, ...rows.map(open));
     const seg = (cls, n) => (n ? h("i", { class: cls, style: `width:${((n / scale) * 100).toFixed(2)}%` }) : null);
@@ -463,17 +463,17 @@
     return [
       h("div", { class: "tp-head" }, h("h1", { class: "tp-headline" }, headline),
         h("div", { class: "tp-head-side" },
-          past ? h("p", { class: "tp-past" }, "Segunda do passado: a fila não existe nessa data.") : null,
-          h("p", { class: "tp-lead" }, `${num(scope.sellers_without_alive)} de ${num(scope.sellers)} sem nenhum vivo.`), brief)),
+          past ? h("p", { class: "tp-past" }, "Segunda do passado: a lista para iniciar não existe nessa data.") : null,
+          h("p", { class: "tp-lead" }, `${num(scope.sellers_without_alive)} de ${num(scope.sellers)} sem nenhum no prazo.`), brief)),
       regions.length ? h("section", { class: "tp-regions", "aria-label": "Por regional" }, regions.map((g) => {
         const b = h("button", { type: "button", class: "tp-region" }, h("b", {}, g.region),
-          ` ${count(g.alive, "vivo", "vivos", "nenhum vivo")}` + (past ? "" : ` · ${num(g.queue)} na fila`) + ` · ${num(g.clean)} para limpar`);
+          ` ${count(g.alive, "no prazo", "no prazo", "nenhum no prazo")}` + (past ? "" : ` · ${num(g.queue)} para iniciar`) + ` · ${num(g.clean)} ${pl(g.clean, "vencido", "vencidos")}`);
         return withTip(b, () => [h("p", { class: "tp-tip-h" }, "Regional " + g.region), ...facts(g)]);
       })) : null,
       h("section", { class: "tp-panel tp-team", "aria-label": "Por vendedor" },
         h("p", { class: "tp-cols tp-tcols", "aria-hidden": "true" }, h("span", {}, "Vendedor"),
-          h("span", { class: "tp-key" }, "Negócios abertos: ", h("i", { class: "tp-3v" }), "vivos ", h("i", { class: "tp-3q" }), "na fila ", h("i", { class: "tp-3l" }), "para limpar"),
-          h("span", {}, "Vivos"), h("span", {}, "Fila"), h("span", {}, "Limpar")),
+          h("span", { class: "tp-key" }, "Negócios abertos: ", h("i", { class: "tp-3v" }), "no prazo ", h("i", { class: "tp-3q" }), "para iniciar ", h("i", { class: "tp-3l" }), "vencidos"),
+          h("span", {}, "No prazo"), h("span", {}, "Iniciar"), h("span", {}, "Vencidos")),
         h("div", { class: "tp-list" }, managers.map(group))),
     ];
   }
@@ -488,14 +488,14 @@
     const close = h("button", { type: "button", class: "tp-btn", onclick: () => dlg.close() }, "Fechar");
     dlg.replaceChildren(...[
       h("div", { class: "tp-how-head" }, h("h2", { id: "how-h" }, "Como a ferramenta decide"), close),
-      h("h3", {}, "Vivo ou para limpar"),
-      para(`Vivo é o negócio dentro da janela em que negócios já foram ganhos: aberto há no máximo ${w.longest_win_days} dias e antes do fim do trimestre seguinte ao do engajamento. Passou de um dos dois, é para limpar.`),
+      h("h3", {}, "No prazo ou vencido"),
+      para(`No prazo é o negócio dentro do prazo em que negócios já foram ganhos: aberto há no máximo ${w.longest_win_days} dias e antes do fim do trimestre seguinte ao do engajamento. Passou de um dos dois, está vencido.`),
       para(`Nenhum negócio foi ganho depois de ${w.longest_win_days} dias aberto. Dos ${num(w.closings_known)} fechamentos conhecidos, ${num(w.closings_after_deadline)} ${pl(w.closings_after_deadline, "ocorreu", "ocorreram")} depois do prazo do trimestre.`),
-      para(`No teste, em ${num(ev.cuts)} datas: ${num(ev.distinct_deals_past_window)} negócios distintos saíram da janela; ${num(ev.won_after)} ${pl(ev.won_after, "foi ganho", "foram ganhos")} depois, ${num(ev.lost_after)} ${pl(ev.lost_after, "perdido", "perdidos")} e ${num(ev.still_open_at_data_end)} seguiam abertos. As datas se sobrepõem no tempo: não é um teste independente.`),
-      para("A ação em “para limpar” é encerrar no CRM e tirar da segunda-feira. Os dados não dizem por que esses negócios estão parados."),
-      h("h3", {}, "A ordem entre os vivos"),
+      para(`No teste, em ${num(ev.cuts)} datas: ${num(ev.distinct_deals_past_window)} negócios distintos venceram; ${num(ev.won_after)} ${pl(ev.won_after, "foi ganho", "foram ganhos")} depois, ${num(ev.lost_after)} ${pl(ev.lost_after, "perdido", "perdidos")} e ${num(ev.still_open_at_data_end)} seguiam abertos. As datas se sobrepõem no tempo: não é um teste independente.`),
+      para("A ação nos vencidos é encerrar no CRM e tirar da segunda-feira. Os dados não dizem por que esses negócios pararam."),
+      h("h3", {}, "A ordem dos negócios no prazo"),
       para(`Valor de tabela, do maior para o menor; no empate, mais dias restantes primeiro. Com ${index.value_note.list_prices} preços de tabela é quase ordem por produto, e ela não foi confirmada em datas novas.`),
-      para("A contagem regressiva e a marca “esfriando” (vivo há mais de " + m.cooling_after_days + " dias) informam, mas não mudam a ordem. Nada na tela diz que um negócio vivo fecha mais que outro."),
+      para("Os dias restantes e a marca “prazo acabando” (aberto há mais de " + m.cooling_after_days + " dias) informam, mas não mudam a ordem. Nada na tela diz que um negócio no prazo fecha mais que outro."),
       h("h3", {}, "Valor"),
       para("É o valor de tabela: o preço de lista do produto. Negócio aberto ainda não tem valor de fechamento."),
       h("h3", {}, "A conta por idade"),
@@ -505,14 +505,14 @@
             h("span", {}, row.reached_days === 0 ? "Engajados (0 dias)" : `Abertos aos ${row.reached_days} dias`),
             h("span", {}, `cerca de ${row.won_per_100} em cada 100 ganhos depois`))))]
         : para("Sem histórico suficiente nesta data: nenhum negócio tinha tido tempo de fechar."),
-      h("h3", {}, "A fila"),
-      para("São os negócios ainda sem data de engajamento. É só uma lista por valor de tabela: nada mais nos dados ordena esses negócios. Numa segunda do passado a fila não pode ser reconstruída, porque o CRM não guarda a data em que um negócio entrou."),
+      h("h3", {}, "Para iniciar"),
+      para("São os negócios ainda sem data de início. É só uma lista por valor de tabela: nada mais nos dados ordena esses negócios. Numa segunda do passado essa lista não pode ser reconstruída, porque o CRM não guarda a data em que um negócio entrou."),
       h("h3", {}, "Os textos"),
       para(prov
-        ? `O próximo passo de cada negócio é escolhido por regra. A frase que o acompanha, o briefing e o resumo do gestor foram redigidos por IA (${prov.model || "modelo não registrado"}, em ${prov.generated_on || "data não registrada"}); os números e os nomes são preenchidos pelo código.`
+        ? `O próximo passo de cada negócio é escolhido por regra. A frase que o acompanha, o resumo da segunda e o resumo do gestor foram redigidos por IA (${prov.model || "modelo não registrado"}, em ${prov.generated_on || "data não registrada"}); os números e os nomes são preenchidos pelo código.`
         : "O próximo passo de cada negócio é escolhido por regra. Os textos de IA não estão carregados: a tela mostra só as frases de regra."),
       h("h3", {}, "Os dados"),
-      para(`Segunda-feira ${brDate(m.monday)}, com os dados fechados no domingo ${brDate(m.data_closed)}. As idades são contadas nessa data, e o dia do prazo ainda conta como vivo.` +
+      para(`Segunda-feira ${brDate(m.monday)}, com os dados fechados no domingo ${brDate(m.data_closed)}. As idades são contadas nessa data, e o último dia do prazo ainda conta como no prazo.` +
         (m.past ? ` É uma segunda do passado: a tela usa só o que se sabia naquele dia, e “depois” vai até ${brDate(m.outcomes_until)}.` : "")),
     ].flat(Infinity));
   }
