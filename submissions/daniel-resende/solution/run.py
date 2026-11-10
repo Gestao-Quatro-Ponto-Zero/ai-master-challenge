@@ -25,6 +25,18 @@ class Handler(SimpleHTTPRequestHandler):
             return str(HERE / "ai" / "textos.json")
         return super().translate_path(path)
 
+    def do_GET(self):
+        # The AI texts are optional: answer "none" instead of a 404 when the file is absent.
+        if self.path.split("?", 1)[0] == "/ai/textos.json" and not (HERE / "ai" / "textos.json").exists():
+            body = b'{"meta": {}, "texts": []}'
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+            return
+        super().do_GET()
+
     def end_headers(self):
         self.send_header("Cache-Control", "no-store")
         super().end_headers()

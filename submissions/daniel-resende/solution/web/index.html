@@ -2,30 +2,34 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pipeline da segunda-feira</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="only light">
+<title>Segunda-feira · o pipeline do vendedor</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="app.css">
 </head>
 <body>
-<h1 id="headline">Carregando...</h1>
-<div id="blocks"></div>
-<script>
-// Thin slice: one seller, three blocks, straight from the contract files.
-async function main() {
-  const index = await (await fetch("out/index.json")).json();
-  const score = await (await fetch("out/" + index.mondays[0].file)).json();
-  const s = score.sellers.find(x => x.seller === index.default_seller);
-  const h = s.headline;
-  document.getElementById("headline").textContent =
-    `${s.seller}: você tem ${h.alive} vivos, ${h.queue} na fila, ${h.clean} para limpar`;
-  const list = (title, items, line) => `<h2>${title} (${items.length})</h2><ol>` +
-    items.map(d => `<li>${line(d)}</li>`).join("") + "</ol>";
-  const name = d => `${d.product}${d.account ? " · " + d.account : ""} · valor de tabela US$ ${d.value}`;
-  document.getElementById("blocks").innerHTML =
-    list("Vivos", s.alive, d => `${name(d)} · aberto há ${d.days_open} dias · faltam ${d.days_left}`) +
-    list("Fila para engajar", s.queue, name) +
-    list("Limpar", s.clean, d => `${name(d)} · aberto há ${d.days_open} dias`);
-}
-main();
-</script>
+<a class="tp-skip" href="#app">Ir para o conteúdo</a>
+<header class="tp-bar">
+  <p class="tp-brand">Segunda-feira</p>
+  <nav class="tp-views" aria-label="Visão">
+    <button type="button" id="view-seller" aria-pressed="true">Vendedor</button>
+    <button type="button" id="view-manager" aria-pressed="false">Gestor</button>
+  </nav>
+  <form class="tp-filters" id="filters" onsubmit="return false">
+    <label class="tp-team-filter">Região <select id="f-region"></select></label>
+    <label class="tp-team-filter">Gestor <select id="f-manager"></select></label>
+    <label id="l-seller">Vendedor <select id="f-seller"></select></label>
+    <label>Ver a segunda-feira de <select id="f-monday"></select></label>
+  </form>
+  <button type="button" class="tp-theme" id="theme" aria-pressed="false">Tema escuro</button>
+</header>
+<main id="app" tabindex="-1">
+  <h1 class="tp-headline">Carregando o pipeline…</h1>
+</main>
+<footer class="tp-foot">
+  <p>Cada número desta tela sai de um arquivo gerado por <code>build.py</code> a partir dos quatro CSVs do desafio. Nada aqui edita o CRM.</p>
+</footer>
+<script src="app.js"></script>
 </body>
 </html>
