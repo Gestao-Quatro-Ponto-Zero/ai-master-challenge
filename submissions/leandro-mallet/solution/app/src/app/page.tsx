@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import { EscolhaPerfil } from "@/components/EscolhaPerfil";
 import { contagemPorVendedor, listarUsuarios } from "@/server/repositorio";
 import { usuarioAtual } from "@/server/sessao";
@@ -10,14 +9,15 @@ function destinoSeguro(voltar: string | undefined): string {
   return voltar && /^\/(painel|pipeline|leads)(\?[^\s]*)?$/.test(voltar) ? voltar : "/painel";
 }
 
+/** A raiz sempre mostra a entrada (O-37); com perfil na sessão, oferece "Continuar como <nome>". */
 export default async function Pagina({ searchParams }: { searchParams: Promise<{ voltar?: string }> }) {
   const { voltar } = await searchParams;
   const destino = destinoSeguro(voltar);
-  if (await usuarioAtual()) redirect(destino);
-  const [usuarios, abertos] = await Promise.all([listarUsuarios(), contagemPorVendedor()]);
+  const [atual, usuarios, abertos] = await Promise.all([usuarioAtual(), listarUsuarios(), contagemPorVendedor()]);
   return (
     <EscolhaPerfil
       destino={destino}
+      atual={atual ? { nome: atual.nome, papel: atual.papel } : null}
       usuarios={usuarios.map((u) => ({ ...u, abertos: u.vendedor ? (abertos.get(u.vendedor) ?? 0) : undefined }))}
     />
   );

@@ -6,7 +6,10 @@ import { COOKIE_PERFIL } from "@/server/sessao";
 
 const corpo = z.object({ usuarioId: z.number().int().min(2) });
 
-/** Escolher o perfil: grava o cookie. O usuário "sistema" (id 1) nunca é aceito. */
+/**
+ * Escolher o perfil: grava o cookie. O usuário "sistema" (id 1) nunca é aceito.
+ * Cookie de sessão do navegador (sem maxAge, O-37): fechou o navegador, escolhe de novo na entrada.
+ */
 export const POST = async (req: NextRequest) => {
   let id = 0;
   const resposta = await rota({ semUsuario: true, corpo }, async ({ corpo }) => {
@@ -15,7 +18,7 @@ export const POST = async (req: NextRequest) => {
     id = u.id;
     return { ok: true, papel: u.papel };
   })(req);
-  if (id) resposta.cookies.set(COOKIE_PERFIL, String(id), { httpOnly: true, sameSite: "lax", path: "/", maxAge: 60 * 60 * 24 * 30 });
+  if (id) resposta.cookies.set(COOKIE_PERFIL, String(id), { httpOnly: true, sameSite: "lax", path: "/" });
   return resposta;
 };
 

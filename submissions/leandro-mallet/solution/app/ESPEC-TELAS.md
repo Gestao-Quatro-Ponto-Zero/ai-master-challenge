@@ -68,6 +68,13 @@ Legenda: **D** = vem do dataset · **C** = calculado · **N** = dado novo do CRM
 | Motivo da perda | N | `core_deals.motivo_perda` | Só se a **[P14]** aprovar |
 | Quem mudou e quando | N | `system_auditoria` | Na linha do tempo do modal |
 
+### 1.2b Entrada (O-37)
+
+- A raiz `/` sempre mostra a entrada, mesmo com perfil escolhido antes: bloco de destaque no azul do deck com "G4 Sight" e "CRM do time comercial com a prioridade do dia dentro do pipeline.", e a escolha do papel em 3 cartões grandes (Vendedor, Manager, Admin). Vendedor e manager escolhem o nome; admin entra direto. Sem login nem senha (decisão 16).
+- Com perfil na sessão, a entrada oferece também "Continuar como <nome>".
+- O perfil fica num cookie **de sessão do navegador** (`g4_perfil`, sem validade): fechou o navegador, escolhe de novo.
+- Rota interna sem perfil continua mandando para a entrada com `?voltar=` e, depois da escolha, volta para lá (só caminhos internos do app).
+
 ### 1.3 Relógio do CRM
 
 **[P6]** O dataset termina em 31/12/2017, mas as ações no CRM acontecem hoje. Proposta: enquanto o CRM estiver em modo demonstração, "hoje" é a data de referência (`config_parametros.data_referencia` = 31/12/2017).
