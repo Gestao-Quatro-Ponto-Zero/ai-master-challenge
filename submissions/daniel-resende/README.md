@@ -85,10 +85,12 @@ Todos os números abaixo saem de `solution/numbers.py` (`docs/numeros-saida.txt`
 
 **As telas** (capturas em `process-log/screenshots/`):
 
-- [O vendedor na segunda-feira](process-log/screenshots/02-vendedor-segunda-1920.png) e [no celular](process-log/screenshots/04-vendedor-celular-412.png)
-- [Um vendedor que só tem fila](process-log/screenshots/05-vendedor-so-com-fila-1366.png)
-- [Uma segunda-feira do passado, com o que aconteceu depois](process-log/screenshots/06-segunda-do-passado-1366.png)
-- [A saúde do pipeline para o gestor](process-log/screenshots/07-gestor-1920.png)
+- [O vendedor na segunda-feira](process-log/screenshots/02-vendedor-segunda-1366.png) e [no celular](process-log/screenshots/04-vendedor-celular-412.png): a manchete, a janela e uma linha por negócio; a página não rola, as listas rolam dentro do próprio painel
+- [A explicação de um negócio](process-log/screenshots/05-explicacao-de-um-negocio-1366.png): abre ao passar o mouse, no foco do teclado ou no toque
+- [Como a ferramenta decide](process-log/screenshots/06-como-a-ferramenta-decide-1366.png): todas as notas de método num painel só
+- [Um vendedor que só tem fila](process-log/screenshots/07-vendedor-so-com-fila-1366.png) e [a lista para limpar, aberta a pedido](process-log/screenshots/12-para-limpar-aberto-1366.png)
+- [Uma segunda-feira do passado, com o que veio depois](process-log/screenshots/08-segunda-do-passado-1366.png)
+- [A saúde do pipeline para o gestor](process-log/screenshots/09-gestor-1366.png)
 
 ### Recomendações
 

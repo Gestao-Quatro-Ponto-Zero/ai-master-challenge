@@ -19,17 +19,18 @@
   <form class="tp-filters" id="filters" onsubmit="return false">
     <label class="tp-team-filter">Região <select id="f-region"></select></label>
     <label class="tp-team-filter">Gestor <select id="f-manager"></select></label>
-    <label id="l-seller">Vendedor <select id="f-seller"></select></label>
-    <label>Ver a segunda-feira de <select id="f-monday"></select></label>
+    <label id="l-seller"><select id="f-seller" aria-label="Vendedor"></select></label>
+    <label><select id="f-monday" aria-label="Segunda-feira: a atual ou uma do passado"></select></label>
   </form>
-  <button type="button" class="tp-theme" id="theme" aria-pressed="false">Tema escuro</button>
+  <button type="button" class="tp-btn" id="how-open" aria-haspopup="dialog">Como a ferramenta decide</button>
+  <button type="button" class="tp-btn" id="theme" aria-pressed="false">Escuro</button>
 </header>
 <main id="app" tabindex="-1">
   <h1 class="tp-headline">Carregando o pipeline…</h1>
 </main>
-<footer class="tp-foot">
-  <p>Cada número desta tela sai de um arquivo gerado por <code>build.py</code> a partir dos quatro CSVs do desafio. Nada aqui edita o CRM.</p>
-</footer>
+<footer class="tp-foot"><p id="foot-note"></p></footer>
+<dialog id="how" class="tp-how" aria-labelledby="how-h"></dialog>
+<div id="tip" class="tp-tip" role="tooltip" hidden></div>
 <script src="app.js"></script>
 </body>
 </html>

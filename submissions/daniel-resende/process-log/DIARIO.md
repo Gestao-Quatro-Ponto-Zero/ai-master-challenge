@@ -152,6 +152,40 @@ Apliquei o método visual do Daniel (skill `visual-tier1`) na interface.
 
 `run.py` é o comando único; o README ganhou a metade técnica (como rodar, a lógica nas palavras do vendedor, os resultados com os números de `numbers.py`, as limitações). Testado também com o Python 3.14 do sistema.
 
+### 2.5 A interface refeita pelo método visual do Daniel (prompt `02v-visual-pelo-metodo.md`, 16:43 a 17:02)
+
+Às 16:39 avisei o Daniel de que o app estava no ar. A resposta veio como o prompt `02v`: a tela do vendedor carregava texto demais para quem não é técnico e lia como relatório. Refiz a interface pelo método visual do Daniel.
+
+**O que mudou.**
+- A primeira vista cabe numa tela, sem rolar a página, em 1366 x 768 e em 1920 x 1080: a manchete, a janela e os primeiros negócios vivos. As listas rolam dentro do próprio painel.
+- Uma linha por negócio: produto, conta quando existe, valor de tabela, dias restantes e a marca "esfriando". Tudo o que explica a linha (o próximo passo, a frase da IA, a frase da conta por idade com o aviso de que não é a chance do negócio, o que é o valor, o ID) abre ao passar o mouse, no foco do teclado e no toque, e fecha de novo.
+- As notas de método saíram da primeira vista e foram para um painel só, "Como a ferramenta decide", a um clique, e para uma linha no rodapé. Nenhuma frase que o prompt 02 exigia foi apagada.
+- O briefing virou um botão que copia; o texto aparece ao passar o mouse ou no foco.
+- "Para limpar" mostra a contagem, o valor, uma linha de evidência e a ação; a lista abre a pedido, uma linha por produto.
+- A tela do gestor e a segunda-feira do passado seguem a mesma disciplina. A composição empilhada (`?comp=pilha`) saiu.
+- A janela ganhou uma imagem feita pelo método visual do Daniel.
+
+**Medição do texto na tela**, na vista do vendedor ao carregar, em 1366 x 768:
+
+| | Antes (commit `1d88afb`) | Depois | Alvo |
+|---|---|---|---|
+| Palavras visíveis | 374 | 113 | no máximo 124 (um terço) |
+| Maior parágrafo visível | 80 palavras | 12 | no máximo 20 |
+| A página rola | sim | não | não |
+| Primeiro negócio vivo, do topo | 829 px (fora da tela) | 342 px | dentro da tela |
+| No celular (412 x 800), primeiro negócio vivo | 1.003 px | cerca de 480 px | até 1.200 px, sem tabela antes |
+
+**O que deu errado, e como percebi.**
+- A primeira contagem de palavras incluía linhas já roladas para fora do painel. Percebi comparando a contagem com o que a captura mostrava; corrigi a contagem e medi de novo o "antes".
+- A tela nova deu 149 palavras na primeira medição, acima do alvo. Cortei rótulos repetidos, a soma dos vivos e metade da nota do rodapé; tudo o que saiu da vista continua a uma ação de distância.
+- O painel "Como a ferramenta decide" abriu sem a tabela e sem a data da conta: uma lista aninhada virou texto. Uma conferência automática apontou a falta.
+- A conferência de acessibilidade apontou a régua: um desenho marcado como imagem com controles focáveis dentro. Passou a ser um grupo.
+- Nas linhas do passado, em 320 px, o nome da conta invadia o número. Corrigido.
+
+**O segundo olhar (prompt `02d`, 16:59).** O revisor que não desenhou recebeu onze capturas novas. O que mudou por causa dele: a contagem ao lado de "fora" na janela; a marca do negócio na janela acende quando a linha dele é aberta; o título de cada bloco diz o que o bloco é, quando perguntado; um botão "Fechar" na explicação aberta por toque; uma borda suave que avisa que a lista continua; a fila sem a linha repetida "sem data de engajamento". O que ele apontou e eu não mudei, e levo ao Daniel: a frase da conta por idade, mesmo com o aviso, ainda pode ser lida como chance do negócio; e o próximo passo é a mesma regra para quase todos os vivos.
+
+**Conferências depois do refazer:** texto dentro do alvo; 539 conferências dos números da tela, 0 divergências; encaixe sem problemas; acessibilidade sem violações.
+
 ## O que o candidato decidiu
 
 ### Etapa 1: a regra e a forma do produto (10/11/2026, resposta recebida no chat e registrada às 15:54, do `date`)
