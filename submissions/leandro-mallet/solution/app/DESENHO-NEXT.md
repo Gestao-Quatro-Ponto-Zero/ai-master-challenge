@@ -1,7 +1,7 @@
 # Desenho: estrutura do app em Next.js
 
 > Proposta para decisão. Nada disto está construído.
-> Identidade (decisão 12): sem login; escolha de perfil (vendedor, manager ou admin) guardada em cookie. Detalhes em [DESENHO-ACOES.md](DESENHO-ACOES.md).
+> Usuários, operação do pipeline, banco e auditoria em [DESENHO-ACOES.md](DESENHO-ACOES.md).
 > O app atual em HTML/JS (`index.html`, `app.js`, `styles.css`) vira referência de telas e fluxos e vai para `prototipo-html/`.
 
 ## Onde fica o projeto Next
@@ -30,69 +30,88 @@ solution/app/
   eslint.config.mjs
   vitest.config.ts
   .gitignore              node_modules/, .next/, .env*.local, coverage/
+  .gitattributes          fim de linha LF
   .env.example            nomes das variáveis, sem valores
   COMO-RODAR.md
   DESENHO-ACOES.md
   DESENHO-NEXT.md
 
   data/
-    deals_scored.json     cópia do arquivo oficial (ver "De onde vêm os dados")
+    deals_scored.json     cópia do arquivo oficial (reserva somente leitura)
   sample/
     deals_scored.sample.json, gerar_sample.py
   scripts/
     dados.mjs             copia ../data/scored/deals_scored.json para data/ e confere o formato
   supabase/
-    migrations/           um arquivo por domínio (DB-01): 0001_core, 0002_score, 0003_config_system, 0004_acao
+    migrations/
+      0001_core.sql                 core_* (dados do CRM)
+      0002_config.sql               config_usuarios, config_parametros
+      0003_score.sql                score_*
+      0004_acao.sql                 acao_registros
+      0005_system.sql               system_auditoria, system_eventos
+      0006_guardas.sql              gatilho de auditoria, bloqueio de DELETE, revoke delete/truncate, RLS
+      0007_funcoes.sql              acao_registrar, acao_desfazer, core_atualizar_deal, core_encerrar_deal, core_encerrar_lote
   prototipo-html/         o app estático atual, como referência
 
   src/
     app/
-      layout.tsx          topo (perfil + Trocar perfil), abas por perfil, aviso de dados de exemplo
+      layout.tsx          topo (usuário + Trocar perfil), abas por papel, aviso de modo reserva
       globals.css         os mesmos tokens visuais do protótipo (claro e escuro)
-      page.tsx            "Quem é você?": vendedor, manager ou admin, depois o nome
-      vendedor/[nome]/page.tsx   Meu dia (vendedor: o próprio; manager: do time; admin: qualquer um)
+      page.tsx            "Quem é você?": vendedor, manager ou admin, depois o usuário
+      vendedor/[nome]/page.tsx   Meu dia
       time/page.tsx              Visão do time (manager) ou geral (admin), com ?regiao=&manager=
-      deals/page.tsx             Todos os deals do perfil (busca, filtros, ordenação)
-      limpeza/page.tsx           Limpeza do pipeline do perfil
+      deals/page.tsx             Deals do usuário (busca, filtros, ordenação, encerrados)
+      limpeza/page.tsx           Limpeza do pipeline em lote
       not-found.tsx, error.tsx, loading.tsx   estados vazio, erro e carregando
       api/
-        perfil/route.ts          POST (escolher) e DELETE (trocar perfil)
-        acoes/route.ts           GET e POST
+        perfil/route.ts                POST (escolher) e DELETE (trocar perfil)
+        acoes/route.ts                 POST registrar
+        acoes/[id]/route.ts            PATCH desfazer
+        deals/[id]/route.ts            PATCH estágio e empresa
+        deals/[id]/encerrar/route.ts   POST ganho ou perdido
+        limpeza/route.ts               POST encerramento em lote (até 100)
     components/
       BarraScore.tsx      barra dividida pelos componentes (servidor)
       CartaoDeal.tsx      cartão do top 5
       ListaMini.tsx       requalificar / desistir
       TabelaDeals.tsx     tabela com ordenação (navegador)
-      Filtros.tsx         região, manager, vendedor no link; só os que o perfil permite (navegador)
-      EscolhaPerfil.tsx   os três papéis e a lista de nomes (navegador)
+      Filtros.tsx         região, manager, vendedor no link; só os que o papel usa (navegador)
+      EscolhaPerfil.tsx   os três papéis e a lista de config_usuarios (navegador)
       PerfilTopo.tsx      quem está usando + Trocar perfil
       DetalheDeal.tsx     painel lateral, aberto por ?deal=ID (navegador)
-      BotoesAcao.tsx      Liguei / Requalifiquei / Desisti (navegador)
-      Estado.tsx          vazio e erro padronizados
+      BotoesAcao.tsx      Liguei / Requalifiquei / Desisti / Desfazer (navegador)
+      EditarDeal.tsx      avançar estágio, escolher empresa, encerrar ganho/perdido (navegador)
+      HistoricoDeal.tsx   linha do tempo lida da auditoria
+      ConfirmarLote.tsx   confirmação da limpeza com a quantidade (navegador)
+      Estado.tsx          vazio e erro padronizados (com o código para suporte)
     lib/                  funções puras, sem I/O, todas testadas
-      contrato.ts         tipos e schema (zod) do deals_scored.json
-      selecao.ts          top 5, requalificar, desistir
+      contrato.ts         tipos e schemas (zod): deals_scored.json e corpo de cada rota
+      selecao.ts          top 5, requalificar, desistir, encerrados
       agregacoes.ts       números do time e por vendedor
-      perfil.ts           papéis, nomes válidos do dataset, escopo de deals de cada perfil
-      permissao.ts        quem pode gravar em qual deal; limite por minuto
-      texto.ts            rótulos, dinheiro, datas, plural
-      config.ts           registro de ações disponível ou não
+      escopo.ts           o que cada papel vê (vendedor, time, tudo)
+      estagios.ts         transições aceitas; reabrir só manager/admin
+      usuarios.ts         lista de usuários a partir do JSON (modo reserva, mesmos ids)
+      texto.ts            rótulos, dinheiro, datas, plural, mensagens de erro
+      config.ts           modo banco disponível ou não
     server/               só roda no servidor (import "server-only")
-      fonte.ts            escolhe o modo (banco ou arquivo) e devolve sempre o mesmo tipo Pipeline
-      fonte-banco.ts      lê core_* + score_* da execução ativa (tempo máximo de 3 s)
+      fonte.ts            escolhe o modo (banco ou reserva) e devolve sempre o mesmo tipo Pipeline
+      fonte-banco.ts      lê core_* + score_* + acao_* (tempo máximo de 3 s)
       fonte-arquivo.ts    lê e valida o deals_scored.json; cai no exemplo se faltar
-      perfil.ts           lê e confere o cookie de perfil; redireciona para a escolha se faltar
+      usuario.ts          lê o cookie e busca o usuário pela chave; volta para a escolha se faltar
       supabase.ts         cliente com a service role
-      acoes.ts            ler e gravar em acao_registros, com as conferências
-      eventos.ts          grava em system_eventos (recusas, quedas para o modo arquivo)
+      escrita.ts          chama as funções do banco com usuario_id e correlation_id; traduz 409/422/503
+      correlacao.ts       gera o correlation_id e devolve no cabeçalho x-correlation-id
 
   tests/
-    contrato.test.ts      o exemplo e o arquivo oficial passam no schema
+    contrato.test.ts      o exemplo e o arquivo oficial passam no schema; corpos inválidos recusados
     fontes.test.ts        o mesmo conjunto de deals lido pelo banco (simulado) e pelo arquivo dá o mesmo Pipeline
-    selecao.test.ts       top 5 completa com requalificar; vendedor sem deals
+    selecao.test.ts       top 5 completa com requalificar; vendedor sem deals; encerrados fora do foco
     agregacoes.test.ts
-    perfil.test.ts        nome inexistente recusado; escopo de vendedor, manager e admin
-    permissao.test.ts     vendedor não grava no deal de outro; manager só no time; lote tudo ou nada
+    escopo.test.ts        vendedor vê o próprio, manager o time, admin tudo
+    estagios.test.ts      transições válidas e inválidas; reabrir por papel
+    usuarios.test.ts      lista do modo reserva com os mesmos ids do banco
+    banco/                (opcional, roda só com credenciais de teste) auditoria gravada em cada escrita,
+                          DELETE recusado, conflito de versão vira 409
 ```
 
 ## Dependências (mínimas)
@@ -103,49 +122,48 @@ solution/app/
 
 ## De onde vêm os dados
 
-- O score oficial é gerado em Python em `solution/data/scored/deals_scored.json`.
-- `npm run dados` copia esse arquivo para `app/data/deals_scored.json` e valida o formato com o schema. A cópia é commitada.
-- Por que commitar a cópia: a Vercel publica a partir de `solution/app` e não depende de enxergar a pasta de fora; o build fica previsível.
-- O `prebuild` só avisa se a cópia estiver diferente da origem; ele não falha.
-- Se a cópia não existir, `server/fonte-arquivo.ts` usa `sample/deals_scored.sample.json` e o topo mostra o aviso de dados de exemplo.
-- **Dois modos** (detalhe em [DESENHO-ACOES.md](DESENHO-ACOES.md)): com credenciais e banco no ar, deals e notas vêm de `core_*` e `score_*`; sem isso, vêm do arquivo acima. As telas recebem o mesmo tipo `Pipeline` nos dois casos e não sabem de onde ele veio; só o rodapé mostra a fonte.
+- **Modo banco (principal):** deals, notas, ações e usuários vêm do Supabase. Detalhes em [DESENHO-ACOES.md](DESENHO-ACOES.md).
+- **Modo reserva:** sem credenciais ou com o banco fora, o app lê `app/data/deals_scored.json` (cópia do arquivo oficial, gerada por `npm run dados` e commitada) ou, na falta dele, o exemplo. A tela vira somente leitura e avisa.
+- Por que commitar a cópia: a Vercel publica a partir de `solution/app` e não depende de enxergar a pasta de fora; o build fica previsível. O `prebuild` só avisa se a cópia estiver diferente da origem.
+- As telas recebem o mesmo tipo `Pipeline` nos dois modos e não sabem de onde ele veio; só o rodapé mostra a fonte.
 - A leitura acontece no servidor. Cada página recebe só o que mostra: o "Meu dia" de um vendedor não manda os 2.089 deals para o navegador.
 
-## Telas e fluxos (iguais ao protótipo)
+## Telas e fluxos
 
 | Protótipo (`#hash`) | Next (rota) |
 |---|---|
-| `#dia` sem vendedor ("Quem é você?") | `/` (agora com vendedor, manager ou admin) |
+| `#dia` sem vendedor ("Quem é você?") | `/` (vendedor, manager ou admin) |
 | `#dia?vendedor=Anna+Snelling` | `/vendedor/anna-snelling` |
 | `#time?manager=...` | `/time?manager=...` |
 | `#todos?regiao=West` | `/deals?regiao=West` |
-| painel do deal | `?deal=FZWU2I30` em qualquer rota (o link abre o detalhe) |
+| painel do deal | `?deal=FZWU2I30` em qualquer rota (agora com edição e histórico) |
 | (novo) | `/limpeza` |
 
-Tela inicial e abas por perfil:
+Tela inicial e abas por papel:
 
-| Perfil | Abre em | Abas |
+| Papel | Abre em | Abas |
 |---|---|---|
 | Vendedor | `/vendedor/<o próprio>` | Meu dia, Meus deals, Limpeza |
 | Manager | `/time?manager=<o próprio>` | Time, Deals do time, Limpeza (o "Meu dia" de cada vendedor abre pelo quadro do time) |
 | Admin | `/time` | Visão geral, Todos os deals, Limpeza |
 
-Um link para fora do escopo do perfil (ex.: vendedor abrindo `/vendedor/outro-nome`) volta para a tela inicial dele.
+As abas e os filtros seguem o papel. O servidor não bloqueia links de fora do escopo (decisão 16); a tela só não os oferece.
 
 ## Variáveis de ambiente
 
 | Variável | Onde é usada | Obrigatória? |
 |---|---|---|
-| `SUPABASE_URL` | `src/server/` | Só para o modo banco (ler do banco e registrar ações) |
+| `SUPABASE_URL` | `src/server/` | Só para o modo banco |
 | `SUPABASE_SERVICE_ROLE_KEY` | `src/server/` | Só para o modo banco |
 
-Os parâmetros da demonstração (execução ativa, data de corte das ações, limite por minuto) ficam em `config_parametros`, não em variáveis.
-
-Nenhuma variável é pública: sem login, o navegador não fala com o Supabase. Sem elas, `npm ci && npm run dev` abre o app completo (perfis, telas e filtros) no modo arquivo, só leitura.
+- Os parâmetros (execução ativa, data de corte das ações, limite por minuto) ficam em `config_parametros`, não em variáveis.
+- Nenhuma variável é pública: o navegador nunca fala com o Supabase.
+- Sem as variáveis, `npm ci && npm run dev` abre o app completo (usuários, telas e filtros) no modo reserva, somente leitura.
 
 ## Qualidade
 
 - `npm run typecheck`, `npm run lint` e `npm test` sem erro antes de cada entrega.
+- Todo corpo de rota validado com zod; erro sempre com frase simples, próximo passo e código para suporte (correlation_id).
 - Fim de linha LF, garantido por `.gitattributes` na pasta.
 - Acessibilidade herdada do protótipo: foco visível, navegação por teclado no painel e nas tabelas, contraste nos dois temas.
 
@@ -153,4 +171,4 @@ Nenhuma variável é pública: sem login, o navegador não fala com o Supabase. 
 
 1. Confirmar `solution/app/` como raiz do projeto Next (recomendado).
 2. Commitar a cópia de `deals_scored.json` dentro do app (recomendado) ou ligar na Vercel a opção de incluir arquivos fora da raiz.
-3. As decisões em aberto de [DESENHO-ACOES.md](DESENHO-ACOES.md): modo banco, quem carrega `core_*` e `score_*`, onde ficam as migrações, se o admin grava e quem faz a limpeza.
+3. As decisões em aberto de [DESENHO-ACOES.md](DESENHO-ACOES.md).

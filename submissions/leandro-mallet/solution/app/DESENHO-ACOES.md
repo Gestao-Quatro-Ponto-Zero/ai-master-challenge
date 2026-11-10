@@ -1,84 +1,89 @@
-# Desenho: perfis, ações do vendedor e limpeza do pipeline
+# Desenho: usuários, operação do pipeline e auditoria
 
 > Proposta para decisão. Nada disto está construído.
-> Stack (decisão 11): Next.js com TypeScript strict, Postgres no Supabase G4_AI_Mastering e publicação na Vercel. Estrutura de pastas em [DESENHO-NEXT.md](DESENHO-NEXT.md).
-> Identidade (decisão 12): sem login e sem senha. A pessoa escolhe o perfil (vendedor, manager ou admin) e, se for vendedor ou manager, o próprio nome.
+> Estrutura de pastas do app em [DESENHO-NEXT.md](DESENHO-NEXT.md).
 
-## Perfis
+Decisões do Leandro que este desenho segue:
 
-| Perfil | Escolhe | Tela inicial | Enxerga | Pode registrar ação em |
-|---|---|---|---|---|
-| **Vendedor** | o nome, entre os 35 do dataset | Meu dia | o próprio pipeline | deals dele |
-| **Manager** | o nome, entre os managers do dataset | Visão do time | o pipeline do time; abre o "Meu dia" de cada vendedor | deals do time |
-| **Admin** | nada | Visão geral (todos os times) | tudo, com os filtros de região, manager e vendedor | qualquer deal |
+| # | Decisão |
+|---|---|
+| 11 | Next.js com TypeScript strict, Postgres no Supabase G4_AI_Mastering e Vercel. Análise e score seguem em Python. |
+| 12 | Sem login e sem senha: a pessoa escolhe o próprio usuário. |
+| 14 | DB-01 (prefixo por domínio, snake_case, plural) e DB-02 (chave estrangeira declarada, com índice, `on delete restrict`). |
+| 15 | Tabela `config_usuarios` gerada do dataset: vendedores, managers e um admin. Sem checagem de nome. |
+| 16 | Sistema operacional: insert e update liberados. DELETE, DROP e exclusão em massa continuam proibidos. Toda escrita é auditada (ARQ-05). O servidor não bloqueia por dono do deal. |
 
-- A escolha fica num cookie (`perfil` = papel + nome), gravado pela rota `POST /api/perfil` depois de conferir que o nome existe no dataset com aquele papel.
-- O topo mostra quem está usando ("Anna Snelling, vendedora") e o botão **Trocar perfil**, que volta para a escolha.
-- O perfil define as telas e os filtros: o vendedor não vê os filtros de região e manager; o manager só filtra entre os vendedores do time; o admin vê todos.
-- Sem senha, o perfil organiza a tela e assina as ações, mas não protege nada: qualquer pessoa pode escolher qualquer perfil. Para uma demonstração, é suficiente. Para uso real, entraria o login com Supabase Auth sobre a mesma estrutura (tabela e rotas não mudam; só a origem do autor).
+## O que cada pessoa faz
 
-## Fluxo da escolha
+| Usuário | Tela inicial | Enxerga | Pode fazer |
+|---|---|---|---|
+| **Vendedor** | Meu dia | o próprio pipeline | registrar ação (Liguei, Requalifiquei, Desisti), avançar o estágio, preencher a empresa do deal, encerrar como ganho ou perdido, desfazer a própria ação |
+| **Manager** | Visão do time | o pipeline do time; abre o "Meu dia" de cada vendedor | o mesmo, nos deals do time, e a limpeza em lote do time |
+| **Admin** | Visão geral | tudo, com filtros de região, manager e vendedor | o mesmo, em qualquer deal, e a limpeza em lote geral |
+
+- A tela mostra só o que é de cada usuário. O servidor não bloqueia por dono (decisão 16): quem escolhe um usuário age como ele.
+- "Limpeza do pipeline": a lista de deals que o score marca como `desistir`, com encerramento em lote como perdido (até 100 por vez, com confirmação que mostra a quantidade). Cada deal encerrado é um update auditado. Nada é apagado.
+
+## Escolha do usuário (decisão 15)
 
 ```
 /  ──►  "Quem é você?"  [Vendedor]  [Manager]  [Admin]
-          │ Vendedor → lista dos vendedores, agrupada por manager (com a contagem de deals)
-          │ Manager  → lista dos managers, com a região e o tamanho do time
+          │ Vendedor → vendedores de config_usuarios, agrupados por manager (com a contagem de deals abertos)
+          │ Manager  → managers, com a região e o tamanho do time
           │ Admin    → entra direto
           ▼
-        POST /api/perfil  → cookie  → tela inicial do perfil
+        POST /api/perfil {usuario_id}  → cookie  → tela inicial do usuário
 ```
 
-Quem chega por um link direto sem perfil escolhido (ex.: `/time`) cai na escolha e, depois dela, volta ao link.
+- A lista vem de `config_usuarios`. No modo reserva (sem banco), a mesma lista é montada a partir do JSON, com os mesmos ids.
+- O cookie guarda só o `usuario_id`. O servidor lê o usuário pela chave (se a chave não existir ou estiver inativa, volta para a escolha). Não há mais a conferência "o nome existe no dataset".
+- O topo mostra quem está usando ("Anna Snelling, vendedora") e **Trocar perfil**.
+- Quem chega por um link sem usuário escolhido passa pela escolha e volta ao link.
 
-## O que o vendedor e o manager ganham
+## Fonte principal: o banco (o Leandro ainda confirma)
 
-- No detalhe de cada deal: botões **Liguei**, **Requalifiquei**, **Desisti** (e **Desfazer**), com uma nota curta opcional.
-- Deal marcado como "Desisti" sai das listas do vendedor. O pipeline fica limpo, mas nada é apagado.
-- Visão do manager: quantos deals o score sugeriu encerrar e quantos o time confirmou, e quem não registra nenhuma ação há dias.
-- Tela "Limpeza do pipeline": a lista de deals que o score marca como `desistir`, com confirmação em lote ("Confirmar desistência dos 43"). Cada confirmação vira um registro. O vendedor vê os dele, o manager os do time e o admin todos.
-
-## Dois modos de leitura (o Leandro ainda confirma o modo banco)
-
-| Modo | Quando | De onde vêm deals e notas | Ações |
+| Modo | Quando | Leitura | Escrita |
 |---|---|---|---|
-| **Banco** | Credenciais presentes e banco respondendo em até 3 s | `core_*` + `score_*` da execução de score ativa | Leitura e gravação em `acao_registros` |
-| **Arquivo** (reserva) | Sem credenciais, banco fora, projeto pausado ou tempo esgotado | `deals_scored.json` (a cópia dentro do app; sem ela, o exemplo) | Só leitura: os botões somem e uma linha discreta avisa "Registro de ações indisponível" |
+| **Banco** (principal) | Credenciais presentes e banco respondendo em até 3 s | `core_*`, `score_*`, `acao_*`, `config_*` | Liberada, com auditoria |
+| **Reserva** | Sem credenciais, banco fora, projeto pausado ou tempo esgotado | `deals_scored.json` (a cópia no app; sem ela, o exemplo) | Nenhuma: os botões somem e uma linha discreta avisa "Modo somente leitura: banco indisponível" |
 
-- O app escolhe o modo a cada carregamento do servidor. Se o banco falha no meio do caminho, a página cai no arquivo em vez de dar erro.
-- O rodapé mostra a fonte em uso: "Dados: banco, notas de 31/12/2017" ou "Dados: arquivo".
-- A escolha de perfil funciona nos dois modos: a lista de nomes vem de `core_vendedores` e `core_managers` ou, no modo arquivo, do próprio JSON.
-- **Quem escreve o quê:** o pipeline em Python (dados e score) carrega `core_*` e `score_*`, e o app só lê essas tabelas. O app só grava em `acao_registros` e `system_eventos`. Assim o `deals_scored.json` continua sendo o contrato, e o banco é uma cópia dele mais as ações.
+- O app decide o modo a cada carregamento do servidor. Se o banco falha no meio do caminho, a página cai na reserva em vez de dar erro.
+- O rodapé mostra a fonte: "Dados: banco, notas de 31/12/2017" ou "Dados: arquivo (somente leitura)".
 
-## Banco (DB-01 prefixos por domínio, DB-02 chaves estrangeiras)
+**Quem escreve o quê:**
+- **Carga inicial (Python, uma vez):** cria `core_*` a partir dos CSVs limpos, `config_usuarios` a partir do `sales_teams` e a primeira execução de `score_*`. A carga usa `on conflict do nothing` em `core_*`: rodar de novo nunca sobrescreve o que foi editado no app.
+- **Operação (app):** depois da carga, o banco é a fonte da verdade de `core_deals`. O app atualiza estágio, empresa e fechamento, e grava em `acao_registros`.
+- **Nova rodada de score (Python):** lê `core_*` do banco, não dos CSVs, para considerar o que os vendedores mudaram. Grava uma nova `score_execucoes` e troca o ponteiro em `config_parametros`.
+- Um deal alterado depois da última rodada de score mostra o selo "Atualizado depois da nota" até a próxima rodada.
 
-Projeto Supabase **G4_AI_Mastering**, usado só para este desafio. Regras aplicadas em todas as tabelas:
-- nome com prefixo, em snake_case e no plural;
-- toda chave estrangeira declarada, com índice próprio e `on delete restrict`;
-- RLS ligado sem política: só a service role, no servidor, acessa.
+## Banco
 
-### Mapa das chaves
+Projeto **G4_AI_Mastering**. Em todas as tabelas:
+- prefixo de domínio, snake_case e plural (DB-01);
+- toda chave estrangeira declarada, com índice próprio e `on delete restrict` (DB-02);
+- RLS ligado sem política, para que só a service role, no servidor, acesse.
 
-```
-core_escritorios ◄── core_managers ◄── core_vendedores ◄── core_deals ──► core_produtos
-                                                               │
-                                       core_contas ◄───────────┘   (core_contas.empresa_mae → core_contas)
+### Quem aponta para quem
 
-score_execucoes ◄── score_deals ──► core_deals
-                        ▲   ▲
-        score_componentes   score_motivos
+| Tabela | Chaves estrangeiras |
+|---|---|
+| `core_managers` | → `core_escritorios` |
+| `core_vendedores` | → `core_managers` |
+| `core_contas` | → `core_contas` (empresa-mãe) |
+| `core_deals` | → `core_vendedores`, `core_produtos`, `core_contas`, `config_usuarios` (quem atualizou por último) |
+| `config_usuarios` | → `core_vendedores`, `core_managers` |
+| `score_deals` | → `score_execucoes`, `core_deals` |
+| `score_componentes`, `score_motivos` | → `score_deals` |
+| `acao_registros` | → `core_deals`, `config_usuarios` (autor e quem desfez), `score_execucoes` (nota vista na hora) |
+| `system_auditoria` | → `config_usuarios` |
+| `core_escritorios`, `core_produtos`, `score_execucoes`, `config_parametros`, `system_eventos` | nenhuma |
 
-acao_registros ──► core_deals, core_vendedores (dono), score_execucoes (nota vista na hora),
-                   core_vendedores / core_managers (autor)
-
-config_parametros        system_eventos        (sem chaves estrangeiras)
-```
-
-### Tabelas
+### Tabelas (15)
 
 ```sql
--- core_: dados do CRM (carregados pelo pipeline em Python; o app só lê)
+-- core_: dados do CRM
 create table core_escritorios (
-  nome text primary key                                  -- Central, East, West
+  nome text primary key                                   -- Central, East, West
 );
 create table core_managers (
   nome            text primary key,
@@ -109,28 +114,57 @@ create table core_contas (
 );
 create index on core_contas (empresa_mae_nome);
 
+-- config_: usuários (decisão 15) e parâmetros
+create table config_usuarios (
+  id            bigint generated always as identity primary key,
+  papel         text not null check (papel in ('vendedor','manager','admin','sistema')),
+  nome_exibicao text not null,
+  vendedor_nome text unique references core_vendedores(nome) on delete restrict,
+  manager_nome  text unique references core_managers(nome) on delete restrict,
+  ativo         boolean not null default true,
+  check (
+    (papel = 'vendedor' and vendedor_nome is not null and manager_nome is null) or
+    (papel = 'manager'  and manager_nome  is not null and vendedor_nome is null) or
+    (papel in ('admin','sistema') and vendedor_nome is null and manager_nome is null)
+  )
+);
+create index on config_usuarios (vendedor_nome);
+create index on config_usuarios (manager_nome);
+-- carga: 35 vendedores + 6 managers do sales_teams, 1 admin e 1 usuário "sistema" (assina as cargas do Python)
+
+create table config_parametros (
+  chave         text primary key,                        -- execucao_ativa, acoes_desde, limite_por_minuto
+  valor         jsonb not null,
+  atualizado_em timestamptz not null default now()
+);
+
 create table core_deals (
   opportunity_id text primary key,
   vendedor_nome  text not null references core_vendedores(nome) on delete restrict,
   produto_nome   text not null references core_produtos(nome) on delete restrict,
-  conta_nome     text references core_contas(nome) on delete restrict,   -- nulo: deal sem empresa
+  conta_nome     text references core_contas(nome) on delete restrict,    -- nulo: deal sem empresa
   estagio        text not null check (estagio in ('Prospecting','Engaging','Won','Lost')),
   engage_date    date,
   close_date     date,
-  close_value    numeric(12,2)
+  close_value    numeric(12,2),
+  atualizado_em  timestamptz not null default now(),                      -- também serve de controle de versão
+  atualizado_por bigint references config_usuarios(id) on delete restrict,
+  check (estagio not in ('Won','Lost') or close_date is not null),
+  check (estagio <> 'Won' or close_value > 0)
 );
 create index on core_deals (vendedor_nome);
 create index on core_deals (produto_nome);
 create index on core_deals (conta_nome);
+create index on core_deals (atualizado_por);
 
--- score_: notas, componentes e motivos (uma execução por rodada do score)
+-- score_: notas, componentes e motivos (uma execução por rodada; gravado só pelo Python)
 create table score_execucoes (
   id             bigint generated always as identity primary key,
   reference_date date not null,
   gerado_em      timestamptz not null,
-  versao         text not null,                         -- versão das regras do score
-  pesos          jsonb not null,                        -- component_weights
-  arquivo_sha256 text not null unique                   -- o deals_scored.json carregado
+  versao         text not null,
+  pesos          jsonb not null,
+  arquivo_sha256 text not null unique
 );
 
 create table score_deals (
@@ -140,7 +174,7 @@ create table score_deals (
   acao_sugerida    text   not null check (acao_sugerida in ('focar','requalificar','desistir')),
   dias_no_pipeline int,
   valor_esperado   numeric(12,2) not null,
-  marcadores       text[] not null default '{}',        -- esfriando, sem_conta, sem_data
+  marcadores       text[] not null default '{}',
   primary key (execucao_id, opportunity_id)
 );
 create index on score_deals (execucao_id);
@@ -149,7 +183,7 @@ create index on score_deals (opportunity_id);
 create table score_componentes (
   execucao_id    bigint not null,
   opportunity_id text   not null,
-  componente     text   not null,                       -- chance, valor, tempo, conta (ou os nomes finais)
+  componente     text   not null,
   pontos         numeric(6,2) not null,
   primary key (execucao_id, opportunity_id, componente),
   foreign key (execucao_id, opportunity_id) references score_deals on delete restrict
@@ -166,93 +200,121 @@ create table score_motivos (
 );
 create index on score_motivos (execucao_id, opportunity_id);
 
--- config_: parâmetros do app (os perfis vêm de core_vendedores e core_managers; admin não precisa de tabela)
-create table config_parametros (
-  chave         text primary key,                       -- execucao_ativa, acoes_desde, limite_por_minuto
-  valor         jsonb not null,
-  atualizado_em timestamptz not null default now()
-);
-
--- acao_: o que o vendedor, o manager ou o admin registra (só acrescenta; nunca apaga nem edita)
+-- acao_: o que a pessoa registra
 create table acao_registros (
   id             bigint generated always as identity primary key,
-  opportunity_id text not null references core_deals(opportunity_id) on delete restrict,
-  vendedor_nome  text not null references core_vendedores(nome) on delete restrict,  -- dono do deal na hora
-  execucao_id    bigint references score_execucoes(id) on delete restrict,           -- nota que estava na tela
-  acao           text not null check (acao in ('liguei','requalifiquei','desisti','desfazer')),
-  nota           text check (char_length(nota) <= 280),
-  autor_papel    text not null check (autor_papel in ('vendedor','manager','admin')),
-  autor_vendedor text references core_vendedores(nome) on delete restrict,
-  autor_manager  text references core_managers(nome) on delete restrict,
+  opportunity_id text   not null references core_deals(opportunity_id) on delete restrict,
+  usuario_id     bigint not null references config_usuarios(id) on delete restrict,
+  papel          text   not null,                                          -- papel na hora da ação
+  execucao_id    bigint references score_execucoes(id) on delete restrict, -- nota que estava na tela
+  acao           text   not null check (acao in ('liguei','requalifiquei','desisti')),
+  nota           text   check (char_length(nota) <= 280),
   criado_em      timestamptz not null default now(),
-  check (
-    (autor_papel = 'vendedor' and autor_vendedor is not null and autor_manager is null) or
-    (autor_papel = 'manager'  and autor_manager  is not null and autor_vendedor is null) or
-    (autor_papel = 'admin'    and autor_vendedor is null     and autor_manager  is null)
-  )
+  desfeita_em    timestamptz,                                              -- desfazer = update, não delete
+  desfeita_por   bigint references config_usuarios(id) on delete restrict
 );
 create index on acao_registros (opportunity_id, criado_em desc);
-create index on acao_registros (vendedor_nome);
+create index on acao_registros (usuario_id, criado_em desc);
 create index on acao_registros (execucao_id);
-create index on acao_registros (autor_vendedor, criado_em desc);
-create index on acao_registros (autor_manager, criado_em desc);
+create index on acao_registros (desfeita_por);
 
--- system_: auditoria e logs
+-- system_: auditoria (ARQ-05) e eventos
+create table system_auditoria (
+  id             bigint generated always as identity primary key,
+  tabela         text   not null,
+  registro_id    text   not null,
+  operacao       text   not null check (operacao in ('insert','update')),
+  antes          jsonb,                                                    -- nulo no insert
+  depois         jsonb  not null,
+  usuario_id     bigint not null references config_usuarios(id) on delete restrict,
+  papel          text   not null,
+  correlation_id uuid   not null,
+  criado_em      timestamptz not null default now()
+);
+create index on system_auditoria (usuario_id);
+create index on system_auditoria (tabela, registro_id, criado_em desc);
+create index on system_auditoria (correlation_id);
+
 create table system_eventos (
-  id        bigint generated always as identity primary key,
-  tipo      text not null,          -- carga_score, gravacao_recusada, banco_indisponivel
-  detalhe   jsonb not null default '{}',
-  criado_em timestamptz not null default now()
+  id             bigint generated always as identity primary key,
+  tipo           text not null,          -- carga_score, conflito_versao, banco_indisponivel, lote_limpeza
+  detalhe        jsonb not null default '{}',
+  correlation_id uuid,
+  criado_em      timestamptz not null default now()
 );
 create index on system_eventos (tipo, criado_em desc);
-
--- RLS ligado sem política em todas: só a service role acessa
+create index on system_eventos (correlation_id);
 ```
 
-- **Autor com chave estrangeira:** em vez de um nome solto, há duas colunas (`autor_vendedor`, `autor_manager`), cada uma com FK, e um `check` que amarra cada uma ao papel. O admin não tem nome.
-- **Estado atual de um deal:** a última linha dele em `acao_registros`. "Desfazer" é um registro novo, não uma remoção. Uma view `acao_estados_atuais` entrega isso pronto.
-- **Nota em uso:** a execução apontada por `config_parametros.execucao_ativa`. Uma rodada nova de score cria outra execução e só depois troca o ponteiro, sem apagar a anterior. Com `acao_registros.execucao_id`, dá para comparar a ação sugerida com o que a pessoa fez.
-- **Limite de gravações:** contado direto em `acao_registros` (último minuto, por autor), sem tabela própria. O teto fica em `config_parametros.limite_por_minuto`.
-- **Auditoria:** gravações recusadas (403), cargas de score e quedas para o modo arquivo vão para `system_eventos`.
-- **"Zerar" a demonstração:** as telas mostram só as ações a partir de `config_parametros.acoes_desde`. Nada é apagado.
-- **Migrações:** um arquivo por domínio (`0001_core.sql`, `0002_score.sql`, `0003_config_system.sql`, `0004_acao.sql`), num só lugar. Proposta: `solution/app/supabase/migrations/`.
+## Como a escrita funciona e por que a auditoria não pode ser pulada
 
-## Rotas de API do Next
+Toda escrita passa por uma **função no banco**, chamada pelo servidor com `supabase.rpc(...)`. A função faz o trabalho dentro de uma transação. Um **gatilho** em cada tabela operacional grava a auditoria.
 
-| Rota | O que faz | Sem credenciais do banco |
+```
+navegador ─► rota do Next (zod valida; gera correlation_id) ─► rpc('core_atualizar_deal', {...})
+                                                                 │ set_config('app.usuario_id', ..., true)
+                                                                 │ set_config('app.correlation_id', ..., true)
+                                                                 │ update core_deals ...
+                                                                 ▼
+                                    gatilho system_auditar(): insert em system_auditoria (antes, depois,
+                                    usuário, papel, momento, correlation_id)
+```
+
+| Função | Faz |
+|---|---|
+| `acao_registrar(usuario_id, correlation_id, opportunity_id, acao, nota)` | insert em `acao_registros` |
+| `acao_desfazer(usuario_id, correlation_id, acao_id)` | update de `desfeita_em` / `desfeita_por` |
+| `core_atualizar_deal(usuario_id, correlation_id, opportunity_id, versao, estagio?, conta_nome?)` | update de estágio e empresa |
+| `core_encerrar_deal(usuario_id, correlation_id, opportunity_id, versao, resultado, close_value?)` | Won (com valor) ou Lost, com `close_date` = hoje |
+| `core_encerrar_lote(usuario_id, correlation_id, opportunity_ids[])` | Lost em até 100 deals; um registro de auditoria por deal e um evento `lote_limpeza` |
+
+- **Auditoria garantida:** o gatilho `system_auditar()` fica em `core_deals`, `core_contas`, `acao_registros`, `config_usuarios` e `config_parametros`. Se a escrita chegar sem `app.usuario_id` ou `app.correlation_id`, o gatilho recusa a operação. Não existe escrita sem auditoria, nem pelo app nem pela carga do Python (que assina como o usuário "sistema").
+- **DELETE e TRUNCATE proibidos no próprio banco:** gatilho `before delete` que recusa em todas as tabelas, e `revoke delete, truncate` de `anon`, `authenticated` e `service_role`. O DROP fica fora do alcance do app, que não tem permissão de dono do schema.
+- **Duas pessoas no mesmo deal:** a tela envia a `versao` (o `atualizado_em` que leu). Se o deal mudou no meio, a função recusa e a rota responde 409. A tela mostra "Este deal foi alterado por Cara Losch às 14:32. Recarregue para ver a versão atual.", e o caso vai para `system_eventos`.
+- **Estágios aceitos:** Prospecting → Engaging → Won ou Lost. Reabrir um deal encerrado (Won/Lost → Engaging) fica com manager e admin. É regra de dado, não de dono.
+- **correlation_id:** gerado pela rota a cada pedido. Volta no cabeçalho `x-correlation-id` e aparece nas mensagens de erro ("código para suporte: 3f2a…"), para achar a linha na auditoria.
+- **Limite de abuso** (sem senha, qualquer um age como qualquer usuário): até `config_parametros.limite_por_minuto` escritas por usuário, contadas em `system_auditoria`.
+
+## Rotas do Next
+
+| Rota | Faz | Modo reserva |
 |---|---|---|
-| `POST /api/perfil` | `{papel, nome?}`: confere o nome (banco ou JSON) e grava o cookie | funciona |
-| `DELETE /api/perfil` | Trocar perfil (apaga só o cookie) | funciona |
-| `GET /api/acoes` | Última ação de cada deal visível para o perfil | `503 {"disponivel": false}` |
-| `POST /api/acoes` | Registra uma ação `{opportunity_id, acao, nota?}`; aceita lote para a limpeza | `503` |
+| `POST /api/perfil` `{usuario_id}` / `DELETE /api/perfil` | escolhe / troca o usuário (cookie) | funciona (ids iguais aos do banco) |
+| `POST /api/acoes` | `acao_registrar` | 503 |
+| `PATCH /api/acoes/[id]` `{desfazer: true}` | `acao_desfazer` | 503 |
+| `PATCH /api/deals/[id]` `{versao, estagio?, conta_nome?}` | `core_atualizar_deal` | 503 |
+| `POST /api/deals/[id]/encerrar` `{versao, resultado, close_value?}` | `core_encerrar_deal` | 503 |
+| `POST /api/limpeza` `{opportunity_ids}` | `core_encerrar_lote` | 503 |
 
-Como a gravação é conferida, em `src/server/acoes.ts`:
-1. Lê o perfil do cookie. Sem perfil, responde 401.
-2. Confere que o nome existe no dataset com aquele papel (o cookie pode ter sido editado). Se não, 403.
-3. Confere que cada deal do pedido pertence ao pipeline do perfil: vendedor → `deal.sales_agent == nome`; manager → `deal.manager == nome`; admin → qualquer deal aberto do arquivo. Se algum falhar, responde 403 e não grava nada do lote.
-4. Confere o limite (`limite_por_minuto`, padrão 30, contado em `acao_registros`, o que vale entre as instâncias da Vercel) e o tamanho da nota. Recusas vão para `system_eventos`.
-5. Grava em `acao_registros` com a service role, com o papel e o autor vindos do perfil e a `execucao_id` da nota em uso.
+A leitura não passa por rota de API: as páginas leem no servidor (`src/server/fonte.ts`).
 
-Os passos 2, 3 e a regra do limite são funções puras em `src/lib/permissao.ts`, testadas sem banco.
-
-**Onde ficam as chaves:** só `SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY`, ambas usadas apenas em `src/server/` (`import "server-only"`; o build falha se um componente do navegador importar um desses arquivos). Não há variável pública: sem login, o navegador não fala com o Supabase. Localmente as chaves ficam em `.env.local` na pasta do app (fora do git; há um `.env.example` com os nomes); na Vercel, nas variáveis de ambiente do projeto.
-
-## Riscos
-
-- **Qualquer um grava como qualquer um.** É aceito para a demonstração. Há duas contenções: o limite por minuto e a regra de pipeline (um vendedor escolhido só grava nos deals dele).
-- **Sujeira da demonstração** (avaliadores clicando): sem DELETE. As telas mostram só as ações a partir de `config_parametros.acoes_desde`. Para "zerar" a demonstração, basta avançar a data.
-- **Plano gratuito do Supabase pausa após 7 dias sem uso:** o app cai no modo só leitura e avisa. Antes de enviar a entrega, conferir se o projeto está ativo.
+**Onde ficam as chaves:** só `SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY`, usadas apenas em `src/server/` (`import "server-only"`; o build falha se um componente do navegador importar um desses arquivos). O navegador nunca fala com o Supabase.
 
 ## Na tela (mudanças previstas)
 
-- O detalhe do deal ganha os botões e a última ação ("Anna ligou em 12/11").
-- Os cartões e as listas mostram um selo com a última ação. Os deals com "Desisti" ficam numa seção recolhida "Encerrados".
-- Ao gravar, a tela mostra "Ação registrada" na hora. Se a gravação falhar, o botão volta e aparece "Não foi possível registrar. Tente de novo."
+- **Detalhe do deal:**
+  - os botões de ação;
+  - o estágio, com "Avançar para Em negociação";
+  - a empresa, com busca entre as contas cadastradas;
+  - "Encerrar: ganho" (pede o valor) e "Encerrar: perdido";
+  - o histórico do deal, lido da auditoria ("Anna mudou o estágio para Em negociação em 12/11 às 9:14").
+- **Cartões e listas:** selo com a última ação. Os deals encerrados saem das listas de foco e vão para "Encerrados" (recolhido).
+- **Retorno:** ao gravar, a tela mostra o resultado na hora ("Ação registrada", "Deal encerrado como perdido"). Se falhar, o controle volta ao estado anterior e a mensagem diz o que fazer, com o código para suporte.
+
+## Riscos
+
+- **Qualquer um age como qualquer usuário** (decisão 12). A auditoria mostra qual usuário foi escolhido em cada escrita, e o limite por minuto segura abuso automático.
+- **Sujeira da demonstração** (avaliadores mexendo):
+  - nada é apagado;
+  - a data de corte `acoes_desde` esconde as ações antigas;
+  - cada encerramento fica na auditoria com o "antes" e pode ser revertido por update, deal a deal.
+- **Plano gratuito do Supabase pausa após 7 dias sem uso:** o app cai na reserva somente leitura e avisa. Antes de enviar a entrega, conferir se o projeto está ativo.
 
 ## Decisões em aberto
 
-1. Confirmar o modo banco (deals e notas no banco, JSON como reserva).
-2. Quem carrega `core_*` e `score_*`. Proposta: um script em Python do pipeline (`scoring/carregar_banco.py`), já que é ele que tem os dados em mãos. O app não escreve nessas tabelas.
-3. Onde ficam as migrações (proposta: `solution/app/supabase/migrations/`).
-4. O admin registra ações em qualquer deal (proposta) ou só lê?
-5. Junto com o score: se "Liguei" mexe no score e se a limpeza fica com os três perfis (proposta) ou só com manager e admin.
+1. Confirmar o banco como fonte principal, com o JSON como reserva somente leitura.
+2. Carga e rodadas de score em Python lendo do banco (`scoring/carregar_banco.py`, dono #3), com `on conflict do nothing` em `core_*`.
+3. Se o vendedor pode criar empresa nova ao preencher a conta do deal, ou só escolher entre as 85 existentes (proposta: só escolher).
+4. Se reabrir deal encerrado fica só com manager e admin (proposta acima).
+5. Onde ficam as migrações (proposta: `solution/app/supabase/migrations/`).
+6. Junto com o score: se "Liguei" e as mudanças de estágio entram na próxima rodada de score.
