@@ -1,182 +1,178 @@
 # Banco do CRM: migrations
 
-Migrations SQL do Postgres (Supabase), derivadas de `app/ESPEC-TELAS.md` (seção 8), `app/DESENHO-ACOES.md`, `app/DESENHO-CRM.md` e das premissas ARQ, BD e BE.
-**Escritas, não aplicadas**: nenhuma foi rodada contra o banco.
+Pasta oficial das migrations do Postgres (Supabase). Elas saem de `app/ESPEC-TELAS.md` (seção 8), `app/DESENHO-ACOES.md` e `app/DESENHO-CRM.md`, e seguem as premissas ARQ, BD e BE.
 
-## Arquivos (aplicar em ordem)
+A base é a versão escrita em `app/supabase/migrations/`, já validada num Postgres em memória. Ela foi consolidada aqui e separada em dois lotes.
 
-| Arquivo | Responsabilidade |
+## Lote 1: cadastros, usuários, auditoria e carga do dataset
+
+Roda sozinho e permite carregar o dataset.
+
+**Ordem de execução:**
+
+| # | Arquivo | Cria |
+|---|---|---|
+| 1 | `migrations/0001_core_cadastros.sql` | `core_escritorios`, `core_managers`, `core_vendedores`, `core_produtos` e `core_contas` (accounts) |
+| 2 | `migrations/0002_config_usuarios.sql` | `config_usuarios` (users, com o papel = profile), `config_parametros` e as funções de leitura de parâmetro |
+| 3 | `migrations/0003_core_deals.sql` | `core_deals` (deals) |
+| 4 | `migrations/0004_system_auditoria.sql` | `system_auditoria` |
+| 5 | `migrations/0005_guardas_base.sql` | relógio do CRM, contexto de quem escreve, auditoria por gatilho, versão do deal, bloqueio de DELETE e TRUNCATE, RLS e permissões |
+| 6 | `migrations/0006_config_inicial.sql` | usuários `sistema` (1) e `admin` (2) e os 27 parâmetros (**gerado**) |
+| 7 | `seed/seed_dataset.sql` | o dataset limpo (**gerado**), descrito abaixo |
+
+**O que o seed carrega:**
+- 3 escritórios, 6 managers, 35 vendedores e 7 produtos;
+- 85 contas, das quais 15 têm empresa-mãe;
+- 41 usuários do time;
+- 8.800 deals.
+
+O seed roda numa transação só, assinado pelo usuário `sistema`.
+
+**Profile:** não há tabela de perfis separada. O perfil é `config_usuarios.papel` (vendedor, manager, admin, sistema), com o vínculo a `vendedor_nome` ou `manager_nome`. Os ids são fixos:
+
+| Id | Usuário |
 |---|---|
-| `0001_core.sql` | escritórios, managers, vendedores, produtos, contas, contatos e deals |
-| `0002_config.sql` | usuários, parâmetros, tags, motivos de perda; fecha as FKs de `core_` para `config_`; funções de leitura de parâmetro |
-| `0003_score.sql` | execuções, notas (score, fit, heat), componentes, motivos e cohorts por vendedor |
-| `0004_acao.sql` | ações, prioridades do dia, comentários, tags no deal e atribuições (roteamento e reatribuição) |
-| `0005_system.sql` | lotes, auditoria, eventos e importações; fecha a FK `core_deals.importacao_id` |
-| `0006_guardas.sql` | contexto obrigatório, auditoria por gatilho, bloqueio de DELETE e TRUNCATE, RLS, revoke e gatilhos de regra |
-| `0007_views.sql` | `score_deals_atuais`, `core_deals_visao`, `core_painel_janelas` |
-| `0008_functions.sql` | leitura das telas, escrita, lote, roteamento e permissão de execução só para a service role |
-| `0009_dados_iniciais.sql` | **gerado** por `gerar_dados_iniciais.py`: parâmetros, motivos de perda, time do dataset e `config_usuarios` |
+| 1 | sistema |
+| 2 | admin |
+| 3–37 | vendedores, de A a Z |
+| 38–43 | managers, de A a Z |
 
-Contas, produtos, deals e notas não estão nas migrations: entram pela carga em Python (`on conflict do nothing`), assinada pelo usuário `sistema` (id 1).
+**Regras da carga:**
+- nome do deal = "Empresa · Produto" (ou "Sem empresa · Produto");
+- `data_abertura` = `engage_date`; os Prospecting ficam sem data;
+- `close_value` inteiro, com Lost = 0;
+- porte = tercil de funcionários;
+- empresa independente fica sem empresa-mãe.
 
-## Conferir sem conectar no banco
+Rodar o seed de novo não duplica nem sobrescreve nada (`on conflict do nothing`).
+
+**Ligações com o lote 2:** `core_deals.contato_id`, `core_deals.importacao_id` e `system_auditoria.lote_id` já existem, com índice. As FKs delas são criadas no lote 2, junto com `core_contatos`, `system_importacoes` e `system_lotes`.
+
+### Validação do lote 1 (sem conectar em banco nenhum)
+
+```bash
+# numa pasta temporária
+npm install @electric-sql/pglite@0.5.11
+node <solution>/db/validar_lote1.mjs <solution>/db
+```
+
+Aplica as 6 migrations e o seed num Postgres em memória (PGlite), com os papéis do Supabase (`service_role` com `bypassrls`). Resultado em 10/11/2026: **aprovado**.
+
+- **Catálogo:**
+  - 9 tabelas, todas com prefixo, e 71 functions, triggers e índices com prefixo;
+  - 11 FKs, todas `on delete restrict` e com índice, nenhum CASCADE;
+  - RLS e bloqueio de DELETE e TRUNCATE nas 9 tabelas; nenhuma política pública.
+- **Dados:** batem com o dataset limpo.
+  - 8.800 deals: 4.238 Won, 2.473 Lost, 1.589 Engaging e 500 Prospecting;
+  - 1.425 abertos sem empresa e nenhum fechado sem empresa;
+  - receita ganha de US$ 10.005.534;
+  - 1.480 "GTXPro" corrigidos.
+- **Auditoria da carga:** 9.006 linhas, uma por inserção, todas do usuário `sistema`, com data do negócio 31/12/2017.
+- **Guardas:**
+  - DELETE e TRUNCATE recusados (`GS405`);
+  - escrita sem usuário recusada (`GS401`);
+  - UPDATE e DELETE na auditoria recusados;
+  - `anon` não lê; `service_role` lê e grava, mas não apaga;
+  - um update com contexto grava antes, depois e usuário, e atualiza a versão do deal;
+  - o seed rodado de novo não muda nada.
+
+Conferência por parser (também sem banco):
 
 ```bash
 pip install pglast
 python solution/db/conferir_migrations.py
 ```
 
-Usa o parser oficial do Postgres (libpg_query) e confere:
-- sintaxe de todos os comandos e dos corpos PL/pgSQL e SQL;
-- nenhum CASCADE;
-- toda FK com `on delete restrict` e com índice;
-- prefixo em todo objeto;
-- nenhum DELETE ou TRUNCATE;
-- todas as tabelas no laço de RLS e bloqueio.
+Confere a sintaxe, inclusive dos corpos PL/pgSQL, e que não há CASCADE, FK sem índice, objeto sem prefixo, DELETE ou TRUNCATE.
 
-Resultado atual:
+### Para regenerar os arquivos gerados
 
-| Objeto | Quantidade |
+```bash
+python solution/data/clean.py
+python solution/db/gerar_seed.py
+```
+
+## Lote 2: o resto do CRM
+
+Roda depois do lote 1 e do seed, em ordem:
+
+| Arquivo | Cria |
 |---|---|
-| Tabelas | 25 |
-| FKs | 52 |
-| Índices explícitos | 64 |
-| Views | 3 |
-| Functions | 47 |
-| Triggers | 70 (20 explícitos + 50 de bloqueio: delete e truncate em cada tabela) |
+| `0007_core_contatos.sql` | `core_contatos` + FK `core_deals.contato_id` |
+| `0008_config_tags.sql` | `config_tags` |
+| `0009_score.sql` | execuções; nota por deal com `fit`, `heat` e `bonus` (0–20) e `score` de 0 a 120 (decisão 33); componentes e motivos (grupos fit, heat e bonus); FIT por vendedor e cohort; **`score_padroes_conta`** (padrão de compra por conta) |
+| `0010_acao.sql` | ações, comentários, tags nos deals, prioridades do dia e reatribuições |
+| `0011_system.sql` | lotes, importações, eventos e roteamentos + FKs `system_auditoria.lote_id` e `core_deals.importacao_id` |
+| `0012_guardas.sql` | contato da mesma empresa, limite de tags, último contato, versão do contato, auditoria e bloqueios das tabelas novas |
+| `0013_functions_base.sql` | papel, eventos, id, cohort, faixa, ícone, escopo e trava de versão |
+| `0014_views.sql` | `score_deals_atuais`, `core_deals_visao` (com `bonus`), `core_painel_janelas` |
+| `0015_functions_leitura.sql` | busca por etiquetas, colunas, linha do tempo, painel e funil |
+| `0016_functions_deals.sql` | roteamento, cadastro, estágio, encerrar, reabrir, editar, contato, reatribuir e desfazer |
+| `0017_functions_importacao.sql` | importação CSV |
+| `0018_functions_acao.sql` | ações, comentários, tags e prioridades do dia |
+| `0019_functions_lote.sql` | lote e desfazer lote |
+| `0020_functions_cargas.sql` | usuários do time (idempotente) e ativação da execução de score |
+| `0021_permissoes.sql` | só a service role executa funções |
 
-O parser **não** confere nomes de colunas nem tipos: isso só aparece aplicando num Postgres de teste.
+**`score_padroes_conta`** guarda, por execução e por conta:
+- tamanho do histórico (`compras_ganhas`, `receita_ganha`);
+- `intervalo_tipico_dias`, `mes_habitual`, `ultima_compra` e `proxima_compra_esperada`;
+- `na_janela`, `bonus` e `explicacao`.
 
-## Garantias
+O cálculo fica no Python (proposta: recalcular todo domingo).
 
-- **Sem DELETE e sem TRUNCATE.** Todas as tabelas têm gatilho `before delete` e `before truncate`, além de `revoke delete, truncate` de `public`, `anon`, `authenticated` e `service_role`. Remover é sempre update: `removido_em`, `removida_em`, `inativo_em`, `ativo = false` ou encerrar o deal.
-- **RLS ligado em todas, sem política.** `anon` e `authenticated` perdem tudo (inclusive as functions). Só a service role, no servidor, lê e grava.
-- **Auditoria obrigatória.** Toda function de escrita começa com `system_definir_contexto(usuario_id, correlation_id)`.
-  - O gatilho `system_auditar` recusa escrita sem contexto.
-  - Grava antes, depois, usuário, papel, `correlation_id`, `lote_id` e `data_negocio`.
-  - Em `core_contatos`, e-mail e telefone ficam mascarados.
-- **Versão do deal.** A tela envia `p_versao` (o `atualizado_em` que leu). Se o deal mudou, a escrita é recusada com `G4409` (HTTP 409).
-- **Dinheiro em inteiro:** `preco`, `close_value`, `valor_esperado`.
-- **Dono do deal não bloqueia nada.** Só duas regras de papel ficam no banco, por serem regra de dado: reabrir deal encerrado e reatribuir deal (manager e admin).
+### Validação completa (sem banco)
 
-**Códigos de erro (SQLSTATE) para a API traduzir em frase simples:**
+```bash
+node <solution>/db/validar_tudo.mjs <solution>/db --com-dataset
+node <solution>/db/validar_tudo.mjs <solution>/db
+```
+
+- **Com o dataset inteiro:** o lote 2 aplica por cima dos 8.800 deals, as 3 FKs pendentes são criadas e validadas sobre os dados, e `core_deals_visao` lê os 8.800 deals. Catálogo final:
+
+  | Objeto | Quantidade |
+  |---|---|
+  | Tabelas | 26 |
+  | FKs (todas RESTRICT e com índice) | 53 |
+  | Funções | 64 |
+  | Views (todas `security_invoker`) | 3 |
+  | Gatilhos | 77 |
+  | Índices | 92 |
+
+  Também: RLS e bloqueio em todas as tabelas, `anon` sem acesso e `service_role` sem DELETE.
+- **Testes de uso:** 52 verificações aprovadas em 10/11/2026.
+  - 45 vêm do validador original: carga, busca, ícones, roteamento, estágios, conflito de versão, desfazer, contato, ações, comentários, tags, lote, importação, prioridades, painel, linha do tempo e bloqueios.
+  - 7 são novas: nota 120 com bonus 20; nota 121 e bonus 21 recusados; padrão por conta gravado; padrão de conta inexistente recusado; DELETE no padrão recusado; bonus na visão.
+
+## Dúvidas abertas
+
+1. **Faixas da nota com nota até 120:** os cortes (alta ≥ 70, média ≥ 40) ficam como estão até a #3 decidir se mudam.
+2. **Valores ainda provisórios em `config_parametros`:**
+   - P5 (abertura como primeiro contato = false);
+   - P14 (motivo da perda opcional);
+   - roteamento com teto de 200 abertos e mínimo de 10 casos;
+   - cohort só por produto.
+3. **Aba "Contas" (Leads):** a tabela `score_padroes_conta` está pronta. Os nomes das colunas devem ser alinhados com a ESPEC-TELAS quando a #4 detalhar a aba. Uma view de leitura entra junto.
+
+## Códigos de erro
+
+Para o servidor traduzir em frase simples:
 
 | Código | Significa |
 |---|---|
-| `G4401` | sem contexto ou usuário inválido |
-| `G4403` | papel sem permissão |
-| `G4404` | não encontrado |
-| `G4405` | remoção proibida |
-| `G4409` | conflito de versão |
-| `G4422` | dado inválido (a mensagem é um código, ex.: `motivo_de_perda_obrigatorio`) |
-| `G4429` | limite de escritas por minuto |
+| `GS400` | entrada inválida |
+| `GS401` | sem usuário ou sem `correlation_id` |
+| `GS403` | papel sem permissão |
+| `GS404` | não encontrado |
+| `GS405` | apagar é proibido |
+| `GS409` | conflito de versão |
+| `GS422` | regra de negócio |
+| `GS429` | limite de escritas |
 
-## Score: só a estrutura
+## Como as cargas escrevem
 
-`SCORE = 0,70 × FIT + 0,30 × HEAT`. Os pesos vão em `score_execucoes.pesos`. O banco não calcula FIT nem HEAT: a fórmula é da sessão do score.
+A auditoria exige usuário e `correlation_id` em toda escrita.
+- A carga começa com `select system_iniciar_contexto_sistema('<uuid>');` dentro de uma transação, e assina como `sistema`.
+- Pela REST cada pedido é uma transação, e o contexto se perde. Por isso as cargas usam conexão direta ou um arquivo SQL como o seed.
 
-| Onde | O que guarda |
-|---|---|
-| `score_deals` | `score`, `fit`, `heat` (nulos = sem dado), `acao_sugerida`, `valor_esperado`, `marcadores` e o `vendedor_nome` dono na hora da nota |
-| `score_componentes` | `grupo` (fit, heat ou outro), `rotulo`, `pontos` e `maximo`, para o "X de Y pontos" do modal |
-| `score_motivos` | frases do modal, em ordem |
-| `score_vendedor_cohorts` | taxa de ganho por vendedor × cohort em média móvel de 3 meses, com encolhimento (base do FIT e do roteamento) |
-
-As dimensões aceitas em `score_vendedor_cohorts` são `produto`, `serie`, `setor`, `porte`, `receita`, `empresa`, `sede` e `tempo_venda`.
-
-Os replies previstos para o HEAT entram como `acao_registros.acao = 'resposta_recebida'`. O dataset não tem esse dado.
-
-## Roteamento de lead novo
-
-`core_criar_deal` sem vendedor chama `core_rotear_lead`:
-
-1. Escolhe o vendedor ativo de maior `taxa_encolhida` num cohort que casa com o lead (produto, série, setor, porte, empresa, sede), na execução ativa. Só concorre quem tem pelo menos `roteamento_min_casos` (10) deals no cohort e menos de `roteamento_teto_abertos` (200) abertos.
-2. Sem execução ativa ou sem candidato, o lead vai para o vendedor ativo com menos abertos (`roteamento_reserva`, com evento em `system_eventos`).
-
-Tudo fica em `acao_atribuicoes`. A reatribuição pelo manager (`core_reatribuir_deal`) também é registrada lá, com o motivo.
-
-## Nomes: o que mudou em relação à ESPEC-TELAS (para a camada de dados do app)
-
-Os nomes de tabelas e colunas da ESPEC foram mantidos. O que mudou:
-
-**Tabelas novas:**
-- `config_motivos_perda` (FK de `core_deals.motivo_perda`);
-- `score_vendedor_cohorts` (FIT e roteamento);
-- `acao_atribuicoes` (roteamento e reatribuição).
-
-**Colunas novas:**
-
-| Tabela | Colunas |
-|---|---|
-| `core_deals` | `engage_date` (valor original, ao lado de `data_abertura`) e `ultimo_contato_carga` (piso do último contato vindo da carga, P5) |
-| `core_vendedores` | `ativo` |
-| `core_contas` | `atualizado_em`, `atualizado_por` |
-| `config_parametros` | `descricao`, `atualizado_por` |
-| `config_tags` | `arquivada_em`, `arquivada_por` |
-| `score_execucoes` | `parametros`, `origem`, `notas`, `criado_por` (e `arquivo_sha256` passa a aceitar nulo, para rodadas lidas do banco) |
-| `score_deals` | `vendedor_nome`, `fit`, `heat` |
-| `score_componentes` | `grupo`, `rotulo`, `maximo`, `ordem` |
-| `score_motivos` | `componente` |
-| `acao_registros` | `correlation_id`; a ação `resposta_recebida` |
-| `system_auditoria` | `data_negocio` |
-| `system_eventos` | `usuario_id` |
-| `system_importacoes` | `recusas` |
-| `system_lotes` | `detalhe` |
-
-**Functions:**
-- Todas as de escrita recebem `p_usuario_id` e `p_correlation_id` primeiro, inclusive `core_mudar_estagio`, `system_executar_lote` e `system_desfazer_lote`.
-- `acao_prioridades_do_dia` também recebe `p_correlation_id`, porque grava a fila na primeira chamada do dia.
-- `core_encerrar_lote` (DESENHO-ACOES) virou `system_executar_lote` com tipo `encerrar_perdido`.
-- Novas: `core_desfazer_mudanca` (Desfazer de 10 s), `core_reatribuir_deal`, `core_rotear_lead`, `core_filtrar_deals` e `core_escopo_vendedores`.
-
-**Etiquetas aceitas por `core_buscar_deals` / `core_filtrar_deals` (`p_etiquetas`):**
-- `estagios`, `nota_min`, `nota_menor_que`, `sem_nota`, `icones`
-- `abertura_de`, `abertura_ate`, `sem_abertura`, `dias_abertura_maior_que`
-- `contato_ha_dias_min` (inclui sem contato), `contato_ha_dias_max`, `sem_contato`, `sem_contato_principal`
-- `setores`, `portes`, `sem_empresa`, `empresas`, `produtos`, `series`
-- `vendedores`, `managers`, `regioes`, `acoes`
-- `fechamento_de`, `fechamento_ate`, `valor_min`
-- `tags` (ids), `sem_tag`, `com_comentario`, `contem`
-
-**Ordens:** `nota`, `valor`, `dias_sem_contato`, `dias_abertura`, `data_abertura`, `ultimo_contato`, `fechamento`, `vendedor`, `lead` e `padrao_leads`.
-
-**Escopo:** `{"vendedor": nome}`, `{"manager": nome}` ou `{}`, com `regiao`, `manager` e `vendedor` opcionais e combináveis.
-
-## O que pode faltar por causa das telas Insights e Configurações (ainda não especificadas)
-
-**Insights:**
-- functions de agregação (ex.: conversão por cohort, ciclo por faixa de tempo, ponto forte por vendedor);
-- talvez tabelas de resumo ou views materializadas, se a base crescer;
-- leitura da série de `score_vendedor_cohorts` (já está gravada por execução) e o histórico de `score_execucoes`.
-
-**Configurações:**
-- functions de escrita para `config_parametros` (hoje só a migration e a carga gravam), com validação por chave;
-- gestão de usuários (ativar ou desativar, criar usuário) e de `core_vendedores.ativo`;
-- edição de motivos de perda e reativar tag arquivada;
-- cadastro de empresa nova (`core_criar_conta`), que depende da decisão "só escolher ou também criar empresa" (DESENHO-CRM, item 5).
-
-**Nas duas:**
-- quem pode ver e editar o quê, se surgir regra de papel além das duas que já estão no banco.
-
-## Dúvidas
-
-1. **Relógio fixo × prioridades do dia:**
-   - Com `data_referencia` fixa em 31/12/2017, o "dia" nunca acaba. A fila montada na primeira abertura fica para sempre.
-   - O alerta de "pulado 3 dias seguidos" nunca dispara.
-   - Proposta: a fila do dia usar a data real e as datas de negócio continuarem fixas.
-2. **Último contato (P5):** a carga preenche `ultimo_contato_carga` com `engage_date` nos deals em negociação, ou deixa vazio? O gatilho nunca fica abaixo desse piso.
-3. **Ações que contam como contato:** hoje Liguei e Requalifiquei (`acoes_contato`). A `resposta_recebida` também conta?
-4. **Teto de abertos do roteamento:** 200 é chute; o maior pipeline hoje tem 194. Precisa de um número decidido, assim como o mínimo de casos (10, o mesmo da análise em média móvel).
-5. **Tokens de cor das tags:** usei `marinho`, `dourado`, `dourado-medio`, `dourado-claro`, `bronze` e `bronze-escuro`. A #4 confirma os 6 do tema.
-6. **Motivos de sistema:**
-   - `cadastro_desfeito` e `importacao_desfeita` estão na lista para o "Desfazer cadastro" e o encerramento em lote de uma importação.
-   - A tela precisa esconder esses dois da lista de escolha.
-7. **Regras de "quem pode" que ficaram só na tela:**
-   - editar o próprio comentário;
-   - apagar comentário (autor, manager ou admin);
-   - criar tag (manager e admin);
-   - importar (manager e admin).
-   Pela decisão 16 o banco não bloqueia por dono. Se alguma delas tiver que valer no banco, é uma linha por function.
-8. **Busca "Contém":** usa `ilike`, que ignora maiúsculas mas não acentos. Para ignorar acentos, falta a extensão `unaccent`.
-9. **Desfazer cadastro:** segue a P9, que encerra como Perdido (motivo `cadastro_desfeito`). A tela chama `core_encerrar_deal`.
-10. **Score sem auditoria:** as tabelas `score_` não são auditadas linha a linha, porque a carga é em massa. Cada rodada fica registrada em `score_execucoes` e num evento `carga_score`.
+`_rascunho_v1/` guarda a primeira versão destas migrations, já substituída. Não aplicar.

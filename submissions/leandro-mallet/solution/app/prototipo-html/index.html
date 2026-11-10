@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Foco da Semana</title>
+  <meta name="description" content="Onde cada vendedor deve focar hoje: deals priorizados por score explicável.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topo">
+    <div class="topo-linha">
+      <div class="marca">
+        <span class="marca-nome">Foco da Semana</span>
+        <span class="marca-data" id="ref-data"></span>
+      </div>
+      <nav class="abas" aria-label="Telas">
+        <a href="#dia" data-view="dia" class="aba">Meu dia</a>
+        <a href="#time" data-view="time" class="aba">Visão do manager</a>
+        <a href="#todos" data-view="todos" class="aba">Todos os deals</a>
+      </nav>
+    </div>
+    <form class="filtros" id="filtros" aria-label="Filtros">
+      <label>Região
+        <select id="f-regiao"><option value="">Todas</option></select>
+      </label>
+      <label>Manager
+        <select id="f-manager"><option value="">Todos</option></select>
+      </label>
+      <label>Vendedor
+        <select id="f-vendedor"><option value="">Todos</option></select>
+      </label>
+    </form>
+  </header>
+
+  <div id="aviso" class="aviso" hidden></div>
+
+  <main id="conteudo" class="conteudo" tabindex="-1">
+    <div class="estado" role="status">
+      <div class="spinner" aria-hidden="true"></div>
+      <p>Carregando o pipeline…</p>
+    </div>
+  </main>
+
+  <dialog id="detalhe" class="detalhe" aria-labelledby="detalhe-titulo">
+    <div id="detalhe-corpo"></div>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>

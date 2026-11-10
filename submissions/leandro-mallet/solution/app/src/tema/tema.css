@@ -1,0 +1,83 @@
+/*
+ * Tema do G4 Sight (DES-01 / FE-03): o ÚNICO arquivo com cor, fonte, tamanho de texto, raio e sombra.
+ * O Tailwind 4 lê o bloco @theme e gera as classes (bg-marinho, text-texto-2, font-titulo, rounded-cartao…).
+ * Fundo branco; marca G4 nos menus, botões, abas, selos, gráficos e destaques. Só tema claro.
+ *
+ * Contraste sobre branco (WCAG AA): marinho 16,8:1 · bronze-escuro 7,1:1 · texto-2 4,9:1.
+ * Dourado (2,2:1) nunca é cor de texto sobre branco: só fundo (com texto marinho, 7,5:1), borda e gráfico.
+ */
+@theme {
+  /* Marca */
+  --color-marinho: #001f35;
+  --color-marinho-2: #082437;
+  --color-dourado: #c9a96e;
+  --color-dourado-claro: #e4c993;
+  --color-dourado-medio: #b9915b;
+  --color-bronze: #a57b41;
+  --color-bronze-escuro: #78501d;
+  --color-marfim: #fffdf8;
+
+  /* Base */
+  --color-fundo: #ffffff;
+  --color-texto: #001f35;
+  --color-texto-2: #66727c;
+  --color-cinza: #6f7c87;
+  --color-linha: #ece3d0;
+  --color-linha-forte: #e4c993;
+  --color-trilho: #f3ead8;
+  --color-branco: #ffffff;
+  --color-sombra: #001f3514;
+
+  /* Faixas da nota (barra do cartão) */
+  --color-nota-alta: #001f35;
+  --color-nota-media: #a57b41;
+  --color-nota-baixa: #6f7c87;
+
+  /* Estados de alerta (não fazem parte da paleta da marca; usados com ícone e texto, nunca só pela cor) */
+  --color-erro: #9b2c2c;
+  --color-erro-fundo: #fbefee;
+  --color-aviso-fundo: #fff6e0;
+
+  /* Cores de tag (fundo + texto com contraste AA) */
+  --color-tag-1: #001f35;
+  --color-tag-2: #c9a96e;
+  --color-tag-3: #e4c993;
+  --color-tag-4: #b9915b;
+  --color-tag-5: #78501d;
+  --color-tag-6: #66727c;
+
+  /* Tipografia */
+  --font-titulo: var(--fonte-libre-baskerville), Georgia, serif;
+  --font-texto: var(--fonte-manrope), system-ui, sans-serif;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+  --text-nota: 2rem;
+
+  /* Forma */
+  --radius-cartao: 10px;
+  --radius-controle: 6px;
+  --radius-selo: 999px;
+  --shadow-cartao: 0 1px 2px var(--color-sombra), 0 6px 16px var(--color-sombra);
+  --shadow-modal: 0 18px 48px var(--color-sombra);
+
+  /* Movimento */
+  --animate-entrar: entrar 0.18s ease-out;
+  --animate-sair: sair 0.2s ease-in forwards;
+  --animate-pulsar: pulsar 1.2s ease-in-out infinite;
+
+  @keyframes entrar {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes sair {
+    to { opacity: 0; transform: translateX(24px); }
+  }
+  @keyframes pulsar {
+    50% { opacity: 0.55; }
+  }
+}

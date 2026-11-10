@@ -1,4 +1,4 @@
-# G4 Sight: especificação das telas Pipeline, Leads e Painel
+# G4 Sight: especificação das telas Pipeline, Leads (com Contas) e Painel
 
 > Especificação para aprovação. Nada de código nem de banco. Marco 1 da decisão 25: especificar as telas e derivar delas o modelo de dados.
 > Segue as premissas de desenvolvimento em revisão final (ARQ, BD, BE e FE). Referências: [DESENHO-ACOES.md](DESENHO-ACOES.md) (usuários, escrita e auditoria), [DESENHO-CRM.md](DESENHO-CRM.md) (importação CSV) e [DESENHO-NEXT.md](DESENHO-NEXT.md) (estrutura e marca).
@@ -259,6 +259,22 @@ Dois jeitos, **a mesma função auditada** (`core_mudar_estagio`):
 | Só leitura (banco fora, BE-05) | faixa: "Modo somente leitura: mudanças estão desligadas agora." Cartões não arrastam; seletor de estágio, comentários e ações somem. O modal mostra a nota e a abertura, sem linha do tempo do CRM |
 | Sem permissão | sem perfil escolhido: vai para "Quem é você?" e volta. Vendedor tentando reabrir: "Reabrir um deal encerrado é feito pelo manager ou pelo admin." |
 
+### 2.9 Repasse por falta de atendimento
+
+Regras do Leandro (os números quem fecha é o score, #3):
+- **Lead sem contato que muda de faixa de tempo é repassado** a outro vendedor com encaixe parecido (FIT próximo no mesmo cohort), pelo mesmo roteamento do lead novo.
+- **Linha do tempo:** "Repassado: sem contato em 2 dias; Anna tem encaixe parecido."
+- **Avisos:** o vendedor que perdeu o lead e o que recebeu ganham um aviso no topo do CRM ("Você recebeu 1 lead repassado" / "1 lead seu foi repassado por falta de contato"), que some ao ser lido.
+- **Mini penalidade:** quem perde lead por repasse leva uma penalidade pequena no roteamento (parâmetro em `config_parametros`), por um período definido pelo score.
+- **Visão do manager:** contador "Perdidos por falta de atendimento" por vendedor (Painel, 4.7).
+- O repasse é feito pela rotina do servidor, nunca pela tela. A tela só mostra o resultado.
+
+| Dado | Tipo | Origem |
+|---|---|---|
+| Evento de repasse na linha do tempo | N | `acao_repasses` (de, para, motivo, faixa de tempo) |
+| Aviso para os dois vendedores | N | `system_avisos` (usuário, texto, lido em) |
+| Contador por vendedor | C | quantidade de `acao_repasses` em que ele perdeu o lead, na janela do Painel |
+
 ## 3. Tela Leads
 
 ### 3.1 Objetivo e ação principal
@@ -310,6 +326,73 @@ Cadastro, importação CSV, ações em lote, tags e comentários. Regras na seç
 | Erro | "Não foi possível carregar os leads. Tente de novo." + "Tentar de novo" e "Ver detalhes" |
 | Só leitura | faixa de somente leitura. O arquivo de reserva só tem os abertos, então a tela avisa: "Mostrando só os 2.089 deals abertos; a base completa volta quando o banco voltar." Cadastro, importação, lote, tags e comentários ficam escondidos |
 | Sem permissão | vendedor tentando importar ou aplicar lote fora do que a tela oferece: "Esta ação é feita pelo manager ou pelo admin." |
+
+### 3.6 Aba Contas
+
+Requisito do Leandro: uma aba **Contas** dentro de Leads, ao lado da lista de leads, com o cadastro da empresa, o histórico e o padrão calculado dela.
+
+**Contexto do score (decisão 33):** NOTA = 0,7 × FIT + 0,3 × HEAT + **Extra Bonus** (0 a 20; a nota vai até 120).
+- O bonus é por empresa: cresce com o tamanho do histórico e com a empresa estar na janela de compra usual (periodicidade e mês).
+- É recalculado todo domingo. A fórmula é da #3.
+- Até ela entregar, os campos do padrão mostram "Calculado no domingo".
+
+**Abas da tela Leads:** `Leads | Contas` (`/leads?aba=contas`). A ação principal da aba Contas é **Nova empresa**.
+
+**Lista das empresas** (85 no dataset):
+
+| Coluna | Tipo | Origem |
+|---|---|---|
+| Empresa | D | `accounts.account` → `core_contas.nome` |
+| Setor | D | `accounts.sector` (em português na tela) |
+| Porte | C | tercil de `accounts.employees` |
+| Sede | D | `accounts.office_location` → `core_contas.pais` |
+| Empresa-mãe | D | `accounts.subsidiary_of` (15 são subsidiárias) |
+| Deals abertos | C | deals abertos da empresa (até 14 hoje) |
+| Compras | C | deals ganhos da empresa (de 23 a 115; mediana 47) |
+| Receita ganha | C | soma de `close_value` dos ganhos (de US$ 51.632 a US$ 341.455) |
+| Padrão | N | selo **Na janela de compra** / **Fora da janela** / **Sem padrão**, com o bonus atual (0 a 20). Antes da primeira rodada: "Calculado no domingo" |
+
+**Ficha da conta** (modal, no mesmo padrão do modal do deal):
+- **Cadastro editável:** nome (só na criação), setor, funcionários, receita, ano de fundação, sede e empresa-mãe. "Nova empresa" cria; "Editar" altera. Tudo auditado. Isto responde à decisão (a): cadastrar empresa nova passa a existir. **[P19]**
+- **Histórico:**
+  - compras ganhas e perdidas por mês, num gráfico de barras simples com tokens (marinho = ganho, cinza = perdido);
+  - produtos comprados (quantidade e receita por produto);
+  - ticket médio dos ganhos;
+  - primeira e última compra.
+- **Padrão calculado** (do score):
+  - intervalo típico entre compras;
+  - mês habitual;
+  - próxima compra esperada;
+  - bonus atual;
+  - frase de explicação (ex.: "Compra a cada 45 dias, mais em março; a próxima deve vir até 15/01").
+  Sem rodada: "Calculado no domingo".
+- **Deals abertos da empresa:** lista com nome, estágio, nota e ícone. Tocar abre o modal do deal.
+
+**Filtro livre na aba** (mesmo interpretador da seção 5, com etiquetas de conta):
+
+| Frase | Etiquetas |
+|---|---|
+| `na janela de compra` · `fora da janela` · `sem padrão` | Padrão: … |
+| `setor varejo` · `varejo` | Setor: varejo |
+| `empresas grandes` | Porte: grande |
+| `mais de 50 compras` | Compras > 50 |
+| `com deal aberto` · `sem deal aberto` | Deals abertos > 0 / = 0 |
+| `receita acima de 200 mil` | Receita ganha ≥ 200.000 |
+| `subsidiárias` · `independentes` | Empresa-mãe preenchida / vazia |
+| `bonus acima de 10` | Bonus ≥ 10 |
+| `sede Estados Unidos` | Sede: United States |
+
+**Ordenação:** Receita ganha (padrão), Compras, Deals abertos, Bonus, Empresa (A–Z).
+
+**Estados:**
+
+| Estado | O que aparece |
+|---|---|
+| Carregando | 8 linhas-esqueleto; ficha com esqueleto do gráfico |
+| Vazio | "Nenhuma empresa cadastrada. Cadastre a primeira ou importe uma planilha de leads." + [Nova empresa] |
+| Vazio (filtro) | "Nenhuma empresa com estes filtros." + "Limpar filtros" |
+| Erro | "Não foi possível carregar as empresas. Tentar de novo." |
+| Só leitura | sem "Nova empresa" e sem "Editar"; a lista e a ficha continuam |
 
 ## 4. Tela Painel
 
@@ -442,6 +525,17 @@ Ficam fora da lista do dia os deals que já tiveram ✓, ✗ ou contato registra
 | Só leitura (banco fora) | números e funil calculados do arquivo de reserva, que só tem os abertos. Aparecem Em negociação, Pipeline aberto e Em risco; os cartões que dependem de fechados mostram "Disponível quando o banco voltar". A lista de prioridades aparece sem ✓ e ✗ |
 | Sem permissão | sem perfil escolhido: vai para "Quem é você?" e volta |
 
+### 4.7 Bloco do time (manager e admin)
+
+Abaixo do funil, só para manager e admin, uma tabela **Por vendedor**:
+
+| Vendedor | Abertos | Em risco | Esfriaram | Prioridades feitas hoje | Perdidos por falta de atendimento (30 dias) |
+|---|---|---|---|---|---|
+
+O último contador vem de `acao_repasses`. Ele nasce em 0, porque o dataset não tem contatos, e passa a contar depois que o CRM estiver em uso. Tocar no vendedor abre o Pipeline filtrado nele.
+
+**Prioridades do dia, regra nova:** um lead novo (criado ou importado hoje) só fura a fila da lista do dia se tiver **FIT ≥ 75**. Com FIT menor, ele entra na ordem normal. Corte em `config_parametros`.
+
 ## 5. Filtro em campo livre: interpretador por regras
 
 **Como funciona:**
@@ -572,6 +666,16 @@ Esta seção atualiza o modelo de [DESENHO-ACOES.md](DESENHO-ACOES.md). Segue BD
 
 Total: 22 tabelas: as 15 de DESENHO-ACOES, `system_importacoes` (de DESENHO-CRM) e 6 novas (`core_contatos`, `config_tags`, `acao_comentarios`, `acao_deal_tags`, `acao_prioridades`, `system_lotes`).
 
+Acrescentado pela aba Contas e pelo repasse (a #2 consolida em `solution/db/`):
+
+| Tabela | Situação | Colunas |
+|---|---|---|
+| `score_contas_padrao` | **nova** (aba Contas) | `execucao_id` FK, `conta_nome` FK, `bonus` (0–20), `na_janela` (bool), `intervalo_tipico_dias`, `mes_habitual`, `proxima_compra_em`, `explicacao`, `calculado_em`; chave (`execucao_id`, `conta_nome`). Calculado pelo score todo domingo |
+| `acao_repasses` | **nova** (repasse) | `opportunity_id` FK, `de_vendedor` FK, `para_vendedor` FK, `motivo`, `faixa_tempo`, `fit_de`, `fit_para`, `criado_em` |
+| `system_avisos` | **nova** (repasse) | `usuario_id` FK, `tipo`, `texto`, `opportunity_id` FK (nulo), `criado_em`, `lido_em` |
+| `config_parametros` | novas chaves | `fit_minimo_furar_fila` (75), `repasse` (faixas de tempo sem contato e penalidade no roteamento) |
+| `core_contas` | criação e edição pela tela | functions `core_salvar_conta` (insert ou update, auditado) e leitura `core_buscar_contas(etiquetas, ordem)` com as agregações da lista |
+
 ### 8.2 Chaves estrangeiras novas (todas com índice e `on delete restrict`)
 
 | De | Para |
@@ -677,3 +781,5 @@ Todas as de escrita recebem `p_usuario_id` e `p_correlation_id`, fazem `set_conf
 | P16 | Trocar "atendimentos no momento" (não existe no dataset) por "Em risco de esfriar"? | Sim; "Contatos registrados hoje" entra depois, quando houver uso |
 | P17 | Prioridades do dia do manager e do admin: os deals do escopo em risco ou super hot, por valor? | Sim; para o vendedor, a lista vem da nota |
 | P18 | ✓ = "trabalhei hoje" e ✗ = "pulei hoje", sem mudar o deal? O ✓ conta como contato? Alerta depois de 3 dias pulado? | Sim; o ✓ não conta como contato (há "Liguei" no item); alerta depois de 3 dias |
+| P19 | Quem cria e edita empresa? | Os três perfis, com auditoria; o nome não muda depois de criado |
+| P20 | Repasse: quais faixas de tempo sem contato disparam o repasse, e qual a penalidade? | A #3 fecha os números; a tela só mostra o resultado |

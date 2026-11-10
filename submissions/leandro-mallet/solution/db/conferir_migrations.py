@@ -149,10 +149,11 @@ def main() -> int:
             erros.append(f"{arq}: FK {tab}{cols} -> {destino} sem índice")
 
     # laço de RLS e bloqueio cobre todas as tabelas (todas têm o prefixo do laço)
-    guardas = (PASTA / "0006_guardas.sql").read_text(encoding="utf-8")
-    laco = "c.relname ~ '^(core|config|score|acao|system)_'" in guardas and "enable row level security" in guardas
+    todos = "\n".join(a.read_text(encoding="utf-8") for a in arquivos)
+    laco = ("tablename ~ '^(core|config|score|acao|system)_'" in todos and "enable row level security" in todos
+            and "_bloquear_delete" in todos and "_bloquear_truncate" in todos)
     if not laco:
-        erros.append("0006_guardas: laço de RLS/bloqueio não encontrado")
+        erros.append("laço de RLS/bloqueio de DELETE e TRUNCATE não encontrado")
     fora = [t for t in tabelas if not PREFIXO.match(t)]
 
     # gatilhos criados no laço: 2 por tabela (delete e truncate)
