@@ -1,0 +1,1852 @@
+{
+  "name": "G4 · Triagem de ticket (RAG + 3 níveis)",
+  "nodes": [
+    {
+      "id": "e0ffaeff-2ae4-4b44-ae74-9fcc3112e392",
+      "name": "Receber ticket do console",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        320
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "g4-support/triage",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "yD741LTYlWeGQxYN",
+          "name": "G4 - Segredo do webhookk"
+        }
+      }
+    },
+    {
+      "id": "236d12b3-b351-4b6d-b4db-01ba7a2917e1",
+      "name": "Preparar ticket",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        220,
+        320
+      ],
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ticket_text",
+              "name": "ticket_text",
+              "value": "={{ String($json.body?.ticket_text ?? $json.ticket_text ?? \"\").trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "source",
+              "name": "source",
+              "value": "={{ $json.body?.source ?? $json.source ?? \"console\" }}",
+              "type": "string"
+            },
+            {
+              "id": "ds2_id",
+              "name": "ds2_id",
+              "value": "={{ $json.body?.ds2_id ?? $json.ds2_id ?? null }}",
+              "type": "number"
+            },
+            {
+              "id": "requested_by",
+              "name": "requested_by",
+              "value": "={{ $json.body?.requested_by ?? \"console\" }}",
+              "type": "string"
+            },
+            {
+              "id": "t0",
+              "name": "t0",
+              "value": "={{ $now.toMillis() }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {
+          "ignoreConversionErrors": true
+        }
+      }
+    },
+    {
+      "id": "f22c7d5a-f122-4c6f-ad98-7b5eccb95979",
+      "name": "Entrada válida?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        440,
+        320
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.ticket_text }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "leftValue": "={{ $json.ticket_text.length }}",
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              },
+              "rightValue": 4000
+            },
+            {
+              "leftValue": "={{ [\"console\", \"holdout\"].includes($json.source) }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "c1fbab3c-56bb-45f9-933c-ad6fb317df11",
+      "name": "Gerar embedding (OpenAI)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        660,
+        320
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/embeddings",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: \"text-embedding-3-small\", input: $json.ticket_text, dimensions: 512 }) }}",
+        "options": {
+          "timeout": 20000
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "onError": "continueErrorOutput",
+      "credentials": {
+        "openAiApi": {
+          "id": "O7tDFfhjrb655KV1",
+          "name": "G4 - OpenAI"
+        }
+      }
+    },
+    {
+      "id": "9af49dfd-883e-478d-a820-37b17e447899",
+      "name": "Responder erro 400",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        660,
+        540
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{ \"error\": \"ticket_text obrigatório (até 4.000 caracteres) e source deve ser console ou holdout\" }",
+        "options": {
+          "responseCode": 400
+        }
+      }
+    },
+    {
+      "id": "1457d1f1-575d-4f22-a284-278d58e6445e",
+      "name": "Classificar por casos parecidos (RAG)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        880,
+        320
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://awiphrbtvgapuuebiouw.supabase.co/rest/v1/rpc/classify_ticket",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ query: $json.data[0].embedding }) }}",
+        "options": {
+          "timeout": 20000
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "onError": "continueErrorOutput",
+      "credentials": {
+        "supabaseApi": {
+          "id": "SEmoMU7WjCZ71Snn",
+          "name": "G4 - Supabase"
+        }
+      }
+    },
+    {
+      "id": "d20b588f-8f51-4c37-a72b-728a1a4b1666",
+      "name": "Buscar soluções validadas",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1100,
+        320
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://awiphrbtvgapuuebiouw.supabase.co/rest/v1/rpc/match_resolutions_json",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ query: $(\"Gerar embedding (OpenAI)\").item.json.data[0].embedding, p_category: $json.category, k: 3 }) }}",
+        "options": {
+          "timeout": 20000
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "onError": "continueErrorOutput",
+      "credentials": {
+        "supabaseApi": {
+          "id": "SEmoMU7WjCZ71Snn",
+          "name": "G4 - Supabase"
+        }
+      }
+    },
+    {
+      "id": "9199ae5b-3e97-451c-b322-34dddef4549c",
+      "name": "Reunir resultado e limiares",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1320,
+        320
+      ],
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ticket_text",
+              "name": "ticket_text",
+              "value": "={{ $(\"Preparar ticket\").item.json.ticket_text }}",
+              "type": "string"
+            },
+            {
+              "id": "source",
+              "name": "source",
+              "value": "={{ $(\"Preparar ticket\").item.json.source }}",
+              "type": "string"
+            },
+            {
+              "id": "ds2_id",
+              "name": "ds2_id",
+              "value": "={{ $(\"Preparar ticket\").item.json.ds2_id }}",
+              "type": "number"
+            },
+            {
+              "id": "embedding",
+              "name": "embedding",
+              "value": "={{ JSON.stringify($(\"Gerar embedding (OpenAI)\").item.json.data[0].embedding) }}",
+              "type": "string"
+            },
+            {
+              "id": "category",
+              "name": "category",
+              "value": "={{ $(\"Classificar por casos parecidos (RAG)\").item.json.category }}",
+              "type": "string"
+            },
+            {
+              "id": "confidence",
+              "name": "confidence",
+              "value": "={{ Number($(\"Classificar por casos parecidos (RAG)\").item.json.confidence) }}",
+              "type": "number"
+            },
+            {
+              "id": "sensitive_share",
+              "name": "sensitive_share",
+              "value": "={{ Number($(\"Classificar por casos parecidos (RAG)\").item.json.sensitive_share) }}",
+              "type": "number"
+            },
+            {
+              "id": "votes",
+              "name": "votes",
+              "value": "={{ $(\"Classificar por casos parecidos (RAG)\").item.json.votes }}",
+              "type": "object"
+            },
+            {
+              "id": "similar_cases",
+              "name": "similar_cases",
+              "value": "={{ $(\"Classificar por casos parecidos (RAG)\").item.json.similar_cases }}",
+              "type": "array"
+            },
+            {
+              "id": "resolutions",
+              "name": "resolutions",
+              "value": "={{ $json.resolutions }}",
+              "type": "array"
+            },
+            {
+              "id": "limiar_auto",
+              "name": "limiar_auto",
+              "value": 0.9,
+              "type": "number"
+            },
+            {
+              "id": "limiar_humano",
+              "name": "limiar_humano",
+              "value": 0.5,
+              "type": "number"
+            },
+            {
+              "id": "limiar_sensivel",
+              "name": "limiar_sensivel",
+              "value": 0.3,
+              "type": "number"
+            },
+            {
+              "id": "categorias_sensiveis",
+              "name": "categorias_sensiveis",
+              "value": "={{ [\"HR Support\", \"Administrative rights\"] }}",
+              "type": "array"
+            },
+            {
+              "id": "termos_bloqueio",
+              "name": "termos_bloqueio",
+              "value": "={{ [\"salary\", \"payroll\", \"bonus\", \"termination\", \"dismissal\", \"resignation\", \"lawsuit\", \"legal\", \"harassment\", \"sick leave\", \"maternity\"] }}",
+              "type": "array"
+            },
+            {
+              "id": "t_class",
+              "name": "t_class",
+              "value": "={{ $now.toMillis() }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {
+          "ignoreConversionErrors": true
+        }
+      }
+    },
+    {
+      "id": "0fea0274-c546-49bd-bc8d-440e0d68ac55",
+      "name": "Marcar termos de bloqueio",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1540,
+        320
+      ],
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": true,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "blocked",
+              "name": "blocked",
+              "value": "={{ $json.termos_bloqueio.some(t => (\" \" + $json.ticket_text.toLowerCase().replace(/[^a-z0-9]+/g, \" \") + \" \").includes(\" \" + t + \" \")) }}",
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "1e97e605-00d3-4c9a-9c48-aee344b7ee65",
+      "name": "Aplicar política de 3 níveis",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1760,
+        320
+      ],
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": true,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "level",
+              "name": "level",
+              "value": "={{ ($json.categorias_sensiveis.includes($json.category) || $json.sensitive_share >= $json.limiar_sensivel || $json.blocked || $json.confidence < $json.limiar_humano) ? 3 : (($json.confidence >= $json.limiar_auto && $json.resolutions.length > 0) ? 1 : 2) }}",
+              "type": "number"
+            },
+            {
+              "id": "level_reason",
+              "name": "level_reason",
+              "value": "={{ $json.categorias_sensiveis.includes($json.category) ? \"Categoria sensível: \" + $json.category : $json.sensitive_share >= $json.limiar_sensivel ? \"Votos em categorias sensíveis: \" + Math.round($json.sensitive_share * 100) + \"%\" : $json.blocked ? \"Termo da lista de bloqueio no texto\" : $json.confidence < $json.limiar_humano ? \"Confiança baixa (\" + $json.confidence.toFixed(2) + \")\" : ($json.confidence >= $json.limiar_auto && $json.resolutions.length > 0) ? \"Confiança alta (\" + $json.confidence.toFixed(2) + \") e solução validada da categoria\" : $json.confidence >= $json.limiar_auto ? \"Confiança alta (\" + $json.confidence.toFixed(2) + \"), mas sem solução validada da categoria\" : \"Confiança intermediária (\" + $json.confidence.toFixed(2) + \")\" }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "62c761b7-8b50-4f75-94ba-1d9461dcb690",
+      "name": "Montar registro da triagem",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1980,
+        320
+      ],
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "source",
+              "name": "source",
+              "value": "={{ $json.source }}",
+              "type": "string"
+            },
+            {
+              "id": "ds2_id",
+              "name": "ds2_id",
+              "value": "={{ $json.ds2_id }}",
+              "type": "number"
+            },
+            {
+              "id": "ticket_text",
+              "name": "ticket_text",
+              "value": "={{ $json.ticket_text }}",
+              "type": "string"
+            },
+            {
+              "id": "embedding",
+              "name": "embedding",
+              "value": "={{ $json.embedding }}",
+              "type": "string"
+            },
+            {
+              "id": "category",
+              "name": "category",
+              "value": "={{ $json.category }}",
+              "type": "string"
+            },
+            {
+              "id": "confidence",
+              "name": "confidence",
+              "value": "={{ $json.confidence }}",
+              "type": "number"
+            },
+            {
+              "id": "sensitive_share",
+              "name": "sensitive_share",
+              "value": "={{ $json.sensitive_share }}",
+              "type": "number"
+            },
+            {
+              "id": "votes",
+              "name": "votes",
+              "value": "={{ $json.votes }}",
+              "type": "object"
+            },
+            {
+              "id": "similar_cases",
+              "name": "similar_cases",
+              "value": "={{ $json.similar_cases }}",
+              "type": "array"
+            },
+            {
+              "id": "blocked",
+              "name": "blocked",
+              "value": "={{ $json.blocked }}",
+              "type": "boolean"
+            },
+            {
+              "id": "level",
+              "name": "level",
+              "value": "={{ $json.level }}",
+              "type": "number"
+            },
+            {
+              "id": "level_reason",
+              "name": "level_reason",
+              "value": "={{ $json.level_reason }}",
+              "type": "string"
+            },
+            {
+              "id": "status",
+              "name": "status",
+              "value": "received",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {
+          "ignoreConversionErrors": true
+        }
+      }
+    },
+    {
+      "id": "aa67d4fc-9fd6-4761-98e8-655156f507fe",
+      "name": "Registrar triagem",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2200,
+        320
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "create",
+        "tableId": "triage_runs",
+        "dataToSend": "autoMapInputData"
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SEmoMU7WjCZ71Snn",
+          "name": "G4 - Supabase"
+        }
+      }
+    },
+    {
+      "id": "618462cb-2151-475f-a7da-3261ed762326",
+      "name": "Rotear por nível",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        2420,
+        320
+      ],
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "outputKey": "Automático",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $(\"Aplicar política de 3 níveis\").item.json.level }}",
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "rightValue": 1
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "outputKey": "Revisão humana",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $(\"Aplicar política de 3 níveis\").item.json.level }}",
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "rightValue": 2
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "outputKey": "Só humano",
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $(\"Aplicar política de 3 níveis\").item.json.level }}",
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "rightValue": 3
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra",
+          "renameFallbackOutput": "Fallback → só humano"
+        }
+      }
+    },
+    {
+      "id": "9490c93d-156b-4b12-951c-7933b63070ac",
+      "name": "Adaptar solução validada ao ticket (OpenAI)",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        2700,
+        0
+      ],
+      "parameters": {
+        "resource": "text",
+        "operation": "response",
+        "modelId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "gpt-5.4-mini"
+        },
+        "responses": {
+          "values": [
+            {
+              "type": "text",
+              "role": "user",
+              "content": "=Ticket:\n{{ $(\"Aplicar política de 3 níveis\").item.json.ticket_text }}\n\nCategory: {{ $(\"Aplicar política de 3 níveis\").item.json.category }}\n\nValidated solution:\n{{ $(\"Aplicar política de 3 níveis\").item.json.resolutions[0].resolution_text }}"
+            }
+          ]
+        },
+        "simplify": false,
+        "options": {
+          "instructions": "You are an IT service desk agent. Adapt the VALIDATED SOLUTION to the customer ticket.\nRules:\n1. Use only the steps, conditions and information that are in the validated solution. Never add new steps, deadlines, promises, exceptions, links or contacts.\n2. You may reorder, shorten and personalize the wording so it addresses this ticket.\n3. Write the reply in the same language as the ticket.\n4. If the validated solution does not address what the ticket asks for, set fits to false, leave response_text empty and explain why in reason (in Brazilian Portuguese).\nReturn only the JSON object.",
+          "maxTokens": 900,
+          "reasoning": {
+            "reasoningOptions": {
+              "effort": "low",
+              "summary": "none"
+            }
+          },
+          "store": false,
+          "textFormat": {
+            "textOptions": {
+              "type": "json_schema",
+              "name": "adapted_reply",
+              "strict": true,
+              "schema": "{\"type\":\"object\",\"properties\":{\"response_text\":{\"type\":\"string\"},\"fits\":{\"type\":\"boolean\"},\"reason\":{\"type\":\"string\"}},\"required\":[\"response_text\",\"fits\",\"reason\"],\"additionalProperties\":false}"
+            }
+          }
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "onError": "continueErrorOutput",
+      "credentials": {
+        "openAiApi": {
+          "id": "O7tDFfhjrb655KV1",
+          "name": "G4 - OpenAI"
+        }
+      }
+    },
+    {
+      "id": "c87f0321-6d1d-4d74-9c44-b94c4bb7fd4e",
+      "name": "Redigir rascunho (OpenAI)",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        3360,
+        320
+      ],
+      "parameters": {
+        "resource": "text",
+        "operation": "response",
+        "modelId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "gpt-5.4-mini"
+        },
+        "responses": {
+          "values": [
+            {
+              "type": "text",
+              "role": "user",
+              "content": "=Ticket:\n{{ $(\"Aplicar política de 3 níveis\").item.json.ticket_text }}\n\nPredicted category: {{ $(\"Aplicar política de 3 níveis\").item.json.category }} (confidence {{ $(\"Aplicar política de 3 níveis\").item.json.confidence.toFixed(2) }})\n\nValidated solutions for this category:\n{{ $(\"Aplicar política de 3 níveis\").item.json.resolutions.length ? $(\"Aplicar política de 3 níveis\").item.json.resolutions.map((r, i) => (i + 1) + \". \" + r.resolution_text).join(\"\\n\") : \"(none yet)\" }}\n\nMost similar past tickets (context only, they have no resolution):\n{{ $(\"Aplicar política de 3 níveis\").item.json.similar_cases.map(c => \"- [\" + c.category + \", sim \" + c.similarity + \"] \" + c.snippet).join(\"\\n\") }}"
+            }
+          ]
+        },
+        "simplify": false,
+        "options": {
+          "instructions": "You are an IT service desk agent drafting a reply that a HUMAN agent will review before sending.\nRules:\n1. Base the draft on the validated solutions when they apply. Similar past tickets only show what kind of request this is; they contain no answers.\n2. Never invent policies, deadlines, promises or exceptions. When information is missing, ask the customer for it.\n3. Write the draft in the same language as the ticket.\n4. In checks, list 2 to 4 items, in Brazilian Portuguese, that the reviewer must verify before sending.\nReturn only the JSON object.",
+          "maxTokens": 1200,
+          "reasoning": {
+            "reasoningOptions": {
+              "effort": "low",
+              "summary": "none"
+            }
+          },
+          "store": false,
+          "textFormat": {
+            "textOptions": {
+              "type": "json_schema",
+              "name": "draft_reply",
+              "strict": true,
+              "schema": "{\"type\":\"object\",\"properties\":{\"draft\":{\"type\":\"string\"},\"checks\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}}},\"required\":[\"draft\",\"checks\"],\"additionalProperties\":false}"
+            }
+          }
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "onError": "continueErrorOutput",
+      "credentials": {
+        "openAiApi": {
+          "id": "O7tDFfhjrb655KV1",
+          "name": "G4 - OpenAI"
+        }
+      }
+    },
+    {
+      "id": "46808001-a6e3-49b0-b46a-799eeb52f490",
+      "name": "Resumir para o humano (OpenAI)",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        2700,
+        640
+      ],
+      "parameters": {
+        "resource": "text",
+        "operation": "response",
+        "modelId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "gpt-5.4-mini"
+        },
+        "responses": {
+          "values": [
+            {
+              "type": "text",
+              "role": "user",
+              "content": "=Ticket:\n{{ $(\"Aplicar política de 3 níveis\").item.json.ticket_text }}\n\nPredicted category: {{ $(\"Aplicar política de 3 níveis\").item.json.category }}\nWhy it must be handled only by a human: {{ $(\"Aplicar política de 3 níveis\").item.json.level_reason }}"
+            }
+          ]
+        },
+        "simplify": false,
+        "options": {
+          "instructions": "You triage support tickets that must be handled ONLY by a human. Do NOT write any reply to the customer.\nWrite in Brazilian Portuguese:\n- summary: 2 to 3 sentences on what the person needs;\n- risk_signals: sensitive aspects (HR, legal, personal data, access privileges, urgency); empty list if none;\n- suggested_owner: the team that should handle it.\nReturn only the JSON object.",
+          "maxTokens": 700,
+          "reasoning": {
+            "reasoningOptions": {
+              "effort": "low",
+              "summary": "none"
+            }
+          },
+          "store": false,
+          "textFormat": {
+            "textOptions": {
+              "type": "json_schema",
+              "name": "human_summary",
+              "strict": true,
+              "schema": "{\"type\":\"object\",\"properties\":{\"summary\":{\"type\":\"string\"},\"risk_signals\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"suggested_owner\":{\"type\":\"string\"}},\"required\":[\"summary\",\"risk_signals\",\"suggested_owner\"],\"additionalProperties\":false}"
+            }
+          }
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "onError": "continueErrorOutput",
+      "credentials": {
+        "openAiApi": {
+          "id": "O7tDFfhjrb655KV1",
+          "name": "G4 - OpenAI"
+        }
+      }
+    },
+    {
+      "id": "ec92361c-a535-4437-9c2a-9bfaeee30f3b",
+      "name": "Ler resposta adaptada",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2920,
+        0
+      ],
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "llm",
+              "name": "llm",
+              "value": "={{ (() => { const j = $json; const c = Array.isArray(j.output) ? j.output.flatMap(o => o.content ?? []).find(x => x.type === \"output_text\") : null; const t = c ? c.text : (j.output_text ?? j.text ?? j.output); if (t && typeof t === \"object\") return t; try { return JSON.parse(t); } catch (e) { return { response_text: \"\", fits: false, reason: \"Resposta do LLM fora do formato\" }; } })() }}",
+              "type": "object"
+            },
+            {
+              "id": "usage",
+              "name": "usage",
+              "value": "={{ $json.usage ?? {} }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "8cf6dbbb-1f35-4913-865b-039171e28de3",
+      "name": "Solução serve ao ticket?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3140,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.llm.fits === true && String($json.llm.response_text ?? \"\").trim().length > 0 }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "c024c5cc-7997-4cce-a907-933f94925ccb",
+      "name": "Marcar como respondido",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        4240,
+        0
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "tableId": "triage_runs",
+        "filterType": "manual",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $(\"Registrar triagem\").item.json.id }}"
+            }
+          ]
+        },
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "auto_answered"
+            },
+            {
+              "fieldId": "response_text",
+              "fieldValue": "={{ $json.llm.response_text }}"
+            },
+            {
+              "fieldId": "resolution_id",
+              "fieldValue": "={{ $(\"Aplicar política de 3 níveis\").item.json.resolutions[0].id }}"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $now.toISO() }}"
+            },
+            {
+              "fieldId": "tokens_in",
+              "fieldValue": "={{ ($(\"Gerar embedding (OpenAI)\").item.json.usage?.total_tokens ?? 0) + [\"Ler resposta adaptada\", \"Ler rascunho\", \"Montar mensagem de alerta\"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.input_tokens ?? 0), 0) }}"
+            },
+            {
+              "fieldId": "tokens_out",
+              "fieldValue": "={{ [\"Ler resposta adaptada\", \"Ler rascunho\", \"Montar mensagem de alerta\"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.output_tokens ?? 0), 0) }}"
+            },
+            {
+              "fieldId": "cost_usd",
+              "fieldValue": "={{ Math.round(($(\"Gerar embedding (OpenAI)\").item.json.usage?.total_tokens ?? 0) * 0.02 + [\"Ler resposta adaptada\", \"Ler rascunho\", \"Montar mensagem de alerta\"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.input_tokens ?? 0), 0) * 0.75 + [\"Ler resposta adaptada\", \"Ler rascunho\", \"Montar mensagem de alerta\"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.output_tokens ?? 0), 0) * 4.5) / 1000000 }}"
+            },
+            {
+              "fieldId": "latency_ms",
+              "fieldValue": "={{ $now.toMillis() - $(\"Preparar ticket\").item.json.t0 }}"
+            },
+            {
+              "fieldId": "step_ms",
+              "fieldValue": "={{ ({ classificacao: $(\"Reunir resultado e limiares\").item.json.t_class - $(\"Preparar ticket\").item.json.t0, redacao: $now.toMillis() - $(\"Reunir resultado e limiares\").item.json.t_class }) }}"
+            }
+          ]
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SEmoMU7WjCZ71Snn",
+          "name": "G4 - Supabase"
+        }
+      }
+    },
+    {
+      "id": "7cdb8529-2e56-4d35-a9ea-6654a34f577b",
+      "name": "Responder ao console",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        4480,
+        320
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ triage_run_id: $(\"Registrar triagem\").item.json.id, status: $json.status, level: $json.level ?? $(\"Aplicar política de 3 níveis\").item.json.level, level_reason: $json.level_reason ?? $(\"Aplicar política de 3 níveis\").item.json.level_reason, category: $(\"Aplicar política de 3 níveis\").item.json.category, confidence: $(\"Aplicar política de 3 níveis\").item.json.confidence, sensitive_share: $(\"Aplicar política de 3 níveis\").item.json.sensitive_share, votes: $(\"Aplicar política de 3 níveis\").item.json.votes, similar_cases: $(\"Aplicar política de 3 níveis\").item.json.similar_cases, resolutions: $(\"Aplicar política de 3 níveis\").item.json.resolutions, response_text: $json.response_text ?? null, resolution_id: $json.resolution_id ?? null, hitl: $(\"Enviar para fila de revisão\").isExecuted ? { hitl_id: $(\"Enviar para fila de revisão\").item.json.id, draft_text: $(\"Enviar para fila de revisão\").item.json.draft_text, checks: $(\"Enviar para fila de revisão\").item.json.checks } : null, notification: null, alert: $(\"Formatar texto do alerta\").isExecuted ? { title: $(\"Formatar texto do alerta\").item.json.title, body: $(\"Formatar texto do alerta\").item.json.body } : null, human_summary: $(\"Formatar texto do alerta\").isExecuted ? $(\"Formatar texto do alerta\").item.json.payload : null }) }}",
+        "options": {
+          "responseCode": 200
+        }
+      }
+    },
+    {
+      "id": "70182e8a-925a-4e56-be3a-e6b273c7d181",
+      "name": "Ler rascunho",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        3580,
+        320
+      ],
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "llm",
+              "name": "llm",
+              "value": "={{ (() => { const j = $json; const c = Array.isArray(j.output) ? j.output.flatMap(o => o.content ?? []).find(x => x.type === \"output_text\") : null; const t = c ? c.text : (j.output_text ?? j.text ?? j.output); if (t && typeof t === \"object\") return t; try { return JSON.parse(t); } catch (e) { return { draft: String(t ?? \"\"), checks: [\"Resposta do LLM fora do formato: revisar com atenção\"] }; } })() }}",
+              "type": "object"
+            },
+            {
+              "id": "usage",
+              "name": "usage",
+              "value": "={{ $json.usage ?? {} }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "a1c193fc-cde5-4da5-919b-52dfe9943344",
+      "name": "Montar item da fila",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        3800,
+        320
+      ],
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "triage_run_id",
+              "name": "triage_run_id",
+              "value": "={{ $(\"Registrar triagem\").item.json.id }}",
+              "type": "number"
+            },
+            {
+              "id": "draft_text",
+              "name": "draft_text",
+              "value": "={{ $json.llm.draft }}",
+              "type": "string"
+            },
+            {
+              "id": "checks",
+              "name": "checks",
+              "value": "={{ $json.llm.checks ?? [] }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "606537f2-1bb3-48a9-9020-596dcede185d",
+      "name": "Enviar para fila de revisão",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        4020,
+        320
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "create",
+        "tableId": "hitl_queue",
+        "dataToSend": "autoMapInputData"
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SEmoMU7WjCZ71Snn",
+          "name": "G4 - Supabase"
+        }
+      }
+    },
+    {
+      "id": "4f30ca43-14d4-4f59-8f4e-086e149fa2f0",
+      "name": "Marcar como em revisão",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        4240,
+        320
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "tableId": "triage_runs",
+        "filterType": "manual",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $(\"Registrar triagem\").item.json.id }}"
+            }
+          ]
+        },
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "pending_review"
+            },
+            {
+              "fieldId": "level",
+              "fieldValue": "={{ 2 }}"
+            },
+            {
+              "fieldId": "level_reason",
+              "fieldValue": "={{ $(\"Aplicar política de 3 níveis\").item.json.level === 1 ? $(\"Aplicar política de 3 níveis\").item.json.level_reason + \" → solução validada não se aplica ao ticket\" : $(\"Aplicar política de 3 níveis\").item.json.level_reason }}"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $now.toISO() }}"
+            },
+            {
+              "fieldId": "tokens_in",
+              "fieldValue": "={{ ($(\"Gerar embedding (OpenAI)\").item.json.usage?.total_tokens ?? 0) + [\"Ler resposta adaptada\", \"Ler rascunho\", \"Montar mensagem de alerta\"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.input_tokens ?? 0), 0) }}"
+            },
+            {
+              "fieldId": "tokens_out",
+              "fieldValue": "={{ [\"Ler resposta adaptada\", \"Ler rascunho\", \"Montar mensagem de alerta\"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.output_tokens ?? 0), 0) }}"
+            },
+            {
+              "fieldId": "cost_usd",
+              "fieldValue": "={{ Math.round(($(\"Gerar embedding (OpenAI)\").item.json.usage?.total_tokens ?? 0) * 0.02 + [\"Ler resposta adaptada\", \"Ler rascunho\", \"Montar mensagem de alerta\"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.input_tokens ?? 0), 0) * 0.75 + [\"Ler resposta adaptada\", \"Ler rascunho\", \"Montar mensagem de alerta\"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.output_tokens ?? 0), 0) * 4.5) / 1000000 }}"
+            },
+            {
+              "fieldId": "latency_ms",
+              "fieldValue": "={{ $now.toMillis() - $(\"Preparar ticket\").item.json.t0 }}"
+            },
+            {
+              "fieldId": "step_ms",
+              "fieldValue": "={{ ({ classificacao: $(\"Reunir resultado e limiares\").item.json.t_class - $(\"Preparar ticket\").item.json.t0, redacao: $now.toMillis() - $(\"Reunir resultado e limiares\").item.json.t_class }) }}"
+            }
+          ]
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SEmoMU7WjCZ71Snn",
+          "name": "G4 - Supabase"
+        }
+      }
+    },
+    {
+      "id": "ea1f8d57-d5b6-440c-81c9-55d2b4172209",
+      "name": "Montar mensagem de alerta",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2920,
+        640
+      ],
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "llm",
+              "name": "llm",
+              "value": "={{ (() => { const j = $json; const c = Array.isArray(j.output) ? j.output.flatMap(o => o.content ?? []).find(x => x.type === \"output_text\") : null; const t = c ? c.text : (j.output_text ?? j.text ?? j.output); if (t && typeof t === \"object\") return t; try { return JSON.parse(t); } catch (e) { return { summary: String(t ?? \"\"), risk_signals: [], suggested_owner: \"Suporte\" }; } })() }}",
+              "type": "object"
+            },
+            {
+              "id": "title",
+              "name": "title",
+              "value": "={{ \"Ticket só para humano · \" + $(\"Aplicar política de 3 níveis\").item.json.category + \" · triagem #\" + $(\"Registrar triagem\").item.json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "usage",
+              "name": "usage",
+              "value": "={{ $json.usage ?? {} }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "30035a11-5fe7-43e0-ae22-9e2b301a023c",
+      "name": "Formatar texto do alerta",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        3140,
+        640
+      ],
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "triage_run_id",
+              "name": "triage_run_id",
+              "value": "={{ $(\"Registrar triagem\").item.json.id }}",
+              "type": "number"
+            },
+            {
+              "id": "kind",
+              "name": "kind",
+              "value": "level3_alert",
+              "type": "string"
+            },
+            {
+              "id": "channel_intended",
+              "name": "channel_intended",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "title",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "body",
+              "name": "body",
+              "value": "=:rotating_light: *{{ $json.title }}*\n*Motivo:* {{ $(\"Aplicar política de 3 níveis\").item.json.level_reason }}\n*Categoria prevista:* {{ $(\"Aplicar política de 3 níveis\").item.json.category }} (confiança {{ $(\"Aplicar política de 3 níveis\").item.json.confidence.toFixed(2) }})\n*Resumo:* {{ $json.llm.summary }}\n*Sinais de risco:* {{ ($json.llm.risk_signals ?? []).join(\", \") || \"nenhum\" }}\n*Time sugerido:* {{ $json.llm.suggested_owner }}\nA IA não respondeu ao cliente. Abra Tickets no app para assumir o ticket.",
+              "type": "string"
+            },
+            {
+              "id": "payload",
+              "name": "payload",
+              "value": "={{ $json.llm }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "d830d51a-7968-4a92-baac-b4e6fc05b436",
+      "name": "Avisar no Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        3360,
+        640
+      ],
+      "parameters": {
+        "resource": "message",
+        "operation": "post",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "#suporte-alertas"
+        },
+        "messageType": "text",
+        "text": "={{ $(\"Formatar texto do alerta\").item.json.body }}",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "disabled": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "8dc0e7a6-6864-4ad4-b985-c55e95b70465",
+      "name": "Marcar como aguardando humano",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        4240,
+        640
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "tableId": "triage_runs",
+        "filterType": "manual",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $(\"Registrar triagem\").item.json.id }}"
+            }
+          ]
+        },
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "awaiting_human"
+            },
+            {
+              "fieldId": "level",
+              "fieldValue": "={{ 3 }}"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $now.toISO() }}"
+            },
+            {
+              "fieldId": "tokens_in",
+              "fieldValue": "={{ ($(\"Gerar embedding (OpenAI)\").item.json.usage?.total_tokens ?? 0) + [\"Ler resposta adaptada\", \"Ler rascunho\", \"Montar mensagem de alerta\"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.input_tokens ?? 0), 0) }}"
+            },
+            {
+              "fieldId": "tokens_out",
+              "fieldValue": "={{ [\"Ler resposta adaptada\", \"Ler rascunho\", \"Montar mensagem de alerta\"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.output_tokens ?? 0), 0) }}"
+            },
+            {
+              "fieldId": "cost_usd",
+              "fieldValue": "={{ Math.round(($(\"Gerar embedding (OpenAI)\").item.json.usage?.total_tokens ?? 0) * 0.02 + [\"Ler resposta adaptada\", \"Ler rascunho\", \"Montar mensagem de alerta\"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.input_tokens ?? 0), 0) * 0.75 + [\"Ler resposta adaptada\", \"Ler rascunho\", \"Montar mensagem de alerta\"].filter(n => $(n).isExecuted).reduce((a, n) => a + ($(n).item.json.usage?.output_tokens ?? 0), 0) * 4.5) / 1000000 }}"
+            },
+            {
+              "fieldId": "latency_ms",
+              "fieldValue": "={{ $now.toMillis() - $(\"Preparar ticket\").item.json.t0 }}"
+            },
+            {
+              "fieldId": "step_ms",
+              "fieldValue": "={{ ({ classificacao: $(\"Reunir resultado e limiares\").item.json.t_class - $(\"Preparar ticket\").item.json.t0, redacao: $now.toMillis() - $(\"Reunir resultado e limiares\").item.json.t_class }) }}"
+            },
+            {
+              "fieldId": "human_summary",
+              "fieldValue": "={{ $(\"Formatar texto do alerta\").item.json.payload }}"
+            },
+            {
+              "fieldId": "alert_title",
+              "fieldValue": "={{ $(\"Formatar texto do alerta\").item.json.title }}"
+            },
+            {
+              "fieldId": "alert_body",
+              "fieldValue": "={{ $(\"Formatar texto do alerta\").item.json.body }}"
+            }
+          ]
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SEmoMU7WjCZ71Snn",
+          "name": "G4 - Supabase"
+        }
+      }
+    },
+    {
+      "id": "363819ab-002b-461e-bb99-43d132206f21",
+      "name": "Responder falha (503)",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        4480,
+        960
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{ \"error\": \"Falha temporária na triagem (OpenAI ou banco). O console deve usar o modo de resultados pré-computados.\" }",
+        "options": {
+          "responseCode": 503
+        }
+      }
+    },
+    {
+      "id": "2a7afcf1-e3c6-44c2-9b40-856b3f32daae",
+      "name": "Marcar triagem com erro",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        4020,
+        960
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "tableId": "triage_runs",
+        "filterType": "manual",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $(\"Registrar triagem\").item.json.id }}"
+            }
+          ]
+        },
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "error"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $now.toISO() }}"
+            }
+          ]
+        }
+      },
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SEmoMU7WjCZ71Snn",
+          "name": "G4 - Supabase"
+        }
+      }
+    },
+    {
+      "id": "30e919fc-771d-46f1-9eac-8e7c64cd0ffc",
+      "name": "Sticky Note 4abef70c",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2680,
+        800
+      ],
+      "parameters": {
+        "content": "## Nível 3: só humano\nA IA não responde ao cliente: resume em pt-BR, aponta riscos e monta o aviso. A nota e o texto do Slack ficam na própria triagem (triage_runs), e o app simula o aviso no navegador. O nó Slack fica **desativado** até existir um workspace; para ligar, selecione a credencial e o canal (ADR-0007, ADR-0015).",
+        "color": 4
+      }
+    },
+    {
+      "id": "770ae295-7b4e-47ae-8244-79e18ca8068e",
+      "name": "Sticky Note ff3980a5",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        640,
+        40
+      ],
+      "parameters": {
+        "content": "## Classificação (RAG no Supabase)\nO voto dos 50 tickets mais parecidos (peso similaridade^16) roda na função SQL `classify_ticket`. O n8n só chama a função pela API REST do Supabase (HTTP Request + credencial Supabase), porque o nó Supabase não chama funções.\nO embedding usa o HTTP Request com a credencial nativa da OpenAI, porque o nó *Embeddings OpenAI* é sub-nó e não tem saída no fluxo principal.",
+        "color": 5
+      }
+    },
+    {
+      "id": "507b4273-9e30-452d-9697-412eddf6f1d5",
+      "name": "Sticky Note 9153644e",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2680,
+        -260
+      ],
+      "parameters": {
+        "content": "## Nível 1: resposta automática\nO LLM só adapta a solução validada (sem passos, prazos ou promessas novas). Se ela não servir ao ticket, o ticket desce para a revisão humana.",
+        "color": 6
+      }
+    }
+  ],
+  "connections": {
+    "Receber ticket do console": {
+      "main": [
+        [
+          {
+            "node": "Preparar ticket",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar ticket": {
+      "main": [
+        [
+          {
+            "node": "Entrada válida?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Entrada válida?": {
+      "main": [
+        [
+          {
+            "node": "Gerar embedding (OpenAI)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Responder erro 400",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerar embedding (OpenAI)": {
+      "main": [
+        [
+          {
+            "node": "Classificar por casos parecidos (RAG)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Responder falha (503)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classificar por casos parecidos (RAG)": {
+      "main": [
+        [
+          {
+            "node": "Buscar soluções validadas",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Responder falha (503)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar soluções validadas": {
+      "main": [
+        [
+          {
+            "node": "Reunir resultado e limiares",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Responder falha (503)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reunir resultado e limiares": {
+      "main": [
+        [
+          {
+            "node": "Marcar termos de bloqueio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar termos de bloqueio": {
+      "main": [
+        [
+          {
+            "node": "Aplicar política de 3 níveis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aplicar política de 3 níveis": {
+      "main": [
+        [
+          {
+            "node": "Montar registro da triagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Montar registro da triagem": {
+      "main": [
+        [
+          {
+            "node": "Registrar triagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar triagem": {
+      "main": [
+        [
+          {
+            "node": "Rotear por nível",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rotear por nível": {
+      "main": [
+        [
+          {
+            "node": "Adaptar solução validada ao ticket (OpenAI)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Redigir rascunho (OpenAI)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resumir para o humano (OpenAI)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Resumir para o humano (OpenAI)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Adaptar solução validada ao ticket (OpenAI)": {
+      "main": [
+        [
+          {
+            "node": "Ler resposta adaptada",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Marcar triagem com erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redigir rascunho (OpenAI)": {
+      "main": [
+        [
+          {
+            "node": "Ler rascunho",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Marcar triagem com erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resumir para o humano (OpenAI)": {
+      "main": [
+        [
+          {
+            "node": "Montar mensagem de alerta",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Marcar triagem com erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ler resposta adaptada": {
+      "main": [
+        [
+          {
+            "node": "Solução serve ao ticket?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Solução serve ao ticket?": {
+      "main": [
+        [
+          {
+            "node": "Marcar como respondido",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Redigir rascunho (OpenAI)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar como respondido": {
+      "main": [
+        [
+          {
+            "node": "Responder ao console",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ler rascunho": {
+      "main": [
+        [
+          {
+            "node": "Montar item da fila",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Montar item da fila": {
+      "main": [
+        [
+          {
+            "node": "Enviar para fila de revisão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar para fila de revisão": {
+      "main": [
+        [
+          {
+            "node": "Marcar como em revisão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar como em revisão": {
+      "main": [
+        [
+          {
+            "node": "Responder ao console",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Montar mensagem de alerta": {
+      "main": [
+        [
+          {
+            "node": "Formatar texto do alerta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Avisar no Slack": {
+      "main": [
+        [
+          {
+            "node": "Marcar como aguardando humano",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar como aguardando humano": {
+      "main": [
+        [
+          {
+            "node": "Responder ao console",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar triagem com erro": {
+      "main": [
+        [
+          {
+            "node": "Responder falha (503)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatar texto do alerta": {
+      "main": [
+        [
+          {
+            "node": "Avisar no Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodeGroups": [
+    {
+      "id": "71d218ad-3e7e-4d3f-b4f2-f7658d9da815",
+      "name": "Política de 3 níveis",
+      "nodeNames": [
+        "Reunir resultado e limiares",
+        "Marcar termos de bloqueio",
+        "Aplicar política de 3 níveis",
+        "Montar registro da triagem",
+        "Registrar triagem",
+        "Rotear por nível"
+      ],
+      "description": "Limiares editáveis, lista de bloqueio, decisão de nível (ADR-0010/0012) e registro da triagem para auditoria."
+    },
+    {
+      "id": "f0fc9b72-af8b-419d-ab92-523b055722fe",
+      "name": "Nível 2 — fila de revisão",
+      "nodeNames": [
+        "Ler rascunho",
+        "Montar item da fila",
+        "Enviar para fila de revisão",
+        "Marcar como em revisão"
+      ],
+      "description": "Lê o rascunho do LLM, cria o item pendente na fila HITL e marca a triagem como em revisão."
+    },
+    {
+      "id": "7d217d88-f6ec-43ee-b602-71de24bddaa6",
+      "name": "Nível 3 — alerta ao humano",
+      "nodeNames": [
+        "Montar mensagem de alerta",
+        "Formatar texto do alerta",
+        "Avisar no Slack",
+        "Marcar como aguardando humano"
+      ],
+      "description": "Monta a nota interna e o texto do Slack, gravados na triagem; o app simula o aviso. Nó Slack desativado até haver workspace."
+    }
+  ],
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "meta": {
+    "exportedFrom": "n8n (VPS do Daniel, URL fora do repositório)",
+    "workflowId": "msFVCvUdsmRq49pv",
+    "active": true,
+    "activeVersionId": "770216bc-d7e9-4ad9-a601-c1bc2c9602ed",
+    "verifiedAgainstLive": "2026-11-10 (sessão 04, MCP n8n-g4)"
+  }
+}

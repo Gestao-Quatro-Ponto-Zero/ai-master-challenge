@@ -1,0 +1,302 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* Tema escuro por classe (next-themes, attribute="class") */
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design system Órbita (docs/design-system.md), base Core-Slides-G4 de João Vitor (MIT).
+ * Tokens Órbita (--bg, --surface, --text-1…, --gold, --green, --red) + mapeamento para as
+ * variáveis do shadcn/ui (--background, --card, --primary…). Regra: um único dourado por tela.
+ */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-manrope);
+  --font-serif: var(--font-baskerville);
+  --font-mono: var(--font-plex-mono);
+  --font-heading: var(--font-baskerville);
+
+  /* Órbita */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-text-1: var(--text-1);
+  --color-text-2: var(--text-2);
+  --color-text-3: var(--text-3);
+  --color-gold: var(--gold);
+  --color-ok: var(--green);
+  --color-alert: var(--red);
+  --color-navy: var(--navy-500);
+  --color-navy-600: var(--navy-600);
+
+  /* Caminhos da triagem (PRD §5) */
+  --color-path-auto: var(--path-auto);
+  --color-path-review: var(--path-review);
+  --color-path-human: var(--path-human);
+
+  /* Categorias do DS2 (PRD §6): sempre com rótulo escrito */
+  --color-cat-hardware: var(--cat-hardware);
+  --color-cat-hr: var(--cat-hr);
+  --color-cat-access: var(--cat-access);
+  --color-cat-misc: var(--cat-misc);
+  --color-cat-storage: var(--cat-storage);
+  --color-cat-purchase: var(--cat-purchase);
+  --color-cat-project: var(--cat-project);
+  --color-cat-admin: var(--cat-admin);
+
+  /* shadcn/ui */
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Forma: raios 10 / 16 / 22 / 30 */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --radius-2xl: 30px;
+  --radius-3xl: 30px;
+  --radius-4xl: 30px;
+  --shadow-soft: 0 1px 2px rgb(0 31 53 / 0.04), 0 8px 24px -12px rgb(0 31 53 / 0.12);
+}
+
+:root {
+  --radius: 16px;
+
+  /* Órbita — claro (paper) */
+  --bg: #f5f4f3;
+  --surface: #ffffff;
+  --surface-2: #efede9;
+  --text-1: #001f35;
+  --text-2: #1d3a4d;
+  --text-3: #5a7184;
+  --border-orbita: rgb(0 31 53 / 0.09);
+  --gold: #b9915b;
+  --green: #12693b;
+  --red: #842e20;
+  --navy-500: #001f35;
+  --navy-600: #001a2d;
+
+  --path-auto: var(--green);
+  --path-review: var(--gold);
+  --path-human: var(--text-1);
+
+  --cat-hardware: #1d4e6e;
+  --cat-hr: #8a5a6b;
+  --cat-access: #4f7c8e;
+  --cat-misc: #8c8478;
+  --cat-storage: #5f8566;
+  --cat-purchase: #a26f48;
+  --cat-project: #5b5f8a;
+  --cat-admin: #6e4a2e;
+
+  /* shadcn/ui */
+  --background: var(--bg);
+  --foreground: var(--text-1);
+  --card: var(--surface);
+  --card-foreground: var(--text-1);
+  --popover: var(--surface);
+  --popover-foreground: var(--text-1);
+  --primary: var(--navy-500);
+  --primary-foreground: #f2f6f9;
+  --secondary: var(--surface-2);
+  --secondary-foreground: var(--text-1);
+  --muted: var(--surface-2);
+  --muted-foreground: var(--text-3);
+  --accent: var(--surface-2);
+  --accent-foreground: var(--text-1);
+  --destructive: var(--red);
+  --border: var(--border-orbita);
+  --input: rgb(0 31 53 / 0.14);
+  --ring: rgb(0 31 53 / 0.35);
+  --chart-1: var(--cat-hardware);
+  --chart-2: var(--cat-access);
+  --chart-3: var(--cat-storage);
+  --chart-4: var(--cat-purchase);
+  --chart-5: var(--cat-project);
+}
+
+.dark {
+  /* Órbita — escuro (navy-700) */
+  --bg: #001525;
+  --surface: #0a2131;
+  --surface-2: #132b3b;
+  --text-1: #f2f6f9;
+  --text-2: #c3d3dd;
+  --text-3: #7e99ab;
+  --border-orbita: rgb(255 255 255 / 0.09);
+  --gold: #c9a05c;
+  --green: #4ade80;
+  --red: #f87171;
+
+  --path-human: var(--text-1);
+
+  --cat-hardware: #7fb0cf;
+  --cat-hr: #d39cae;
+  --cat-access: #93c1d1;
+  --cat-misc: #c4bcb0;
+  --cat-storage: #9cc7a3;
+  --cat-purchase: #dcae86;
+  --cat-project: #a7abd9;
+  --cat-admin: #c99b72;
+
+  --background: var(--bg);
+  --foreground: var(--text-1);
+  --card: var(--surface);
+  --card-foreground: var(--text-1);
+  --popover: var(--surface);
+  --popover-foreground: var(--text-1);
+  --primary: #f2f6f9;
+  --primary-foreground: #001f35;
+  --secondary: var(--surface-2);
+  --secondary-foreground: var(--text-1);
+  --muted: var(--surface-2);
+  --muted-foreground: var(--text-3);
+  --accent: var(--surface-2);
+  --accent-foreground: var(--text-1);
+  --destructive: var(--red);
+  --border: var(--border-orbita);
+  --input: rgb(255 255 255 / 0.15);
+  --ring: rgb(255 255 255 / 0.35);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "tnum" 1, "lnum" 1;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+/* Barra flutuante do mobile não cobre o conteúdo */
+@layer utilities {
+  .pb-mobile-nav {
+    padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+  }
+  @media (min-width: 768px) {
+    .pb-mobile-nav {
+      padding-bottom: 0;
+    }
+  }
+}
+
+/* Documentos transcritos (ADRs e judgment log) no pop-up de Como foi feito › Decisões. */
+@layer components {
+  .doc-prose {
+    font-size: 0.875rem;
+    line-height: 1.65;
+    color: var(--text-2);
+  }
+  .doc-prose > * + * {
+    margin-top: 0.75rem;
+  }
+  .doc-prose h2 {
+    margin-top: 1.5rem;
+    font-family: var(--font-baskerville);
+    font-size: 1.05rem;
+    color: var(--text-1);
+  }
+  .doc-prose h3,
+  .doc-prose h4 {
+    margin-top: 1.25rem;
+    font-weight: 600;
+    color: var(--text-1);
+  }
+  .doc-prose strong {
+    font-weight: 600;
+    color: var(--text-1);
+  }
+  .doc-prose ul,
+  .doc-prose ol {
+    padding-left: 1.25rem;
+  }
+  .doc-prose ul {
+    list-style: disc;
+  }
+  .doc-prose ol {
+    list-style: decimal;
+  }
+  .doc-prose li + li,
+  .doc-prose li > ul,
+  .doc-prose li > ol {
+    margin-top: 0.25rem;
+  }
+  .doc-prose a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .doc-prose code {
+    font-family: var(--font-plex-mono);
+    font-size: 0.8em;
+    border-radius: 4px;
+    background: var(--surface-2);
+    padding: 0.05rem 0.3rem;
+  }
+  .doc-prose pre {
+    overflow-x: auto;
+    border-radius: 10px;
+    background: var(--surface-2);
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
+  }
+  .doc-prose pre code {
+    background: none;
+    padding: 0;
+  }
+  .doc-prose blockquote {
+    border-left: 2px solid var(--border-orbita);
+    padding-left: 0.875rem;
+    color: var(--text-3);
+  }
+  .doc-prose table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+  }
+  .doc-prose th,
+  .doc-prose td {
+    border: 1px solid var(--border-orbita);
+    padding: 0.4rem 0.6rem;
+    text-align: left;
+    vertical-align: top;
+  }
+  .doc-prose th {
+    background: var(--surface-2);
+    font-weight: 600;
+    color: var(--text-1);
+  }
+  .doc-prose hr {
+    border-color: var(--border-orbita);
+  }
+}

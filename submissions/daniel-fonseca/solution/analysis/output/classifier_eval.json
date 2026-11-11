@@ -1,0 +1,803 @@
+{
+ "dataset": "DS2",
+ "n_train": 38270,
+ "n_test": 9567,
+ "classes": [
+  "Access",
+  "Administrative rights",
+  "HR Support",
+  "Hardware",
+  "Internal Project",
+  "Miscellaneous",
+  "Purchase",
+  "Storage"
+ ],
+ "class_share_test": {
+  "Hardware": 0.2846,
+  "HR Support": 0.2282,
+  "Access": 0.1489,
+  "Miscellaneous": 0.1476,
+  "Storage": 0.058,
+  "Purchase": 0.0515,
+  "Internal Project": 0.0443,
+  "Administrative rights": 0.0368
+ },
+ "results": [
+  {
+   "method": "tfidf_lr",
+   "accuracy": 0.8692,
+   "f1_macro": 0.8695,
+   "f1_per_class": {
+    "Access": 0.8914,
+    "Administrative rights": 0.7961,
+    "HR Support": 0.871,
+    "Hardware": 0.8583,
+    "Internal Project": 0.8579,
+    "Miscellaneous": 0.8555,
+    "Purchase": 0.9229,
+    "Storage": 0.9031
+   },
+   "coverage_precision": [
+    {
+     "threshold": 0.0,
+     "coverage": 1.0,
+     "precision": 0.8692
+    },
+    {
+     "threshold": 0.5,
+     "coverage": 0.9071,
+     "precision": 0.9056
+    },
+    {
+     "threshold": 0.6,
+     "coverage": 0.8296,
+     "precision": 0.9302
+    },
+    {
+     "threshold": 0.7,
+     "coverage": 0.7521,
+     "precision": 0.9497
+    },
+    {
+     "threshold": 0.8,
+     "coverage": 0.6649,
+     "precision": 0.9671
+    },
+    {
+     "threshold": 0.85,
+     "coverage": 0.6118,
+     "precision": 0.974
+    },
+    {
+     "threshold": 0.9,
+     "coverage": 0.5403,
+     "precision": 0.9816
+    },
+    {
+     "threshold": 0.95,
+     "coverage": 0.4397,
+     "precision": 0.9888
+    }
+   ],
+   "confusion_matrix": {
+    "labels": [
+     "Access",
+     "Administrative rights",
+     "HR Support",
+     "Hardware",
+     "Internal Project",
+     "Miscellaneous",
+     "Purchase",
+     "Storage"
+    ],
+    "matrix": [
+     [
+      1231,
+      3,
+      49,
+      106,
+      4,
+      30,
+      0,
+      2
+     ],
+     [
+      3,
+      246,
+      8,
+      81,
+      0,
+      12,
+      0,
+      2
+     ],
+     [
+      31,
+      1,
+      1914,
+      171,
+      9,
+      46,
+      2,
+      9
+     ],
+     [
+      42,
+      9,
+      102,
+      2474,
+      6,
+      64,
+      14,
+      12
+     ],
+     [
+      4,
+      1,
+      28,
+      34,
+      341,
+      16,
+      0,
+      0
+     ],
+     [
+      19,
+      3,
+      76,
+      106,
+      11,
+      1193,
+      1,
+      3
+     ],
+     [
+      4,
+      2,
+      11,
+      33,
+      0,
+      6,
+      437,
+      0
+     ],
+     [
+      3,
+      1,
+      24,
+      37,
+      0,
+      10,
+      0,
+      480
+     ]
+    ]
+   },
+   "seconds": 15.6
+  },
+  {
+   "method": "knn15_1536",
+   "accuracy": 0.8247,
+   "f1_macro": 0.8227,
+   "f1_per_class": {
+    "Access": 0.8657,
+    "Administrative rights": 0.7452,
+    "HR Support": 0.8288,
+    "Hardware": 0.8189,
+    "Internal Project": 0.7874,
+    "Miscellaneous": 0.7784,
+    "Purchase": 0.9004,
+    "Storage": 0.8566
+   },
+   "coverage_precision": [
+    {
+     "threshold": 0.0,
+     "coverage": 1.0,
+     "precision": 0.8247
+    },
+    {
+     "threshold": 0.5,
+     "coverage": 0.855,
+     "precision": 0.8864
+    },
+    {
+     "threshold": 0.6,
+     "coverage": 0.7577,
+     "precision": 0.9259
+    },
+    {
+     "threshold": 0.7,
+     "coverage": 0.6553,
+     "precision": 0.9506
+    },
+    {
+     "threshold": 0.8,
+     "coverage": 0.5659,
+     "precision": 0.9708
+    },
+    {
+     "threshold": 0.85,
+     "coverage": 0.5183,
+     "precision": 0.9798
+    },
+    {
+     "threshold": 0.9,
+     "coverage": 0.4474,
+     "precision": 0.9869
+    },
+    {
+     "threshold": 0.95,
+     "coverage": 0.3559,
+     "precision": 0.9935
+    }
+   ],
+   "confusion_matrix": {
+    "labels": [
+     "Access",
+     "Administrative rights",
+     "HR Support",
+     "Hardware",
+     "Internal Project",
+     "Miscellaneous",
+     "Purchase",
+     "Storage"
+    ],
+    "matrix": [
+     [
+      1189,
+      4,
+      76,
+      98,
+      9,
+      42,
+      2,
+      5
+     ],
+     [
+      8,
+      234,
+      8,
+      80,
+      0,
+      15,
+      4,
+      3
+     ],
+     [
+      25,
+      2,
+      1893,
+      155,
+      16,
+      72,
+      6,
+      14
+     ],
+     [
+      60,
+      21,
+      205,
+      2301,
+      8,
+      89,
+      23,
+      16
+     ],
+     [
+      4,
+      1,
+      41,
+      33,
+      313,
+      29,
+      1,
+      2
+     ],
+     [
+      26,
+      7,
+      117,
+      155,
+      24,
+      1066,
+      11,
+      6
+     ],
+     [
+      3,
+      4,
+      10,
+      27,
+      0,
+      5,
+      443,
+      1
+     ],
+     [
+      7,
+      3,
+      35,
+      48,
+      1,
+      9,
+      1,
+      451
+     ]
+    ]
+   },
+   "seconds": 4.0,
+   "near_dup_0.95": {
+    "share": 0.0726,
+    "accuracy_without": 0.8173
+   },
+   "near_dup_0.98": {
+    "share": 0.0282,
+    "accuracy_without": 0.8218
+   }
+  },
+  {
+   "method": "emb_lr_1536",
+   "accuracy": 0.8381,
+   "f1_macro": 0.8423,
+   "f1_per_class": {
+    "Access": 0.8637,
+    "Administrative rights": 0.7783,
+    "HR Support": 0.834,
+    "Hardware": 0.831,
+    "Internal Project": 0.8235,
+    "Miscellaneous": 0.8052,
+    "Purchase": 0.9158,
+    "Storage": 0.8872
+   },
+   "coverage_precision": [
+    {
+     "threshold": 0.0,
+     "coverage": 1.0,
+     "precision": 0.8381
+    },
+    {
+     "threshold": 0.5,
+     "coverage": 0.9129,
+     "precision": 0.8718
+    },
+    {
+     "threshold": 0.6,
+     "coverage": 0.83,
+     "precision": 0.902
+    },
+    {
+     "threshold": 0.7,
+     "coverage": 0.7513,
+     "precision": 0.9285
+    },
+    {
+     "threshold": 0.8,
+     "coverage": 0.6623,
+     "precision": 0.9527
+    },
+    {
+     "threshold": 0.85,
+     "coverage": 0.6099,
+     "precision": 0.9642
+    },
+    {
+     "threshold": 0.9,
+     "coverage": 0.5489,
+     "precision": 0.973
+    },
+    {
+     "threshold": 0.95,
+     "coverage": 0.4525,
+     "precision": 0.9824
+    }
+   ],
+   "confusion_matrix": {
+    "labels": [
+     "Access",
+     "Administrative rights",
+     "HR Support",
+     "Hardware",
+     "Internal Project",
+     "Miscellaneous",
+     "Purchase",
+     "Storage"
+    ],
+    "matrix": [
+     [
+      1220,
+      4,
+      55,
+      108,
+      6,
+      31,
+      0,
+      1
+     ],
+     [
+      6,
+      244,
+      15,
+      72,
+      1,
+      9,
+      1,
+      4
+     ],
+     [
+      49,
+      4,
+      1814,
+      205,
+      16,
+      77,
+      3,
+      15
+     ],
+     [
+      69,
+      14,
+      134,
+      2375,
+      13,
+      91,
+      10,
+      17
+     ],
+     [
+      10,
+      0,
+      23,
+      31,
+      336,
+      21,
+      3,
+      0
+     ],
+     [
+      35,
+      5,
+      91,
+      133,
+      20,
+      1118,
+      5,
+      5
+     ],
+     [
+      5,
+      2,
+      8,
+      38,
+      0,
+      5,
+      435,
+      0
+     ],
+     [
+      6,
+      2,
+      27,
+      31,
+      0,
+      13,
+      0,
+      476
+     ]
+    ]
+   },
+   "seconds": 12.0
+  },
+  {
+   "method": "knn15_512",
+   "accuracy": 0.8206,
+   "f1_macro": 0.8207,
+   "f1_per_class": {
+    "Access": 0.8615,
+    "Administrative rights": 0.7608,
+    "HR Support": 0.8239,
+    "Hardware": 0.8156,
+    "Internal Project": 0.7852,
+    "Miscellaneous": 0.7679,
+    "Purchase": 0.8954,
+    "Storage": 0.8555
+   },
+   "coverage_precision": [
+    {
+     "threshold": 0.0,
+     "coverage": 1.0,
+     "precision": 0.8206
+    },
+    {
+     "threshold": 0.5,
+     "coverage": 0.8477,
+     "precision": 0.885
+    },
+    {
+     "threshold": 0.6,
+     "coverage": 0.7501,
+     "precision": 0.9249
+    },
+    {
+     "threshold": 0.7,
+     "coverage": 0.6465,
+     "precision": 0.9542
+    },
+    {
+     "threshold": 0.8,
+     "coverage": 0.5589,
+     "precision": 0.9716
+    },
+    {
+     "threshold": 0.85,
+     "coverage": 0.5126,
+     "precision": 0.979
+    },
+    {
+     "threshold": 0.9,
+     "coverage": 0.4417,
+     "precision": 0.9879
+    },
+    {
+     "threshold": 0.95,
+     "coverage": 0.3525,
+     "precision": 0.9938
+    }
+   ],
+   "confusion_matrix": {
+    "labels": [
+     "Access",
+     "Administrative rights",
+     "HR Support",
+     "Hardware",
+     "Internal Project",
+     "Miscellaneous",
+     "Purchase",
+     "Storage"
+    ],
+    "matrix": [
+     [
+      1176,
+      3,
+      83,
+      108,
+      8,
+      39,
+      4,
+      4
+     ],
+     [
+      7,
+      237,
+      10,
+      78,
+      0,
+      14,
+      4,
+      2
+     ],
+     [
+      23,
+      1,
+      1897,
+      151,
+      16,
+      72,
+      7,
+      16
+     ],
+     [
+      56,
+      17,
+      207,
+      2291,
+      7,
+      102,
+      25,
+      18
+     ],
+     [
+      4,
+      0,
+      47,
+      33,
+      307,
+      31,
+      0,
+      2
+     ],
+     [
+      32,
+      6,
+      133,
+      155,
+      19,
+      1049,
+      10,
+      8
+     ],
+     [
+      3,
+      3,
+      10,
+      31,
+      0,
+      4,
+      441,
+      1
+     ],
+     [
+      4,
+      4,
+      35,
+      48,
+      1,
+      9,
+      1,
+      453
+     ]
+    ]
+   },
+   "seconds": 3.8,
+   "near_dup_0.95": {
+    "share": 0.0795,
+    "accuracy_without": 0.8125
+   },
+   "near_dup_0.98": {
+    "share": 0.0317,
+    "accuracy_without": 0.8172
+   }
+  },
+  {
+   "method": "emb_lr_512",
+   "accuracy": 0.8112,
+   "f1_macro": 0.8178,
+   "f1_per_class": {
+    "Access": 0.8403,
+    "Administrative rights": 0.7488,
+    "HR Support": 0.8137,
+    "Hardware": 0.8008,
+    "Internal Project": 0.8029,
+    "Miscellaneous": 0.7611,
+    "Purchase": 0.9064,
+    "Storage": 0.8683
+   },
+   "coverage_precision": [
+    {
+     "threshold": 0.0,
+     "coverage": 1.0,
+     "precision": 0.8112
+    },
+    {
+     "threshold": 0.5,
+     "coverage": 0.894,
+     "precision": 0.8556
+    },
+    {
+     "threshold": 0.6,
+     "coverage": 0.8011,
+     "precision": 0.8867
+    },
+    {
+     "threshold": 0.7,
+     "coverage": 0.7145,
+     "precision": 0.9165
+    },
+    {
+     "threshold": 0.8,
+     "coverage": 0.6176,
+     "precision": 0.9433
+    },
+    {
+     "threshold": 0.85,
+     "coverage": 0.5547,
+     "precision": 0.9557
+    },
+    {
+     "threshold": 0.9,
+     "coverage": 0.4877,
+     "precision": 0.9666
+    },
+    {
+     "threshold": 0.95,
+     "coverage": 0.3749,
+     "precision": 0.9802
+    }
+   ],
+   "confusion_matrix": {
+    "labels": [
+     "Access",
+     "Administrative rights",
+     "HR Support",
+     "Hardware",
+     "Internal Project",
+     "Miscellaneous",
+     "Purchase",
+     "Storage"
+    ],
+    "matrix": [
+     [
+      1176,
+      4,
+      61,
+      140,
+      4,
+      35,
+      1,
+      4
+     ],
+     [
+      7,
+      237,
+      10,
+      81,
+      1,
+      12,
+      1,
+      3
+     ],
+     [
+      52,
+      3,
+      1786,
+      216,
+      14,
+      93,
+      4,
+      15
+     ],
+     [
+      77,
+      24,
+      170,
+      2285,
+      20,
+      111,
+      14,
+      22
+     ],
+     [
+      9,
+      1,
+      29,
+      30,
+      328,
+      23,
+      2,
+      2
+     ],
+     [
+      40,
+      6,
+      117,
+      162,
+      23,
+      1050,
+      5,
+      9
+     ],
+     [
+      7,
+      2,
+      7,
+      37,
+      1,
+      8,
+      431,
+      0
+     ],
+     [
+      6,
+      4,
+      27,
+      33,
+      2,
+      15,
+      0,
+      468
+     ]
+    ]
+   },
+   "seconds": 3.5
+  }
+ ]
+}

@@ -1,0 +1,30 @@
+{
+ "model": "gpt-5.4-mini",
+ "k_in_prompt": 15,
+ "n": 400,
+ "usage": {
+  "prompt_tokens": 366327,
+  "completion_tokens": 28869
+ },
+ "zero_shot_accuracy": 0.4325,
+ "tfidf_lr_accuracy": 0.835,
+ "rag_vote_accuracy": 0.8075,
+ "rag_llm_accuracy": 0.8075,
+ "agree_conf_0.0": {
+  "coverage": 0.8475,
+  "precision": 0.882
+ },
+ "agree_conf_0.6": {
+  "coverage": 0.7125,
+  "precision": 0.9298
+ },
+ "agree_conf_0.8": {
+  "coverage": 0.5725,
+  "precision": 0.9825
+ },
+ "disagree": {
+  "share": 0.1525,
+  "llm_acc": 0.3934,
+  "vote_acc": 0.3934
+ }
+}

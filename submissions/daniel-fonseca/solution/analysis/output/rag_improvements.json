@@ -1,0 +1,406 @@
+{
+ "grid": [
+  {
+   "dims": 512,
+   "k": 1,
+   "power": 1,
+   "accuracy": 0.7779,
+   "coverage_at_0_8": 1.0,
+   "precision_at_0_8": 0.7779
+  },
+  {
+   "dims": 512,
+   "k": 1,
+   "power": 4,
+   "accuracy": 0.7779,
+   "coverage_at_0_8": 1.0,
+   "precision_at_0_8": 0.7779
+  },
+  {
+   "dims": 512,
+   "k": 1,
+   "power": 16,
+   "accuracy": 0.7779,
+   "coverage_at_0_8": 1.0,
+   "precision_at_0_8": 0.7779
+  },
+  {
+   "dims": 512,
+   "k": 5,
+   "power": 1,
+   "accuracy": 0.8114,
+   "coverage_at_0_8": 0.6401,
+   "precision_at_0_8": 0.9456
+  },
+  {
+   "dims": 512,
+   "k": 5,
+   "power": 4,
+   "accuracy": 0.8136,
+   "coverage_at_0_8": 0.6424,
+   "precision_at_0_8": 0.9448
+  },
+  {
+   "dims": 512,
+   "k": 5,
+   "power": 16,
+   "accuracy": 0.8126,
+   "coverage_at_0_8": 0.6877,
+   "precision_at_0_8": 0.9272
+  },
+  {
+   "dims": 512,
+   "k": 10,
+   "power": 1,
+   "accuracy": 0.8207,
+   "coverage_at_0_8": 0.586,
+   "precision_at_0_8": 0.9658
+  },
+  {
+   "dims": 512,
+   "k": 10,
+   "power": 4,
+   "accuracy": 0.8236,
+   "coverage_at_0_8": 0.588,
+   "precision_at_0_8": 0.9655
+  },
+  {
+   "dims": 512,
+   "k": 10,
+   "power": 16,
+   "accuracy": 0.8207,
+   "coverage_at_0_8": 0.6421,
+   "precision_at_0_8": 0.9479
+  },
+  {
+   "dims": 512,
+   "k": 15,
+   "power": 1,
+   "accuracy": 0.8206,
+   "coverage_at_0_8": 0.5589,
+   "precision_at_0_8": 0.9716
+  },
+  {
+   "dims": 512,
+   "k": 15,
+   "power": 4,
+   "accuracy": 0.8246,
+   "coverage_at_0_8": 0.5611,
+   "precision_at_0_8": 0.9709
+  },
+  {
+   "dims": 512,
+   "k": 15,
+   "power": 16,
+   "accuracy": 0.8258,
+   "coverage_at_0_8": 0.6216,
+   "precision_at_0_8": 0.9546
+  },
+  {
+   "dims": 512,
+   "k": 25,
+   "power": 1,
+   "accuracy": 0.8182,
+   "coverage_at_0_8": 0.5199,
+   "precision_at_0_8": 0.9775
+  },
+  {
+   "dims": 512,
+   "k": 25,
+   "power": 4,
+   "accuracy": 0.8234,
+   "coverage_at_0_8": 0.5232,
+   "precision_at_0_8": 0.9774
+  },
+  {
+   "dims": 512,
+   "k": 25,
+   "power": 16,
+   "accuracy": 0.8267,
+   "coverage_at_0_8": 0.5929,
+   "precision_at_0_8": 0.9626
+  },
+  {
+   "dims": 512,
+   "k": 50,
+   "power": 1,
+   "accuracy": 0.8111,
+   "coverage_at_0_8": 0.4773,
+   "precision_at_0_8": 0.982
+  },
+  {
+   "dims": 512,
+   "k": 50,
+   "power": 4,
+   "accuracy": 0.8173,
+   "coverage_at_0_8": 0.4814,
+   "precision_at_0_8": 0.9824
+  },
+  {
+   "dims": 512,
+   "k": 50,
+   "power": 16,
+   "accuracy": 0.828,
+   "coverage_at_0_8": 0.5559,
+   "precision_at_0_8": 0.9707
+  },
+  {
+   "dims": 1536,
+   "k": 1,
+   "power": 1,
+   "accuracy": 0.7839,
+   "coverage_at_0_8": 1.0,
+   "precision_at_0_8": 0.7839
+  },
+  {
+   "dims": 1536,
+   "k": 1,
+   "power": 4,
+   "accuracy": 0.7839,
+   "coverage_at_0_8": 1.0,
+   "precision_at_0_8": 0.7839
+  },
+  {
+   "dims": 1536,
+   "k": 1,
+   "power": 16,
+   "accuracy": 0.7839,
+   "coverage_at_0_8": 1.0,
+   "precision_at_0_8": 0.7839
+  },
+  {
+   "dims": 1536,
+   "k": 5,
+   "power": 1,
+   "accuracy": 0.8147,
+   "coverage_at_0_8": 0.6487,
+   "precision_at_0_8": 0.9447
+  },
+  {
+   "dims": 1536,
+   "k": 5,
+   "power": 4,
+   "accuracy": 0.8178,
+   "coverage_at_0_8": 0.6508,
+   "precision_at_0_8": 0.9439
+  },
+  {
+   "dims": 1536,
+   "k": 5,
+   "power": 16,
+   "accuracy": 0.8139,
+   "coverage_at_0_8": 0.707,
+   "precision_at_0_8": 0.923
+  },
+  {
+   "dims": 1536,
+   "k": 10,
+   "power": 1,
+   "accuracy": 0.8229,
+   "coverage_at_0_8": 0.5942,
+   "precision_at_0_8": 0.9631
+  },
+  {
+   "dims": 1536,
+   "k": 10,
+   "power": 4,
+   "accuracy": 0.8255,
+   "coverage_at_0_8": 0.5961,
+   "precision_at_0_8": 0.9625
+  },
+  {
+   "dims": 1536,
+   "k": 10,
+   "power": 16,
+   "accuracy": 0.8204,
+   "coverage_at_0_8": 0.6611,
+   "precision_at_0_8": 0.9418
+  },
+  {
+   "dims": 1536,
+   "k": 15,
+   "power": 1,
+   "accuracy": 0.8247,
+   "coverage_at_0_8": 0.5659,
+   "precision_at_0_8": 0.9708
+  },
+  {
+   "dims": 1536,
+   "k": 15,
+   "power": 4,
+   "accuracy": 0.829,
+   "coverage_at_0_8": 0.5675,
+   "precision_at_0_8": 0.9714
+  },
+  {
+   "dims": 1536,
+   "k": 15,
+   "power": 16,
+   "accuracy": 0.8272,
+   "coverage_at_0_8": 0.6411,
+   "precision_at_0_8": 0.9491
+  },
+  {
+   "dims": 1536,
+   "k": 25,
+   "power": 1,
+   "accuracy": 0.8213,
+   "coverage_at_0_8": 0.5313,
+   "precision_at_0_8": 0.9788
+  },
+  {
+   "dims": 1536,
+   "k": 25,
+   "power": 4,
+   "accuracy": 0.8265,
+   "coverage_at_0_8": 0.5349,
+   "precision_at_0_8": 0.9789
+  },
+  {
+   "dims": 1536,
+   "k": 25,
+   "power": 16,
+   "accuracy": 0.8301,
+   "coverage_at_0_8": 0.6163,
+   "precision_at_0_8": 0.9559
+  },
+  {
+   "dims": 1536,
+   "k": 50,
+   "power": 1,
+   "accuracy": 0.8193,
+   "coverage_at_0_8": 0.4891,
+   "precision_at_0_8": 0.9823
+  },
+  {
+   "dims": 1536,
+   "k": 50,
+   "power": 4,
+   "accuracy": 0.8254,
+   "coverage_at_0_8": 0.4952,
+   "precision_at_0_8": 0.9827
+  },
+  {
+   "dims": 1536,
+   "k": 50,
+   "power": 16,
+   "accuracy": 0.833,
+   "coverage_at_0_8": 0.5865,
+   "precision_at_0_8": 0.9635
+  }
+ ],
+ "hybrid": [
+  {
+   "dims": 512,
+   "k": 10,
+   "rrf_k": 10,
+   "accuracy": 0.8181,
+   "coverage_at_0_8": 0.5528,
+   "precision_at_0_8": 0.9692
+  },
+  {
+   "dims": 512,
+   "k": 10,
+   "rrf_k": 60,
+   "accuracy": 0.8198,
+   "coverage_at_0_8": 0.5642,
+   "precision_at_0_8": 0.9692
+  },
+  {
+   "dims": 512,
+   "k": 15,
+   "rrf_k": 10,
+   "accuracy": 0.8232,
+   "coverage_at_0_8": 0.5155,
+   "precision_at_0_8": 0.9779
+  },
+  {
+   "dims": 512,
+   "k": 15,
+   "rrf_k": 60,
+   "accuracy": 0.8216,
+   "coverage_at_0_8": 0.5249,
+   "precision_at_0_8": 0.9763
+  },
+  {
+   "dims": 512,
+   "k": 25,
+   "rrf_k": 10,
+   "accuracy": 0.8278,
+   "coverage_at_0_8": 0.4828,
+   "precision_at_0_8": 0.9827
+  },
+  {
+   "dims": 512,
+   "k": 25,
+   "rrf_k": 60,
+   "accuracy": 0.8248,
+   "coverage_at_0_8": 0.4804,
+   "precision_at_0_8": 0.9824
+  },
+  {
+   "dims": 1536,
+   "k": 10,
+   "rrf_k": 10,
+   "accuracy": 0.8201,
+   "coverage_at_0_8": 0.5564,
+   "precision_at_0_8": 0.969
+  },
+  {
+   "dims": 1536,
+   "k": 10,
+   "rrf_k": 60,
+   "accuracy": 0.8205,
+   "coverage_at_0_8": 0.5685,
+   "precision_at_0_8": 0.968
+  },
+  {
+   "dims": 1536,
+   "k": 15,
+   "rrf_k": 10,
+   "accuracy": 0.8243,
+   "coverage_at_0_8": 0.5212,
+   "precision_at_0_8": 0.9773
+  },
+  {
+   "dims": 1536,
+   "k": 15,
+   "rrf_k": 60,
+   "accuracy": 0.824,
+   "coverage_at_0_8": 0.5315,
+   "precision_at_0_8": 0.975
+  },
+  {
+   "dims": 1536,
+   "k": 25,
+   "rrf_k": 10,
+   "accuracy": 0.8306,
+   "coverage_at_0_8": 0.485,
+   "precision_at_0_8": 0.9834
+  },
+  {
+   "dims": 1536,
+   "k": 25,
+   "rrf_k": 60,
+   "accuracy": 0.8266,
+   "coverage_at_0_8": 0.4853,
+   "precision_at_0_8": 0.9826
+  }
+ ],
+ "best_vector_only": {
+  "dims": 1536,
+  "k": 50,
+  "power": 16,
+  "accuracy": 0.833,
+  "coverage_at_0_8": 0.5865,
+  "precision_at_0_8": 0.9635
+ },
+ "best_hybrid": {
+  "dims": 1536,
+  "k": 25,
+  "rrf_k": 10,
+  "accuracy": 0.8306,
+  "coverage_at_0_8": 0.485,
+  "precision_at_0_8": 0.9834
+ }
+}

@@ -1,0 +1,164 @@
+{
+ "level1_total": 2983,
+ "sensitive_escapes_level1": 15,
+ "lists": {
+  "estreita": {
+   "terms": [
+    "salary",
+    "payroll",
+    "bonus",
+    "termination",
+    "dismissal",
+    "resignation",
+    "lawsuit",
+    "legal",
+    "harassment",
+    "sick leave",
+    "maternity"
+   ],
+   "false_positives_l1": 6,
+   "false_positive_rate_l1": 0.002,
+   "escapes_caught": 1,
+   "per_term": {
+    "salary": {
+     "false_positives_l1": 2,
+     "escapes_caught": 0
+    },
+    "payroll": {
+     "false_positives_l1": 1,
+     "escapes_caught": 0
+    },
+    "bonus": {
+     "false_positives_l1": 2,
+     "escapes_caught": 0
+    },
+    "termination": {
+     "false_positives_l1": 0,
+     "escapes_caught": 0
+    },
+    "dismissal": {
+     "false_positives_l1": 0,
+     "escapes_caught": 0
+    },
+    "resignation": {
+     "false_positives_l1": 0,
+     "escapes_caught": 0
+    },
+    "lawsuit": {
+     "false_positives_l1": 0,
+     "escapes_caught": 0
+    },
+    "legal": {
+     "false_positives_l1": 0,
+     "escapes_caught": 0
+    },
+    "harassment": {
+     "false_positives_l1": 0,
+     "escapes_caught": 0
+    },
+    "sick leave": {
+     "false_positives_l1": 0,
+     "escapes_caught": 0
+    },
+    "maternity": {
+     "false_positives_l1": 1,
+     "escapes_caught": 1
+    }
+   }
+  },
+  "ampla": {
+   "terms": [
+    "salary",
+    "payroll",
+    "bonus",
+    "termination",
+    "dismissal",
+    "resignation",
+    "lawsuit",
+    "legal",
+    "harassment",
+    "sick leave",
+    "maternity",
+    "contract",
+    "leaver",
+    "absence",
+    "admin rights",
+    "administrator",
+    "password"
+   ],
+   "false_positives_l1": 637,
+   "false_positive_rate_l1": 0.2135,
+   "escapes_caught": 1,
+   "per_term": {
+    "salary": {
+     "false_positives_l1": 2,
+     "escapes_caught": 0
+    },
+    "payroll": {
+     "false_positives_l1": 1,
+     "escapes_caught": 0
+    },
+    "bonus": {
+     "false_positives_l1": 2,
+     "escapes_caught": 0
+    },
+    "termination": {
+     "false_positives_l1": 0,
+     "escapes_caught": 0
+    },
+    "dismissal": {
+     "false_positives_l1": 0,
+     "escapes_caught": 0
+    },
+    "resignation": {
+     "false_positives_l1": 0,
+     "escapes_caught": 0
+    },
+    "lawsuit": {
+     "false_positives_l1": 0,
+     "escapes_caught": 0
+    },
+    "legal": {
+     "false_positives_l1": 0,
+     "escapes_caught": 0
+    },
+    "harassment": {
+     "false_positives_l1": 0,
+     "escapes_caught": 0
+    },
+    "sick leave": {
+     "false_positives_l1": 0,
+     "escapes_caught": 0
+    },
+    "maternity": {
+     "false_positives_l1": 1,
+     "escapes_caught": 1
+    },
+    "contract": {
+     "false_positives_l1": 32,
+     "escapes_caught": 0
+    },
+    "leaver": {
+     "false_positives_l1": 21,
+     "escapes_caught": 0
+    },
+    "absence": {
+     "false_positives_l1": 1,
+     "escapes_caught": 0
+    },
+    "admin rights": {
+     "false_positives_l1": 1,
+     "escapes_caught": 0
+    },
+    "administrator": {
+     "false_positives_l1": 421,
+     "escapes_caught": 0
+    },
+    "password": {
+     "false_positives_l1": 173,
+     "escapes_caught": 0
+    }
+   }
+  }
+ }
+}

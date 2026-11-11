@@ -1,0 +1,108 @@
+{
+  "name": "G4 · Heartbeat diário (Supabase ativo)",
+  "nodes": [
+    {
+      "id": "897bedad-44d3-4a97-8ffd-a1805c8cd693",
+      "name": "Todo dia às 06:00 (São Paulo)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        96
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "days",
+              "daysInterval": 1,
+              "triggerAtHour": 6,
+              "triggerAtMinute": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "12769368-3e9e-4806-aa7b-4b2e0cf7a68d",
+      "name": "Registrar heartbeat no banco",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        224,
+        96
+      ],
+      "parameters": {
+        "resource": "row",
+        "operation": "create",
+        "tableId": "heartbeat",
+        "dataToSend": "defineBelow",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "source",
+              "fieldValue": "n8n"
+            },
+            {
+              "fieldId": "ok",
+              "fieldValue": "={{ true }}"
+            },
+            {
+              "fieldId": "detail",
+              "fieldValue": "keep-alive"
+            }
+          ]
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "supabaseApi": {
+          "id": "SEmoMU7WjCZ71Snn",
+          "name": "G4 - Supabase"
+        }
+      }
+    },
+    {
+      "id": "1baa1b22-297d-4d7a-afbb-31f7c1465e7b",
+      "name": "Sticky Note d08f8cd3",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        256
+      ],
+      "parameters": {
+        "content": "## Heartbeat (ADR-0006)\nO Supabase free pausa por inatividade. Todo dia às 06:00 de São Paulo, este fluxo grava uma linha em `heartbeat` (`source = n8n`) com a credencial G4 - Supabase.\nO keep-alive roda só no n8n, por decisão do Daniel (10/11). Se a gravação falhar nas 3 tentativas, a execução fica com erro no n8n.",
+        "color": 4
+      }
+    }
+  ],
+  "connections": {
+    "Todo dia às 06:00 (São Paulo)": {
+      "main": [
+        [
+          {
+            "node": "Registrar heartbeat no banco",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodeGroups": [],
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true,
+    "timezone": "America/Sao_Paulo"
+  },
+  "meta": {
+    "exportedFrom": "n8n (VPS do Daniel, URL fora do repositório)",
+    "workflowId": "LpQK8XX5AZJrUCy8",
+    "active": true,
+    "activeVersionId": "9f8e417a-30aa-4951-8fc2-9577433bdaed",
+    "verifiedAgainstLive": "2026-11-10 (sessão 04, MCP n8n-g4)"
+  }
+}

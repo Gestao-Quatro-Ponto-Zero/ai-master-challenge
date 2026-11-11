@@ -1,0 +1,27 @@
+# segredos
+.env
+.env.*
+!.env.example
+
+# dados brutos (baixar com scripts/download_data.sh). Sem barra final para casar também com symlinks em worktrees.
+data
+
+# python
+.venv
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# node / next
+node_modules/
+.next/
+.vercel/
+
+# local
+.DS_Store
+**/.claude/settings.local.json
+**/.claude/worktrees/
+
+# gerado pelo next dev/build
+*.tsbuildinfo
+**/next-env.d.ts
