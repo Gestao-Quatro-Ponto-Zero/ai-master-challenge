@@ -223,3 +223,11 @@
   - mudei: experimento.md reescrito com base 17,3%, 996 sem cluster, 1.100 como número de planejamento (guia), duração em semanas medida; design.md sem a frase falsa de consistência. Nenhuma correção de código
 
 **Fim da sessão** 2026-11-11 16:05 — três afirmações verificadas; duas corrigidas, uma corrigida na redação; experimento reescrito
+
+## 2026-11-11 16:09 · Tarefa 13 · etapa 1 — deploy na Vercel · modelo claude-haiku-5-5 · ferramenta Claude Code
+
+- **16:09** — pedi: publicar a demo na Vercel com a conta já logada, projeto lead-scorer-diego
+  - veio: conta diegoalves-data, time Diego, plano hobby. URL de produção: https://lead-scorer-diego.vercel.app. Acesso anônimo responde 200; demo carrega com faixa de demo e 5 deals em foco no desktop e no celular, sem rolagem horizontal
+  - mudei: criei app/vercel.json (cleanUrls) e app/.vercelignore (data/acoes.jsonl), como o plano pede. Ressalva: /acoes responde 404 no host estático, e o console do navegador mostra esse erro; é o fallback esperado para o modo demo, mas um avaliador vai vê-lo. Não suprimi
+
+**Fim da sessão** 2026-11-11 16:09 — deploy de produção pronto e conferido em navegador; erro 404 de /acoes é o fallback esperado
