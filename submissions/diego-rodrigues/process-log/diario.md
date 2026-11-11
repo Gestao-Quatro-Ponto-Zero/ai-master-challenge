@@ -255,3 +255,11 @@
   - mudei: a linha de benchmark do plano (credito ao PR #242) foi substituida por texto consistente com docs/logica.md, que ja registra que nao verificamos o PR. Marquei a verificacao independente como pendente (nao feita ainda, e a proxima etapa), nao como concluida -- erro que eu mesmo cometi na primeira versao do arquivo e corrigi antes de commitar. Tabela de ferramentas usa os modelos reais do diario (6 modelos Claude Code + Copilot + 3 baselines), nao a lista fixa do template
 
 **Fim da sessão** 2026-11-11 16:41 — README.md criado e fechado; verificacao independente fica para a proxima etapa
+
+## 2026-11-11 16:45 · Tarefa 13 · etapa 4 — limitacoes.md · modelo claude-sonnet-5 · ferramenta Claude Code
+
+- **16:45** — pedi: fechar docs/limitacoes.md: dataset sintético, 3 trimestres, hoje fixo, sem atividade/desconto/motivo de perda, sem escrita no CRM, sem login, conta de horas como premissa, 1.425 sem conta, discovery ensaiado com personas
+  - veio: 710 palavras; incorporei o rascunho da Tarefa 0B em vez de substituir; nenhuma ocorrência de 'entrevistei vendedores' fora da citação que explica a proibição
+  - mudei: acrescentei um item que o plano não pedia explicitamente: o ajuste de cluster do calculo de amostra do experimento (1.100 vs 996 sem ajuste) nao foi verificado por nos -- e uma limitacao real que a Tarefa 12 ja tinha documentado em experimento.md, trazida aqui tambem
+
+**Fim da sessão** 2026-11-11 16:45 — limitacoes.md fechado, 710 palavras
