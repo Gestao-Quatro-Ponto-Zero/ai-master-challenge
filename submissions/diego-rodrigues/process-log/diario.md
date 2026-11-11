@@ -111,3 +111,11 @@
   - mudei: pontuar_em virou função de produção (motor/pontuar.py), não helper de teste, porque o build da Tarefa 6 precisa do mesmo caminho; test_pontuacao_independe_do_futuro usa d1.equals(d2) sem drop de gerado_em, que esta função não produz
 
 **Fim da sessão** 2026-11-11 14:38 — Tarefa 4 verde: 9 testes, suíte 26/26
+
+## 2026-11-11 14:42 · Tarefa 5 — motor/explicar.py · modelo claude-haiku-5-5 · ferramenta Claude Code
+
+- **14:42** — pedi: implementar explicar (cartões valor, momento, prazo + nao_sabe) e resumo_vendedor da Tarefa 5
+  - veio: 35/35 verdes. Textos conferidos na saída real: 35 em cada 100 (fechar), 62 em cada 100 e nenhum em 28 dias (preparar), motivo de 138 dias e de trimestre separados, 4 itens de nao_sabe quando não há conta
+  - mudei: resumo_vendedor recebe o nome do vendedor (plano: sub e carga), porque um vendedor sem deal não tem linha para dizer quem é; prazo_trimestre virou pública em janela.py para explicar usar; corrigidos dois textos que os testes não pegavam: 'pelo limite de o fim' e 'só 0 nas próximas quatro semanas'
+
+**Fim da sessão** 2026-11-11 14:42 — Tarefa 5 verde: 9 testes, suíte 35/35

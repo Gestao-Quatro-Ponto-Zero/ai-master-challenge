@@ -9,7 +9,7 @@ import pandas as pd
 from motor.carregar import Dados
 
 
-def _prazo_trimestre(serie: pd.Series) -> pd.Series:
+def prazo_trimestre(serie: pd.Series) -> pd.Series:
     """Fim do trimestre seguinte ao do engajamento."""
     return (
         serie.dt.to_period("Q").dt.start_time
@@ -32,7 +32,7 @@ def aprender_janela(dados: Dados, config: dict) -> Janela:
 
     ciclo_max = int((fe.close_date - fe.engage_date).dt.days.max())
 
-    apos_prazo = int((fe.close_date > _prazo_trimestre(fe.engage_date)).sum())
+    apos_prazo = int((fe.close_date > prazo_trimestre(fe.engage_date)).sum())
     usa = (
         len(fe) >= config["min_fechamentos_para_prazo"]
         and apos_prazo / len(fe) <= config["tolerancia_prazo_trimestre"]
@@ -52,7 +52,7 @@ def prazo_do_deal(engage_date: pd.Series, janela: Janela) -> pd.Series:
     if not janela.usa_prazo_trimestre:
         return por_idade
     return pd.Series(
-        np.minimum(por_idade.values, _prazo_trimestre(engage_date).values),
+        np.minimum(por_idade.values, prazo_trimestre(engage_date).values),
         index=engage_date.index,
     )
 
