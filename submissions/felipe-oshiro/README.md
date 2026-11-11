@@ -14,6 +14,18 @@
 
 ---
 
+## Prévia da solução (sem executar código)
+
+> Prints do dashboard final (`solution/dashboard/dashboard_g4.html`). O arquivo é self-contained — para ver ao vivo, basta abrir no navegador; os prints abaixo dão a prévia sem baixar nada.
+
+<!-- Salve os prints com estes nomes exatos (recorte as seções correspondentes do dashboard em tela cheia, ~1440px de largura): -->
+
+![Diagnóstico do fluxo — o funil travado](docs/dashboard/preview-01-diagnostico.png)
+![Classificador DistilBERT e roteador por confiança](docs/dashboard/preview-02-classificador-roteador.png)
+![As 4 portas que ficam sempre com humano — decisões](docs/dashboard/preview-03-decisoes.png)
+
+---
+
 ## Solução
 
 ### Abordagem
@@ -75,8 +87,9 @@ A decisão de rotear **por confiança** (precisão ≥ 0,95) em vez de perseguir
 - [x] Screenshots das conversas com IA → `process-log/screenshots/`
 - [x] Chat exports → `process-log/chat-exports/` (EDA, classificador, dashboard)
 - [x] Narrativa escrita → `process-log/narrativa.md`
+- [x] Print de custo/uso do modelo → `process-log/screenshots/custo-uso-glm53flash.png`
 - [x] Git history (commits incrementais por etapa: EDA → modelos → roteador → dashboard → submissão)
-- [x] Outro: dashboard navegável em `solution/dashboard/dashboard_g4.html`
+- [x] Outro: dashboard navegável em `solution/dashboard/dashboard_g4.html` + prévia em prints (`docs/dashboard/`)
 
 ---
 

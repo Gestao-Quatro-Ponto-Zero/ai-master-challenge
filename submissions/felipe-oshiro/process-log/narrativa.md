@@ -81,7 +81,25 @@ Usei IA para mapear os guias (`submission-guide.md`, `CONTRIBUTING.md`, template
 
 ---
 
-## 7. Resumo honesto
+## 7. Custo e uso do modelo (transparência)
+
+Todo o trabalho (EDA, modelos, roteador, dashboard, Streamlit e esta submissão) foi feito no **opencode (assinatura Go) com o modelo GLM 5.3 Flash, effort high**. Uso total apurado no painel:
+
+| Métrica | Valor |
+| --- | --- |
+| Requests | 390 |
+| Input tokens | 2,0M |
+| Cache read | 18,9M |
+| Output tokens | 245,4k |
+| **Custo total** | **US$ 1,00** |
+
+Duas leituras: (1) o alto volume de *cache read* (18,9M vs 2,0M de input) reflete o workflow de sessão longa e iterativa — contexto reutilizado entre iterações de EDA, treino e dashboard, não prompts do zero a cada passo; (2) o desafio inteiro, do diagnóstico ao protótipo funcional, saiu por **um dólar** de tokens — o custo real estava em dirigir a IA com precisão, não em tokens.
+
+📸 *Slot: print do painel de custo/uso — `process-log/screenshots/custo-uso-glm53flash.png`*
+
+---
+
+## 8. Resumo honesto
 
 - **Ferramentas:** opencode (assinatura Go) com o modelo GLM 5.3 Flash em effort high, do início ao fim; julgamento, critérios de aceite, direção de design e as correções de rota acima foram meus.
 - **Iterações:** dezenas — em particular o ciclo dashboard (3 gerações de template até a final) e a recalibragem narrativa do distribution shift.
