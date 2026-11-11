@@ -103,3 +103,11 @@
   - mudei: nenhum código; nota no diário. O commit 261eb0e não foi reescrito: o amend mudaria um commit já feito, então a citação fica nesta nota
 
 **Fim da sessão** 2026-11-11 14:36 — fórmula do v1 e correção registradas; teste test_nao_ha_vies_de_sobrevivencia é a prova
+
+## 2026-11-11 14:38 · Tarefa 4 — motor/pontuar.py · modelo claude-haiku-5-5 · ferramenta Claude Code
+
+- **14:38** — pedi: implementar pontuar (fila, ordem, foco, índice) e criar s e pontuar_em, que o plano usa sem definir
+  - veio: 9/9 verdes de primeira; valores de ouro batem (filas 1474/500/108/7, valor por fila, ve 65.482,05 e 2.699,05, 127 em foco); mutação de desfechos futuros altera 6.038 linhas e a lista de 08-28 não muda
+  - mudei: pontuar_em virou função de produção (motor/pontuar.py), não helper de teste, porque o build da Tarefa 6 precisa do mesmo caminho; test_pontuacao_independe_do_futuro usa d1.equals(d2) sem drop de gerado_em, que esta função não produz
+
+**Fim da sessão** 2026-11-11 14:38 — Tarefa 4 verde: 9 testes, suíte 26/26
