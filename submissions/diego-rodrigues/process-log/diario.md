@@ -295,3 +295,11 @@
   - mudei: decisao de arquitetura tomada pelo Diego (opcao A, geracao no build, nao chamada ao vivo). Corrigi no meu proprio teste uma asercao vazia (or True) que eu tinha escrito, removida antes de rodar. Limpei o run.py que forcava template mesmo com chave. README, contrato, limitacoes, o-que-eu-acrescentei e MODELOS atualizados para nao afirmar mais que a IA nao e chamada. Nao rodei nenhuma chamada real a API: a primeira execucao com chave e do Diego, pelo docs/deploy-passos.md
 
 **Fim da sessão** 2026-11-11 19:38 — IA ligada no build com limites; docs e process log alinhados; primeira chamada real pendente do Diego
+
+## 2026-11-11 19:47 · Correção: erro da API no briefing · modelo claude-haiku-5-5 · ferramenta Claude Code
+
+- **19:47** — pedi: rodar run.py com a chave do Diego
+  - veio: a API respondeu 400: credit balance too low. A chave funciona; a conta esta sem saldo. Erro de codigo meu: qualquer erro da API derrubava o build inteiro
+  - mudei: erro da API agora cai no template do item, desliga a IA para o restante da execucao e aparece em recusas. modelo so diz haiku se algum texto veio da IA. Teste novo cobre o caso (1 chamada, sem derrubar). 16/16 testes de briefing. Nao ha texto da IA gravado ainda: o briefings.json atual e so template
+
+**Fim da sessão** 2026-11-11 19:47 — erro da API tratado; aguarda saldo na conta para a primeira execucao real

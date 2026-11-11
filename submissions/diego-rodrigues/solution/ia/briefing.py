@@ -6,6 +6,8 @@ import os
 from datetime import datetime
 from pathlib import Path
 
+import anthropic
+
 from ia.validar import marcadores_validos, preencher, validar
 
 MODELO_FIXO = "claude-haiku-5-5"
@@ -138,13 +140,17 @@ def _chamar_modelo(cliente, tipo: str, fatos: dict, motivo_anterior: str | None)
 
 
 def _gerar_com_ia(cliente, tipo: str, fatos: dict, uso: dict) -> tuple[str | None, str | None]:
-    """Devolve (texto validado, None) ou (None, motivo da última recusa)."""
+    """Devolve (texto validado, None) ou (None, motivo da última recusa). Erro da API encerra a IA na execução."""
     motivo = None
     for _ in range(TENTATIVAS_POR_ITEM):
         if uso["chamadas"] >= TETO_CHAMADAS:
             return None, "teto de chamadas atingido"
-        resposta = _chamar_modelo(cliente, tipo, fatos, motivo)
         uso["chamadas"] += 1
+        try:
+            resposta = _chamar_modelo(cliente, tipo, fatos, motivo)
+        except anthropic.APIError as erro:
+            uso["ativo"] = False
+            return None, f"erro da API ({type(erro).__name__}): {erro}"
         uso["entrada"] += resposta.usage.input_tokens
         uso["saida"] += resposta.usage.output_tokens
         if resposta.stop_reason != "end_turn":
@@ -182,11 +188,11 @@ def gerar(scored: dict, modelo: str = MODELO_FIXO, sem_ia: bool = False, cliente
         import anthropic
         cliente = anthropic.Anthropic()
 
-    uso = {"chamadas": 0, "entrada": 0, "saida": 0}
+    uso = {"chamadas": 0, "entrada": 0, "saida": 0, "ativo": usa_ia}
     recusas = []
 
     def _um(texto_template: str, fatos: dict, nome: str, tipo: str) -> dict:
-        if usa_ia:
+        if uso["ativo"]:
             texto, motivo = _gerar_com_ia(cliente, tipo, fatos, uso)
             if texto is not None:
                 return {"texto": texto, "origem": "ia", "motivo": None}
@@ -205,7 +211,9 @@ def gerar(scored: dict, modelo: str = MODELO_FIXO, sem_ia: bool = False, cliente
 
     return {
         "gerado_em": datetime.now().isoformat(timespec="seconds"),
-        "modelo": MODELO_FIXO if usa_ia else "template",
+        "modelo": MODELO_FIXO if any(
+            v["origem"] == "ia" for v in list(vendedores_out.values()) + list(gestores_out.values())
+        ) else "template",
         "vendedores": vendedores_out,
         "gestores": gestores_out,
         "custo_estimado_usd": _custo_usd(uso) if usa_ia else 0.0,

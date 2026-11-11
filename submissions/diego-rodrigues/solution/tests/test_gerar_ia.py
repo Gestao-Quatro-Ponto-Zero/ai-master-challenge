@@ -1,6 +1,7 @@
 import json
 from types import SimpleNamespace
 
+import anthropic
 import pytest
 
 import ia.briefing as briefing
@@ -89,6 +90,31 @@ def test_custo_segue_o_preco_do_haiku(scored):
     b = gerar(scored, cliente=cliente)
     esperado = round(b["tokens_entrada"] * 0.10 / 1e6 + b["tokens_saida"] * 0.50 / 1e6, 6)
     assert b["custo_estimado_usd"] == esperado and b["custo_estimado_usd"] > 0
+
+
+class _ErroDeCreditos(anthropic.APIError):
+    def __init__(self):
+        Exception.__init__(self, "Your credit balance is too low")
+        self.message = "Your credit balance is too low"
+
+
+class ClienteSemCreditos:
+    def __init__(self):
+        self.chamadas = 0
+        self.messages = SimpleNamespace(create=self._create)
+
+    def _create(self, **kwargs):
+        self.chamadas += 1
+        raise _ErroDeCreditos()
+
+
+def test_erro_da_api_nao_derruba_e_para_de_chamar(scored):
+    cliente = ClienteSemCreditos()
+    b = gerar(scored, cliente=cliente)
+    assert all(v["origem"] == "template" for v in b["vendedores"].values())
+    assert cliente.chamadas == 1
+    assert b["modelo"] == "template"
+    assert any("erro da API" in r["motivo"] for r in b["recusas"])
 
 
 def test_sem_chave_e_sem_cliente_vai_para_template(scored, monkeypatch):
