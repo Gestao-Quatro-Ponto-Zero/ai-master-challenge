@@ -61,3 +61,11 @@
   - mudei: nada: a implementação seguiu a spec; adicionei pytest.ini com pythonpath=. para o pytest descobrir o pacote motor/
 
 **Fim da sessão** 2026-11-11 14:10 — 5/5 testes GREEN: carregar, qualidade, produto desconhecido, recortar sem futuro, recortar no fim do export
+
+## 2026-11-11 14:16 · Tarefa 1 — verificação do insight do merge de produto · modelo claude-haiku-5-5 · ferramenta Claude Code
+
+- **14:16** — pedi: conferir o valor de US$ 1,6 mi que o commit da Tarefa 1 cita, e registrar o insight que o plano pede no diário
+  - veio: merge ingênuo por nome exato: 1.480 linhas sem preço; 333 abertas sem preço somando US$ 1.605.393 em tabela; total aberto normalizado US$ 4.966.215
+  - mudei: nenhum código; nota no diário com o cálculo e a contagem
+
+**Fim da sessão** 2026-11-11 14:16 — insight do merge verificado: 1.480 linhas, 333 abertas, US$ 1.605.393 em tabela; total aberto US$ 4.966.215
