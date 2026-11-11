@@ -4,7 +4,16 @@
 
 | Modelo (id exato) | Papel neste entregável | Como foi acessado | Dado sensível exposto | Custo estimado |
 |---|---|---|---|---|
-| `claude-haiku-5-5` | implementação, testes, análise (sessão da Tarefa 0) | Claude Code (terminal) | não — só dataset público CC0 | incluído na assinatura |
+| `claude-haiku-5-5` | sessões registradas no diário: Tarefa 0; verificações e correções pontuais (Tarefas 1, 3, 6–8 e correções); Tarefa 4 (`pontuar`), Tarefa 5 (`explicar`), Tarefa 6 (`build`), Tarefa 7 (`avaliacao`), Tarefa 8 (`drift`); Tarefa 13 etapa 1 (deploy) e correção do 404 | Claude Code (terminal) | não — só dataset público CC0 | incluído na assinatura |
+| `claude-sonnet-4-6` | Tarefa 1 (`carregar`), Tarefa 2 (`janela`) | Claude Code (terminal) | não — só dataset público CC0 | incluído na assinatura |
+| `claude-sonnet-5-5` | Tarefa 3 (`aprender`), Tarefa 11 (três telas) | Claude Code (terminal) | não — só dataset público CC0 | incluído na assinatura |
+| `claude-sonnet-5` | Tarefa 9 (`ia/`, validador e templates), Tarefa 10 (`run.py`), Tarefa 12 (documentos de operação e experimento), Tarefa 13 etapas 3 e 4 (README e limitações) | Claude Code (terminal) | não — só dataset público CC0 | incluído na assinatura |
+| `claude-opus-5` | Tarefa 13 etapa 2 (resumo executivo) | Claude Code (terminal) | não — só dataset público CC0 | incluído na assinatura |
+| `claude-haiku-4-5-20251001` | Tarefa 2, nota de atribuição ao PR #242 | Claude Code (terminal) | não — só dataset público CC0 | incluído na assinatura |
+
+Baselines sem ferramenta (Tarefa 0, passo 4), para comparar propostas sem o dado na mão: Nemotron-3.5-lightning (via OpenRouter, gratuito), Gemini 3.1 (interface web, colado pelo Diego), ChatGPT 6.1 Sol (interface web, colado pelo Diego). Nenhum deles entrou no produto.
+
+Os modelos foram trocados pelo Diego entre etapas, por escolha de custo e de qualidade. A coluna "sessões" reproduz o que o diário registra no início de cada sessão; trocas no meio de uma mesma sessão não aparecem nele.
 
 ## Informantes sintéticos (personas, usuários simulados, agentes entrevistados)
 

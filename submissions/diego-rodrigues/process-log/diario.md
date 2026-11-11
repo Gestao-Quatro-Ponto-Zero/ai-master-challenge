@@ -263,3 +263,11 @@
   - mudei: acrescentei um item que o plano não pedia explicitamente: o ajuste de cluster do calculo de amostra do experimento (1.100 vs 996 sem ajuste) nao foi verificado por nos -- e uma limitacao real que a Tarefa 12 ja tinha documentado em experimento.md, trazida aqui tambem
 
 **Fim da sessão** 2026-11-11 16:45 — limitacoes.md fechado, 710 palavras
+
+## 2026-11-11 16:48 · Tarefa 13 · etapa 5 — process log · modelo claude-haiku-5-5 · ferramenta Claude Code
+
+- **16:48** — pedi: fechar o process log: MODELOS, onde-a-ia-errou, o-que-eu-acrescentei, REGISTRO, e fazer o --conferir passar
+  - veio: --conferir passa sem pendências. onde-a-ia-errou tem 5 itens das personas (preservados) + 11 meus, cada um com proposta, mecanismo, teste e o que ficou. REGISTRO: 16 erros pegos no total (o --conferir conta so 5 do diario)
+  - mudei: MODELOS e a tabela de ferramentas do README estavam atribuidos por suposicao; refeitos a partir das sessoes do diario. Corrigi tambem a afirmacao do README de que a verificacao independente estava concluida (nao esta). Removi todos os blocos de exemplo do template
+
+**Fim da sessão** 2026-11-11 16:48 — process log fechado; --conferir sem pendencias; verificacao independente segue pendente

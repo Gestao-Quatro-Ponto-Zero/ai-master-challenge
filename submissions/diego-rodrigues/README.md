@@ -47,7 +47,7 @@ Lista completa e honesta em [`docs/limitacoes.md`](docs/limitacoes.md).
 
 | Ferramenta | Para que usou |
 |------------|--------------|
-| Claude Code — `claude-sonnet-5-5`, `claude-sonnet-5`, `claude-sonnet-4-6`, `claude-opus-5`, `claude-haiku-5-5`, `claude-haiku-4-5-20251001` | Implementação do motor (TDD), backtest, avaliação, as três telas, o deploy, os cinco documentos da Tarefa 12 e este README. Modelo trocado por tipo de trabalho: Opus para documentos lidos primeiro pelo avaliador, Haiku para deploy e comandos mecânicos, Sonnet para implementação. |
+| Claude Code — `claude-sonnet-4-6`, `claude-sonnet-5-5`, `claude-sonnet-5`, `claude-opus-5`, `claude-haiku-5-5`, `claude-haiku-4-5-20251001` | Implementação do motor com TDD (Tarefas 1 a 10), telas (Tarefa 11), documentos de operação e experimento (Tarefa 12), deploy, resumo executivo e README (Tarefa 13). Cada modelo está registrado com as tarefas em que rodou em [`process-log/MODELOS.md`](process-log/MODELOS.md). As trocas foram feitas pelo Diego entre etapas, por custo e qualidade. |
 | Microsoft 365 Copilot (Premium), GPT Sol 6.1 | Agente de persona do discovery (Tarefa 0B) — informante sintético, nunca fonte de fato. |
 | Nemotron-3.5-lightning (via OpenRouter), Gemini 3.1, ChatGPT 6.1 Sol | Baseline sem ferramentas (Tarefa 0), para medir o que um modelo propõe sem o dado na mão. |
 
