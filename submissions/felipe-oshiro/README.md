@@ -3,7 +3,7 @@
 ## Sobre mim
 
 - **Nome:** Felipe Oshiro
-- **LinkedIn:** [adicionar link]
+- **LinkedIn:** https://www.linkedin.com/in/felipe-oshiro/
 - **Challenge escolhido:** 002 — Redesign de Suporte (`process-002-support`)
 
 ---
