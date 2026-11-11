@@ -5,7 +5,7 @@ import { Prioridades } from "@/components/Prioridades";
 import { CartaoNumero, PilulaVariacao } from "@/components/ui/CartaoNumero";
 import { Etiqueta as EtiquetaUi } from "@/components/ui/Etiqueta";
 import { classeSuperficie } from "@/components/ui/Superficie";
-import { dataBR, dinheiro, dinheiroCurto, inteiro, NOME_MOEDA, variacao } from "@/lib/calculos";
+import { dinheiro, dinheiroCurto, inteiro, variacao } from "@/lib/calculos";
 import { CONFIG } from "@/lib/config";
 import { codificar, type Etiqueta } from "@/lib/filtro/etiquetas";
 import { lerFiltrosEquipe } from "@/server/parametros";
@@ -40,10 +40,7 @@ export default async function Pagina({ searchParams }: { searchParams: Promise<{
   return (
     <div className="grid grid-cols-1 gap-5">
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-bold">Painel</h1>
-          <p className="text-sm text-texto-2">Dados até {dataBR(n.data)}, em {NOME_MOEDA}.</p>
-        </div>
+        <h1 className="text-2xl font-bold">Painel</h1>
         <FiltrosEquipe filtros={filtros} />
       </div>
 

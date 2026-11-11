@@ -104,9 +104,28 @@ describe.skipIf(!temBanco)("rotina diária contra o banco (PGlite, dataset intei
     const { rodarRotina } = await import("@/server/motor/rotina");
     const { motorScore } = await import("@/server/motor/motor-score");
     await comoSistema("update config_parametros set valor = to_jsonb(to_char(system_dia_real() - 7, 'YYYY-MM-DD')) where chave = 'data_ancora_real'");
+    // O-52: o banco recusa ~1 em cada 4 repasses enquanto a marca do teste está ligada (só neste banco em memória).
+    await db.exec(`create or replace function teste_recusar_repasse() returns trigger language plpgsql as $$
+      begin
+        if coalesce(current_setting('g4.recusar', true), '') = 'on' and abs(hashtext(new.opportunity_id)) % 4 = 0 then
+          raise exception 'Repasse recusado (teste).';
+        end if;
+        return new;
+      end $$;
+      create trigger teste_recusar_repasse before insert on acao_reatribuicoes for each row execute function teste_recusar_repasse();`);
+    await db.exec("set g4.recusar = 'on'");
+    const [antes] = await q<{ n: number }>("select count(*)::int n from acao_reatribuicoes where origem = 'redistribuicao'");
     const r = await rodarRotina(conexao, motorScore, "cron");
+    await db.exec("set g4.recusar = 'off'");
+    // um repasse recusado não derruba o dia: a rotina fecha ok, conta as recusas e grava só os aceitos
     expect(r).toMatchObject({ status: "ok", dataNegocio: "2018-01-07", domingo: true });
     expect(Number(r.semanal!.elegiveis)).toBe(35);
+    expect(Number(r.semanal!.recusados)).toBeGreaterThan(0);
+    expect(String(r.semanal!.recusas)).toContain("Repasse recusado (teste).");
+    const [depois] = await q<{ n: number }>("select count(*)::int n from acao_reatribuicoes where origem = 'redistribuicao'");
+    expect(depois!.n - antes!.n).toBe(Number(r.semanal!.redistribuidos));
+    const [okDia] = await q<{ n: number }>("select count(*)::int n from system_eventos where tipo = 'rotina_diaria' and detalhe ->> 'dia_negocio' = '2018-01-07'");
+    expect(okDia!.n).toBe(1);
     const [red] = await q<{ n: number; motivo: string }>(
       "select count(*)::int n, min(motivo) motivo from acao_reatribuicoes where origem = 'redistribuicao'");
     expect(red!.motivo).toBe("Redistribuição de domingo.");

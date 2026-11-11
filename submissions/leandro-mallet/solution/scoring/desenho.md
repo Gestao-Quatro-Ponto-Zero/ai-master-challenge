@@ -88,17 +88,18 @@ A especificação completa, com as contas, os 3 exemplos reais e as simulações
 
 **NOTA = 0,70 × FIT + 0,30 × HEAT + BONUS.** FIT e HEAT vão de 0 a 100. O BONUS vai de 0 a 20 e soma por fora, então a nota vai de 0 a 120. O valor fica fora da nota e aparece só como contexto no cartão. Decisão do Leandro: "nunca se sabe o valor antes de atender". A exceção, empresa que compra muito e está no período de comprar, virou o BONUS.
 
-### FIT (70%): encaixe do lead no ponto forte do vendedor dono
+### FIT (70%): conversão do vendedor no perfil do lead (FIT absoluto, O-51)
 - Usa 7 características do lead: produto, série, setor, porte por receita, porte por funcionários, empresa e sede. "Tempo de venda" fica fora, porque um lead aberto ainda não tem esse dado.
-- A janela são os 3 meses de fechamentos do vendedor (hoje, out–dez/2017). Recalcula todo domingo, com os 3 meses que terminam naquele domingo, para a segunda abrir com a lista priorizada. Fica fixo a semana inteira, porque a média móvel quase não muda de um dia para o outro (decisão do Leandro). O HEAT continua dinâmico. Como 31/12/2017 é um domingo, a janela atual (01/10 a 31/12) é exatamente a desse recálculo.
-- Taxa encolhida de cada característica = (ganhos + 20 × taxa do vendedor) / (fechados + 20). Desvio = taxa encolhida − taxa do vendedor. Característica com menos de 10 fechados vale desvio 0 e fica fora da média.
-- Destaque = a característica de maior taxa encolhida, entre as que têm 10 ou mais fechados.
-- **FIT = 50 + 50 × (média dos desvios do lead) / (desvio do destaque)**, limitado entre 0 e 100.
-  - 50 = na média do vendedor; 100 = tão bom quanto o destaque.
+- A janela são os 3 meses de fechamentos do vendedor (hoje, out–dez/2017). Recalcula todo domingo, com os 3 meses que terminam naquele domingo, para a segunda abrir com a lista priorizada. Fica fixo a semana inteira (decisão do Leandro). O HEAT continua dinâmico.
+- Conversão ajustada de cada característica = (ganhos + 20 × conversão geral do vendedor) / (fechados + 20). Característica com menos de 10 fechados não entra.
+- **FIT = 100 × média das conversões ajustadas do vendedor nas características do lead que contam**, de 0 a 100. Exemplo: FIT 62 = o vendedor fecha 62% dos leads com aquele perfil.
 - Casos especiais:
-  - **Lead sem empresa (68%):** usa só produto e série, sem penalidade.
-  - **Vendedor sem destaque** (nenhuma característica com 10+ fechados, ou destaque a menos de 3 pontos da média dele): FIT 50 para todos os leads dele. Hoje são 2 vendedores, com 81 deals.
-- Distribuição hoje: 15 deals em 100, 86 em 0 e 98 exatamente em 50.
+  - **sem característica que conte:** FIT = conversão geral do vendedor;
+  - **vendedor sem histórico na janela:** FIT = conversão do time na janela;
+  - **lead sem empresa (68%):** usa só produto e série, sem penalidade.
+- O destaque (a característica de maior conversão ajustada do vendedor) fica só como informação no motivo: "Ponto forte do vendedor: setor varejo (71%).".
+- Distribuição hoje (execução 15): FIT de 47 a 77, mediana de 62. Só 38 leads ficam com FIT de 75 ou mais (30 ativos).
+- Histórico: até a execução 13, o FIT era relativo à média de cada vendedor (50 + 50 × desvio ÷ destaque). Ver validacao.md.
 
 ### HEAT (30%): tempo de atendimento
 - **HEAT = pontos da faixa de idade × fator de contato.**
@@ -182,14 +183,10 @@ Decisão do Leandro: "o recálculo sempre divide igual entre vendedores... calcu
 Proposta: só equilíbrio. As travas existem para não tirar de um vendedor um lead que ele já trabalhou. O lead sem contato não tem esse trabalho a proteger. Com as travas, 95 leads ficam presos com o dono atual e a carga volta a ficar desigual (0 a 59), enquanto os leads de FIT alto são praticamente os mesmos (268 contra 269).
 
 ### Lead novo durante a semana
-- Vai para o vendedor com a maior conversão no perfil do lead (taxa dele + média dos desvios nas características do lead), já descontada a penalidade.
-- Travas:
-  - quem já está no limite de ativos da semana fica de fora (o teto fixo de 40 saiu);
-  - é preciso ter pelo menos 1 característica do lead com 10+ fechados do vendedor;
-  - o FIT do vendedor com o lead precisa ser 50 ou mais (P1).
-- Empate: vai para quem tem menos ativos. Se ninguém passar nas travas, vai para a fila do manager. A reatribuição pelo manager fica registrada na linha do tempo.
+- Quem roteia é só a função do banco `core_rotear_lead`: maior FIT do vendedor no cohort do lead em `score_fit_vendedores` (hoje `produto=<produto>`), menos a penalidade ativa, com pelo menos 10 casos. Empate: menos abertos. Ninguém com casos: quem tem menos abertos.
+- Com o FIT absoluto, a função continua valendo sem mudança: a comparação entre vendedores passa a ser de conversão real, e a penalidade em pontos vira pontos de conversão.
+- O motor em TS não tem mais regra própria de roteamento (o `rotearLeadNovo()` saiu), para não haver duas regras.
 - O lead atribuído entra no topo das Prioridades do dia do novo dono.
-- Na simulação com o lead sem empresa (GTX Pro), Moses (31 ativos) passa do limite de 27 e o lead vai para Boris (74,0%, FIT 91).
 
 ### Repasse (decisão do Leandro)
 - **Quando:** o lead muda de faixa do HEAT sem nenhum contato registrado desde que o dono atual o recebeu.

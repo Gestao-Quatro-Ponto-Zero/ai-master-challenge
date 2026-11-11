@@ -1,6 +1,6 @@
-// "Por que a nota é N" (O-36): a conta numa linha, a barra empilhada com legenda, os motivos com o ícone do grupo
+// "Por que a nota é N" (O-36; FIT absoluto na O-52): a conta numa linha, a barra empilhada com legenda, os motivos com o ícone do grupo
 // e os componentes em linhas (cabeçalho com valor e peso; itens com o texto inteiro e os pontos à direita).
-import { contaDaNota, contribuicoes, itensDoGrupo, pontosDoItem, ROTULO_GRUPO, type Grupo } from "@/lib/explicacaoNota";
+import { contaDaNota, contribuicoes, itemFitForaDaConta, itensDoFit, itensDoGrupo, pontosDoItem, ROTULO_GRUPO, valorDoItemFit, type Grupo } from "@/lib/explicacaoNota";
 import type { Componente } from "@/lib/tipos";
 import { Icone, type NomeIcone } from "./ui/Icones";
 
@@ -31,7 +31,7 @@ export function NotaExplicada({
             </li>
           ))}
         </ul>
-        <p className="mt-1.5 text-xs text-texto-2">A nota soma 70% do encaixe com o vendedor (FIT), 30% do tempo de atendimento (HEAT) e o bônus da empresa (BONUS, de 0 a 20).</p>
+        <p className="mt-1.5 text-xs text-texto-2">A nota soma 70% da performance do vendedor neste perfil (FIT), 30% do tempo de atendimento (HEAT) e o bônus da empresa (BONUS, de 0 a 20).</p>
       </div>
 
       {/* Os motivos, com o ícone do grupo */}
@@ -57,7 +57,7 @@ export function NotaExplicada({
       {/* Componentes em linhas */}
       <div className="divide-y divide-divisoria border-y border-divisoria">
         {GRUPOS.map((g) => {
-          const itens = itensDoGrupo(componentes, g);
+          const itens = g === "fit" ? itensDoFit(componentes) : itensDoGrupo(componentes, g);
           const valor = g === "fit" ? fit : g === "heat" ? heat : bonus;
           return (
             <section key={g} aria-label={`${ROTULO_GRUPO[g].nome} (${ROTULO_GRUPO[g].sigla})`} className="py-3">
@@ -67,7 +67,7 @@ export function NotaExplicada({
                   {ROTULO_GRUPO[g].nome} ({ROTULO_GRUPO[g].sigla})
                 </p>
                 <p className="shrink-0 text-right">
-                  <span className="text-base font-semibold tabular-nums">{valor}</span>
+                  <span className="text-base font-semibold tabular-nums">{g === "fit" ? `${num(valor)}%` : valor}</span>
                   <span className="ml-1.5 text-xs text-texto-2">{ROTULO_GRUPO[g].peso}</span>
                 </p>
               </div>
@@ -76,7 +76,9 @@ export function NotaExplicada({
                   {itens.map((c) => (
                     <li key={c.nome} className="flex items-start justify-between gap-3">
                       <span className="min-w-0 break-words">{c.nome}</span>
-                      <span className="shrink-0 text-right whitespace-nowrap text-texto tabular-nums">{pontosDoItem(c)}</span>
+                      <span className={`shrink-0 text-right whitespace-nowrap tabular-nums ${g === "fit" && itemFitForaDaConta(c) ? "text-texto-2" : "text-texto"}`}>
+                        {g === "fit" ? valorDoItemFit(c) : pontosDoItem(c)}
+                      </span>
                     </li>
                   ))}
                 </ul>

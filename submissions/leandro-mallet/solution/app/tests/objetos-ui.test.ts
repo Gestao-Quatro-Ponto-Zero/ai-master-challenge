@@ -160,3 +160,16 @@ describe("variação zero (ajuste da O-30)", () => {
     expect(variacaoZero("↑ 0,5 p.p.")).toBe(false);
   });
 });
+
+describe("sem rodapé de data e fonte (O-48)", () => {
+  it("nenhuma tela mostra data dos dados, fonte ou moeda como subtítulo (adendo: o do Painel sai inteiro)", async () => {
+    const { readFileSync, readdirSync, statSync } = await import("node:fs");
+    const { join } = await import("node:path");
+    const arquivos = (d: string): string[] => readdirSync(d).flatMap((f) => (statSync(join(d, f)).isDirectory() ? arquivos(join(d, f)) : f.endsWith(".tsx") ? [join(d, f)] : []));
+    for (const f of [...arquivos("src/app"), ...arquivos("src/components")]) {
+      const s = readFileSync(f, "utf8");
+      expect(s, f).not.toMatch(/[Dd]ados até|Fonte: |Valores em|em \{NOME_MOEDA\}/);
+    }
+    expect(readFileSync("src/app/painel/page.tsx", "utf8")).not.toMatch(/<h1[^>]*>Painel<\/h1>\s*<p/);
+  });
+});

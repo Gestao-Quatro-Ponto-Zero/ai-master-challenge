@@ -49,16 +49,33 @@ function calcularDoDia(base: Awaited<ReturnType<typeof lerBase>>, hoje: string) 
   return { leads, cel, padroes, notas, refFit };
 }
 
+/** As primeiras recusas em texto curto, para o resumo do dia (o resumo só guarda valores simples). */
+const resumoRecusas = (r: { opportunity_id: string; erro: string }[]) =>
+  r.length ? r.slice(0, 10).map((x) => `${x.opportunity_id}: ${x.erro}`).join(" | ") : null;
+
+/**
+ * Cada repasse num savepoint (O-52): se o banco recusar um, só ele é desfeito, conta como "recusado" e a rotina segue.
+ * Um repasse recusado não derruba o dia.
+ */
 async function repassar(sql: Sql, correlationId: string, chamadas: ChamadaRepasse[]) {
   let feitos = 0;
+  const recusados: { opportunity_id: string; erro: string }[] = [];
   for (const c of chamadas) {
-    await sql(
-      "select (core_repassar_deal($1::uuid, $2, $3, $4, $5::bigint, $6::smallint, $7::smallint, $8::smallint, $9)).id",
-      [correlationId, c.p_opportunity_id, c.p_para_vendedor, c.p_origem, c.p_execucao_id || null, c.p_fit_dono, c.p_fit_novo, c.p_posicao_top, c.p_faixa_heat],
-    );
-    feitos += 1;
+    await sql("savepoint repasse");
+    try {
+      await sql(
+        "select (core_repassar_deal($1::uuid, $2, $3, $4, $5::bigint, $6::smallint, $7::smallint, $8::smallint, $9)).id",
+        [correlationId, c.p_opportunity_id, c.p_para_vendedor, c.p_origem, c.p_execucao_id || null, c.p_fit_dono, c.p_fit_novo, c.p_posicao_top, c.p_faixa_heat],
+      );
+      await sql("release savepoint repasse");
+      feitos += 1;
+    } catch (e) {
+      await sql("rollback to savepoint repasse");
+      await sql("release savepoint repasse");
+      recusados.push({ opportunity_id: c.p_opportunity_id, erro: (e instanceof Error ? e.message : String(e)).replace(/\s+/g, " ").slice(0, 160) });
+    }
   }
-  return feitos;
+  return { feitos, recusados };
 }
 
 async function parametrosRepasse(sql: Sql): Promise<ParametrosRepasse> {
@@ -159,8 +176,11 @@ export const motorScore: MotorScore = {
     const ativos = await vendedoresAtivos(ctx.sql);
     if (!ativos.length) return { redistribuidos: 0, motivo: "sem vendedores ativos" };
     const plano = planejarRedistribuicao(c.leads, c.notas, c.cel, TRAVADOS, ativos);
-    const feitos = await repassar(ctx.sql, ctx.correlationId, chamadasRedistribuicao(plano.trocas, ativa));
-    return { referencia_fit: c.refFit, elegiveis: plano.elegiveis.length, limite: plano.limite, avaliados: plano.trocas.length, redistribuidos: feitos };
+    const { feitos, recusados } = await repassar(ctx.sql, ctx.correlationId, chamadasRedistribuicao(plano.trocas, ativa));
+    return {
+      referencia_fit: c.refFit, elegiveis: plano.elegiveis.length, limite: plano.limite, avaliados: plano.trocas.length, redistribuidos: feitos,
+      recusados: recusados.length, recusas: resumoRecusas(recusados),
+    };
   },
 
   async diario(ctx): Promise<ResumoJob> {
@@ -189,7 +209,7 @@ export const motorScore: MotorScore = {
       repassesPorLead: new Map(contagens.map((x) => [x.opportunity_id, Number(x.n)])),
       penalidades: new Map(penalidades.map((x) => [x.vendedor_nome, Number(x.pontos)])),
     });
-    const feitos = await repassar(ctx.sql, ctx.correlationId, r.chamadas);
+    const { feitos, recusados } = await repassar(ctx.sql, ctx.correlationId, r.chamadas);
     // 2) Execução nova (HEAT e nota de hoje), com os donos depois do repasse, e ativação.
     const baseFinal = feitos ? await lerBase(ctx.sql) : base;
     const ex = await gravarExecucao(ctx, feitos ? calcularDoDia(baseFinal, ctx.dataNegocio) : c, baseFinal);
@@ -197,7 +217,7 @@ export const motorScore: MotorScore = {
     const [semDono] = await ctx.sql<{ n: number }>("select count(*)::int as n from core_deals where vendedor_nome is null");
     return {
       execucao_id: ex.id, deals: ex.deals, fit_vendedores: ex.fits, padroes_conta: ex.padroes, referencia_fit: c.refFit,
-      repasses: feitos, fila_manager: r.filaManager.length, sem_dono: Number(semDono?.n ?? 0),
+      repasses: feitos, recusados: recusados.length, recusas: resumoRecusas(recusados), fila_manager: r.filaManager.length, sem_dono: Number(semDono?.n ?? 0),
     };
   },
 };

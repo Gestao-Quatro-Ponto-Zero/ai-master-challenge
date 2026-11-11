@@ -1,6 +1,6 @@
 /**
  * Paridade do motor em TS com o regra.py (referência): mesma entrada, mesma data, mesma saída deal a deal.
- * Fixtures: a entrada lida do banco e a carga JSON da execução 9 (sha256 de9f5962…), gerada pelo Python.
+ * Fixtures: a entrada lida do banco e a carga JSON gerada pelo regra.py com o FIT absoluto (O-51) sobre a mesma entrada.
  */
 import { readFileSync } from "node:fs";
 import { gunzipSync } from "node:zlib";
@@ -11,14 +11,14 @@ const ler = (nome: string) =>
   JSON.parse(gunzipSync(readFileSync(new URL(`./fixtures/score/${nome}`, import.meta.url))).toString("utf-8"));
 
 const entrada = ler("entrada_2017-12-31.json.gz") as { deals: LinhaDeal[]; contas: LinhaConta[]; produtos: LinhaProduto[] };
-const esperado = ler("score_exec9_2017-12-31.json.gz");
+const esperado = ler("score_fit_absoluto_2017-12-31.json.gz");
 /** JSON com chaves em ordem (a carga do Python sai com sort_keys). */
 const canonico = (v: unknown): string =>
   JSON.stringify(v, (_k, x) => (x && typeof x === "object" && !Array.isArray(x)
     ? Object.fromEntries(Object.keys(x).sort().map((k) => [k, (x as Record<string, unknown>)[k]])) : x));
 const r = calcular(entrada.deals, entrada.contas, entrada.produtos, esperado.reference_date);
 
-describe("paridade com o regra.py (execução 9)", () => {
+describe("paridade com o regra.py (FIT absoluto)", () => {
   it("mesmos deals", () => {
     expect(r.deals.map((d) => d.opportunity_id)).toEqual(esperado.deals.map((d: { opportunity_id: string }) => d.opportunity_id));
   });

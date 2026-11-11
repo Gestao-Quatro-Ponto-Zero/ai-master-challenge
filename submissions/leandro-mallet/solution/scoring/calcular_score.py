@@ -93,6 +93,7 @@ def montar_carga(res: dict, produtos: pd.DataFrame, fonte: str) -> dict:
         "parametros": {
             "fit": {"janela_inicio": str(ini.date()), "janela_fim": str(fim.date()), "janela_meses": regra.JANELA_MESES,
                     "encolhimento": regra.ENCOLHIMENTO, "minimo_casos": regra.MINIMO_CASOS,
+                    "formula": "FIT = 100 × média das conversões ajustadas nas características com 10+ fechados; sem característica: conversão geral do vendedor; sem histórico: conversão do time",
                     "corte_destaque_pontos": regra.CORTE_DESTAQUE * 100, "caracteristicas": list(regra.DIMENSOES),
                     "sem_empresa": "produto e série", "recalculo": "todo domingo"},
             "heat": {"faixas": [{"ate_dias": a, "pontos": p} for a, p, _ in regra.FAIXAS_HEAT],

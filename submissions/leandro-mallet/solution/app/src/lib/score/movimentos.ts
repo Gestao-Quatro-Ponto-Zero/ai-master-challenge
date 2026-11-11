@@ -1,10 +1,11 @@
 /**
- * Movimentos de dono: redistribuição de domingo, repasse por mudança de faixa e roteamento de lead novo.
+ * Movimentos de dono: redistribuição de domingo e repasse por mudança de faixa.
+ * O lead novo é roteado só pela função do banco (core_rotear_lead, sobre score_fit_vendedores).
  * Funções puras: devolvem o plano e as chamadas de função do banco; quem executa é a rotina (I/O fora daqui).
  * Referência da redistribuição: solution/scoring/redistribuir.py.
  */
 import {
-  arredondar, dia, faixaHeat, fitDoLead, FIT_FURAR_FILA, PESOS, temDestaque,
+  arredondar, dia, faixaHeat, fitDoLead, PESOS,
   type Celulas, type DealNota, type Lead,
 } from "./regra";
 
@@ -86,7 +87,7 @@ export interface ResultadoRepasse { chamadas: ChamadaRepasse[]; filaManager: str
 
 /**
  * Lead aberto, sem contato registrado e sem trava, que mudou de faixa do HEAT entre ontem e hoje.
- * Passa ao vendedor de maior FIT entre os que: têm destaque e 1+ característica do lead com 10+ fechados,
+ * Passa ao vendedor de maior FIT entre os que: têm histórico e 1+ característica do lead com 10+ fechados,
  * FIT ≥ fitMinimo, FIT ≥ FIT do dono − maxAbaixoDoDono e em cujo top N o lead entra pela nota com ele.
  * Empate: menos ativos e depois menos penalidade. Lead que atingiu o máximo de repasses vai à fila do manager.
  * A penalidade de quem perde o lead é gravada pelo próprio core_repassar_deal (config penalidade_roteamento).
@@ -118,7 +119,7 @@ export function planejarRepasses(
     }
     let melhor: { v: string; fit: number; pos: number } | null = null;
     for (const v of vendedores) {
-      if (v === l.vendedor_nome || !temDestaque(cel, v)) continue;
+      if (v === l.vendedor_nome || !cel.taxaVendedor.has(v)) continue;
       const f = fitDoLead(cel, v, l);
       if (!f.usadas.length || f.fit < par.fitMinimo || f.fit < n.fit - par.maxAbaixoDoDono) continue;
       const notaCom = PESOS.fit * f.fit + PESOS.heat * n.heat + n.bonus;
@@ -139,34 +140,4 @@ export function planejarRepasses(
     ativos.set(l.vendedor_nome, (ativos.get(l.vendedor_nome) ?? 1) - 1);
   }
   return { chamadas, filaManager: fila };
-}
-
-/* ------------------------------------------------------------------ lead novo durante a semana */
-
-export interface Rota { vendedor: string | null; conversao: number | null; fit: number | null; motivo: string }
-
-/**
- * Lead novo vai ao vendedor de maior conversão no perfil (taxa dele + média dos desvios do lead), já descontada a
- * penalidade (em pontos percentuais). Fora: quem está no limite da semana, quem não tem 1+ característica do lead
- * com 10+ fechados e quem teria FIT abaixo de 50. Empate: menos ativos. Ninguém passa: fila do manager.
- */
-export function rotearLeadNovo(
-  lead: Pick<Lead, "produto_nome" | "serie" | "setor" | "faixa_receita" | "faixa_funcionarios" | "conta_nome" | "sede">,
-  cel: Celulas, ativos: Map<string, number>, limiteSemana: number, penalidades: Map<string, number> = new Map(),
-): Rota {
-  let melhor: { v: string; conv: number; fit: number } | null = null;
-  for (const v of [...cel.taxaVendedor.keys()].sort()) {
-    if ((ativos.get(v) ?? 0) >= limiteSemana) continue;
-    const f = fitDoLead(cel, v, lead);
-    if (!f.usadas.length || f.fit < 50) continue;
-    let soma = 0;
-    for (const u of f.usadas) soma += u.desvio;
-    const conv = cel.taxaVendedor.get(v)! + soma / f.usadas.length - (penalidades.get(v) ?? 0) / 100;
-    if (!melhor || conv > melhor.conv || (conv === melhor.conv && (ativos.get(v) ?? 0) < (ativos.get(melhor.v) ?? 0))) melhor = { v, conv, fit: f.fit };
-  }
-  if (!melhor) return { vendedor: null, conversao: null, fit: null, motivo: "Nenhum vendedor passou nas travas: fila do manager." };
-  return {
-    vendedor: melhor.v, conversao: arredondar(melhor.conv * 100, 1), fit: arredondar(melhor.fit),
-    motivo: melhor.fit >= FIT_FURAR_FILA ? "Lead novo de alto encaixe: entra no topo das prioridades." : "Lead novo roteado pela maior conversão no perfil.",
-  };
 }

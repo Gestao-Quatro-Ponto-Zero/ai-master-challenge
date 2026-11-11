@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { pedir } from "@/lib/cliente";
-import { dataNegocioAgora } from "@/lib/relogio";
 import { dataBR, dinheiro, rotuloSetor, ROTULO_PORTE } from "@/lib/calculos";
 import type { DealDetalhe, EventoLinhaDoTempo, Tag, Usuario } from "@/lib/tipos";
 import { useAvisos } from "./Avisos";
@@ -366,7 +365,7 @@ function Conteudo({ id, usuario, somenteLeitura }: { id: string; usuario: Usuari
               <details>
                 <summary className="cursor-pointer">Ver detalhes</summary>
                 <p className="mt-1">
-                  Código do deal: {d.id} · produto {d.produto} (série {d.serie}), preço de tabela {dinheiro(d.preco)} · dados até {dataBR(dataNegocioAgora())}
+                  Código do deal: {d.id} · produto {d.produto} (série {d.serie}), preço de tabela {dinheiro(d.preco)}
                 </p>
               </details>
             </footer>

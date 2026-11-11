@@ -4,8 +4,7 @@ import { Avisos } from "@/components/Avisos";
 import { ProvedorEstagio } from "@/components/Estagio";
 import { ModalDeal } from "@/components/ModalDeal";
 import { Topo } from "@/components/Topo";
-import { dataBR } from "@/lib/calculos";
-import { dataNegocio, escritaSoEmMemoria, fonteDosDados, somenteLeitura } from "@/server/repositorio";
+import { escritaSoEmMemoria, somenteLeitura } from "@/server/repositorio";
 import { usuarioAtual } from "@/server/sessao";
 import { libreBaskerville, manrope } from "@/tema/fontes";
 import "./globals.css";
@@ -36,10 +35,11 @@ export default async function Layout({ children }: { children: ReactNode }) {
               </Suspense>
             ) : null}
           </ProvedorEstagio>
-          <footer className="mx-auto max-w-7xl px-4 pb-8 text-xs text-texto-2 sm:px-6">
-            Dados até {dataBR(dataNegocio())}. Fonte: {fonteDosDados() === "banco" ? "banco de dados" : "arquivo"}.
-            {escritaSoEmMemoria() ? " Sem banco configurado: as mudanças ficam guardadas só enquanto o servidor está ligado." : ""}
-          </footer>
+          {escritaSoEmMemoria() ? (
+            <footer className="mx-auto max-w-7xl px-4 pb-8 text-xs text-texto-2 sm:px-6">
+              Sem banco configurado: as mudanças ficam guardadas só enquanto o servidor está ligado.
+            </footer>
+          ) : null}
         </Avisos>
       </body>
     </html>

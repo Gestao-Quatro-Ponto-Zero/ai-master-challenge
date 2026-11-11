@@ -6,7 +6,7 @@ import type { Componente } from "./tipos";
 export type Grupo = Componente["grupo"];
 
 export const ROTULO_GRUPO: Record<Grupo, { nome: string; sigla: string; peso: string }> = {
-  fit: { nome: "Encaixe com o vendedor", sigla: "FIT", peso: `peso ${Math.round(CONFIG.pesosNota.fit * 100)}%` },
+  fit: { nome: "Performance do vendedor neste perfil", sigla: "FIT", peso: `peso ${Math.round(CONFIG.pesosNota.fit * 100)}%` },
   heat: { nome: "Tempo de atendimento", sigla: "HEAT", peso: `peso ${Math.round(CONFIG.pesosNota.heat * 100)}%` },
   bonus: { nome: "Bônus da empresa", sigla: "BONUS", peso: "soma direto, de 0 a 20" },
 };
@@ -32,4 +32,23 @@ export function itensDoGrupo(componentes: Componente[], grupo: Grupo): Component
 export function pontosDoItem(c: Pick<Componente, "pontos" | "maximo">): string {
   const p = `${c.pontos < 0 ? "−" : ""}${num(Math.abs(c.pontos))}`;
   return c.maximo === null ? p : `${p} / ${num(c.maximo)}`;
+}
+
+/**
+ * FIT absoluto (O-51/O-52): cada característica do lead traz a conversão do vendedor nela, de 0 a 100 (máximo 100).
+ * Característica que ficou fora da conta por ter poucos fechados vem sem máximo (maximo null).
+ */
+export const itemFitForaDaConta = (c: Pick<Componente, "maximo">) => c.maximo === null;
+
+/** "65%" · "poucos casos" · formato antigo ("4,7 / 10,9") enquanto a carga nova não chega. */
+export function valorDoItemFit(c: Pick<Componente, "pontos" | "maximo">): string {
+  if (itemFitForaDaConta(c)) return "poucos casos";
+  if (c.maximo === 100) return `${num(c.pontos)}%`;
+  return pontosDoItem(c);
+}
+
+/** Itens do FIT: os que contam primeiro, depois os de poucos casos (a ordem de cada parte é a do score). */
+export function itensDoFit(componentes: Componente[]): Componente[] {
+  const itens = itensDoGrupo(componentes, "fit");
+  return [...itens.filter((c) => !itemFitForaDaConta(c)), ...itens.filter(itemFitForaDaConta)];
 }

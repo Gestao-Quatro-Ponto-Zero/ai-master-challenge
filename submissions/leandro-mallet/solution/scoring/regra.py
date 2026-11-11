@@ -81,8 +81,9 @@ class Celulas:
     taxa_vendedor: dict              # vendedor -> taxa
     fechados_vendedor: dict          # vendedor -> fechados na janela
     tabela: pd.DataFrame             # vendedor, dim, valor, n, ganhos, taxa_encolhida, desvio, ok
-    destaque: pd.DataFrame           # por vendedor: dim, valor, n, ganhos, taxa_encolhida, desvio
+    destaque: pd.DataFrame           # por vendedor: dim, valor, n, ganhos, taxa_encolhida, desvio (só informação)
     janela: tuple = field(default_factory=tuple)
+    taxa_time: float = 0.0           # conversão do time na janela (FIT de quem não tem histórico)
 
     def __post_init__(self):
         self._idx = {(r.vendedor, r.dim, r.valor): r for r in self.tabela.itertuples(index=False)}
@@ -115,11 +116,17 @@ def celulas(d: pd.DataFrame, referencia: pd.Timestamp) -> Celulas:
     elegiveis = t[t["ok"]].sort_values(["vendedor", "taxa_encolhida", "dim", "valor"], ascending=[True, False, True, True])
     destaque = elegiveis.groupby("vendedor").head(1).set_index("vendedor")
     return Celulas(taxa, ag["count"].to_dict(), t[["vendedor", "dim", "valor", "n", "ganhos", "taxa_encolhida", "desvio", "ok"]],
-                   destaque, (ini, fim))
+                   destaque, (ini, fim), float(f["ganhou"].sum() / len(f)) if len(f) else 0.0)
 
 
 def fit_do_lead(cel: Celulas, vendedor: str, lead: pd.Series) -> dict:
-    """FIT = 50 + 50 × média dos desvios das características com 10+ fechados ÷ desvio do destaque."""
+    """FIT absoluto (decisão da O-51): a conversão do vendedor naquele perfil de lead, de 0 a 100 (62 = fecha 62%).
+
+    FIT = 100 × média das conversões ajustadas do vendedor nas características do lead com 10+ fechados na janela.
+    Conversão ajustada = (ganhos + 20 × conversão geral do vendedor) ÷ (fechados + 20).
+    Sem característica que conte: a conversão geral do vendedor. Vendedor sem histórico: a conversão do time.
+    O destaque (melhor perfil do vendedor) fica só como informação para o motivo.
+    """
     usadas, fora = [], []
     for dim, col in DIMENSOES.items():
         valor = lead.get(col)
@@ -129,16 +136,19 @@ def fit_do_lead(cel: Celulas, vendedor: str, lead: pd.Series) -> dict:
         item = {"dim": dim, "valor": str(valor), "n": int(c.n) if c else 0, "ganhos": int(c.ganhos) if c else 0,
                 "taxa_encolhida": float(c.taxa_encolhida) if c else None, "desvio": float(c.desvio) if c else 0.0}
         (usadas if c is not None and c.ok else fora).append(item)
-    if not cel.tem_destaque(vendedor):
-        # sem destaque ou sem histórico na janela (decisão 49: os sem histórico entram com FIT 50 em todo lead)
-        return {"fit": 50.0, "sem_destaque": True, "sem_historico": vendedor not in cel.taxa_vendedor,
-                "usadas": usadas, "fora": fora, "media": 0.0, "destaque": None}
-    dest = cel.destaque.loc[vendedor]
-    media = float(np.mean([u["desvio"] for u in usadas])) if usadas else 0.0
-    fit = float(np.clip(50 + 50 * media / dest["desvio"], 0, 100))
-    return {"fit": fit, "sem_destaque": False, "sem_historico": False, "usadas": usadas, "fora": fora, "media": media,
-            "destaque": {"dim": dest["dim"], "valor": dest["valor"], "n": int(dest["n"]), "ganhos": int(dest["ganhos"]),
-                         "taxa_encolhida": float(dest["taxa_encolhida"]), "desvio": float(dest["desvio"])}}
+    sem_historico = vendedor not in cel.taxa_vendedor
+    if usadas:
+        fit = 100 * float(np.mean([u["taxa_encolhida"] for u in usadas]))
+    elif not sem_historico:
+        fit = 100 * float(cel.taxa_vendedor[vendedor])
+    else:
+        fit = 100 * float(cel.taxa_time)
+    dest = None
+    if cel.tem_destaque(vendedor):
+        x = cel.destaque.loc[vendedor]
+        dest = {"dim": x["dim"], "valor": x["valor"], "n": int(x["n"]), "ganhos": int(x["ganhos"]),
+                "taxa_encolhida": float(x["taxa_encolhida"]), "desvio": float(x["desvio"])}
+    return {"fit": fit, "sem_historico": sem_historico, "sem_casos": not usadas, "usadas": usadas, "fora": fora, "destaque": dest}
 
 
 def faixa_heat(dias) -> tuple[int, str]:
@@ -269,24 +279,17 @@ def motivos(l: dict) -> list[tuple[str, str]]:
     """
     f = l["detalhe_fit"]
     saida = []
-    if f.get("sem_historico"):
-        saida.append(("fit", "Vendedor sem histórico: encaixe neutro (50)."))
-    elif f["sem_destaque"]:
-        saida.append(("fit", "O vendedor não tem um destaque com casos suficientes nos últimos 3 meses: o encaixe fica neutro (50)."))
-    elif not f["usadas"]:
-        saida.append(("fit", "Ainda não há casos suficientes para medir o encaixe deste lead com o vendedor: nota neutra (50)."))
+    pct = int(round(l["fit"]))
+    if f["sem_historico"]:
+        saida.append(("fit", f"Vendedor sem histórico nos últimos 3 meses: o encaixe usa a conversão do time ({pct}%)."))
+    elif f["sem_casos"]:
+        saida.append(("fit", f"Poucos casos neste perfil: o encaixe usa a conversão geral do vendedor ({pct}%)."))
     else:
+        frase = f"O vendedor fecha {pct}% dos leads com este perfil."
         dest = f["destaque"]
-        bate = [u for u in f["usadas"] if u["dim"] == dest["dim"] and u["valor"] == dest["valor"]]
-        if bate:
-            u = bate[0]
-            saida.append(("fit", f"Encaixa no destaque do vendedor: {_rot(u)} ({u['ganhos']} de {u['n']} ganhos nos últimos 3 meses)."))
-        elif f["media"] >= 0:
-            u = max(f["usadas"], key=lambda x: x["desvio"])
-            saida.append(("fit", f"Encaixe acima da média do vendedor: {_rot(u)} ({u['ganhos']} de {u['n']} ganhos nos últimos 3 meses)."))
-        else:
-            u = min(f["usadas"], key=lambda x: x["desvio"])
-            saida.append(("fit", f"Fora do forte do vendedor: {_rot(u)} ({u['ganhos']} de {u['n']} ganhos nos últimos 3 meses, abaixo da média dele)."))
+        if dest and any(u["dim"] == dest["dim"] and u["valor"] == dest["valor"] for u in f["usadas"]):
+            frase += f" Ponto forte do vendedor: {_rot(dest)} ({int(round(dest['taxa_encolhida'] * 100))}%)."
+        saida.append(("fit", frase))
     if l["conta_nome"] is None:
         saida.append(("fit", "Sem empresa cadastrada: o encaixe usa só o produto. Identifique a empresa."))
     dias = l["dias"]
@@ -310,7 +313,6 @@ def motivos(l: dict) -> list[tuple[str, str]]:
 
 def componentes(l: dict) -> list[dict]:
     f = l["detalhe_fit"]
-    dest = f["destaque"]
     out = [{"grupo": "fit", "componente": "Encaixe com o vendedor (70%)", "pontos": round(PESOS["fit"] * l["fit"], 2), "maximo": 70},
            {"grupo": "heat", "componente": "Tempo de atendimento (30%)", "pontos": round(PESOS["heat"] * l["heat"], 2), "maximo": 30},
            {"grupo": "heat", "componente": f"Faixa: {l['heat_faixa']}", "pontos": l["heat_pontos"], "maximo": 100},
@@ -318,8 +320,13 @@ def componentes(l: dict) -> list[dict]:
            {"grupo": "bonus", "componente": "Histórico da empresa", "pontos": l["bonus_historico"], "maximo": 10},
            {"grupo": "bonus", "componente": "Janela de compra", "pontos": l["bonus_janela"], "maximo": 10}]
     for u in f["usadas"]:
-        out.append({"grupo": "fit", "componente": f"Desvio: {_rot(u)}"[:60], "pontos": round(u["desvio"] * 100, 2),
-                    "maximo": round(dest["desvio"] * 100, 2) if dest else None})
+        rot = _rot(u)
+        out.append({"grupo": "fit", "componente": (rot[:1].upper() + rot[1:])[:60], "pontos": round(u["taxa_encolhida"] * 100, 2),
+                    "maximo": 100})
+    for u in f["fora"]:
+        # característica com poucos casos (menos de 10 fechados): não entra no FIT; pontos = fechados, sem máximo
+        rot = _rot(u)
+        out.append({"grupo": "fit", "componente": (rot[:1].upper() + rot[1:])[:60], "pontos": u["n"], "maximo": None})
     return out
 
 
@@ -333,9 +340,8 @@ def fit_vendedores(cel: Celulas, produtos: pd.DataFrame) -> pd.DataFrame:
             cp = cel.celula(v, "produto", p["nome"])
             cs = cel.celula(v, "serie", p["serie"])
             casos = max(int(cp.n) if cp else 0, int(cs.n) if cs else 0)
-            taxa = float(cp.taxa_encolhida) if (cp is not None and cp.ok) else cel.taxa_vendedor[v]
             linhas.append({"vendedor_nome": v, "cohort": f"produto={p['nome']}", "produto_nome": p["nome"],
-                           "taxa_media_movel": round(taxa, 4), "casos": casos, "fit": int(round(f["fit"]))})
+                           "taxa_media_movel": round(f["fit"] / 100, 4), "casos": casos, "fit": int(round(f["fit"]))})
     return pd.DataFrame(linhas)
 
 

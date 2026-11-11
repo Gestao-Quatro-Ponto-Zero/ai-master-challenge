@@ -159,6 +159,8 @@ export interface Celulas {
   tabela: Map<string, Celula>;
   destaque: Map<string, Celula>;
   janela: [number, number];
+  /** conversão do time na janela (FIT de quem não tem histórico) */
+  taxaTime: number;
 }
 const chave = (v: string, d: string, x: string) => `${v}\u0000${d}\u0000${x}`;
 
@@ -198,7 +200,10 @@ export function celulas(leads: Lead[], referencia: string): Celulas {
       destaque.set(c.vendedor, c);
     }
   }
-  return { taxaVendedor: taxa, fechadosVendedor: new Map([...ag].map(([v, a]) => [v, a.n])), tabela, destaque, janela: [ini, fim] };
+  let ganhosTime = 0;
+  for (const d of f) ganhosTime += d.estagio === "Won" ? 1 : 0;
+  return { taxaVendedor: taxa, fechadosVendedor: new Map([...ag].map(([v, a]) => [v, a.n])), tabela, destaque, janela: [ini, fim],
+    taxaTime: f.length ? ganhosTime / f.length : 0 };
 }
 
 export function temDestaque(cel: Celulas, vendedor: string): boolean {
@@ -207,10 +212,17 @@ export function temDestaque(cel: Celulas, vendedor: string): boolean {
 }
 
 export interface ItemFit { dim: Dimensao; valor: string; n: number; ganhos: number; taxa_encolhida: number | null; desvio: number }
-export interface DetalheFit { fit: number; sem_destaque: boolean; sem_historico: boolean; usadas: ItemFit[]; fora: ItemFit[]; media: number; destaque: Celula | null }
+export interface DetalheFit { fit: number; sem_historico: boolean; sem_casos: boolean; usadas: ItemFit[]; fora: ItemFit[]; destaque: Celula | null }
 
 type CaracteristicasLead = Pick<Lead, "produto_nome" | "serie" | "setor" | "faixa_receita" | "faixa_funcionarios" | "conta_nome" | "sede">;
 
+/**
+ * FIT absoluto (O-51): a conversão do vendedor naquele perfil de lead, de 0 a 100 (62 = fecha 62%).
+ * FIT = 100 × média das conversões ajustadas nas características do lead com 10+ fechados na janela,
+ * com conversão ajustada = (ganhos + 20 × conversão geral do vendedor) ÷ (fechados + 20).
+ * Sem característica que conte: a conversão geral do vendedor. Vendedor sem histórico: a conversão do time.
+ * O destaque (melhor perfil do vendedor) fica só como informação para o motivo.
+ */
 export function fitDoLead(cel: Celulas, vendedor: string, lead: CaracteristicasLead): DetalheFit {
   const usadas: ItemFit[] = [], fora: ItemFit[] = [];
   for (const dim of DIMENSOES) {
@@ -220,14 +232,16 @@ export function fitDoLead(cel: Celulas, vendedor: string, lead: CaracteristicasL
     const item: ItemFit = { dim, valor: String(v), n: c?.n ?? 0, ganhos: c?.ganhos ?? 0, taxa_encolhida: c ? c.taxa_encolhida : null, desvio: c ? c.desvio : 0 };
     (c && c.ok ? usadas : fora).push(item);
   }
-  // sem destaque ou sem histórico na janela (decisão 49: os sem histórico entram com FIT 50 em todo lead)
-  if (!temDestaque(cel, vendedor)) return { fit: 50, sem_destaque: true, sem_historico: !cel.taxaVendedor.has(vendedor), usadas, fora, media: 0, destaque: null };
-  const dest = cel.destaque.get(vendedor)!;
-  let soma = 0;
-  for (const u of usadas) soma += u.desvio;
-  const media = usadas.length ? soma / usadas.length : 0;
-  const fit = Math.min(100, Math.max(0, 50 + (50 * media) / dest.desvio));
-  return { fit, sem_destaque: false, sem_historico: false, usadas, fora, media, destaque: dest };
+  const semHistorico = !cel.taxaVendedor.has(vendedor);
+  let fit: number;
+  if (usadas.length) {
+    let soma = 0;
+    for (const u of usadas) soma += u.taxa_encolhida!;
+    fit = 100 * (soma / usadas.length);
+  } else if (!semHistorico) fit = 100 * cel.taxaVendedor.get(vendedor)!;
+  else fit = 100 * cel.taxaTime;
+  const destaque = temDestaque(cel, vendedor) ? cel.destaque.get(vendedor)! : null;
+  return { fit, sem_historico: semHistorico, sem_casos: !usadas.length, usadas, fora, destaque };
 }
 
 /* ------------------------------------------------------------------ HEAT (diário) */
@@ -333,20 +347,16 @@ export function rotulo(item: { dim: Dimensao; valor: string }): string {
 export function motivos(l: DealNota): [string, string][] {
   const f = l.detalhe_fit;
   const saida: [string, string][] = [];
-  if (f.sem_historico) saida.push(["fit", "Vendedor sem histórico: encaixe neutro (50)."]);
-  else if (f.sem_destaque) saida.push(["fit", "O vendedor não tem um destaque com casos suficientes nos últimos 3 meses: o encaixe fica neutro (50)."]);
-  else if (!f.usadas.length) saida.push(["fit", "Ainda não há casos suficientes para medir o encaixe deste lead com o vendedor: nota neutra (50)."]);
+  const pct = arredondar(l.fit);
+  if (f.sem_historico) saida.push(["fit", `Vendedor sem histórico nos últimos 3 meses: o encaixe usa a conversão do time (${pct}%).`]);
+  else if (f.sem_casos) saida.push(["fit", `Poucos casos neste perfil: o encaixe usa a conversão geral do vendedor (${pct}%).`]);
   else {
-    const dest = f.destaque!;
-    const bate = f.usadas.find((u) => u.dim === dest.dim && u.valor === dest.valor);
-    if (bate) saida.push(["fit", `Encaixa no destaque do vendedor: ${rotulo(bate)} (${bate.ganhos} de ${bate.n} ganhos nos últimos 3 meses).`]);
-    else if (f.media >= 0) {
-      const u = f.usadas.reduce((a, b) => (b.desvio > a.desvio ? b : a));
-      saida.push(["fit", `Encaixe acima da média do vendedor: ${rotulo(u)} (${u.ganhos} de ${u.n} ganhos nos últimos 3 meses).`]);
-    } else {
-      const u = f.usadas.reduce((a, b) => (b.desvio < a.desvio ? b : a));
-      saida.push(["fit", `Fora do forte do vendedor: ${rotulo(u)} (${u.ganhos} de ${u.n} ganhos nos últimos 3 meses, abaixo da média dele).`]);
+    let frase = `O vendedor fecha ${pct}% dos leads com este perfil.`;
+    const dest = f.destaque;
+    if (dest && f.usadas.some((u) => u.dim === dest.dim && u.valor === dest.valor)) {
+      frase += ` Ponto forte do vendedor: ${rotulo(dest)} (${arredondar(dest.taxa_encolhida * 100)}%).`;
     }
+    saida.push(["fit", frase]);
   }
   if (l.conta_nome === null) saida.push(["fit", "Sem empresa cadastrada: o encaixe usa só o produto. Identifique a empresa."]);
   const dias = l.dias;
@@ -365,7 +375,7 @@ export function motivos(l: DealNota): [string, string][] {
 export interface Componente { grupo: "fit" | "heat" | "bonus"; componente: string; pontos: number; maximo: number | null }
 
 export function componentes(l: DealNota): Componente[] {
-  const f = l.detalhe_fit, dest = f.destaque;
+  const f = l.detalhe_fit;
   const out: Componente[] = [
     { grupo: "fit", componente: "Encaixe com o vendedor (70%)", pontos: arredondar(PESOS.fit * l.fit, 2), maximo: 70 },
     { grupo: "heat", componente: "Tempo de atendimento (30%)", pontos: arredondar(PESOS.heat * l.heat, 2), maximo: 30 },
@@ -375,8 +385,13 @@ export function componentes(l: DealNota): Componente[] {
     { grupo: "bonus", componente: "Janela de compra", pontos: l.bonus_janela, maximo: 10 },
   ];
   for (const u of f.usadas) {
-    out.push({ grupo: "fit", componente: `Desvio: ${rotulo(u)}`.slice(0, 60), pontos: arredondar(u.desvio * 100, 2),
-      maximo: dest ? arredondar(dest.desvio * 100, 2) : null });
+    const rot = rotulo(u);
+    out.push({ grupo: "fit", componente: (rot.slice(0, 1).toUpperCase() + rot.slice(1)).slice(0, 60), pontos: arredondar(u.taxa_encolhida! * 100, 2), maximo: 100 });
+  }
+  for (const u of f.fora) {
+    // característica com poucos casos (menos de 10 fechados): não entra no FIT; pontos = fechados, sem máximo
+    const rot = rotulo(u);
+    out.push({ grupo: "fit", componente: (rot.slice(0, 1).toUpperCase() + rot.slice(1)).slice(0, 60), pontos: u.n, maximo: null });
   }
   return out;
 }
@@ -394,7 +409,7 @@ export function fitVendedores(cel: Celulas, produtos: LinhaProduto[]): FitVended
       const cp = cel.tabela.get(chave(v, "produto", p.nome)), cs = cel.tabela.get(chave(v, "serie", p.serie));
       out.push({
         vendedor_nome: v, cohort: `produto=${p.nome}`, produto_nome: p.nome,
-        taxa_media_movel: arredondar(cp && cp.ok ? cp.taxa_encolhida : cel.taxaVendedor.get(v)!, 4),
+        taxa_media_movel: arredondar(f.fit / 100, 4),
         casos: Math.max(cp?.n ?? 0, cs?.n ?? 0), fit: arredondar(f.fit),
         janela_inicio: diaIso(cel.janela[0]), janela_fim: diaIso(cel.janela[1]),
       });

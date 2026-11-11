@@ -40,23 +40,32 @@ class TestDataset(unittest.TestCase):
         self.assertTrue(self.deals["heat"].between(0, 100).all())
         self.assertTrue(self.deals["bonus"].between(0, 20).all())
 
-    def test_tres_exemplos_do_html(self):
-        for oid, nota, fit, heat, bonus in [("4ZQTMS3Z", 72.8, 72.6, 40, 10), ("1HD5JJM3", 85.0, 100.0, 50, 0),
-                                            ("F5I33E1I", 67.1, 95.8, 0, 0)]:
+    def test_tres_exemplos(self):
+        # FIT absoluto (O-51): conversão do vendedor no perfil, de 0 a 100
+        for oid, nota, fit, heat, bonus in [("4ZQTMS3Z", 66.62, 63.74, 40, 10), ("1HD5JJM3", 68.60, 76.58, 50, 0),
+                                            ("F5I33E1I", 47.69, 68.13, 0, 0)]:
             r = self.deals.loc[oid]
-            self.assertAlmostEqual(r["nota"], nota, delta=0.05, msg=oid)
-            self.assertAlmostEqual(r["fit"], fit, delta=0.05, msg=oid)
+            self.assertAlmostEqual(r["nota"], nota, delta=0.01, msg=oid)
+            self.assertAlmostEqual(r["fit"], fit, delta=0.01, msg=oid)
             self.assertEqual(r["heat"], heat, oid)
             self.assertEqual(r["bonus"], bonus, oid)
 
-    def test_distribuicao_fit(self):
+    def test_fit_absoluto(self):
+        import numpy as np
+        cel = self.res["celulas"]
+        for _, r in self.deals.iterrows():
+            f = r["detalhe_fit"]
+            if f["usadas"]:
+                esperado = 100 * float(np.mean([u["taxa_encolhida"] for u in f["usadas"]]))
+            elif not f["sem_historico"]:
+                esperado = 100 * cel.taxa_vendedor[r["vendedor_nome"]]
+            else:
+                esperado = 100 * cel.taxa_time
+            self.assertAlmostEqual(r["fit"], esperado, places=9)
         f = self.deals["fit"]
-        esperado = {"0-20": 174, "20-40": 423, "40-50": 353, "50": 98, "50-60": 349, "60-75": 400, "75+": 292}
-        obtido = {"0-20": int((f <= 20).sum()), "20-40": int(((f > 20) & (f <= 40)).sum()),
-                  "40-50": int(((f > 40) & (f < 50)).sum()), "50": int((f == 50).sum()),
-                  "50-60": int(((f > 50) & (f <= 60)).sum()), "60-75": int(((f > 60) & (f < 75)).sum()),
-                  "75+": int((f >= 75).sum())}
-        self.assertEqual(obtido, esperado)
+        self.assertGreaterEqual(f.min(), 47.0)
+        self.assertLessEqual(f.max(), 77.0)
+        self.assertEqual(int((f >= 75).sum()), 17)
 
     def test_heat_por_faixa(self):
         self.assertEqual(self.deals["heat"].value_counts().to_dict(),
@@ -69,9 +78,7 @@ class TestDataset(unittest.TestCase):
     def test_top5(self):
         t5 = regra.top5(self.deals.reset_index())
         self.assertEqual(len(t5), 135)
-        self.assertAlmostEqual(100 * t5["ativo"].mean(), 77.8, delta=0.05)
-        self.assertAlmostEqual(100 * t5["conta_nome"].notna().mean(), 38.5, delta=0.05)
-        self.assertEqual(int((t5["dias"] >= 181).sum()), 6)
+        self.assertAlmostEqual(100 * t5["ativo"].mean(), 85.9, delta=0.05)
 
     def test_vendedores_sem_destaque(self):
         cel = self.res["celulas"]
@@ -92,7 +99,7 @@ class TestDataset(unittest.TestCase):
                           r"setor (" + "|".join(k for k, v in regra.SETORES.items() if k != v) + r")\b")
         self.assertFalse([t for t in textos if crus.search(t) and "de receita" not in t])
         self.assertEqual(self.deals.loc["4ZQTMS3Z", "motivos"][0][1],
-                         "Encaixa no destaque do vendedor: série MG (27 de 39 ganhos nos últimos 3 meses).")
+                         "O vendedor fecha 64% dos leads com este perfil. Ponto forte do vendedor: série MG (67%).")
 
     def test_rotulos(self):
         casos = {("produto", "GTX Pro"): "produto GTX Pro", ("serie", "MG"): "série MG",

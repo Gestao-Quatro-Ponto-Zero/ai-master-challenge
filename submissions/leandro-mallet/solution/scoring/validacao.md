@@ -7,9 +7,9 @@ NOTA = 0,70 × FIT + 0,30 × HEAT + BONUS, de 0 a 120.
 
 | Item | Valor |
 |---|---|
-| Execução ativa | `score_execucoes.id = 11`, versão `lead-score-1.0`, referência 31/12/2017, com os 35 vendedores na redistribuição (decisão 49) |
+| Execução ativa | `score_execucoes.id = 17`, versão `lead-score-1.0`, referência 31/12/2017, FIT absoluto (O-51), donos atuais |
 | Arquivo de carga | `scoring/carga/score_2017-12-31.json` |
-| sha256 | `f78eb182aa4cc02d6ee3d190c96322751aca72c4a651485b4d87217ec62ede79` |
+| sha256 | `06c9ac888aa541ec0524ad36daa8b31d4437f8f9d373b8ece80b7eda295786e3` |
 | Execução 9 | sha256 `de9f5962d01a271fc0ddaa4728bea830f242472c0841282b1dbe851d25d59858` (redistribuição com 30 vendedores). O id 10 foi gasto pelo ensaio |
 | Execução 7 | sha256 `f3aab6b5606d0cc2d1f8194e181eb79ca9e61c2f46f7031adf0af57e943e018f` (donos antes da redistribuição). Os ids 6 e 8 foram gastos pelos ensaios, que não deixaram linha |
 | Execução anterior | `id = 5`, sha256 `73ce4a8934a172fe352c0bf3156d5941ae778cccf888d97c303fe899fee8aa32` (mesmas notas, texto antigo dos motivos). O id 6 foi gasto pelo ensaio, que não deixou linha |
@@ -30,6 +30,66 @@ Conferências antes do COMMIT, todas aprovadas:
 - nota entre 0 e 89 (dentro de 0–120);
 - 0 deals com dono diferente do atual;
 - execução ativa = a carregada.
+
+## FIT absoluto (O-51): execução 15
+
+**Regra nova.**
+- FIT = 100 × média das conversões ajustadas do vendedor nas características do lead com 10+ fechados na janela. Conversão ajustada = (ganhos + 20 × conversão geral do vendedor) ÷ (fechados + 20).
+- Sem característica que conte: a conversão geral do vendedor. Sem histórico: a conversão do time na janela (60,2% no dataset).
+- Saiu "50 + 50 × desvio ÷ destaque". O destaque ficou só no motivo.
+- Componentes do FIT: a conversão de cada característica (ex.: "Setor finanças: 65", máximo 100), no lugar do desvio.
+- Motivos: "O vendedor fecha 62% dos leads com este perfil." e, quando o lead bate no melhor perfil, "Ponto forte do vendedor: série MG (67%).".
+- `score_fit_vendedores` grava o FIT absoluto por cohort (`produto=<produto>`), lido pela função `core_rotear_lead`. A função não precisou mudar.
+
+**Carga.**
+- Ensaio com ROLLBACK, depois inserção pelo papel de carga e `score_ativar_execucao`. O ensaio gastou o id 14.
+- Execução 15, sha256 `5aba6298…db35d`.
+- 2.089 deals, nota de 35 a 75, 0 donos diferentes, sem redistribuição.
+- `core_deals`: 8.801 deals.
+- Componentes 17.790, motivos 6.041, fit_vendedores 210 (FIT de 44 a 77, média 60,2), padrões 85.
+
+**Distribuição do FIT (gravado, inteiro).**
+
+| FIT | Deals |
+|---|---|
+| 47–49 | 43 |
+| 50–54 | 297 |
+| 55–59 | 310 |
+| 60–64 | 754 |
+| 65–69 | 454 |
+| 70–74 | 193 |
+| 75–77 | 38 |
+
+Com o valor exato, 31 deals ficam com FIT ≥ 75. Gravado e arredondado, são 38, dos quais 30 ativos. O limite para furar a fila e as travas do repasse continuam em 75 (decisão do Leandro).
+
+**Top 5 por nota.**
+
+| Vendedor | Deal | Nota | FIT | HEAT | BONUS | Produto · empresa |
+|---|---|---|---|---|---|---|
+| Darcel Schlecht | GR8JTX1T | 69 | 63 | 50 | 10 | GTX Pro · Warephase |
+| | 9CYYLZ11 | 69 | 62 | 50 | 10 | GTX Basic · Stanredtax |
+| | P7UPCSTC | 64 | 63 | 50 | 5 | GTX Pro · Faxquote |
+| | YKBJP191 | 64 | 63 | 50 | 5 | GTX Pro · Faxquote |
+| | 00400B1S | 58 | 62 | 50 | 0 | GTX Basic · sem empresa |
+| Kami Bicknell | 7XRWWM0X | 66 | 63 | 40 | 10 | MG Special · Scotfind |
+| | LC93MVYP | 61 | 64 | 55 | 0 | GTX Basic · sem empresa |
+| | E1LFK6E3 | 57 | 64 | 40 | 0 | GTX Basic · sem empresa |
+| | RYWETTBK | 56 | 63 | 25 | 5 | GTX Basic · Fasehatice |
+| | 059K86LU | 56 | 61 | 10 | 10 | GTX Plus Pro · Labdrill |
+
+Top 5 dos 35 vendedores: 175 deals, 97,7% ativos.
+
+**Testes.**
+- Python: 13 testes, todos passando. Exemplos novos no dataset: 4ZQTMS3Z com FIT 63,74 e nota 66,62; 1HD5JJM3 com 76,58 e 68,60; F5I33E1I com 68,13 e 47,69. O FIT é conferido como 100 × média deal a deal.
+- TS: paridade total com o Python sobre a mesma entrada (2.089 deals: notas, componentes e motivos; FIT por vendedor; padrões; os 3 planos de redistribuição). `rotearLeadNovo()` e os testes dele saíram. `tsc` e build passam.
+
+**Execução 17: características com poucos casos.**
+- A pedido da tela, os componentes do FIT passam a trazer também as características que não contam por terem menos de 10 fechados: nome da característica, pontos = fechados, sem máximo. Ex.: "Setor software", 6.
+- As notas da 17 são idênticas às da 15 em todos os 2.089 deals.
+- Componentes: 17.790 → 20.032. sha256 `06c9ac88…5786e3`. Os ensaios gastaram os ids 14 e 16.
+- Testes: Python 13 OK; TS 184 passando (suíte inteira), paridade refeita; `tsc` ok.
+
+**Efeito na redistribuição.** Com o FIT novo, o plano de domingo deixa de ser estável: sobre a foto de entrada ele moveria 352 leads (375 com os 35 vendedores). Nesta carga não houve redistribuição.
 
 ## Decisão 49: os 35 vendedores na redistribuição (execução 11)
 
