@@ -41,7 +41,11 @@ def _mensagem(item: str, guardado, novo) -> str:
         return ("a regra do fim do trimestre desligou: deals que venceram pelo fim do trimestre "
                 "voltam a aparecer como vivos e podem subir de fila.")
     if item.startswith("p_decide"):
-        return f"a chance de decidir em 28 dias da faixa mudou de {guardado} para {novo}."
+        if guardado is None:
+            return "apareceu uma faixa de idade nova, com chance de decidir em 28 dias de " + f"{novo:.3f}."
+        if novo is None:
+            return "uma faixa de idade sumiu: a janela aprendida agora tem outros limites."
+        return f"a chance de decidir em 28 dias da faixa mudou de {guardado:.3f} para {novo:.3f}."
     return f"a carga de referência mudou de {guardado} para {novo} deals."
 
 

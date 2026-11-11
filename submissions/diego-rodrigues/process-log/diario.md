@@ -159,3 +159,11 @@
   - mudei: tolerância zero, sem limiar novo: ciclo e regra são comparados exatos, p_decide a 3 casas e carga a 1 casa. O plano não define tolerância para esses itens e a regra do projeto é não inventar limiar. build.py grava janela.json na raiz da solução, como o plano pede
 
 **Fim da sessão** 2026-11-11 15:15 — Tarefa 8 verde: 4 testes, suíte 47/47; drift sai 0 sobre dados atuais
+
+## 2026-11-11 15:18 · Correção: testes e mensagem do drift · modelo claude-haiku-5-5 · ferramenta Claude Code
+
+- **15:18** — pedi: conferir a Tarefa 8: testes passados e mensagens do drift
+  - veio: 4 testes passam (não 3, como constava); CLI com deal plantado sai 1 e nomeia ciclo_max; mensagem de faixa que muda de nome dizia 'de 0.0 para None'
+  - mudei: mensagens de faixa que surge ou some reescritas em drift.py
+
+**Fim da sessão** 2026-11-11 15:18 — correção da mensagem de faixa no drift; 4/4 testes
