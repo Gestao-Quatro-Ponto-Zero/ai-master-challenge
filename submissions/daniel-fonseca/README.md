@@ -136,4 +136,4 @@ ticket → embedding → voto dos 50 casos parecidos (pgvector) → regras → c
 
 ---
 
-_Submissão enviada em: [data]_
+_Submissão enviada em: 10/11/2026_

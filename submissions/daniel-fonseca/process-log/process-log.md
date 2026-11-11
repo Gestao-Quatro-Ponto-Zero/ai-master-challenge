@@ -308,3 +308,22 @@ A regra de conduta também foi registrada no AGENTS.md.
    - Atualizados ADR-0006 (revisão), `docs/n8n-flows.md`, `docs/architecture.md`, PRD e judgment #47. `03_heartbeat.json` e `.sdk.ts` foram reexportados.
 
 **Pendente (Daniel, opcional):** apagar a variável `CRON_SECRET` do projeto na Vercel e do `.env` local, onde ficou sem uso. A remoção da rota chega à produção no próximo deploy.
+
+## Sessão 05 — 2026-11-10 (noite) — Claude Code (Opus 5.5, app desktop, sessão base) — ~1h30
+
+**Objetivo:** fechar a entrega: produção atualizada, documentação e vídeo.
+
+**Direcionamento do Daniel:**
+- Liberou o MCP da Vercel para o deploy de produção e corrigiu a branch de produção no painel (havia um "m" a mais no nome).
+- O app deixa de mandar o avaliador para o GitHub: ADRs e judgment log abrem num pop-up com o documento transcrito.
+- Pediu o rascunho do README final, a explicação de cada variável do ROI e o fluxo 1 do n8n desenhado como uma rota de 3 caminhos.
+- Gravou o vídeo.
+
+**O que a IA fez:**
+1. Abriu a sessão lateral das tarefas dos MCPs (Sessão 04) e publicou em produção o `86255aa` e depois o `160b87d`, com smoke test.
+2. Avisou o Daniel que o fork e o repositório do G4 são públicos, e que o PR (canal único de entrega) expõe a pasta da submissão. Segredos, dados e a URL da VPS ficam fora do repositório.
+3. Pop-up dos documentos: `generate.mjs` converte as ADRs e o judgment log em HTML no build; links relativos do repositório viram texto.
+4. README final pelo template do G4, a partir de `data-findings.md`, das ADRs, dos testes do ROI e do judgment log.
+5. Fluxo 1 em 3 faixas, só com posições. Uma tentativa de agrupar cada caminho foi recusada pelo n8n (grupos exigem uma entrada e uma saída) e apagou os grupos dos níveis 2 e 3; a IA percebeu na leitura do fluxo e os restaurou antes de publicar.
+6. Link do vídeo no README e no setup, data de envio e texto do PR.
+
