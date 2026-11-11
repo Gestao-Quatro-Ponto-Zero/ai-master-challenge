@@ -215,3 +215,11 @@
   - mudei: ERRO MEU na primeira versão desta correção: escrevi '~1.156' e que o ICC explicava a diferença, sem ter calculado. Refiz: 1.160, e o ICC com ~70 deals por vendedor aumentaria o tamanho (efeito de desenho ~3,1), não diminuiria. Removi a afirmação. A frase '~três semanas de pipeline do time' vem do plano e não foi verificada por nós: deixada, marcada como não verificada
 
 **Fim da sessão** 2026-11-11 16:00 — design e experimento com cálculo explicado; 'três semanas de pipeline' pendente de verificação
+
+## 2026-11-11 16:05 · Verificação das três ações pendentes antes da Tarefa 13 · modelo claude-haiku-5-5 · ferramenta Claude Code
+
+- **16:05** — pedi: verificar as três afirmações abertas (três semanas de pipeline, origem e cálculo do 1.100, coerência dos números entre docs) antes de avançar para a Tarefa 13
+  - veio: três semanas estava errado: entram 134 deals por semana, então 1.100 por braço são ~8 semanas, 2.200 ~16. Base do experimento era 22%, mas 22,7% é a taxa de acerto do relógio (só ganhos); a base correta de decisão em 28 dias, um registro por deal, é 17,3%, e +5 pontos pedem 996 por braço sem cluster. 'Consistente nos seis cortes' estava errado: o relógio ganha em 5 de 6
+  - mudei: experimento.md reescrito com base 17,3%, 996 sem cluster, 1.100 como número de planejamento (guia), duração em semanas medida; design.md sem a frase falsa de consistência. Nenhuma correção de código
+
+**Fim da sessão** 2026-11-11 16:05 — três afirmações verificadas; duas corrigidas, uma corrigida na redação; experimento reescrito

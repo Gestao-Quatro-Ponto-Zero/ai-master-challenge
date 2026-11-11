@@ -9,7 +9,7 @@
 
 ## A rejeitada, com número
 
-**Ordenar por preço (o que o campo faz hoje) rende 0,77× o valor do relógio do trimestre, com IC 95% de 0,66 a 0,88 — o intervalo não cruza 1.** Esse número é o inverso da razão relógio/preço e prazo de `docs/logica.md` (1,30, IC [1,13; 1,52]): 1/1,30 ≈ 0,77, e os extremos do IC invertem na mesma ordem (1/1,52 ≈ 0,66; 1/1,13 ≈ 0,88). A inversão preserva o intervalo porque a razão é positiva; é a mesma comparação lida ao contrário. A diferença não é sutil nem dentro do ruído: é consistente nos seis cortes do backtest.
+**Ordenar por preço (o que o campo faz hoje) rende 0,77× o valor do relógio do trimestre, com IC 95% de 0,66 a 0,88 — o intervalo não cruza 1.** Esse número é o inverso da razão relógio/preço e prazo de `docs/logica.md` (1,30, IC [1,13; 1,52]): 1/1,30 ≈ 0,77, e os extremos do IC invertem na mesma ordem (1/1,52 ≈ 0,66; 1/1,13 ≈ 0,88). A inversão preserva o intervalo porque a razão é positiva; é a mesma comparação lida ao contrário. O relógio ganha em 5 dos 6 cortes do backtest; no corte de 23/10/2017, preço e prazo ganha (US$ 150.104 contra US$ 133.640). O intervalo de confiança é o que sustenta a afirmação, não a consistência corte a corte.
 
 Preço também perde na taxa de acerto: 15,4% contra 22,7% do relógio (`docs/numeros-saida.txt`). Mas essa comparação é secundária — ver a nota sobre taxa de acerto em `docs/logica.md`.
 
