@@ -284,3 +284,21 @@ A regra de conduta também foi registrada no AGENTS.md.
 **Isolamento:** os MCPs do projeto não carregaram nesta sessão. A IA não usou os MCPs das contas pessoais (judgment #46).
 
 **Próximo passo:** deploy de produção e smoke test; revisão da documentação pedida pelo G4 (README final); vídeo; PR manual pelo Daniel.
+
+## Sessão 04 — 2026-11-10 (noite) — Claude Code (Opus 5.5, app desktop, sessão lateral com `supabase-g4` e `n8n-g4`) — ~20 min
+
+**Objetivo:** fazer a parte da Sessão 03 que dependia dos MCPs do projeto, só com verificações e sem mexer na Vercel.
+
+**O que a IA fez:**
+1. Supabase:
+   - `list_migrations` registra a `…0008_tickets`;
+   - advisors: segurança só com o INFO de RLS sem policy (intencional); performance com 4 INFO novos de índice nunca usado, por causa do volume baixo do demo;
+   - `usage_monitor_check()` segue coerente sem o `level3_alert` do fluxo 1 e não acusou nenhum sinal acima do limite.
+2. n8n:
+   - `search_workflows` confirmou os 4 IDs em uso (Heartbeat `LpQK8XX5AZJrUCy8`);
+   - a versão publicada de cada fluxo bate com o JSON exportado (mesmo `activeVersionId` e mesmos nós). Os `nodeGroups` do canvas entraram no JSON;
+   - nó a nó, só credenciais G4;
+   - nenhuma execução com erro desde 10/11.
+3. Fluxo 3: a credencial `G4 - Cron da Vercel` ainda não existe, e o fluxo segue inativo.
+
+**Pendente (Daniel):** criar a credencial `G4 - Cron da Vercel` (Header Auth). Depois a IA vincula pelo ID, testa e publica.

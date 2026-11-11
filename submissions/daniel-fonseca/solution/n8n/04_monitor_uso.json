@@ -301,6 +301,7 @@
       ]
     }
   },
+  "nodeGroups": [],
   "settings": {
     "executionOrder": "v1",
     "availableInMCP": true
@@ -309,6 +310,7 @@
     "exportedFrom": "n8n (VPS do Daniel, URL fora do repositório)",
     "workflowId": "xchzY3KKbsm0hzyG",
     "active": true,
-    "activeVersionId": "8b0320c8-bbbb-40f3-9e43-8688c0bb92f3"
+    "activeVersionId": "8b0320c8-bbbb-40f3-9e43-8688c0bb92f3",
+    "verifiedAgainstLive": "2026-11-10 (sessão 04, MCP n8n-g4)"
   }
 }

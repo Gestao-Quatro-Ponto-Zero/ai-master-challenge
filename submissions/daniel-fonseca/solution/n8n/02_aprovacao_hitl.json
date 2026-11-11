@@ -813,6 +813,27 @@
       ]
     }
   },
+  "nodeGroups": [
+    {
+      "id": "e42dfd39-c2f1-4ea8-b0e2-cd751187c42b",
+      "name": "Aprovar ou editar → aprender",
+      "nodeNames": [
+        "Gravar solução validada",
+        "Fechar item da fila",
+        "Marcar triagem como respondida"
+      ],
+      "description": "Grava a solução validada com o embedding da triagem, fecha o item da fila e marca a triagem como respondida."
+    },
+    {
+      "id": "bb1cf533-3ac9-440b-9912-ce8cf3ef2f0c",
+      "name": "Rejeitar",
+      "nodeNames": [
+        "Fechar item como rejeitado",
+        "Marcar triagem como rejeitada"
+      ],
+      "description": "Fecha o item como rejeitado e devolve o ticket ao atendimento manual."
+    }
+  ],
   "settings": {
     "executionOrder": "v1",
     "availableInMCP": true
@@ -821,6 +842,7 @@
     "exportedFrom": "n8n (VPS do Daniel, URL fora do repositório)",
     "workflowId": "FWb7G9cGmMC69Q6D",
     "active": true,
-    "activeVersionId": "3a3e5041-fad1-48d4-b0a1-c23372ae1804"
+    "activeVersionId": "3a3e5041-fad1-48d4-b0a1-c23372ae1804",
+    "verifiedAgainstLive": "2026-11-10 (sessão 04, MCP n8n-g4)"
   }
 }

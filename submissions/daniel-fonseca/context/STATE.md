@@ -80,7 +80,7 @@ No máximo **dois turnos noturnos**: hoje (09/11) e amanhã (10/11), incluindo v
    - fluxo n8n **G4 · Monitor de uso (alertas)** `xchzY3KKbsm0hzyG`, a cada 15 min, **publicado**; credencial `G4 - Supabase` vinculada por ID (o n8n tinha auto-atribuído `Supabase – padaria-bi`). Testado: alerta gravado na caixa (exec 248) e repetição barrada (exec 249);
    - tarefa agendada local `g4-monitor-uso-app` (a cada 2 h, até o Daniel mandar desligar): só leitura de Supabase, Vercel e n8n; reporta nesta sessão. Ela substitui o `scripts/monitor_usage.py` previsto no PRD. **Passo do Daniel:** abrir a tarefa no app e clicar em "Run now" uma vez para aprovar as ferramentas e definir o modo de permissão;
    - sobra do teste: 1 alerta de teste (`notifications` id 11) e 1 evento sinalizado (`usage_events` id 37). O comando de limpeza foi recusado; o `reset_demo.py` remove os dois.
-14. Fluxo 3 (heartbeat): URL de produção e Header Auth configurados. **Passo do Daniel:** criar no n8n a credencial `G4 - Cron da Vercel` (Header Auth, Name `Authorization`, Value `Bearer ` + `CRON_SECRET` do `.env`). Depois a IA vincula pelo ID, testa e publica.
+14. Fluxo 3 (heartbeat, `LpQK8XX5AZJrUCy8`): URL de produção e Header Auth configurados. Em 10/11 (sessão 04), `list_credentials` confirmou que a credencial ainda não existe. **Passo do Daniel:** criar no n8n a credencial `G4 - Cron da Vercel` (Header Auth, Name `Authorization`, Value `Bearer ` + `CRON_SECRET` do `.env`). Depois a IA vincula pelo ID, testa e publica.
 15. Turno 2: app Vercel (dashboard + console + `/api/heartbeat`) + deploy + ativar o fluxo 3 com a URL + vídeo + PR.
 
 ## Sessão 03 — notas para a próxima sessão
@@ -89,6 +89,18 @@ No máximo **dois turnos noturnos**: hoje (09/11) e amanhã (10/11), incluindo v
 - `reset_demo.py` marca tudo o que cria como `is_demo`; `/api/demo/reset` também.
 - Migration `20261110000008_tickets` aplicada pela conexão do `.env` (os MCPs do projeto não carregaram nesta sessão) e registrada em `supabase_migrations.schema_migrations`.
 - Testes de 10/11 deixaram as triagens #40–44 (não demo, invisíveis para outros navegadores) e uma solução aprendida a partir do ticket de demonstração #34.
+
+## Sessão 04 — verificação pelos MCPs do projeto (10/11)
+- **Supabase (`supabase-g4`):** `list_migrations` registra `20261110000008 tickets`.
+  - Advisors de segurança: só INFO "RLS sem policy" nas 12 tabelas, intencional, porque o acesso é só pelo backend.
+  - Advisors de performance: 4 INFO novos de índice nunca usado (`validated_resolutions_hnsw_idx`, `triage_runs_status_idx`, `triage_runs_resolution_idx`, `heartbeat_ran_idx`). Eles vêm do volume baixo do demo, e nenhuma ação foi tomada.
+- `usage_monitor_check()` segue coerente: só lê `notifications` com `kind = 'usage_alert'` para barrar repetição e não depende do `level3_alert`, que o fluxo 1 não grava mais. Na chamada de 10/11 nenhum sinal passou do limite. Em `notifications` há 3 `level3_alert` antigos e 1 `usage_alert` de teste (id 11).
+- **n8n (`n8n-g4`):** o Heartbeat em uso é o `LpQK8XX5AZJrUCy8`. O `RtQAhCEnwxEDQrd4` está arquivado.
+  - Nos 4 fluxos, a versão publicada (ou o rascunho, no fluxo 3) bate com o JSON de `solution/n8n/`. Faltavam só os `nodeGroups` do canvas, acrescentados ao JSON.
+  - Credenciais: só as G4.
+  - Nenhuma execução com erro desde 10/11 (124 execuções).
+- **Fluxo 3:** a credencial `G4 - Cron da Vercel` ainda não existe. Ver o passo do Daniel no item 14.
+- Detalhe cosmético na Triagem: há duas notas adesivas "Nível 3", e a nota antiga e a descrição do grupo "Nível 3 — alerta ao humano" ainda falam em gravar na caixa do painel. Não foi alterado porque exigiria republicar o fluxo.
 
 ## Perguntas abertas para o Daniel
 - [x] ADR-0010: RAG como classificador único (Daniel). ADR-0011: diretrizes do n8n (Daniel).

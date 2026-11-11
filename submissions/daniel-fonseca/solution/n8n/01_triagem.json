@@ -1815,6 +1815,43 @@
       ]
     }
   },
+  "nodeGroups": [
+    {
+      "id": "71d218ad-3e7e-4d3f-b4f2-f7658d9da815",
+      "name": "Política de 3 níveis",
+      "nodeNames": [
+        "Reunir resultado e limiares",
+        "Marcar termos de bloqueio",
+        "Aplicar política de 3 níveis",
+        "Montar registro da triagem",
+        "Registrar triagem",
+        "Rotear por nível"
+      ],
+      "description": "Limiares editáveis, lista de bloqueio, decisão de nível (ADR-0010/0012) e registro da triagem para auditoria."
+    },
+    {
+      "id": "f0fc9b72-af8b-419d-ab92-523b055722fe",
+      "name": "Nível 2 — fila de revisão",
+      "nodeNames": [
+        "Ler rascunho",
+        "Montar item da fila",
+        "Enviar para fila de revisão",
+        "Marcar como em revisão"
+      ],
+      "description": "Lê o rascunho do LLM, cria o item pendente na fila HITL e marca a triagem como em revisão."
+    },
+    {
+      "id": "7d217d88-f6ec-43ee-b602-71de24bddaa6",
+      "name": "Nível 3 — alerta ao humano",
+      "nodeNames": [
+        "Montar mensagem de alerta",
+        "Formatar texto do alerta",
+        "Avisar no Slack",
+        "Marcar como aguardando humano"
+      ],
+      "description": "Monta o alerta (mesmo texto do Slack), grava na caixa do painel; nó Slack desativado até haver workspace."
+    }
+  ],
   "settings": {
     "executionOrder": "v1",
     "availableInMCP": true
@@ -1823,6 +1860,7 @@
     "exportedFrom": "n8n (VPS do Daniel, URL fora do repositório)",
     "workflowId": "msFVCvUdsmRq49pv",
     "active": true,
-    "activeVersionId": "770216bc-d7e9-4ad9-a601-c1bc2c9602ed"
+    "activeVersionId": "770216bc-d7e9-4ad9-a601-c1bc2c9602ed",
+    "verifiedAgainstLive": "2026-11-10 (sessão 04, MCP n8n-g4)"
   }
 }

@@ -16,9 +16,17 @@
 
 As versões de 09/11 (com nó Postgres) foram **arquivadas** no n8n: `ML8nNXH22pSaDF09`, `Mm1hZMJvQMQu1uQJ` e `RtQAhCEnwxEDQrd4`.
 
+### Verificação pelo MCP `n8n-g4` (10/11, sessão 04)
+- `search_workflows` devolve 4 fluxos G4 não arquivados, com os IDs da tabela acima. O Heartbeat em uso é o `LpQK8XX5AZJrUCy8`.
+- Nos fluxos 1, 2 e 4 o rascunho é igual à versão publicada (`activeVersion.sameAsDraft`), e o `activeVersionId` ao vivo é o mesmo gravado no `meta` do JSON exportado. Os IDs de nó também batem. O fluxo 3 segue sem versão publicada, e o rascunho confere campo a campo com o JSON.
+- O export não tinha os grupos de nós do canvas (`nodeGroups`: 3 na Triagem e 2 no HITL). Eles foram acrescentados ao JSON a partir da versão ao vivo.
+- Credenciais nó a nó: só `G4 - Supabase` (`SEmoMU7WjCZ71Snn`), `G4 - OpenAI` (`O7tDFfhjrb655KV1`) e `G4 - Segredo do webhookk` (`yD741LTYlWeGQxYN`). Nenhum nó usa `Supabase – padaria-bi`, `Waha VPS (chave API)` ou `BI Linear`. Os nós Slack estão desativados e sem credencial. O nó HTTP do fluxo 3 está sem credencial, à espera da `G4 - Cron da Vercel`.
+- Execuções com status `error` ou `crashed` desde 10/11 00:00 (São Paulo): nenhuma, num total de 124 execuções. A última do Monitor de uso (exec 313) terminou com sucesso.
+- `list_credentials`: a credencial `G4 - Cron da Vercel` ainda não existe. O fluxo 3 continua inativo.
+
 - **Nós nativos do Supabase (ADR-0013):** as tabelas usam o nó Supabase. As duas funções do RAG usam HTTP Request com a credencial Supabase na API REST (`/rest/v1/rpc/...`), porque o nó Supabase não chama funções. Uma credencial só: `G4 - Supabase`.
 - **Credenciais (IDs conferidos):** `G4 - Supabase`, `G4 - OpenAI` e `G4 - Segredo do webhookk` (o nome tem um "k" a mais, sem efeito). O n8n auto-atribuiu as credenciais de outros contextos (`Supabase – padaria-bi`, `Waha VPS`) na criação. Todas foram trocadas pelos IDs G4 antes de qualquer execução.
-- **Fonte versionada:** o código SDK recria cada fluxo igual via MCP. O export JSON ("Import from file") ainda está pendente.
+- **Fonte versionada:** o código SDK recria cada fluxo igual via MCP. O export JSON ("Import from file") está em `solution/n8n/0N_*.json`, conferido contra a versão publicada em 10/11.
 - **Banco:** migrations `…0003_ops` e `…0004_rest_wrappers` aplicadas; playbook-semente **validado pelo Daniel** (14 soluções).
 
 ### Teste ponta a ponta (10/11, execuções manuais pelo MCP)
