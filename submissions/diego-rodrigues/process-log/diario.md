@@ -191,3 +191,11 @@
   - mudei: DEFEITOS ENCONTRADOS OLHANDO OS PRINTS, nenhum pego por teste: (1) briefing da Tarefa 9 dizia 'em sem conta no CRM', '89.0 dias' e repetia a lista de foco; corrigi template e _formatar; (2) estado vazio repetia a mesma frase três vezes e mostrava 'carga 0' para vendedor sem histórico, que parecia medição; (3) BUG MEU: coluna fixa do vendedor na tabela do time ocupava 353 de 358 px no celular e escondia todas as outras colunas; (4) valores em dólar quebravam em duas linhas; (5) plurais '1 ações' e '1 deals'. Também: acrescentei datas_analogas ao scored.json porque a Tela 3 precisa e o front não pode calcular; eval.json ganhou o campo sinal para a conclusão vir do dado e não do JS. Playwright foi instalado num venv separado, fora de requirements.txt
 
 **Fim da sessão** 2026-11-11 15:44 — Tarefa 11 verde no navegador: 3 telas, 6 prints, 59/59
+
+## 2026-11-11 15:49 · Correção: checklist da Tarefa 11 · modelo claude-haiku-5-5 · ferramenta Claude Code
+
+- **15:49** — pedi: conferir o checklist de fim da Tarefa 11 e corrigir o que não bate com o estado atual
+  - veio: dois itens não batem: (1) Carl Lin não mostra carga de referência na tela; mostra 'Sem histórico' e a tabela do time mostra 'sem histórico' na coluna de carga. (2) Tela 3 mostra as 9 faixas, mas sem intervalo de confiança por faixa; o IC aparece só nas razões entre políticas. Os outros itens conferem (Boris 1 fechar e 4 preparar, Darcel 5 iniciar, filtro de região, 6 linhas de backtest, 6 prints, sem erro de console, commit fd9ea4f)
+  - mudei: nenhum código; registro das duas correções de redação do checklist. Também confirmei que app.js ainda tem uma linha que mostra carga para vendedor com deal mas sem vivos (texto 'Nos trimestres anteriores, N deals...'), que é o estado vazio com histórico, correto
+
+**Fim da sessão** 2026-11-11 15:49 — checklist da Tarefa 11 corrigido em dois pontos de redação; sem mudança de código
