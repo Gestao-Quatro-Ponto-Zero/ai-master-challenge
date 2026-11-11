@@ -49,7 +49,7 @@ Legenda: **D** = vem do dataset · **C** = calculado · **N** = dado novo do CRM
 | Porte | C | faixa de `accounts.employees` → `core_contas.funcionarios`: pequena (até 1.428), média (até 4.540) e grande | Tercis calculados na limpeza. **[P3]** Porte por funcionários (proposta) ou por receita (`accounts.revenue`)? |
 | Vendedor | D | `sales_pipeline.sales_agent` → `core_deals.vendedor_nome` | |
 | Manager e região | D | `sales_teams.manager`, `sales_teams.regional_office` → `core_vendedores.manager_nome` → `core_managers.escritorio_nome` | |
-| Estágio | D | `sales_pipeline.deal_stage` → `core_deals.estagio` | Na tela (O-31): Novo lead, Atendimento (Prospecting sem e com contato registrado), Em negociação, Fechado e Perdido |
+| Estágio | D | `sales_pipeline.deal_stage` → `core_deals.estagio` | Na tela: Novo lead, Atendimento (Prospecting sem e com contato registrado), Em negociação, Fechado e Perdido |
 | Data de abertura | D/N | `sales_pipeline.engage_date` (o início da negociação, pela definição do dataset) → `core_deals.data_abertura`. No CRM: a data em que o deal passa para Em negociação | Os 500 Prospecting ficam sem data e mostram "Não iniciado". **[P4]** |
 | Dias desde a abertura | C | `data_referencia − data_abertura` | "Não iniciado" quando não há abertura |
 | Ícone (super hot, em risco, esfriou) | C | estágio, dias desde a abertura e preço de tabela, com os cortes de `config_parametros` | Critérios e contagens em 2.4. **[P13]** |
@@ -68,12 +68,19 @@ Legenda: **D** = vem do dataset · **C** = calculado · **N** = dado novo do CRM
 | Motivo da perda | N | `core_deals.motivo_perda` | Só se a **[P14]** aprovar |
 | Quem mudou e quando | N | `system_auditoria` | Na linha do tempo do modal |
 
-### 1.2b Entrada (O-37)
+### 1.2b Entrada (tela de login sem senha)
 
-- A raiz `/` sempre mostra a entrada, mesmo com perfil escolhido antes: bloco de destaque no azul do deck com "G4 Sight" e "CRM do time comercial com a prioridade do dia dentro do pipeline.", e a escolha do papel em 3 cartões grandes (Vendedor, Manager, Admin). Vendedor e manager escolhem o nome; admin entra direto. Sem login nem senha (decisão 16).
-- Com perfil na sessão, a entrada oferece também "Continuar como <nome>".
+- A raiz `/` sempre mostra a entrada, mesmo com perfil escolhido antes. É uma tela de login clássica: um cartão estreito no centro e, em telas de 1024 px ou mais, o bloco no azul do deck ao lado, com "G4 Sight" e "CRM do time comercial com a prioridade do dia dentro do pipeline.".
+- No cartão, de cima para baixo:
+  - "G4 Sight" e "Login sem senha.";
+  - **Selecione o Perfil**: lista suspensa com Vendedor, Manager e Admin;
+  - **Selecione o Usuário**: lista suspensa com os nomes do perfil, desligada até escolher o perfil. Vendedores agrupados por time ("Time de <manager> (<região>)"), managers com a região, e o admin já vem escolhido;
+  - botão largo **Login**;
+  - "Continuar como <nome>", como link discreto, só quando já há perfil na sessão.
+- Sem senha (decisão 16): o perfil organiza a tela e assina as ações, mas não protege nada.
+- Teclado: Tab segue Perfil → Usuário → Login; escolher o usuário leva o foco ao Login e Enter entra. Sem escolha, a mensagem diz o que falta ("Selecione o perfil para entrar.").
 - O perfil fica num cookie **de sessão do navegador** (`g4_perfil`, sem validade): fechou o navegador, escolhe de novo.
-- Rota interna sem perfil continua mandando para a entrada com `?voltar=` e, depois da escolha, volta para lá (só caminhos internos do app).
+- Rota interna sem perfil continua mandando para a entrada com `?voltar=` e, depois do login, volta para lá (só caminhos internos do app).
 
 ### 1.3 Relógio do CRM
 
@@ -81,8 +88,8 @@ Legenda: **D** = vem do dataset · **C** = calculado · **N** = dado novo do CRM
 - Idade, dias sem contato e filtros de data contam a partir dela.
 - Contato, comentário e deal registrados agora ganham duas datas: a **data do negócio** (a data de referência, usada nas contas) e o momento real (usado na auditoria).
 - Sem isso, um contato registrado hoje apareceria "8 anos depois" de todos os outros dados.
-- **Atualizado (decisão 48, O-41, migration 0034): o relógio anda.** A data de negócio avança 1 dia por dia real, ancorada em 10/11/2026 (America/Sao_Paulo) = 31/12/2017: 17/11/2026 = 07/01/2018 (o 1º domingo), e assim por diante. As âncoras ficam em `config_parametros` (`data_ancora_real`, `data_ancora_negocio`); `system_data_negocio()` e o app (`src/lib/relogio.ts`) fazem a mesma conta. Dias no pipeline, faixas, linha do tempo e o "Dados até …" do Painel andam juntos.
-- **Rotina diária do score (O-41):** cron da Vercel todo dia às 03:00 de Brasília (`/api/rotina/diaria`, protegida por `CRON_SECRET`). Numa transação com o papel de carga (`g4_rotina` → `system_carga`): no domingo de negócio, o job semanal (FIT da janela de 3 meses, redistribuição, padrões de conta); todo dia, o diário (HEAT e nota novos em execução nova, repasse por mudança de faixa sem contato, lead novo sem dono roteado). Um dia de negócio roda uma vez só (registro em `system_eventos`); erro desfaz tudo e registra a falha. Teste manual: `POST /api/rotina/rodar-agora` com o mesmo segredo. O cálculo do score é o motor da #3 (`src/lib/score/`), ligado em `src/server/motor/instalado.ts`.
+- **Atualizado (decisão 48, migration 0034): o relógio anda.** A data de negócio avança 1 dia por dia real, ancorada em 10/11/2026 (America/Sao_Paulo) = 31/12/2017: 17/11/2026 = 07/01/2018 (o 1º domingo), e assim por diante. As âncoras ficam em `config_parametros` (`data_ancora_real`, `data_ancora_negocio`); `system_data_negocio()` e o app (`src/lib/relogio.ts`) fazem a mesma conta. Dias no pipeline, faixas e linha do tempo andam juntos. As telas não mostram a data dos dados.
+- **Rotina diária do score:** cron da Vercel todo dia às 03:00 de Brasília (`/api/rotina/diaria`, protegida por `CRON_SECRET`). Numa transação com o papel de carga (`g4_rotina` → `system_carga`): no domingo de negócio, o job semanal (FIT da janela de 3 meses, redistribuição, padrões de conta); todo dia, o diário (repasse por mudança de faixa sem contato e HEAT e nota novos em execução nova). Lead novo já recebe o dono na criação, pelo banco (`core_rotear_lead`). Cada repasse roda num savepoint: se o banco recusar um, só ele é desfeito e conta como recusado. Um dia de negócio roda uma vez só (registro em `system_eventos`); erro desfaz tudo e registra a falha. Teste manual: `POST /api/rotina/rodar-agora` com o mesmo segredo; com `?forcar=1`, roda mesmo com o dia já rodado e registra `rotina_forcada`. O cálculo do score fica em `src/lib/score/`, ligado à rotina em `src/server/motor/instalado.ts`.
 
 ### 1.4 O que cada perfil vê (vale para todas as telas)
 
@@ -115,15 +122,15 @@ Requisitos do Leandro para esta tela:
 ┌ topo: G4 Sight · Pipeline | Leads · Anna Snelling, vendedora · Trocar perfil ───────────────────────┐
 │ [ Filtrar: ex. "nota alta sem contato há 15 dias"                 ]   Ordenar: Nota ▾   [Abrir o próximo deal] │
 │ Entendi assim:  (Nota ≥ 70 ×)  (Sem contato há 15+ dias ×)                     Limpar filtros        │
-├──────────────────────────────────────────┬──────────────────────────────────────────┤
-│ Prospecção · 18 deals · R$ 24.300       │ Em negociação · 94 deals · R$ 151.200   │
-│ ┌ cartão ┐                              │ ┌ cartão ┐                               │
-│ … 50 por coluna · Mostrar mais          │ … 50 por coluna · Mostrar mais           │
-└──────────────────────────────────────────┴──────────────────────────────────────────┘
-   ao arrastar um cartão aparecem à direita duas áreas: [Ganho] [Perdido]
+├────────────────┬────────────────┬────────────────┬────────────────┬────────────────┤
+│ Novo lead      │ Atendimento    │ Em negociação  │ Fechado        │ Perdido        │
+│ 18 · R$ 24.300 │ 3 · R$ 4.100   │ 94 · R$ 151.200│ 26 · R$ 98.700 │ 12 · R$ 30.500 │
+│ ┌ cartão ┐     │ ┌ cartão ┐     │ ┌ cartão ┐     │ ┌ cartão ┐     │ ┌ cartão ┐     │
+│ … Mostrar mais │ … Mostrar mais │ … Mostrar mais │ … Mostrar mais │ … Mostrar mais │
+└────────────────┴────────────────┴────────────────┴────────────────┴────────────────┘
 ```
 
-- **Atualizado (O-31, decisão do Leandro): cinco colunas, uma por etapa:** **Novo lead**, **Atendimento**, **Em negociação**, **Fechado** e **Perdido**. O desenho acima é o de antes.
+- **Cinco colunas, uma por etapa (decisão do Leandro):** **Novo lead**, **Atendimento**, **Em negociação**, **Fechado** e **Perdido**.
   - O banco continua com 4 estágios. Novo lead e Atendimento são o `Prospecting` sem e com contato registrado (`core_deals.ultimo_contato_em`); a separação é feita no app.
   - O primeiro contato registrado (Liguei, Requalifiquei, ✓ com tipo que conta como contato, ou o registro de atendimento) leva o lead para Atendimento sozinho.
   - O cabeçalho de cada coluna mostra a quantidade e a soma do valor (abertos: valor esperado; Fechado: valor de fechamento; Perdido: preço de tabela).
@@ -165,7 +172,7 @@ O que os dados mostram (dados limpos e `analysis/findings.md`):
 
 | Ícone | Critério | Deals abertos que caem nele hoje | Frase ao passar o mouse |
 |---|---|---|---|
-| 🔥 **Super hot** | Em negociação **entre 15 e 106 dias** (passou da janela em que os perdidos caem e está dentro do ciclo de 90% dos ganhos). Sem critério de ticket desde a 0030 (O-24): o valor não entra na nota (decisões 28 e 29) | **150** (7% dos abertos); com o antigo corte de R$ 3.000 eram 66 | "Na fase em que mais deals viram ganho." |
+| 🔥 **Super hot** | Em negociação **entre 15 e 106 dias** (passou da janela em que os perdidos caem e está dentro do ciclo de 90% dos ganhos). Sem critério de ticket desde a 0030: o valor não entra na nota (decisões 28 e 29) | **150** (7% dos abertos); com o antigo corte de R$ 3.000 eram 66 | "Na fase em que mais deals viram ganho." |
 | ⚠ **Em risco de esfriar** | Em negociação **entre 107 e 138 dias**: já passou do tempo em que 90% dos ganhos fecharam e se aproxima do maior ciclo já visto | **141** (7% dos abertos) | "Aberto há 120 dias. 90% dos ganhos fecham em até 106 dias." |
 | ❄ **Esfriou** (ícone cinza, mais discreto) | Em negociação **há mais de 138 dias**: mais tempo que qualquer deal já fechado | **1.291** (62% dos abertos) | "Aberto há 210 dias, mais que qualquer deal já fechado (138). Requalifique ou encerre." |
 | sem ícone | Prospecção (sem data de abertura) e negociação com menos de 15 dias | 500 + 7 | — |
@@ -235,18 +242,18 @@ Dois jeitos, **a mesma função auditada** (`core_mudar_estagio`):
 1. **Arrastar** o cartão entre as cinco colunas.
 2. **Trocar no controle** do cartão ou do modal, que só oferece as transições válidas.
 
-**Atendimento (O-31):** soltar um Novo lead em Atendimento (ou escolher "Registrar atendimento") abre o registro do contato, com tipo de atividade e comentário obrigatórios (`acao_registrar_contato`, migration 0031). Gravado o contato, o deal aparece em Atendimento; sem contato, não entra. Não existe voltar de Atendimento para Novo lead: o contato não se desfaz (só o "Desfazer" dos primeiros segundos). Na tabela abaixo, "Prospecção" vale para Novo lead e Atendimento, e "Ganho" passou a se chamar **Fechado**.
+**Atendimento:** soltar um Novo lead em Atendimento (ou escolher "Registrar atendimento") abre o registro do contato, com tipo de atividade e comentário obrigatórios (`acao_registrar_contato`, migration 0031). Gravado o contato, o deal aparece em Atendimento; sem contato, não entra. Não existe voltar de Atendimento para Novo lead: o contato não se desfaz (só o "Desfazer" dos primeiros segundos).
 
 | De → Para | Permitido | O que pede |
 |---|---|---|
-| Prospecção → Em negociação | sim, todos | data de abertura (padrão: hoje no relógio do CRM) |
-| Em negociação → Ganho | sim, todos | valor de fechamento, inteiro > 0 (sugerido: o preço de tabela) |
+| Novo lead ou Atendimento → Em negociação | sim, todos | data de abertura (padrão: hoje no relógio do CRM) |
+| Em negociação → Fechado | sim, todos | valor de fechamento, inteiro > 0 (sugerido: o preço de tabela) |
 | Em negociação → Perdido | sim, todos | confirmação e, se a **[P14]** aprovar, o motivo |
-| Prospecção → Perdido ("Descartar") | sim, todos | confirmação e motivo (**[P14]**). Fica sem data de abertura |
-| Prospecção → Ganho | não | precisa passar por negociação. O seletor não oferece |
-| Em negociação → Prospecção | não | a abertura já foi registrada. Só "Desfazer" nos 10 s |
-| Ganho ou Perdido → Em negociação (reabrir) | só manager e admin **[P10]** | confirmação; limpa `close_date` e `close_value`, e o histórico fica na auditoria |
-| Ganho ↔ Perdido | não direto | reabrir antes |
+| Novo lead ou Atendimento → Perdido ("Descartar") | sim, todos | confirmação e motivo (**[P14]**). Fica sem data de abertura |
+| Novo lead ou Atendimento → Fechado | não | precisa passar por negociação. O seletor não oferece |
+| Em negociação → Novo lead ou Atendimento | não | a abertura já foi registrada. Só "Desfazer" nos 10 s |
+| Fechado ou Perdido → Em negociação (reabrir) | só manager e admin **[P10]** | confirmação; limpa `close_date` e `close_value`, e o histórico fica na auditoria |
+| Fechado ↔ Perdido | não direto | reabrir antes |
 
 - Toda mudança grava antes e depois em `system_auditoria` e aparece na linha do tempo.
 - "Desfazer" por 10 segundos, pelo próprio autor, devolve o estágio anterior.
@@ -274,7 +281,7 @@ Dois jeitos, **a mesma função auditada** (`core_mudar_estagio`):
 
 ### 2.9 Repasse por falta de atendimento
 
-Regras do Leandro (os números quem fecha é o score, #3):
+Regras do Leandro (os números quem fecha é o score):
 - **Lead sem contato que muda de faixa de tempo é repassado** a outro vendedor com encaixe parecido (FIT próximo no mesmo cohort), pelo mesmo roteamento do lead novo.
 - **Linha do tempo:** "Repassado: sem contato em 2 dias; Anna tem encaixe parecido."
 - **Avisos:** o vendedor que perdeu o lead e o que recebeu ganham um aviso no topo do CRM ("Você recebeu 1 lead repassado" / "1 lead seu foi repassado por falta de contato"), que some ao ser lido.
@@ -300,14 +307,14 @@ Regras do Leandro (os números quem fecha é o score, #3):
 ```
 ┌ topo ───────────────────────────────────────────────────────────────────────────────┐
 │ [ Filtrar: ex. "varejo grande ganhos em 2017"                     ]   [Importar CSV]  [Novo lead] │
-│ Entendi assim: (Setor: varejo ×) (Porte: grande ×) (Estágio: Ganho ×) (Fechou em 2017 ×)        │
+│ Entendi assim: (Setor: varejo ×) (Porte: grande ×) (Estágio: Fechado ×) (Fechou em 2017 ×)      │
 │ 1.204 leads · R$ 2,1 mi fechados                                                     │
 ├──┬──────────────────────┬──────────────┬───────────────┬──────┬────────────┬────────┬────────┬──────┤
 │☐ │ Lead                 │ Vendedor     │ Estágio       │ Nota │ Valor      │Abertura│ Últ.   │ Tags │
 │  │ nome · contato       │              │               │      │            │        │ contato│ 💬 n │
 ├──┼──────────────────────┼──────────────┼───────────────┼──────┼────────────┼────────┼────────┼──────┤
 │☐ │ Hottechi · GTX Pro   │ Anna Snelling│ Em negociação │ 82   │ R$ 3.064 e│ 14/11  │ há 3 d │ #urg │
-│☐ │ Cancity · MG Special │ Moses Frase  │ Ganho         │  —   │ R$ 55     │ 20/10  │ —      │      │
+│☐ │ Cancity · MG Special │ Moses Frase  │ Fechado       │  —   │ R$ 55     │ 20/10  │ —      │      │
 └──┴──────────────────────┴──────────────┴───────────────┴──────┴────────────┴────────┴────────┴──────┘
  50 por página · Mostrar mais
  ── ao marcar linhas, sobe uma barra: "12 selecionados · Selecionar os 1.204 do filtro · [Aplicar tag] [Comentar] [Mais ▾]"
@@ -346,7 +353,7 @@ Requisito do Leandro: uma aba **Contas** dentro de Leads, ao lado da lista de le
 
 **Contexto do score (decisão 33):** NOTA = 0,7 × FIT + 0,3 × HEAT + **Extra Bonus** (0 a 20; a nota vai até 120).
 - O bonus é por empresa: cresce com o tamanho do histórico e com a empresa estar na janela de compra usual (periodicidade e mês).
-- É recalculado todo domingo. A fórmula é da #3.
+- É recalculado todo domingo. A fórmula é a do score (`src/lib/score/`).
 - Até ela entregar, os campos do padrão mostram "Calculado no domingo".
 
 **Abas da tela Leads:** `Leads | Contas` (`/leads?aba=contas`). A ação principal da aba Contas é **Nova empresa**.
@@ -422,38 +429,36 @@ Requisitos do Leandro para esta tela:
 ### 4.2 Layout
 
 ```
-┌ topo: G4 Sight · Painel | Pipeline | Leads · Anna Snelling, vendedora · Trocar perfil ───────────────┐
-│ Painel · dados até 31/12/2017                                         (moeda: R$, [P15])           │
-├───────────────────────────────────────────────────────────────────────┬─────────────────────────────┤
-│ ┌Leads novos ┐ ┌Em negociação┐ ┌Fechamentos ┐ ┌Conversão   ┐          │ PRIORIDADES DO DIA          │
-│ │ 0 hoje     │ │ 1.589       │ │ 19 hoje    │ │ 78,7%      │          │ 3 de 10 feitas  ▓▓▓░░░░░░░  │
-│ │ 117 em 30 d│ │ R$ 3,9 mi  │ │ 498 em 30 d│ │ em 30 dias │          │ ┌ Hottechi · GTX Pro    82 ┐│
-│ │ ↓ 57%      │ │             │ │ ↑ 23%      │ │ ↑ 25 p.p. ⓘ│          │ │ ⚠ em risco · R$ 4.821   ││
-│ └────────────┘ └─────────────┘ └────────────┘ └────────────┘          │ │        [✓ Feito] [✗ Pular]││
-│ ┌Receita     ┐ ┌Pipeline     ┐ ┌Total de    ┐ ┌Em risco de ┐          │ └──────────────────────────┘│
-│ │ ganha 30 d │ │ aberto      │ │ leads      │ │ esfriar    │          │ ┌ item 2 ┐                  │
-│ │ R$ 1,10 mi│ │ R$ 4,97 mi │ │ 8.800      │ │ 141        │          │ ┌ item 3 ┐                  │
-│ │ ↑ 17%      │ │             │ │            │ │            │          │ ┌ item 4 ┐                  │
-│ └────────────┘ └─────────────┘ └────────────┘ └────────────┘          │ ┌ item 5 ┐                  │
-│                                                                       │ Próximos: 5 na fila          │
-│ SITUAÇÃO DO FUNIL                         [Quantidade | Valor]        │                              │
-│ Prospecção     ████████                              500             │                              │
-│ Em negociação  ██████████████████████              1.589             │                              │
-│ Ganho          ███████████████████████████████████ 4.238             │                              │
-│ ─────────                                                             │                              │
-│ Perdido (à parte) ████████████████████             2.473             │                              │
-└───────────────────────────────────────────────────────────────────────┴─────────────────────────────┘
+┌ topo: G4 Sight · Painel | Pipeline | Leads · Anna Snelling, vendas · Trocar perfil ───────────────────────────┐
+│ Painel                                                                  [filtro de time e vendedor] │
+├──────────────┬───────────────────────────────────────────┬──────────────┤
+│ Pipeline     │ PRIORIDADES DO DIA  (fundo azul)          │ Em           │
+│ aberto       │ 3 de 20 feitas  ▓▓▓░░░░░░░░░░░░░░░░░      │ negociação   │
+│ R$ 4,97 mi   │ ⚠ 141 em risco · 37 já esfriaram          │ 1.589        │
+├──────────────┤ Hottechi · GTX Pro      82  [✕] [✓]       ├──────────────┤
+│ Leads hoje   │   R$ 4.821 · há 139 dias · em risco       │ Fechamentos  │
+│ 0            │ … os 20 da meta; os marcados vão ao fim,  │ hoje  19     │
+├──────────────┤   esmaecidos (Feito, Pulado, Contato hoje)├──────────────┤
+│ Leads em     │                                           │ Fechamentos  │
+│ 30 dias 117  │                                           │ em 30 dias   │
+│ ↓ 57%        │                                           │ 498  ↑ 23%   │
+├──────────────┼───────────────────────────────────────────┼──────────────┤
+│ Total de     │ SITUAÇÃO DO FUNIL     [Quantidade | Valor]│ Conversão em │
+│ leads 8.800  │ Novo lead · Atendimento · Em negociação · │ 30 dias      │
+│              │ Fechado · Perdido (5 barras)              │ 78,7% ↑ 25pp │
+└──────────────┴───────────────────────────────────────────┴──────────────┘
 ```
 
-- **À esquerda:** grade de 8 cartões de número (4 por linha no computador, 2 no celular) e, embaixo, o funil.
-- **À direita:** o bloco Prioridades do dia, fixo na rolagem. No celular ele vem **primeiro**, antes dos números, porque é onde está a ação.
+- **Grade (computador, ≥ 1280 px):** 4 × 4. Prioridades do dia nas duas colunas do meio, no alto; o funil embaixo dele; os 8 cartões de número nas laterais. De 1024 a 1279 px, Prioridades e funil em largura cheia no topo e os 8 números em 4 colunas. Abaixo de 1024 px, Prioridades primeiro (é onde está a ação), números em 2 colunas e o funil.
+- **Título:** só "Painel", sem data nem moeda. Os valores estão em R$, com os mesmos números do dataset, sem conversão.
+- **Os 8 cartões:** Pipeline aberto, Em negociação, Leads hoje, Fechamentos hoje, Leads em 30 dias, Fechamentos em 30 dias (com a receita ganha), Total de leads e Conversão em 30 dias.
 - **Cartão de número:**
   - ícone do tema;
   - rótulo curto;
-  - número grande (Libre Baskerville);
+  - número grande em **Manrope** negrito, fonte fluida, nunca quebra linha;
   - linha secundária;
-  - selo de variação "↑ 23% vs 30 dias antes", em marinho quando sobe e em bronze escuro quando cai, sempre com a seta (a cor nunca é a única pista).
-- Só tokens do tema (FE-03). As barras do funil usam marinho (abertos), dourado médio (ganho) e cinza (perdido).
+  - selo de variação "↑ 23% vs 30d ant.": **verde quando sobe e vermelho quando cai**, sempre com a seta (a cor nunca é a única pista). Variação de 0% fica num selo neutro, cinza.
+- Só tokens do tema (FE-03). As barras do funil usam as cores do funil do tema (uma por etapa; Perdido em cinza).
 
 ### 4.3 Cartões e origem de cada número
 
@@ -483,7 +488,7 @@ Números conferidos nos dados limpos (`data/clean/deals.csv`) para os três perf
 
 ### 4.4 Situação do funil
 
-| Barra (O-31) | Quantidade | Valor | Origem |
+| Barra | Quantidade | Valor | Origem |
 |---|---|---|---|
 | Novo lead | 500 (dataset) | valor esperado | `estagio = 'Prospecting'` e sem contato registrado |
 | Atendimento | 0 no dataset; enche com o uso | valor esperado | `estagio = 'Prospecting'` e com contato registrado |
@@ -512,12 +517,12 @@ Números conferidos nos dados limpos (`data/clean/deals.csv`) para os três perf
 
 Ficam fora da lista do dia os deals que já tiveram ✓, ✗ ou contato registrado hoje.
 
-**Visual (O-32):** bloco escuro no padrão do deck (degradê navy, texto claro, contador e nota em dourado). Cada lead ocupa uma linha (nome · produto, nota em dourado, ✕ e ✓ em pílula) e uma linha pequena embaixo (valor, há quantos dias e o alerta). O motivo da nota não aparece aberto: clicar no lead abre o deal na parte "Por que a nota é N", com FIT, HEAT e BONUS, os pontos de cada componente e todos os motivos. ✓ e ✕ não abrem o deal. O topo (título, alerta de risco e contador) fica fixo e a lista rola embaixo; no computador aparecem pelo menos 2 itens inteiros.
+**Visual:** bloco escuro no padrão do deck (degradê navy, texto claro, contador e nota em dourado). Cada lead ocupa uma linha (nome · produto, nota em dourado, ✕ e ✓ em pílula) e uma linha pequena embaixo (valor, há quantos dias e o alerta). O motivo da nota não aparece aberto: clicar no lead abre o deal na parte "Por que a nota é N", com FIT, HEAT e BONUS, os pontos de cada componente e todos os motivos. ✓ e ✕ não abrem o deal. O topo (título, alerta de risco e contador) fica fixo e a lista rola embaixo; no computador aparecem pelo menos 2 itens inteiros.
 
-**Painel em todas as larguras (O-32):** ≥ 1280 px, a grade 4 × 4; de 1024 a 1279, Prioridades e funil em largura cheia no topo e os 8 números em 4 colunas; abaixo de 1024, Prioridades, números em 2 colunas e funil. Os números grandes usam fonte fluida e nunca quebram linha.
+**Painel em todas as larguras:** ≥ 1280 px, a grade 4 × 4; de 1024 a 1279, Prioridades e funil em largura cheia no topo e os 8 números em 4 colunas; abaixo de 1024, Prioridades, números em 2 colunas e funil. Os números grandes usam fonte fluida e nunca quebram linha.
 
 **Como a lista anda:**
-- **Meta do dia de 20, todos à mostra** (O-34, pedido do Leandro; `config_parametros.meta_prioridades_dia`, migration 0032). Não há fila nem "5 por vez". A barra "3 de 20 feitas" mostra o avanço. Listas de hoje montadas com meta menor se completam até 20 na próxima abertura, sem tirar os itens que já estavam.
+- **Meta do dia de 20, todos à mostra** (pedido do Leandro; `config_parametros.meta_prioridades_dia`, migration 0032). Não há fila nem "5 por vez". A barra "3 de 20 feitas" mostra o avanço. Listas de hoje montadas com meta menor se completam até 20 na próxima abertura, sem tirar os itens que já estavam.
 - Ao marcar ✓ ou ✗, o item **fica na lista**, esmaecido e com o estado ("Feito" ou "Pulado"); a lista não anda. No bloco azul a lista rola por dentro com o topo fixo; abaixo de 1280 px o bloco cresce.
 - A lista do dia é montada na primeira abertura do dia e fica estável até o dia acabar. Exceção: se a execução de score ativa mudar, os itens ainda não marcados saem (ficam gravados como substituídos) e entram os da ordem nova; os já marcados ficam.
 
@@ -598,7 +603,7 @@ O último contador vem de `acao_repasses`. Ele nasce em 0, porque o dataset não
 | `abertos` · `ganhos` · `perdidos` | Estágio (só Leads) |
 | `prospecção` · `em negociação` | Estágio: … |
 | `fechados em 2017` · `ganhos em 2017` · `fechou em março` | Estágio: Fechado + Fechamento em … (só Leads) |
-| `novo lead` · `novos leads` · `atendimento` · `em atendimento` | Estágio: Novo lead / Atendimento (O-31) |
+| `novo lead` · `novos leads` · `atendimento` · `em atendimento` | Estágio: Novo lead / Atendimento |
 | `valor acima de 3000` · `mais de 5 mil` | Valor esperado ≥ 3.000 / ≥ 5.000 |
 | `#urgente` · `tag urgente` · `sem tag` | Tag: urgente / Sem tag |
 | `com comentário` | Tem comentário |
@@ -689,7 +694,7 @@ Esta seção atualiza o modelo de [DESENHO-ACOES.md](DESENHO-ACOES.md). Segue BD
 
 Total: 22 tabelas: as 15 de DESENHO-ACOES, `system_importacoes` (de DESENHO-CRM) e 6 novas (`core_contatos`, `config_tags`, `acao_comentarios`, `acao_deal_tags`, `acao_prioridades`, `system_lotes`).
 
-Acrescentado pela aba Contas e pelo repasse (a #2 consolida em `solution/db/`):
+Acrescentado pela aba Contas e pelo repasse (consolidado em `solution/db/`):
 
 | Tabela | Situação | Colunas |
 |---|---|---|
@@ -805,4 +810,4 @@ Todas as de escrita recebem `p_usuario_id` e `p_correlation_id`, fazem `set_conf
 | P17 | Prioridades do dia do manager e do admin: os deals do escopo em risco ou super hot, por valor? | Sim; para o vendedor, a lista vem da nota |
 | P18 | ✓ = "trabalhei hoje" e ✗ = "pulei hoje", sem mudar o deal? O ✓ conta como contato? Alerta depois de 3 dias pulado? | Sim; o ✓ não conta como contato (há "Liguei" no item); alerta depois de 3 dias |
 | P19 | Quem cria e edita empresa? | Os três perfis, com auditoria; o nome não muda depois de criado |
-| P20 | Repasse: quais faixas de tempo sem contato disparam o repasse, e qual a penalidade? | A #3 fecha os números; a tela só mostra o resultado |
+| P20 | Repasse: quais faixas de tempo sem contato disparam o repasse, e qual a penalidade? | O score fecha os números; a tela só mostra o resultado |

@@ -2,7 +2,9 @@
 
 CRM do time comercial com a prioridade embutida no pipeline. Next.js 16 (App Router), React 19, TypeScript strict e Tailwind 4.
 
-**No ar:** https://g4-sight.vercel.app
+**Avaliação pelo link:** https://g4-sight.vercel.app. Lá o app roda com o banco, as notas do score e a rotina diária. Na tela de login, escolha um perfil e um usuário (não há senha).
+
+Rodar localmente é opcional. **Sem credenciais, o app local mostra as telas com os dados do dataset, mas sem as notas** (os deals aparecem como "Sem nota ainda"), porque as notas ficam no banco.
 
 ## Rodar em 5 minutos
 
@@ -15,7 +17,7 @@ npm ci
 npm run dev
 ```
 
-Abra **http://localhost:3010** e escolha um perfil (vendedor, manager ou admin). Não há senha.
+Abra **http://localhost:3010**, escolha o perfil e o usuário e clique em **Login**. Não há senha.
 
 Sem preencher nada no `.env.local`, o app abre com os dados do arquivo `data/base.json`, em modo somente leitura. Para testar as mudanças sem banco, use `G4_ESCRITA_EM_MEMORIA=1` (elas somem ao reiniciar).
 
@@ -43,7 +45,7 @@ Ficam em `.env.local` (fora do git). O modelo, sem valores, é o `.env.example`.
 | **Pipeline** | Cinco colunas, uma por etapa. O cartão mostra o nome, o contato, a barra da nota, a data de abertura e um ícone (super hot, em risco de esfriar ou esfriou). **Atendimento é automático:** o primeiro contato registrado leva o lead de Novo lead para Atendimento. A etapa muda arrastando o cartão ou pelo seletor. O filtro aceita texto livre, que vira etiquetas removíveis. |
 | **Leads** | A base inteira (abertos e fechados) em tabela, com filtro livre, ordenação, **Novo lead** e ações em lote sobre os marcados ou sobre todos os do filtro: aplicar ou remover tag, comentar, mover para Em negociação e encerrar como perdido. O lote pode ser desfeito. |
 | **Leads › Contas** | As 85 empresas com setor, porte, sede, deals abertos, compras e receita ganha. A ficha mostra o cadastro, o histórico de compras por mês, os produtos comprados, o padrão de compra e os deals abertos. |
-| **Modal do deal** | Abre ao clicar no deal ou pelo link `?deal=ID`. Mostra a linha do tempo, os comentários, as ações (registrar contato, Requalifiquei, Desisti) e a **explicação da nota em linhas**: a conta (por exemplo "0,7 × 66 + 0,3 × 10 + 5 = 54"), a barra com a parte de cada componente e os motivos agrupados. |
+| **Modal do deal** | Abre ao clicar no deal ou pelo link `?deal=ID`. Mostra a linha do tempo, os comentários, os botões **Liguei**, **Requalifiquei** e **Desisti** e a **explicação da nota em linhas** ("Por que a nota é N"): a conta (por exemplo "0,7 × 62 + 0,3 × 10 + 5 = 51"), a barra com a parte de cada componente e os motivos agrupados. O **FIT** aparece como **% de conversão**: "Performance do vendedor neste perfil (FIT) 62%" quer dizer que o vendedor fecha 62% dos leads com esse perfil. Embaixo, a conversão dele em cada característica do lead (por exemplo "Setor finanças 65%"); a característica com poucos fechados aparece como "poucos casos". |
 
 Os valores aparecem em **R$**, com os mesmos números do dataset, sem conversão de moeda.
 

@@ -1,28 +1,32 @@
 # Banco do CRM: migrations
 
-Migrations do Postgres (Supabase). Elas saem de `app/ESPEC-TELAS.md` (seção 8), `app/DESENHO-ACOES.md` e `app/DESENHO-CRM.md`, e seguem as premissas ARQ, BD e BE.
+Migrations do Postgres (Supabase). Elas saem de `app/ESPEC-TELAS.md` (seção 8), `app/DESENHO-ACOES.md` e `app/DESENHO-CRM.md`, e seguem as premissas de arquitetura, banco de dados e back-end do projeto.
 
 ## Estado
 
+Todas as migrations (`0001` a `0034`) e o seed estão **aplicados** no Supabase. A última, `0034_relogio_e_rotina.sql`, foi aplicada em 10/11/2026 (sha256 `ed2065bd…`). Nenhum arquivo aplicado é alterado: mudança nova entra como migration nova.
+
 | Parte | Arquivos | Estado |
 |---|---|---|
-| Lote 1 | `migrations/0001`–`0006` + `seed/seed_dataset.sql` | **aplicado** no Supabase em 10/11/2026: 9 tabelas, 8.800 deals, 85 contas, 43 usuários e 9.006 linhas de auditoria. Não alterar: mudanças entram como migrations novas |
-| Lote 2 | `migrations/0007`–`0025` | **aplicado** no Supabase |
-| Teto global | `migrations/0026_limite_global.sql` | **aplicado** no Supabase (versão do commit `d6c4f12`, sha256 `ea36c7b6…443a`) |
-| Teto exato | `migrations/0027_limite_exato.sql` | **aplicado** no Supabase |
-| Contexto obrigatório | `migrations/0028_contexto_obrigatorio.sql` | aplicada no Supabase (corrige o achado L2-1 da revisão do lote 2) |
-| Reforço do contexto | `migrations/0029_reforco_contexto.sql` | escrito e validado (PGlite); **falta aplicar**, depois da 0028 (usuário ativo e achados L2-5 e L2-6) |
-| Prioridades pela nota | `migrations/0030_prioridades_pela_nota.sql` | escrita e validada (PGlite: `validar_tudo.mjs`, com e sem dataset, e `validar_0030.mjs`); **falta aplicar**, depois da 0029 |
-| Funil com 5 etapas | `migrations/0031_funil_cinco_etapas.sql` | escrita e validada (`validar_0031.mjs`); aplicação pela #5 (O-31) |
-| 20 prioridades por dia | `migrations/0032_meta_prioridades_20.sql` | escrita e validada (`validar_0032.mjs`); aplicação pela #5 (O-34) |
-| Redistribuição de domingo | `migrations/0033_redistribuicao_de_domingo.sql` | escrita e validada (`validar_0033.mjs`, `validar_tudo.mjs` com e sem dataset, 0030–0032); **falta aplicar** (O-39) |
-| Relógio e rotina diária | `migrations/0034_relogio_e_rotina.sql` | escrita e validada (`validar_0034.mjs`, `validar_tudo.mjs` com e sem dataset, 0030–0033); **falta aplicar** e definir a senha do `g4_rotina` fora do git (O-41) |
+| Lote 1 | `migrations/0001`–`0006` + `seed/seed_dataset.sql` | aplicado em 10/11/2026: 9 tabelas, 8.800 deals, 85 contas, 43 usuários e 9.006 linhas de auditoria |
+| Lote 2 | `migrations/0007`–`0025` | aplicado |
+| Teto global | `migrations/0026_limite_global.sql` | aplicado (sha256 `ea36c7b6…443a`) |
+| Teto exato | `migrations/0027_limite_exato.sql` | aplicado |
+| Contexto obrigatório | `migrations/0028_contexto_obrigatorio.sql` | aplicado (corrige um achado da revisão de segurança do lote 2) |
+| Reforço do contexto | `migrations/0029_reforco_contexto.sql` | aplicado |
+| Prioridades pela nota | `migrations/0030_prioridades_pela_nota.sql` | aplicado |
+| Funil com 5 etapas | `migrations/0031_funil_cinco_etapas.sql` | aplicado |
+| 20 prioridades por dia | `migrations/0032_meta_prioridades_20.sql` | aplicado |
+| Redistribuição de domingo | `migrations/0033_redistribuicao_de_domingo.sql` | aplicado |
+| Relógio e rotina diária | `migrations/0034_relogio_e_rotina.sql` | aplicado em 10/11/2026 (sha256 `ed2065bd…`) |
+
+Cada migration nova foi validada antes de aplicar, num Postgres em memória (PGlite), com e sem o dataset (`validar_tudo.mjs` e `validar_00NN.mjs`).
 
 **Histórico da 0026:** ela foi aplicada antes de um ajuste pedido pela revisão de segurança. A versão aplicada contava o pedido atual e usava `>`, o que deixava passar um pedido a mais que o teto. O arquivo `0026` no repositório é exatamente o que está no banco. O ajuste (contar só os pedidos anteriores e usar `>=`, para o teto ficar exato) entrou como `0027`, que substitui a função `system_iniciar_contexto`.
 
 ## Ordem de execução do lote 2 em diante
 
-Cada arquivo numa transação, rodado pelo dono do schema (`postgres`), na ordem. Já aplicados: 1 a 22. **Falta aplicar: só a 23 (`0029`).**
+Cada arquivo numa transação, rodado pelo dono do schema (`postgres`), na ordem. Todos já estão aplicados no Supabase.
 
 | # | Arquivo | O que faz |
 |---|---|---|
@@ -42,8 +46,8 @@ Cada arquivo numa transação, rodado pelo dono do schema (`postgres`), na ordem
 | 14 | `0020_functions_cargas.sql` | usuários do time e ativação da execução de score |
 | 15 | `0021_permissoes.sql` | permissões das funções |
 | 16 | `0022_seguranca.sql` | **correção de segurança**: papel de carga, `correlation_id` único por transação, limite de escritas contado pelo banco |
-| 17 | `0023_atividades.sql` | **decisão 37**: tipo de atividade e comentário obrigatórios no ✓ |
-| 18 | `0024_roteamento_repasse.sql` | **decisões 35 e 38**: roteamento sem teto, repasse e penalidade |
+| 17 | `0023_atividades.sql` | tipo de atividade e comentário obrigatórios no ✓ |
+| 18 | `0024_roteamento_repasse.sql` | roteamento sem teto, repasse e penalidade |
 | 19 | `0025_permissoes_e_guardas.sql` | proteções das tabelas novas, política do papel de carga e permissões finais |
 | 20 | `0026_limite_global.sql` | **teto global** de pedidos do app por janela (soma de todos os usuários); o papel de carga fica fora |
 | 21 | `0027_limite_exato.sql` | tetos exatos (no máximo 30 por usuário e 300 no total por janela); limite por IP nas rotas do app é obrigatório |
@@ -53,7 +57,23 @@ Cada arquivo numa transação, rodado pelo dono do schema (`postgres`), na ordem
 | 25 | `0031_funil_cinco_etapas.sql` | "Ganho" vira "Fechado" no rótulo; ação `contato` (registro de atendimento com tipo e comentário obrigatórios, `acao_registrar_contato`); linha do tempo com o atendimento |
 | 26 | `0032_meta_prioridades_20.sql` | meta do dia = 20; a lista guarda a meta usada (`meta_dia`) e as listas de hoje com meta menor se completam na próxima abertura |
 | 27 | `0033_redistribuicao_de_domingo.sql` | `core_repassar_deal`: as travas do repasse (FIT mínimo, no máximo 3 abaixo do dono, top N) valem só para `repasse_janela`; a redistribuição de domingo é só equilíbrio (deal aberto, sem contato registrado, destino ativo e diferente do dono, motivo "Redistribuição de domingo.", sem penalidade); a linha do tempo mostra os repasses automáticos com o motivo |
-| 28 | `0034_relogio_e_rotina.sql` | relógio que anda (âncoras em `config_parametros`; `system_data_negocio()` = âncora de negócio + dias reais desde a âncora real); papel de login `g4_rotina` (sem senha no arquivo, membro só de `system_carga`); `system_rotina_ja_rodou(dia)` para a rotina diária não rodar duas vezes. **Depois de aplicar:** `alter role g4_rotina password '…'` fora do git e a URL como `DATABASE_URL_ROTINA` nos segredos do app |
+| 28 | `0034_relogio_e_rotina.sql` | relógio que anda (âncoras em `config_parametros`; `system_data_negocio()` = âncora de negócio + dias reais desde a âncora real); papel de login `g4_rotina` (sem senha no arquivo, membro só de `system_carga`); `system_rotina_ja_rodou(dia)` para a rotina diária não rodar duas vezes. Depois de aplicar, ver "Banco novo" |
+
+## Banco novo
+
+Para montar o banco do zero (por exemplo, num projeto Supabase novo):
+
+1. **Ordem:** `migrations/0001` a `0006`, depois `seed/seed_dataset.sql`, depois `0007` a `0034`. Cada arquivo numa transação, rodado pelo dono do schema (`postgres`).
+2. **Senha do `g4_rotina`:** a `0034` cria o papel de login da rotina diária sem senha. Defina a senha fora do git, direto no banco: `alter role g4_rotina password '…';`.
+3. **Segredos do app na Vercel:**
+   - `DATABASE_URL_ROTINA`: a URL de conexão com o usuário `g4_rotina`.
+   - `CRON_SECRET`: o segredo que o cron da Vercel manda às rotas da rotina.
+   - Também `SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY`, para as telas.
+4. **Datas de simulação** (em `config_parametros`): o dataset termina em 31/12/2017, então o banco simula o tempo.
+   - `modo_demonstracao` = `true` liga a simulação.
+   - `data_ancora_real` e `data_ancora_negocio` fazem a data de negócio andar 1 dia por dia real: no dia real `data_ancora_real`, a data de negócio é `data_ancora_negocio`. Hoje: 10/11/2026 = 31/12/2017.
+   - Sem as âncoras, com a simulação ligada, a data fica parada em `data_referencia`.
+   - **Em produção, com dados reais:** remova as datas ancoradas (`data_ancora_real` e `data_ancora_negocio` sem valor) e desligue `modo_demonstracao` (`false`). A data de negócio passa a ser o dia real.
 
 ## Segurança
 
@@ -90,7 +110,7 @@ Cada arquivo numa transação, rodado pelo dono do schema (`postgres`), na ordem
 - O teto global do banco é rede de segurança: protege o banco.
 - Se o limite por IP faltar, uma só origem pode esgotar o teto global e travar as escritas de todos os usuários até a janela passar.
 
-**Limitação que continua: não há login (decisões 12 e 15).** Qualquer pessoa escolhe qualquer usuário da tela, **inclusive o admin**, e age como ele.
+**Limitação que continua: não há login (decisão de projeto do desafio).** Qualquer pessoa escolhe qualquer usuário da tela, **inclusive o admin**, e age como ele.
 - **Sem login, o limite por usuário só organiza o uso:** quem quiser abusar troca de usuário.
 - **Proteção contra abuso, em ordem:**
   1. limite por IP nas rotas do app (obrigatório);
@@ -100,18 +120,19 @@ Cada arquivo numa transação, rodado pelo dono do schema (`postgres`), na ordem
 
 ## Regras de negócio no banco (números em `config_parametros`)
 
-- **✓ nas Prioridades do dia (decisão 37):**
+- **✓ nas Prioridades do dia:**
   - exige tipo de atividade (`config_tipos_atividade`: Ligação, E-mail, Mensagem, Reunião, Proposta enviada, Requalificado, Sem resposta) e comentário (até 280 caracteres);
   - grava em `acao_registros`, com o item da lista do dia e o horário real (`criado_em`), e atualiza o último contato;
   - o ✗ continua sem registro obrigatório;
   - a assinatura antiga de `acao_marcar_prioridade` (sem tipo) ainda aceita o ✗ e recusa o ✓.
-- **Roteamento (decisão 38):**
+- **Roteamento:**
   - sem teto de abertos;
   - lead novo vai ao vendedor de maior FIT no cohort, menos a penalidade ativa, com o mínimo de casos;
-  - a distribuição equilibrada do recálculo de domingo é feita pelo score (Python) e gravada pelo papel de carga.
+  - a redistribuição de domingo (equilíbrio entre os vendedores ativos) é planejada pela rotina diária do app (`app/src/server/motor`) e gravada pelo papel de carga, por `core_repassar_deal`.
 - **Repasse (`core_repassar_deal`, só o papel de carga):**
-  - só com o FIT do novo vendedor ≥ 75, no máximo 3 pontos abaixo do FIT do dono, e o lead no top 5 do novo;
-  - no repasse por mudança de janela, o lead tem de estar sem contato;
+  - no repasse por mudança de faixa (`repasse_janela`): só com o FIT do novo vendedor ≥ 75, no máximo 3 pontos abaixo do FIT do dono, e o lead no top 5 do novo;
+  - na redistribuição de domingo: só equilíbrio, sem essas travas e sem penalidade;
+  - nos dois, o lead tem de estar aberto e sem contato registrado;
   - fica registrado em `acao_reatribuicoes`, com origem, FITs, posição e faixa.
 - **Penalidade (`system_penalidades`):** quem perde lead por repasse de janela recebe `pontos` por `dias`, descontados do FIT só na escolha do vendedor de lead novo. A nota dos deals não muda.
 - **Ainda a decidir (ficam `null` até a regra do score fechar):**
@@ -183,4 +204,4 @@ python solution/db/gerar_seed.py
 
 ## Pendências
 
-- **Trava do dono pelo manager** (decisão 38, desenho do score): o manager poderia travar o dono de um lead para que ele não seja repassado nem redistribuído. Ainda não existe no banco nem na tela, e hoje ninguém trava nada; a 0033 não trata disso. Quando for feita, `core_repassar_deal` precisa recusar o lead travado nas duas origens.
+- **Trava do dono pelo manager:** o manager poderia travar o dono de um lead para que ele não seja repassado nem redistribuído. Ainda não existe no banco nem na tela, e hoje ninguém trava nada; a 0033 não trata disso. Quando for feita, `core_repassar_deal` precisa recusar o lead travado nas duas origens.
