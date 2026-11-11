@@ -95,3 +95,11 @@
   - mudei: tabela_vazia_para recebe também os rótulos das faixas (o plano só tem hoje), senão a tabela vazia não tem linhas; _ctx, que o plano usa sem definir, ficou no arquivo de teste
 
 **Fim da sessão** 2026-11-11 14:34 — Tarefa 3 verde: 7 testes, suíte 17/17
+
+## 2026-11-11 14:36 · Tarefa 3 — nota: fórmula do v1 e correção do viés · modelo claude-haiku-5-5 · ferramenta Claude Code
+
+- **14:36** — pedi: registrar no diário a fórmula do v1 e a correção de viés de sobrevivência da Tarefa 3
+  - veio: a fórmula do v1 contava só fechados e dava 100% de chance aos 120 dias; a tabela atual põe os abertos em risco no denominador e dá quase zero (106–120 e 121–138 com p_decide 0,0000)
+  - mudei: nenhum código; nota no diário. O commit 261eb0e não foi reescrito: o amend mudaria um commit já feito, então a citação fica nesta nota
+
+**Fim da sessão** 2026-11-11 14:36 — fórmula do v1 e correção registradas; teste test_nao_ha_vies_de_sobrevivencia é a prova
