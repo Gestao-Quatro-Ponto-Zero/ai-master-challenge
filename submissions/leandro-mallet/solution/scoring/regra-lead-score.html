@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Regra do lead score</title>
+<title>Lead Score — G4 Sight</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -78,6 +78,16 @@
   details { margin: 12px 0; }
   summary { cursor: pointer; font-weight: 700; color: var(--navy); }
   code { font-size: 13px; background: var(--soft); padding: 1px 5px; border-radius: 3px; }
+  .metodo ul, .metodo ol { padding-left: 22px; }
+  .metodo li { margin: 6px 0; }
+  .metodo p { margin: 8px 0; }
+  .historico { margin-top: 48px; padding-top: 24px; border-top: 3px dashed #b42318; }
+  .historico-titulo { font: 700 21px/1.3 "Libre Baskerville", Georgia, serif; color: #b42318; margin: 0 0 12px; }
+  .aviso { display: flex; gap: 12px; align-items: flex-start; background: #fef3f2; border: 2px solid #b42318; border-left: 8px solid #b42318;
+           border-radius: 6px; padding: 14px 16px; margin: 0 0 22px; color: #7a271a; font-weight: 700; }
+  .aviso p { margin: 0; max-width: none; }
+  .aviso-icone { font-size: 26px; line-height: 1; color: #b42318; }
+  .historico-corpo { opacity: .78; }
   @media (max-width: 600px) {
     header h1 { font-size: 22px; padding: 20px 16px; }
     .card { padding: 16px; }
@@ -91,8 +101,124 @@
 </style>
 </head>
 <body>
-<header><h1>Regra do lead score</h1></header>
+<header><h1>Lead Score — G4 Sight</h1></header>
 <main>
+<section class="card metodo">
+  <h2>Visão Geral</h2>
+  <p>O Lead Score responde duas perguntas:</p>
+  <ol>
+    <li>Quem atende cada lead.</li>
+    <li>Em que ordem cada vendedor deve trabalhar os seus leads.</li>
+  </ol>
+</section>
+
+<section class="card metodo">
+  <h2>Premissas e Benefícios da Metodologia</h2>
+  <ul>
+    <li><b>Vendedor ideal para cada lead.</b> A priorização define a ordem de atendimento e também indica qual vendedor deve atender cada lead. Encaminhar o lead a quem mais converte aquele perfil aumenta a probabilidade de conversão.</li>
+    <li><b>Performance recente.</b> A conversão de cada vendedor num perfil de lead nos últimos 3 meses vale mais que a sua performance histórica, porque reflete o momento atual dele.</li>
+    <li><b>Análise multiparamétrica.</b> A probabilidade de conversão de cada vendedor é avaliada em 7 parâmetros do lead ao mesmo tempo. Isso revela diferenças de conversão que não aparecem quando os parâmetros são analisados um a um.</li>
+    <li><b>Velocidade de atendimento.</b> Quanto mais recente o lead, maior a sua urgência na fila. A pontuação começa no máximo no primeiro dia e cai em faixas de tempo até zerar depois de 6 meses. A partir daí, a fila passa a ser decidida somente pelo perfil e pelo cliente.</li>
+    <li><b>Melhores clientes priorizados.</b> Empresas com maior histórico de compra, e as que estão no seu período usual de compra, ganham prioridade extra na fila.</li>
+    <li><b>Destaque para o lead novo.</b> O lead novo é priorizado para atendimento em até 1 dia e, se esse prazo passar sem contato, fica sinalizado.</li>
+    <li><b>Incentivo ao cumprimento da prioridade.</b> O lead que muda de faixa de tempo sem contato é redistribuído para outro vendedor com performance equivalente no mesmo perfil. Quem deixa o lead parado perde a oportunidade, e o lead segue com quem vai atendê-lo.</li>
+    <li><b>Distribuição equilibrada.</b> Cada vendedor tem um limite de leads ativos. A carga é distribuída de forma proporcional, sempre priorizando o vendedor de maior performance em cada lead.</li>
+    <li><b>Atualização contínua.</b> A performance é recalculada semanalmente e a urgência diariamente. Cada contato registrado alimenta a fila e o histórico de conversão, e a metodologia fica mais precisa com o uso.</li>
+    <li><b>Transparência.</b> Cada nota mostra o motivo, e vendedor e manager entendem por que o lead está naquela posição e com aquele vendedor.</li>
+  </ul>
+</section>
+
+<section class="card metodo">
+  <h2>Como funciona</h2>
+  <ol>
+    <li><b>Quem atende → FIT.</b> Cada lead vai para o vendedor de maior performance naquele perfil de lead nos últimos 3 meses.</li>
+    <li><b>Em que ordem → FIT + HEAT + BÔNUS.</b> A fila de cada vendedor começa pelos leads com a maior nota total dessas três variáveis:
+      <ul>
+        <li>FIT (70%): a performance do vendedor naquele perfil de lead;</li>
+        <li>HEAT (30%): a urgência de atendimento;</li>
+        <li>BÔNUS (até +20 pontos): a força de compra da empresa.</li>
+      </ul>
+    </li>
+    <li><b>Equilíbrio → Nivelamento.</b> O limite de leads ativos por vendedor é o total de leads dividido pelo número de vendedores. Quem passar do limite repassa os excedentes para o vendedor seguinte de maior performance em cada lead.</li>
+    <li><b>Lead parado → Repasse.</b> O lead sem contato que muda de faixa de tempo é repassado a outro vendedor com performance equivalente no mesmo perfil.</li>
+  </ol>
+</section>
+
+<section class="card metodo">
+  <h2>Variáveis</h2>
+  <p><b>FIT:</b> mede quanto o vendedor converte aquele PERFIL de lead nos últimos 3 meses. Vai de 0 a 100 e corresponde à própria taxa de conversão: FIT 62 significa que o vendedor fecha 62% dos leads com aquele perfil.</p>
+  <p><b>PERFIL:</b> o lead é avaliado em 7 parâmetros, cada um isoladamente:</p>
+  <ol>
+    <li>Produto (ex.: GTX Plus Basic)</li>
+    <li>Série do produto (ex.: GTX)</li>
+    <li>Setor da empresa (ex.: finanças)</li>
+    <li>Porte por faturamento: a empresa está entre as menores, as médias ou as maiores em receita</li>
+    <li>Porte por número de funcionários: a mesma divisão, por funcionários</li>
+    <li>A própria empresa (ex.: Xx-holding)</li>
+    <li>Sede: nos EUA ou fora</li>
+  </ol>
+  <p>Para cada parâmetro, mede-se quanto o vendedor converteu nos últimos 3 meses (ex.: "fecha 65% em finanças"). O FIT é a média desses resultados. Se faltar algum parâmetro, o lead é avaliado pelos demais e reavaliado depois que os dados forem completados.</p>
+  <p><b>HEAT:</b> mede a urgência de atendimento pelo tempo desde a entrada do lead:</p>
+  <ul>
+    <li>até 1 dia: 100</li>
+    <li>2 a 7 dias: 85</li>
+    <li>8 a 15 dias: 70</li>
+    <li>16 a 30 dias: 55</li>
+    <li>31 a 60 dias: 40</li>
+    <li>61 a 90 dias: 25</li>
+    <li>91 a 180 dias: 10</li>
+    <li>mais de 180 dias: 0</li>
+  </ul>
+  <p><b>BÔNUS:</b> soma pontos para as empresas com maior força de compra:</p>
+  <ul>
+    <li>histórico de compra: as empresas são divididas em três grupos pela receita que já geraram. Grupo de cima = +10; do meio = +5; de baixo = 0;</li>
+    <li>período de compra: +10 se a empresa estiver na época em que costuma comprar.</li>
+  </ul>
+  <p>Lead sem empresa cadastrada não recebe bônus.</p>
+  <p><b>Valor do deal:</b> não entra na nota, porque não é conhecido antes do atendimento.</p>
+</section>
+
+<section class="card metodo">
+  <h2>Operação</h2>
+  <ul>
+    <li><b>Recálculo:</b> o FIT e o bônus são recalculados todo domingo, e a segunda-feira começa com a fila pronta. O HEAT é atualizado diariamente.</li>
+    <li><b>Lead novo:</b> com boa performance do vendedor, entra no topo da fila. Se passar de 1 dia sem contato, recebe a marca de atendimento atrasado e continua no topo.</li>
+    <li><b>Contato registrado:</b> após o primeiro contato, a urgência passa a ser contada a partir do último contato.</li>
+    <li><b>Segurança do FIT:</b>
+      <ul>
+        <li>parâmetro com menos de 10 negócios fechados pelo vendedor não é considerado;</li>
+        <li>com poucos casos, o resultado é ajustado na direção da média geral do vendedor, para evitar que um acaso (3 de 3) vire 100%.</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<section class="card metodo">
+  <h2>Limitações</h2>
+  <ul>
+    <li><b>Período de compra:</b> nos dados do desafio, nenhuma empresa apresenta uma época de compra própria, então essa parte do bônus hoje vale 0.</li>
+  </ul>
+</section>
+
+<section class="card metodo">
+  <h2>Exemplos</h2>
+  <p><b>Quem atende.</b> Lead de GTX Plus Basic, da empresa Xx-holding (finanças, empresa grande, sede nos EUA). A Kami converte 61% dos leads com esse perfil, e o Darcel converte 62%. → O lead vai para o Darcel.</p>
+  <p><b>Em que ordem.</b> Na fila do Darcel há dois leads:</p>
+  <ul>
+    <li>Lead A: aberto há 18 dias, de empresa que compra muito. FIT 62, HEAT 55, bônus +10 → nota 70.</li>
+    <li>Lead B: aberto há 200 dias, de empresa sem histórico. FIT 66, HEAT 0, bônus 0 → nota 46.</li>
+  </ul>
+  <p>→ O Lead A vem primeiro. O Darcel converte um pouco mais o perfil do Lead B, mas o Lead A é recente e de uma empresa com alta força de compra.</p>
+  <p><b>Nivelamento.</b> O limite atual é de 23 leads ativos por vendedor. Se o Darcel for o melhor vendedor para 30 leads, ele fica com 23, e os outros 7 vão para o vendedor seguinte de maior performance em cada um.</p>
+</section>
+
+<section class="historico" aria-labelledby="t-historico">
+  <h2 id="t-historico" class="historico-titulo">Histórico (versão anterior)</h2>
+  <div class="aviso" role="note">
+    <span class="aviso-icone" aria-hidden="true">⚠</span>
+    <p>ATENÇÃO: versão anterior da regra, mantida só como histórico. Está DESATUALIZADA e contém definições ERRADAS (FIT relativo à média do vendedor, fórmula 50 + 50 × desvio ÷ destaque, entre outras). Não usar como referência: a regra vigente é a de cima.</p>
+  </div>
+  <div class="historico-corpo">
 
 <section class="hero">
   <div class="f">NOTA = 0,7 × FIT + 0,3 × HEAT + BONUS
@@ -421,6 +547,8 @@
   </ul>
 </section>
 
+  </div>
+</section>
 </main>
 </body>
 </html>
