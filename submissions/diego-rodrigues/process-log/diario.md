@@ -135,3 +135,11 @@
   - mudei: mantido: a tela pode mostrar quando os dados foram gerados, e o hash continua determinístico porque o campo sai do cálculo. Alternativa rejeitada: remover o campo, perdendo a informação de quando o build rodou
 
 **Fim da sessão** 2026-11-11 14:49 — decisão sobre gerado_em registrada: campo mantido, fora do hash
+
+## 2026-11-11 15:09 · Tarefa 7 — avaliacao/ e backtest · modelo claude-haiku-5-5 · ferramenta Claude Code
+
+- **15:09** — pedi: fechar a Tarefa 7: aplicar A (agrupamento mantido), B (sorteio por deal), 1 a 4 (teste de sinal, documentação, nomes sem 'semente' no texto de negócio)
+  - veio: 43/43 verdes. Relógio 1.097.324, preço e prazo 842.462, IC 1,13 a 1,52; aleatório em 200 rodadas 318.622; atributos sem sinal (todos p > 0,05)
+  - mudei: ERRO ENCONTRADO: o campo conta é preenchido só depois do desfecho (0 de 6.711 fechados sem conta). Deals sem conta vazavam resultado para o teste de vendedor, que aparecia com p = 0,012. Corrigido: atributos só com conta preenchida (3.001 deals). Com isso o vendedor cai para p = 0,141, e o sinal fraco aprovado na opção 2 deixou de existir: o teste passou a afirmar 'sem sinal'. Porte, que parecia p = 0,001, também era vazamento (p = 0,983 corrigido)
+
+**Fim da sessão** 2026-11-11 15:09 — Tarefa 7 verde: 43/43; vazamento do campo conta encontrado e corrigido
