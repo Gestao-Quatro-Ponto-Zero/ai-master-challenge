@@ -23,12 +23,14 @@ solution/app/
   package.json, package-lock.json
   next.config.ts          inclui data/ no pacote publicado (outputFileTracingIncludes)
   tsconfig.json, eslint.config.mjs, postcss.config.mjs, vitest.config.mts
+  vercel.json             cron da rotina diária (06:00 UTC → /api/rotina/diaria)
+  .env.example            as variáveis, sem valores
   .gitignore              node_modules/, .next/, .env*.local
-  COMO-RODAR.md, ESPEC-TELAS.md, DESENHO-NEXT.md, DESENHO-ACOES.md, DESENHO-CRM.md
+  COMO-RODAR.md, ESPEC-TELAS.md, DESENHO-NEXT.md
 
   data/
-    base.json             8.800 deals, 85 contas, 35 vendedores e 7 produtos (gerado dos CSVs limpos)
-    deals_scored.json     notas do score, quando existir (opcional)
+    base.json             8.800 deals, 85 contas, 35 vendedores e 7 produtos (gerado dos CSVs limpos);
+                          reserva sem banco, sem notas (as notas ficam no banco)
   scripts/
     dados.mjs             gera data/base.json a partir de solution/data/clean
     espelhar-para-drive.ps1   copia o código da cópia de trabalho para esta pasta
@@ -39,20 +41,21 @@ solution/app/
       fontes.ts           Libre Baskerville e Manrope via next/font
     app/
       layout.tsx          topo, aviso de somente leitura, provedores e o modal do deal
-      page.tsx            "Quem é você?" (escolha de perfil)
-      painel/             Painel: números, funil, Prioridades do dia e quadro por vendedor
-      pipeline/           Pipeline: duas colunas, cartões e filtro livre
+      page.tsx            tela de login sem senha (Selecione o Perfil, Selecione o Usuário, Login)
+      painel/             Painel: grade com 8 números, Prioridades do dia (20, bloco azul), funil de 5 etapas e quadro por vendedor
+      pipeline/           Pipeline: cinco colunas (Novo lead, Atendimento, Em negociação, Fechado, Perdido), cartões e filtro livre
       leads/              Leads: tabela, lote e a aba Contas (?aba=contas)
       error.tsx, not-found.tsx, */loading.tsx   estados de erro, vazio e carregando
       api/                rotas (tabela abaixo)
     components/
       Topo, TopoCliente   marca, abas e "Trocar perfil"
-      EscolhaPerfil       vendedor, manager ou admin
-      Prioridades         lista do dia, ✓ com registro obrigatório e ✗
-      Funil               situação do funil (quantidade | valor)
-      Quadro              colunas do Pipeline, cartão e arraste
-      Estagio             mudança de estágio (uma implementação para arraste, seletor e modal)
-      ModalDeal           linha do tempo, nota, comentários, tags e contato (?deal=ID)
+      EscolhaPerfil       tela de login: perfil e usuário em listas suspensas (vendedores por time)
+      Prioridades         lista do dia: 20 da meta à mostra; ✓ com registro obrigatório, ✗ e Contato hoje
+      Funil               situação do funil em 5 etapas (quantidade | valor); barras na horizontal no celular
+      Quadro              as 5 colunas do Pipeline, cartão e arraste
+      Estagio             mudança de etapa (uma implementação para arraste, seletor e modal) e registro de atendimento
+      ModalDeal           linha do tempo, Liguei/Requalifiquei/Desisti, comentários, tags e contato (?deal=ID)
+      NotaExplicada       "Por que a nota é N": a conta, a barra por componente, os motivos e o FIT em % de conversão
       TabelaLeads         tabela com seleção e ações em lote
       LotesRecentes       lotes das últimas 24 horas, com "Desfazer este lote"
       NovoLead            cadastro de lead
@@ -60,34 +63,35 @@ solution/app/
       Filtros, FiltrosEquipe   filtro livre com etiquetas; seletores de região, manager e vendedor
       Avisos              avisos com "Desfazer" e recarga dos dados
       Dialogo, Estado, Nota    peças comuns (diálogo, selo de tag, vazio/erro/esqueleto, barra da nota, ícone)
-      ui/                 objetos da interface, um conjunto só para todas as telas (O-28):
+      ui/                 objetos da interface, um conjunto só para todas as telas:
         Botao             3 níveis (primário navy, secundário branco com borda neutra, discreto), 40 px ou 32 px
         Campo             campo e área de texto com a altura do botão; rótulo e erro de formulário
-        Seletor           lista estilizada no lugar do <select> nativo, por teclado; modo ação (estágio, + Tag)
+        Seletor           lista estilizada no lugar do <select> nativo, por teclado; grupos opcionais; modo ação (estágio, + Tag)
         Etiqueta          uma forma, tons neutro, atenção, negativo, positivo e destaque
         BarraNota         barra fina, cor pela faixa, número em Manrope 600 tabular
         Superficie        painel, lista com divisória, cartão leve, alternador e caixa de marcar
         Icones            ícones em SVG (sem glifos)
-        CartaoNumero      cartão de número do Painel (O-30): faixa e ícone na cor do grupo, número grande, pílula de variação
+        CartaoNumero      cartão de número do Painel: ícone na cor do grupo, número grande em Manrope, selo de variação (verde sobe, vermelho cai, cinza em 0%)
     lib/                  funções puras, sem I/O
       tipos.ts, config.ts, calculos.ts, painel.ts, cliente.ts
       desfazer.ts         formato do token do "Desfazer"
       lotes.ts            rótulos, prazo de 24 horas e quem vê cada lote
       prioridades.ts      contador e ordem das Prioridades do dia (a mesma da 0030) e a explicação do item
       relogio.ts          relógio do CRM (decisão 48): data de negócio = âncora + dias reais
-      score/              motor do lead score em TypeScript (sessão #3): regra.ts, movimentos.ts
-      etapas.ts           as 5 etapas da tela (O-31): Novo lead e Atendimento = Prospecting sem e com contato
+      explicacaoNota.ts   a conta da nota, as partes e o FIT em % para "Por que a nota é N"
+      score/              motor do lead score em TypeScript: regra.ts (FIT absoluto, HEAT, bônus, nota), movimentos.ts (redistribuição e repasse)
+      etapas.ts           as 5 etapas da tela: Novo lead e Atendimento = Prospecting sem e com contato
       validacao.ts        frase específica para erro de campo na API
       filtro/             etiquetas.ts, interpretar.ts (frase → etiquetas), aplicar.ts
     server/               só roda no servidor (import "server-only")
-      motor/              rotina diária do score (O-41): rotina.ts (transação, idempotência, falha), motor-score.ts
-                          (liga src/lib/score da #3 ao banco), conexao.ts (DATABASE_URL_ROTINA), autorizacao.ts (CRON_SECRET),
-                          contrato.ts e instalado.ts; rotas /api/rotina/diaria (cron, vercel.json) e /api/rotina/rodar-agora
+      motor/              rotina diária do score: rotina.ts (transação, idempotência, rodada forçada, falha), motor-score.ts
+                          (liga src/lib/score ao banco; cada repasse num savepoint), conexao.ts (DATABASE_URL_ROTINA),
+                          autorizacao.ts (CRON_SECRET), contrato.ts e instalado.ts
       banco.ts            cliente do Supabase (service_role só aqui), tradução de erros e correlation_id
       repositorio.ts      a única porta das telas: escolhe banco ou reserva e faz as contas das telas
       repositorio-banco.ts    leitura pela view e pelas tabelas; escrita só pelas functions do banco
       repositorio-arquivo.ts  reserva em arquivo (somente leitura; memória só com G4_ESCRITA_EM_MEMORIA=1)
-      fonte.ts            lê data/base.json e data/deals_scored.json
+      fonte.ts            lê data/base.json (e data/deals_scored.json, se existir; hoje não existe)
       sessao.ts           perfil escolhido (cookie)
       rota.ts             base das rotas: usuário, limite por IP, correlation_id, zod, erro em frase simples
       parametros.ts       lê e valida os filtros do link
@@ -101,7 +105,8 @@ solution/app/
 | `POST` / `DELETE /api/perfil` | escolher / trocar o perfil (o usuário "sistema" nunca é aceito) |
 | `POST /api/deals` | novo lead |
 | `GET /api/deals/[id]` | detalhe para o modal |
-| `POST /api/deals/[id]/estagio` | mudar estágio (arraste, seletor e modal) |
+| `POST /api/deals/[id]/estagio` | mudar etapa (arraste, seletor e modal) |
+| `POST /api/deals/[id]/atendimento` | registrar atendimento (tipo e comentário obrigatórios): leva o Novo lead para Atendimento |
 | `POST /api/deals/[id]/acoes` | Liguei, Requalifiquei, Desisti |
 | `POST /api/deals/[id]/comentarios` | postar comentário |
 | `DELETE /api/comentarios/[id]` | apagar comentário (remoção lógica) |
@@ -109,11 +114,13 @@ solution/app/
 | `POST` / `DELETE /api/deals/[id]/tags` | aplicar / remover tag |
 | `GET` / `POST /api/tags` | listar / criar tag (manager e admin) |
 | `POST /api/prioridades` | ✓ (tipo de atividade e comentário obrigatórios) ou ✗ |
-| `POST /api/prioridades/mais` | puxar mais 5 |
+| `POST /api/prioridades/mais` | puxar mais 5 (a tela não usa: os 20 da meta ficam à mostra) |
 | `GET /api/lotes` | lotes das últimas 24 horas que o perfil pode desfazer (os próprios; manager: os do time; admin: todos) |
 | `POST /api/lotes` | ação em lote (marcados ou todos os do filtro, até 500) |
 | `GET /api/contas/[nome]` | ficha da empresa |
 | `POST /api/contas` | criar ou editar empresa |
+| `GET /api/rotina/diaria` | rotina diária do score (cron da Vercel, `Authorization: Bearer CRON_SECRET`); um dia de negócio roda uma vez |
+| `POST /api/rotina/rodar-agora` | a mesma rotina, na mão, com o mesmo segredo; `?forcar=1` roda mesmo com o dia já rodado (`rotina_forcada`) |
 | `POST /api/desfazer` | desfazer uma mudança ou um lote (token fora do formato = 400, sem chamar o banco); no lote, devolve quantas mudanças voltaram e quantas ficaram |
 
 Toda rota de escrita: valida a entrada com zod, tem limite por endereço de rede (60 por minuto, resposta 429 em frase simples), gera o `correlation_id` no servidor e o devolve em `x-correlation-id`, e responde erro sempre como `{ erro, codigo }`. Erro de campo vem com a frase do campo ("E-mail inválido…", "Preencha o nome.") e `detalhe.campo`; o valor digitado nunca volta na resposta.
@@ -134,11 +141,11 @@ Toda rota de escrita: valida a entrada com zod, tem limite por endereço de rede
 - **Erros do banco:** `GS400`–`GS429` viram a frase simples que o banco devolve; conflito de versão (`GS409`) diz quem alterou. Entrada que o banco recusa (dado inválido, pedido mal formado) vira frase simples (400 ou 422), sem mostrar a mensagem crua.
 - **Banco fora por 15 s:** só em falha de disponibilidade (rede, tempo esgotado, HTTP 5xx, erro de conexão do Postgres). Entrada inválida nunca aciona, para que ninguém consiga travar as escritas dos outros de propósito. Consulta que passa do tempo limite do banco falha só naquele pedido.
 - **Reserva:** banco fora ou não configurado = leitura de `data/base.json`, faixa de somente leitura e escrita recusada (503).
-- Variáveis: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `G4_ESCRITA_EM_MEMORIA` e `G4_SOMENTE_LEITURA` (ver `.env.example`).
+- Variáveis: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `DATABASE_URL_ROTINA`, `CRON_SECRET`, `G4_ESCRITA_EM_MEMORIA` e `G4_SOMENTE_LEITURA` (ver `.env.example` e `COMO-RODAR.md`).
 
 ## Ainda não construído
 
-- Importação de leads por CSV (desenhada em [DESENHO-CRM.md](DESENHO-CRM.md)).
+- Importação de leads por CSV na tela (a função existe no banco; o desenho ficou como registro em [../historico/DESENHO-CRM.md](../historico/DESENHO-CRM.md)).
 - Editar o nome do deal e a empresa do deal pelo modal.
 - Cadastrar e editar empresa com o banco ligado (falta a function no banco).
-- Playwright nos caminhos críticos (o Vitest já cobre a reserva, as prioridades, o escopo da ficha da empresa, a classificação dos erros do banco, o token do "Desfazer", o filtro "Contém", o contador e a ordem das prioridades, o cartão da lista do dia, o desfazer de lote e as frases de erro de campo).
+- Playwright nos caminhos críticos. O Vitest cobre a reserva, as prioridades, o escopo da ficha da empresa, os erros do banco, o "Desfazer", o filtro livre, o desfazer de lote, as frases de erro de campo, a tela de login, a explicação da nota e a rotina diária (inclusive contra um Postgres em memória com todas as migrations e o dataset inteiro).

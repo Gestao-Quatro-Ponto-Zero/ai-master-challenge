@@ -1,7 +1,7 @@
 # G4 Sight: especificação das telas Pipeline, Leads (com Contas) e Painel
 
 > Especificação para aprovação. Nada de código nem de banco. Marco 1 da decisão 25: especificar as telas e derivar delas o modelo de dados.
-> Segue as premissas de desenvolvimento em revisão final (ARQ, BD, BE e FE). Referências: [DESENHO-ACOES.md](DESENHO-ACOES.md) (usuários, escrita e auditoria), [DESENHO-CRM.md](DESENHO-CRM.md) (importação CSV) e [DESENHO-NEXT.md](DESENHO-NEXT.md) (estrutura e marca).
+> Segue as premissas de desenvolvimento em revisão final (ARQ, BD, BE e FE). Estrutura e marca do app: [DESENHO-NEXT.md](DESENHO-NEXT.md). Os desenhos iniciais de usuários, escrita e auditoria e da importação CSV ficaram como registro em [../historico/DESENHO-ACOES.md](../historico/DESENHO-ACOES.md) e [../historico/DESENHO-CRM.md](../historico/DESENHO-CRM.md); o que vale deles está nesta especificação (seções 6 e 8) e em `solution/db/`. Versões anteriores de trechos desta especificação: [../historico/espec-telas-versao-anterior.md](../historico/espec-telas-versao-anterior.md).
 > As perguntas para o Leandro estão marcadas **[P1]**, **[P2]**… e reunidas no fim.
 
 ## 0. Interpretação e números de partida
@@ -54,7 +54,7 @@ Legenda: **D** = vem do dataset · **C** = calculado · **N** = dado novo do CRM
 | Dias desde a abertura | C | `data_referencia − data_abertura` | "Não iniciado" quando não há abertura |
 | Ícone (super hot, em risco, esfriou) | C | estágio, dias desde a abertura e preço de tabela, com os cortes de `config_parametros` | Critérios e contagens em 2.4. **[P13]** |
 | Último contato | N | o registro mais recente de contato em `acao_registros` → `core_deals.ultimo_contato_em` | O dataset não tem contatos: sem a proposta da **[P5]**, nasce vazio para os 8.800 |
-| Lead score (0–100) | C | `score_deals.score` da execução ativa (gerado em Python) | Só para deals abertos. Sem nota (deal novo ou importado depois da rodada): "Sem nota ainda". As regras dependem da decisão do score (decisão 10, em aberto) |
+| Lead score (0–120) | C | `score_deals.score` da execução ativa, gravada pela rotina diária (`src/lib/score/`) | Só para deals abertos. Sem nota (deal criado depois da última rodada): "Sem nota ainda". A regra está em `solution/scoring/` |
 | Componentes e motivos da nota | C | `score_componentes`, `score_motivos` | No modal (2.5); o cartão mostra só a barra da nota. Os nomes finais vêm da decisão do score |
 | Ação sugerida | C | `score_deals.acao_sugerida` (focar, requalificar, desistir) | Selo do cartão |
 | Marcadores | C | `score_deals.marcadores` (esfriando, sem_conta, sem_data) | Saída do score, usada nos filtros e nos motivos do modal. Não é o ícone do cartão (2.4), que vem de critérios medidos nos dados |
@@ -84,12 +84,22 @@ Legenda: **D** = vem do dataset · **C** = calculado · **N** = dado novo do CRM
 
 ### 1.3 Relógio do CRM
 
-**[P6]** O dataset termina em 31/12/2017, mas as ações no CRM acontecem hoje. Proposta: enquanto o CRM estiver em modo demonstração, "hoje" é a data de referência (`config_parametros.data_referencia` = 31/12/2017).
-- Idade, dias sem contato e filtros de data contam a partir dela.
-- Contato, comentário e deal registrados agora ganham duas datas: a **data do negócio** (a data de referência, usada nas contas) e o momento real (usado na auditoria).
-- Sem isso, um contato registrado hoje apareceria "8 anos depois" de todos os outros dados.
-- **Atualizado (decisão 48, migration 0034): o relógio anda.** A data de negócio avança 1 dia por dia real, ancorada em 10/11/2026 (America/Sao_Paulo) = 31/12/2017: 17/11/2026 = 07/01/2018 (o 1º domingo), e assim por diante. As âncoras ficam em `config_parametros` (`data_ancora_real`, `data_ancora_negocio`); `system_data_negocio()` e o app (`src/lib/relogio.ts`) fazem a mesma conta. Dias no pipeline, faixas e linha do tempo andam juntos. As telas não mostram a data dos dados.
-- **Rotina diária do score:** cron da Vercel todo dia às 03:00 de Brasília (`/api/rotina/diaria`, protegida por `CRON_SECRET`). Numa transação com o papel de carga (`g4_rotina` → `system_carga`): no domingo de negócio, o job semanal (FIT da janela de 3 meses, redistribuição, padrões de conta); todo dia, o diário (repasse por mudança de faixa sem contato e HEAT e nota novos em execução nova). Lead novo já recebe o dono na criação, pelo banco (`core_rotear_lead`). Cada repasse roda num savepoint: se o banco recusar um, só ele é desfeito e conta como recusado. Um dia de negócio roda uma vez só (registro em `system_eventos`); erro desfaz tudo e registra a falha. Teste manual: `POST /api/rotina/rodar-agora` com o mesmo segredo; com `?forcar=1`, roda mesmo com o dia já rodado e registra `rotina_forcada`. O cálculo do score fica em `src/lib/score/`, ligado à rotina em `src/server/motor/instalado.ts`.
+O dataset termina em 31/12/2017, mas as ações no CRM acontecem hoje. Por isso o CRM tem uma **data de negócio**, que anda 1 dia por dia real (decisão 48, migration 0034).
+- Âncora: 10/11/2026 (America/Sao_Paulo) = 31/12/2017. Assim, 17/11/2026 = 07/01/2018 (o 1º domingo), e assim por diante.
+- As âncoras ficam em `config_parametros` (`data_ancora_real`, `data_ancora_negocio`, com `modo_demonstracao` ligado); `system_data_negocio()` no banco e `src/lib/relogio.ts` no app fazem a mesma conta.
+- Idade, dias sem contato, faixas, filtros de data e linha do tempo contam a partir da data de negócio.
+- Contato, comentário e deal registrados ganham duas datas: a data de negócio (usada nas contas) e o momento real (usado na auditoria).
+- As telas não mostram a data dos dados.
+
+**Rotina diária do score:**
+- Cron da Vercel todo dia às 03:00 de Brasília (`/api/rotina/diaria`, protegida por `CRON_SECRET`), numa transação com o papel de carga (`g4_rotina` → `system_carga`).
+- No domingo de negócio, o job semanal: FIT da janela de 3 meses, redistribuição entre os vendedores ativos e padrões de conta.
+- Todo dia, o diário: repasse por mudança de faixa sem contato, depois HEAT e nota novos numa execução nova.
+- Cada repasse roda num savepoint: se o banco recusar um, só ele é desfeito e conta como recusado.
+- Lead novo já recebe o dono na criação, pelo banco (`core_rotear_lead`).
+- Um dia de negócio roda uma vez só (registro em `system_eventos`); erro desfaz tudo e registra a falha.
+- Teste manual: `POST /api/rotina/rodar-agora` com o mesmo segredo; com `?forcar=1`, roda mesmo com o dia já rodado e registra `rotina_forcada`.
+- O cálculo fica em `src/lib/score/`, ligado à rotina em `src/server/motor/instalado.ts`.
 
 ### 1.4 O que cada perfil vê (vale para todas as telas)
 
@@ -155,7 +165,7 @@ Requisitos do Leandro para esta tela:
 | ① | **Nome do deal** | `core_deals.nome`, editável no modal. O dataset não tem nome de deal: a migração preenche "Empresa · Produto" ou, sem empresa, "Sem empresa · Produto". **[P11]** |
 | ② | **Contato principal** | O contato do deal em `core_contatos` (nome e cargo). O dataset não tem contatos: nasce vazio para os 8.800 e mostra o link "+ Adicionar contato". **[P12]** |
 | ③ | **Barra da nota** | Preenchida de 0 a 100, com o número ao lado. A cor vem da faixa: alta (≥ 70) em `--color-nota-alta` (marinho), média (40–69) em `--color-nota-media` (bronze) e baixa (< 40) em `--color-nota-baixa` (cinza). Trilho em `--color-dourado-claro`. Sem nota: barra vazia e "Sem nota ainda". Os componentes da nota ficam no modal |
-| ④ | **Data de abertura** | `engage_date` → `core_deals.data_abertura`, com a idade em dias até a data de referência. Prospecção sem data: "Não iniciado" |
+| ④ | **Data de abertura** | `engage_date` → `core_deals.data_abertura`, com a idade em dias até a data de negócio. Novo lead ou Atendimento sem data: "Não iniciado" |
 | ⑤ | **Valor e estágio** | Valor esperado (`score_deals.valor_esperado`, inteiro). O seletor de estágio só mostra as transições válidas (2.6) |
 | ⑥ | **Ícone na ponta** | Super hot, em risco de esfriar ou esfriou (2.4); no máximo um. Tem rótulo para leitor de tela e, ao passar o mouse, a frase do motivo |
 
@@ -168,14 +178,14 @@ O que os dados mostram (dados limpos e `analysis/findings.md`):
 - **Ciclo dos ganhos:** mediana 57 dias, p75 88, p90 **106**, máximo **138**. Nenhum deal fechado passou de 138 dias.
 - **O pipeline aberto está quase todo parado:** dos 1.589 em negociação, 1.291 (81%) estão abertos há mais de 138 dias.
 
-**Proposta [P13]:**
+**Ícones [P13]:**
 
 | Ícone | Critério | Deals abertos que caem nele hoje | Frase ao passar o mouse |
 |---|---|---|---|
 | 🔥 **Super hot** | Em negociação **entre 15 e 106 dias** (passou da janela em que os perdidos caem e está dentro do ciclo de 90% dos ganhos). Sem critério de ticket desde a 0030: o valor não entra na nota (decisões 28 e 29) | **150** (7% dos abertos); com o antigo corte de R$ 3.000 eram 66 | "Na fase em que mais deals viram ganho." |
 | ⚠ **Em risco de esfriar** | Em negociação **entre 107 e 138 dias**: já passou do tempo em que 90% dos ganhos fecharam e se aproxima do maior ciclo já visto | **141** (7% dos abertos) | "Aberto há 120 dias. 90% dos ganhos fecham em até 106 dias." |
 | ❄ **Esfriou** (ícone cinza, mais discreto) | Em negociação **há mais de 138 dias**: mais tempo que qualquer deal já fechado | **1.291** (62% dos abertos) | "Aberto há 210 dias, mais que qualquer deal já fechado (138). Requalifique ou encerre." |
-| sem ícone | Prospecção (sem data de abertura) e negociação com menos de 15 dias | 500 + 7 | — |
+| sem ícone | Novo lead e Atendimento (sem data de abertura) e negociação com menos de 15 dias | 500 + 7 | — |
 
 - **Por que três ícones e não dois:** se o "em risco" incluísse os parados há mais de 138 dias, ele apareceria em 69% dos cartões e deixaria de chamar atenção. Separar o "esfriou" mantém o alerta raro e útil. **[P13]** decide se fica assim ou se os dois viram um só.
 - **Depois que o CRM estiver em uso:** "sem contato registrado há 14 dias ou mais" também passa a contar como risco. O número 14 vem da janela dos perdidos, mas o dataset não tem contatos para medir esse critério; ele fica como parâmetro em `config_parametros`.
@@ -213,7 +223,7 @@ Clicar no cartão abre um modal sobre o Pipeline (`?deal=ID` no link, que abre d
 | Evento | Origem |
 |---|---|
 | Aberto (entrou em negociação) | dataset: `engage_date`; no CRM: a mudança de estágio em `system_auditoria` |
-| Mudança de estágio, encerramento (Ganho com valor, Perdido com motivo) e reabertura | dataset: `close_date` e `close_value`; no CRM: `system_auditoria` (campo `estagio`) |
+| Mudança de etapa, encerramento (Fechado com valor, Perdido com motivo) e reabertura | dataset: `close_date` e `close_value`; no CRM: `system_auditoria` (campo `estagio`) |
 | Criado no CRM ou importado | `core_deals.criado_em` / `importacao_id` |
 | Ações (Liguei, Requalifiquei, Desisti) | `acao_registros` (as desfeitas aparecem riscadas) |
 | Comentários | `acao_comentarios` (os apagados não aparecem) |
@@ -271,13 +281,13 @@ Dois jeitos, **a mesma função auditada** (`core_mudar_estagio`):
 
 | Estado | O que aparece |
 |---|---|
-| Carregando | as duas colunas com 4 cartões-esqueleto cada; o campo de filtro já pode ser usado. O modal abre com o esqueleto da linha do tempo |
+| Carregando | as cinco colunas com cartões-esqueleto; o campo de filtro já pode ser usado. O modal abre com o esqueleto da linha do tempo |
 | Vazio (sem deals abertos) | "Você não tem deals abertos. Cadastre um lead ou importe uma planilha em Leads." + botão "Ir para Leads" |
 | Vazio (filtro sem resultado) | "Nenhum deal com estes filtros." + as etiquetas e "Limpar filtros" |
 | Vazio (modal) | linha do tempo só com a abertura e o trecho "Sem registros"; comentários: "Nenhum comentário ainda. Escreva o primeiro." |
 | Erro | "Não foi possível carregar o pipeline. Tente de novo em alguns segundos." + "Tentar de novo"; o código para suporte fica em "Ver detalhes" |
 | Só leitura (banco fora, BE-05) | faixa: "Modo somente leitura: mudanças estão desligadas agora." Cartões não arrastam; seletor de estágio, comentários e ações somem. O modal mostra a nota e a abertura, sem linha do tempo do CRM |
-| Sem permissão | sem perfil escolhido: vai para "Quem é você?" e volta. Vendedor tentando reabrir: "Reabrir um deal encerrado é feito pelo manager ou pelo admin." |
+| Sem permissão | sem perfil escolhido: vai para a tela de login e volta. Vendedor tentando reabrir: "Reabrir um deal encerrado é feito pelo manager ou pelo admin." |
 
 ### 2.9 Repasse por falta de atendimento
 
@@ -306,7 +316,7 @@ Regras do Leandro (os números quem fecha é o score):
 
 ```
 ┌ topo ───────────────────────────────────────────────────────────────────────────────┐
-│ [ Filtrar: ex. "varejo grande ganhos em 2017"                     ]   [Importar CSV]  [Novo lead] │
+│ [ Filtrar: ex. "varejo grande fechados em 2017"                                    ]   [Novo lead] │
 │ Entendi assim: (Setor: varejo ×) (Porte: grande ×) (Estágio: Fechado ×) (Fechou em 2017 ×)      │
 │ 1.204 leads · R$ 2,1 mi fechados                                                     │
 ├──┬──────────────────────┬──────────────┬───────────────┬──────┬────────────┬────────┬────────┬──────┤
@@ -341,7 +351,7 @@ Cadastro, importação CSV, ações em lote, tags e comentários. Regras na seç
 | Estado | O que aparece |
 |---|---|
 | Carregando | a tabela com 8 linhas-esqueleto; o total aparece quando chega |
-| Vazio (base vazia) | "Ainda não há leads. Importe uma planilha ou cadastre o primeiro." + [Importar CSV] [Novo lead] |
+| Vazio (base vazia) | "Ainda não há leads. Cadastre o primeiro." + [Novo lead] |
 | Vazio (filtro sem resultado) | "Nenhum lead com estes filtros." + as etiquetas e "Limpar filtros" |
 | Erro | "Não foi possível carregar os leads. Tente de novo." + "Tentar de novo" e "Ver detalhes" |
 | Só leitura | faixa de somente leitura. O arquivo de reserva só tem os abertos, então a tela avisa: "Mostrando só os 2.089 deals abertos; a base completa volta quando o banco voltar." Cadastro, importação, lote, tags e comentários ficam escondidos |
@@ -463,24 +473,24 @@ Requisitos do Leandro para esta tela:
 ### 4.3 Cartões e origem de cada número
 
 **Janelas:**
-- "hoje" = data de referência (31/12/2017, relógio do CRM, [P6]);
-- "30 dias" = 02/12 a 31/12/2017;
-- "30 dias antes" = 02/11 a 01/12/2017.
+- "hoje" = a data de negócio (relógio do CRM, 1.3);
+- "30 dias" = os 30 dias até hoje;
+- "30 dias antes" = os 30 dias anteriores a esses.
 
-Números conferidos nos dados limpos (`data/clean/deals.csv`) para os três perfis de exemplo:
+Números de exemplo conferidos nos dados limpos (`data/clean/deals.csv`) com hoje = 31/12/2017, para três perfis:
 
 | Cartão | Tipo | Origem e cálculo | Admin (todos) | Manager (Dustin Brinkmann) | Vendedora (Anna Snelling) |
 |---|---|---|---|---|---|
-| **Leads novos**: hoje e 30 dias, com variação | C | deals com `data_abertura` (de `engage_date`) no dia ou na janela, em qualquer estágio de hoje. Os Prospecting não têm data e não entram. Deals criados no CRM entram pela `data_abertura` | 0 hoje · 117 em 30 d · ↓ 57% (275 antes) | 0 · 18 · ↓ 40% | 0 · 7 · ↓ 12% |
+| **Pipeline aberto** (valor) | C | soma de `score_deals.valor_esperado` dos abertos; sem nota, soma do preço de tabela (`core_produtos.preco`), com a linha "pelo preço de tabela" | R$ 4.966.215 | R$ 585.616 | R$ 173.259 |
 | **Em negociação** | C | `estagio = 'Engaging'`: quantidade e soma do valor | 1.589 · R$ 3,89 mi | 193 · R$ 0,28 mi | 57 · R$ 95 mil |
-| **Fechamentos**: hoje e 30 dias, quantidade e valor, com variação | D | `estagio = 'Won'` com `close_date` no dia ou na janela; valor = soma de `close_value` | 19 (R$ 41.764) hoje · 498 (R$ 1,10 mi) em 30 d · ↑ 23% | 6 · 91 · ↑ 36% | 2 · 26 · ↑ 18% |
-| **Conversão em 30 dias**, com variação em pontos | C | Won ÷ (Won + Lost) com `close_date` na janela | 78,7% · ↑ 25,0 p.p. (53,7% antes) | 86,7% · ↑ 33,9 p.p. | 86,7% · ↑ 33,0 p.p. |
-| **Receita ganha em 30 dias**, com variação | D | soma de `close_value` dos Won na janela (inteiro, BD-05) | R$ 1.101.152 · ↑ 17% | R$ 142.110 · ↑ 49% | R$ 36.454 · ↑ 74% |
-| **Pipeline aberto** (valor) | C | soma de `score_deals.valor_esperado` dos abertos; **até o score existir**, soma do preço de tabela (`core_produtos.preco`), com o rótulo "pelo preço de tabela" | R$ 4.966.215 | R$ 585.616 | R$ 173.259 |
+| **Leads hoje** | C | deals com `data_abertura` no dia, em qualquer estágio de hoje. Novo lead e Atendimento não têm data e não entram. Deals criados no CRM entram pela `data_abertura` | 0 | 0 | 0 |
+| **Fechamentos hoje** | D | `estagio = 'Won'` com `close_date` no dia; valor = soma de `close_value` | 19 (R$ 41.764) | 6 | 2 |
+| **Leads em 30 dias**, com variação | C | a mesma conta de "Leads hoje", na janela | 117 · ↓ 57% (275 antes) | 18 · ↓ 40% | 7 · ↓ 12% |
+| **Fechamentos em 30 dias**, com variação e a receita ganha | D | `estagio = 'Won'` com `close_date` na janela; a linha secundária e o segundo selo mostram a soma de `close_value` | 498 · ↑ 23% · R$ 1,10 mi ↑ 17% | 91 · ↑ 36% · R$ 142.110 ↑ 49% | 26 · ↑ 18% · R$ 36.454 ↑ 74% |
 | **Total de leads** | D | todos os deals do perfil, em qualquer estágio | 8.800 | 1.583 | 448 |
-| **Em risco de esfriar** (no lugar de "atendimentos no momento") | C | deals com o ícone ⚠ da 2.4 (em negociação há 107–138 dias); a linha secundária mostra os "esfriou" | 141 · 1.291 esfriaram | 3 · 190 | 1 · 56 |
+| **Conversão em 30 dias**, com variação em pontos | C | Won ÷ (Won + Lost) com `close_date` na janela | 78,7% · ↑ 25,0 p.p. (53,7% antes) | 86,7% · ↑ 33,9 p.p. | 86,7% · ↑ 33,0 p.p. |
 
-**"Atendimentos no momento" sai:** o dataset não tem atendimento nem contato em tempo real. Proposta: trocar por **Em risco de esfriar**, que é medível hoje e leva direto à ação (tocar abre o Pipeline filtrado em "em risco"). Depois que o CRM estiver em uso, dá para acrescentar "Contatos registrados hoje" (de `acao_registros`), que nasce em 0. **[P16]**
+**Em risco de esfriar:** não é cartão. Aparece como selo no topo das Prioridades do dia ("141 em risco · 1.291 já esfriaram"), e tocar abre o Pipeline filtrado em "em risco".
 
 **Aviso de calendário (ⓘ no cartão de conversão e no de fechamentos):** dezembro fecha um trimestre. No histórico, os ganhos se concentram no último mês de cada trimestre (padrão do gerador dos dados, `findings.md`), por isso a conversão salta de 53,7% para 78,7%. O ⓘ abre a frase: "Dezembro fecha o trimestre; no histórico, os ganhos se concentram no último mês. Compare com o mesmo mês de outro trimestre." Assim o manager não lê como melhora do time.
 
@@ -515,7 +525,7 @@ Números conferidos nos dados limpos (`data/clean/deals.csv`) para os três perf
 
 **Cartão:** a linha de explicação é o 1º motivo da nota (`score_motivos`, ordem 1). O ícone aparece só como alerta (em risco, esfriou); o atendimento atrasado tem marca própria.
 
-Ficam fora da lista do dia os deals que já tiveram ✓, ✗ ou contato registrado hoje.
+Quando a lista do dia é montada, não entram os deals que já tiveram ✓, ✗ ou contato registrado hoje.
 
 **Visual:** bloco escuro no padrão do deck (degradê navy, texto claro, contador e nota em dourado). Cada lead ocupa uma linha (nome · produto, nota em dourado, ✕ e ✓ em pílula) e uma linha pequena embaixo (valor, há quantos dias e o alerta). O motivo da nota não aparece aberto: clicar no lead abre o deal na parte "Por que a nota é N", com FIT, HEAT e BONUS, os pontos de cada componente e todos os motivos. ✓ e ✕ não abrem o deal. O topo (título, alerta de risco e contador) fica fixo e a lista rola embaixo; no computador aparecem pelo menos 2 itens inteiros.
 
@@ -530,7 +540,7 @@ Ficam fora da lista do dia os deals que já tiveram ✓, ✗ ou contato registra
 
 | Marca | Significa | Grava | Na linha do tempo do lead | Muda o deal? |
 |---|---|---|---|---|
-| ✓ **Feito** | "trabalhei este deal hoje" | `acao_registros` com `acao = 'prioridade_feita'`, `data_negocio` = hoje e nota opcional | "Anna marcou como feito na prioridade do dia" | Não muda estágio. Proposta: **não** conta como contato; para registrar contato, o item tem também "Liguei" |
+| ✓ **Feito** | "trabalhei este deal hoje" | `acao_registros` com `acao = 'prioridade_feita'`, `data_negocio` = hoje, tipo de atividade e comentário obrigatórios (decisão 37) | "Anna marcou como feito na prioridade do dia" | Conta como contato registrado: atualiza o último contato e leva o Novo lead para Atendimento |
 | ✗ **Pular** | "não vou trabalhar este deal hoje" | `acao_registros` com `acao = 'prioridade_pulada'` | "Anna pulou na prioridade do dia" | Não descarta nem muda nada. O deal pode voltar amanhã |
 
 - **Para o manager e o admin**, ✓ significa "acompanhei este deal com o vendedor hoje" e ✗, "não vou acompanhar hoje". A gravação e a linha do tempo são as mesmas, com o nome de quem marcou.
@@ -550,7 +560,7 @@ Ficam fora da lista do dia os deals que já tiveram ✓, ✗ ou contato registra
 | Variação sem base | quando a janela anterior é 0: "sem base para comparar" no lugar do selo (nunca "∞%") |
 | Erro | por bloco: se o funil falhar, os cartões continuam. "Não foi possível carregar este bloco. Tentar de novo." O código para suporte fica em "Ver detalhes" |
 | Só leitura (banco fora) | números e funil calculados do arquivo de reserva, que só tem os abertos. Aparecem Em negociação, Pipeline aberto e Em risco; os cartões que dependem de fechados mostram "Disponível quando o banco voltar". A lista de prioridades aparece sem ✓ e ✗ |
-| Sem permissão | sem perfil escolhido: vai para "Quem é você?" e volta |
+| Sem permissão | sem perfil escolhido: vai para a tela de login e volta |
 
 ### 4.7 Bloco do time (manager e admin)
 
@@ -624,10 +634,10 @@ Regras comuns a todas as escritas:
 
 | Função | Quem pode (tela) | Validação | Auditoria e registros | Desfazer |
 |---|---|---|---|---|
-| **Cadastrar lead** (Novo lead) | todos; o vendedor cadastra para si, manager e admin escolhem o vendedor | produto existente (obrigatório); empresa existente ou vazia; nome do deal (padrão "Empresa · Produto"); contato opcional; estágio Prospecção (padrão) ou Em negociação (pede a data de abertura); vendedor existente | `core_deals` insert; id gerado pelo banco | "Desfazer" por 10 s marca o deal como Perdido com motivo "cadastro desfeito"; depois disso, o caminho é encerrar |
-| **Importar CSV** | manager e admin | por linha, conforme [DESENHO-CRM.md](DESENHO-CRM.md): colunas do `sales_pipeline`, FKs existentes, datas e valores coerentes, id repetido no arquivo recusado | `core_deals` insert por linha + `system_importacoes`; reimportar não duplica (`on conflict do nothing`) | Não há desfazer em massa: os deals importados são encerrados como Perdido em lote, filtrando pela importação |
+| **Cadastrar lead** (Novo lead) | todos; o vendedor cadastra para si, manager e admin escolhem o vendedor | produto existente (obrigatório); empresa existente ou vazia; nome do deal (padrão "Empresa · Produto"); contato opcional; etapa Novo lead (padrão) ou Em negociação (pede a data de abertura); vendedor existente | `core_deals` insert; id gerado pelo banco | "Desfazer" por 10 s marca o deal como Perdido com motivo "cadastro desfeito"; depois disso, o caminho é encerrar |
+| **Importar CSV** (não construído na tela) | manager e admin | a função existe no banco (`core_importar_deals`, por linha: colunas do `sales_pipeline`, FKs existentes, datas e valores coerentes, id repetido recusado); desenho em [../historico/DESENHO-CRM.md](../historico/DESENHO-CRM.md) | `core_deals` insert por linha + `system_importacoes`; reimportar não duplica (`on conflict do nothing`) | Sem desfazer em massa: os importados seriam encerrados como Perdido em lote, filtrando pela importação |
 | **Mudar de estágio** (arrastar ou seletor) | todos; reabrir só manager e admin | transições da tabela 2.6 | `core_deals` update por `core_mudar_estagio` | 10 s |
-| **Encerrar** (Ganho / Perdido) | todos | Ganho pede valor inteiro > 0; Perdido pede confirmação e motivo (**[P14]**); só deal aberto (BE-02) | `core_deals` update (`estagio`, `close_date` = data do negócio, `close_value`) | 10 s; depois disso, **reabrir** só manager e admin |
+| **Encerrar** (Fechado / Perdido) | todos | Fechado pede valor inteiro > 0; Perdido pede confirmação e motivo (**[P14]**); só deal aberto (BE-02) | `core_deals` update (`estagio`, `close_date` = data do negócio, `close_value`) | 10 s; depois disso, **reabrir** só manager e admin |
 | **Preencher empresa** | todos | só entre as contas cadastradas (decisão (a) em aberto) | `core_deals` update | 10 s |
 | **Registrar contato e ações** (Liguei, Requalifiquei, Desisti) | todos | só deal aberto; nota opcional até 280 caracteres | `acao_registros` insert; o gatilho atualiza `ultimo_contato_em` | 10 s (update `desfeita_em`) |
 | **Comentar** | todos | texto de 1 a 1.000 caracteres; sem HTML | `acao_comentarios` insert | o autor edita (fica "editado"; o texto anterior fica na auditoria) |
@@ -647,9 +657,9 @@ Regras comuns a todas as escritas:
 **Ações disponíveis:**
 - Aplicar tag; remover tag.
 - Adicionar o mesmo comentário em todos.
-- Mover Prospecção → Em negociação (data de abertura = hoje no relógio do CRM).
+- Mover para Em negociação (data de abertura = hoje no relógio do CRM).
 - Encerrar como Perdido.
-- Ganho em lote não existe, porque cada deal tem o próprio valor.
+- Fechar em lote não existe, porque cada deal tem o próprio valor.
 
 **Confirmação:** antes de aplicar, a tela mostra o que vai acontecer, com a quantidade e 5 exemplos ("Aplicar a tag #urgente em 128 leads"). O botão repete a ação e o número.
 
@@ -666,7 +676,7 @@ Toda tela tem carregando, vazio, erro, só leitura e sem permissão, como nas se
 
 ## 8. O que o banco precisa (derivado destas três telas)
 
-Esta seção atualiza o modelo de [DESENHO-ACOES.md](DESENHO-ACOES.md). Segue BD-01 (prefixos, snake_case, plural), BD-02 (FK com índice e `on delete restrict`), BD-03 (RLS sem política pública) e BD-05 (dinheiro em inteiro de dólar).
+Esta seção atualiza o modelo do desenho inicial (registro em [../historico/DESENHO-ACOES.md](../historico/DESENHO-ACOES.md)); o banco aplicado está em `solution/db/`. Segue BD-01 (prefixos, snake_case, plural), BD-02 (FK com índice e `on delete restrict`), BD-03 (RLS sem política pública) e BD-05 (dinheiro em inteiro, os mesmos números do dataset, mostrados em R$).
 
 ### 8.1 Tabelas
 
@@ -689,10 +699,10 @@ Esta seção atualiza o modelo de [DESENHO-ACOES.md](DESENHO-ACOES.md). Segue BD
 | `acao_deal_tags` | **nova** | `id`, `opportunity_id` FK, `tag_id` FK, `usuario_id` FK, `criado_em`, `removida_em`, `removida_por` FK; índice único parcial (`opportunity_id`, `tag_id`) onde `removida_em is null` |
 | `system_auditoria` | já desenhada | mais `lote_id` FK `system_lotes` (nulo fora de lote) |
 | `system_eventos` | já desenhada | novos tipos: `lote_aplicado`, `lote_desfeito`, `filtro_nao_entendido` (só a contagem, para melhorar o interpretador) |
-| `system_importacoes` | desenhada em DESENHO-CRM | sem mudança |
+| `system_importacoes` | do desenho da importação CSV ([../historico/DESENHO-CRM.md](../historico/DESENHO-CRM.md)) | sem mudança |
 | `system_lotes` | **nova** | `id`, `usuario_id` FK, `tipo` (tag, remover_tag, comentario, avancar_estagio, encerrar_perdido), `parametros` jsonb, `etiquetas` jsonb (o filtro usado), `quantidade`, `aplicados`, `pulados`, `correlation_id`, `criado_em`, `desfeito_em`, `desfeito_por` FK |
 
-Total: 22 tabelas: as 15 de DESENHO-ACOES, `system_importacoes` (de DESENHO-CRM) e 6 novas (`core_contatos`, `config_tags`, `acao_comentarios`, `acao_deal_tags`, `acao_prioridades`, `system_lotes`).
+Total: 22 tabelas: as 15 do desenho inicial, `system_importacoes` (da importação CSV) e 6 novas (`core_contatos`, `config_tags`, `acao_comentarios`, `acao_deal_tags`, `acao_prioridades`, `system_lotes`).
 
 Acrescentado pela aba Contas e pelo repasse (consolidado em `solution/db/`):
 
@@ -759,7 +769,7 @@ Todas as de escrita recebem `p_usuario_id` e `p_correlation_id`, fazem `set_conf
 | `core_buscar_deals(p_etiquetas jsonb, p_escopo jsonb, p_ordem text, p_limite int, p_cursor text)` | leitura (`stable`) | Pipeline (por coluna) e Leads; devolve as linhas e o total |
 | `core_resumir_colunas(p_etiquetas, p_escopo)` | leitura | cabeçalho das colunas (quantidade e soma do valor esperado) |
 | `core_criar_deal` | escrita | Novo lead |
-| `core_importar_deals` | escrita | Importar CSV |
+| `core_importar_deals` | escrita | Importar CSV (a tela ainda não usa) |
 | `core_painel_numeros(p_escopo, p_data)` | leitura | os 8 cartões do Painel, com as variações (lê `core_painel_janelas`) |
 | `core_painel_funil(p_escopo)` | leitura | Situação do funil, em quantidade e valor |
 | `acao_prioridades_do_dia(p_usuario_id)` | leitura e escrita | devolve a lista do dia; na primeira chamada do dia, monta e grava em `acao_prioridades` (regra 4.5) |
@@ -768,7 +778,7 @@ Todas as de escrita recebem `p_usuario_id` e `p_correlation_id`, fazem `set_conf
 | `core_mudar_estagio(p_opportunity_id, p_versao, p_para, p_valor, p_motivo)` | escrita | arrastar e seletor; aplica a tabela 2.6 |
 | `core_atualizar_deal` | escrita | nome, empresa e contato principal |
 | `core_salvar_contato` | escrita | adicionar ou editar contato (insert ou update em `core_contatos`) |
-| `core_encerrar_deal` / `core_reabrir_deal` | escrita | chamadas por `core_mudar_estagio` (Ganho, Perdido, reabrir) |
+| `core_encerrar_deal` / `core_reabrir_deal` | escrita | chamadas por `core_mudar_estagio` (Fechado, Perdido, reabrir) |
 | `acao_registrar` / `acao_desfazer` | escrita | Liguei, Requalifiquei, Desisti |
 | `acao_comentar` / `acao_editar_comentario` / `acao_remover_comentario` / `acao_restaurar_comentario` | escrita | comentários; remover = remoção lógica; restaurar = "Desfazer" dos 10 s e recuperação pelo admin |
 | `config_criar_tag` / `config_arquivar_tag` | escrita | tags |
@@ -805,7 +815,7 @@ Todas as de escrita recebem `p_usuario_id` e `p_correlation_id`, fazem `set_conf
 | P12 | Contato: tabela nova de contatos da empresa, com um contato principal por deal, que nasce vazio ("+ Adicionar contato")? | Sim; o contato pode existir sem empresa enquanto o deal não tiver empresa |
 | P13 | Ícones: super hot (15–106 dias e ticket ≥ R$ 3.000: 66 deals), em risco (107–138 dias: 141) e esfriou (> 138 dias: 1.291, ícone cinza)? Ou um ícone de risco só, juntando os dois últimos (1.432 deals, 69% dos abertos)? | Três ícones, para o alerta de risco continuar raro |
 | P14 | Ao encerrar como Perdido (ou descartar), pedir o motivo? | Sim, lista curta obrigatória (preço, concorrente, sem orçamento, sem resposta, outro + texto) |
-| P15 | "Em reais": o dataset está em dólar, e converter exigiria uma cotação que não existe nos dados. Manter US$? | **Decidido pelo Leandro: reais, com os mesmos números, sem conversão.** O CRM mostra "R$" em todas as telas (formatador único `dinheiro` em `src/lib/calculos.ts`) |
+| P15 | Em que moeda mostrar os valores? (o dataset não traz cotação para converter) | **Decidido pelo Leandro: reais, com os mesmos números do dataset, sem conversão.** O CRM mostra "R$" em todas as telas (formatador único `dinheiro` em `src/lib/calculos.ts`) |
 | P16 | Trocar "atendimentos no momento" (não existe no dataset) por "Em risco de esfriar"? | Sim; "Contatos registrados hoje" entra depois, quando houver uso |
 | P17 | Prioridades do dia do manager e do admin: os deals do escopo em risco ou super hot, por valor? | Sim; para o vendedor, a lista vem da nota |
 | P18 | ✓ = "trabalhei hoje" e ✗ = "pulei hoje", sem mudar o deal? O ✓ conta como contato? Alerta depois de 3 dias pulado? | Sim; o ✓ não conta como contato (há "Liguei" no item); alerta depois de 3 dias |

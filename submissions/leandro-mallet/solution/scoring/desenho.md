@@ -1,6 +1,6 @@
 # Desenho do score
 
-Status: **regra decidida pelo Leandro (decisões 28 e 29), com o FIT absoluto (O-51) e as perguntas P0 a P6 decididas (seção 4)**. A especificação vigente está no topo de [`regra-lead-score.html`](regra-lead-score.html). A seção 1 é o diagnóstico dos dados que embasou a regra; os números dela são os de `analysis/findings.md`.
+Status: **regra decidida pelo Leandro (decisões 28 e 29), com o FIT absoluto (O-51) e as perguntas P0 a P6 decididas (seção 4)**. A especificação vigente está em [`regra-lead-score.html`](regra-lead-score.html); as versões anteriores, em [`../historico/score-versao-anterior.md`](../historico/score-versao-anterior.md). A seção 1 é o diagnóstico dos dados que embasou a regra; os números dela são os de `analysis/findings.md`.
 Data de referência ("hoje"): **2017-12-31**, último dia com registro no dataset.
 Números medidos sobre `data/raw/` com as regras de limpeza de `data/clean.py`. O script de validação vai reproduzir todos eles.
 
@@ -84,7 +84,7 @@ Teste de chance: a diferença entre o maior e o menor win rate dos grupos com 30
 
 ## 2. Regra decidida (decisões 28 e 29, FIT absoluto da O-51)
 
-A especificação vigente está no topo de [`regra-lead-score.html`](regra-lead-score.html); abaixo dela fica o histórico (versão anterior). Aqui vai só o resumo.
+A especificação vigente está em [`regra-lead-score.html`](regra-lead-score.html). Aqui vai só o resumo.
 
 **NOTA = 0,70 × FIT + 0,30 × HEAT + BONUS.** FIT e HEAT vão de 0 a 100. O BONUS vai de 0 a 20 e soma por fora, então a nota vai de 0 a 120. O valor fica fora da nota e aparece só como contexto no cartão. Decisão do Leandro: "nunca se sabe o valor antes de atender". A exceção, empresa que compra muito e está no período de comprar, virou o BONUS.
 
@@ -99,7 +99,6 @@ A especificação vigente está no topo de [`regra-lead-score.html`](regra-lead-
   - **lead sem empresa (68%):** usa só produto e série, sem penalidade.
 - O destaque (a característica de maior conversão ajustada do vendedor) fica só como informação no motivo: "Ponto forte do vendedor: setor varejo (71%).".
 - Distribuição hoje (execuções 15 e 17, mesmas notas): FIT de 47 a 77, mediana de 62. Só 38 leads ficam com FIT de 75 ou mais (30 ativos).
-- Histórico: até a execução 13, o FIT era relativo à média de cada vendedor (50 + 50 × desvio ÷ destaque). Ver validacao.md.
 
 ### HEAT (30%): tempo de atendimento
 - **HEAT = pontos da faixa de idade × fator de contato.**
@@ -128,7 +127,7 @@ A especificação vigente está no topo de [`regra-lead-score.html`](regra-lead-
 - Por empresa, recalculado todo domingo junto com o FIT. Deal sem empresa (68% dos abertos): BONUS 0, declarado e sem penalidade.
 - Divisão decidida (P3):
   - **(a) tamanho do histórico, 0/5/10:** terços da receita ganha. Cortes de hoje: US$ 90.110 e US$ 127.050.
-  - **(b) janela de compra por calendário, 0 ou 10:** a semana cai no período preferido da empresa. Período preferido = aquele em que a empresa compra mais que o calendário geral de todas, além do acaso (permutação, corrigida para o número de empresas). Recorte proposto: semestre (P4).
+  - **(b) janela de compra por calendário, 0 ou 10:** a semana cai no período preferido da empresa. Período preferido = aquele em que a empresa compra mais que o calendário geral de todas, além do acaso (permutação, corrigida para o número de empresas). Recorte: semestre, com o teste contra o calendário geral (P4).
 - Janela por calendário, medida por empresa contra o calendário geral (2.000 permutações; correção de Bonferroni para 85 empresas, p < 0,00059):
 
   | Recorte | Participação geral | Teste geral (qui-quadrado; p) | Empresas com preferência (p < 0,05 sem correção) | Depois da correção |
@@ -143,16 +142,6 @@ A especificação vigente está no topo de [`regra-lead-score.html`](regra-lead-
   - Medição anterior, por intervalo entre compras: o intervalo típico vai de 2 a 11 dias (mediana de 5), e a regularidade é igual à do acaso (CV de 0,92 contra 0,91).
   - A taxa de ganho por terço de receita é 62,8%, 61,6% e 64,5%. A parte (a) mede volume, não chance.
 - **Nestes dados, a janela de compra não se distingue do acaso.** Ela fica como regra pronta para dados reais, de preferência com 2 anos ou mais de histórico, para o período se repetir. Hoje só a parte (a) pontua: 438 deals abertos com bônus (208 com +5 e 230 com +10).
-- Se a janela usasse o período bruto, sem o teste, na semana de 01/01/2018 (+10 para a empresa cujo período preferido contém a semana):
-
-  | Recorte | Empresas na janela | Deals com +10 | Top 5 muda (contra só o histórico) | Top 5 ativos | Top 5 com 181 dias ou mais |
-  |---|---|---|---|---|---|
-  | Trimestre (T1) | 23 | 169 | 21 | 77,8% | 10 |
-  | Semestre (S1) | 43 | 341 | 34 | 71,9% | 19 |
-  | Mês no trimestre (1º) | 27 | 201 | 32 | 73,3% | 13 |
-
-  Sem o teste, o bônus premia empresas escolhidas pelo acaso e puxa deals parados para o topo.
-- Efeito no top 5 (135 deals) com a proposta: mudam 30 deals. Os deals com empresa passam de 22,2% para 38,5%, os ativos de 81,5% para 77,8%, e os de 181 dias ou mais de 9 para 6.
 - Frases no cartão: "Empresa entre as que mais compram: +10." · "Empresa na época de compra: +10." · "Sem empresa cadastrada: sem bônus."
 
 ### Recálculo de domingo: distribuição equilibrada (sem teto fixo)
@@ -167,23 +156,6 @@ Decisão do Leandro: "o recálculo sempre divide igual entre vendedores... calcu
 - A troca é gravada pela função do banco `core_repassar_deal`, com origem `redistribuicao` e motivo "Redistribuição de domingo.". Essa origem não passa pelas travas do repasse (migração 0033).
 - **Rodada forçada corrigida (O-45):** 35 elegíveis, limite 23, 257 trocas, execução 13. Foi calculada com o FIT relativo, antes da O-51.
 - **Com o FIT absoluto:** sobre a foto de entrada, o plano de domingo moveria 375 leads com os 35 vendedores. Esse plano não foi aplicado: as execuções 15 e 17 mantiveram os donos.
-
-**(versão anterior) Resultado com o FIT relativo e 30 vendedores, que embasou as decisões 47 e 49:**
-- 482 dos 500 mudariam de dono, e 29 vendedores receberiam;
-- ativos por vendedor passariam de 0–111 para 17–31;
-- o FIT médio dos 500 iria de 49,5 para 77,8, e o dos ativos de 50,3 para 68,1;
-- os leads com FIT do dono ≥ 75 entre os 500 passariam de 48 para 269;
-- redistribuir todos os abertos (cenário A) trocaria o dono de 2.026 dos 2.089 deals toda semana.
-
-**(versão anterior) P0, só equilíbrio × travas do repasse, nos 500 de então:**
-
-| | Só equilíbrio (decidido) | Com as travas do repasse |
-|---|---|---|
-| Mudam de dono | 482 | 233 |
-| Sem vendedor permitido (ficam com o dono atual) | 0 | 95 |
-| Ativos por vendedor | 17 a 31 | 0 a 59 |
-| FIT médio dos 500 | 49,5 → 77,8 | 49,5 → 70,0 |
-| Leads com FIT do dono ≥ 75 | 48 → 269 | 48 → 268 |
 
 ### Lead novo durante a semana
 - Quem roteia é só a função do banco `core_rotear_lead`: maior FIT do vendedor no cohort do lead em `score_fit_vendedores` (hoje `produto=<produto>`), menos a penalidade ativa, com pelo menos 10 casos. Empate: menos abertos. Ninguém com casos: quem tem menos abertos.
@@ -201,14 +173,12 @@ Decisão do Leandro: "o recálculo sempre divide igual entre vendedores... calcu
 - Travas: máximo de repasses por lead em branco, sem valor decidido (P5); ao atingir o máximo, o lead vai para a fila do manager; o manager pode travar o dono.
 - Registro e aviso: a linha do tempo registra de quem, para quem, quando, o motivo e os dois FITs; os dois vendedores recebem aviso.
 - Os limites (top 5, FIT ≥ 75, 3 pontos) ficam como estão (decisão 51). Com o FIT absoluto, só 38 leads têm FIT ≥ 75, então o repasse fica raro.
-- **(versão anterior, FIT relativo)** 873 leads atendiam às três condições (536 ativos), com mediana de 2 candidatos. Sem a condição (a), seriam 1.813. Exemplo: W1XRTUT2 (MG Special, Finhigh), de Versie Hillebrand (FIT 74,4) para Kami Bicknell (FIT 75,8), com nota 68,1 com Kami, acima do 5º da lista dela (60,2).
 - Deals do dataset: não têm histórico de contato. Repasse por mudança de faixa só para leads recebidos no CRM.
 
 ### Mini penalidade para quem perde lead por repasse
 - Valor em branco, sem decisão (P6). Quem aplica é o banco, no roteamento do lead novo.
 - Contador "leads perdidos por falta de atendimento" na visão do manager, da semana e acumulado.
 - Não mexe no FIT, no HEAT nem no BONUS dos deals do vendedor.
-- **(versão anterior)** Proposta: −2 pontos percentuais na conversão usada no roteamento por lead perdido, por 2 semanas, com no máximo −6. Exemplo: Hayden recebe com 71,8% contra 67,9% de James. Com 1 lead perdido, ainda recebe (69,8%). Com 2, o lead vai para James (67,8%).
 
 ### Prioridades do dia
 1. Topo, acima de tudo: lead novo (aberto há até 1 dia, sem contato registrado) com **FIT de 75 ou mais** (decisão do Leandro). Hoje 38 abertos têm FIT de 75 ou mais (30 ativos). O motivo é a velocidade de atendimento do lead novo de alto encaixe, que deve ser atendido em 0 ou 1 dia. Não há estatística para isso, porque o dataset não tem dados de contato.
@@ -220,7 +190,7 @@ Decisão do Leandro: "o recálculo sempre divide igual entre vendedores... calcu
 
 Hoje (execução 15), o top 5 dos 35 vendedores soma 175 deals, 97,7% ativos.
 
-**(versão anterior, FIT relativo)** Com o BONUS proposto, o top 5 dos 27 vendedores com deals abertos somava 135 deals. Desses, 77,8% estão ativos, 38,5% têm empresa, 35,6% estão em Prospecting e 6 têm 181 dias ou mais. Os 3 exemplos do HTML ficavam com nota 72,8 (+10 de BONUS), 85,0 e 67,1. Com o FIT absoluto, os exemplos dos testes são 4ZQTMS3Z (FIT 63,74, nota 66,62), 1HD5JJM3 (76,58 e 68,60) e F5I33E1I (68,13 e 47,69).
+Exemplos dos testes, com o FIT absoluto: 4ZQTMS3Z (FIT 63,74, nota 66,62), 1HD5JJM3 (76,58 e 68,60) e F5I33E1I (68,13 e 47,69).
 
 ### Motivos (`reasons`)
 São 2 ou 3 frases montadas a partir das contas, escritas na 3ª pessoa. Exemplos:

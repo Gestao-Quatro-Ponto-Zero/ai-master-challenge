@@ -1,6 +1,6 @@
 # Banco do CRM: migrations
 
-Migrations do Postgres (Supabase). Elas saem de `app/ESPEC-TELAS.md` (seção 8), `app/DESENHO-ACOES.md` e `app/DESENHO-CRM.md`, e seguem as premissas de arquitetura, banco de dados e back-end do projeto.
+Migrations do Postgres (Supabase). Elas saem de [`app/ESPEC-TELAS.md`](../app/ESPEC-TELAS.md) (seção 8) e dos desenhos iniciais de ações e da importação CSV, hoje como registro em [`historico/DESENHO-ACOES.md`](../historico/DESENHO-ACOES.md) e [`historico/DESENHO-CRM.md`](../historico/DESENHO-CRM.md). Seguem as premissas de arquitetura, banco de dados e back-end do projeto.
 
 ## Estado
 
