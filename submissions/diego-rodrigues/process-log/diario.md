@@ -207,3 +207,11 @@
   - mudei: P5 não estava citada em nenhum dos 5 docs na primeira passada (estava só implementada na Tarefa 11); acrescentei seção em operating-map.md. Os números do experimento (ICC 0,031, 109 vendedores, 1.100 deals) vêm da errata do guia oficial (01-guia-fde.md linha 545), não recalculados por mim — conferido que a ordem de grandeza bate com a fórmula padrão de poder para duas proporções (~1.156 vs 1.100)
 
 **Fim da sessão** 2026-11-11 15:52 — Tarefa 12: 5 documentos escritos e conferidos (wc -w e cobertura de premissas contrariadas)
+
+## 2026-11-11 16:00 · Correção: redação de design.md e experimento.md · modelo claude-haiku-5-5 · ferramenta Claude Code
+
+- **16:00** — pedi: corrigir a redação de design.md (cálculo do 0,77 e IC invertido) e de experimento.md (origem do 1.100)
+  - veio: design.md agora explica que 0,77 é 1/1,30 e os extremos invertem (1/1,52 = 0,66; 1/1,13 = 0,88). experimento.md agora diz que 1.100 vem da errata do guia, e que refizemos sem cluster: 1.160 com poder de 80%, 1.553 com 90%
+  - mudei: ERRO MEU na primeira versão desta correção: escrevi '~1.156' e que o ICC explicava a diferença, sem ter calculado. Refiz: 1.160, e o ICC com ~70 deals por vendedor aumentaria o tamanho (efeito de desenho ~3,1), não diminuiria. Removi a afirmação. A frase '~três semanas de pipeline do time' vem do plano e não foi verificada por nós: deixada, marcada como não verificada
+
+**Fim da sessão** 2026-11-11 16:00 — design e experimento com cálculo explicado; 'três semanas de pipeline' pendente de verificação

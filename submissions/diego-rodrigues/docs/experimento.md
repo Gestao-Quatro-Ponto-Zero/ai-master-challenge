@@ -12,7 +12,7 @@ Cada deal aberto, dentro de cada vendedor, é sorteado para receber a ordem do r
 
 - **ICC (correlação intraclasse) de 0,031** entre deals do mesmo vendedor: baixo, porque o desfecho de um deal não informa muito sobre o desfecho do deal vizinho do mesmo vendedor.
 - **Métrica primária: taxa de decisão em 28 dias** dos deals priorizados (decidiu = fechou, ganho ou perdido, no horizonte). Taxa-base medida: 22,7% (acerto do relógio no backtest).
-- **Tamanho:** 1.100 deals por braço detectam +5 pontos percentuais sobre a base de 22%, com o ICC acima. Dado o pipeline do time (2.089 deals abertos na referência, Tarefa 6), isso corresponde a cerca de três semanas de pipeline do time inteiro.
+- **Tamanho:** 1.100 deals por braço detectam +5 pontos percentuais sobre a base de 22%, com o ICC acima. Esse número vem da errata do guia de origem (`01-guia-fde.md`, linha 545). Refizemos a conta sem o ajuste de cluster: para +5 pontos sobre 22%, com alfa de 5% e poder de 80%, são 1.160 deals por braço; com poder de 90%, 1.553. O guia não declara o poder usado, então não podemos confirmar que 1.100 vem exatamente dessa premissa. Sem ajuste de cluster, esse cálculo ignora que deals do mesmo vendedor são correlacionados. O guia argumenta que sortear dentro do vendedor reduz esse efeito porque cada vendedor é seu próprio controle; essa afirmação ainda não foi verificada por nós. Dado o pipeline do time (2.089 deals abertos na referência, Tarefa 6), isso corresponde a cerca de três semanas de pipeline do time inteiro.
 
 ## Métrica secundária
 
