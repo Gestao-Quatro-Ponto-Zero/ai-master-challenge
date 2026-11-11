@@ -12,7 +12,7 @@ Um agente que você entrevista é um modelo, e entra neste inventário como qual
 
 | Agente | Papel | Construído a partir de | É fonte de fato? | Como a confiabilidade foi medida |
 |---|---|---|---|---|
-| <!-- exemplo: apague esta linha ao preencher --> agente de personas (4 arquétipos comerciais) | discovery ensaiado: processo, incentivo, reação, adoção | estudo de perfis + a mesma base de dados do projeto | **não** — nenhuma resposta dele vira número no entregável | perguntas de calibração com resposta já conhecida por script; acertos e invenções registrados em `onde-a-ia-errou.md` |
+| Discovery Personas Sintéticas Vendas G4 · Microsoft 365 Copilot (Premium), modelo GPT Sol 6.1 · versão exata: não exposta pela interface (configuração de 11/11/2026) | informante sintético de discovery, quatro arquétipos (Caio, Helena, André, Renata) | pesquisa de fontes abertas sobre a G4, Perplexity, 11/11/2026 (`fontes-cultura-g4.md`) + fatos conferidos nos CSVs (`agente-personas-config.md`) | **não** — nenhuma resposta dele vira número no entregável; nenhum número do produto vem dele | números do contexto conferidos contra `data/` em 11/11/2026; perguntas de calibração com resposta já conhecida por script, a fazer; acertos e invenções em `onde-a-ia-errou.md` |
 
 Regras ao usar informante sintético:
 
