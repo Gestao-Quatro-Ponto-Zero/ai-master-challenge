@@ -53,3 +53,11 @@
   - pego por: Comparação com o critério de calibração (resposta como ele mesmo, sem fontes inventadas) e com o gabarito por vendedor
   - teste: Checagem da voz da resposta, da ausência de anexo e do denominador (27 vendedores com aberto)
   - ficou: Registrado como invenção de fonte e falha de voz. Número dentro do intervalo, mas com denominador errado e medida diferente da mediana. Não entra como fato.
+
+## 2026-11-11 14:10 · Tarefa 1 — motor/carregar.py · modelo claude-sonnet-4-6 · ferramenta Claude Code
+
+- **14:10** — pedi: implementar carregar(pasta) -> Dados e recortar(dados, hoje) -> Dados seguindo o plano v2 da Tarefa 1
+  - veio: motor/carregar.py com Dados (pipeline+contas+produtos+times+qualidade), resolução de apelido por chave sem espaços, enriquecimento com gerente/regiao/setor, recortar sem vazamento temporal
+  - mudei: nada: a implementação seguiu a spec; adicionei pytest.ini com pythonpath=. para o pytest descobrir o pacote motor/
+
+**Fim da sessão** 2026-11-11 14:10 — 5/5 testes GREEN: carregar, qualidade, produto desconhecido, recortar sem futuro, recortar no fim do export
