@@ -1,0 +1,37 @@
+{
+  "modelo": "Regressão logística com peso por categoria",
+  "acuracia_teste": 0.8695652173913043,
+  "f1_macro_teste": 0.8711762937729427,
+  "curva_confianca": [
+    {
+      "limite": 0.0,
+      "cobertura": 1.0,
+      "acerto": 0.8695652173913043
+    },
+    {
+      "limite": 0.5,
+      "cobertura": 0.9156563545150501,
+      "acerto": 0.9026366853098962
+    },
+    {
+      "limite": 0.6,
+      "cobertura": 0.8467809364548495,
+      "acerto": 0.9264379165638114
+    },
+    {
+      "limite": 0.7,
+      "cobertura": 0.770066889632107,
+      "acerto": 0.9477470141150923
+    },
+    {
+      "limite": 0.8,
+      "cobertura": 0.6837374581939799,
+      "acerto": 0.964383980434118
+    },
+    {
+      "limite": 0.9,
+      "cobertura": 0.5741011705685619,
+      "acerto": 0.9807027125432368
+    }
+  ]
+}

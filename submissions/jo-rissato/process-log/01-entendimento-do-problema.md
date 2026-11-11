@@ -555,3 +555,63 @@ resposta, 49,0% dos respondidos fechados, 32,7% com nota, 49,3% de tempo imposs�
 ## Rodada 41 (2026-11-11 10:34 BRT): resposta 6 do bloco 2 salva, bloco 2 completo
 
 **Jó (literal):** "Sim, salva". Adotada a versão ajustada da rodada 40. Com isso, os 3 diagnósticos do brief e as 6 perguntas do bloco 2 estão respondidos pelo Jó, cada um com a versão original literal neste log e a tabela de evidências no arquivo do bloco 2.
+
+## Rodada 42 (2026-11-11 10:37 BRT): início da parte 2, auditoria do Dataset 2
+
+**Pedido do Jó (literal):** "Sim, começa" (resposta a "Começo a parte 2 pela auditoria do Dataset 2?").
+
+**O que foi feito:** `solution/analise/auditoria_dataset2.py` gera `docs/relatorio-auditoria-dataset2.md`. Achados:
+47.837 textos, 0 vazios, 0 duplicados (nem após normalizar), 0 conflitos de rótulo; texto já pré-processado (sem
+maiúsculas, dígitos nem e-mails); 8 categorias de 3,7% a 28,5% (7,7 vezes); 1.210 textos de Compra (49,1% da categoria)
+são o formulário "new purchase po", que pode inflar o acerto de Compra; palavras como "leave", "locked" e
+"administrator" mudam de sentido entre categorias.
+
+**Correção minha durante a auditoria:** a primeira versão dizia que "administrator aparece em formulário de compra"
+sem conferir. Conferido: 1.184 dos 1.980 textos de Compra com essas palavras começam com "new purchase po", e a
+palavra é a assinatura do formulário. A frase foi reescrita com o número.
+
+## Rodada 43 (2026-11-11 10:43 BRT): classificador do Dataset 2
+
+**Pedido do Jó (literal):** "Sim, segue" (resposta a "Sigo para o classificador com acerto medido por categoria?").
+
+**O que foi feito:** `solution/analise/classificador.py`. 20% de teste separado antes de tudo; 5 modelos comparados
+por validação cruzada só no treino, com o vetorizador dentro do pipeline (lição do vazamento da rodada 17). Escolhido
+pelo F1 macro: regressão logística com peso por categoria (86,5% na validação). No teste: acurácia 87,0% contra 28,5%
+da linha de base; F1 de 79,7% (Direitos de administrador) a 92,0% (Compra). Maior confusão relativa: 15% de Direitos
+de administrador previstos como Hardware. Compra: 99,6% no formulário automático, 79,4% sem ele. Curva de confiança:
+com limite 0,7 o modelo decide 77,0% dos tickets com 94,8% de acerto e passa 23,0% para uma pessoa.
+
+**Limite declarado:** a curva foi lida no teste; o limite de operação deve ser fixado com tickets novos. O modelo prova
+o método em TI interna, não o acerto nos 5 tipos do Dataset 1.
+
+## Rodada 44 (2026-11-11 11:32 BRT): diferença entre os limites 0,7 e 0,8
+
+**Pergunta do Jó (literal):** "qual é a difereca das duas opcoes?"
+
+**Resposta:** a cada 1.000 tickets, pelos percentuais do teste: limite 0,7, a IA classifica 770 e erra cerca de 40, 230 vão para uma pessoa; limite 0,8, a IA classifica 684 e erra cerca de 25, 316 vão para uma pessoa. Subir de 0,7 para 0,8 evita cerca de 15 erros e manda 86 tickets a mais para o time. O limite vale só para classificar e encaminhar; ação irreversível continua sempre com uma pessoa (resposta 5).
+
+## Rodada 45 (2026-11-11 11:33 BRT): decisão do limite de confiança
+
+**Decisão do Jó (literal):** "0,8". No teste, a IA classifica sozinha 68,4% dos tickets com 96,4% de acerto, e 31,6% vão para triagem humana. O valor será revisto com os dados dos primeiros 30 dias (resposta 6).
+
+## Rodada 46 (2026-11-11 11:33 BRT): rascunho do fluxo proposto
+
+Com o limite 0,8 decidido, montei `docs/fluxo-proposto.md`: 9 etapas (entrada, leitura, roteamento, prioridade, primeira resposta, ação sobre dinheiro ou contrato, acompanhamento, fechamento, medição), cada uma com o papel da IA, o da pessoa e o dado que a sustenta. Três parâmetros ficam a definir (prazo do alerta de crítico, intervalo do follow-up, amostra de revisão). Enviado ao Jó para validação; não adotado ainda.
+
+## Rodada 47 (2026-11-11 11:38 BRT): fluxo aprovado
+
+**Jó (literal):** "Aprovado". O fluxo de 9 etapas de `docs/fluxo-proposto.md` foi adotado como a proposta de automação. Seguem a definir: prazo do alerta de crítico, intervalo do follow-up e amostra de revisão.
+
+## Rodada 48 (2026-11-11 11:41 BRT): recepção conversacional antes do commit
+
+**Pedido do Jó (literal):** "antes de comitar o atedimento sempre recebe o cliente de forma humanizada e conversa de forma inteligennte até entender qual é a categoria que o cliente se encaixa"
+
+**Conferência contra o dado (Claude):** o Dataset 2 só tem um texto por ticket, então a conversa não pode ser medida
+diretamente. Teste substituto: classificar só as 10 primeiras palavras e depois o texto inteiro, no mesmo teste
+separado. Acerto 78,2% com 10 palavras contra 87,0% com o texto inteiro; dos 3.271 tickets abaixo de 0,8 com 10
+palavras, 35,6% passam de 0,8 com o texto inteiro. Mais informação aumenta o acerto, o que sustenta perguntar antes de
+rotear. Também medido: tickets mais longos não têm confiança maior (média de 0,868 até 10 palavras e 0,841 acima de 80),
+então o ganho vem de informação útil, não de tamanho.
+
+**Mudança no fluxo:** etapa 2 virou "Recepção e conversa" (a IA recebe de forma humanizada e pergunta até a confiança
+passar de 0,8); etapa 3 passa para uma pessoa só depois do número máximo de perguntas, novo parâmetro a definir.
