@@ -39,9 +39,9 @@ O dataset termina em 31/12/2017. Para a simulação, o "hoje" do sistema (a data
 
 ### Abordagem
 
-1. **Entender o pedido antes da tecnologia.** A Head de RevOps disse que o time não vai abrir mais uma ferramenta. Li isso como: **a prioridade tem que estar dentro do CRM que o vendedor já usa**. O produto virou o próprio CRM (Painel, Pipeline, Leads), com a nota em cada lead.
-2. **Dados primeiro.** Limpeza reproduzível e teste de sinal de 18 variáveis ([findings.md](solution/analysis/findings.md)). Nenhuma característica do lead, sozinha, separa ganhos de perdas, e por isso a nota passou a olhar o encaixe entre o lead e o vendedor que atende.
-3. **Premissas antes de código.** Regras de arquitetura, banco, backend e frontend fixadas antes de construir ([02-premissas.md](process-log/02-premissas.md)): prefixos de domínio no banco, chave estrangeira em toda relação, nada se apaga, auditoria de toda mudança e marca do G4.
+1. **Entender o pedido antes da tecnologia.** A Head de RevOps disse que o time não vai abrir mais uma ferramenta. Li isso como: **a prioridade tem que estar dentro do CRM que o vendedor já usa**. **O produto virou o próprio CRM** (Painel, Pipeline, Leads), numa versão enxuta para o desafio, com a nota em cada lead. A premissa considerada foi: **cada vendedor vai olhar no sistema para quem vai ligar**. Isso abriu a possibilidade de distribuir os leads de forma otimizada por vendedor, e não só de ordenar uma lista.
+2. **Premissas antes de código.** Regras de arquitetura, banco, backend e frontend fixadas antes de construir ([02-premissas.md](process-log/02-premissas.md)): prefixos de domínio no banco, chave estrangeira em toda relação, nada se apaga, auditoria de toda mudança e marca do G4.
+3. **Dados antes do score.** Limpeza reproduzível e teste de sinal de 18 variáveis ([findings.md](solution/analysis/findings.md)). Nenhuma característica do lead, sozinha, separa ganhos de perdas, e por isso a nota passou a olhar o encaixe entre o lead e o vendedor que atende.
 4. **Construção em paralelo, com papéis fixos.** Uma sessão de IA orquestrou, e quatro construíram: dados e banco, score, telas e QA. Toda tarefa virou uma ordem numerada, e toda entrega foi conferida por outra sessão antes do commit e testada no ar.
 
 ### A metodologia do Lead Score
