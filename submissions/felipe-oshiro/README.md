@@ -54,7 +54,7 @@ Detalhes completos: seção 5 de `solution/README.md`.
 
 | Ferramenta | Para que usou |
 |------------|--------------|
-| Claude Code (opencode + GLM) | EDA completa, treino dos modelos (TF-IDF e DistilBERT), roteador, dashboard, app Streamlit e organização desta submissão |
+| opencode (assinatura Go) — modelo GLM 5.3 Flash, effort high | EDA completa, treino dos modelos (TF-IDF e DistilBERT), roteador, dashboard, app Streamlit e organização desta submissão |
 
 ### Workflow
 
@@ -66,7 +66,7 @@ Documentado em `process-log/narrativa.md` — destaques: zero-shot LLM próximo 
 
 ### O que eu adicionei que a IA sozinha não faria
 
-A decisão de rotear **por confiança** (precisão ≥ 0,95) em vez de perseguir acurácia máxima; reconhecer que o CSAT é sorteio e não deixar nada dependendo dele; manter o humano em Administrative rights por custo de erro; e a honestidade em relatar o distribution shift em vez de vender os 80,7% de cobertura.
+A decisão de rotear **por confiança** (precisão ≥ 0,95) em vez de perseguir acurácia máxima; reconhecer que o CSAT é sorteio e não deixar nada dependendo dele; manter o humano em Administrative rights por custo de erro; e a honestidade em relatar o distribution shift em vez de vender os 80,7% de cobertura. Além disso, três inputs que a IA não teria sozinha: (1) a direção de **replicar a identidade visual da G4** no dashboard — varredura do site da G4 e engenharia reversa do design em tokens concretos; (2) aplicar as **boas práticas do livro "Storytelling com Dados"** à narrativa e aos textos do relatório de EDA; (3) o pedido de **gráficos dedicados** para visualização, incluindo a ideia do **gráfico de correlação de Pearson** entre timestamps — que provou, em vez de afirmar, que os relógios do sistema estavam quebrados.
 
 ---
 
