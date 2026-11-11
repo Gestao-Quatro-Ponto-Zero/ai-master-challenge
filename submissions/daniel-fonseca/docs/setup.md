@@ -4,7 +4,7 @@
 
 ## 1. Para quem só quer ver funcionando
 - App: https://triagem-case-ai-master-case-g4.vercel.app
-- Vídeo: _link (pendente)_
+- Vídeo (não listado): https://youtu.be/pLQ0Yh6tb64
 
 ## 2. Ambiente de desenvolvimento com agentes de IA
 

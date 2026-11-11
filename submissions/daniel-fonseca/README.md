@@ -6,7 +6,7 @@
 - **LinkedIn:** [danielcoelhof](https://www.linkedin.com/in/danielcoelhof/)
 - **Challenge escolhido:** 002 — Redesign de Suporte
 
-**Ver funcionando:** app em produção em https://triagem-case-ai-master-case-g4.vercel.app · vídeo: _link a incluir_
+**Ver funcionando:** app em produção em https://triagem-case-ai-master-case-g4.vercel.app · vídeo (não listado): https://youtu.be/pLQ0Yh6tb64
 
 ---
 
@@ -127,7 +127,7 @@ ticket → embedding → voto dos 50 casos parecidos (pgvector) → regras → c
 ## Evidências
 
 - [ ] Screenshots das conversas com IA
-- [ ] Screen recording do workflow
+- [x] Screen recording do workflow: [vídeo de apresentação](https://youtu.be/pLQ0Yh6tb64)
 - [ ] Chat exports
 - [x] Git history (commits com o trailer de co-autoria do Claude)
 - [x] Outro: narrativa por sessão ([`process-log/process-log.md`](process-log/process-log.md)), judgment log ([`process-log/judgment-log.md`](process-log/judgment-log.md)), 15 ADRs com a origem de cada decisão ([`docs/decisions/`](docs/decisions/)) e o app com a seção "Como foi feito"
