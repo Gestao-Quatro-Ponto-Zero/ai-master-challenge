@@ -1,0 +1,26 @@
+{
+  "results": {
+    "tfidf_word12_svm": {
+      "accuracy": 0.8643,
+      "fit_seconds": 2.5
+    },
+    "tfidf_word12_logreg": {
+      "accuracy": 0.8678,
+      "fit_seconds": 15.5
+    },
+    "tfidf_char35_svm": {
+      "accuracy": 0.8596,
+      "fit_seconds": 12.2
+    },
+    "tfidf_wordchar_svm": {
+      "accuracy": 0.8627,
+      "fit_seconds": 16.6
+    },
+    "voting_wordchar_logreg": {
+      "accuracy": 0.8672,
+      "fit_seconds": 44.5
+    }
+  },
+  "best": "tfidf_word12_logreg",
+  "best_accuracy": 0.8677884615384616
+}

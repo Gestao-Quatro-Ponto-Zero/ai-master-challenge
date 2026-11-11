@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Triagem inteligente de tickets — G4 Educação</title>
+<link rel="icon" type="image/png" href="data:image/png;base64,__FAVICON__">
+<style>
+@font-face {
+  font-family: 'PPMuseum';
+  src: url(data:font/ttf;base64,__FONT_ULTRABOLD__) format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'PPMuseum';
+  src: url(data:font/ttf;base64,__FONT_REGULAR__) format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+:root {
+  --navy: #001F35;
+  --navy-2: #184560;
+  --gold: #B9915B;
+  --gold-soft: #E8C9A0;
+  --surface: #F5F4F3;
+  --ink: #031A26;
+  --alert: #842E20;
+  --gray: #706F6F;
+  --gray-light: #D6D5D5;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, .kpi-v, .bar-v, .flow-box, .step-n {
+  font-family: 'PPMuseum', -apple-system, sans-serif;
+  font-weight: 700;
+}
+h2 { font-size: 2rem; line-height: 1.15; margin: 0 0 .3rem; color: var(--navy); }
+h3 { font-size: 1.05rem; margin: 0 0 .4rem; color: var(--navy); }
+.kicker {
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  color: var(--gray);
+  margin: 0 0 .5rem;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 1.25rem; }
+section { padding: 4.5rem 0; }
+section + section { border-top: 1px solid var(--gray-light); }
+
+/* nav */
+nav {
+  position: sticky; top: 0; z-index: 20;
+  background: rgba(0,31,53,.96);
+  backdrop-filter: blur(4px);
+}
+nav ul { max-width: 1080px; margin: 0 auto; padding: 0 1rem; list-style: none; display: flex; flex-wrap: wrap; }
+nav a {
+  display: block; color: #B9C7D0; text-decoration: none;
+  font-size: .74rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  padding: .8rem .9rem; border-bottom: 2px solid transparent;
+}
+nav a:hover { color: var(--gold-soft); }
+nav a.active { color: var(--gold-soft); border-bottom-color: var(--gold); }
+
+/* hero */
+.hero {
+  background: var(--navy);
+  color: var(--surface);
+  padding: 4rem 0 4.5rem;
+  text-align: center;
+}
+.hero .logo svg { height: 58px; width: auto; margin-bottom: 2rem; }
+.hero h1 { font-size: 2.6rem; line-height: 1.1; margin: 0 0 .8rem; color: #fff; }
+.hero h1 .gold { color: var(--gold); }
+.hero p.sub {
+  max-width: 620px; margin: 0 auto 2.5rem;
+  color: #A9BCC7; font-size: 1.05rem;
+}
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: .9rem;
+  max-width: 980px;
+  margin: 0 auto;
+  text-align: left;
+}
+.kpi {
+  background: rgba(245,244,243,.06);
+  border: 1px solid rgba(245,244,243,.18);
+  border-top: 3px solid var(--alert);
+  border-radius: 10px;
+  padding: 1.1rem 1.2rem 1rem;
+}
+.kpi.gold { border-top-color: var(--gold); }
+.kpi.v { border-top-color: #7FA3B8; }
+.kpi-v { font-size: 2.3rem; line-height: 1; color: #fff; }
+.kpi.gold .kpi-v { color: var(--gold-soft); }
+.kpi-l { margin-top: .45rem; font-size: .86rem; color: #A9BCC7; line-height: 1.4; }
+.hero .scroll-hint {
+  margin-top: 2.8rem; font-size: .72rem; letter-spacing: .2em;
+  text-transform: uppercase; color: #6C8494;
+}
+
+/* generic blocks */
+.thesis {
+  max-width: 760px;
+  border-left: 5px solid var(--gold);
+  background: #fff;
+  border-radius: 0 10px 10px 0;
+  padding: 1.1rem 1.4rem;
+  margin: 0 0 2.2rem;
+  font-size: 1.08rem;
+  color: var(--navy);
+}
+.grid { display: grid; gap: 1rem; }
+.g2 { grid-template-columns: 1fr 1fr; }
+.g3 { grid-template-columns: repeat(3, 1fr); }
+.g4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 860px) { .g2, .g3, .g4 { grid-template-columns: 1fr; } }
+.card {
+  background: #fff;
+  border: 1px solid var(--gray-light);
+  border-radius: 10px;
+  padding: 1.1rem 1.25rem;
+}
+.card p { margin: .3rem 0; font-size: .93rem; }
+.num-card {
+  background: #fff;
+  border: 1px solid var(--gray-light);
+  border-radius: 10px;
+  padding: .9rem 1.1rem;
+}
+.num-card .v { font-family: 'PPMuseum', sans-serif; font-weight: 700; font-size: 1.55rem; color: var(--navy); line-height: 1.1; }
+.num-card.alert .v { color: var(--alert); }
+.num-card .l { margin-top: .3rem; font-size: .84rem; color: var(--gray); line-height: 1.4; }
+.src { font-size: .78rem; color: var(--gray); margin-top: 1.8rem; }
+.src code { font-family: ui-monospace, Menlo, monospace; font-size: .95em; }
+
+/* figures — one message each */
+figure.feature {
+  background: #fff;
+  border: 1px solid var(--gray-light);
+  border-radius: 12px;
+  padding: 1.3rem 1.5rem 1.1rem;
+  margin: 0 0 1.4rem;
+}
+figure.feature h3 { margin-bottom: .6rem; }
+figure.feature img { display: block; width: 100%; max-width: 720px; margin: 0 auto; height: auto; }
+figure.feature figcaption { font-size: .82rem; color: var(--gray); margin-top: .7rem; max-width: 720px; margin-left: auto; margin-right: auto; }
+figure.feature.narrow img { max-width: 560px; }
+figure.feature.center { text-align: center; }
+
+/* method ladder */
+.ladder { max-width: 780px; margin: 0 auto; }
+.step { display: grid; grid-template-columns: 210px 1fr 74px; gap: .8rem; align-items: center; margin-bottom: .55rem; }
+@media (max-width: 640px) { .step { grid-template-columns: 150px 1fr 60px; font-size: .85rem; } }
+.step-n { font-size: .88rem; color: var(--ink); text-align: right; line-height: 1.25; }
+.bar-track { background: #ECEBE9; border-radius: 5px; height: 30px; position: relative; overflow: hidden; }
+.bar-fill { height: 100%; background: var(--navy-2); border-radius: 5px 0 0 5px; display: flex; align-items: center; }
+.step.win .bar-fill { background: var(--gold); }
+.bar-v { padding-left: .55rem; color: #fff; font-size: .85rem; white-space: nowrap; }
+.step.win .bar-v { color: var(--navy); }
+.pct { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--navy); font-size: .95rem; }
+.step-note { font-size: .82rem; color: var(--gray); margin: .3rem 0 0; }
+
+/* flowchart */
+.flow { max-width: 620px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
+.flow-box {
+  width: 100%; background: #fff; border: 1.5px solid var(--navy-2);
+  border-radius: 10px; padding: .8rem 1.1rem; text-align: center;
+  font-size: .98rem; color: var(--ink);
+}
+.flow-box b { color: var(--navy); }
+.flow-box.decision { border-style: dashed; border-color: var(--gold); background: #FDFBF8; }
+.flow-arrow { color: var(--navy-2); font-size: 1.25rem; line-height: 1; padding: .35rem 0; }
+.branches { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; width: 100%; margin-top: .2rem; }
+@media (max-width: 640px) { .branches { grid-template-columns: 1fr; } }
+.branch { border-radius: 10px; padding: .9rem 1.1rem; text-align: center; }
+.branch .tag {
+  display: inline-block; font-size: .66rem; font-weight: 700; letter-spacing: .12em;
+  padding: .18rem .6rem; border-radius: 4px; margin-bottom: .45rem; color: #fff;
+}
+.branch.auto { background: #EAF0EC; border: 1.5px solid #4C7A57; }
+.branch.auto .tag { background: #4C7A57; }
+.branch.human { background: #F7EDEA; border: 1.5px solid var(--alert); }
+.branch.human .tag { background: var(--alert); }
+.branch p { margin: 0; font-size: .92rem; }
+.branch .b-t { font-family: 'PPMuseum', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--navy); margin-bottom: .2rem; }
+
+/* honesty note */
+.honesty {
+  background: #FDFBF8;
+  border: 1px solid var(--gold);
+  border-left-width: 5px;
+  border-radius: 10px;
+  padding: 1.1rem 1.4rem;
+  margin-top: 1.6rem;
+}
+.honesty .h-tag {
+  font-size: .68rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: .35rem;
+}
+.honesty p { margin: .25rem 0; font-size: .95rem; }
+.honesty .big { font-size: 1.05rem; color: var(--navy); }
+.honesty .big b.alert { color: var(--alert); }
+
+/* tables */
+table { border-collapse: collapse; width: 100%; font-size: .84rem; background: #fff; }
+th, td { border-bottom: 1px solid var(--gray-light); padding: .42rem .55rem; text-align: left; }
+th { color: var(--navy); font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; border-bottom-width: 2px; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr.total td { font-weight: 700; color: var(--navy); border-top: 2px solid var(--navy); }
+td.low { color: var(--alert); font-weight: 700; }
+td.hi { color: var(--navy); font-weight: 700; }
+
+/* footer */
+footer { background: var(--navy); color: #A9BCC7; padding: 2.2rem 0 2.6rem; font-size: .8rem; }
+footer .logo svg { height: 30px; width: auto; opacity: .9; margin-bottom: 1rem; }
+footer p { margin: .3rem 0; max-width: 760px; }
+footer b { color: var(--gold-soft); font-weight: 600; }
+footer code { font-family: ui-monospace, Menlo, monospace; color: #CFD9DE; }
+</style>
+</head>
+<body>
+
+<nav aria-label="Seções">
+  <ul>
+    <li><a href="#hero">Início</a></li>
+    <li><a href="#diagnostico">Diagnóstico</a></li>
+    <li><a href="#classificador">Classificador</a></li>
+    <li><a href="#roteamento">Roteamento</a></li>
+    <li><a href="#limites">Não automatizado</a></li>
+    <li><a href="#decisoes">Decisões</a></li>
+  </ul>
+</nav>
+
+<!-- 1 · HERO -->
+<header class="hero" id="hero">
+  <div class="wrap">
+    <div class="logo">__LOGO_WHITE__</div>
+    <h1>Triagem inteligente de tickets <span class="gold">—</span> G4 Educação</h1>
+    <p class="sub">O que os dados dizem sobre o fluxo de atendimento, o que um classificador resolve — e o que deve continuar nas mãos de pessoas.</p>
+    <div class="kpis">
+      <div class="kpi"><div class="kpi-v">33%</div><div class="kpi-l">dos tickets nunca recebem 1ª resposta (2.819 de 8.469)</div></div>
+      <div class="kpi"><div class="kpi-v">67%</div><div class="kpi-l">do fluxo parado — esperando operação ou cliente</div></div>
+      <div class="kpi gold"><div class="kpi-v">R$ 15 mil</div><div class="kpi-l">custo único para limpar o backlog (~700 h, 0,4 FTE-ano)</div></div>
+      <div class="kpi v"><div class="kpi-v">87,8%</div><div class="kpi-l">acurácia do classificador de tópicos no holdout</div></div>
+    </div>
+    <div class="scroll-hint">role para ler o diagnóstico ↓</div>
+  </div>
+</header>
+
+<!-- 2 · DIAGNÓSTICO -->
+<section id="diagnostico">
+  <div class="wrap">
+    <p class="kicker">1 · O diagnóstico</p>
+    <h2>O gargalo é o começo, não a execução — e a nota de satisfação é sorteio</h2>
+    <div class="thesis">
+      <p style="margin:0"><b>Um terço dos clientes nunca recebe a primeira resposta e 67% do fluxo está parado</b> — não por canal, prioridade ou tipo de ticket, mas por processo. Nenhum fator explica o tempo de resolução porque os relógios do sistema estão quebrados; e as notas de satisfação se comportam como um dado de 5 faces, não como opinião de cliente.</p>
+    </div>
+
+    <figure class="feature">
+      <h3>67% do fluxo parado</h3>
+      <img src="data:image/png;base64,__IMG_FUNIL__" alt="Funil do fluxo: 33% nunca respondidos, 34% aguardando cliente, 33% resolvidos" loading="lazy">
+      <figcaption>2.819 tickets (33,3%) sem nenhuma primeira resposta · 2.880 (34,0%) aguardando o cliente · só 32,7% resolvidos — e, quando o fluxo anda, em horas. O gargalo é o começo do fluxo, não a execução.</figcaption>
+    </figure>
+
+    <figure class="feature">
+      <h3>A nota é um dado de 5 faces</h3>
+      <img src="data:image/png;base64,__IMG_CSAT__" alt="CSAT distribuído ~20% em cada nota de 1 a 5" loading="lazy">
+      <figcaption>Das 2.769 notas existentes (só tickets fechados, média 2,99), cada nota aparece com ~20% de frequência — padrão de sorteio, não de opinião. Tempo, canal e tipo não têm efeito; todos os atributos juntos explicam 2% da variância.</figcaption>
+    </figure>
+
+    <figure class="feature">
+      <h3>O desperdício é tempo de cliente</h3>
+      <img src="data:image/png;base64,__IMG_CENARIOS__" alt="Cenários de desperdício: horas de espera do cliente e custo de retrabalho por ciclo" loading="lazy">
+      <figcaption>O sistema não guarda a data de criação do ticket — a espera é cenário, com premissas declaradas (R$ 21/h carregado, CAGED/RAIS; 15 min por recontato). O desperdício principal é tempo de cliente parado, não folha.</figcaption>
+    </figure>
+
+    <div class="grid g4">
+      <div class="num-card alert"><div class="v">2.819</div><div class="l">tickets sem 1ª resposta — único grupo 100% nas mãos da operação</div></div>
+      <div class="num-card alert"><div class="v">49,3%</div><div class="l">dos "tempos" registrados são cronologicamente impossíveis — relógios quebrados</div></div>
+      <div class="num-card"><div class="v">~20%</div><div class="l">em cada nota de CSAT — não guie nenhum investimento por ela</div></div>
+      <div class="num-card"><div class="v">R$ 3,8 mil</div><div class="l">de retrabalho por ciclo no cenário base (24h de espera, 25% retornam)</div></div>
+    </div>
+
+    <p class="src">Fonte: <code>analysis/relatorio_fluxo_atendimento.md</code> — EDA de <code>customer_support_tickets.csv</code> (8.469 tickets, 17 colunas; testes Kruskal-Wallis, Spearman, Bonferroni).</p>
+  </div>
+</section>
+
+<!-- 3 · CLASSIFICADOR -->
+<section id="classificador">
+  <div class="wrap">
+    <p class="kicker">2 · A solução — classificador</p>
+    <h2>Do chute ao modelo: 28,5% → 87,8% de acerto em 8 tópicos</h2>
+    <p style="max-width:760px;color:var(--gray);margin:.4rem 0 2rem">Três métodos testados sobre 47.837 tickets (holdout 80/20, 8 classes de tópico). A escada de baselines define o piso; o fine-tuning define o teto prático.</p>
+
+    <div class="ladder">
+      <div class="step">
+        <div class="step-n">Classe majoritária<br><span style="font-weight:400;color:var(--gray)">baseline</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:__MAJORITY_PCT__"></div></div>
+        <div class="pct">__MAJORITY_PCT__</div>
+      </div>
+      <div class="step">
+        <div class="step-n">Zero-shot<br><span style="font-weight:400;color:var(--gray)">piso do transformer</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:32%"></div></div>
+        <div class="pct">~32%</div>
+      </div>
+      <div class="step">
+        <div class="step-n">TF-IDF (word 1–2)<br>+ LogReg</div>
+        <div class="bar-track"><div class="bar-fill" style="width:__TFIDF_ACC__"></div></div>
+        <div class="pct">__TFIDF_ACC__</div>
+      </div>
+      <div class="step win">
+        <div class="step-n">DistilBERT fine-tuned<br><span style="font-weight:400;color:var(--gold)">escolhido</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:__TRANS_ACC__"></div></div>
+        <div class="pct">__TRANS_ACC__</div>
+      </div>
+      <p class="step-note">Acurácia no holdout de __HOLDOUT_N__ tickets · DistilBERT: macro-F1 __TRANS_MACROF1__, 3 épocas, max_length 192 · TF-IDF+LogReg: __TFIDF_ACC2__ · zero-shot sem fine-tuning como piso de referência.</p>
+    </div>
+
+    <div class="grid g2" style="margin-top:2.2rem">
+      <figure class="feature" style="margin:0">
+        <h3>Onde o modelo erra</h3>
+        <img src="data:image/png;base64,__IMG_CONFUSION__" alt="Matriz de confusão 8x8 do DistilBERT no holdout" loading="lazy">
+        <figcaption>Matriz de confusão 8×8 no holdout: a diagonal concentra os acertos; a confusão maior é Administrative rights × HR Support / Miscellaneous.</figcaption>
+      </figure>
+      <div>
+        <div class="card">
+          <h3>As classes mais difíceis</h3>
+          <table>
+            <tr><th>Classe</th><th class="num">Precisão</th><th class="num">Revocação</th><th class="num">F1</th><th class="num">n</th></tr>
+            __WORST_ROWS__
+          </table>
+          <p style="margin-top:.7rem">A pior classe é <b>Administrative rights</b> (F1 0,78 — permissions, resets de conta): baixa revocação e consequência alta quando errado. Por isso a regra operacional:</p>
+        </div>
+        <div class="card" style="border-left:5px solid var(--alert);margin-top:1rem">
+          <h3 style="color:var(--alert)">Administrative rights → sempre humano</h3>
+          <p style="margin:0">Nenhum ticket desta classe segue para automação, mesmo quando o modelo acerta.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="src">Fontes: <code>solution/artifacts/step1_results.json</code> · <code>solution/artifacts/transformer/step2_results.json</code> · <code>solution/artifacts/transformer/classification_report.txt</code> · dataset <code>all_tickets_processed_improved_v3.csv</code> (47.837).</p>
+  </div>
+</section>
+
+<!-- 4 · ROTEAMENTO -->
+<section id="roteamento">
+  <div class="wrap">
+    <p class="kicker">3 · O roteamento</p>
+    <h2>Só vai para a fila automática o que acerta com ≥ 95% de precisão</h2>
+    <p style="max-width:760px;color:var(--gray);margin:.4rem 0 2rem">O roteador usa a probabilidade do classificador e um limiar escolhido na curva precisão × cobertura: abaixo dele, o ticket vai para triagem humana.</p>
+
+    <div class="flow">
+      <div class="flow-box"><b>Ticket entra</b> — texto cru do cliente</div>
+      <div class="flow-arrow">▼</div>
+      <div class="flow-box"><b>Classificador DistilBERT</b> — tópico previsto em 8 classes + confiança</div>
+      <div class="flow-arrow">▼</div>
+      <div class="flow-box decision"><b>Confiança ≥ __THRESHOLD__ E tópico ≠ Administrative rights?</b></div>
+      <div class="branches">
+        <div class="branch auto">
+          <span class="tag">SIM → AUTO</span>
+          <div class="b-t">Fila automática</div>
+          <p>Roteado direto para a equipe do tópico — 95,1% de precisão na fila AUTO (holdout).</p>
+        </div>
+        <div class="branch human">
+          <span class="tag">NÃO → HUMANO</span>
+          <div class="b-t">Triagem humana</div>
+          <p>Confiança baixa ou classe sensível: uma pessoa decide o destino do ticket.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid g2" style="margin-top:2.4rem">
+      <div>
+        <figure class="feature" style="margin:0 0 1rem">
+          <h3>O limiar na curva</h3>
+          <img src="data:image/png;base64,__IMG_PRECISION__" alt="Curva precisão x cobertura: limiar 0,86 entrega 95% de precisão e 80,7% de cobertura" loading="lazy">
+          <figcaption>Limiar __THRESHOLD__: __ROUTER_PRECISION__ de precisão na fila AUTO com __ROUTER_COVERAGE__ de cobertura no holdout.</figcaption>
+        </figure>
+      </div>
+      <div>
+        <div class="card" style="margin:0 0 1rem">
+          <h3>Impacto real no lote — texto cru de produção</h3>
+          <p>Aplicado ao lote de <b>__N_ROUTED__ tickets</b> (<code>routed_tickets.csv</code>, texto de produção sem pré-processamento):</p>
+          <table style="margin-top:.6rem">
+            <tr><th>Decisão</th><th class="num">Tickets</th><th class="num">%</th></tr>
+            <tr><td><b>AUTO</b> (confiança ok)</td><td class="num">__AUTO_N__</td><td class="num hi">__AUTO_PCT__</td></tr>
+            <tr><td>HUMANO — baixa confiança</td><td class="num">__LOWCONF_N__</td><td class="num">__LOWCONF_PCT__</td></tr>
+            <tr><td>HUMANO — classe sensível</td><td class="num">__SENS_N__</td><td class="num">__SENS_PCT__</td></tr>
+            <tr class="total"><td>HUMANO — total</td><td class="num">__HUMANO_N__</td><td class="num">__HUMANO_PCT__</td></tr>
+          </table>
+        </div>
+        <div class="card">
+          <h3>AUTO por tópico no lote</h3>
+          <table>
+            <tr><th>Tópico</th><th class="num">n</th><th class="num">% do lote</th><th class="num">% AUTO</th></tr>
+            __TOPIC_ROWS__
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="honesty">
+      <div class="h-tag">Nota de honestidade — distribution shift</div>
+      <p class="big">No holdout pré-processado, a cobertura AUTO é <b>__ROUTER_COVERAGE__</b>; no texto cru de produção caiu para <b class="alert">__AUTO_PCT__</b> — com mediana de confiança de <b>__CONF_MEDIAN__</b>, bem abaixo do limiar.</p>
+      <p>O modelo é menos confiável em texto ruidoso não pré-processado (distribution shift). Antes de escalar a automação: <b>reprocessar/padronizar o texto de entrada</b> (o texto de produção traz placeholders e ruído que o treino não viu) e <b>recalibrar o limiar na operação</b>, monitorando precisão da fila AUTO semana a semana.</p>
+    </div>
+
+    <p class="src">Fontes: <code>solution/artifacts/router_threshold.json</code> · <code>solution/artifacts/routed_tickets.csv</code> (números derivados nesta página) · <code>solution/scripts/route_tickets.py</code> · <code>solution/scripts/pick_threshold.py</code>.</p>
+  </div>
+</section>
+
+<!-- 5 · NÃO AUTOMATIZAMOS -->
+<section id="limites">
+  <div class="wrap">
+    <p class="kicker">4 · O que não automatizamos</p>
+    <h2>Quatro portas que ficam sempre com uma pessoa</h2>
+    <p style="max-width:760px;color:var(--gray);margin:.4rem 0 2rem">Automação só onde o erro é barato. Onde o erro é caro ou o dado não confere, a decisão é humana por desenho.</p>
+    <div class="grid g2">
+      <div class="card" style="border-left:5px solid var(--alert)">
+        <h3>1 · Administrative rights</h3>
+        <p>Sempre humano. É a classe com pior F1 (0,78) e lida com permissões e acessos de conta — o custo de um erro alto e o recall baixo não justificam automação.</p>
+      </div>
+      <div class="card" style="border-left:5px solid var(--alert)">
+        <h3>2 · Confiança abaixo do limiar</h3>
+        <p>Quando o modelo não tem certeza (&lt; __THRESHOLD__), o ticket vai para triagem humana. No lote de produção, essa foi a origem de __LOWCONF_PCT__ dos encaminhamentos.</p>
+      </div>
+      <div class="card" style="border-left:5px solid var(--navy-2)">
+        <h3>3 · Resposta final ao cliente</h3>
+        <p>A automação só roteia e prioriza. Nenhuma resposta ao cliente sai sem revisão humana — o roteador decide o destino, nunca a mensagem.</p>
+      </div>
+      <div class="card" style="border-left:5px solid var(--navy-2)">
+        <h3>4 · Nenhuma decisão guiada pelo CSAT atual</h3>
+        <p>A nota se comporta como sorteio (~20% em cada nota, R² = 2%). Nenhum investimento, fila ou prioridade é definido por ela até que a medição seja reconstruída.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · DECISÕES -->
+<section id="decisoes">
+  <div class="wrap">
+    <p class="kicker">5 · Decisões e próximos passos</p>
+    <h2>O que recuperar agora — e para onde o modelo evolui</h2>
+
+    <div class="grid g2" style="margin-top:1.6rem">
+      <div>
+        <h3 style="margin-bottom:.8rem">Desperdício recuperável (do relatório)</h3>
+        <div class="card" style="margin:0 0 .8rem">
+          <h3>1 · A fila silenciosa — 2.819 tickets</h3>
+          <p>Campanha única de resposta: ~700 h, ~R$ 15 mil, uma vez só. Depois, regra permanente: nenhum ticket sem primeira resposta.</p>
+        </div>
+        <div class="card" style="margin:0 0 .8rem">
+          <h3>2 · Os relógios quebrados</h3>
+          <p>Registrar as datas reais de abertura, resposta e resolução (<code>created_at</code>, <code>first_response_at</code>, <code>resolved_at</code>). Barato, semanas, vale para sempre.</p>
+        </div>
+        <div class="card" style="margin:0 0 .8rem">
+          <h3>3 · A fila do "aguardando o cliente" — 2.881</h3>
+          <p>Lembretes proativos destravam os casos parados com a bola na quadra do cliente.</p>
+        </div>
+        <div class="card" style="margin:0">
+          <h3>4 · As filas erradas</h3>
+          <p>Tickets encaminhados à equipe errada morrem sem resposta. A triagem automática ataca exatamente esta origem — é o que este classificador faz.</p>
+        </div>
+      </div>
+      <div>
+        <h3 style="margin-bottom:.8rem">Roadmap do modelo</h3>
+        <div class="card" style="margin:0 0 .8rem">
+          <h3>1 · Padronizar o texto de entrada</h3>
+          <p>Reprocessar o texto cru de produção (placeholders e ruído que o treino não viu). É o caminho mais curto para subir a cobertura AUTO de __AUTO_PCT__ em direção aos __ROUTER_COVERAGE__ do holdout.</p>
+        </div>
+        <div class="card" style="margin:0 0 .8rem">
+          <h3>2 · Recalibrar o limiar na operação</h3>
+          <p>Reescolher o ponto na curva precisão × cobertura com dados de produção e monitorar a precisão da fila AUTO semana a semana.</p>
+        </div>
+        <div class="card" style="margin:0 0 .8rem">
+          <h3>3 · DeBERTa / GPU quando disponível</h3>
+          <p>O DistilBERT foi o limite do hardware disponível (treino em 84 min). Com GPU, um modelo maior e mais dados rotulados de produção elevam o teto dos 87,8%.</p>
+        </div>
+        <div class="card" style="margin:0;border-left:5px solid var(--gold)">
+          <h3>4 · Nunca guiar pelo CSAT atual</h3>
+          <p>Reconstruir a medição: avaliar todos os tickets fechados e registrar os tempos reais junto. Só então a nota volta a ser sinal.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="logo">__LOGO_WHITE__</div>
+    <p><b>Dados:</b> all_tickets_processed_improved_v3.csv (47.837) + customer_support_tickets.csv (8.469) · Análise completa em <code>analysis/relatorio_fluxo_atendimento.md</code>.</p>
+    <p>Modelos, limiar e lote roteado em <code>solution/artifacts/</code> · scripts em <code>solution/scripts/</code>. Página autocontida: imagens e fontes em base64, sem dependências externas.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var links = Array.prototype.slice.call(document.querySelectorAll('nav a'));
+  var targets = links
+    .map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); })
+    .filter(Boolean);
+  function highlight() {
+    var y = window.scrollY + window.innerHeight * 0.28;
+    var current = targets[0];
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i].offsetTop <= y) current = targets[i];
+    }
+    links.forEach(function (a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current.id);
+    });
+  }
+  window.addEventListener('scroll', highlight, { passive: true });
+  highlight();
+})();
+</script>
+
+</body>
+</html>
