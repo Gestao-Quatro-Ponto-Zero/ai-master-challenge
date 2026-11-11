@@ -1,9 +1,10 @@
-# Submissão — Leandro Mallet — Challenge 003
+# Submissão — Leandro Maia Mallet — Challenge 003
 
 ## Sobre mim
 
-- **Nome:** Leandro Mallet
-- **LinkedIn:** [confirmar]
+- **Nome:** Leandro Maia Mallet
+- **LinkedIn:** https://www.linkedin.com/in/leandro-maia-mallet/
+- **Instagram:** [@leandromaia.fly](https://www.instagram.com/leandromaia.fly/)
 - **Challenge escolhido:** 003 — Lead Scorer
 
 ---

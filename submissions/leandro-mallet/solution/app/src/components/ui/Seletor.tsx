@@ -2,7 +2,7 @@
 // Seletor estilizado no lugar do <select> nativo, com a mesma altura do botão e do campo.
 // Teclado: Enter, Espaço ou seta abrem; setas, Home e End andam; letra pula para a opção; Enter escolhe; Esc fecha.
 // A lista abre por cima da página (posição fixa), para não ser cortada por diálogos com rolagem.
-import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
+import { Fragment, useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
 import { semAcento } from "@/lib/calculos";
 import type { TamanhoControle } from "./Botao";
 import { Icone } from "./Icones";
@@ -10,6 +10,8 @@ import { Icone } from "./Icones";
 export interface Opcao {
   valor: string;
   rotulo: string;
+  /** Título do grupo: aparece uma vez, antes da primeira opção do grupo (as opções do mesmo grupo vêm juntas). */
+  grupo?: string;
 }
 
 interface Props {
@@ -176,9 +178,15 @@ export function Seletor({ valor, opcoes, onMudar, rotulo, textoVazio, tamanho = 
         >
           {opcoes.map((o, i) => {
             const marcado = !acao && o.valor === valor;
+            const titulo = o.grupo && o.grupo !== opcoes[i - 1]?.grupo ? o.grupo : null;
             return (
+              <Fragment key={o.valor}>
+              {titulo ? (
+                <li role="presentation" className="px-3 pt-2 pb-1 text-xs font-semibold text-texto-2">
+                  {titulo}
+                </li>
+              ) : null}
               <li
-                key={o.valor}
                 id={`${id}-op-${i}`}
                 role="option"
                 aria-selected={marcado}
@@ -186,9 +194,13 @@ export function Seletor({ valor, opcoes, onMudar, rotulo, textoVazio, tamanho = 
                 onClick={() => escolher(i)}
                 className={`flex min-h-9 cursor-pointer items-center justify-between gap-3 rounded-controle px-3 py-2 text-sm ${i === ativo ? "bg-superficie-2" : ""} ${marcado ? "font-semibold" : ""}`}
               >
-                <span>{o.rotulo}</span>
+                <span>
+                  {o.rotulo}
+                  {o.grupo ? <span className="sr-only">, {o.grupo}</span> : null}
+                </span>
                 {marcado ? <Icone nome="check" className="h-4 w-4 text-marinho" /> : null}
               </li>
+              </Fragment>
             );
           })}
         </ul>

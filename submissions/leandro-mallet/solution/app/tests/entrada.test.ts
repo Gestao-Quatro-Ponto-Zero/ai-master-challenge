@@ -66,3 +66,34 @@ describe("raiz e retorno", () => {
     expect(fora.props.destino).toBe("/painel");
   });
 });
+
+describe("login (O-47): listas de perfil e usuário", () => {
+  const U = [
+    { id: 1, papel: "admin", nome: "Admin" },
+    { id: 10, papel: "manager", nome: "Rocco Neubert", manager: "Rocco Neubert", regiao: "East" },
+    { id: 11, papel: "manager", nome: "Dustin Brinkmann", manager: "Dustin Brinkmann", regiao: "Central" },
+    { id: 20, papel: "vendedor", nome: "Zane Levy", manager: "Rocco Neubert", vendedor: "Zane Levy" },
+    { id: 21, papel: "vendedor", nome: "Anna Snelling", manager: "Dustin Brinkmann", vendedor: "Anna Snelling" },
+    { id: 22, papel: "vendedor", nome: "Boris Faz", manager: "Rocco Neubert", vendedor: "Boris Faz" },
+  ] as Usuario[];
+
+  it("sem perfil, a lista de usuários fica vazia", async () => {
+    const { usuariosDoPerfil } = await import("@/components/EscolhaPerfil");
+    expect(usuariosDoPerfil(U, null)).toEqual([]);
+  });
+
+  it("vendedores agrupados por time (times e nomes em ordem alfabética)", async () => {
+    const { usuariosDoPerfil } = await import("@/components/EscolhaPerfil");
+    expect(usuariosDoPerfil(U, "vendedor")).toEqual([
+      { valor: "21", rotulo: "Anna Snelling", grupo: "Time de Dustin Brinkmann (Central)" },
+      { valor: "22", rotulo: "Boris Faz", grupo: "Time de Rocco Neubert (East)" },
+      { valor: "20", rotulo: "Zane Levy", grupo: "Time de Rocco Neubert (East)" },
+    ]);
+  });
+
+  it("managers com a região; admin mostra o usuário admin", async () => {
+    const { usuariosDoPerfil } = await import("@/components/EscolhaPerfil");
+    expect(usuariosDoPerfil(U, "manager").map((o) => o.rotulo)).toEqual(["Dustin Brinkmann · Central", "Rocco Neubert · East"]);
+    expect(usuariosDoPerfil(U, "admin")).toEqual([{ valor: "1", rotulo: "Admin" }]);
+  });
+});
