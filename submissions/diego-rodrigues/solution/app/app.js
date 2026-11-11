@@ -66,15 +66,21 @@ function gravarLocal(registro) {
   } catch (_) { /* navegador sem armazenamento: a ação vale só nesta sessão */ }
 }
 
+const SERVIDOR_LOCAL = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname);
+
 async function carregarAcoes() {
+  ESTADO.modoDemo = !SERVIDOR_LOCAL;
+  if (ESTADO.modoDemo) {
+    ESTADO.acoes = lerLocais();
+    return;
+  }
   try {
     const r = await fetch('acoes', { cache: 'no-store' });
     if (r.ok) {
       ESTADO.acoes = await r.json();
-      ESTADO.modoDemo = false;
       return;
     }
-  } catch (_) { /* cai no modo demo */ }
+  } catch (_) { /* servidor local ausente: cai no modo demo */ }
   ESTADO.modoDemo = true;
   ESTADO.acoes = lerLocais();
 }

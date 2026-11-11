@@ -231,3 +231,11 @@
   - mudei: criei app/vercel.json (cleanUrls) e app/.vercelignore (data/acoes.jsonl), como o plano pede. Ressalva: /acoes responde 404 no host estático, e o console do navegador mostra esse erro; é o fallback esperado para o modo demo, mas um avaliador vai vê-lo. Não suprimi
 
 **Fim da sessão** 2026-11-11 16:09 — deploy de produção pronto e conferido em navegador; erro 404 de /acoes é o fallback esperado
+
+## 2026-11-11 16:12 · Correção: 404 de /acoes na demo publicada · modelo claude-haiku-5-5 · ferramenta Claude Code
+
+- **16:12** — pedi: corrigir o 404 de /acoes na demo publicada, sem apenas esconder o erro
+  - veio: causa: a interface chamava /acoes mesmo no host estático, e o navegador registra qualquer 404 de rede no console. Correção: a interface só chama /acoes e /acao quando o host é localhost, 127.0.0.1 ou ::1 (servidor do run.py); qualquer outro host é modo demo e não faz chamada de rede para ações
+  - mudei: app.js: SERVIDOR_LOCAL e carregarAcoes. Testado nos dois modos: publicado (host não local) sem chamada a /acoes e sem erro; local (run.py) com GET /acoes. Redeploy de produção: zero erros de console e zero respostas 4xx/5xx no desktop e no celular
+
+**Fim da sessão** 2026-11-11 16:12 — 404 eliminado na origem; demo publicada sem erros de console; redeploy feito
