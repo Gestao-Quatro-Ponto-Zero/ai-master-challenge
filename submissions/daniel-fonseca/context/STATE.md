@@ -95,6 +95,7 @@ No máximo **dois turnos noturnos**: hoje (09/11) e amanhã (10/11), incluindo v
 - Testes de 10/11 deixaram as triagens #40–44 (não demo, invisíveis para outros navegadores) e uma solução aprendida a partir do ticket de demonstração #34.
 
 ## Sessão 04 — verificação pelos MCPs do projeto (10/11)
+- **Produção (10/11):** o push do `8fd69ae` gerou só preview. Com a liberação do Daniel, a IA publicou o `86255aa` em produção pelo `vercel-g4` (`dpl_FJUczqtwratcRkgci9BfYsZ4EhKr`). Smoke test: rotas novas 200, `/` e `/como-foi-feito` redirecionam para a primeira visão, `/?visao=roi` e `/console?aba=fila` redirecionam para as rotas novas, heartbeat sem segredo 401, Diagnóstico com 33,3%. **Pendente (Daniel):** branch de produção em Settings → Environments → Production, para os pushes irem direto à produção.
 - **Supabase (`supabase-g4`):** `list_migrations` registra `20261110000008 tickets`.
   - Advisors de segurança: só INFO "RLS sem policy" nas 12 tabelas, intencional, porque o acesso é só pelo backend.
   - Advisors de performance: 4 INFO novos de índice nunca usado (`validated_resolutions_hnsw_idx`, `triage_runs_status_idx`, `triage_runs_resolution_idx`, `heartbeat_ran_idx`). Eles vêm do volume baixo do demo, e nenhuma ação foi tomada.
