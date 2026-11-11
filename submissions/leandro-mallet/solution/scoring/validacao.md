@@ -1,6 +1,7 @@
 # Validação do lead score — carga de 31/12/2017
 
-Regra: `regra.py` (decisões 28 a 40; resumo em `desenho.md`, regra completa em `regra-lead-score.html`).
+Regra: `regra.py` (decisões 28 a 40, FIT absoluto da O-51 e perguntas P0 a P6 decididas; resumo em `desenho.md`, regra vigente no topo de `regra-lead-score.html`).
+As seções vão da mais nova para a mais antiga. As marcadas "(versão anterior)" registram o FIT relativo, que valeu até a execução 13.
 NOTA = 0,70 × FIT + 0,30 × HEAT + BONUS, de 0 a 120.
 
 ## Execução carregada no banco
@@ -10,24 +11,25 @@ NOTA = 0,70 × FIT + 0,30 × HEAT + BONUS, de 0 a 120.
 | Execução ativa | `score_execucoes.id = 17`, versão `lead-score-1.0`, referência 31/12/2017, FIT absoluto (O-51), donos atuais |
 | Arquivo de carga | `scoring/carga/score_2017-12-31.json` |
 | sha256 | `06c9ac888aa541ec0524ad36daa8b31d4437f8f9d373b8ece80b7eda295786e3` |
+| Execução 13 | rodada forçada corrigida da redistribuição (O-45): 35 elegíveis, limite 23, 257 trocas, FIT relativo |
 | Execução 9 | sha256 `de9f5962d01a271fc0ddaa4728bea830f242472c0841282b1dbe851d25d59858` (redistribuição com 30 vendedores). O id 10 foi gasto pelo ensaio |
 | Execução 7 | sha256 `f3aab6b5606d0cc2d1f8194e181eb79ca9e61c2f46f7031adf0af57e943e018f` (donos antes da redistribuição). Os ids 6 e 8 foram gastos pelos ensaios, que não deixaram linha |
 | Execução anterior | `id = 5`, sha256 `73ce4a8934a172fe352c0bf3156d5941ae778cccf888d97c303fe899fee8aa32` (mesmas notas, texto antigo dos motivos). O id 6 foi gasto pelo ensaio, que não deixou linha |
 | Como | Uma transação: `set role system_carga` → `system_iniciar_contexto_sistema` → só INSERT nas 6 tabelas `score_*` → `score_ativar_execucao` → conferências → COMMIT. Antes, um ensaio completo com ROLLBACK |
-| Dono do deal | o atual. Sem redistribuição, sem repasse e nenhuma mudança em `core_deals` |
+| Dono do deal | o atual no banco, que já inclui as redistribuições gravadas (execuções 9, 11 e 13). A carga do score só lê o dono: não muda `core_deals` |
 | Evento | `system_eventos` `carga_score` em cada carga (`{deals: 2089, execucao_id: 5}` e `{deals: 2089, execucao_id: 7}`) |
 
 | Tabela | Linhas |
 |---|---|
 | `score_deals` | 2.089 (= deals abertos: 500 em Prospecting e 1.589 em Engaging) |
-| `score_componentes` | 18.255 |
+| `score_componentes` | 20.032 |
 | `score_motivos` | 6.041 (1.863 deals com 3 motivos e 226 com 2) |
-| `score_fit_vendedores` | 210 (30 vendedores × 7 produtos, cohort `produto=<produto>`) |
+| `score_fit_vendedores` | 210 (30 vendedores com histórico × 7 produtos, cohort `produto=<produto>`, FIT absoluto) |
 | `score_padroes_conta` | 85 |
 
 Conferências antes do COMMIT, todas aprovadas:
 - deals com nota = deals abertos (2.089) e nenhum aberto sem nota;
-- nota entre 0 e 89 (dentro de 0–120);
+- nota entre 35 e 75 (dentro de 0–120);
 - 0 deals com dono diferente do atual;
 - execução ativa = a carregada.
 
@@ -44,7 +46,7 @@ Conferências antes do COMMIT, todas aprovadas:
 **Carga.**
 - Ensaio com ROLLBACK, depois inserção pelo papel de carga e `score_ativar_execucao`. O ensaio gastou o id 14.
 - Execução 15, sha256 `5aba6298…db35d`.
-- 2.089 deals, nota de 35 a 75, 0 donos diferentes, sem redistribuição.
+- 2.089 deals, nota de 35 a 75, 0 donos diferentes do banco (a carga não troca dono).
 - `core_deals`: 8.801 deals.
 - Componentes 17.790, motivos 6.041, fit_vendedores 210 (FIT de 44 a 77, média 60,2), padrões 85.
 
@@ -89,9 +91,18 @@ Top 5 dos 35 vendedores: 175 deals, 97,7% ativos.
 - Componentes: 17.790 → 20.032. sha256 `06c9ac88…5786e3`. Os ensaios gastaram os ids 14 e 16.
 - Testes: Python 13 OK; TS 184 passando (suíte inteira), paridade refeita; `tsc` ok.
 
-**Efeito na redistribuição.** Com o FIT novo, o plano de domingo deixa de ser estável: sobre a foto de entrada ele moveria 352 leads (375 com os 35 vendedores). Nesta carga não houve redistribuição.
+**Efeito na redistribuição.** Com o FIT novo, o plano de domingo deixa de ser estável: sobre a foto de entrada ele moveria 352 leads (375 com os 35 vendedores). Esse plano não foi aplicado; a próxima redistribuição de domingo já usa o FIT absoluto.
 
-## Decisão 49: os 35 vendedores na redistribuição (execução 11)
+## Rodada forçada corrigida da redistribuição (O-45): execução 13
+
+- Rodada pela rotina diária, com a regra da decisão 49 e o FIT relativo (antes da O-51).
+- 35 elegíveis, limite da semana 23, 257 trocas, execução 13.
+- Gravada por `core_repassar_deal` com origem `redistribuicao` e o motivo "Redistribuição de domingo.", sem UPDATE direto e sem DELETE.
+- `acao_reatribuicoes` com esse motivo, conferido no banco: 1.254 linhas = 475 (execução 9) + 261 (execução 11) + 261 (execução 12, rotina diária) + 257 (execução 13).
+
+## Decisão 49: os 35 vendedores na redistribuição (execução 11, versão anterior)
+
+Com o FIT absoluto, quem não tem histórico entra com a conversão do time (60,2%), não com FIT 50. O texto abaixo é o da execução 11.
 
 - **Regra:**
   - elegíveis = os 35 vendedores ativos do time;
@@ -124,9 +135,9 @@ Top 5 dos 35 vendedores: 175 deals, 97,7% ativos.
   - top 5: 175 deals (35 vendedores), 94,9% ativos;
   - FIT ≥ 75: 479.
 
-## Redistribuição de domingo (31/12/2017) e execução 9
+## Redistribuição de domingo (31/12/2017) e execução 9 (versão anterior)
 
-Regra decidida (cenário B, só equilíbrio): entram só os leads abertos sem contato registrado. O limite da semana é ativos ÷ vendedores elegíveis, arredondado para cima. Os pares lead × vendedor são ordenados por FIT, do maior para o menor.
+Regra decidida (cenário B, só equilíbrio, decisão 47): entram só os leads abertos sem contato registrado. O limite da semana é ativos ÷ vendedores elegíveis, arredondado para cima. Os pares lead × vendedor são ordenados por FIT, do maior para o menor.
 
 - **Scripts:**
   - `scoring/redistribuir.py` calcula o plano, só lendo o banco;
@@ -159,7 +170,7 @@ Regra decidida (cenário B, só equilíbrio): entram só os leads abertos sem co
   - top 5: 150 deals (30 vendedores), 94,7% ativos, 0 com 181 dias ou mais;
   - deals com FIT ≥ 75: 509.
 
-## Execução 7: só o texto dos motivos
+## Execução 7: só o texto dos motivos (versão anterior)
 
 A 7 troca o texto dos motivos. A regra e os números são os mesmos da 5.
 
@@ -185,7 +196,9 @@ A 7 troca o texto dos motivos. A regra e os números são os mesmos da 5.
 | Você não tem um destaque com casos suficientes nos últimos 3 meses: o encaixe fica neutro (50). | O vendedor não tem um destaque com casos suficientes nos últimos 3 meses: o encaixe fica neutro (50). |
 | Fora do seu forte: série GTX (35 de 70 ganhos nos últimos 3 meses, abaixo da sua média). | Fora do forte do vendedor: série GTX (35 de 70 ganhos nos últimos 3 meses, abaixo da média dele). |
 
-## Conferência contra o desenho (dataset limpo, `python -m unittest scoring/test_regra.py`)
+## Conferência contra o desenho (versão anterior, FIT relativo; dataset limpo, `python -m unittest scoring/test_regra.py`)
+
+Os exemplos do FIT absoluto estão na seção da O-51.
 
 13 testes, todos passando.
 
@@ -210,7 +223,9 @@ O cálculo da carga lê o banco. O banco tem 3 deals alterados nos testes da QA:
 
 Os totais por faixa e o top 5 ficam iguais aos do dataset.
 
-## Distribuições da carga (valores gravados, inteiros)
+## Distribuições da carga (versão anterior: execução 5, FIT relativo; valores gravados, inteiros)
+
+A distribuição do FIT absoluto está na seção da O-51.
 
 | Nota | Deals |
 |---|---|
@@ -243,7 +258,7 @@ O 50 inclui o arredondamento de 49,5 a 50,4.
 
 Na tela, pela view `core_deals_visao`: faixa de nota alta 98, média 1.063, baixa 928.
 
-## Top 5 por nota (execução 7, igual à 5)
+## Top 5 por nota (versão anterior: execução 7, igual à 5)
 
 | Vendedor | Deal | Nota | FIT | HEAT | BONUS | Produto · empresa |
 |---|---|---|---|---|---|---|
@@ -258,18 +273,18 @@ Na tela, pela view `core_deals_visao`: faixa de nota alta 98, média 1.063, baix
 | | NWPSEF2I | 85 | 100 | 50 | 0 | GTX Plus Basic · sem empresa |
 | | H046CU4Z | 81 | 94 | 50 | 0 | GTX Basic · sem empresa |
 
-## Valores propostos usados (sem decisão final)
+## Valores usados
 
-- **BONUS:** só a parte do histórico (terços da receita ganha: até US$ 90.110 vale 0, até US$ 127.050 vale 5, acima disso 10). A janela de compra está no código e vale 0.
+- **BONUS (P3, P4):** a parte do histórico pontua (terços da receita ganha: até US$ 90.110 vale 0, até US$ 127.050 vale 5, acima disso 10). A janela de compra está no código e vale 0.
 - **Ação:** desistir acima de 276 dias, o dobro do deal mais longo que já fechou.
-- **Vendedor sem destaque:** destaque a menos de 3 pontos da média dele.
+- **Limites (decisão 51):** ficam como estão: FIT ≥ 75 para furar a fila, repasse com FIT ≥ 75, até 3 pontos abaixo do dono e top 5.
+- **Máximo de repasses e penalidade (P5, P6):** em branco, sem valor decidido.
+- **(versão anterior) Vendedor sem destaque:** destaque a menos de 3 pontos da média dele. Com o FIT absoluto, o destaque só aparece no motivo.
 - **Padrão da conta na tela:** "Sem padrão". O intervalo típico, o mês habitual e a próxima compra ficam em branco, porque nenhuma empresa tem época de compra própria; a explicação diz isso.
 
-## Fora desta carga
+## Fora da carga do score
 
-- Redistribuição de domingo (P0).
-- Repasse e penalidade.
-- Mudança no contrato do app.
+- A carga do score não troca dono. A redistribuição de domingo e o repasse rodam à parte, pela função `core_repassar_deal` (seções da O-45 e da execução 9).
 - Backtest contra "por valor", "mais novo primeiro" e acaso (seção 3 do desenho).
 
 ## Reproduzir

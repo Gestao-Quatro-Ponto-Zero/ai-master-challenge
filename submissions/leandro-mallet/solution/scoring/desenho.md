@@ -1,6 +1,6 @@
 # Desenho do score
 
-Status: **regra decidida pelo Leandro (decisões 28 e 29)**, com as perguntas da seção 4 em aberto. A seção 1 é o diagnóstico dos dados que embasou a regra.
+Status: **regra decidida pelo Leandro (decisões 28 e 29), com o FIT absoluto (O-51) e as perguntas P0 a P6 decididas (seção 4)**. A especificação vigente está no topo de [`regra-lead-score.html`](regra-lead-score.html). A seção 1 é o diagnóstico dos dados que embasou a regra; os números dela são os de `analysis/findings.md`.
 Data de referência ("hoje"): **2017-12-31**, último dia com registro no dataset.
 Números medidos sobre `data/raw/` com as regras de limpeza de `data/clean.py`. O script de validação vai reproduzir todos eles.
 
@@ -14,14 +14,14 @@ Win rate geral: **63,2%** (4.238 Won / 6.711 fechados).
 
 | Variável | Menor win rate | Maior win rate | Diferença |
 |---|---|---|---|
-| Produto (7) | 60,0% (GTK 500, n=25) | 64,8% (MG Special) | 4,8 pts |
-| Setor (10) | 61,2% (finance) | 64,8% (marketing) | 3,6 pts |
+| Produto (7) | 60,3% (MG Advanced) | 64,8% (MG Special) | 4,5 pts (GTK 500 tem só 25 fechados: 60%) |
+| Setor (10) | 61,2% | 64,9% | 3,7 pts |
 | Porte por receita (tercis) | 63,0% | 63,2% | 0,2 pt |
 | Porte por funcionários (tercis) | 62,4% | 63,6% | 1,2 pt |
 | Escritório regional (3) | 62,6% | 63,9% | 1,3 pt |
 | Manager (6) | 62,1% | 64,4% | 2,3 pts |
 
-- **Vendedor:** win rate vai de 55% a 70%, mas o desvio entre vendedores (3,7 pts) é quase igual ao que o acaso sozinho produziria (3,2 pts com ~220 deals por vendedor).
+- **Vendedor:** win rate vai de 55,0% a 70,4%, mas o desvio entre vendedores (3,7 pts) é o que o acaso sozinho produziria se todos tivessem a mesma taxa (3,4 pts; p95 de 4,3 pts). Só 2 dos 30 têm intervalo fora da média, e o acaso daria ~1,5.
 - **Conta:** desvio de 4,8 pts contra 5,4 pts esperados só pelo acaso, ou seja, nenhum sinal.
 - **Teste no tempo** (usar só o histórico anterior a cada deal, como seria na vida real): o win rate passado da conta, do vendedor e do vendedor × produto **não prevê** o resultado seguinte. Os quintis ficam todos entre 60% e 65%, sem ordem.
 - **Idade do deal:** fotografando o pipeline no fim de cada mês (abr–nov/2017), deals novos e antigos ganham na mesma proporção (61%–71%, sem padrão estável).
@@ -64,14 +64,14 @@ Teste de chance: a diferença entre o maior e o menor win rate dos grupos com 30
 |---|---|---|---|---|
 | products | `product` / `sales_price` | Win 60,3%–64,8% (4,5 pts); preço de US$ 55 a US$ 26.768; valor fechado = 97%–100% da tabela (mediana por produto) | Chance geral: ruído. **Entra no FIT** (por vendedor, 3 meses). Valor: contexto (P5) | Detalhe do FIT + valor no cartão |
 | products | `series` | 62,7%–63,4% (0,7 pt) | Chance geral: ruído. **Entra no FIT** | Detalhe do FIT |
-| accounts | `sector` | 61,2%–64,8% (3,7 pts) | Chance geral: ruído. **Entra no FIT** | Detalhe do FIT |
+| accounts | `sector` | 61,2%–64,9% (3,7 pts) | Chance geral: ruído. **Entra no FIT** | Detalhe do FIT |
 | accounts | `revenue` (tercis) | 63,0%–63,2% (0,2 pt) | Chance geral: ruído. **Entra no FIT** | Detalhe do FIT |
 | accounts | `employees` (tercis) | 62,4%–63,6% (1,2 pt) | Chance geral: ruído. **Entra no FIT** | Detalhe do FIT |
 | accounts | `year_established` (tercis de idade) | 62,6%–64,2% (1,6 pt) | Ruído | Detalhe do deal |
 | accounts | `subsidiary_of` (tem empresa-mãe) | 63,1% × 63,6% (0,6 pt) | Ruído | Detalhe do deal (grupo da conta) |
 | accounts | `office_location` | 56%–75% (19 pts), mas cada país fora dos EUA é **uma conta só**; EUA 63,3% (n=5.555) × resto 62,6% (n=1.156) | Ruído (é o mesmo da conta). **Entra no FIT** como sede EUA × fora | Detalhe do FIT |
 | accounts | histórico da conta | 53%–75% (22 pts), desvio 4,8 pts contra 5,4 pts do acaso; win rate passado não prevê o seguinte (quintis 60%–65%, sem ordem) | Ruído. **Entra no FIT** como empresa (só com 10+ fechados do vendedor na janela) | Detalhe do FIT |
-| sales_teams | `sales_agent` | 55%–70% (15 pts), desvio 3,7 pts contra 3,2 pts do acaso; win rate passado não prevê o seguinte | Ruído | Visão do manager: win rate por vendedor com a faixa do acaso desenhada |
+| sales_teams | `sales_agent` | 55,0%–70,4% (15 pts), desvio 3,7 pts contra 3,4 pts do acaso; win rate passado não prevê o seguinte | Ruído | Visão do manager: win rate por vendedor com a faixa do acaso desenhada |
 | sales_teams | `manager` | 62,1%–64,4% (2,3 pts) | Ruído | Filtro + visão do manager |
 | sales_teams | `regional_office` | 62,6%–63,9% (1,4 pt) | Ruído | Filtro + visão do manager |
 | pipeline | `account` vazia | 0 de 6.711 fechados sem conta; 68% dos abertos sem | Sem penalidade: o FIT usa só produto e série | Flag `sem_conta` + tarefa |
@@ -82,9 +82,9 @@ Teste de chance: a diferença entre o maior e o menor win rate dos grupos com 30
 
 ---
 
-## 2. Regra decidida (decisões 28 e 29)
+## 2. Regra decidida (decisões 28 e 29, FIT absoluto da O-51)
 
-A especificação completa, com as contas, os 3 exemplos reais e as simulações de roteamento, está em [`regra-lead-score.html`](regra-lead-score.html). Abaixo vai só o resumo.
+A especificação vigente está no topo de [`regra-lead-score.html`](regra-lead-score.html); abaixo dela fica o histórico (versão anterior). Aqui vai só o resumo.
 
 **NOTA = 0,70 × FIT + 0,30 × HEAT + BONUS.** FIT e HEAT vão de 0 a 100. O BONUS vai de 0 a 20 e soma por fora, então a nota vai de 0 a 120. O valor fica fora da nota e aparece só como contexto no cartão. Decisão do Leandro: "nunca se sabe o valor antes de atender". A exceção, empresa que compra muito e está no período de comprar, virou o BONUS.
 
@@ -98,7 +98,7 @@ A especificação completa, com as contas, os 3 exemplos reais e as simulações
   - **vendedor sem histórico na janela:** FIT = conversão do time na janela;
   - **lead sem empresa (68%):** usa só produto e série, sem penalidade.
 - O destaque (a característica de maior conversão ajustada do vendedor) fica só como informação no motivo: "Ponto forte do vendedor: setor varejo (71%).".
-- Distribuição hoje (execução 15): FIT de 47 a 77, mediana de 62. Só 38 leads ficam com FIT de 75 ou mais (30 ativos).
+- Distribuição hoje (execuções 15 e 17, mesmas notas): FIT de 47 a 77, mediana de 62. Só 38 leads ficam com FIT de 75 ou mais (30 ativos).
 - Histórico: até a execução 13, o FIT era relativo à média de cada vendedor (50 + 50 × desvio ÷ destaque). Ver validacao.md.
 
 ### HEAT (30%): tempo de atendimento
@@ -126,7 +126,7 @@ A especificação completa, com as contas, os 3 exemplos reais e as simulações
 
 ### BONUS (0 a 20): histórico e janela de compra da empresa
 - Por empresa, recalculado todo domingo junto com o FIT. Deal sem empresa (68% dos abertos): BONUS 0, declarado e sem penalidade.
-- Proposta (P3):
+- Divisão decidida (P3):
   - **(a) tamanho do histórico, 0/5/10:** terços da receita ganha. Cortes de hoje: US$ 90.110 e US$ 127.050.
   - **(b) janela de compra por calendário, 0 ou 10:** a semana cai no período preferido da empresa. Período preferido = aquele em que a empresa compra mais que o calendário geral de todas, além do acaso (permutação, corrigida para o número de empresas). Recorte proposto: semestre (P4).
 - Janela por calendário, medida por empresa contra o calendário geral (2.000 permutações; correção de Bonferroni para 85 empresas, p < 0,00059):
@@ -158,29 +158,32 @@ A especificação completa, com as contas, os 3 exemplos reais e as simulações
 ### Recálculo de domingo: distribuição equilibrada (sem teto fixo)
 Decisão do Leandro: "o recálculo sempre divide igual entre vendedores... calculando qual vendedor tem mais chance de fechar aquele lead... mas ponderando pela quantidade de leads de cada um".
 - **Escopo (decidido, cenário B):** entram só os leads sem contato registrado. Hoje são os 500 em Prospecting, porque o engajamento já é um contato. Os deals com contato ficam com o dono e só mudam pela regra de repasse.
+- **Só equilíbrio (decisão 47, P0):** a redistribuição não obedece às travas do repasse. As travas protegem o trabalho que o vendedor já fez no lead, e o lead sem contato não tem esse trabalho.
 - **Método (atribuição gulosa com limite):**
-  - limite da semana = leads ativos ÷ vendedores, arredondado para cima (hoje 798 ÷ 30 = 27), contando os ativos que cada vendedor já tem;
+  - limite da semana = leads ativos ÷ vendedores elegíveis, arredondado para cima (hoje 23, com os 35), contando os ativos que cada vendedor já tem;
   - os pares lead × vendedor são ordenados do maior FIT para o menor, e cada lead vai para o primeiro vendedor abaixo do limite;
   - lead travado pelo manager fica fora.
-- Elegíveis: os 35 vendedores ativos do time (decisão 49). Quem não tem destaque (2) ou não tem histórico (os 5 sem nenhum deal no dataset) entra com FIT 50 em todo lead, e o motivo diz "Vendedor sem histórico: encaixe neutro (50).". O limite da semana passa a ser ativos ÷ 35. Antes da decisão 49, só os 30 com fechamentos na janela entravam.
-- **Resultado hoje:**
-  - 482 dos 500 mudam de dono, e 29 vendedores recebem;
-  - ativos por vendedor passam de 0–111 para 17–31;
-  - o FIT médio dos 500 vai de 49,5 para 77,8, e o dos ativos de 50,3 para 68,1;
-  - os leads com FIT do dono ≥ 75 entre os 500 passam de 48 para 269.
-- Comparação que embasou a decisão: redistribuir todos os abertos (cenário A) trocaria o dono de 2.026 dos 2.089 deals toda semana. Ficaria com ativos de 15 a 27 por vendedor e FIT médio dos ativos de 75,8.
+- **Elegíveis (decisão 49):** os 35 vendedores ativos do time. Os 5 sem histórico na janela entram com a conversão do time (60,2%) em todo lead, e o motivo diz "Vendedor sem histórico nos últimos 3 meses: o encaixe usa a conversão do time (60%).".
+- A troca é gravada pela função do banco `core_repassar_deal`, com origem `redistribuicao` e motivo "Redistribuição de domingo.". Essa origem não passa pelas travas do repasse (migração 0033).
+- **Rodada forçada corrigida (O-45):** 35 elegíveis, limite 23, 257 trocas, execução 13. Foi calculada com o FIT relativo, antes da O-51.
+- **Com o FIT absoluto:** sobre a foto de entrada, o plano de domingo moveria 375 leads com os 35 vendedores. Esse plano não foi aplicado: as execuções 15 e 17 mantiveram os donos.
 
-**Pergunta da #2 (P0, para o Leandro): a redistribuição de domingo obedece às travas do repasse (FIT ≥ 75, no máximo 3 pontos abaixo do dono, top 5 do novo vendedor) ou só à regra de equilíbrio?** Nos 500 de hoje:
+**(versão anterior) Resultado com o FIT relativo e 30 vendedores, que embasou as decisões 47 e 49:**
+- 482 dos 500 mudariam de dono, e 29 vendedores receberiam;
+- ativos por vendedor passariam de 0–111 para 17–31;
+- o FIT médio dos 500 iria de 49,5 para 77,8, e o dos ativos de 50,3 para 68,1;
+- os leads com FIT do dono ≥ 75 entre os 500 passariam de 48 para 269;
+- redistribuir todos os abertos (cenário A) trocaria o dono de 2.026 dos 2.089 deals toda semana.
 
-| | Só equilíbrio (proposta) | Com as travas do repasse |
+**(versão anterior) P0, só equilíbrio × travas do repasse, nos 500 de então:**
+
+| | Só equilíbrio (decidido) | Com as travas do repasse |
 |---|---|---|
 | Mudam de dono | 482 | 233 |
 | Sem vendedor permitido (ficam com o dono atual) | 0 | 95 |
 | Ativos por vendedor | 17 a 31 | 0 a 59 |
 | FIT médio dos 500 | 49,5 → 77,8 | 49,5 → 70,0 |
 | Leads com FIT do dono ≥ 75 | 48 → 269 | 48 → 268 |
-
-Proposta: só equilíbrio. As travas existem para não tirar de um vendedor um lead que ele já trabalhou. O lead sem contato não tem esse trabalho a proteger. Com as travas, 95 leads ficam presos com o dono atual e a carga volta a ficar desigual (0 a 59), enquanto os leads de FIT alto são praticamente os mesmos (268 contra 269).
 
 ### Lead novo durante a semana
 - Quem roteia é só a função do banco `core_rotear_lead`: maior FIT do vendedor no cohort do lead em `score_fit_vendedores` (hoje `produto=<produto>`), menos a penalidade ativa, com pelo menos 10 casos. Empate: menos abertos. Ninguém com casos: quem tem menos abertos.
@@ -195,32 +198,36 @@ Proposta: só equilíbrio. As travas existem para não tirar de um vendedor um l
   - (b) o FIT dele com o lead é 75 ou mais;
   - (c) esse FIT é no máximo 3 pontos menor que o do dono atual.
 - Entre vários candidatos, ganha o de maior FIT; no empate, quem tem menos ativos.
-- Travas: no máximo 2 repasses por lead, e depois fila do manager (P5); o manager pode travar o dono.
+- Travas: máximo de repasses por lead em branco, sem valor decidido (P5); ao atingir o máximo, o lead vai para a fila do manager; o manager pode travar o dono.
 - Registro e aviso: a linha do tempo registra de quem, para quem, quando, o motivo e os dois FITs; os dois vendedores recebem aviso.
-- **Se valesse hoje:** 873 leads atendem às três condições (536 ativos), com mediana de 2 candidatos. Sem a condição (a), seriam 1.813. Exemplo: W1XRTUT2 (MG Special, Finhigh), de Versie Hillebrand (FIT 74,4) para Kami Bicknell (FIT 75,8), com nota 68,1 com Kami, acima do 5º da lista dela (60,2).
+- Os limites (top 5, FIT ≥ 75, 3 pontos) ficam como estão (decisão 51). Com o FIT absoluto, só 38 leads têm FIT ≥ 75, então o repasse fica raro.
+- **(versão anterior, FIT relativo)** 873 leads atendiam às três condições (536 ativos), com mediana de 2 candidatos. Sem a condição (a), seriam 1.813. Exemplo: W1XRTUT2 (MG Special, Finhigh), de Versie Hillebrand (FIT 74,4) para Kami Bicknell (FIT 75,8), com nota 68,1 com Kami, acima do 5º da lista dela (60,2).
 - Deals do dataset: não têm histórico de contato. Repasse por mudança de faixa só para leads recebidos no CRM.
 
 ### Mini penalidade para quem perde lead por repasse
-- −2 pontos percentuais na conversão usada no roteamento por lead perdido, por 2 semanas, com no máximo −6 (P6).
+- Valor em branco, sem decisão (P6). Quem aplica é o banco, no roteamento do lead novo.
 - Contador "leads perdidos por falta de atendimento" na visão do manager, da semana e acumulado.
 - Não mexe no FIT, no HEAT nem no BONUS dos deals do vendedor.
-- Exemplo: Hayden recebe com 71,8% contra 67,9% de James. Com 1 lead perdido, ainda recebe (69,8%). Com 2, o lead vai para James (67,8%).
+- **(versão anterior)** Proposta: −2 pontos percentuais na conversão usada no roteamento por lead perdido, por 2 semanas, com no máximo −6. Exemplo: Hayden recebe com 71,8% contra 67,9% de James. Com 1 lead perdido, ainda recebe (69,8%). Com 2, o lead vai para James (67,8%).
 
 ### Prioridades do dia
-1. Topo, acima de tudo: lead novo (aberto há até 1 dia, sem contato registrado) com **FIT de 75 ou mais** (decisão do Leandro). Hoje 292 abertos têm FIT de 75 ou mais: 98 ativos e 262 sem empresa. O motivo é a velocidade de atendimento do lead novo de alto encaixe, que deve ser atendido em 0 ou 1 dia. Não há estatística para isso, porque o dataset não tem dados de contato.
+1. Topo, acima de tudo: lead novo (aberto há até 1 dia, sem contato registrado) com **FIT de 75 ou mais** (decisão do Leandro). Hoje 38 abertos têm FIT de 75 ou mais (30 ativos). O motivo é a velocidade de atendimento do lead novo de alto encaixe, que deve ser atendido em 0 ou 1 dia. Não há estatística para isso, porque o dataset não tem dados de contato.
    - Se esse lead passar de 1 dia sem contato, continua no topo com a marca "atendimento atrasado", na lista e na visão do manager, até o primeiro contato ou até ser repassado (decidido).
 2. Depois, todos pela nota (FIT + HEAT + BONUS).
 3. No empate, vem antes o de maior HEAT.
 4. Os deals em risco e os esfriados aparecem com alerta.
-5. A tela mostra 5 por vez. O ✗ faz a lista andar. O ✓ exige tipo de atividade, comentário e horário (decisão 37) e conta como contato: atualiza o último contato e o fator de contato do HEAT.
+5. A lista do dia tem 20 leads por vendedor, todos à mostra. O ✗ tira o lead da lista. O ✓ exige tipo de atividade, comentário e horário (decisão 37) e conta como contato: atualiza o último contato e o fator de contato do HEAT.
 
-Hoje, com o BONUS proposto, o top 5 dos 27 vendedores com deals abertos soma 135 deals. Desses, 77,8% estão ativos, 38,5% têm empresa, 35,6% estão em Prospecting e 6 têm 181 dias ou mais. Os 3 exemplos do HTML ficam com nota 72,8 (+10 de BONUS), 85,0 e 67,1.
+Hoje (execução 15), o top 5 dos 35 vendedores soma 175 deals, 97,7% ativos.
+
+**(versão anterior, FIT relativo)** Com o BONUS proposto, o top 5 dos 27 vendedores com deals abertos somava 135 deals. Desses, 77,8% estão ativos, 38,5% têm empresa, 35,6% estão em Prospecting e 6 têm 181 dias ou mais. Os 3 exemplos do HTML ficavam com nota 72,8 (+10 de BONUS), 85,0 e 67,1. Com o FIT absoluto, os exemplos dos testes são 4ZQTMS3Z (FIT 63,74, nota 66,62), 1HD5JJM3 (76,58 e 68,60) e F5I33E1I (68,13 e 47,69).
 
 ### Motivos (`reasons`)
-São 2 ou 3 frases montadas a partir das contas. Exemplos:
-- "Encaixa no seu destaque: série MG (27 de 39 nos últimos 3 meses)."
-- "Sem empresa cadastrada: o encaixe usa só o produto. Identifique a empresa."
-- "Parado há 293 dias: nenhum deal fechou depois de 138. Requalifique ou encerre."
+São 2 ou 3 frases montadas a partir das contas, escritas na 3ª pessoa. Exemplos:
+- "O vendedor fecha 62% dos leads com este perfil. Ponto forte do vendedor: série MG (67%)."
+- "Vendedor sem histórico nos últimos 3 meses: o encaixe usa a conversão do time (60%)."
+- "Aberto há 120 dias: em risco de esfriar."
+- "Empresa entre as que mais compram: +10."
 
 ---
 
@@ -242,33 +249,31 @@ Backtest com fotografias no fim de cada mês, de abr a nov/2017. Em cada fotogra
 - **Cada atributo da seção 1.3** contra o resultado real, regerado pelo script.
 - **Prospecting (500 deals):** HEAT declarado como "sem dado de tempo".
 
-Saída: `data/scored/deals_scored.json` + `scoring/validacao.md`. Só serão gerados depois das respostas às perguntas abaixo.
+Saída: `data/scored/deals_scored.json` + `scoring/validacao.md`.
 
 ---
 
-## 4. Perguntas em aberto
+## 4. Perguntas decididas
 
 As decisões 28 e 29 substituíram as antigas D1–D4: a chance por segmento saiu, o valor saiu da nota e o tempo virou HEAT. Estão decididos:
 - a janela de 3 meses e o recálculo aos domingos;
+- o FIT absoluto (O-51): conversão do vendedor no perfil do lead;
 - as 8 faixas de HEAT, com Prospecting sem data = 50;
 - o BONUS de 0 a 20;
 - FIT 75 para furar a fila;
 - o atendimento atrasado fica no topo até o contato ou o repasse;
 - a distribuição equilibrada sem teto fixo, só com os leads sem contato registrado (cenário B);
 - o repasse só para o top 5 do novo vendedor, com FIT ≥ 75 e no máximo 3 pontos abaixo do dono;
-- a mini penalidade;
+- a lista do dia com 20 leads, todos à mostra;
 - o ✓ com tipo, comentário e horário.
 
-Ficam abertas:
-
-- **P0.** A redistribuição de domingo obedece às travas do repasse ou só à regra de equilíbrio (proposta: só equilíbrio)? Números na seção "Recálculo de domingo".
-- **P1.** Trava de FIT ≥ 50 para o lead novo no roteamento.
-- **P2.** Mudança do contrato:
-  - `components` vira `{ fit, heat, bonus }`, e `score` vai de 0 a 120;
-  - entram o detalhe do FIT, a faixa de HEAT, a marca de atendimento atrasado, o detalhe do BONUS, os repasses do lead e a trava do manager.
-
-  O contrato só muda depois do sim, com aviso antes à #1 e à #4.
-- **P3.** Divisão do BONUS: 10 (histórico, terços da receita ganha) + 10 (janela de compra por calendário).
-- **P4.** Janela de compra: recorte semestre (o único com teste geral abaixo de 0,05), ou trimestre ou mês do ano, sempre com teste contra o calendário geral. Nestes dados nenhuma empresa tem período preferido além do acaso.
-- **P5.** Máximo de 2 repasses por lead antes da fila do manager.
-- **P6.** Penalidade: −2 pontos percentuais no roteamento por lead perdido, por 2 semanas, com no máximo −6.
+| | Pergunta | Decisão |
+|---|---|---|
+| P0 | A redistribuição de domingo obedece às travas do repasse? | Não: só equilíbrio (decisão 47) |
+| — | Quem entra na redistribuição | Os 35 vendedores ativos (decisão 49) |
+| P1 | Limites do roteamento e do repasse (trava de FIT para o lead novo, FIT ≥ 75, 3 pontos, top 5) | Ficam como estão (decisão 51) |
+| P2 | Contrato do app | Em uso: `components` = `{ fit, heat, bonus }`, `score` de 0 a 120, detalhe do FIT, faixa de HEAT, marcas e motivos |
+| P3 | Divisão do BONUS | 10 (histórico, terços da receita ganha) + 10 (janela de compra) |
+| P4 | Janela de compra | Fica na regra, com teste contra o calendário geral; nestes dados vale 0 para todas as empresas |
+| P5 | Máximo de repasses por lead (`max_repasses`) | Em branco, sem valor decidido |
+| P6 | Penalidade de quem perde lead por repasse | Em branco, sem valor decidido |
