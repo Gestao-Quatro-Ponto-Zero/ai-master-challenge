@@ -1,0 +1,42 @@
+{
+  "model": "distilbert-base-uncased",
+  "test_accuracy": 0.878,
+  "macro_f1": 0.8747,
+  "epochs": 3,
+  "max_length": 192,
+  "batch_size": 32,
+  "lr": 2e-05,
+  "device": "mps",
+  "token_length_p95": 148,
+  "train_seconds": 5058.4,
+  "history": [
+    {
+      "epoch": 1,
+      "val_accuracy": 0.8569,
+      "train_loss_last": 0.8052,
+      "seconds": 1584.7
+    },
+    {
+      "epoch": 2,
+      "val_accuracy": 0.8736,
+      "train_loss_last": 0.3557,
+      "seconds": 1590.3
+    },
+    {
+      "epoch": 3,
+      "val_accuracy": 0.878,
+      "train_loss_last": 0.3139,
+      "seconds": 1527.4
+    }
+  ],
+  "classes": [
+    "Access",
+    "Administrative rights",
+    "HR Support",
+    "Hardware",
+    "Internal Project",
+    "Miscellaneous",
+    "Purchase",
+    "Storage"
+  ]
+}

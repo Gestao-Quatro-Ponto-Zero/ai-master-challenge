@@ -1,0 +1,7 @@
+{
+  "threshold": 0.86,
+  "auto_precision": 0.9505,
+  "coverage": 0.8073,
+  "model": "distilbert-base-uncased",
+  "proba_source": "test_predictions.npy (softmax do holdout)"
+}
