@@ -175,3 +175,11 @@
   - mudei: ERRO ENCONTRADO 1: minha primeira lista de termos proibidos ('decidir', 'decidem', 'decisão', 'decide') rejeitava 10 templates reais de vendedor e 2 de gestor, porque a fila preparar legitimamente diz 'decidem mais tarde no trimestre' — isso não é promessa de decisão iminente. Restringi a lista a frases de prazo curto ('próximas semanas', 'em breve', 'devem/vão decidir'). ERRO ENCONTRADO 2 (no meu próprio código): template_gestor sempre escrevia '{n_fechar} deal(s)... com chance de decidir nas próximas semanas', mesmo com n_fechar=0 — frase sem sentido que o validador corretamente rejeitou. Corrigido para condicionar a frase a n_fechar>0. gerar() levanta NotImplementedError se tentar usar a API sem sem_ia=True, para não mascarar a ausência da chamada real
 
 **Fim da sessão** 2026-11-11 15:25 — Tarefa 9 (parte 1, sem IA) verde: 7 testes, suíte 54/54; validador testado contra 35 vendedores e 6 gestores reais, não só fixtures
+
+## 2026-11-11 15:30 · Tarefa 10 — run.py · modelo claude-sonnet-5 · ferramenta Claude Code
+
+- **15:30** — pedi: implementar run.py: build + briefing + http.server + POST /acao com validação
+  - veio: 5/5 testes verdes. Teste manual num build limpo: servidor sobe, GET / responde 200, POST /acao grava e GET /acoes reflete a ação no mesmo processo
+  - mudei: Manipulador exportado é criado por fabrica_manipulador(app, acoes), porque SimpleHTTPRequestHandler usa a classe (não a instância) para abrir o diretório — precisei de uma fábrica para fechar sobre o caminho de dados e o arquivo de ações sem variável global mutável. sem_ia em run.py chama gerar(sem_ia=True) sempre, porque a chamada real da API ainda não existe (Tarefa 9 parcial)
+
+**Fim da sessão** 2026-11-11 15:30 — Tarefa 10 verde: 5 testes, suíte 59/59; teste manual ok (build, servidor, POST e GET refletindo)
