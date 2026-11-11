@@ -3,7 +3,7 @@
 > Rascunho — será completado à medida que cada componente for construído. Nenhum segredo neste arquivo.
 
 ## 1. Para quem só quer ver funcionando
-- App: _URL da Vercel (pendente)_
+- App: https://triagem-case-ai-master-case-g4.vercel.app
 - Vídeo: _link (pendente)_
 
 ## 2. Ambiente de desenvolvimento com agentes de IA
