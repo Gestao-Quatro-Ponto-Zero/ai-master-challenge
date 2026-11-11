@@ -79,3 +79,11 @@
   - mudei: test_prazo_do_deal_pega_o_limite_mais_curto: corrigido para dropna() antes de comparar — pandas retorna False para NaT<=NaT, e o test deve operar só sobre engage_dates válidas
 
 **Fim da sessão** 2026-11-11 14:28 — 5/5 GREEN Tarefa 2; suite completa 10/10
+
+## 2026-11-11 14:31 · Tarefa 2 — crédito ao PR #242 · modelo claude-haiku-4-5-20251001 · ferramenta Claude Code
+
+- **14:31** — pedi: registrar o crédito à regra do prazo do trimestre do PR #242
+  - veio: nota adicionada ao diário
+  - mudei: nada no código; anotação sobre a fonte da regra
+
+**Fim da sessão** 2026-11-11 14:31 — crédito ao PR #242 registrado: a regra do prazo do trimestre vem de lá
