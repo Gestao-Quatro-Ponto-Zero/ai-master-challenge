@@ -8,7 +8,7 @@
       "typeVersion": 2.1,
       "position": [
         0,
-        1024
+        320
       ],
       "parameters": {
         "httpMethod": "POST",
@@ -30,8 +30,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        224,
-        1024
+        220,
+        320
       ],
       "parameters": {
         "mode": "manual",
@@ -81,8 +81,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        448,
-        1024
+        440,
+        320
       ],
       "parameters": {
         "conditions": {
@@ -128,8 +128,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        672,
-        928
+        660,
+        320
       ],
       "parameters": {
         "method": "POST",
@@ -161,8 +161,8 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        672,
-        1120
+        660,
+        540
       ],
       "parameters": {
         "respondWith": "json",
@@ -178,8 +178,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        896,
-        864
+        880,
+        320
       ],
       "parameters": {
         "method": "POST",
@@ -211,8 +211,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        1120,
-        784
+        1100,
+        320
       ],
       "parameters": {
         "method": "POST",
@@ -244,8 +244,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        1344,
-        416
+        1320,
+        320
       ],
       "parameters": {
         "mode": "manual",
@@ -361,8 +361,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        1568,
-        416
+        1540,
+        320
       ],
       "parameters": {
         "mode": "manual",
@@ -386,8 +386,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        1792,
-        416
+        1760,
+        320
       ],
       "parameters": {
         "mode": "manual",
@@ -417,8 +417,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        2016,
-        416
+        1980,
+        320
       ],
       "parameters": {
         "mode": "manual",
@@ -516,8 +516,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        2240,
-        416
+        2200,
+        320
       ],
       "parameters": {
         "resource": "row",
@@ -541,8 +541,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        2464,
-        384
+        2420,
+        320
       ],
       "parameters": {
         "rules": {
@@ -624,8 +624,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 2.3,
       "position": [
-        2688,
-        208
+        2700,
+        0
       ],
       "parameters": {
         "resource": "text",
@@ -683,7 +683,7 @@
       "typeVersion": 2.3,
       "position": [
         3360,
-        240
+        320
       ],
       "parameters": {
         "resource": "text",
@@ -740,8 +740,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 2.3,
       "position": [
-        3136,
-        720
+        2700,
+        640
       ],
       "parameters": {
         "resource": "text",
@@ -798,8 +798,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        2912,
-        144
+        2920,
+        0
       ],
       "parameters": {
         "mode": "manual",
@@ -829,8 +829,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        3136,
-        144
+        3140,
+        0
       ],
       "parameters": {
         "conditions": {
@@ -860,7 +860,7 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        4256,
+        4240,
         0
       ],
       "parameters": {
@@ -937,7 +937,7 @@
       "typeVersion": 1.5,
       "position": [
         4480,
-        304
+        320
       ],
       "parameters": {
         "respondWith": "json",
@@ -953,8 +953,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        3584,
-        192
+        3580,
+        320
       ],
       "parameters": {
         "mode": "manual",
@@ -984,8 +984,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        3808,
-        192
+        3800,
+        320
       ],
       "parameters": {
         "mode": "manual",
@@ -1021,8 +1021,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        4032,
-        192
+        4020,
+        320
       ],
       "parameters": {
         "resource": "row",
@@ -1046,8 +1046,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        4256,
-        192
+        4240,
+        320
       ],
       "parameters": {
         "resource": "row",
@@ -1122,8 +1122,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        3360,
-        656
+        2920,
+        640
       ],
       "parameters": {
         "mode": "manual",
@@ -1159,8 +1159,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        3584,
-        736
+        3140,
+        640
       ],
       "parameters": {
         "mode": "manual",
@@ -1214,8 +1214,8 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.7,
       "position": [
-        4032,
-        1104
+        3360,
+        640
       ],
       "parameters": {
         "resource": "message",
@@ -1241,8 +1241,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        4256,
-        1104
+        4240,
+        640
       ],
       "parameters": {
         "resource": "row",
@@ -1325,8 +1325,8 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        3808,
-        832
+        4480,
+        960
       ],
       "parameters": {
         "respondWith": "json",
@@ -1342,8 +1342,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        3584,
-        528
+        4020,
+        960
       ],
       "parameters": {
         "resource": "row",
@@ -1388,8 +1388,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        2176,
-        1120
+        2680,
+        800
       ],
       "parameters": {
         "content": "## Nível 3: só humano\nA IA não responde ao cliente: resume em pt-BR, aponta riscos e monta o aviso. A nota e o texto do Slack ficam na própria triagem (triage_runs), e o app simula o aviso no navegador. O nó Slack fica **desativado** até existir um workspace; para ligar, selecione a credencial e o canal (ADR-0007, ADR-0015).",
@@ -1402,8 +1402,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        2176,
-        1376
+        640,
+        40
       ],
       "parameters": {
         "content": "## Classificação (RAG no Supabase)\nO voto dos 50 tickets mais parecidos (peso similaridade^16) roda na função SQL `classify_ticket`. O n8n só chama a função pela API REST do Supabase (HTTP Request + credencial Supabase), porque o nó Supabase não chama funções.\nO embedding usa o HTTP Request com a credencial nativa da OpenAI, porque o nó *Embeddings OpenAI* é sub-nó e não tem saída no fluxo principal.",
@@ -1416,26 +1416,12 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        2176,
-        1632
+        2680,
+        -260
       ],
       "parameters": {
         "content": "## Nível 1: resposta automática\nO LLM só adapta a solução validada (sem passos, prazos ou promessas novas). Se ela não servir ao ticket, o ticket desce para a revisão humana.",
         "color": 6
-      }
-    },
-    {
-      "id": "52c42cfb-7906-4499-955e-0730703b654f",
-      "name": "Sticky Note 2d3a79cb",
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        2176,
-        1888
-      ],
-      "parameters": {
-        "content": "## Nível 3: só humano\nA IA não responde ao cliente: resume, aponta riscos e avisa. A caixa do painel é a fonte de verdade. O nó Slack fica **desativado** até existir um workspace; para ligar, selecione a credencial e o canal (ADR-0007).",
-        "color": 3
       }
     }
   ],
@@ -1849,7 +1835,7 @@
         "Avisar no Slack",
         "Marcar como aguardando humano"
       ],
-      "description": "Monta o alerta (mesmo texto do Slack), grava na caixa do painel; nó Slack desativado até haver workspace."
+      "description": "Monta a nota interna e o texto do Slack, gravados na triagem; o app simula o aviso. Nó Slack desativado até haver workspace."
     }
   ],
   "settings": {
