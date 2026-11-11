@@ -127,3 +127,11 @@
   - mudei: construir levanta erro se hoje é None (o motor não inventa data); dados_dir em vez de caminho relativo 'data' no teste; app/data gerado mas não commitado (submissions/ é ignorado pelo repositório oficial, o build é refeito no deploy)
 
 **Fim da sessão** 2026-11-11 14:46 — Tarefa 6 verde: 2 testes, suíte 37/37; contrato em docs/contrato.md
+
+## 2026-11-11 14:49 · Tarefa 6 — decisão sobre gerado_em · modelo claude-haiku-5-5 · ferramenta Claude Code
+
+- **14:49** — pedi: registrar no diário a decisão sobre o campo gerado_em do scored.json
+  - veio: o build grava gerado_em (quando rodou) e o hash o exclui; o guia e o plano não tratam o campo, então a decisão é nossa
+  - mudei: mantido: a tela pode mostrar quando os dados foram gerados, e o hash continua determinístico porque o campo sai do cálculo. Alternativa rejeitada: remover o campo, perdendo a informação de quando o build rodou
+
+**Fim da sessão** 2026-11-11 14:49 — decisão sobre gerado_em registrada: campo mantido, fora do hash
