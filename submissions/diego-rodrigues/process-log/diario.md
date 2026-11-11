@@ -239,3 +239,11 @@
   - mudei: app.js: SERVIDOR_LOCAL e carregarAcoes. Testado nos dois modos: publicado (host não local) sem chamada a /acoes e sem erro; local (run.py) com GET /acoes. Redeploy de produção: zero erros de console e zero respostas 4xx/5xx no desktop e no celular
 
 **Fim da sessão** 2026-11-11 16:12 — 404 eliminado na origem; demo publicada sem erros de console; redeploy feito
+
+## 2026-11-11 16:16 · Tarefa 13 · etapa 2 — resumo executivo · modelo claude-opus-5 · ferramenta Claude Code
+
+- **16:16** — pedi: escrever docs/resumo-executivo.md na ordem medido -> premissa, com a frase para a diretoria
+  - veio: 626 palavras. Achado mais forte do que o plano previa: dos 734 deals distintos classificados como vencidos nos 6 cortes, ZERO foi ganho em qualquer momento do export, nao so nos 28 dias. Conta de horas virou ponto de equilibrio medido: US$ 1.416 por vendedor a cada 4 semanas (US$ 254.862 / 30 vendedores / 6 cortes), convertido em horas a tres custos-hora diferentes em vez de inventar um
+  - mudei: DOIS ERROS NA FRASE DO CFO QUE O PLANO MANDA USAR, ambos corrigidos: (1) 'o que sobra vivo cabe numa lista de cinco deals por vendedor' e FALSO - 11 dos 17 vendedores com deal vivo tem mais de 5, e so 77 dos 115 vivos cabem em listas de cinco; troquei por '115 negocios em 17 dos 35 vendedores'. (2) 'intervalo de confianca que nao cruza zero' esta errado para uma razao: o IC [1,13; 1,52] nao cruza UM, nao zero; corrigido. Tambem declarei que os US$ 1.416 vem de simulacao historica, nao de operacao real
+
+**Fim da sessão** 2026-11-11 16:16 — resumo executivo escrito; dois erros da frase do CFO do plano corrigidos
