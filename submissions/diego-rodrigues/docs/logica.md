@@ -68,5 +68,5 @@ Uma faixa com menos de 30 observações é juntada com a vizinha mais velha. Iss
 
 ## Fontes
 
-- A regra do fim do trimestre seguinte vem da revisão pública do challenge (PR #242), citada no plano. **A conferência do conteúdo desse PR ainda não foi feita nesta versão.**
-- O efeito de calendário discutido no PR #240 não foi conferido nesta versão.
+- A regra do fim do trimestre seguinte é medida aqui (1 fechamento depois do prazo em 6.711). Não a atribuímos a outra submissão: a descrição do PR #242 que lemos fala do achado de que negócios vencidos não ganham, não dessa regra. Só creditaremos se o código do PR for conferido.
+- O PR #240 (submissão de outro participante) foi lido apenas pela descrição, que não menciona efeito de calendário. Não citamos o que ele descartou.

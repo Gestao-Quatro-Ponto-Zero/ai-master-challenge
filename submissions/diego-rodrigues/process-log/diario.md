@@ -143,3 +143,11 @@
   - mudei: ERRO ENCONTRADO: o campo conta é preenchido só depois do desfecho (0 de 6.711 fechados sem conta). Deals sem conta vazavam resultado para o teste de vendedor, que aparecia com p = 0,012. Corrigido: atributos só com conta preenchida (3.001 deals). Com isso o vendedor cai para p = 0,141, e o sinal fraco aprovado na opção 2 deixou de existir: o teste passou a afirmar 'sem sinal'. Porte, que parecia p = 0,001, também era vazamento (p = 0,983 corrigido)
 
 **Fim da sessão** 2026-11-11 15:09 — Tarefa 7 verde: 43/43; vazamento do campo conta encontrado e corrigido
+
+## 2026-11-11 15:12 · Correção: atribuição ao PR #242 e #240 · modelo claude-haiku-5-5 · ferramenta Claude Code
+
+- **15:12** — pedi: conferir a atribuição do PR #242 e do PR #240 que o diário e o plano citam
+  - veio: lidos pelo gh, só metadados e descrição. #242 descreve que negócios vencidos não ganham (717 distintos, nenhum ganho); não fala da regra do fim do trimestre. #240 não menciona efeito de calendário
+  - mudei: nota de correção: as entradas da Tarefa 2 que dizem que a regra do trimestre 'vem de' e foi 'verificada' no PR #242 não se sustentam. O docs/logica.md foi corrigido. Não atribuímos a regra a outra submissão até conferir o código
+
+**Fim da sessão** 2026-11-11 15:12 — correção de atribuição registrada (PR #242 e #240)
