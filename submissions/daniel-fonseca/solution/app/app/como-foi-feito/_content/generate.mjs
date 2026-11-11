@@ -8,10 +8,11 @@ import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs"
 import { dirname, join, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 
+import { Marked } from "marked"
+
 const here = dirname(fileURLToPath(import.meta.url))
 const SUB = resolve(here, "../../../../..") // submissions/daniel-fonseca
 const OUT = join(here, "docs.generated.json")
-const REPO = "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca"
 
 const decisionsDir = join(SUB, "docs/decisions")
 const judgmentFile = join(SUB, "process-log/judgment-log.md")
@@ -21,6 +22,22 @@ if (!existsSync(decisionsDir) || !existsSync(judgmentFile)) {
   console.log(`[como-foi-feito] fontes .md fora do alcance do build; mantido ${existsSync(OUT) ? "o JSON versionado" : "nada (JSON ausente!)"}`)
   process.exit(0)
 }
+
+// O repositório é privado: o app mostra o documento transcrito num pop-up. Links externos (http) abrem em nova aba;
+// links relativos do repositório viram texto, porque não há destino público para eles.
+const md2html = new Marked({
+  gfm: true,
+  renderer: {
+    link({ href, tokens }) {
+      const text = this.parser.parseInline(tokens)
+      return /^https?:\/\//.test(href) ? `<a href="${href}" target="_blank" rel="noreferrer">${text}</a>` : `<span class="doc-ref">${text}</span>`
+    },
+    html() {
+      return ""
+    },
+  },
+})
+const toHtml = (md) => md2html.parse(md)
 
 /** Remove marcação markdown leve (negrito, código, links) para texto corrido. */
 const plain = (s) =>
@@ -81,12 +98,15 @@ const adrs = readdirSync(decisionsDir)
       origin,
       originKind: originKind(origin),
       summary: summary(md),
-      href: `${REPO}/docs/decisions/${file}`,
+      file: `docs/decisions/${file}`,
+      // Corpo sem o título (o pop-up mostra o título no cabeçalho).
+      html: toHtml(md.replace(/^# .+\n+/, "")),
     }
   })
 
 // Tabela do judgment log: | # | Data | Tipo | O que aconteceu | Quem percebeu | Resultado |
-const judgment = readFileSync(judgmentFile, "utf8")
+const judgmentMd = readFileSync(judgmentFile, "utf8")
+const judgment = judgmentMd
   .split("\n")
   .filter((l) => /^\|\s*\d+\s*\|/.test(l))
   .map((l) => {
@@ -106,12 +126,10 @@ const sessions = existsSync(processFile)
   : []
 
 const data = {
-  repo: REPO,
   adrs,
   judgment,
-  judgmentHref: `${REPO}/process-log/judgment-log.md`,
+  judgmentHtml: toHtml(judgmentMd.replace(/^# .+\n+/, "")),
   sessions,
-  processLogHref: `${REPO}/process-log/process-log.md`,
 }
 writeFileSync(OUT, `${JSON.stringify(data, null, 1)}\n`)
 console.log(`[como-foi-feito] ${adrs.length} ADRs, ${judgment.length} registros do judgment log, ${sessions.length} sessões → ${OUT}`)

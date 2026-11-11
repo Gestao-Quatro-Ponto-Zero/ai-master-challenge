@@ -1,6 +1,7 @@
-import { ExternalLink } from "lucide-react"
+import { FileText } from "lucide-react"
 
 import { content, isAiError, isHumanJudgment, type Adr, type JudgmentEntry } from "@/components/metodo/content"
+import { DocDialog } from "@/components/metodo/doc-dialog"
 import { Section } from "@/components/metodo/section"
 import { cn } from "@/lib/utils"
 
@@ -34,10 +35,15 @@ export function DecisoesView() {
                 <span className="shrink-0 font-mono text-xs text-text-3">
                   {a.number} · {fmtDate(a.date)}
                 </span>
-                <a href={a.href} target="_blank" rel="noreferrer" className="group inline-flex items-baseline gap-1.5 text-sm font-medium text-text-1 hover:underline hover:underline-offset-4">
+                <DocDialog
+                  eyebrow={`ADR-${a.number} · ${fmtDate(a.date)}`}
+                  title={a.title}
+                  html={a.html}
+                  className="group inline-flex cursor-pointer items-baseline gap-1.5 text-left text-sm font-medium text-text-1 hover:underline hover:underline-offset-4 focus-visible:underline focus-visible:outline-none"
+                >
                   {a.title}
-                  <ExternalLink className="size-3 shrink-0 translate-y-0.5 text-text-3 opacity-0 transition-opacity group-hover:opacity-100" aria-hidden />
-                </a>
+                  <FileText className="size-3 shrink-0 translate-y-0.5 text-text-3 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100" aria-hidden />
+                </DocDialog>
               </div>
               <div className="mt-1.5 flex flex-wrap items-center gap-2">
                 <span className={cn("rounded-full border px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider", a.statusKind === "aceita" ? "border-border text-text-2" : "border-dashed border-text-3 text-text-3")}>
@@ -59,9 +65,14 @@ export function DecisoesView() {
           <JudgmentList title="Onde a IA errou" items={errors} />
           <JudgmentList title="O que o Daniel decidiu" items={human} limit={7} />
         </div>
-        <a href={content.judgmentHref} target="_blank" rel="noreferrer" className="inline-flex w-fit items-center gap-1.5 text-sm text-text-2 underline underline-offset-4 hover:text-text-1">
-          Ler o judgment log completo <ExternalLink className="size-3.5" aria-hidden />
-        </a>
+        <DocDialog
+          eyebrow={`Judgment log · ${judgment.length} registros`}
+          title="Judgment log: IA e julgamento humano"
+          html={content.judgmentHtml}
+          className="inline-flex w-fit cursor-pointer items-center gap-1.5 text-sm text-text-2 underline underline-offset-4 hover:text-text-1"
+        >
+          Ler o judgment log completo <FileText className="size-3.5" aria-hidden />
+        </DocDialog>
       </Section>
     </div>
   )

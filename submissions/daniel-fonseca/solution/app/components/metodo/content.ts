@@ -13,7 +13,10 @@ export interface Adr {
   origin: string | null
   originKind: "daniel" | "daniel_ia" | "ia_daniel" | "ia"
   summary: string | null
-  href: string
+  /** Caminho do .md no repositório (só referência; o repositório é privado). */
+  file: string
+  /** Documento completo em HTML, gerado no build a partir do .md. */
+  html: string
 }
 
 export interface JudgmentEntry {
@@ -33,14 +36,12 @@ export interface SessionEntry {
 }
 
 export const content = docs as {
-  repo: string
   adrs: Adr[]
   judgment: JudgmentEntry[]
-  judgmentHref: string
+  judgmentHtml: string
   sessions: SessionEntry[]
-  processLogHref: string
 }
 
 export const isAiError = (j: JudgmentEntry) => /^IA errou/i.test(j.type)
 export const isHumanJudgment = (j: JudgmentEntry) => /^Julgamento humano/i.test(j.type)
-export const repoHref = (path: string) => `${content.repo}/${path}`
+export const adrByNumber = (n: string) => content.adrs.find((a) => a.number === n)

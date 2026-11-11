@@ -208,3 +208,95 @@
     }
   }
 }
+
+/* Documentos transcritos (ADRs e judgment log) no pop-up de Como foi feito › Decisões. */
+@layer components {
+  .doc-prose {
+    font-size: 0.875rem;
+    line-height: 1.65;
+    color: var(--text-2);
+  }
+  .doc-prose > * + * {
+    margin-top: 0.75rem;
+  }
+  .doc-prose h2 {
+    margin-top: 1.5rem;
+    font-family: var(--font-baskerville);
+    font-size: 1.05rem;
+    color: var(--text-1);
+  }
+  .doc-prose h3,
+  .doc-prose h4 {
+    margin-top: 1.25rem;
+    font-weight: 600;
+    color: var(--text-1);
+  }
+  .doc-prose strong {
+    font-weight: 600;
+    color: var(--text-1);
+  }
+  .doc-prose ul,
+  .doc-prose ol {
+    padding-left: 1.25rem;
+  }
+  .doc-prose ul {
+    list-style: disc;
+  }
+  .doc-prose ol {
+    list-style: decimal;
+  }
+  .doc-prose li + li,
+  .doc-prose li > ul,
+  .doc-prose li > ol {
+    margin-top: 0.25rem;
+  }
+  .doc-prose a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .doc-prose code {
+    font-family: var(--font-plex-mono);
+    font-size: 0.8em;
+    border-radius: 4px;
+    background: var(--surface-2);
+    padding: 0.05rem 0.3rem;
+  }
+  .doc-prose pre {
+    overflow-x: auto;
+    border-radius: 10px;
+    background: var(--surface-2);
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
+  }
+  .doc-prose pre code {
+    background: none;
+    padding: 0;
+  }
+  .doc-prose blockquote {
+    border-left: 2px solid var(--border-orbita);
+    padding-left: 0.875rem;
+    color: var(--text-3);
+  }
+  .doc-prose table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+  }
+  .doc-prose th,
+  .doc-prose td {
+    border: 1px solid var(--border-orbita);
+    padding: 0.4rem 0.6rem;
+    text-align: left;
+    vertical-align: top;
+  }
+  .doc-prose th {
+    background: var(--surface-2);
+    font-weight: 600;
+    color: var(--text-1);
+  }
+  .doc-prose hr {
+    border-color: var(--border-orbita);
+  }
+}

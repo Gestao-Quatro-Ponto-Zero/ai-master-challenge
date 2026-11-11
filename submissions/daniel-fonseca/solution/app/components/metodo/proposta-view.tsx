@@ -1,5 +1,6 @@
 import type { AppSummary } from "@/components/painel/diagnostic-data"
-import { repoHref } from "@/components/metodo/content"
+import { adrByNumber } from "@/components/metodo/content"
+import { DocDialog } from "@/components/metodo/doc-dialog"
 import { FlowDiagram, type FlowNode } from "@/components/metodo/flow-diagram"
 import { Section } from "@/components/metodo/section"
 import { PathBadge } from "@/components/shared/path-badge"
@@ -24,6 +25,7 @@ interface Blocklist {
 }
 
 export async function PropostaView() {
+  const adr10 = adrByNumber("0010")
   const [rag, clf, zs, ragLlm, db, block, summary, examples] = await Promise.all([
     getMetric<RagPolicy>("rag_only_policy"),
     getMetric<ClassifierEval>("classifier_eval"),
@@ -173,8 +175,15 @@ export async function PropostaView() {
       </Section>
 
       <p className="text-xs leading-relaxed text-text-3">
-        Evidência: <a className="underline underline-offset-2 hover:text-text-1" href={repoHref("docs/decisions/0010-classificador-de-producao.md")} target="_blank" rel="noreferrer">ADR-0010</a>,{" "}
-        <a className="underline underline-offset-2 hover:text-text-1" href={repoHref("docs/n8n-flows.md")} target="_blank" rel="noreferrer">fluxos do n8n</a> e scripts{" "}
+        Evidência:{" "}
+        {adr10 ? (
+          <DocDialog eyebrow="ADR-0010" title={adr10.title} html={adr10.html} className="cursor-pointer underline underline-offset-2 hover:text-text-1">
+            ADR-0010
+          </DocDialog>
+        ) : (
+          "ADR-0010"
+        )}
+        , fluxos do n8n (<span className="font-mono">docs/n8n-flows.md</span>) e scripts{" "}
         <span className="font-mono">03</span> a <span className="font-mono">12</span> em <span className="font-mono">solution/analysis/</span>.
       </p>
     </div>
