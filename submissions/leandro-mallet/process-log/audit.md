@@ -237,3 +237,22 @@ A #5 aplicou 0007–0026 no Supabase, sem erro. Contagem: 29 tabelas, 60 FKs (RE
   - O que protege são a trava de contexto, os limites de escrita (30/min por usuário e 300/min no total), a auditoria e o desfazer. A conferência por dono só passa a fazer sentido com login, o que fica como evolução registrada.
 - O-38, O-43 e O-41/O-42/O-44: redistribuição do 1º domingo feita duas vezes. A primeira deu 475 trocas, com 30 elegíveis. A segunda, depois da decisão 49 (os 35 vendedores ativos, os sem histórico com FIT 50), deu 261 trocas, e os 5 ficaram com 23 cada. O motor do score foi portado para TypeScript, com paridade total contra o Python. A automação está publicada, com o relógio da data de negócio (0034, sha256 ed2065bd…), o papel g4_rotina (senha fora do git) e o cron diário às 06:00 UTC. Os segredos estão na Vercel e a rotina responde 401 sem eles.
 - **Erro achado pela #1 no 1º teste da rotina no ar:** a rotina rodou com a lista de elegíveis antiga (só os 30 com histórico) e desfez as 261 trocas da O-43 (execução 12, mais 2 repasses). Nada foi apagado: as trocas ficaram registradas em acao_reatribuicoes. Causa: motor-score.ts chamava planejarRedistribuicao sem a lista dos vendedores ativos. Correção na O-45, com nova rodada forçada.
+
+## 10/11 — Leitura completa do código, metodologia nova e FIT absoluto
+
+- **Leitura completa do código, sem executar nada** (4 frentes: motor da nota, telas, servidor e banco, entrega). Principais achados:
+  - o resumo do README contradizia a análise;
+  - o modo local sem banco não mostra nota;
+  - a marca "atendimento atrasado" nunca aparece (data de negócio × data real de criação);
+  - um repasse recusado desfazia a rotina do dia;
+  - havia dois roteamentos de lead novo;
+  - a documentação do score e do banco estava desatualizada.
+- **O que entrou:**
+  - o resumo foi reescrito;
+  - a rotina passou a usar savepoint por repasse (O-52);
+  - o roteamento ficou só no banco (O-51);
+  - o FIT absoluto entrou na execução 17 (sha256 06c9ac88…);
+  - a metodologia nova foi para regra-lead-score.html (2748d0e), com a versão anterior como histórico.
+- **Ficou como está, por decisão do Leandro (51):** os limites de FIT ≥ 75 e o "atendimento atrasado".
+- **Conferido pela #1 no banco (leitura):** 2.089 notas, todas iguais a 0,7 × FIT + 0,3 × HEAT + bônus; nenhum aberto sem nota nem com dono errado. O deal 9CYYLZ11 foi recalculado à mão: FIT 62,4 e nota 68,7, iguais aos gravados.
+- **Efeito registrado:** com o FIT absoluto, só 38 leads têm FIT ≥ 75, então furar a fila e o repasse ficam raros; a próxima redistribuição de domingo trocaria o dono de cerca de 375 leads.
