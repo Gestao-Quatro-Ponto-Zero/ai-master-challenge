@@ -119,3 +119,11 @@
   - mudei: resumo_vendedor recebe o nome do vendedor (plano: sub e carga), porque um vendedor sem deal não tem linha para dizer quem é; prazo_trimestre virou pública em janela.py para explicar usar; corrigidos dois textos que os testes não pegavam: 'pelo limite de o fim' e 'só 0 nas próximas quatro semanas'
 
 **Fim da sessão** 2026-11-11 14:42 — Tarefa 5 verde: 9 testes, suíte 35/35
+
+## 2026-11-11 14:46 · Tarefa 6 — build.py · modelo claude-haiku-5-5 · ferramenta Claude Code
+
+- **14:46** — pedi: implementar construir e o contrato JSON (scored, qualidade, hash) da Tarefa 6
+  - veio: 37/37 verdes. CLI roda; JSON lido com parse_constant que recusa NaN; 2.089 deals, 35 vendedores, 5 sem deal, hash determinístico entre duas execuções
+  - mudei: construir levanta erro se hoje é None (o motor não inventa data); dados_dir em vez de caminho relativo 'data' no teste; app/data gerado mas não commitado (submissions/ é ignorado pelo repositório oficial, o build é refeito no deploy)
+
+**Fim da sessão** 2026-11-11 14:46 — Tarefa 6 verde: 2 testes, suíte 37/37; contrato em docs/contrato.md
