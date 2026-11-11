@@ -1,5 +1,9 @@
 # Passo a passo: ligar a IA e publicar a demo
 
+> **Estado desta submissão (11/11/2026):** a IA **não está ligada**. A conta da API da Anthropic não tem créditos, e a primeira chamada real foi recusada com `credit balance is too low`. Por isso, os textos publicados na demo são de **template validado**, e não de IA. O código de geração com Haiku 5.5 está pronto e testado com cliente falso (`tests/test_gerar_ia.py`), mas nunca rodou contra a API real.
+>
+> Para ir para produção com IA, é preciso um plano com API e orçamento de tokens. Os requisitos estão na seção "Para produção" no fim deste documento. Os passos abaixo valem quando houver saldo.
+
 A demo é um site estático. A chave da Anthropic **não vai para a Vercel nem para o navegador**: ela fica no seu computador, só durante a geração dos briefings. A Vercel recebe apenas os arquivos já gerados em `app/data/`.
 
 ## 1. Guardar a chave na sua máquina, sem histórico de shell
@@ -70,3 +74,15 @@ unset ANTHROPIC_API_KEY
 | `recusas` alto | abra `briefings.json`, veja o motivo de cada item; o template cobre os casos recusados |
 | `custo estimado` acima do esperado | pare, confira o limite de gasto no console e revise `LIMITE_TOKENS` em `ia/briefing.py` |
 | erro de autenticação da API | a chave foi copiada incompleta ou está revogada; gere outra no console |
+
+## Para produção
+
+Antes de ligar a IA para valer, estes itens precisam estar resolvidos. Hoje nenhum está:
+
+1. **Plano com API e créditos suficientes** na conta da Anthropic, com faturamento ativo. Sem saldo, o produto cai no template, que é o comportamento esperado, mas não é "IA em produção".
+2. **Orçamento de tokens definido por escrito**: teto mensal em US$, teto de tokens por execução (hoje 60 chamadas, 250 e 150 tokens de saída) e quem aprova um aumento.
+3. **Limite de gasto mensal no console** da Anthropic, configurado antes de qualquer execução com chave de produção.
+4. **Chave em gerenciador de segredos**, nunca em arquivo do repositório. O site publicado não usa chave.
+5. **Monitoramento de custo**: a cada execução, `custo_estimado_usd`, `chamadas` e `recusas` precisam ser registrados, não só impressos.
+6. **Avaliação de qualidade do texto** com pessoas reais da operação. O validador garante que os números e as promessas estão corretos; não garante que o texto seja útil.
+7. **Plano de reversão**: se o custo ou a taxa de recusa passarem do limite, a geração volta a ser só template, sem mudança de código.

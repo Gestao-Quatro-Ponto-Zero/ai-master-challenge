@@ -28,7 +28,7 @@ O discovery (`docs/discovery.md`) foi ensaiado com quatro personas sintéticas e
 
 - **Motor:** `solution/motor/` (carregar, janela, aprender, pontuar, explicar), 59 testes, TDD tarefa a tarefa.
 - **Avaliação:** `solution/avaliacao/` — backtest as-of com 3 métricas e IC por bootstrap de vendedor, permutação para descartar atributos como sinal. Único erro de método que encontrei sozinho: o campo de conta só é preenchido após o desfecho (0 de 6.711 fechados sem conta, 1.425 de 2.089 abertos sem conta), e isso vazava sinal falso para "vendedor" no primeiro teste — corrigido em `docs/logica.md`.
-- **Produto:** `solution/app/` (3 telas, mobile-first, estado vazio como primeira classe), `solution/run.py` (um comando, servidor local, ações gravadas), `solution/ia/` (briefing com o Haiku 5.5 da Anthropic, validado contra os fatos antes de ser exibido; quando a IA não passa no validador, cai num template determinístico). Os textos são gerados no build, com limite de tokens por resposta e teto de chamadas por execução; a chave da API nunca vai para o navegador.
+- **Produto:** `solution/app/` (3 telas, mobile-first, estado vazio como primeira classe), `solution/run.py` (um comando, servidor local, ações gravadas), `solution/ia/` (briefing validado contra os fatos antes de ser exibido, com o Haiku 5.5 da Anthropic como geração desenhada e testada, e template determinístico como fallback). **Estado atual: a IA não está ligada.** A conta da API não tem créditos, e a primeira chamada real foi recusada. Por isso, os textos publicados são de template validado. A chave nunca vai para o navegador, e os requisitos para ligar a IA em produção (plano com API, orçamento de tokens, limite de gasto, monitoramento e avaliação do texto) estão em [`docs/deploy-passos.md`](docs/deploy-passos.md#para-produção).
 - **Prints:** `process-log/screenshots/` (desktop 1366px e mobile 390px).
 
 ### Recomendações
@@ -48,6 +48,7 @@ Lista completa e honesta em [`docs/limitacoes.md`](docs/limitacoes.md).
 | Ferramenta | Para que usou |
 |------------|--------------|
 | Claude Code — `claude-sonnet-4-6`, `claude-sonnet-5-5`, `claude-sonnet-5`, `claude-opus-5`, `claude-haiku-5-5`, `claude-haiku-4-5-20251001` | Implementação do motor com TDD (Tarefas 1 a 10), telas (Tarefa 11), documentos de operação e experimento (Tarefa 12), deploy, resumo executivo e README (Tarefa 13). Cada modelo está registrado com as tarefas em que rodou em [`process-log/MODELOS.md`](process-log/MODELOS.md). As trocas foram feitas pelo Diego entre etapas, por custo e qualidade. |
+| API da Anthropic, `claude-haiku-5-5` (planejada, **não executada**) | geração dos textos de briefing no `run.py`, com limite de tokens. Implementada e testada com cliente falso; a primeira chamada real foi recusada por falta de créditos. Não há texto da IA publicado. |
 | Microsoft 365 Copilot (Premium), GPT Sol 6.1 | Agente de persona do discovery (Tarefa 0B) — informante sintético, nunca fonte de fato. |
 | Nemotron-3.5-lightning (via OpenRouter), Gemini 3.1, ChatGPT 6.1 Sol | Baseline sem ferramentas (Tarefa 0), para medir o que um modelo propõe sem o dado na mão. |
 
@@ -60,7 +61,7 @@ Inventário completo, com versão exata e papel: [`process-log/MODELOS.md`](proc
 3. Fila, ordem e explicação por deal (Tarefas 4–5), cada uma verificada contra os valores de ouro do protótipo (`analise/eda-06-prototipo-motor-v2.saida.txt`) antes do commit.
 4. Build do contrato JSON e relatório de desvio (Tarefas 6 e 8).
 5. Backtest com três políticas e IC, permutação de atributos (Tarefa 7) — onde encontrei e corrigi o vazamento do campo de conta.
-6. Briefing com validador determinístico, primeiro só por template (Tarefa 9); depois ligado ao Haiku 5.5 com limites de tokens e teto de chamadas (ajuste pós-checklist da Tarefa 13), servidor local (Tarefa 10), três telas (Tarefa 11) — corrigidas depois de olhar os próprios prints, não só os testes.
+6. Briefing com validador determinístico (Tarefa 9). A geração com Haiku 5.5 foi implementada com limites de tokens e teto de chamadas, e testada com cliente falso; a primeira chamada real foi recusada por falta de créditos, então a IA não está ligada nesta submissão. Servidor local (Tarefa 10), três telas (Tarefa 11) — corrigidas depois de olhar os próprios prints, não só os testes.
 7. Operating map, sponsor map, design, deploy e experimento citando as transcrições do discovery (Tarefa 12).
 8. Deploy, resumo executivo, limitações e este README (Tarefa 13).
 

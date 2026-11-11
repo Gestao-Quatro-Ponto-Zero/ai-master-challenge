@@ -89,7 +89,7 @@ Gerado por `python build.py --hoje AAAA-MM-DD` em `app/data/`. O front só lê e
 
 ## briefings.json
 
-Gerado por `python run.py` (não pelo `build.py`), em `app/data/`. Só é gravado com `ANTHROPIC_API_KEY` no ambiente; sem a chave, ou com `--sem-ia`, a interface usa o texto do template no navegador.
+Gerado por `python run.py` (não pelo `build.py`), em `app/data/`. **Nesta submissão, todos os textos publicados são de template:** a chamada à API foi recusada por falta de créditos, e nenhum texto da IA foi gravado. O campo `origem` mostra isso item a item. Sem a chave, ou com `--sem-ia`, a interface usa o template.
 
 - `gerado_em`: quando os textos foram gerados
 - `modelo`: `claude-haiku-5-5` quando a IA foi usada; `template` quando não foi

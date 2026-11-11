@@ -303,3 +303,11 @@
   - mudei: erro da API agora cai no template do item, desliga a IA para o restante da execucao e aparece em recusas. modelo so diz haiku se algum texto veio da IA. Teste novo cobre o caso (1 chamada, sem derrubar). 16/16 testes de briefing. Nao ha texto da IA gravado ainda: o briefings.json atual e so template
 
 **Fim da sessão** 2026-11-11 19:47 — erro da API tratado; aguarda saldo na conta para a primeira execucao real
+
+## 2026-11-11 19:53 · Correção de estado: IA não está ligada · modelo claude-haiku-5-5 · ferramenta Claude Code
+
+- **19:53** — pedi: revisar a documentacao: a IA nao esta ligada; para producao e preciso plano com API e tokens
+  - veio: a entrada anterior deste diario, 'IA ligada no build', esta errada: a primeira chamada real foi recusada por falta de creditos e nenhum texto da IA foi gravado. Os documentos foram ajustados para dizer isso
+  - mudei: README, deploy-passos (secao 'Para producao' com 7 requisitos), contrato, limitacoes, o-que-eu-acrescentei, MODELOS e onde-a-ia-errou (novo item: erro da API derrubava o build). Mantive a entrada antiga do diario, sem editar, como exige o registro
+
+**Fim da sessão** 2026-11-11 19:53 — documentacao alinhada: IA nao ligada, requisitos para producao registrados

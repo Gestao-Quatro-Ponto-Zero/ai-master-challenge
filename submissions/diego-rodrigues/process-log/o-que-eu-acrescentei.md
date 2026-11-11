@@ -26,6 +26,6 @@
 
 - **Encerrar um negócio no CRM não é automático.** A fila de encerrar vira "confirmar ou reativar", porque o vendedor tem informação que o export não tem (Caio, na transcrição: "sem data não significa morto").
 - **Marcar "não está vivo" não mexe no número do gerente sem o motivo registrado** (P7), e a visibilidade para o gestor fica como decisão de piloto, não de produto.
-- **A chave da API fica fora do site publicado.** Os briefings são gerados no computador de quem roda o `run.py`, e a Vercel recebe só o resultado. Um site estático com chave no código ficaria exposto a qualquer um que abrisse o navegador. Decisão tomada pelo Diego (opção A), depois de eu explicar a alternativa de chamada a cada abertura.
+- **A chave da API fica fora do site publicado.** A decisão de arquitetura (gerar em lote, no computador de quem roda o `run.py`, e não chamar a API a cada abertura) foi do Diego, depois de eu explicar a alternativa. Mas a chave não chegou a gerar texto: a conta ficou sem créditos, e a IA não está ligada nesta submissão. Esse é o estado real, registrado sem arredondar.
 - **Limite de tokens e teto de chamadas no código, não só no console.** Cada resposta tem limite de saída, cada item tem no máximo duas tentativas, e a execução para em 60 chamadas. O validador recusa o que sai do marcador, e o template cobre o restante.
 - **Nenhuma troca de modelo foi automática.** O Diego trocou o modelo entre etapas, por custo e qualidade; a atribuição por tarefa está em `MODELOS.md`.

@@ -127,3 +127,10 @@
 - **Como foi pego:** Conferência da pasta `process-log/verificacao/`, que tinha só `LEIA.md`. A verificação é a etapa 6 e ainda não aconteceu.
 - **Teste que fixa:** Checagem de existência do relatório antes de marcar.
 - **O que ficou:** Marcada como pendente.
+
+## A geração de briefings não tratava erro da API, e um saldo zero derrubava o build
+
+- **O que a IA propôs:** chamar `messages.create` sem captura de erro. A suíte de testes usava cliente falso que sempre respondia, então nenhum teste cobria falha da API.
+- **Como foi pego:** a primeira execução com a chave real. A API respondeu `400 credit balance is too low`, e o `run.py` terminou com traceback, sem gravar nada.
+- **Teste que fixa:** `test_erro_da_api_nao_derruba_e_para_de_chamar`, com um cliente que levanta o erro da API.
+- **O que ficou:** erro da API cai no template do item, para de chamar a API no restante da execução e registra o motivo em `recusas`. A IA continua não ligada nesta submissão, porque a conta não tem créditos. Registrado sem arredondar.
