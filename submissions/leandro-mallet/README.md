@@ -13,7 +13,7 @@
 
 ## Executive Summary
 
-Construí o **G4 Sight**, o CRM do time comercial com a prioridade do dia dentro do pipeline. Está no ar em **https://g4-sight.vercel.app**, ligado a um banco Postgres no Supabase com os 8.800 deals do dataset. Não é um modelo num notebook: é a ferramenta que o vendedor abre de manhã para saber para quem ligar, com banco auditado, rotina automática diária e semanal e o motivo de cada nota na tela.
+Construí o **G4 Sight**, um CRM light do time comercial, com a prioridade do dia dentro do pipeline. Está no ar em **https://g4-sight.vercel.app**, ligado a um banco Postgres no Supabase com os 8.800 deals do dataset. Não é um modelo num notebook: é a ferramenta que o vendedor abre de manhã para saber para quem ligar, com banco auditado, rotina automática diária e semanal e o motivo de cada nota na tela.
 
 O Lead Score responde duas perguntas: **quem atende cada lead** e **em que ordem cada vendedor deve trabalhar os seus leads**. Cada lead vai para o vendedor de maior performance naquele perfil de lead nos últimos 3 meses (FIT). A fila de cada vendedor é ordenada por essa performance, pela urgência de atendimento (HEAT) e pela força de compra da empresa (bônus), e cada nota mostra o motivo.
 
@@ -39,7 +39,7 @@ O dataset termina em 31/12/2017. Para a simulação, o "hoje" do sistema (a data
 
 ### Abordagem
 
-1. **Entender o pedido antes da tecnologia.** A Head de RevOps disse que o time não vai abrir mais uma ferramenta. Li isso como: **a prioridade tem que estar dentro do CRM que o vendedor já usa**. **O produto virou o próprio CRM** (Painel, Pipeline, Leads), numa versão enxuta para o desafio, com a nota em cada lead. A premissa considerada foi: **cada vendedor vai olhar no sistema para quem vai ligar**. Isso abriu a possibilidade de distribuir os leads de forma otimizada por vendedor, e não só de ordenar uma lista.
+1. **Entender o pedido antes da tecnologia.** A Head de RevOps disse que o time não vai abrir mais uma ferramenta. Li isso como: **a prioridade tem que estar dentro do CRM que o vendedor já usa**. **O produto virou um CRM light** (Painel, Pipeline, Leads), uma versão enxuta para o desafio, com a nota em cada lead. A premissa considerada foi: **cada vendedor vai olhar no sistema para quem vai ligar**. Isso abriu a possibilidade de distribuir os leads de forma otimizada por vendedor, e não só de ordenar uma lista.
 2. **Premissas antes de código.** Regras de arquitetura, banco, backend e frontend fixadas antes de construir ([02-premissas.md](process-log/02-premissas.md)): prefixos de domínio no banco, chave estrangeira em toda relação, nada se apaga, auditoria de toda mudança e marca do G4.
 3. **Dados antes do score.** Limpeza reproduzível e teste de sinal de 18 variáveis ([findings.md](solution/analysis/findings.md)). Nenhuma característica do lead, sozinha, separa ganhos de perdas, e por isso a nota passou a olhar o encaixe entre o lead e o vendedor que atende.
 4. **Construção em paralelo, com papéis fixos.** Uma sessão de IA orquestrou, e quatro construíram: dados e banco, score, telas e QA. Toda tarefa virou uma ordem numerada, e toda entrega foi conferida por outra sessão antes do commit e testada no ar.
@@ -112,7 +112,7 @@ A entrega típica de uma IA que recebe só o brief e os CSVs está reconstruída
 - **Poucos casos tratados.** A baseline usa a taxa de ganho crua, e um vendedor com poucos deals vira extremo. Aqui a conversão é ajustada para poucos casos e exige 10 negócios por parâmetro.
 - **Lead incompleto declarado.** 68% dos abertos não têm empresa. A baseline costuma preencher com média em silêncio. Aqui o lead é avaliado pelos parâmetros que tem e reavaliado quando é completado.
 - **Explicação em frase, não lista de pontos.** Cada nota mostra a conta e frases como "O vendedor fecha 64% dos leads com este perfil".
-- **CRM em uso, não painel de leitura.** No lugar de tabela, KPIs e gráfico, um CRM com Painel, Pipeline, Leads, lista do dia com ✓ registrado, lista própria do manager, banco auditado e rotina automática.
+- **CRM light em uso, não painel de leitura.** No lugar de tabela, KPIs e gráfico, um CRM light com Painel, Pipeline, Leads, lista do dia com ✓ registrado, lista própria do manager, banco auditado e rotina automática.
 - **Process log com julgamento.** No lugar de "pedi o app e publiquei", 54 decisões registradas, a auditoria de cada entrega e os erros da IA que foram corrigidos.
 
 ### Recomendações
@@ -175,7 +175,7 @@ A entrega típica de uma IA que recebe só o brief e os CSVs está reconstruída
 
 ### O que eu adicionei que a IA sozinha não faria
 
-- **O produto é o CRM**, e não uma ferramenta ao lado. Foi a leitura da frase da Head de RevOps.
+- **O produto é um CRM light**, e não uma ferramenta ao lado. Foi a leitura da frase da Head de RevOps.
 - **O vendedor ideal para cada lead:** a nota decide quem atende, e não só a ordem.
 - **A performance recente (3 meses)** em vez da histórica, e a conversão do vendedor no perfil como medida simples e comparável.
 - **O tempo como urgência de atendimento**, com faixas definidas por mim e o lead novo atendido em até 1 dia.
