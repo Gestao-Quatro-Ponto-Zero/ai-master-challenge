@@ -21,4 +21,4 @@ Status: **confirmada** (a persona e/ou o dado sustentam a premissa), **contraria
 
 ## Pendências nas tarefas do produto
 
-Tarefas 9 e 11: estado vazio (P5), visão agregada na Tela 2 (P8), caminho para a lista completa (P4). Tarefa 12: onda 1 e meta da fila de encerrar (P12).
+Pendências por tarefa, com teste de validação: [pendencias-produto.md](pendencias-produto.md).
