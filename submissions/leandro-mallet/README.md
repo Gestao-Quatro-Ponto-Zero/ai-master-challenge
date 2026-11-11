@@ -6,12 +6,14 @@
 - **LinkedIn:** https://www.linkedin.com/in/leandro-maia-mallet/
 - **Instagram:** [@leandromaia.fly](https://www.instagram.com/leandromaia.fly/)
 - **Challenge escolhido:** 003 — Lead Scorer
+- **Perfil:** um conjunto raro de habilidades em um só profissional: o pensamento analítico de engenheiro, o domínio de metodologias de gestão empresarial e de gestão de projetos, o background em tecnologia e growth, e a mão na massa em IA, agentes e vibe coding.
+- **Track record:** gestão de projetos de tecnologia e engenharia, mentoria e treinamento de pequenos e médios empresários, e design e validação de produtos e startups.
 
 ---
 
 ## Executive Summary
 
-Construí o **G4 Sight**, o CRM do time comercial com a prioridade do dia dentro do pipeline. Está no ar em **https://g4-sight.vercel.app**, ligado a um banco Postgres com os 8.800 deals do dataset.
+Construí o **G4 Sight**, o CRM do time comercial com a prioridade do dia dentro do pipeline. Está no ar em **https://g4-sight.vercel.app**, ligado a um banco Postgres no Supabase com os 8.800 deals do dataset. Não é um modelo num notebook: é a ferramenta que o vendedor abre de manhã para saber para quem ligar, com banco auditado, rotina automática diária e semanal e o motivo de cada nota na tela.
 
 O Lead Score responde duas perguntas: **quem atende cada lead** e **em que ordem cada vendedor deve trabalhar os seus leads**. Cada lead vai para o vendedor de maior performance naquele perfil de lead nos últimos 3 meses (FIT). A fila de cada vendedor é ordenada por essa performance, pela urgência de atendimento (HEAT) e pela força de compra da empresa (bônus), e cada nota mostra o motivo.
 
@@ -25,8 +27,6 @@ Recomendação principal: **distribuir cada lead para o vendedor que mais conver
 
 - **No ar (recomendado):** https://g4-sight.vercel.app. Escolha o perfil e o usuário na tela de entrada; não há senha.
 - **Local:** [solution/app/COMO-RODAR.md](solution/app/COMO-RODAR.md) (Node 20+, `npm ci`, `npm run dev`). Sem as credenciais do banco, o app abre com os dados do arquivo para ver as telas, mas sem as notas, que ficam no banco.
-- **Score em Python (referência):** `python solution/scoring/calcular_score.py` (detalhes em [solution/scoring/validacao.md](solution/scoring/validacao.md)).
-- **Testes:** `npm test` no app (188 testes, entre eles a paridade do motor TypeScript com o Python) e `python -m unittest scoring/test_regra.py` (13 testes).
 
 ### Datas: simulação com o dataset × produção
 
@@ -92,7 +92,7 @@ Documento completo: [regra-lead-score.html](solution/scoring/regra-lead-score.ht
 ![Pipeline](docs/screenshots/04-pipeline.png)
 
 **Números da execução ativa** (2.089 deals abertos, conferidos no banco):
-- **Notas:** de 35 a 75, todas iguais a 0,7 × FIT + 0,3 × HEAT + bônus. O FIT vai de 47 a 77, com média de 61,7. 438 leads têm bônus.
+- **Notas:** de 35 a 75, todas iguais a 0,7 × FIT + 0,3 × HEAT + bônus. O FIT médio é 61,9.
 - **Distribuição:** os 35 vendedores têm leads, com limite de 23 leads ativos por vendedor na redistribuição.
 - **Paridade do motor:** o motor em TypeScript, que roda na rotina automática, reproduz o cálculo em Python deal a deal.
 
@@ -100,6 +100,20 @@ Documento completo: [regra-lead-score.html](solution/scoring/regra-lead-score.ht
 - **Banco:** 34 migrations, com RLS e sem política pública, sem DELETE nem TRUNCATE, auditoria por gatilho, gravação só por funções e limite de escritas por usuário e global.
 - **Revisão:** cada migration foi revisada e validada por uma sessão diferente da que escreveu ([solution/qa](solution/qa)).
 - **Testes no ar:** dois ciclos completos, com prints ([teste-banco-online.md](solution/qa/teste-banco-online.md), [teste-n1-n4-online.md](solution/qa/teste-n1-n4-online.md)).
+- **Testes automatizados:** 189 no app (`npm test`), entre eles a comparação do motor da rotina com o cálculo de referência em Python, deal a deal, e 13 no Python (`python -m unittest scoring/test_regra.py`). O Python não é necessário para rodar o app: serve de referência e validação ([validacao.md](solution/scoring/validacao.md)).
+
+### Como superamos a baseline
+
+A entrega típica de uma IA que recebe só o brief e os CSVs está reconstruída e medida contra os dados em [baseline.md](solution/qa/baseline.md). Onde o G4 Sight vai além:
+- **Pesos medidos, não escolhidos.** A baseline dá pontos por setor, porte, região e produto, que nestes dados não separam ganhos de perdas (diferença de 1,4 a 4,8 pontos na taxa de ganho). O G4 Sight testou 18 variáveis antes de pontuar e mede a conversão de cada vendedor no perfil completo do lead.
+- **Decide quem atende, não só a ordem.** A baseline ordena uma lista. O G4 Sight indica o vendedor ideal para cada lead, distribui a carga com limite por vendedor e repassa o lead parado.
+- **Valor fora da nota.** Na baseline, o valor do deal pesa e o score vira "ordenar por produto caro", o que o brief proíbe. Aqui o valor não entra, e a força de compra vem do histórico da empresa.
+- **Tempo como urgência, com data coerente.** A baseline penaliza a idade em linha reta e usa a data de hoje, o que zera todos os deals do dataset. Aqui o tempo é a urgência de atendimento por faixas, sobre a data de negócio da simulação.
+- **Poucos casos tratados.** A baseline usa a taxa de ganho crua, e um vendedor com poucos deals vira extremo. Aqui a conversão é ajustada para poucos casos e exige 10 negócios por parâmetro.
+- **Lead incompleto declarado.** 68% dos abertos não têm empresa. A baseline costuma preencher com média em silêncio. Aqui o lead é avaliado pelos parâmetros que tem e reavaliado quando é completado.
+- **Explicação em frase, não lista de pontos.** Cada nota mostra a conta e frases como "O vendedor fecha 64% dos leads com este perfil".
+- **CRM em uso, não painel de leitura.** No lugar de tabela, KPIs e gráfico, um CRM com Painel, Pipeline, Leads, lista do dia com ✓ registrado, lista própria do manager, banco auditado e rotina automática.
+- **Process log com julgamento.** No lugar de "pedi o app e publiquei", 54 decisões registradas, a auditoria de cada entrega e os erros da IA que foram corrigidos.
 
 ### Recomendações
 
@@ -183,4 +197,4 @@ Documento completo: [regra-lead-score.html](solution/scoring/regra-lead-score.ht
 
 ---
 
-_Submissão enviada em: [data]_
+_Submissão enviada em: 11/11/2026_
