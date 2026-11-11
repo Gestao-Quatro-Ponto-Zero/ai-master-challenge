@@ -2,12 +2,12 @@
 
 > Atualize ao final de cada sessão. Qualquer agente (Claude Code, Codex…) deve conseguir continuar o trabalho só com este arquivo + AGENTS.md.
 
-**Última atualização:** 2026-11-10 · Sessão 03 · Claude Code (Opus 5.5)
+**Última atualização:** 2026-11-11 · revisão do handoff após as Sessões 03 e 04 · Claude Code (Opus 5.5)
 
 ## Fase atual
-**Sessão 03 (pente fino, 10/11 noite):** navegação de um nível com submenus, tela **Tickets** em formato de conversa, Slack simulado no navegador, Diagnóstico enxuto, "atendente" × "agente" e Proposta mais objetiva (ADR-0015, Proposta). Fluxo 1 sem a gravação na caixa, republicado. JSON dos 4 fluxos exportados. **Próximo:** deploy de produção + smoke test; revisão da documentação pedida pelo G4 (README final); vídeo (última etapa); PR manual pelo Daniel.
+**Sessão 03 (pente fino, 10/11 noite):** navegação de um nível com submenus, tela **Tickets** em formato de conversa, Slack simulado no navegador, Diagnóstico enxuto, "atendente" × "agente" e Proposta mais objetiva (ADR-0015, Proposta). Fluxo 1 sem a gravação na caixa, republicado. JSON dos 4 fluxos exportados. Em produção desde o `86255aa` (smoke test na Sessão 04, refeito em 11/11 com o `1c8809e`: 9 rotas 200, redirects ok, `/api/heartbeat` 404, 10 tickets de demonstração com 5 rascunhos pendentes). **Próximo:** revisão do README (rascunho no `bde9f98`); `reset_demo.py`; vídeo (última etapa); PR manual pelo Daniel.
 
-**App Vercel integrado e em produção** (https://triagem-case-ai-master-case-g4.vercel.app). Frentes A e B integradas na `submission/daniel-fonseca` com o OK do Daniel (10/11). Monitoramento de uso ativo (n8n a cada 15 min + tarefa local a cada 2 h). Keep-alive só no n8n (fluxo 3 publicado em 10/11). Próximo: revisão do app pelo Daniel; exportar os JSON do n8n; README final; vídeo; PR.
+**App Vercel integrado e em produção** (https://triagem-case-ai-master-case-g4.vercel.app). Frentes A e B integradas na `submission/daniel-fonseca` com o OK do Daniel (10/11). Monitoramento de uso ativo (n8n a cada 15 min + tarefa local a cada 2 h). Keep-alive só no n8n (fluxo 3 publicado em 10/11). JSON do n8n exportados (`86255aa`, layout do fluxo 1 em 3 faixas no `e430e7d`).
 
 ## Timebox (decisão do Daniel)
 No máximo **dois turnos noturnos**: hoje (09/11) e amanhã (10/11), incluindo vídeo e PR. Se terminar hoje, melhor.
@@ -105,7 +105,7 @@ No máximo **dois turnos noturnos**: hoje (09/11) e amanhã (10/11), incluindo v
   - Credenciais: só as G4.
   - Nenhuma execução com erro desde 10/11 (124 execuções).
 - **Fluxo 3:** a credencial `G4 - Cron da Vercel` não existia. Na mesma noite o Daniel decidiu deixar o keep-alive só no n8n (item 14).
-- Detalhe cosmético na Triagem: há duas notas adesivas "Nível 3", e a nota antiga e a descrição do grupo "Nível 3 — alerta ao humano" ainda falam em gravar na caixa do painel. Não foi alterado porque exigiria republicar o fluxo.
+- ~~Detalhe cosmético na Triagem (nota antiga do Nível 3 e descrição do grupo falando da caixa do painel)~~ resolvido no `e430e7d`: a nota antiga saiu e a descrição foi atualizada. Parâmetros e conexões conferidos iguais aos do `8fd69ae`.
 
 ## Perguntas abertas para o Daniel
 - [x] ADR-0010: RAG como classificador único (Daniel). ADR-0011: diretrizes do n8n (Daniel).
@@ -118,7 +118,8 @@ No máximo **dois turnos noturnos**: hoje (09/11) e amanhã (10/11), incluindo v
 - [x] ADR-0003 validada (09/11).
 - [x] Premissas de custo: benchmarks com fonte (8,6 min/ticket MetricNet; R$ 21,30/h CAGED CBO 4223-20; volume 30K/ano do brief).
 - [x] ADRs 0004, 0005 e 0009 validadas pelo Daniel (09/11). Categorias "só humano" conforme a proposta da 0005.
-- [x] Slack: sem workspace → envio demonstrado pela caixa de mensagens do painel; nó Slack fica no workflow, documentado.
+- [x] Slack: sem workspace → envio simulado na tela Tickets, só no navegador do visitante (ADR-0015); nó Slack fica desativado no workflow, documentado.
+- [ ] Aprovar a ADR-0015 (Tickets em conversa e Slack simulado), hoje com status Proposta.
 
 ## Recursos (sem segredos)
 | Recurso | Valor |
