@@ -151,3 +151,11 @@
   - mudei: nota de correção: as entradas da Tarefa 2 que dizem que a regra do trimestre 'vem de' e foi 'verificada' no PR #242 não se sustentam. O docs/logica.md foi corrigido. Não atribuímos a regra a outra submissão até conferir o código
 
 **Fim da sessão** 2026-11-11 15:12 — correção de atribuição registrada (PR #242 e #240)
+
+## 2026-11-11 15:15 · Tarefa 8 — drift.py · modelo claude-haiku-5-5 · ferramenta Claude Code
+
+- **15:15** — pedi: implementar drift.py: conferir o que o build aprendeu contra os CSVs atuais, e avisar quando algo mudou
+  - veio: 47/47 verdes. Drift sai com 0 sobre os dados atuais; hash do build inalterado (2cb40e…). Teste de deal ganho aos 200 dias muda o ciclo; fechamentos depois do prazo desligam a regra do trimestre
+  - mudei: tolerância zero, sem limiar novo: ciclo e regra são comparados exatos, p_decide a 3 casas e carga a 1 casa. O plano não define tolerância para esses itens e a regra do projeto é não inventar limiar. build.py grava janela.json na raiz da solução, como o plano pede
+
+**Fim da sessão** 2026-11-11 15:15 — Tarefa 8 verde: 4 testes, suíte 47/47; drift sai 0 sobre dados atuais

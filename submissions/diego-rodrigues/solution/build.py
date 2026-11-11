@@ -12,6 +12,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from drift import aprendido
 from motor.aprender import carga_referencia, tabela_destino
 from motor.carregar import carregar, recortar
 from motor.explicar import explicar, resumo_vendedor
@@ -147,6 +148,9 @@ def main():
     if hoje is None:
         p.error("passe --hoje AAAA-MM-DD (config.hoje está null)")
     out = construir(RAIZ / "data", config, a.saida, hoje)
+    aprendida = aprendido(RAIZ / "data", config, pd.Timestamp(hoje))
+    (RAIZ / "janela.json").write_text(json.dumps(aprendida, ensure_ascii=False, indent=1, sort_keys=True),
+                                      encoding="utf-8")
     print("hash", out["hash"], "| saida", out["saida"])
 
 
