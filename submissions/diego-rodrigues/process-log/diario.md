@@ -167,3 +167,11 @@
   - mudei: mensagens de faixa que surge ou some reescritas em drift.py
 
 **Fim da sessão** 2026-11-11 15:18 — correção da mensagem de faixa no drift; 4/4 testes
+
+## 2026-11-11 15:25 · Tarefa 9 — ia/ validador e templates (sem chamada de API) · modelo claude-sonnet-5 · ferramenta Claude Code
+
+- **15:25** — pedi: implementar validar.py e briefing.py da Tarefa 9, só com templates — sem chamar a API Anthropic por decisão do Diego, fica para depois
+  - veio: 7/7 testes verdes. Rodei gerar(sem_ia=True) contra os dados reais (35 vendedores, 6 gerentes), não só os fixtures
+  - mudei: ERRO ENCONTRADO 1: minha primeira lista de termos proibidos ('decidir', 'decidem', 'decisão', 'decide') rejeitava 10 templates reais de vendedor e 2 de gestor, porque a fila preparar legitimamente diz 'decidem mais tarde no trimestre' — isso não é promessa de decisão iminente. Restringi a lista a frases de prazo curto ('próximas semanas', 'em breve', 'devem/vão decidir'). ERRO ENCONTRADO 2 (no meu próprio código): template_gestor sempre escrevia '{n_fechar} deal(s)... com chance de decidir nas próximas semanas', mesmo com n_fechar=0 — frase sem sentido que o validador corretamente rejeitou. Corrigido para condicionar a frase a n_fechar>0. gerar() levanta NotImplementedError se tentar usar a API sem sem_ia=True, para não mascarar a ausência da chamada real
+
+**Fim da sessão** 2026-11-11 15:25 — Tarefa 9 (parte 1, sem IA) verde: 7 testes, suíte 54/54; validador testado contra 35 vendedores e 6 gestores reais, não só fixtures
