@@ -189,11 +189,11 @@ O vermelho fica reservado a falha ou alerta de sistema. Confirmar na pendência 
 - **Acesso ao Supabase:** só no servidor (Server Components e Route Handlers), com a service role. O navegador não recebe chave.
 - **Rotas de API:**
   - `/api/triage` e `/api/hitl`: repassam ao n8n com `X-Webhook-Secret`, timeout de 30 s e modo offline;
-  - `/api/heartbeat`: Vercel Cron às 12:00 UTC, protegido por `CRON_SECRET`;
+  - `/api/heartbeat`: removida em 10/11. O keep-alive roda só no fluxo 3 do n8n (ADR-0006, revisão do Daniel);
   - `/api/demo/reset`: restaurar demonstração.
   - Todas as rotas `/api/*` aplicam os limites de uso e gravam em `usage_events` (8.1).
 - **Deploy:** projeto Vercel ligado ao fork no GitHub, com *root directory* `submissions/daniel-fonseca/solution/app`.
-- **Variáveis:** `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `N8N_BASE_URL`, `N8N_WEBHOOK_SECRET`, `CRON_SECRET`, `IP_HASH_SALT`, `FREE_TEXT_ENABLED` e os limites de uso (`RATE_*`).
+- **Variáveis:** `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `N8N_BASE_URL`, `N8N_WEBHOOK_SECRET`, `IP_HASH_SALT`, `FREE_TEXT_ENABLED` e os limites de uso (`RATE_*`).
 - **Banco (novo):** tabela `usage_events`; `notifications.kind` passa a aceitar `usage_alert`; colunas de tokens, custo e latência em `triage_runs` (migration na construção).
 - **Testes:** unitários das fórmulas do ROI + 1 e2e do Console.
 

@@ -7,7 +7,7 @@
 ## Fase atual
 **Sessão 03 (pente fino, 10/11 noite):** navegação de um nível com submenus, tela **Tickets** em formato de conversa, Slack simulado no navegador, Diagnóstico enxuto, "atendente" × "agente" e Proposta mais objetiva (ADR-0015, Proposta). Fluxo 1 sem a gravação na caixa, republicado. JSON dos 4 fluxos exportados. **Próximo:** deploy de produção + smoke test; revisão da documentação pedida pelo G4 (README final); vídeo (última etapa); PR manual pelo Daniel.
 
-**App Vercel integrado e em produção** (https://triagem-case-ai-master-case-g4.vercel.app). Frentes A e B integradas na `submission/daniel-fonseca` com o OK do Daniel (10/11). Monitoramento de uso ativo (n8n a cada 15 min + tarefa local a cada 2 h). Próximo: credencial do fluxo 3 (Daniel) e ativação; revisão do app pelo Daniel; exportar os JSON do n8n; README final; vídeo; PR.
+**App Vercel integrado e em produção** (https://triagem-case-ai-master-case-g4.vercel.app). Frentes A e B integradas na `submission/daniel-fonseca` com o OK do Daniel (10/11). Monitoramento de uso ativo (n8n a cada 15 min + tarefa local a cada 2 h). Keep-alive só no n8n (fluxo 3 publicado em 10/11). Próximo: revisão do app pelo Daniel; exportar os JSON do n8n; README final; vídeo; PR.
 
 ## Timebox (decisão do Daniel)
 No máximo **dois turnos noturnos**: hoje (09/11) e amanhã (10/11), incluindo vídeo e PR. Se terminar hoje, melhor.
@@ -80,7 +80,11 @@ No máximo **dois turnos noturnos**: hoje (09/11) e amanhã (10/11), incluindo v
    - fluxo n8n **G4 · Monitor de uso (alertas)** `xchzY3KKbsm0hzyG`, a cada 15 min, **publicado**; credencial `G4 - Supabase` vinculada por ID (o n8n tinha auto-atribuído `Supabase – padaria-bi`). Testado: alerta gravado na caixa (exec 248) e repetição barrada (exec 249);
    - tarefa agendada local `g4-monitor-uso-app` (a cada 2 h, até o Daniel mandar desligar): só leitura de Supabase, Vercel e n8n; reporta nesta sessão. Ela substitui o `scripts/monitor_usage.py` previsto no PRD. **Passo do Daniel:** abrir a tarefa no app e clicar em "Run now" uma vez para aprovar as ferramentas e definir o modo de permissão;
    - sobra do teste: 1 alerta de teste (`notifications` id 11) e 1 evento sinalizado (`usage_events` id 37). O comando de limpeza foi recusado; o `reset_demo.py` remove os dois.
-14. Fluxo 3 (heartbeat, `LpQK8XX5AZJrUCy8`): URL de produção e Header Auth configurados. Em 10/11 (sessão 04), `list_credentials` confirmou que a credencial ainda não existe. **Passo do Daniel:** criar no n8n a credencial `G4 - Cron da Vercel` (Header Auth, Name `Authorization`, Value `Bearer ` + `CRON_SECRET` do `.env`). Depois a IA vincula pelo ID, testa e publica.
+14. ✔ (10/11, sessão 04) **Keep-alive só no n8n**, por decisão do Daniel (ADR-0006 revista, judgment #47).
+   - O fluxo 3 (`LpQK8XX5AZJrUCy8`) grava direto em `heartbeat` (`source = 'n8n'`) com `G4 - Supabase`. Teste manual: exec 315, linha #5. **Publicado.**
+   - Saíram do app o cron do `vercel.json`, a rota `/api/heartbeat` e o `CRON_SECRET` (`env.ts` e `.env.example`). A credencial `G4 - Cron da Vercel` deixou de ser necessária.
+   - **Passo opcional do Daniel:** a variável `CRON_SECRET` continua cadastrada no projeto da Vercel e no `.env` local, sem uso. Pode ser apagada pelo painel.
+   - A remoção do cron e da rota entra na produção no próximo deploy de produção.
 15. Turno 2: app Vercel (dashboard + console + `/api/heartbeat`) + deploy + ativar o fluxo 3 com a URL + vídeo + PR.
 
 ## Sessão 03 — notas para a próxima sessão
@@ -99,7 +103,7 @@ No máximo **dois turnos noturnos**: hoje (09/11) e amanhã (10/11), incluindo v
   - Nos 4 fluxos, a versão publicada (ou o rascunho, no fluxo 3) bate com o JSON de `solution/n8n/`. Faltavam só os `nodeGroups` do canvas, acrescentados ao JSON.
   - Credenciais: só as G4.
   - Nenhuma execução com erro desde 10/11 (124 execuções).
-- **Fluxo 3:** a credencial `G4 - Cron da Vercel` ainda não existe. Ver o passo do Daniel no item 14.
+- **Fluxo 3:** a credencial `G4 - Cron da Vercel` não existia. Na mesma noite o Daniel decidiu deixar o keep-alive só no n8n (item 14).
 - Detalhe cosmético na Triagem: há duas notas adesivas "Nível 3", e a nota antiga e a descrição do grupo "Nível 3 — alerta ao humano" ainda falam em gravar na caixa do painel. Não foi alterado porque exigiria republicar o fluxo.
 
 ## Perguntas abertas para o Daniel
@@ -108,7 +112,7 @@ No máximo **dois turnos noturnos**: hoje (09/11) e amanhã (10/11), incluindo v
 - [x] OK final do rascunho v2 (Daniel, 09/11) → fluxos construídos.
 - [x] Playbook-semente validado pelo Daniel (10/11).
 - [x] Ativação dos fluxos 1 e 2 autorizada pelo Daniel (10/11).
-- [x] Credenciais G4 criadas pelo Daniel (10/11). Falta só a `G4 – Cron da Vercel`, depois do deploy.
+- [x] Credenciais G4 criadas pelo Daniel (10/11). A `G4 – Cron da Vercel` deixou de ser necessária (keep-alive só no n8n).
 - [ ] Opcional: testar `text-embedding-3-large` (~US$ 0,30) para tentar subir o RAG alguns pontos.
 - [x] ADR-0003 validada (09/11).
 - [x] Premissas de custo: benchmarks com fonte (8,6 min/ticket MetricNet; R$ 21,30/h CAGED CBO 4223-20; volume 30K/ano do brief).

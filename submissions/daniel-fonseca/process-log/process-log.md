@@ -301,4 +301,10 @@ A regra de conduta também foi registrada no AGENTS.md.
    - nenhuma execução com erro desde 10/11.
 3. Fluxo 3: a credencial `G4 - Cron da Vercel` ainda não existe, e o fluxo segue inativo.
 
-**Pendente (Daniel):** criar a credencial `G4 - Cron da Vercel` (Header Auth). Depois a IA vincula pelo ID, testa e publica.
+4. **Decisão do Daniel na mesma sessão:** o keep-alive fica só no n8n, sem o cron da Vercel.
+   - A IA apresentou o rascunho do fluxo 3 com 2 nós (Schedule → Supabase Create em `heartbeat`), e o Daniel aprovou. Ele também pediu para remover a rota e o segredo.
+   - Fluxo 3 alterado pelo MCP (sem credencial auto-atribuída), testado em modo manual (exec 315 → `heartbeat` #5, `source = n8n`) e publicado.
+   - App: saíram o cron do `vercel.json`, `app/api/heartbeat`, `cronSecret` em `env.ts` e `CRON_SECRET` em `.env.example`. `tsc` e lint ok.
+   - Atualizados ADR-0006 (revisão), `docs/n8n-flows.md`, `docs/architecture.md`, PRD e judgment #47. `03_heartbeat.json` e `.sdk.ts` foram reexportados.
+
+**Pendente (Daniel, opcional):** apagar a variável `CRON_SECRET` do projeto na Vercel e do `.env` local, onde ficou sem uso. A remoção da rota chega à produção no próximo deploy.

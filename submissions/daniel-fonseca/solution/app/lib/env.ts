@@ -17,7 +17,6 @@ export const env = {
   supabaseServiceRoleKey: () => required("SUPABASE_SERVICE_ROLE_KEY"),
   n8nBaseUrl: () => required("N8N_BASE_URL").replace(/\/+$/, ""),
   n8nWebhookSecret: () => required("N8N_WEBHOOK_SECRET"),
-  cronSecret: () => required("CRON_SECRET"),
   ipHashSalt: () => required("IP_HASH_SALT"),
   /** Interruptor manual do texto livre (PRD §8). Só muda por instrução do Daniel. */
   freeTextEnabled: () => (process.env.FREE_TEXT_ENABLED ?? "true").toLowerCase() !== "false",

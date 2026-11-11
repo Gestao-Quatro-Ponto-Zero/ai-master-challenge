@@ -535,6 +535,14 @@
    "what": "Nesta sessão do app, os MCPs do projeto (supabase-g4, n8n-g4) não carregaram, e os disponíveis eram das contas pessoais do Daniel. A IA não usou nenhum deles: aplicou a migration pela conexão do .env do G4 (conferindo os 47.837 tickets) e chamou o servidor n8n-g4 pelo token configurado no projeto",
    "who": "IA",
    "result": "Isolamento de contas mantido (ADR-0002)"
+  },
+  {
+   "n": 47,
+   "date": "2026-11-10",
+   "type": "Corte de escopo",
+   "what": "O Daniel decidiu deixar o keep-alive só no n8n, porque o fluxo diário já cobre a pausa do Supabase. Isso dispensou o cron da Vercel, a rota /api/heartbeat, o CRON_SECRET e uma credencial nova no n8n",
+   "who": "Daniel",
+   "result": "ADR-0006 revista; fluxo 3 grava direto no Supabase e foi publicado"
   }
  ],
  "judgmentHref": "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca/process-log/judgment-log.md",
@@ -556,6 +564,12 @@
    "date": "2026-11-10 (noite)",
    "harness": "Claude Code (Opus 5.5, app desktop)",
    "duration": "~3h"
+  },
+  {
+   "name": "Sessão 04",
+   "date": "2026-11-10 (noite)",
+   "harness": "Claude Code (Opus 5.5, app desktop, sessão lateral com supabase-g4 e n8n-g4)",
+   "duration": "~20 min"
   }
  ],
  "processLogHref": "https://github.com/danielcoelhof/ai-master-challenge/blob/submission/daniel-fonseca/submissions/daniel-fonseca/process-log/process-log.md"

@@ -1,6 +1,6 @@
 # Fluxos n8n — rascunho nó a nó (ADR-0011)
 
-> **Status: ATIVO no n8n (fluxos 1, 2 e 4), 10/11.** Rascunho v2 aprovado pelo Daniel (ADR-0012). Nós Postgres trocados por nós nativos do Supabase (ADR-0013). Testado ponta a ponta e pelo webhook de produção. O fluxo 3 tem a URL de produção e espera a credencial `G4 - Cron da Vercel`.
+> **Status: ATIVO no n8n (fluxos 1 a 4), 10/11.** Rascunho v2 aprovado pelo Daniel (ADR-0012). Nós Postgres trocados por nós nativos do Supabase (ADR-0013). Testado ponta a ponta e pelo webhook de produção. O fluxo 3 grava o keep-alive direto no Supabase, sem a Vercel (revisão da ADR-0006 pelo Daniel).
 > **Exportação (10/11):** o JSON de cada fluxo está em `solution/n8n/0N_*.json` (nós, conexões e configurações; sem a URL da VPS e sem segredos). Para importar: n8n → *Import from File*, depois selecionar as credenciais `G4 - Supabase`, `G4 - OpenAI` e `G4 - Segredo do webhookk` nos nós que pedem.
 > **Mudança de 10/11 (ADR-0015):** no caminho Somente humano, o fluxo 1 deixou de gravar em `notifications`. A nota interna (`human_summary`) e o texto do Slack (`alert_title`, `alert_body`) ficam na própria `triage_runs`, e o app simula o aviso do Slack no navegador.
 > Fontes consultadas no `n8n-g4` (09/11): SDK reference (guidelines), best practices de *triage*, *scheduling* e *chatbot* (a de *human_in_the_loop* ainda não tem documentação no servidor) e definições dos nós nativos listados abaixo.
@@ -11,7 +11,7 @@
 |---|---|---|---|---|
 | G4 · Triagem de ticket (RAG + 3 níveis) | `msFVCvUdsmRq49pv` | 34 | [`solution/n8n/01_triagem.sdk.ts`](../solution/n8n/01_triagem.sdk.ts) | **Ativo** (10/11) · testado ponta a ponta e pelo webhook de produção |
 | G4 · Aprovação HITL | `FWb7G9cGmMC69Q6D` | 16 | [`solution/n8n/02_aprovacao_hitl.sdk.ts`](../solution/n8n/02_aprovacao_hitl.sdk.ts) | **Ativo** (10/11) · testado (4 caminhos + produção) |
-| G4 · Heartbeat diário (Supabase ativo) | `LpQK8XX5AZJrUCy8` | 6 | [`solution/n8n/03_heartbeat.sdk.ts`](../solution/n8n/03_heartbeat.sdk.ts) | URL de produção configurada (10/11) · caminho de falha testado · inativo até a credencial `G4 - Cron da Vercel` |
+| G4 · Heartbeat diário (Supabase ativo) | `LpQK8XX5AZJrUCy8` | 2 + nota | [`solution/n8n/03_heartbeat.sdk.ts`](../solution/n8n/03_heartbeat.sdk.ts) | **Ativo** (10/11) · grava direto no Supabase · teste manual gravou `heartbeat` #5 (`source = n8n`) |
 | G4 · Monitor de uso (alertas) | `xchzY3KKbsm0hzyG` | 9 | [`solution/n8n/04_monitor_uso.sdk.ts`](../solution/n8n/04_monitor_uso.sdk.ts) | **Ativo** (10/11) · testado: sem alerta, com alerta e repetição barrada |
 
 As versões de 09/11 (com nó Postgres) foram **arquivadas** no n8n: `ML8nNXH22pSaDF09`, `Mm1hZMJvQMQu1uQJ` e `RtQAhCEnwxEDQrd4`.
@@ -22,7 +22,7 @@ As versões de 09/11 (com nó Postgres) foram **arquivadas** no n8n: `ML8nNXH22p
 - O export não tinha os grupos de nós do canvas (`nodeGroups`: 3 na Triagem e 2 no HITL). Eles foram acrescentados ao JSON a partir da versão ao vivo.
 - Credenciais nó a nó: só `G4 - Supabase` (`SEmoMU7WjCZ71Snn`), `G4 - OpenAI` (`O7tDFfhjrb655KV1`) e `G4 - Segredo do webhookk` (`yD741LTYlWeGQxYN`). Nenhum nó usa `Supabase – padaria-bi`, `Waha VPS (chave API)` ou `BI Linear`. Os nós Slack estão desativados e sem credencial. O nó HTTP do fluxo 3 está sem credencial, à espera da `G4 - Cron da Vercel`.
 - Execuções com status `error` ou `crashed` desde 10/11 00:00 (São Paulo): nenhuma, num total de 124 execuções. A última do Monitor de uso (exec 313) terminou com sucesso.
-- `list_credentials`: a credencial `G4 - Cron da Vercel` ainda não existe. O fluxo 3 continua inativo.
+- `list_credentials`: a credencial `G4 - Cron da Vercel` não existe. Na mesma noite, o Daniel decidiu deixar o keep-alive só no n8n, e ela deixou de ser necessária (ver Fluxo 3).
 
 - **Nós nativos do Supabase (ADR-0013):** as tabelas usam o nó Supabase. As duas funções do RAG usam HTTP Request com a credencial Supabase na API REST (`/rest/v1/rpc/...`), porque o nó Supabase não chama funções. Uma credencial só: `G4 - Supabase`.
 - **Credenciais (IDs conferidos):** `G4 - Supabase`, `G4 - OpenAI` e `G4 - Segredo do webhookk` (o nome tem um "k" a mais, sem efeito). O n8n auto-atribuiu as credenciais de outros contextos (`Supabase – padaria-bi`, `Waha VPS`) na criação. Todas foram trocadas pelos IDs G4 antes de qualquer execução.
@@ -199,22 +199,19 @@ flowchart LR
 
 ## Fluxo 3 — Heartbeat diário (ADR-0006)
 
+**Revisão de 10/11 (Daniel):** o keep-alive roda só no n8n. Saíram o cron da Vercel, a chamada a `/api/heartbeat` e o alerta em `notifications`. O fluxo grava direto no Supabase.
+
 ```mermaid
 flowchart LR
-  T[Todo dia às 06:00 São Paulo] --> H[Chamar /api/heartbeat da Vercel]
-  H -- sucesso --> FIM[Heartbeat ok]
-  H -- erro --> DB[Registrar heartbeat direto no banco] --> AL[Gravar alerta na caixa do painel]
+  T[Todo dia às 06:00 São Paulo] --> DB[Registrar heartbeat no banco]
 ```
 
 | # | Nome do nó | Tipo (nativo) | O que faz | Credencial |
 |---|---|---|---|---|
-| 1 | **Todo dia às 06:00 (São Paulo)** | Schedule Trigger (intervalo diário, timezone `America/Sao_Paulo`) | Horário definido pelo Daniel. O cron da Vercel roda em outro horário (proposta: 12:00 UTC = 09:00 em São Paulo), para os dois não coincidirem | — |
-| 2 | **Chamar /api/heartbeat da Vercel** | HTTP Request `GET <URL do app>/api/heartbeat?source=n8n` (placeholder até o deploy); `onError: continueErrorOutput`; *retry* 3× | A rota faz leitura e escrita real no Supabase (`heartbeat`, `source = 'n8n'`) | `G4 – Cron da Vercel` |
-| 3 | **Heartbeat ok** | No Operation | Fim do caminho de sucesso; a saída de erro do nó 2 leva ao 4 | — |
-| 4 | **Registrar heartbeat direto no banco** | Supabase · Create em `heartbeat` (`source = 'n8n-fallback'`, `ok = false`, `detail` = erro) | Mantém o banco ativo mesmo com a Vercel fora | `G4 - Supabase` |
-| 5 | **Gravar alerta na caixa do painel** | Supabase · Create em `notifications` (`kind = 'heartbeat_failure'`) | Fica na tabela para as rotinas do Claude (fora da interface desde a ADR-0015) | `G4 - Supabase` |
+| 1 | **Todo dia às 06:00 (São Paulo)** | Schedule Trigger (intervalo diário, timezone `America/Sao_Paulo`) | Horário definido pelo Daniel | — |
+| 2 | **Registrar heartbeat no banco** | Supabase · Create em `heartbeat` (`source = 'n8n'`, `ok = true`, `detail = 'keep-alive'`); *retry* 3× | A escrita real no banco mantém o projeto free ativo. Se as 3 tentativas falharem, a execução fica com erro no n8n | `G4 - Supabase` |
 
-Best practice de *scheduling* aplicada: tarefa idempotente (inserir um heartbeat a mais não causa problema) e sem risco de sobreposição (a execução leva segundos, o intervalo é de 24 h). A URL pública do app na Vercel pode ficar no JSON exportado; quem não pode aparecer no repositório é a URL da VPS do n8n.
+Best practice de *scheduling* aplicada: tarefa idempotente (inserir um heartbeat a mais não causa problema) e sem risco de sobreposição (a execução leva menos de 1 s, e o intervalo é de 24 h). Teste manual em 10/11: a execução 315 gravou `heartbeat` #5. Fluxo publicado em seguida.
 
 ---
 

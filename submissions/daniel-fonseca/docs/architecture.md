@@ -5,7 +5,6 @@ flowchart LR
   subgraph Vercel["Vercel — app web"]
     D[Dashboard de diagnóstico]
     C[Console operacional<br/>novo ticket · fila HITL · alertas]
-    H[/api/heartbeat — cron diário/]
   end
 
   subgraph N8N["n8n (VPS)"]
@@ -17,6 +16,7 @@ flowchart LR
     Q[Nível 2: rascunho → fila HITL]
     N[Nível 3: só humano → alerta]
     W2[Webhook: aprovação HITL]
+    HBF[Schedule diário 06:00:<br/>heartbeat]
   end
 
   subgraph SB["Supabase (Postgres + pgvector)"]
@@ -34,7 +34,7 @@ flowchart LR
   Q -.revisão.-> C -->|aprovar/editar| W2 --> T3
   N --> SL[Slack via n8n<br/>+ caixa de mensagens no painel]
   D --> T1 & T4
-  H --> HB
+  HBF --> HB
 ```
 
 ## Componentes
@@ -56,7 +56,7 @@ Fontes: [Functions Limits](https://vercel.com/docs/functions/limitations) · [Ho
 | Duração máxima de função | 300 s | Triagem leva poucos segundos (embedding + `classify_ticket` ~0,1 s + LLM). Folga grande |
 | Active CPU | 4 CPU-h/mês | A espera por I/O (n8n, OpenAI, banco) **não conta**. Uso desprezível |
 | Invocações de função | 1M/mês | Desprezível |
-| Cron | 1×/dia (ADR-0006) | Só o heartbeat |
+| Cron | 1×/dia | Sem uso: o keep-alive roda no n8n (ADR-0006, revisão de 10/11) |
 | Região padrão | `iad1` (EUA); uma região, alterável | Configurar `gru1` (São Paulo), perto do Supabase `sa-east-1` |
 | Uso | Não comercial / pessoal | Projeto de processo seletivo: dentro da regra |
 | Estouro de limite | Recurso pausado por até 30 dias | Proteções abaixo |

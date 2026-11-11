@@ -24,47 +24,13 @@
       }
     },
     {
-      "id": "cdbfe2ba-cc1c-49c8-96e0-c5e2fec4c3b1",
-      "name": "Chamar /api/heartbeat da Vercel",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.5,
-      "position": [
-        224,
-        96
-      ],
-      "parameters": {
-        "method": "GET",
-        "url": "https://triagem-case-ai-master-case-g4.vercel.app/api/heartbeat?source=n8n",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
-        "options": {
-          "timeout": 20000
-        }
-      },
-      "retryOnFail": true,
-      "maxTries": 3,
-      "waitBetweenTries": 5000,
-      "onError": "continueErrorOutput"
-    },
-    {
-      "id": "f94db4b7-1cc0-467e-b1e5-1d4c990d39c0",
-      "name": "Heartbeat ok",
-      "type": "n8n-nodes-base.noOp",
-      "typeVersion": 1,
-      "position": [
-        448,
-        0
-      ],
-      "parameters": {}
-    },
-    {
       "id": "12769368-3e9e-4806-aa7b-4b2e0cf7a68d",
-      "name": "Registrar heartbeat direto no banco",
+      "name": "Registrar heartbeat no banco",
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        448,
-        192
+        224,
+        96
       ],
       "parameters": {
         "resource": "row",
@@ -75,60 +41,15 @@
           "fieldValues": [
             {
               "fieldId": "source",
-              "fieldValue": "n8n-fallback"
+              "fieldValue": "n8n"
             },
             {
               "fieldId": "ok",
-              "fieldValue": "={{ false }}"
+              "fieldValue": "={{ true }}"
             },
             {
               "fieldId": "detail",
-              "fieldValue": "={{ \"Vercel não respondeu: \" + String($json.error?.message ?? $json.message ?? \"erro desconhecido\").slice(0, 300) }}"
-            }
-          ]
-        }
-      },
-      "retryOnFail": true,
-      "maxTries": 3,
-      "waitBetweenTries": 5000,
-      "credentials": {
-        "supabaseApi": {
-          "id": "SEmoMU7WjCZ71Snn",
-          "name": "G4 - Supabase"
-        }
-      }
-    },
-    {
-      "id": "5fd336cc-f488-4712-a935-ea6c87a7d0fe",
-      "name": "Gravar alerta na caixa do painel",
-      "type": "n8n-nodes-base.supabase",
-      "typeVersion": 1,
-      "position": [
-        672,
-        192
-      ],
-      "parameters": {
-        "resource": "row",
-        "operation": "create",
-        "tableId": "notifications",
-        "dataToSend": "defineBelow",
-        "fieldsUi": {
-          "fieldValues": [
-            {
-              "fieldId": "kind",
-              "fieldValue": "heartbeat_failure"
-            },
-            {
-              "fieldId": "channel_intended",
-              "fieldValue": "slack"
-            },
-            {
-              "fieldId": "title",
-              "fieldValue": "Heartbeat da Vercel falhou"
-            },
-            {
-              "fieldId": "body",
-              "fieldValue": "={{ \"O n8n não conseguiu chamar /api/heartbeat às \" + $now.setZone(\"America/Sao_Paulo\").toFormat(\"dd/MM HH:mm\") + \". O banco foi mantido ativo por escrita direta; verifique o deploy da Vercel.\" }}"
+              "fieldValue": "keep-alive"
             }
           ]
         }
@@ -149,11 +70,11 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        272,
-        192
+        0,
+        256
       ],
       "parameters": {
-        "content": "## Heartbeat (ADR-0006)\nO Supabase free pausa por inatividade. O cron da Vercel chama `/api/heartbeat` uma vez por dia; este fluxo é a **redundância**, às 06:00 de São Paulo.\nSe a Vercel falhar, o n8n escreve direto no banco (mantém o projeto ativo) e deixa um alerta na caixa do painel.",
+        "content": "## Heartbeat (ADR-0006)\nO Supabase free pausa por inatividade. Todo dia às 06:00 de São Paulo, este fluxo grava uma linha em `heartbeat` (`source = n8n`) com a credencial G4 - Supabase.\nO keep-alive roda só no n8n, por decisão do Daniel (10/11). Se a gravação falhar nas 3 tentativas, a execução fica com erro no n8n.",
         "color": 4
       }
     }
@@ -163,36 +84,7 @@
       "main": [
         [
           {
-            "node": "Chamar /api/heartbeat da Vercel",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Chamar /api/heartbeat da Vercel": {
-      "main": [
-        [
-          {
-            "node": "Heartbeat ok",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Registrar heartbeat direto no banco",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Registrar heartbeat direto no banco": {
-      "main": [
-        [
-          {
-            "node": "Gravar alerta na caixa do painel",
+            "node": "Registrar heartbeat no banco",
             "type": "main",
             "index": 0
           }
@@ -209,8 +101,8 @@
   "meta": {
     "exportedFrom": "n8n (VPS do Daniel, URL fora do repositório)",
     "workflowId": "LpQK8XX5AZJrUCy8",
-    "active": false,
-    "activeVersionId": null,
+    "active": true,
+    "activeVersionId": "9f8e417a-30aa-4951-8fc2-9577433bdaed",
     "verifiedAgainstLive": "2026-11-10 (sessão 04, MCP n8n-g4)"
   }
 }

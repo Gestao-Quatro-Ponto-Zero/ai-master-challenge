@@ -8,7 +8,7 @@ Especificação: [`docs/prd/01-prd.md`](../../docs/prd/01-prd.md) · decisões: 
 |---|---|---|
 | `app/(painel)/`, `app/como-foi-feito/`, `components/painel/`, `components/metodo/` | Frente A | Painel (Diagnóstico · ROI · Operação) e Como foi feito |
 | `app/console/`, `components/console/`, `app/api/triage`, `app/api/hitl`, `app/api/demo` | Frente B | Console (Triagem · Fila · Caixa) e rotas de API |
-| `components/shell/`, `components/shared/`, `components/ui/`, `lib/`, `app/api/heartbeat` | Base | Shell, tokens Órbita, componentes e contratos compartilhados |
+| `components/shell/`, `components/shared/`, `components/ui/`, `lib/` | Base | Shell, tokens Órbita, componentes e contratos compartilhados |
 
 ## Regras
 - O navegador nunca recebe chave: Supabase só no servidor (`lib/supabase.ts`, service role), n8n só pelas rotas `/api/*` com `X-Webhook-Secret`.

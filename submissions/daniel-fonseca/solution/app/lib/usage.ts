@@ -5,7 +5,7 @@ import { createHash } from "node:crypto"
 import { env, rateLimits, type LimitedAction } from "@/lib/env"
 import { supabaseServer } from "@/lib/supabase"
 
-export type UsageAction = LimitedAction | "heartbeat"
+export type UsageAction = LimitedAction
 export type UsageOutcome = "ok" | "rate_limited" | "client_error" | "server_error" | "offline" | "disabled"
 
 /** IP do visitante (Vercel envia x-forwarded-for). Só o hash com sal é gravado (PRD §8). */
