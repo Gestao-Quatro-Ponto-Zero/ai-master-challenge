@@ -10,6 +10,7 @@ from motor.carregar import carregar
 
 RAIZ = Path(__file__).parent.parent
 REPETICOES_PERMUTACAO = 1000
+LIMITE_SINAL = 0.05
 ATRIBUTOS = [
     ("conta", "conta"),
     ("vendedor", "vendedor"),
@@ -40,7 +41,7 @@ def calcular() -> dict:
     permutacoes = {}
     for chave, rotulo in ATRIBUTOS:
         p = permutacao(h, chave, estratificar_por="mes_do_trimestre", n=REPETICOES_PERMUTACAO)["p"]
-        permutacoes[rotulo] = {"p": p}
+        permutacoes[rotulo] = {"p": p, "sinal": bool(p < LIMITE_SINAL)}
     p_vendedor_controlado = permutacao(
         h, "vendedor", estratificar_por=["mes_do_trimestre", "gerente"], n=REPETICOES_PERMUTACAO
     )["p"]
@@ -66,7 +67,8 @@ def calcular() -> dict:
         },
         "razoes": razoes,
         "permutacao": permutacoes,
-        "permutacao_vendedor_controlado_por_gerente": {"p": p_vendedor_controlado},
+        "permutacao_vendedor_controlado_por_gerente": {
+            "p": p_vendedor_controlado, "sinal": bool(p_vendedor_controlado < LIMITE_SINAL)},
         "parametros": {
             "rodadas_aleatorio": RODADAS_ALEATORIO,
             "repeticoes_permutacao": REPETICOES_PERMUTACAO,

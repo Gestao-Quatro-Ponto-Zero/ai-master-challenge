@@ -12,6 +12,7 @@ Gerado por `python build.py --hoje AAAA-MM-DD` em `app/data/`. O front só lê e
 - `janela.usa_prazo_trimestre`: se a regra do fim do trimestre seguinte está ativa
 - `janela.n_fechamentos`: quantos fechamentos conhecidos sustentam a janela
 - `janela.fechamentos_apos_prazo`: quantos fecharam depois do fim do trimestre seguinte
+- `datas_analogas`: datas passadas (3, 6 e 9 meses antes de `hoje`) de onde a tabela de destino foi aprendida
 - `tabela_destino[].faixa`: rótulo da faixa de idade, por exemplo `1-15` ou `76-138`
 - `tabela_destino[].n`: deals abertos observados nessa faixa, somando as datas análogas
 - `tabela_destino[].decidiram_28d`: quantos desses decidiram nos 28 dias seguintes

@@ -55,34 +55,43 @@ def fatos_gestor(scored: dict, gerente: str) -> dict:
 
 def template_vendedor(fatos: dict) -> str:
     if fatos.get("sem_nada_vivo"):
-        return (
-            "{nome}, não há nenhum deal vivo na sua carteira nesta semana "
-            "(semana {semana_do_trimestre} do trimestre). "
-            "Se houver deals em iniciar, comece por eles no CRM."
-        )
+        base = ("{nome}, não há nenhum deal vivo na sua carteira nesta semana "
+                "(semana {semana_do_trimestre} do trimestre).")
+        n = fatos.get("n_iniciar", 0)
+        if n > 0:
+            return base + " {n_iniciar} " + _deal(n) + " sem data de engajamento: comece registrando o primeiro contato."
+        return base + " Também não há deals para iniciar."
     linhas = ["{nome}, semana {semana_do_trimestre} do trimestre."]
-    if fatos.get("n_fechar", 0) > 0:
-        linhas.append("Você tem {n_fechar} deal(s) com chance medida de decidir nas próximas semanas.")
-    if fatos.get("n_preparar", 0) > 0:
-        linhas.append("{n_preparar} deal(s) decidem mais tarde no trimestre: vale avançar uma etapa.")
-    if fatos.get("n_iniciar", 0) > 0:
-        linhas.append("{n_iniciar} deal(s) sem data de engajamento: registre o primeiro contato.")
-    if fatos.get("n_encerrar", 0) > 0:
-        linhas.append("{n_encerrar} deal(s) venceram a janela, valor de tabela {valor_encerrar}: confirme ou encerre no CRM.")
-    for i, item in enumerate(fatos.get("foco", []), start=1):
-        linhas.append(f"- {{produto_{i}}} em {{conta_{i}}}, fila {{fila_{i}}}, {{dias_restantes_{i}}} dias restantes.")
+    n = fatos.get("n_fechar", 0)
+    if n > 0:
+        linhas.append("Você tem {n_fechar} " + _deal(n) + " com chance medida de decidir nas próximas semanas.")
+    n = fatos.get("n_preparar", 0)
+    if n > 0:
+        linhas.append("{n_preparar} " + ("deal vivo decide" if n == 1 else "deals vivos decidem")
+                      + " mais tarde no trimestre: vale avançar uma etapa.")
+    n = fatos.get("n_iniciar", 0)
+    if n > 0:
+        linhas.append("{n_iniciar} " + _deal(n) + " sem data de engajamento: registre o primeiro contato.")
+    n = fatos.get("n_encerrar", 0)
+    if n > 0:
+        linhas.append("{n_encerrar} " + _deal(n) + (" venceu" if n == 1 else " venceram")
+                      + " a janela (valor de tabela {valor_encerrar}): confirme ou encerre no CRM.")
     return "\n".join(linhas)
 
 
+def _deal(n: int) -> str:
+    return "deal" if n == 1 else "deals"
+
+
 def template_gestor(fatos: dict) -> str:
-    linhas = ["Resumo do time de {gerente}, semana {semana_do_trimestre} do trimestre."]
-    if fatos.get("n_fechar", 0) > 0:
-        linhas.append(
-            "{vendedores} vendedores no cadastro; {n_fechar} deal(s) do time com chance medida de "
-            "decidir nas próximas semanas; {n_encerrar} vencido(s)."
-        )
+    linhas = ["Semana {semana_do_trimestre} do trimestre, {vendedores} vendedores no cadastro."]
+    nf = fatos.get("n_fechar", 0)
+    ne = fatos.get("n_encerrar", 0)
+    if nf > 0:
+        linhas.append("{n_fechar} " + _deal(nf) + " do time com chance medida de decidir nas próximas semanas; "
+                      "{n_encerrar} " + _deal(ne) + " vencido" + ("" if ne == 1 else "s") + ".")
     else:
-        linhas.append("{vendedores} vendedores no cadastro; {n_encerrar} deal(s) vencido(s) no time.")
+        linhas.append("{n_encerrar} " + _deal(ne) + " vencido" + ("" if ne == 1 else "s") + " no time.")
     linhas.append("Valor aberto {valor_aberto}, valor vivo {valor_vivo}, valor vencido {valor_vencido}.")
     return "\n".join(linhas)
 

@@ -183,3 +183,11 @@
   - mudei: Manipulador exportado é criado por fabrica_manipulador(app, acoes), porque SimpleHTTPRequestHandler usa a classe (não a instância) para abrir o diretório — precisei de uma fábrica para fechar sobre o caminho de dados e o arquivo de ações sem variável global mutável. sem_ia em run.py chama gerar(sem_ia=True) sempre, porque a chamada real da API ainda não existe (Tarefa 9 parcial)
 
 **Fim da sessão** 2026-11-11 15:30 — Tarefa 10 verde: 5 testes, suíte 59/59; teste manual ok (build, servidor, POST e GET refletindo)
+
+## 2026-11-11 15:44 · Tarefa 11 — app/ três telas · modelo claude-sonnet-5-5 · ferramenta Claude Code
+
+- **15:44** — pedi: construir as três telas (segunda-feira, o time, como decide), carregando frontend-design e ui-ux-pro-max antes do CSS, e verificar em navegador real
+  - veio: HTML/CSS/JS sem framework; relógio de 13 semanas no topo como único elemento de aposta; 6 prints em process-log/screenshots; 59/59 testes; roteiro do Passo 2 conferido por Playwright (Boris 1 fechar e 4 preparar, Darcel 5 iniciar, Carl Lin vazio, filtro de região 35 para 12, 6 linhas de backtest e 9 faixas)
+  - mudei: DEFEITOS ENCONTRADOS OLHANDO OS PRINTS, nenhum pego por teste: (1) briefing da Tarefa 9 dizia 'em sem conta no CRM', '89.0 dias' e repetia a lista de foco; corrigi template e _formatar; (2) estado vazio repetia a mesma frase três vezes e mostrava 'carga 0' para vendedor sem histórico, que parecia medição; (3) BUG MEU: coluna fixa do vendedor na tabela do time ocupava 353 de 358 px no celular e escondia todas as outras colunas; (4) valores em dólar quebravam em duas linhas; (5) plurais '1 ações' e '1 deals'. Também: acrescentei datas_analogas ao scored.json porque a Tela 3 precisa e o front não pode calcular; eval.json ganhou o campo sinal para a conclusão vir do dado e não do JS. Playwright foi instalado num venv separado, fora de requirements.txt
+
+**Fim da sessão** 2026-11-11 15:44 — Tarefa 11 verde no navegador: 3 telas, 6 prints, 59/59

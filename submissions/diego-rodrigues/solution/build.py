@@ -13,7 +13,7 @@ import numpy as np
 import pandas as pd
 
 from drift import aprendido
-from motor.aprender import carga_referencia, tabela_destino
+from motor.aprender import carga_referencia, datas_analogas, tabela_destino
 from motor.carregar import carregar, recortar
 from motor.explicar import explicar, resumo_vendedor
 from motor.janela import aprender_janela
@@ -116,6 +116,7 @@ def construir(pasta_dados, config: dict, saida, hoje=None) -> dict:
         "semana_do_trimestre": semana,
         "config": config,
         "janela": asdict(janela),
+        "datas_analogas": [d.date().isoformat() for d in datas_analogas(r, hoje)],
         "tabela_destino": [_registro(x) for x in t_out.reset_index().to_dict("records")],
         "deals": deals,
         "vendedores": vendedores,

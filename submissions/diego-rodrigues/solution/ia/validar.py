@@ -20,8 +20,11 @@ def _eh_moeda(chave: str) -> bool:
 
 
 def _formatar(valor) -> str:
-    if isinstance(valor, float) and valor != valor:  # NaN
-        return "indefinido"
+    if isinstance(valor, float):
+        if valor != valor:  # NaN
+            return "indefinido"
+        if valor.is_integer():
+            return str(int(valor))
     return str(valor)
 
 
@@ -38,7 +41,7 @@ def marcadores_validos(fatos: dict) -> dict[str, str]:
             m[chave] = valor
     for i, item in enumerate(fatos.get("foco", []), start=1):
         m[f"produto_{i}"] = item["produto"]
-        m[f"conta_{i}"] = item["conta"] if item.get("conta") else "sem conta no CRM"
+        m[f"conta_{i}"] = item["conta"] if item.get("conta") else "conta não registrada no CRM"
         m[f"valor_{i}"] = _valor_moeda(item["valor"])
         m[f"idade_{i}"] = _formatar(item["idade"])
         m[f"dias_restantes_{i}"] = _formatar(item["dias_restantes"]) if item.get("dias_restantes") is not None else "indefinido"
