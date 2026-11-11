@@ -129,10 +129,11 @@ def main(argv: list[str] | None = None) -> int:
     if not a.sem_ia:
         from ia.briefing import gerar
         scored = json.loads((app_dir / "data" / "scored.json").read_text(encoding="utf-8"))
-        b = gerar(scored, sem_ia=True)  # chamada real ainda não implementada (Tarefa 9)
+        b = gerar(scored)
         (app_dir / "data" / "briefings.json").write_text(
             json.dumps(b, ensure_ascii=False, indent=1, sort_keys=True), encoding="utf-8")
-        print("briefings gravados (origem: template)")
+        origem = "IA (Haiku 5.5)" if b["modelo"] != "template" else "template"
+        print(f"briefings gravados (origem: {origem}, chamadas: {b['chamadas']}, custo estimado: US$ {b['custo_estimado_usd']:.4f}, recusas: {len(b['recusas'])})")
 
     acoes = app_dir / "data" / "acoes.jsonl"
     handler = fabrica_manipulador(app_dir, acoes)

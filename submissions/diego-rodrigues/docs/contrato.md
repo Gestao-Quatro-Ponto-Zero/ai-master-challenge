@@ -87,6 +87,21 @@ Gerado por `python build.py --hoje AAAA-MM-DD` em `app/data/`. O front só lê e
 - `vendedores_com_deal_aberto`: vendedores com algum deal aberto
 - `vendedores_sem_deal`: vendedores do cadastro sem nenhum deal no export
 
+## briefings.json
+
+Gerado por `python run.py` (não pelo `build.py`), em `app/data/`. Só é gravado com `ANTHROPIC_API_KEY` no ambiente; sem a chave, ou com `--sem-ia`, a interface usa o texto do template no navegador.
+
+- `gerado_em`: quando os textos foram gerados
+- `modelo`: `claude-haiku-5-5` quando a IA foi usada; `template` quando não foi
+- `vendedores[nome]`: `texto` (já com os números preenchidos), `origem` (`ia` ou `template`) e `motivo` (preenchido só quando um template foi usado após recusa da IA)
+- `gestores[nome]`: mesma estrutura de `vendedores`, para o resumo por gerente
+- `custo_estimado_usd`: soma dos tokens de entrada e de saída pelo preço do Haiku 5.5 (US$ 0,10 por milhão de entrada e US$ 0,50 por milhão de saída)
+- `chamadas`: número de chamadas à API nesta execução (teto de 60)
+- `tokens_entrada`, `tokens_saida`: totais reportados pela API
+- `recusas`: lista de itens em que a IA não passou no validador ou não completou a resposta, com o motivo; cada um recebeu o template
+
+Limites fixos no código (`ia/briefing.py`): modelo `claude-haiku-5-5`; até 250 tokens de saída por briefing de vendedor e 150 por resumo de gestor; até 2 tentativas por item; teto de 60 chamadas por execução. Sem `temperature` e com `thinking` desligado, porque o Haiku 5.5 rejeita temperatura não padrão e o orçamento de saída deve ir para o texto.
+
 ## hash.txt
 
 - SHA-256 do `scored.json` sem `gerado_em`, serializado com `sort_keys` e `indent=1`. Duas execuções com os mesmos dados e a mesma data dão o mesmo hash.

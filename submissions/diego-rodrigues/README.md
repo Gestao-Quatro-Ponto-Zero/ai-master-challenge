@@ -28,7 +28,7 @@ O discovery (`docs/discovery.md`) foi ensaiado com quatro personas sintéticas e
 
 - **Motor:** `solution/motor/` (carregar, janela, aprender, pontuar, explicar), 59 testes, TDD tarefa a tarefa.
 - **Avaliação:** `solution/avaliacao/` — backtest as-of com 3 métricas e IC por bootstrap de vendedor, permutação para descartar atributos como sinal. Único erro de método que encontrei sozinho: o campo de conta só é preenchido após o desfecho (0 de 6.711 fechados sem conta, 1.425 de 2.089 abertos sem conta), e isso vazava sinal falso para "vendedor" no primeiro teste — corrigido em `docs/logica.md`.
-- **Produto:** `solution/app/` (3 telas, mobile-first, estado vazio como primeira classe), `solution/run.py` (um comando, servidor local, ações gravadas), `solution/ia/` (briefing com validador determinístico; nesta versão, só por template — a chamada à API da Anthropic não foi implementada, por decisão do Diego).
+- **Produto:** `solution/app/` (3 telas, mobile-first, estado vazio como primeira classe), `solution/run.py` (um comando, servidor local, ações gravadas), `solution/ia/` (briefing com o Haiku 5.5 da Anthropic, validado contra os fatos antes de ser exibido; quando a IA não passa no validador, cai num template determinístico). Os textos são gerados no build, com limite de tokens por resposta e teto de chamadas por execução; a chave da API nunca vai para o navegador.
 - **Prints:** `process-log/screenshots/` (desktop 1366px e mobile 390px).
 
 ### Recomendações
@@ -60,7 +60,7 @@ Inventário completo, com versão exata e papel: [`process-log/MODELOS.md`](proc
 3. Fila, ordem e explicação por deal (Tarefas 4–5), cada uma verificada contra os valores de ouro do protótipo (`analise/eda-06-prototipo-motor-v2.saida.txt`) antes do commit.
 4. Build do contrato JSON e relatório de desvio (Tarefas 6 e 8).
 5. Backtest com três políticas e IC, permutação de atributos (Tarefa 7) — onde encontrei e corrigi o vazamento do campo de conta.
-6. Briefing por template com validador determinístico (Tarefa 9, sem chamada de API nesta versão), servidor local (Tarefa 10), três telas (Tarefa 11) — corrigidas depois de olhar os próprios prints, não só os testes.
+6. Briefing com validador determinístico, primeiro só por template (Tarefa 9); depois ligado ao Haiku 5.5 com limites de tokens e teto de chamadas (ajuste pós-checklist da Tarefa 13), servidor local (Tarefa 10), três telas (Tarefa 11) — corrigidas depois de olhar os próprios prints, não só os testes.
 7. Operating map, sponsor map, design, deploy e experimento citando as transcrições do discovery (Tarefa 12).
 8. Deploy, resumo executivo, limitações e este README (Tarefa 13).
 

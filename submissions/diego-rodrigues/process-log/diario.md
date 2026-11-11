@@ -287,3 +287,11 @@
   - mudei: nenhum documento alterado nesta etapa: os ajustes envolvem resumo-executivo e deploy.md, designados a Opus, e a pasta prompts, que precisa de decisao sobre o que existe de fato
 
 **Fim da sessão** 2026-11-11 17:15 — checklist da seção 10: 7 itens cumpridos, 3 parciais, 4 nao cumpridos; aguarda decisao do Diego
+
+## 2026-11-11 19:38 · Ligação da IA (Haiku 5.5) ao briefing, opção A · modelo claude-haiku-5-5 · ferramenta Claude Code
+
+- **19:38** — pedi: ligar a API da Anthropic ao briefing, com Haiku 5.5 fixo, limites de tokens, sem chave no site publicado, documentado
+  - veio: 67/67 testes (59 + 8 novos). Briefings gerados por run.py com Haiku 5.5: max 250 tokens (vendedor) e 150 (gestor), ate 2 tentativas por item, teto de 60 chamadas por execucao, custo estimado calculado a partir do usage reportado. Sem temperature e com thinking desligado (o modelo nao aceita temperatura nao padrao). Nenhuma chave gravada em arquivo algum (verificado com grep)
+  - mudei: decisao de arquitetura tomada pelo Diego (opcao A, geracao no build, nao chamada ao vivo). Corrigi no meu proprio teste uma asercao vazia (or True) que eu tinha escrito, removida antes de rodar. Limpei o run.py que forcava template mesmo com chave. README, contrato, limitacoes, o-que-eu-acrescentei e MODELOS atualizados para nao afirmar mais que a IA nao e chamada. Nao rodei nenhuma chamada real a API: a primeira execucao com chave e do Diego, pelo docs/deploy-passos.md
+
+**Fim da sessão** 2026-11-11 19:38 — IA ligada no build com limites; docs e process log alinhados; primeira chamada real pendente do Diego

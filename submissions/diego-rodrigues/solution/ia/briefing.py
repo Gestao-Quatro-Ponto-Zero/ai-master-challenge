@@ -1,12 +1,19 @@
-"""Fatos para o briefing, templates deterministas, e `gerar` (por ora, só template)."""
+"""Fatos para o briefing, templates deterministas e `gerar`: IA com validador, ou template como fallback."""
 from __future__ import annotations
 
+import json
 import os
 from datetime import datetime
+from pathlib import Path
 
-from ia.validar import preencher, validar
+from ia.validar import marcadores_validos, preencher, validar
 
-MODELO_PADRAO = "claude-sonnet-5-5"
+MODELO_FIXO = "claude-haiku-5-5"
+LIMITE_TOKENS = {"vendedor": 250, "gestor": 150}
+TENTATIVAS_POR_ITEM = 2
+TETO_CHAMADAS = 60
+PRECO_USD_POR_MTOK = {"entrada": 0.10, "saida": 0.50}
+PROMPTS = Path(__file__).parent / "prompts"
 
 
 def fatos_vendedor(scored: dict, vendedor: str) -> dict:
@@ -103,27 +110,107 @@ def _gerar_um(texto_template: str, fatos: dict) -> dict:
     return {"texto": preencher(texto_template, fatos), "origem": "template", "motivo": None}
 
 
-def gerar(scored: dict, modelo: str = MODELO_PADRAO, sem_ia: bool = False) -> dict:
-    """Gera os briefings. Por ora, `sem_ia` é o único caminho: sem ANTHROPIC_API_KEY, tudo vem de template."""
-    usa_ia = (not sem_ia) and bool(os.environ.get("ANTHROPIC_API_KEY"))
-    if usa_ia:
-        raise NotImplementedError("chamada à API ainda não implementada nesta versão; use sem_ia=True")
+def _prompt_sistema(tipo: str) -> str:
+    nome = "briefing_vendedor.md" if tipo == "vendedor" else "resumo_gestor.md"
+    return (PROMPTS / nome).read_text(encoding="utf-8")
+
+
+def _texto_da_resposta(resposta) -> str:
+    return "".join(b.text for b in resposta.content if getattr(b, "type", None) == "text").strip()
+
+
+def _chamar_modelo(cliente, tipo: str, fatos: dict, motivo_anterior: str | None):
+    marcadores = sorted(marcadores_validos(fatos))
+    pedido = (
+        "Fatos (JSON):\n" + json.dumps(fatos, ensure_ascii=False, indent=1)
+        + "\n\nMarcadores permitidos: " + ", ".join("{" + m + "}" for m in marcadores)
+    )
+    if motivo_anterior:
+        pedido += f"\n\nA versão anterior foi recusada: {motivo_anterior}. Reescreva usando só os marcadores."
+    return cliente.messages.create(
+        model=MODELO_FIXO,
+        max_tokens=LIMITE_TOKENS[tipo],
+        system=_prompt_sistema(tipo),
+        thinking={"type": "disabled"},
+        output_config={"effort": "low"},
+        messages=[{"role": "user", "content": pedido}],
+    )
+
+
+def _gerar_com_ia(cliente, tipo: str, fatos: dict, uso: dict) -> tuple[str | None, str | None]:
+    """Devolve (texto validado, None) ou (None, motivo da última recusa)."""
+    motivo = None
+    for _ in range(TENTATIVAS_POR_ITEM):
+        if uso["chamadas"] >= TETO_CHAMADAS:
+            return None, "teto de chamadas atingido"
+        resposta = _chamar_modelo(cliente, tipo, fatos, motivo)
+        uso["chamadas"] += 1
+        uso["entrada"] += resposta.usage.input_tokens
+        uso["saida"] += resposta.usage.output_tokens
+        if resposta.stop_reason != "end_turn":
+            motivo = f"parada incompleta ({resposta.stop_reason})"
+            continue
+        texto = _texto_da_resposta(resposta)
+        ok, motivo = validar(texto, fatos)
+        if ok:
+            return preencher(texto, fatos), None
+        if not motivo:
+            motivo = "resposta vazia"
+    return None, motivo
+
+
+def _custo_usd(uso: dict) -> float:
+    return round(
+        uso["entrada"] * PRECO_USD_POR_MTOK["entrada"] / 1_000_000
+        + uso["saida"] * PRECO_USD_POR_MTOK["saida"] / 1_000_000,
+        6,
+    )
+
+
+def gerar(scored: dict, modelo: str = MODELO_FIXO, sem_ia: bool = False, cliente=None) -> dict:
+    """Gera os briefings. Com chave e sem `sem_ia`, usa o Haiku 5.5 com validador; caso contrário, template.
+
+    Qualquer item que a IA não consegue validar cai no template, com o motivo registrado em `recusas`.
+    """
+    if modelo != MODELO_FIXO:
+        raise ValueError(f"modelo fixo nesta submissão: {MODELO_FIXO}")
+    if sem_ia:
+        usa_ia = False
+    else:
+        usa_ia = cliente is not None or bool(os.environ.get("ANTHROPIC_API_KEY"))
+    if usa_ia and cliente is None:
+        import anthropic
+        cliente = anthropic.Anthropic()
+
+    uso = {"chamadas": 0, "entrada": 0, "saida": 0}
+    recusas = []
+
+    def _um(texto_template: str, fatos: dict, nome: str, tipo: str) -> dict:
+        if usa_ia:
+            texto, motivo = _gerar_com_ia(cliente, tipo, fatos, uso)
+            if texto is not None:
+                return {"texto": texto, "origem": "ia", "motivo": None}
+            recusas.append({"item": nome, "motivo": motivo})
+        return _gerar_um(texto_template, fatos)
 
     vendedores_out = {}
     for v in scored["vendedores"]:
         fatos = fatos_vendedor(scored, v["vendedor"])
-        vendedores_out[v["vendedor"]] = _gerar_um(template_vendedor(fatos), fatos)
+        vendedores_out[v["vendedor"]] = _um(template_vendedor(fatos), fatos, v["vendedor"], "vendedor")
 
     gestores_out = {}
     for gerente in sorted({v["gerente"] for v in scored["vendedores"]}):
         fatos = fatos_gestor(scored, gerente)
-        gestores_out[gerente] = _gerar_um(template_gestor(fatos), fatos)
+        gestores_out[gerente] = _um(template_gestor(fatos), fatos, gerente, "gestor")
 
     return {
         "gerado_em": datetime.now().isoformat(timespec="seconds"),
-        "modelo": modelo if usa_ia else "template",
+        "modelo": MODELO_FIXO if usa_ia else "template",
         "vendedores": vendedores_out,
         "gestores": gestores_out,
-        "custo_estimado_usd": 0.0,
-        "recusas": [],
+        "custo_estimado_usd": _custo_usd(uso) if usa_ia else 0.0,
+        "chamadas": uso["chamadas"],
+        "tokens_entrada": uso["entrada"],
+        "tokens_saida": uso["saida"],
+        "recusas": recusas,
     }
