@@ -6,13 +6,15 @@ Todo número desta página sai de `solution/avaliacao/numeros.py` e do build de 
 
 Dos **US$ 4.966.215** de preço de tabela em negócios abertos, **US$ 3.656.299 (73,6%)** estão em negócios que passaram da janela de decisão observada. Isso não é projeção: nos seis cortes do teste de volta ao passado, **734 negócios distintos** foram classificados como vencidos, e **nenhum deles foi ganho** — nem nas quatro semanas seguintes, nem em momento nenhum do restante do export.
 
+**O que esse número prova, e o que não prova:** 733 dos 734 nunca chegaram a fechar — seguem abertos sem decisão até o fim do export. O único que fechou foi perdido, e é o mesmo fechamento que ensinou a regra do trimestre. "Nenhum foi ganho" descreve o export; não é uma confirmação independente de que negócios nessa condição estão mesmo mortos (detalhe completo em `docs/logica.md`).
+
 O forecast da operação é construído sobre esse volume. Sobram **115 negócios vivos**, com **US$ 235.930** de preço de tabela, distribuídos em **17 dos 35 vendedores** do cadastro.
 
 Há ainda **500 negócios em Prospecting**, somando **US$ 1.073.986**, que não têm data de engajamento registrada. Não é possível estimar quando decidem, porque não se sabe quando começaram. É o maior bloco de valor sobre o qual a ferramenta não opina.
 
-## Medido: priorizar pela janela de decisão rende mais que priorizar por valor
+## Medido: priorizar por valor esperado na janela rende mais que priorizar só por valor de tabela
 
-Priorizar pelo relógio do trimestre captura **1,30 vez** o valor da melhor alternativa honesta — ordenar por preço de tabela e prazo, que é o que a operação faz hoje —, com intervalo de confiança de 95% entre **1,13 e 1,52**. O intervalo não cruza 1, então a diferença não é ruído. A taxa de acerto é de **22,7%** contra **15,4%**.
+Priorizar pelo valor de tabela multiplicado pela chance aprendida de decidir na janela captura **1,30 vez** o valor da melhor alternativa honesta — ordenar só por preço de tabela e prazo, que é o que a operação faz hoje —, com intervalo de confiança de 95% entre **1,13 e 1,52**. O intervalo não cruza 1, então a diferença não é ruído. A taxa de acerto é de **22,7%** contra **15,4%**. Não é "tempo em vez de valor": uma ordem que olhasse só a chance, sem multiplicar pelo valor, perde para o preço (razão 0,66). O ganho vem de combinar os dois, não de substituir um pelo outro.
 
 A vantagem não é uniforme: o relógio vence em cinco dos seis cortes, e perde no corte de 23/10/2017. O que sustenta a conclusão é o intervalo de confiança, não a repetição corte a corte.
 
@@ -28,7 +30,7 @@ Quanto isso vale em horas depende do custo-hora, que não temos. A conta fica as
 
 ## A frase para a diretoria
 
-> Três quartos do pipeline que entra no forecast não fecham mais, e isso é medido: dos 734 negócios que o histórico classificaria como vencidos, nenhum foi ganho. O que sobra vivo são 115 negócios em 17 dos 35 vendedores. Priorizar esses negócios pela janela de decisão rende 1,30 vez o que priorizar por valor rende, com intervalo de confiança que não cruza 1. Em 90 dias medimos esse ganho com grupo de controle antes de expandir.
+> Três quartos do pipeline que entra no forecast está numa condição em que, no histórico, nunca decidiu — isso é medido. O que sobra vivo são 115 negócios em 17 dos 35 vendedores. Priorizar esses negócios por valor esperado na janela de decisão rende 1,30 vez o que priorizar só por valor de tabela, com intervalo de confiança que não cruza 1. Em 90 dias medimos esse ganho com grupo de controle antes de expandir.
 
 ## O que o próximo passo mede
 

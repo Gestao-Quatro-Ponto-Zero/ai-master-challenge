@@ -271,3 +271,11 @@
   - mudei: MODELOS e a tabela de ferramentas do README estavam atribuidos por suposicao; refeitos a partir das sessoes do diario. Corrigi tambem a afirmacao do README de que a verificacao independente estava concluida (nao esta). Removi todos os blocos de exemplo do template
 
 **Fim da sessão** 2026-11-11 16:48 — process log fechado; --conferir sem pendencias; verificacao independente segue pendente
+
+## 2026-11-11 17:13 · Tarefa 13 · etapa 6 — correção das 4 ressalvas da verificação independente · modelo claude-sonnet-5 · ferramenta Claude Code
+
+- **17:13** — pedi: corrigir no README, resumo-executivo.md, design.md e logica.md as 4 ressalvas que o revisor independente (claude-opus-5-5) levantou
+  - veio: docs ajustados: (1) 734 vencidos sem ganho agora explica que 733 nunca fecharam e o unico fechamento foi o perdido que ensinou a regra -- descreve o export, nao confirma a regra de forma independente; (2) regra do trimestre: forma escolhida a mao, so o liga/desliga e aprendido, com nota em logica.md, design.md e README; (3) 'relogio em vez de valor' trocado por 'valor esperado na janela, nao valor de tabela sozinho', com a prova de que so-tempo perde para preco (0,66x); (4) nota preventiva em logica.md que faixa de idade alta com p=0 e propriedade da posicao no trimestre (datas analogas), nao da idade isolada -- a afirmacao so aparecia num docstring de teste, nao em doc publico
+  - mudei: tambem corrigido 'cinco datas' para 'seis datas' em logica.md (achado de inconsistencia de texto do revisor); secao do vazamento de conta reescrita de 'encontramos e removemos' para 'encontramos, e reduzimos', reconhecendo que o filtro ainda condiciona num campo que so existe apos o desfecho; nota sobre carregar.py usar a maior data do export inteiro, sem efeito em producao. Suite 59/59 inalterada (so docs)
+
+**Fim da sessão** 2026-11-11 17:13 — 4 ressalvas corrigidas em README, resumo-executivo, design e logica; suite 59/59

@@ -10,7 +10,7 @@
 
 ## Executive Summary
 
-Três quartos do pipeline aberto (US$ 3,66 mi dos US$ 4,97 mi, 73,6%) não tem nenhuma chance histórica de fechar: dos 734 negócios distintos classificados como vencidos nos seis cortes do backtest, nenhum foi ganho em momento algum do export. O que sobra vivo são 115 negócios, em 17 dos 35 vendedores. Priorizar esses negócios pela janela de decisão do trimestre — aprendida do histórico, não escrita à mão — rende 1,30 vez o valor da melhor alternativa honesta (ordenar por preço e prazo), com intervalo de confiança de 95% que não cruza 1 (1,13 a 1,52). Nenhum atributo do negócio prevê quem ganha; a recomendação não é "quem vai fechar", é "quando este negócio costuma decidir". Resumo completo, com a conta de horas como premissa declarada: [`docs/resumo-executivo.md`](docs/resumo-executivo.md).
+Três quartos do pipeline aberto (US$ 3,66 mi dos US$ 4,97 mi, 73,6%) está em negócios que, no histórico, nunca decidiram: dos 734 distintos classificados como vencidos nos seis cortes do backtest, nenhum foi ganho em momento algum do export (733 nunca fecharam; o único que fechou foi perdido — detalhe em `docs/logica.md`). O que sobra vivo são 115 negócios, em 17 dos 35 vendedores. Priorizar esses negócios por valor de tabela multiplicado pela chance aprendida de decidir — o ciclo máximo é aprendido do histórico, a forma da regra do trimestre é escolhida à mão e confirmada pelo histórico — rende 1,30 vez o valor da melhor alternativa honesta (ordenar só por preço e prazo), com intervalo de confiança de 95% que não cruza 1 (1,13 a 1,52). Nenhum atributo do negócio prevê quem ganha; a recomendação não é "quem vai fechar", é "quando este negócio costuma decidir". Resumo completo, com a conta de horas como premissa declarada: [`docs/resumo-executivo.md`](docs/resumo-executivo.md).
 
 ---
 
@@ -33,7 +33,7 @@ O discovery (`docs/discovery.md`) foi ensaiado com quatro personas sintéticas e
 
 ### Recomendações
 
-A frase de negócio, com a conta por trás em [`docs/resumo-executivo.md`](docs/resumo-executivo.md): priorizar pelo relógio do trimestre em vez de por valor, medir o ganho num piloto com grupo de controle antes de expandir (`docs/experimento.md`), e tratar os 500 deals em Prospecting sem data (US$ 1,07 mi) como a maior lacuna sobre a qual a ferramenta não opina.
+A frase de negócio, com a conta por trás em [`docs/resumo-executivo.md`](docs/resumo-executivo.md): priorizar por valor esperado na janela de decisão do trimestre, não por valor de tabela sozinho; medir o ganho num piloto com grupo de controle antes de expandir (`docs/experimento.md`); e tratar os 500 deals em Prospecting sem data (US$ 1,07 mi) como a maior lacuna sobre a qual a ferramenta não opina.
 
 ### Limitações
 
@@ -56,7 +56,7 @@ Inventário completo, com versão exata e papel: [`process-log/MODELOS.md`](proc
 ### Workflow
 
 1. Procedência do dado e recorte temporal sem vazamento (Tarefa 1), com TDD: testes escritos e vistos falhar antes do código.
-2. Janela de validade e tabela de destino aprendidas do histórico, nunca com limiar escrito à mão (Tarefas 2–3).
+2. Janela de validade e tabela de destino (Tarefas 2–3): o ciclo máximo e a tabela são aprendidos do histórico; a forma da regra do fim do trimestre é escolhida à mão e confirmada pelo histórico, não descoberta do zero (detalhe em `docs/logica.md`).
 3. Fila, ordem e explicação por deal (Tarefas 4–5), cada uma verificada contra os valores de ouro do protótipo (`analise/eda-06-prototipo-motor-v2.saida.txt`) antes do commit.
 4. Build do contrato JSON e relatório de desvio (Tarefas 6 e 8).
 5. Backtest com três políticas e IC, permutação de atributos (Tarefa 7) — onde encontrei e corrigi o vazamento do campo de conta.
