@@ -1,0 +1,43 @@
+@import "tailwindcss";
+@import "../tema/tema.css";
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--color-fundo);
+    color: var(--color-texto);
+    font-family: var(--font-texto);
+    font-variant-numeric: tabular-nums;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-titulo);
+    color: var(--color-marinho);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-marinho);
+    outline-offset: 2px;
+  }
+  /* Títulos e números grandes em Libre Baskerville; o resto em Manrope */
+  h3 {
+    font-family: var(--font-texto);
+    font-weight: 700;
+  }
+}
+
+/* Fundo do bloco escuro (O-32): o mesmo degradê do deck. Fica aqui porque o Tailwind não monta este degradê por tokens. */
+.fundo-escuro {
+  background: radial-gradient(ellipse at 92% 18%, var(--color-escuro-1), var(--color-escuro-2) 58%, var(--color-escuro-3));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

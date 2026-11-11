@@ -1,0 +1,258 @@
+# Auditoria das sessões — Challenge 003
+
+A sessão #1 (orquestração) confere cada entrega das outras sessões antes do commit. Registro do que foi entregue, do que foi conferido e do que estava errado.
+
+| Sessão | Papel | Pasta |
+|---|---|---|
+| #2 | Dados | `solution/data/`, `solution/analysis/` |
+| #3 | Score | `solution/scoring/`, `solution/data/scored/` |
+| #4 | App | `solution/app/` |
+| #5 | QA e baseline | `solution/qa/` |
+
+---
+
+## 09/11 ~21:50 — Estado encontrado quando a #1 assumiu
+
+Até então, a #1 só tinha lido o repositório e os arquivos de contexto. Não baixou nem analisou dados, então não havia nada a passar para a #2.
+
+Ao assumir, a pasta já tinha trabalho das outras sessões, ainda sem auditoria e sem commit:
+
+| Arquivo | Sessão provável | Situação |
+|---|---|---|
+| `solution/data/raw/*.csv` (5 arquivos, incluindo `metadata.csv`) | #2 | Baixados do Kaggle; aguardando o aviso de etapa da #2 |
+| `solution/data/clean/*` + `solution/data/clean.py` + `cleaning_report.json` | #2 | Em andamento (gravados entre 21:48 e 21:49) |
+| `solution/qa/baseline.md` | #5 | Em andamento |
+| `solution/app/index.html` + `app/sample/` | #4 | Em andamento, com amostra no formato do contrato |
+| `solution/analysis/`, `solution/scoring/`, `solution/data/scored/` | #2, #3 | Vazios |
+
+**O que estava faltando:**
+- `decisoes.md` estava em branco. As decisões da Etapa 0 só foram registradas agora (linhas 1–9), a partir da narrativa da preparação.
+- Nada versionado. O `.gitignore` oficial ignora `submissions/`, então o git não via nenhum desses arquivos.
+
+**Decisões técnicas já tomadas pela #2 que ainda dependem do Leandro** (aparecem no `cleaning_report.json` e serão levadas a ele com a entrega da #2):
+- Data de referência fixa em 2017-12-31, a última `close_date` do arquivo.
+- Correção de nomes: `GTXPro` virou `GTX Pro` (1.480 deals) e o setor `technolgy` foi corrigido (12 contas).
+- Faixas de porte por tercis de receita e de funcionários.
+
+---
+
+## 09/11 — #5 QA: etapa 1 (baseline) e etapa 2 (checklist)
+
+**Entregue:** `solution/qa/baseline.md`, que reconstrói a entrega típica de uma IA só com o brief e traz 12 erros dela medidos nos dados e 20 armadilhas para marcar, e `solution/qa/checklist.md`, o checklist de entrega.
+
+**Conferência:** a #1 recalculou os números de forma independente, com um script próprio sobre `data/raw/`, data de referência 2017-12-31 e o typo de setor e o nome do produto corrigidos.
+
+| Afirmação da #5 | Recalculado pela #1 | Situação |
+|---|---|---|
+| 8.800 deals; 4.238 Won / 2.473 Lost / 1.589 Engaging / 500 Prospecting; win rate 63,2% | Igual | ✅ |
+| Diferença de win rate entre o melhor e o pior grupo: produto 4,8 p.p. | 4,8 (60,0–64,8) | ✅ |
+| Setor 3,6 p.p. | 3,67 → **3,7** | ⚠️ truncado em vez de arredondado |
+| Manager 2,3 p.p. | 2,3 | ✅ |
+| Região 1,3 p.p. | 1,38 → **1,4** | ⚠️ truncado em vez de arredondado |
+| Win rate por quartil de funcionários 64,1 / 61,4 / 63,9 / 63,2 | Igual | ✅ |
+| Abertos sem conta: 1.088/1.589 Engaging, 337/500 Prospecting (68%) | Igual (68,2%) | ✅ |
+| Correlação 1º × 2º semestre: conta −0,08; vendedor 0,36; win rate do vendedor 55,0–70,4%, mínimo de 79 deals | Igual | ✅ |
+| Duração mediana: Lost 14 dias, Won 57; ciclo máximo 138 | Igual | ✅ |
+| Chance de ganhar, para deals que já duraram d dias: 63 / 69 / 71 / 76% (d = 0, 14, 90, 120) | 63,2 / 68,6 / 71,3 com "≥ d"; em 120 dá 75,1 com "≥" e 75,6 com "> 120" | ⚠️ critério de corte não declarado; com "≥", o certo é 75% |
+| 1.291/1.589 Engaging acima de 138 dias (mediana 165) | Igual | ✅ |
+| `close_value` ÷ preço de tabela nos Won: mediana 1,00 (0,66–1,34) | Mediana 1,00, mín–máx 0,66–1,34 | ✅ |
+| Fim de trimestre fecha 78–83% Won contra 49–57% nos outros meses | 78,5–82,8 contra 48,6–56,8 | ✅ |
+| 5 vendedores sem deals | Os mesmos 5 nomes | ✅ |
+
+**Problemas encontrados:**
+1. **Bloqueante:** o item H1 do `checklist.md` cita nominalmente as empresas do candidato que não podem aparecer na entrega, justamente na regra que proíbe citá-las. O commit fica retido, porque o histórico do git vai junto no PR.
+2. Arredondamento de setor (3,7) e região (1,4), e o critério de "depois de d dias" a declarar. Não muda nenhuma conclusão.
+
+**Encaminhamento:** devolvido à #5 para corrigir os três pontos. O commit de `solution/qa/` sai depois da correção.
+
+**Retorno da #5 (conferido):**
+1. H1 reescrito de forma genérica. A busca por nomes de empresas, projetos e e-mails nos dois arquivos deu zero ocorrências, e os dois estão em LF. ✅
+2. Setor 3,7 p.p. e região 1,4 p.p., com nota de que a diferença é calculada antes de arredondar. ✅
+3. **A #1 errou neste ponto.** A #5 já usava o mesmo corte estrito (ciclo > d) nos quatro pontos, então o 76% (75,6) estava coerente. A #1 tinha comparado com "≥ d". A #5 declarou o corte e mostrou as duas versões: > d = 63,2 / 68,7 / 71,1 / 75,6%; ≥ d = 63,2 / 68,6 / 71,3 / 75,1%. A #1 conferiu: o ciclo mínimo é 1 dia, por isso d = 0 dá o mesmo nas duas. ✅
+
+**Resultado:** `solution/qa/` aprovado e commitado.
+
+---
+
+## 09/11 — #2 Dados: limpeza e análise de sinal
+
+**Entregue:**
+- `data/raw/`: os 5 CSVs originais. A #2 moveu para cá os arquivos que estavam soltos em `data/`, sem alterar nada.
+- `data/clean.py` gera `data/clean/` (as tabelas limpas, `deals.csv` com tudo junto e `cleaning_report.json`). As regras de limpeza estão em `data/README.md`.
+- `analysis/signal.py` gera `analysis/signal_summary.json` e `analysis/tables/` (32 CSVs). A leitura está em `analysis/findings.md`.
+
+**Conferência:**
+
+| Verificação | Como | Resultado |
+|---|---|---|
+| Reprodutibilidade | Copiei `data/` e `analysis/` para uma pasta à parte, rodei os dois scripts e comparei os arquivos gerados com os entregues | ✅ Os 39 arquivos são idênticos, byte a byte |
+| Coorte sem viés (engajados de 01/03 a 15/08/2017) | Recalculado | ✅ n = 3.718; fechou em 0–14 dias = 1.737 deals, 54,2%; em 15 dias ou mais = 1.981 deals, 67,2% |
+| Fim de trimestre | Recalculado | ✅ 2.574 deals, 80,7%, contra 4.137 deals, 52,3% |
+| Fim de semana como sinal de dado sintético | Recalculado sobre `engage_date` | ✅ 28,7% (a #2 diz 28,6%; a diferença é de base ou de arredondamento, sem efeito) |
+| Engaging com mais de 138 dias e engajados nos últimos 90 dias | Recalculado | ✅ 1.291 e 110 |
+| Variáveis sem sinal, p-valores e teste fora do tempo | Tabelas reproduzidas byte a byte; os spreads batem com os da #1 na auditoria da #5 | ✅ |
+| Termos proibidos e fim de linha | Busca por nomes e e-mails; checagem de CRLF | ✅ Nenhuma ocorrência; tudo em LF |
+
+**Achado da auditoria, levado ao Leandro junto com as decisões:** só **7 dos 1.589 Engaging** abertos têm até 14 dias, e só 18 têm até 30. O único sinal do dataset (as duas primeiras semanas) praticamente não se aplica ao pipeline atual. Na prática, nada nos dados ordena os deals abertos por chance. O que dá para usar é o valor (preço de tabela, ±10%), o estado do deal (dentro ou fora do ciclo histórico) e a qualidade do cadastro (sem conta).
+
+**Resultado:** `data/` e `analysis/` aprovados e commitados. As decisões 1 a 6 do `findings.md` vão ao Leandro antes de a #3 construir o score.
+
+---
+
+## 09/11 — Pesquisa: como o G4 avalia (feita pela #1, a pedido do Leandro)
+
+Leitura pública do repositório oficial, sem login e sem nenhuma interação:
+- 239 PRs, 116 do challenge 003. Nenhum foi mesclado; os fechados foram todos fechados pelos próprios autores.
+- O avaliador comentou em março, com notas de 0 a 10 de um assistente de avaliação por IA. **Correção feita pela #5:** a #1 tinha escrito que as notas 6,4 / 7,0 / 7,3 não foram aprovadas. Na verdade, a 7,0 e uma das 7,3 foram aprovadas em 23/03, depois que os candidatos acrescentaram uma seção mostrando onde conduziram a IA. A 6,4 não avançou (13/04, depois de 4 rodadas), e a outra 7,3 ficou sem decisão pública.
+- Critérios citados nas devolutivas:
+  - "Uso de IA" pesa 30% da nota;
+  - o process log precisa mostrar onde o candidato corrigiu ou redirecionou a IA, e que hipóteses ele tinha antes;
+  - a evidência tem que estar dentro do repositório;
+  - dependências commitadas são bloqueador;
+  - arquivos fora da pasta da submissão fazem a entrega ser devolvida.
+- Desde 24/03 o retorno é por e-mail.
+
+## 09/11 — #5 QA: benchmark dos 10 PRs mais completos do 003
+
+**Entregue:** `solution/qa/benchmark-prs.md`. Os 10 PRs mais completos (ranqueados pela #1 por sinais de completude) foram lidos, e os 8 links publicados foram abertos. O texto está anonimizado (A–J).
+
+**Conferência:**
+
+| Item | Resultado |
+|---|---|
+| Anonimização | ✅ Nenhum nome nem login de candidato. A busca automática só achou a palavra "dias", um falso positivo |
+| Termos proibidos e fim de linha | ✅ Nenhum termo; LF |
+| Deals que fecham no 1º mês do trimestre duram no máximo 13 dias (mediana 7); no 2º e no 3º mês, até 125 e 138 | ✅ Recalculado: 1.779 deals, mediana 7, máximo 13; 68/125; 75/138 |
+| Controlando pelo mês de fechamento, o efeito das 2 semanas some (3º mês: rápidos 86% × lentos 81%) | ✅ |
+| Controlando pelo mês de início, o efeito fica (rápidos × lentos: 50×69, 57×64, 63×69) | ✅ 50×69, **56×63**, 63×69 (diferença de arredondamento) |
+
+**Achado que muda a estratégia:** os cinco achados de dados que tratávamos como diferencial (chance plana, 81% parados, 68% sem conta, data fixa, GTXPro) aparecem em 6 dos 10 concorrentes. A fórmula que a #3 esboçou (valor + curva de idade) é, em essência, a de 3 deles. Daqui em diante, o diferencial precisa vir de três coisas:
+1. a validação, comparando a fila também com "mais novo primeiro", regra que nem os melhores conseguiram superar;
+2. o que a ferramenta faz: o ciclo de ação e a limpeza do pipeline;
+3. o diagnóstico de dados sintéticos, que nenhum dos 10 fez.
+
+**Encaminhamentos:**
+- #5: nota curta no item E do `baseline.md` (a subida até 76% vem do corte de 2016 e do fim de trimestre). Liberada pela #1, porque complementa sem mudar a conclusão.
+- #2: acrescentar ao `findings.md` a regra do 1º mês do trimestre e a distinção entre controlar pelo início e pelo fechamento.
+- #3: incluir "mais novo primeiro" no backtest e rever o componente "conta" (hoje tiraria 20 pontos de 68% do pipeline). As duas coisas vão ao Leandro junto com as decisões pendentes.
+- #4: o `COMO-RODAR.md` precisa acompanhar o desenho final dos componentes.
+
+## 09/11 — #5 QA: critérios reais do avaliador e nota no baseline
+
+**Entregue:** seção "Critérios reais do avaliador" no `benchmark-prs.md` (casos K–R, anonimizados); seção 9 do `checklist.md` com 16 itens verificáveis (A1–A16, dos quais A8 e A9 são bloqueadores); nota no item E do `baseline.md`, liberada pela #1.
+
+**Conferência:** nenhum nome de candidato nem do avaliador nos 3 arquivos (a busca só achou a palavra "Fontes", falso positivo). Nenhum termo proibido; tudo em LF. A correção da #5 sobre as notas aprovadas foi aceita e registrada acima. O caso "AUC 0,43" que a #1 citou existe (comentário público no PR 46, de 24/03); só não estava nos arquivos que a #5 leu.
+
+**Ponto que vai ao Leandro junto com as decisões do score:** no único 003 aprovado, o primeiro pedido do avaliador foi aproveitar mais dados do dataset. Por isso, mesmo que a chance por segmento saia do score, a entrega precisa de uma tabela com cada atributo das 4 tabelas → testado → resultado → onde aparece (no score, como contexto na tela ou fora) (A11), e de contexto da conta, do produto e do time no detalhe do deal (A12).
+
+## 09/11 — #2 Dados: origem fictícia e duas evidências novas
+
+**Entregue:** `findings.md`, `signal.py` e `signal_summary.json` atualizados, mais 3 tabelas novas (ciclo por mês do trimestre; efeito das 2 semanas controlado pelo mês de fechamento e pelo mês de início).
+
+**Conferência:**
+- Reprodução numa cópia separada: os 42 arquivos saíram idênticos. ✅
+- Números iguais aos recalculados pela #1 na auditoria do benchmark. ✅
+- Ressalva honesta da #2: o efeito das 2 semanas só é forte para quem começou no 1º mês do trimestre (49,7% × 68,9%). No 2º mês não é significativo e no 3º fica no limite. ✅
+- Origem documentada: o dataset é o "CRM Sales Opportunities" da Maven Analytics, de uma empresa fictícia de hardware. Várias contas têm nomes de ficção (Acme Corporation, Bluth Company, Bubba Gump). Com isso, "parecem sintéticos" passa a ser "são fictícios", com duas linhas de prova separadas: a fonte e os padrões medidos. ✅
+- Sem termos proibidos; tudo em LF. ✅
+
+## 10/11 — Banco: duas versões das migrations, decisão da #1
+
+Por mensagens que chegaram fora de ordem, a #2 e a #4 escreveram o banco ao mesmo tempo:
+- #2: 9 migrations, conferidas só por parser (sintaxe, prefixos, FKs), commit 749312e;
+- #4: 18 migrations, validadas executando num Postgres em memória (PGlite, sem conexão externa), com conferência pelo catálogo e 45 testes de uso.
+
+**Decisão da #1:** a base oficial é a versão da #4, porque foi validada por execução e já está alinhada ao app. A #2 passa a mantê-la em solution/db/ e faz em cima dela as próximas migrations. A versão da #2 fica no histórico do git e numa pasta fora do repositório; nada foi apagado.
+
+**Segurança:** uma revisão automática apontou, na versão da #2, um limite de gravação contornável (contava correlation_id enviado pelo cliente) e a isenção do usuário "sistema" acessível sem login. A versão escolhida tem o mesmo risco por outro caminho (correlation_id como parâmetro; função de contexto "sistema"). A correção entra antes de qualquer aplicação no banco: correlation_id gerado no servidor, reuso recusado e contexto "sistema" só por um papel de carga separado do app.
+
+## 10/11 — Parada geral, causa dos conflitos e regras de coordenação
+
+**O que deu errado, e foi erro de orquestração da #1:**
+1. A #1 pediu as migrations à #4 e, minutos depois, passou para a #2. A troca ficou na fila da #4, que seguiu escrevendo: duas versões do banco.
+2. A #1 liberou a #5 para aplicar a versão antiga e corrigiu em seguida. A #5 aplicou a versão certa (lote 1 da #2).
+3. Mensagens enfileiradas ou retidas por diferença de modo de permissão fizeram sessões trabalharem com decisões já superadas.
+4. A instalação do app (node_modules, ~310 pacotes) dentro do Google Drive, somada a 5 sessões e validadores, deixou a máquina com ~500 MB livres.
+
+**O que foi feito:** o Leandro parou as sessões. A #1 apagou o node_modules (que se regenera com npm install), moveu as versões antigas do banco para fora do repositório (sem apagar) e commitou o estado (7ab3bec). O lote 1 está no banco e confere: 9 tabelas, 8.800 deals, 85 contas, 43 usuários, 9.006 linhas de auditoria.
+
+**Regras aprovadas (decisão 39):** ordens numeradas com confirmação; dono único por pasta; sequência no mesmo artefato; até 2 sessões pesadas por vez; dependências fora do Drive; mesmo modo de permissão; quadro de status (local).
+
+## 10/11 — Lote 2 aplicado; a 0026 foi aplicada antes do ajuste
+
+A #5 aplicou 0007–0026 no Supabase, sem erro. Contagem: 29 tabelas, 60 FKs (RESTRICT, validadas e com índice), 68 funções, 3 views, 86 gatilhos, 104 índices. Os dados foram preservados: 8.800 deals, 85 contas, 43 usuários, receita ganha de US$ 10.005.534.
+
+**Erro de orquestração da #1:** o aviso "não aplicar a 0026 ainda" chegou à #5 depois que ela já tinha aplicado a 0026 original (commit d6c4f12). A #1 já tinha commitado a 0026 ajustada (4017322), o que deixava o repositório diferente do banco. Correção, proposta pela #5: a 0026 do repositório volta à versão aplicada, e o ajuste (teto exato) entra como migration nova, 0027.
+
+## 10/11 — App publicado para validação
+
+- Fatia 1 (perfil, Painel, Pipeline, modal) e fatia 2 (Leads, Contas, lote, tags) publicadas em https://g4-sight.vercel.app pela CLI da Vercel, a partir de uma cópia limpa (sem dependências nem arquivos antigos). Conferido online pela #1: os números do Painel batem (vendedora: 448 leads, 57 em negociação, US$ 95.414, 86,7%), as 85 contas e a receita de US$ 10,01 mi batem, e o console não mostra erro.
+- **Erro da #1:** a #1 apontou um "bug" de contagem nas abas do Pipeline (66/67 contra 55/57). Era leitura errada do print reduzido: o "5" em negrito parecia "6". A #4 conferiu o HTML publicado, que estava certo, e passou o número da aba para peso normal.
+- As escritas ficam em memória nesta versão; a ligação com o banco é a próxima ordem (O-15).
+
+## 10/11 — Banco blindado e app ligado ao banco
+
+- 0029 aplicada pela #5 (sha256 3ac678a5…, igual ao commit 799e861): a auditoria e os eventos só são gravados por funções SECURITY DEFINER, usuário inativo é recusado e as notas não aceitam escrita pelo app. Validador: 133 ok. Nenhum achado de segurança aberto no banco.
+- App ligado ao banco (O-15) e com o disjuntor corrigido (O-17, depois de alerta automático: entrada mal formada derrubava o app para somente leitura). 69 testes.
+- Publicado com as variáveis do banco como segredo na Vercel. Verificado online: /api/health com banco ok e fonte banco; Painel com "Fonte: banco de dados".
+- Dados de teste no banco (o banco não apaga): o lead "Teste de persistência" (88UBTBQ8), um comentário, uma tag "teste" e prioridades de teste, criados pela #4 ao validar a ligação.
+- Teste online das escritas (O-18, #5): aprovado. ✓/✗, estágio (Ganho com valor, Perdido), comentário, contato, tag e lote com Desfazer gravam e persistem depois de recarregar e de ~7 minutos. Números do Painel batem com o banco nos 3 perfis. 15 entradas mal formadas e 5 tokens de desfazer ruins → 400, sem derrubar o app. Escritas feitas só em leads de teste, menos um ✓ num lead real da lista da vendedora de teste (registrado no relatório). Conferido pela #1: relatório, 7 prints e /api/health. Achados leves N1–N4 viraram a O-19 da #4.
+- O-19 (#4): N1–N4 corrigidos. Conferido pela #1: 91 testes e checagem de tipos limpos, sem nomes proibidos, fim de linha LF; rota nova GET /api/lotes responde 401 sem perfil. Publicado. Observação aceita: o banco deixa qualquer manager desfazer um lote, e só a tela recorta pelo time. Sem login, a escolha de perfil já dá esse acesso, então não abre nada novo. Diferença registrada: a ESPEC 6.1 pede a lista dos leads pulados ao desfazer, e o banco devolve só a contagem.
+- O-20 (#5): N1–N4 aprovados no ar. Busca por palavras em qualquer ordem; lotes recentes visíveis só para quem aplicou, o manager do time e o admin (outra vendedora do time e o manager de outro time não veem); desfazer informa o que ficou como estava; contador só com ✓; frases de erro por campo, sem devolver o valor digitado. Escritas de teste desfeitas (lotes 1 e 2, tag "teste" removida). Observação R1 (comentário só com espaços dá erro genérico) virou a O-21.
+- O-21 (#4): texto obrigatório só com espaços recusado na rota. Conferido pela #1: 102 testes e checagem de tipos limpos; publicado; no ar, comentário e lote "Comentar" só com espaços → 400 "Preencha o comentário.", sem escrita no banco.
+- Achado da #1 na auditoria: src/server/perfil.ts é um arquivo antigo sem uso, com outro nome de cookie (g4_usuario) e sem a recusa do usuário "sistema". Não está ligado a nenhuma rota, então não há risco no ar, mas é uma armadilha para quem mexer depois. Virou a O-22.
+- O-22 (#4): perfil.ts sem uso conferido (nenhuma importação) e movido para fora da entrega; tirado do git pela #1. Cookies de teste no servidor local: id do sistema e o cookie antigo recusados (401), perfil válido aceito.
+
+## 10/11 — Score calculado e carregado no banco
+
+- O-23 (#3), aprovada pelo Leandro: regra das decisões 28–40 calculada em Python (`scoring/regra.py`, `calcular_score.py`) e carregada pelo papel de carga (`carregar_score.py`), numa transação só de inserção. Antes houve um ensaio completo com ROLLBACK. Execução 5 ativa; arquivo de carga com sha256 73ce4a89…, conferido pela #1.
+- 2.089 deals abertos com nota (500 em Prospecting e 1.589 em Engaging), sem nenhum aberto sem nota e sem mudança de dono. Nota de 0 a 89. BONUS só pelo histórico (0/5/10); a janela de compra vale 0, porque nenhuma empresa passa do teste contra o calendário geral.
+- Conferido pela #1: 11 testes passando. Os 3 exemplos do desenho batem (72,8 / 85,0 / 67,1), assim como a distribuição do FIT e o top 5 (135 deals, 77,8% ativos). Arquivos em LF e sem nomes proibidos. No ar: /api/health ok e notas nos cartões.
+- Diferença conhecida: os 112 deals abertos de uma vendedora variam de 1 a 3 pontos contra o dataset, porque o deal de teste da QA (perdido em 31/12) entra na janela de 3 meses dela.
+- Fora desta carga, como decidido: redistribuição de domingo (P0), repasse e penalidade, mudança de contrato e o backtest contra filas simples.
+- **Achado da #1 no ar:** a lista "Prioridades do dia" não segue a nota (ex.: 46, 55, 50, 41, 44). Há três causas:
+  - a lista de hoje foi montada antes da carga e fica gravada para o dia;
+  - o desempate e a lista do manager e do admin ainda usam o valor do deal e o ícone antigo;
+  - o cartão mostra o rótulo antigo "Super hot… ticket alto" em vez dos motivos da nota.
+
+  As decisões 28 e 29 tiraram o valor da nota e definiram a ordem: lead novo com FIT ≥ 75 no topo, depois a nota, e no empate o HEAT. Virou a O-24.
+- O-24 e O-25 (#4): a lista do dia passou a seguir a nota, com a migration 0030 e o app. A ordem vale para todos: atendimento atrasado, lead novo com FIT ≥ 75 sem contato, nota, HEAT no empate. O valor do deal saiu da ordem.
+  - Quando a execução de score muda, a lista do dia se refaz. Os itens não marcados são marcados como substituídos, sem DELETE.
+  - O cartão mostra o 1º motivo da nota.
+  - A lista do manager e do admin mostra só o que pede ação (decisão 42).
+  - O "super hot" continua, porque o ícone é decisão do Leandro (26), mas perdeu o critério de ticket (≥ US$ 3.000), que tinha vindo de uma proposta. Os abertos super hot passaram de 66 para 150.
+  - Conferido pela #1: 115 testes e tsc limpos; sha256 da 0030 8741e6f4…; nada destrutivo.
+- O-26 (#5): 0030 revisada, validada (134 ok sem dataset; 21 ok no validador próprio) e aplicada com o mesmo sha256. Ficaram 75 funções, 106 índices e 61 FKs. Sem achado de segurança e sem dado perdido.
+- Publicado e conferido no ar pela #1:
+  - a lista de uma vendedora saiu de 46, 55, 50, 41, 44 para 55, 55, 55, 54, 54, com o motivo da nota em cada item e o lead mais recente antes no empate;
+  - a lista de um manager mostra só os deals do time em risco de esfriar, pela nota.
+- **Achado da #1 no ar:** dois problemas no texto dos motivos. Aparecem "receita media" (sem acento) e "funcionários pequena". E a frase "seu destaque" aparece também na tela do manager, onde o destaque é do vendedor. Virou a O-27.
+- O-27 (#3): motivos reescritos em terceira pessoa ("destaque do vendedor", "média do vendedor") e com rótulos em português ("empresa de receita média", "setor varejo", "sede nos EUA"). Carga como execução 7 (o ensaio com ROLLBACK gastou o id 6 sem deixar linha); sha256 f3aab6b5…, conferido pela #1.
+  - As notas da 7 são iguais às da 5 deal a deal (2.089 de 2.089): mudou só o texto.
+  - 13 testes passando. Nenhum "você/seu/sua" nos motivos.
+  - No ar: a lista do manager se refez sozinha com a troca de execução e mostra o texto novo.
+- O-31 a O-33: funil com 5 etapas (Novo lead, Atendimento automático no 1º contato, Em negociação, Fechado, Perdido). A 0031 foi aplicada pela #5 (sha256 51da2c34…, sem achados). As Prioridades ficaram com o fundo azul do deck, um item por linha, e o clique abre o racional da nota. O Painel ficou responsivo de 375 a 1536 px, e os valores aparecem em reais. 143 testes passando. Publicado e conferido no ar pela #1 (ce4ea2a).
+  - Revisão automática de segurança: acao_registrar_contato não confere se o deal é do vendedor do perfil.
+  - Mantido como está, porque não há login (decisão 16): o perfil é escolhido na tela, sem senha, então qualquer visitante já pode agir como qualquer vendedor. O escopo organiza a tela e não é controle de acesso, e a função nova segue o mesmo padrão de acao_registrar e acao_comentar.
+  - O que protege são a trava de contexto, os limites de escrita (30/min por usuário e 300/min no total), a auditoria e o desfazer. A conferência por dono só passa a fazer sentido com login, o que fica como evolução registrada.
+- O-38, O-43 e O-41/O-42/O-44: redistribuição do 1º domingo feita duas vezes. A primeira deu 475 trocas, com 30 elegíveis. A segunda, depois da decisão 49 (os 35 vendedores ativos, os sem histórico com FIT 50), deu 261 trocas, e os 5 ficaram com 23 cada. O motor do score foi portado para TypeScript, com paridade total contra o Python. A automação está publicada, com o relógio da data de negócio (0034, sha256 ed2065bd…), o papel g4_rotina (senha fora do git) e o cron diário às 06:00 UTC. Os segredos estão na Vercel e a rotina responde 401 sem eles.
+- **Erro achado pela #1 no 1º teste da rotina no ar:** a rotina rodou com a lista de elegíveis antiga (só os 30 com histórico) e desfez as 261 trocas da O-43 (execução 12, mais 2 repasses). Nada foi apagado: as trocas ficaram registradas em acao_reatribuicoes. Causa: motor-score.ts chamava planejarRedistribuicao sem a lista dos vendedores ativos. Correção na O-45, com nova rodada forçada.
+
+## 10/11 — Leitura completa do código, metodologia nova e FIT absoluto
+
+- **Leitura completa do código, sem executar nada** (4 frentes: motor da nota, telas, servidor e banco, entrega). Principais achados:
+  - o resumo do README contradizia a análise;
+  - o modo local sem banco não mostra nota;
+  - a marca "atendimento atrasado" nunca aparece (data de negócio × data real de criação);
+  - um repasse recusado desfazia a rotina do dia;
+  - havia dois roteamentos de lead novo;
+  - a documentação do score e do banco estava desatualizada.
+- **O que entrou:**
+  - o resumo foi reescrito;
+  - a rotina passou a usar savepoint por repasse (O-52);
+  - o roteamento ficou só no banco (O-51);
+  - o FIT absoluto entrou na execução 17 (sha256 06c9ac88…);
+  - a metodologia nova foi para regra-lead-score.html (2748d0e), com a versão anterior como histórico.
+- **Ficou como está, por decisão do Leandro (51):** os limites de FIT ≥ 75 e o "atendimento atrasado".
+- **Conferido pela #1 no banco (leitura):** 2.089 notas, todas iguais a 0,7 × FIT + 0,3 × HEAT + bônus; nenhum aberto sem nota nem com dono errado. O deal 9CYYLZ11 foi recalculado à mão: FIT 62,4 e nota 68,7, iguais aos gravados.
+- **Efeito registrado:** com o FIT absoluto, só 38 leads têm FIT ≥ 75, então furar a fila e o repasse ficam raros; a próxima redistribuição de domingo trocaria o dono de cerca de 375 leads.

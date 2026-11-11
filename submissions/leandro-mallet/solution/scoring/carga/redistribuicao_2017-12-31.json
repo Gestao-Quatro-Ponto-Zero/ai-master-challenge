@@ -1,0 +1,4015 @@
+{
+ "resumo": {
+  "sem_contato": 499,
+  "mudam": 261,
+  "limite": 23,
+  "elegiveis": 35,
+  "ativos_por_vendedor_antes": [
+   0,
+   31
+  ],
+  "ativos_por_vendedor_depois_elegiveis": [
+   9,
+   31
+  ],
+  "fit_medio_antes": 77.8,
+  "fit_medio_depois": 73.4,
+  "fit_75_antes": 265,
+  "fit_75_depois": 235,
+  "trocas_que_as_travas_do_repasse_recusariam": 244
+ },
+ "trocas": [
+  {
+   "opportunity_id": "0E8D6TCQ",
+   "de": "Moses Frase",
+   "para": "Moses Frase",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "0BQTT5UF",
+   "de": "Rosie Papadopoulos",
+   "para": "Reed Clapper",
+   "fit_dono": 79.19,
+   "fit_novo": 77.54,
+   "muda": true
+  },
+  {
+   "opportunity_id": "1HD5JJM3",
+   "de": "Moses Frase",
+   "para": "Moses Frase",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "38K5251H",
+   "de": "Cecily Lampkin",
+   "para": "Cecily Lampkin",
+   "fit_dono": 82.15,
+   "fit_novo": 82.15,
+   "muda": false
+  },
+  {
+   "opportunity_id": "4AUWVKUU",
+   "de": "Marty Freudenburg",
+   "para": "Darcel Schlecht",
+   "fit_dono": 64.5,
+   "fit_novo": 63.8,
+   "muda": true
+  },
+  {
+   "opportunity_id": "8U9CA21G",
+   "de": "Lajuana Vencill",
+   "para": "Lajuana Vencill",
+   "fit_dono": 95.9,
+   "fit_novo": 95.9,
+   "muda": false
+  },
+  {
+   "opportunity_id": "9L0WKMJ2",
+   "de": "Darcel Schlecht",
+   "para": "Donn Cantrell",
+   "fit_dono": 63.8,
+   "fit_novo": 62.69,
+   "muda": true
+  },
+  {
+   "opportunity_id": "9P9ISECL",
+   "de": "Anna Snelling",
+   "para": "Anna Snelling",
+   "fit_dono": 70.25,
+   "fit_novo": 70.25,
+   "muda": false
+  },
+  {
+   "opportunity_id": "9R8AKL0D",
+   "de": "Cecily Lampkin",
+   "para": "Cecily Lampkin",
+   "fit_dono": 82.15,
+   "fit_novo": 82.15,
+   "muda": false
+  },
+  {
+   "opportunity_id": "A4M34F8C",
+   "de": "Hayden Neloms",
+   "para": "Hayden Neloms",
+   "fit_dono": 75.41,
+   "fit_novo": 75.41,
+   "muda": false
+  },
+  {
+   "opportunity_id": "AV50UWVV",
+   "de": "Hayden Neloms",
+   "para": "Hayden Neloms",
+   "fit_dono": 75.41,
+   "fit_novo": 75.41,
+   "muda": false
+  },
+  {
+   "opportunity_id": "CGRMC7OE",
+   "de": "Jonathan Berthelot",
+   "para": "Jonathan Berthelot",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "CPEYUW7V",
+   "de": "Darcel Schlecht",
+   "para": "Donn Cantrell",
+   "fit_dono": 63.8,
+   "fit_novo": 62.69,
+   "muda": true
+  },
+  {
+   "opportunity_id": "F0K8UDEG",
+   "de": "Boris Faz",
+   "para": "Boris Faz",
+   "fit_dono": 90.91,
+   "fit_novo": 90.91,
+   "muda": false
+  },
+  {
+   "opportunity_id": "GR8JTX1T",
+   "de": "Darcel Schlecht",
+   "para": "Darcel Schlecht",
+   "fit_dono": 69.63,
+   "fit_novo": 69.63,
+   "muda": false
+  },
+  {
+   "opportunity_id": "JD7ACALY",
+   "de": "Versie Hillebrand",
+   "para": "Markita Hansen",
+   "fit_dono": 74.01,
+   "fit_novo": 69.49,
+   "muda": true
+  },
+  {
+   "opportunity_id": "K38J8D75",
+   "de": "Darcel Schlecht",
+   "para": "Carl Lin",
+   "fit_dono": 63.8,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "KAZ72JJ0",
+   "de": "Versie Hillebrand",
+   "para": "Carl Lin",
+   "fit_dono": 74.01,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "KIOF5EM0",
+   "de": "Versie Hillebrand",
+   "para": "Carl Lin",
+   "fit_dono": 74.01,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "KLUS7RVS",
+   "de": "Versie Hillebrand",
+   "para": "Versie Hillebrand",
+   "fit_dono": 81.26,
+   "fit_novo": 81.26,
+   "muda": false
+  },
+  {
+   "opportunity_id": "LO8L5ELD",
+   "de": "Cecily Lampkin",
+   "para": "Cecily Lampkin",
+   "fit_dono": 82.15,
+   "fit_novo": 82.15,
+   "muda": false
+  },
+  {
+   "opportunity_id": "MTH7D617",
+   "de": "Versie Hillebrand",
+   "para": "Carol Thompson",
+   "fit_dono": 74.01,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "OJDZN6UK",
+   "de": "Anna Snelling",
+   "para": "Niesha Huffines",
+   "fit_dono": 66.92,
+   "fit_novo": 57.32,
+   "muda": true
+  },
+  {
+   "opportunity_id": "P7UPCSTC",
+   "de": "Darcel Schlecht",
+   "para": "Darcel Schlecht",
+   "fit_dono": 68.44,
+   "fit_novo": 68.44,
+   "muda": false
+  },
+  {
+   "opportunity_id": "Q9UWOC28",
+   "de": "Anna Snelling",
+   "para": "Anna Snelling",
+   "fit_dono": 67.59,
+   "fit_novo": 67.59,
+   "muda": false
+  },
+  {
+   "opportunity_id": "RSY2XLKK",
+   "de": "Anna Snelling",
+   "para": "Anna Snelling",
+   "fit_dono": 71.33,
+   "fit_novo": 71.33,
+   "muda": false
+  },
+  {
+   "opportunity_id": "VW8CEV4C",
+   "de": "Versie Hillebrand",
+   "para": "Versie Hillebrand",
+   "fit_dono": 81.97,
+   "fit_novo": 81.97,
+   "muda": false
+  },
+  {
+   "opportunity_id": "W2149WNZ",
+   "de": "Versie Hillebrand",
+   "para": "Versie Hillebrand",
+   "fit_dono": 81.26,
+   "fit_novo": 81.26,
+   "muda": false
+  },
+  {
+   "opportunity_id": "WA3U0EVI",
+   "de": "Gladys Colclough",
+   "para": "Mei-Mei Johns",
+   "fit_dono": 57.3,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "X9NUTLTR",
+   "de": "Gladys Colclough",
+   "para": "Gladys Colclough",
+   "fit_dono": 88.18,
+   "fit_novo": 88.18,
+   "muda": false
+  },
+  {
+   "opportunity_id": "YKBJP191",
+   "de": "Darcel Schlecht",
+   "para": "Darcel Schlecht",
+   "fit_dono": 68.44,
+   "fit_novo": 68.44,
+   "muda": false
+  },
+  {
+   "opportunity_id": "ZT1234V3",
+   "de": "Garret Kinder",
+   "para": "Garret Kinder",
+   "fit_dono": 85.77,
+   "fit_novo": 85.77,
+   "muda": false
+  },
+  {
+   "opportunity_id": "ZT163LH3",
+   "de": "Niesha Huffines",
+   "para": "Natalya Ivanova",
+   "fit_dono": 54.19,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "ZTCQWF53",
+   "de": "Niesha Huffines",
+   "para": "Rosalina Dieter",
+   "fit_dono": 52.99,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "ZTFYF8PV",
+   "de": "Niesha Huffines",
+   "para": "Rosalina Dieter",
+   "fit_dono": 57.32,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "ZVO432VF",
+   "de": "Wilburn Farren",
+   "para": "Rosalina Dieter",
+   "fit_dono": 50.0,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "ZXNPF7PL",
+   "de": "Marty Freudenburg",
+   "para": "Marty Freudenburg",
+   "fit_dono": 72.95,
+   "fit_novo": 72.95,
+   "muda": false
+  },
+  {
+   "opportunity_id": "00400B1S",
+   "de": "Marty Freudenburg",
+   "para": "Darcel Schlecht",
+   "fit_dono": 64.5,
+   "fit_novo": 63.8,
+   "muda": true
+  },
+  {
+   "opportunity_id": "03P9VXWG",
+   "de": "Marty Freudenburg",
+   "para": "Darcel Schlecht",
+   "fit_dono": 64.5,
+   "fit_novo": 63.8,
+   "muda": true
+  },
+  {
+   "opportunity_id": "0C34Z5UZ",
+   "de": "Moses Frase",
+   "para": "Moses Frase",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "0CECGPEJ",
+   "de": "Elease Gluck",
+   "para": "Elease Gluck",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "0HR4TEU4",
+   "de": "Rosie Papadopoulos",
+   "para": "Carl Lin",
+   "fit_dono": 73.99,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "0KSK9O00",
+   "de": "Reed Clapper",
+   "para": "Reed Clapper",
+   "fit_dono": 74.37,
+   "fit_novo": 74.37,
+   "muda": false
+  },
+  {
+   "opportunity_id": "0M4K6F8Q",
+   "de": "Marty Freudenburg",
+   "para": "Darcel Schlecht",
+   "fit_dono": 64.5,
+   "fit_novo": 63.8,
+   "muda": true
+  },
+  {
+   "opportunity_id": "0PXJYUT7",
+   "de": "Moses Frase",
+   "para": "Moses Frase",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "0QMDTHBS",
+   "de": "James Ascencio",
+   "para": "James Ascencio",
+   "fit_dono": 88.22,
+   "fit_novo": 88.22,
+   "muda": false
+  },
+  {
+   "opportunity_id": "0RLU8I9Q",
+   "de": "Marty Freudenburg",
+   "para": "Darcel Schlecht",
+   "fit_dono": 64.5,
+   "fit_novo": 63.8,
+   "muda": true
+  },
+  {
+   "opportunity_id": "0TQP0E65",
+   "de": "Moses Frase",
+   "para": "Moses Frase",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "0XVL2UMH",
+   "de": "Garret Kinder",
+   "para": "Carl Lin",
+   "fit_dono": 69.36,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "0ZG6U7MQ",
+   "de": "Moses Frase",
+   "para": "Moses Frase",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "10ALJD82",
+   "de": "Corliss Cosme",
+   "para": "Corliss Cosme",
+   "fit_dono": 82.03,
+   "fit_novo": 82.03,
+   "muda": false
+  },
+  {
+   "opportunity_id": "11T4HX93",
+   "de": "Reed Clapper",
+   "para": "Reed Clapper",
+   "fit_dono": 76.58,
+   "fit_novo": 76.58,
+   "muda": false
+  },
+  {
+   "opportunity_id": "18IUIUK0",
+   "de": "Elease Gluck",
+   "para": "Elease Gluck",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "1969NL80",
+   "de": "James Ascencio",
+   "para": "James Ascencio",
+   "fit_dono": 88.22,
+   "fit_novo": 88.22,
+   "muda": false
+  },
+  {
+   "opportunity_id": "1BB5LME9",
+   "de": "Reed Clapper",
+   "para": "Reed Clapper",
+   "fit_dono": 78.46,
+   "fit_novo": 78.46,
+   "muda": false
+  },
+  {
+   "opportunity_id": "1FAU5C6V",
+   "de": "James Ascencio",
+   "para": "James Ascencio",
+   "fit_dono": 88.22,
+   "fit_novo": 88.22,
+   "muda": false
+  },
+  {
+   "opportunity_id": "1LWG4COF",
+   "de": "Moses Frase",
+   "para": "Moses Frase",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "1XR36ESV",
+   "de": "Elease Gluck",
+   "para": "Elease Gluck",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "22TUMCKT",
+   "de": "Marty Freudenburg",
+   "para": "Darcel Schlecht",
+   "fit_dono": 64.5,
+   "fit_novo": 63.8,
+   "muda": true
+  },
+  {
+   "opportunity_id": "27ZK0L0F",
+   "de": "Marty Freudenburg",
+   "para": "Darcel Schlecht",
+   "fit_dono": 64.5,
+   "fit_novo": 63.8,
+   "muda": true
+  },
+  {
+   "opportunity_id": "2872DC79",
+   "de": "Elease Gluck",
+   "para": "Elease Gluck",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "28EJ0L9T",
+   "de": "Moses Frase",
+   "para": "Moses Frase",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "2BD1SDBX",
+   "de": "Corliss Cosme",
+   "para": "Corliss Cosme",
+   "fit_dono": 74.62,
+   "fit_novo": 74.62,
+   "muda": false
+  },
+  {
+   "opportunity_id": "2G5ZMOYC",
+   "de": "Corliss Cosme",
+   "para": "Corliss Cosme",
+   "fit_dono": 74.62,
+   "fit_novo": 74.62,
+   "muda": false
+  },
+  {
+   "opportunity_id": "2IRZM0LB",
+   "de": "Cecily Lampkin",
+   "para": "Cecily Lampkin",
+   "fit_dono": 82.15,
+   "fit_novo": 82.15,
+   "muda": false
+  },
+  {
+   "opportunity_id": "2NO97U9Z",
+   "de": "Elease Gluck",
+   "para": "Elease Gluck",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "2RQOUJ9V",
+   "de": "Marty Freudenburg",
+   "para": "Darcel Schlecht",
+   "fit_dono": 64.5,
+   "fit_novo": 63.8,
+   "muda": true
+  },
+  {
+   "opportunity_id": "2SZX9B7J",
+   "de": "Rosie Papadopoulos",
+   "para": "Rosie Papadopoulos",
+   "fit_dono": 83.75,
+   "fit_novo": 83.75,
+   "muda": false
+  },
+  {
+   "opportunity_id": "2TI0MAKP",
+   "de": "Reed Clapper",
+   "para": "Carl Lin",
+   "fit_dono": 67.71,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "2WTPSQTN",
+   "de": "Moses Frase",
+   "para": "Moses Frase",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "2WWMPY7O",
+   "de": "Marty Freudenburg",
+   "para": "Darcel Schlecht",
+   "fit_dono": 64.5,
+   "fit_novo": 63.8,
+   "muda": true
+  },
+  {
+   "opportunity_id": "32NDDT4L",
+   "de": "James Ascencio",
+   "para": "James Ascencio",
+   "fit_dono": 88.22,
+   "fit_novo": 88.22,
+   "muda": false
+  },
+  {
+   "opportunity_id": "37PEZCGO",
+   "de": "Elease Gluck",
+   "para": "Elease Gluck",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "39NJ6UC9",
+   "de": "Elease Gluck",
+   "para": "Elease Gluck",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "3K70RL7Q",
+   "de": "Moses Frase",
+   "para": "Moses Frase",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "3LCLVRVV",
+   "de": "Marty Freudenburg",
+   "para": "Darcel Schlecht",
+   "fit_dono": 64.5,
+   "fit_novo": 63.8,
+   "muda": true
+  },
+  {
+   "opportunity_id": "3PN3YSPK",
+   "de": "Elease Gluck",
+   "para": "Elease Gluck",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "3R4W7ZVY",
+   "de": "Moses Frase",
+   "para": "Moses Frase",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "3TMNC3GW",
+   "de": "Donn Cantrell",
+   "para": "Donn Cantrell",
+   "fit_dono": 64.95,
+   "fit_novo": 64.95,
+   "muda": false
+  },
+  {
+   "opportunity_id": "426EL41A",
+   "de": "James Ascencio",
+   "para": "James Ascencio",
+   "fit_dono": 88.22,
+   "fit_novo": 88.22,
+   "muda": false
+  },
+  {
+   "opportunity_id": "44JDHBI8",
+   "de": "Elease Gluck",
+   "para": "Elease Gluck",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "465ZW6J2",
+   "de": "Moses Frase",
+   "para": "Moses Frase",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "473F6L9F",
+   "de": "James Ascencio",
+   "para": "James Ascencio",
+   "fit_dono": 88.22,
+   "fit_novo": 88.22,
+   "muda": false
+  },
+  {
+   "opportunity_id": "47P0HBNM",
+   "de": "Reed Clapper",
+   "para": "Donn Cantrell",
+   "fit_dono": 67.48,
+   "fit_novo": 63.17,
+   "muda": true
+  },
+  {
+   "opportunity_id": "49T7VKA7",
+   "de": "Cassey Cress",
+   "para": "Carl Lin",
+   "fit_dono": 57.36,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "4ENCEYPG",
+   "de": "James Ascencio",
+   "para": "James Ascencio",
+   "fit_dono": 88.22,
+   "fit_novo": 88.22,
+   "muda": false
+  },
+  {
+   "opportunity_id": "4H6DFFO4",
+   "de": "Elease Gluck",
+   "para": "Elease Gluck",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "4H8GZ075",
+   "de": "Garret Kinder",
+   "para": "Garret Kinder",
+   "fit_dono": 82.21,
+   "fit_novo": 82.21,
+   "muda": false
+  },
+  {
+   "opportunity_id": "4ROECHG6",
+   "de": "Cecily Lampkin",
+   "para": "Cecily Lampkin",
+   "fit_dono": 82.15,
+   "fit_novo": 82.15,
+   "muda": false
+  },
+  {
+   "opportunity_id": "4V17GRKW",
+   "de": "Elease Gluck",
+   "para": "Elease Gluck",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "4XQ43RJW",
+   "de": "Elease Gluck",
+   "para": "Jonathan Berthelot",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "4YJKB8EC",
+   "de": "Moses Frase",
+   "para": "Moses Frase",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "51HOGHF0",
+   "de": "Moses Frase",
+   "para": "Moses Frase",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "52V1RWCZ",
+   "de": "Reed Clapper",
+   "para": "Darcel Schlecht",
+   "fit_dono": 71.92,
+   "fit_novo": 65.31,
+   "muda": true
+  },
+  {
+   "opportunity_id": "52WACRCG",
+   "de": "Moses Frase",
+   "para": "Moses Frase",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "537X47QY",
+   "de": "Moses Frase",
+   "para": "Moses Frase",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "566X0PLZ",
+   "de": "Moses Frase",
+   "para": "Moses Frase",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "5697WKA6",
+   "de": "James Ascencio",
+   "para": "James Ascencio",
+   "fit_dono": 88.22,
+   "fit_novo": 88.22,
+   "muda": false
+  },
+  {
+   "opportunity_id": "5C59O9GU",
+   "de": "Reed Clapper",
+   "para": "Reed Clapper",
+   "fit_dono": 76.58,
+   "fit_novo": 76.58,
+   "muda": false
+  },
+  {
+   "opportunity_id": "5ELMZN3E",
+   "de": "James Ascencio",
+   "para": "James Ascencio",
+   "fit_dono": 88.22,
+   "fit_novo": 88.22,
+   "muda": false
+  },
+  {
+   "opportunity_id": "5EUHU5AF",
+   "de": "Moses Frase",
+   "para": "Moses Frase",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "5JS1Z5BQ",
+   "de": "Moses Frase",
+   "para": "Moses Frase",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "5MNF16D8",
+   "de": "Moses Frase",
+   "para": "Moses Frase",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "5P4OCP0Q",
+   "de": "James Ascencio",
+   "para": "Hayden Neloms",
+   "fit_dono": 88.22,
+   "fit_novo": 75.41,
+   "muda": true
+  },
+  {
+   "opportunity_id": "5Q2BX622",
+   "de": "Garret Kinder",
+   "para": "Garret Kinder",
+   "fit_dono": 85.77,
+   "fit_novo": 85.77,
+   "muda": false
+  },
+  {
+   "opportunity_id": "5TGQL49J",
+   "de": "Elease Gluck",
+   "para": "Jonathan Berthelot",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "5ZATE1WV",
+   "de": "Marty Freudenburg",
+   "para": "Darcel Schlecht",
+   "fit_dono": 64.5,
+   "fit_novo": 63.8,
+   "muda": true
+  },
+  {
+   "opportunity_id": "61GDYW9T",
+   "de": "Elease Gluck",
+   "para": "Jonathan Berthelot",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "647SQRGL",
+   "de": "Marty Freudenburg",
+   "para": "Darcel Schlecht",
+   "fit_dono": 64.5,
+   "fit_novo": 63.8,
+   "muda": true
+  },
+  {
+   "opportunity_id": "64OXRCSR",
+   "de": "Moses Frase",
+   "para": "Moses Frase",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "65SMA4OZ",
+   "de": "Moses Frase",
+   "para": "Moses Frase",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "67CBAWHG",
+   "de": "Moses Frase",
+   "para": "Moses Frase",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "6CWZFOHJ",
+   "de": "Niesha Huffines",
+   "para": "Carl Lin",
+   "fit_dono": 51.71,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "6IG2A8KD",
+   "de": "James Ascencio",
+   "para": "Hayden Neloms",
+   "fit_dono": 88.22,
+   "fit_novo": 75.41,
+   "muda": true
+  },
+  {
+   "opportunity_id": "6IO91583",
+   "de": "Moses Frase",
+   "para": "Lajuana Vencill",
+   "fit_dono": 100.0,
+   "fit_novo": 95.9,
+   "muda": true
+  },
+  {
+   "opportunity_id": "6KHIXTAD",
+   "de": "Moses Frase",
+   "para": "Lajuana Vencill",
+   "fit_dono": 100.0,
+   "fit_novo": 95.9,
+   "muda": true
+  },
+  {
+   "opportunity_id": "6KW4PU0S",
+   "de": "Marty Freudenburg",
+   "para": "Darcel Schlecht",
+   "fit_dono": 64.5,
+   "fit_novo": 63.8,
+   "muda": true
+  },
+  {
+   "opportunity_id": "6QKBZAEQ",
+   "de": "James Ascencio",
+   "para": "Hayden Neloms",
+   "fit_dono": 88.22,
+   "fit_novo": 75.41,
+   "muda": true
+  },
+  {
+   "opportunity_id": "6R94B0SG",
+   "de": "Moses Frase",
+   "para": "Lajuana Vencill",
+   "fit_dono": 100.0,
+   "fit_novo": 95.9,
+   "muda": true
+  },
+  {
+   "opportunity_id": "6RN7I8ZF",
+   "de": "Kary Hendrixson",
+   "para": "Kary Hendrixson",
+   "fit_dono": 73.05,
+   "fit_novo": 73.05,
+   "muda": false
+  },
+  {
+   "opportunity_id": "6RQUXORL",
+   "de": "Moses Frase",
+   "para": "Lajuana Vencill",
+   "fit_dono": 100.0,
+   "fit_novo": 95.9,
+   "muda": true
+  },
+  {
+   "opportunity_id": "6SLKZ8FI",
+   "de": "Elease Gluck",
+   "para": "Jonathan Berthelot",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "6WNENPQM",
+   "de": "Garret Kinder",
+   "para": "Garret Kinder",
+   "fit_dono": 82.21,
+   "fit_novo": 82.21,
+   "muda": false
+  },
+  {
+   "opportunity_id": "6Z6DMG2V",
+   "de": "Lajuana Vencill",
+   "para": "Lajuana Vencill",
+   "fit_dono": 95.9,
+   "fit_novo": 95.9,
+   "muda": false
+  },
+  {
+   "opportunity_id": "73CWPT9H",
+   "de": "Lajuana Vencill",
+   "para": "Lajuana Vencill",
+   "fit_dono": 95.9,
+   "fit_novo": 95.9,
+   "muda": false
+  },
+  {
+   "opportunity_id": "74LCNGIK",
+   "de": "Lajuana Vencill",
+   "para": "Lajuana Vencill",
+   "fit_dono": 95.9,
+   "fit_novo": 95.9,
+   "muda": false
+  },
+  {
+   "opportunity_id": "76WK0KFZ",
+   "de": "Garret Kinder",
+   "para": "Niesha Huffines",
+   "fit_dono": 73.74,
+   "fit_novo": 69.24,
+   "muda": true
+  },
+  {
+   "opportunity_id": "7CZU8GS1",
+   "de": "James Ascencio",
+   "para": "Hayden Neloms",
+   "fit_dono": 88.22,
+   "fit_novo": 75.41,
+   "muda": true
+  },
+  {
+   "opportunity_id": "7KQAH6UI",
+   "de": "Jonathan Berthelot",
+   "para": "Jonathan Berthelot",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "7MKYTX69",
+   "de": "Lajuana Vencill",
+   "para": "Lajuana Vencill",
+   "fit_dono": 95.9,
+   "fit_novo": 95.9,
+   "muda": false
+  },
+  {
+   "opportunity_id": "7N6AHU7C",
+   "de": "Kami Bicknell",
+   "para": "Hayden Neloms",
+   "fit_dono": 81.66,
+   "fit_novo": 75.41,
+   "muda": true
+  },
+  {
+   "opportunity_id": "7Q90C2VN",
+   "de": "Hayden Neloms",
+   "para": "Hayden Neloms",
+   "fit_dono": 75.41,
+   "fit_novo": 75.41,
+   "muda": false
+  },
+  {
+   "opportunity_id": "7UVKZD60",
+   "de": "Marty Freudenburg",
+   "para": "Darcel Schlecht",
+   "fit_dono": 64.5,
+   "fit_novo": 63.8,
+   "muda": true
+  },
+  {
+   "opportunity_id": "7WXPAXAV",
+   "de": "Garret Kinder",
+   "para": "Garret Kinder",
+   "fit_dono": 83.95,
+   "fit_novo": 83.95,
+   "muda": false
+  },
+  {
+   "opportunity_id": "7YOJ4KU7",
+   "de": "Lajuana Vencill",
+   "para": "Lajuana Vencill",
+   "fit_dono": 95.9,
+   "fit_novo": 95.9,
+   "muda": false
+  },
+  {
+   "opportunity_id": "847RHYQE",
+   "de": "Lajuana Vencill",
+   "para": "Lajuana Vencill",
+   "fit_dono": 95.9,
+   "fit_novo": 95.9,
+   "muda": false
+  },
+  {
+   "opportunity_id": "8E0VRCLW",
+   "de": "Marty Freudenburg",
+   "para": "Darcel Schlecht",
+   "fit_dono": 64.5,
+   "fit_novo": 63.8,
+   "muda": true
+  },
+  {
+   "opportunity_id": "8GNSME5U",
+   "de": "Hayden Neloms",
+   "para": "Hayden Neloms",
+   "fit_dono": 75.41,
+   "fit_novo": 75.41,
+   "muda": false
+  },
+  {
+   "opportunity_id": "8I5ONXJX",
+   "de": "Jonathan Berthelot",
+   "para": "Jonathan Berthelot",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "8IPMP8NT",
+   "de": "Lajuana Vencill",
+   "para": "Lajuana Vencill",
+   "fit_dono": 95.9,
+   "fit_novo": 95.9,
+   "muda": false
+  },
+  {
+   "opportunity_id": "8JL58ECD",
+   "de": "Lajuana Vencill",
+   "para": "Lajuana Vencill",
+   "fit_dono": 95.9,
+   "fit_novo": 95.9,
+   "muda": false
+  },
+  {
+   "opportunity_id": "8M2O0Q8V",
+   "de": "Garret Kinder",
+   "para": "Garret Kinder",
+   "fit_dono": 85.77,
+   "fit_novo": 85.77,
+   "muda": false
+  },
+  {
+   "opportunity_id": "8NI8O26G",
+   "de": "Garret Kinder",
+   "para": "Garret Kinder",
+   "fit_dono": 82.21,
+   "fit_novo": 82.21,
+   "muda": false
+  },
+  {
+   "opportunity_id": "8NLGRTU5",
+   "de": "Lajuana Vencill",
+   "para": "Lajuana Vencill",
+   "fit_dono": 95.9,
+   "fit_novo": 95.9,
+   "muda": false
+  },
+  {
+   "opportunity_id": "8O212QCV",
+   "de": "Lajuana Vencill",
+   "para": "Lajuana Vencill",
+   "fit_dono": 95.9,
+   "fit_novo": 95.9,
+   "muda": false
+  },
+  {
+   "opportunity_id": "8O98HGMW",
+   "de": "Jonathan Berthelot",
+   "para": "Jonathan Berthelot",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "8RQCHZ5O",
+   "de": "Lajuana Vencill",
+   "para": "Lajuana Vencill",
+   "fit_dono": 95.9,
+   "fit_novo": 95.9,
+   "muda": false
+  },
+  {
+   "opportunity_id": "8TLX2786",
+   "de": "Hayden Neloms",
+   "para": "Hayden Neloms",
+   "fit_dono": 75.41,
+   "fit_novo": 75.41,
+   "muda": false
+  },
+  {
+   "opportunity_id": "8XE8GGIW",
+   "de": "Rosie Papadopoulos",
+   "para": "Reed Clapper",
+   "fit_dono": 79.19,
+   "fit_novo": 78.64,
+   "muda": true
+  },
+  {
+   "opportunity_id": "8Y3OMER4",
+   "de": "Darcel Schlecht",
+   "para": "Darcel Schlecht",
+   "fit_dono": 63.8,
+   "fit_novo": 63.8,
+   "muda": false
+  },
+  {
+   "opportunity_id": "90KRHC6T",
+   "de": "Lajuana Vencill",
+   "para": "Lajuana Vencill",
+   "fit_dono": 95.9,
+   "fit_novo": 95.9,
+   "muda": false
+  },
+  {
+   "opportunity_id": "910NLQ80",
+   "de": "Lajuana Vencill",
+   "para": "Lajuana Vencill",
+   "fit_dono": 95.9,
+   "fit_novo": 95.9,
+   "muda": false
+  },
+  {
+   "opportunity_id": "94DGJSLN",
+   "de": "Lajuana Vencill",
+   "para": "Lajuana Vencill",
+   "fit_dono": 95.9,
+   "fit_novo": 95.9,
+   "muda": false
+  },
+  {
+   "opportunity_id": "94ZZLWOH",
+   "de": "Jonathan Berthelot",
+   "para": "Jonathan Berthelot",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "97WEHB4X",
+   "de": "Darcel Schlecht",
+   "para": "Darcel Schlecht",
+   "fit_dono": 63.8,
+   "fit_novo": 63.8,
+   "muda": false
+  },
+  {
+   "opportunity_id": "99YRLZM0",
+   "de": "Niesha Huffines",
+   "para": "Niesha Huffines",
+   "fit_dono": 62.41,
+   "fit_novo": 62.41,
+   "muda": false
+  },
+  {
+   "opportunity_id": "9BM1CGBV",
+   "de": "Hayden Neloms",
+   "para": "Hayden Neloms",
+   "fit_dono": 87.71,
+   "fit_novo": 87.71,
+   "muda": false
+  },
+  {
+   "opportunity_id": "9CYYLZ11",
+   "de": "Reed Clapper",
+   "para": "Darcel Schlecht",
+   "fit_dono": 71.92,
+   "fit_novo": 65.31,
+   "muda": true
+  },
+  {
+   "opportunity_id": "9F9NDO41",
+   "de": "Hayden Neloms",
+   "para": "Hayden Neloms",
+   "fit_dono": 75.41,
+   "fit_novo": 75.41,
+   "muda": false
+  },
+  {
+   "opportunity_id": "9H2V1F1E",
+   "de": "Garret Kinder",
+   "para": "Garret Kinder",
+   "fit_dono": 85.77,
+   "fit_novo": 85.77,
+   "muda": false
+  },
+  {
+   "opportunity_id": "9HA8VBAP",
+   "de": "Reed Clapper",
+   "para": "Carl Lin",
+   "fit_dono": 70.26,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "9HFEMESD",
+   "de": "Darcel Schlecht",
+   "para": "Darcel Schlecht",
+   "fit_dono": 63.8,
+   "fit_novo": 63.8,
+   "muda": false
+  },
+  {
+   "opportunity_id": "9MIWFW5J",
+   "de": "Jonathan Berthelot",
+   "para": "Jonathan Berthelot",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "9P9J2ANM",
+   "de": "Lajuana Vencill",
+   "para": "Lajuana Vencill",
+   "fit_dono": 95.9,
+   "fit_novo": 95.9,
+   "muda": false
+  },
+  {
+   "opportunity_id": "9PDR4X2R",
+   "de": "Marty Freudenburg",
+   "para": "Marty Freudenburg",
+   "fit_dono": 65.54,
+   "fit_novo": 65.54,
+   "muda": false
+  },
+  {
+   "opportunity_id": "9RGWSKNU",
+   "de": "Cecily Lampkin",
+   "para": "Cecily Lampkin",
+   "fit_dono": 82.15,
+   "fit_novo": 82.15,
+   "muda": false
+  },
+  {
+   "opportunity_id": "9YLUGU6I",
+   "de": "Lajuana Vencill",
+   "para": "Lajuana Vencill",
+   "fit_dono": 95.9,
+   "fit_novo": 95.9,
+   "muda": false
+  },
+  {
+   "opportunity_id": "A4TA5P1B",
+   "de": "Lajuana Vencill",
+   "para": "Lajuana Vencill",
+   "fit_dono": 95.9,
+   "fit_novo": 95.9,
+   "muda": false
+  },
+  {
+   "opportunity_id": "A5DN7SE1",
+   "de": "Hayden Neloms",
+   "para": "Hayden Neloms",
+   "fit_dono": 75.41,
+   "fit_novo": 75.41,
+   "muda": false
+  },
+  {
+   "opportunity_id": "A8NXNY0M",
+   "de": "Garret Kinder",
+   "para": "Carl Lin",
+   "fit_dono": 69.36,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "A8PVW8RI",
+   "de": "Garret Kinder",
+   "para": "Garret Kinder",
+   "fit_dono": 82.27,
+   "fit_novo": 82.27,
+   "muda": false
+  },
+  {
+   "opportunity_id": "A9DGDN56",
+   "de": "Rosie Papadopoulos",
+   "para": "Rosie Papadopoulos",
+   "fit_dono": 80.66,
+   "fit_novo": 80.66,
+   "muda": false
+  },
+  {
+   "opportunity_id": "AAQ5H36J",
+   "de": "Jonathan Berthelot",
+   "para": "Jonathan Berthelot",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "AE3YDLK3",
+   "de": "Cecily Lampkin",
+   "para": "Cecily Lampkin",
+   "fit_dono": 82.15,
+   "fit_novo": 82.15,
+   "muda": false
+  },
+  {
+   "opportunity_id": "AP74NF6M",
+   "de": "Garret Kinder",
+   "para": "Garret Kinder",
+   "fit_dono": 82.27,
+   "fit_novo": 82.27,
+   "muda": false
+  },
+  {
+   "opportunity_id": "APXWBOOT",
+   "de": "Hayden Neloms",
+   "para": "Hayden Neloms",
+   "fit_dono": 75.41,
+   "fit_novo": 75.41,
+   "muda": false
+  },
+  {
+   "opportunity_id": "ARBTXSEH",
+   "de": "Rosie Papadopoulos",
+   "para": "Rosie Papadopoulos",
+   "fit_dono": 83.75,
+   "fit_novo": 83.75,
+   "muda": false
+  },
+  {
+   "opportunity_id": "ASDR6QEZ",
+   "de": "Hayden Neloms",
+   "para": "Hayden Neloms",
+   "fit_dono": 75.41,
+   "fit_novo": 75.41,
+   "muda": false
+  },
+  {
+   "opportunity_id": "ATOYVLLB",
+   "de": "Darcel Schlecht",
+   "para": "Donn Cantrell",
+   "fit_dono": 63.8,
+   "fit_novo": 62.69,
+   "muda": true
+  },
+  {
+   "opportunity_id": "B26TNOGQ",
+   "de": "Cecily Lampkin",
+   "para": "Cecily Lampkin",
+   "fit_dono": 82.15,
+   "fit_novo": 82.15,
+   "muda": false
+  },
+  {
+   "opportunity_id": "B2YZJ212",
+   "de": "Lajuana Vencill",
+   "para": "Cecily Lampkin",
+   "fit_dono": 95.9,
+   "fit_novo": 79.92,
+   "muda": true
+  },
+  {
+   "opportunity_id": "B5H6M7AP",
+   "de": "Lajuana Vencill",
+   "para": "Boris Faz",
+   "fit_dono": 95.9,
+   "fit_novo": 90.91,
+   "muda": true
+  },
+  {
+   "opportunity_id": "B7KZYEII",
+   "de": "Lajuana Vencill",
+   "para": "Maureen Marcano",
+   "fit_dono": 95.9,
+   "fit_novo": 80.52,
+   "muda": true
+  },
+  {
+   "opportunity_id": "BBV196A3",
+   "de": "Lajuana Vencill",
+   "para": "Boris Faz",
+   "fit_dono": 95.9,
+   "fit_novo": 90.91,
+   "muda": true
+  },
+  {
+   "opportunity_id": "BG0BLC6S",
+   "de": "Garret Kinder",
+   "para": "Garret Kinder",
+   "fit_dono": 85.77,
+   "fit_novo": 85.77,
+   "muda": false
+  },
+  {
+   "opportunity_id": "BIN9U8D9",
+   "de": "Jonathan Berthelot",
+   "para": "Jonathan Berthelot",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "BJE7KCZ1",
+   "de": "Rosie Papadopoulos",
+   "para": "Rosie Papadopoulos",
+   "fit_dono": 87.81,
+   "fit_novo": 87.81,
+   "muda": false
+  },
+  {
+   "opportunity_id": "BKI3OLP8",
+   "de": "Jonathan Berthelot",
+   "para": "Jonathan Berthelot",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "BTDY3DHP",
+   "de": "Corliss Cosme",
+   "para": "Corliss Cosme",
+   "fit_dono": 74.62,
+   "fit_novo": 74.62,
+   "muda": false
+  },
+  {
+   "opportunity_id": "BTH2O9OF",
+   "de": "Hayden Neloms",
+   "para": "Versie Hillebrand",
+   "fit_dono": 75.41,
+   "fit_novo": 74.01,
+   "muda": true
+  },
+  {
+   "opportunity_id": "BUOI3TBI",
+   "de": "Reed Clapper",
+   "para": "Reed Clapper",
+   "fit_dono": 72.28,
+   "fit_novo": 72.28,
+   "muda": false
+  },
+  {
+   "opportunity_id": "BV75OM0B",
+   "de": "Rosie Papadopoulos",
+   "para": "Reed Clapper",
+   "fit_dono": 75.24,
+   "fit_novo": 75.05,
+   "muda": true
+  },
+  {
+   "opportunity_id": "BVRUBA3A",
+   "de": "Lajuana Vencill",
+   "para": "Maureen Marcano",
+   "fit_dono": 95.9,
+   "fit_novo": 80.52,
+   "muda": true
+  },
+  {
+   "opportunity_id": "BW0NOLCK",
+   "de": "Darcel Schlecht",
+   "para": "Donn Cantrell",
+   "fit_dono": 63.8,
+   "fit_novo": 62.69,
+   "muda": true
+  },
+  {
+   "opportunity_id": "BZ96Z7AI",
+   "de": "Lajuana Vencill",
+   "para": "Cecily Lampkin",
+   "fit_dono": 95.9,
+   "fit_novo": 79.92,
+   "muda": true
+  },
+  {
+   "opportunity_id": "C54CWZIT",
+   "de": "Anna Snelling",
+   "para": "Anna Snelling",
+   "fit_dono": 72.22,
+   "fit_novo": 72.22,
+   "muda": false
+  },
+  {
+   "opportunity_id": "C5B5WBY9",
+   "de": "Anna Snelling",
+   "para": "Anna Snelling",
+   "fit_dono": 79.57,
+   "fit_novo": 79.57,
+   "muda": false
+  },
+  {
+   "opportunity_id": "CAONNFXN",
+   "de": "Donn Cantrell",
+   "para": "Donn Cantrell",
+   "fit_dono": 64.48,
+   "fit_novo": 64.48,
+   "muda": false
+  },
+  {
+   "opportunity_id": "CC70D9SD",
+   "de": "Lajuana Vencill",
+   "para": "Maureen Marcano",
+   "fit_dono": 95.9,
+   "fit_novo": 80.52,
+   "muda": true
+  },
+  {
+   "opportunity_id": "CLPDG9BG",
+   "de": "Donn Cantrell",
+   "para": "Donn Cantrell",
+   "fit_dono": 69.19,
+   "fit_novo": 69.19,
+   "muda": false
+  },
+  {
+   "opportunity_id": "COGXUYLL",
+   "de": "Reed Clapper",
+   "para": "Carl Lin",
+   "fit_dono": 68.29,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "CVMNBKGH",
+   "de": "Marty Freudenburg",
+   "para": "Marty Freudenburg",
+   "fit_dono": 65.54,
+   "fit_novo": 65.54,
+   "muda": false
+  },
+  {
+   "opportunity_id": "D00AN5HY",
+   "de": "Darcel Schlecht",
+   "para": "Donn Cantrell",
+   "fit_dono": 63.8,
+   "fit_novo": 62.69,
+   "muda": true
+  },
+  {
+   "opportunity_id": "D00KRY2S",
+   "de": "Darcel Schlecht",
+   "para": "Donn Cantrell",
+   "fit_dono": 63.8,
+   "fit_novo": 62.69,
+   "muda": true
+  },
+  {
+   "opportunity_id": "D01U08PR",
+   "de": "Kary Hendrixson",
+   "para": "Kary Hendrixson",
+   "fit_dono": 73.05,
+   "fit_novo": 73.05,
+   "muda": false
+  },
+  {
+   "opportunity_id": "D382N39B",
+   "de": "Jonathan Berthelot",
+   "para": "Jonathan Berthelot",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "D3ZJX20X",
+   "de": "Hayden Neloms",
+   "para": "Versie Hillebrand",
+   "fit_dono": 75.41,
+   "fit_novo": 74.01,
+   "muda": true
+  },
+  {
+   "opportunity_id": "D45LXDPW",
+   "de": "Lajuana Vencill",
+   "para": "Cecily Lampkin",
+   "fit_dono": 95.9,
+   "fit_novo": 79.92,
+   "muda": true
+  },
+  {
+   "opportunity_id": "D6YEYMJC",
+   "de": "Jonathan Berthelot",
+   "para": "Jonathan Berthelot",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "D8ZJ6F45",
+   "de": "Donn Cantrell",
+   "para": "Donn Cantrell",
+   "fit_dono": 69.19,
+   "fit_novo": 69.19,
+   "muda": false
+  },
+  {
+   "opportunity_id": "D95K3R9N",
+   "de": "Boris Faz",
+   "para": "Boris Faz",
+   "fit_dono": 90.91,
+   "fit_novo": 90.91,
+   "muda": false
+  },
+  {
+   "opportunity_id": "DDHNCZMO",
+   "de": "Garret Kinder",
+   "para": "Niesha Huffines",
+   "fit_dono": 73.74,
+   "fit_novo": 71.65,
+   "muda": true
+  },
+  {
+   "opportunity_id": "DGI6CB5K",
+   "de": "Hayden Neloms",
+   "para": "Versie Hillebrand",
+   "fit_dono": 75.41,
+   "fit_novo": 74.01,
+   "muda": true
+  },
+  {
+   "opportunity_id": "DIGG7U6M",
+   "de": "Boris Faz",
+   "para": "Boris Faz",
+   "fit_dono": 90.91,
+   "fit_novo": 90.91,
+   "muda": false
+  },
+  {
+   "opportunity_id": "DJDJ5A58",
+   "de": "Darcel Schlecht",
+   "para": "Donn Cantrell",
+   "fit_dono": 63.8,
+   "fit_novo": 62.69,
+   "muda": true
+  },
+  {
+   "opportunity_id": "DOP1NORG",
+   "de": "Garret Kinder",
+   "para": "Garret Kinder",
+   "fit_dono": 82.21,
+   "fit_novo": 82.21,
+   "muda": false
+  },
+  {
+   "opportunity_id": "DS5HZHDA",
+   "de": "Corliss Cosme",
+   "para": "Corliss Cosme",
+   "fit_dono": 82.03,
+   "fit_novo": 82.03,
+   "muda": false
+  },
+  {
+   "opportunity_id": "DW5BQ220",
+   "de": "Versie Hillebrand",
+   "para": "Versie Hillebrand",
+   "fit_dono": 81.26,
+   "fit_novo": 81.26,
+   "muda": false
+  },
+  {
+   "opportunity_id": "DWGARGA2",
+   "de": "Hayden Neloms",
+   "para": "Versie Hillebrand",
+   "fit_dono": 75.41,
+   "fit_novo": 74.01,
+   "muda": true
+  },
+  {
+   "opportunity_id": "DX1M0XF0",
+   "de": "Boris Faz",
+   "para": "Boris Faz",
+   "fit_dono": 90.91,
+   "fit_novo": 90.91,
+   "muda": false
+  },
+  {
+   "opportunity_id": "DYA87PL1",
+   "de": "Hayden Neloms",
+   "para": "Versie Hillebrand",
+   "fit_dono": 75.41,
+   "fit_novo": 74.01,
+   "muda": true
+  },
+  {
+   "opportunity_id": "DYXD1AXO",
+   "de": "Hayden Neloms",
+   "para": "Versie Hillebrand",
+   "fit_dono": 75.41,
+   "fit_novo": 74.01,
+   "muda": true
+  },
+  {
+   "opportunity_id": "E0HMRMZ9",
+   "de": "Hayden Neloms",
+   "para": "Versie Hillebrand",
+   "fit_dono": 75.41,
+   "fit_novo": 74.01,
+   "muda": true
+  },
+  {
+   "opportunity_id": "E0S2ZL6X",
+   "de": "Anna Snelling",
+   "para": "Anna Snelling",
+   "fit_dono": 81.84,
+   "fit_novo": 81.84,
+   "muda": false
+  },
+  {
+   "opportunity_id": "E4YR0OE6",
+   "de": "Boris Faz",
+   "para": "Boris Faz",
+   "fit_dono": 90.91,
+   "fit_novo": 90.91,
+   "muda": false
+  },
+  {
+   "opportunity_id": "E54FFQBM",
+   "de": "Hayden Neloms",
+   "para": "Versie Hillebrand",
+   "fit_dono": 75.41,
+   "fit_novo": 74.01,
+   "muda": true
+  },
+  {
+   "opportunity_id": "E6798P2J",
+   "de": "Darcel Schlecht",
+   "para": "Donn Cantrell",
+   "fit_dono": 63.8,
+   "fit_novo": 62.69,
+   "muda": true
+  },
+  {
+   "opportunity_id": "E6DGJSDW",
+   "de": "Kami Bicknell",
+   "para": "Versie Hillebrand",
+   "fit_dono": 81.88,
+   "fit_novo": 74.42,
+   "muda": true
+  },
+  {
+   "opportunity_id": "EABYCHB3",
+   "de": "Cecily Lampkin",
+   "para": "Cecily Lampkin",
+   "fit_dono": 79.92,
+   "fit_novo": 79.92,
+   "muda": false
+  },
+  {
+   "opportunity_id": "EB393LSH",
+   "de": "Cecily Lampkin",
+   "para": "Anna Snelling",
+   "fit_dono": 79.92,
+   "fit_novo": 66.92,
+   "muda": true
+  },
+  {
+   "opportunity_id": "EG3X1ACF",
+   "de": "Cecily Lampkin",
+   "para": "Anna Snelling",
+   "fit_dono": 79.92,
+   "fit_novo": 66.92,
+   "muda": true
+  },
+  {
+   "opportunity_id": "EG7S6ZOI",
+   "de": "Kary Hendrixson",
+   "para": "Carl Lin",
+   "fit_dono": 67.66,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "EJCPWP6V",
+   "de": "Rosie Papadopoulos",
+   "para": "Rosie Papadopoulos",
+   "fit_dono": 80.66,
+   "fit_novo": 80.66,
+   "muda": false
+  },
+  {
+   "opportunity_id": "EJUQOEY5",
+   "de": "Reed Clapper",
+   "para": "Carl Lin",
+   "fit_dono": 67.48,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "EL09RK8X",
+   "de": "Garret Kinder",
+   "para": "Garret Kinder",
+   "fit_dono": 82.27,
+   "fit_novo": 82.27,
+   "muda": false
+  },
+  {
+   "opportunity_id": "EOJHYLXG",
+   "de": "Jonathan Berthelot",
+   "para": "Jonathan Berthelot",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "EPOB4B15",
+   "de": "Darcel Schlecht",
+   "para": "Donn Cantrell",
+   "fit_dono": 63.8,
+   "fit_novo": 62.69,
+   "muda": true
+  },
+  {
+   "opportunity_id": "ETJR6FUL",
+   "de": "Cecily Lampkin",
+   "para": "Cecily Lampkin",
+   "fit_dono": 82.15,
+   "fit_novo": 82.15,
+   "muda": false
+  },
+  {
+   "opportunity_id": "EU4DPJGN",
+   "de": "Hayden Neloms",
+   "para": "Versie Hillebrand",
+   "fit_dono": 75.41,
+   "fit_novo": 74.01,
+   "muda": true
+  },
+  {
+   "opportunity_id": "EYR5E7LO",
+   "de": "Cecily Lampkin",
+   "para": "Cecily Lampkin",
+   "fit_dono": 82.15,
+   "fit_novo": 82.15,
+   "muda": false
+  },
+  {
+   "opportunity_id": "F11IGBLD",
+   "de": "Maureen Marcano",
+   "para": "Maureen Marcano",
+   "fit_dono": 80.52,
+   "fit_novo": 80.52,
+   "muda": false
+  },
+  {
+   "opportunity_id": "F14T88OP",
+   "de": "Maureen Marcano",
+   "para": "Marty Freudenburg",
+   "fit_dono": 80.52,
+   "fit_novo": 72.95,
+   "muda": true
+  },
+  {
+   "opportunity_id": "F1NWH30L",
+   "de": "Jonathan Berthelot",
+   "para": "Jonathan Berthelot",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "F22C6LKO",
+   "de": "Versie Hillebrand",
+   "para": "Versie Hillebrand",
+   "fit_dono": 81.26,
+   "fit_novo": 81.26,
+   "muda": false
+  },
+  {
+   "opportunity_id": "F4W7Z1UU",
+   "de": "Versie Hillebrand",
+   "para": "Versie Hillebrand",
+   "fit_dono": 81.26,
+   "fit_novo": 81.26,
+   "muda": false
+  },
+  {
+   "opportunity_id": "F6AOT0NK",
+   "de": "Jonathan Berthelot",
+   "para": "Jonathan Berthelot",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "F77XD7IZ",
+   "de": "Jonathan Berthelot",
+   "para": "Jonathan Berthelot",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "FBDS7GIZ",
+   "de": "Boris Faz",
+   "para": "Boris Faz",
+   "fit_dono": 90.91,
+   "fit_novo": 90.91,
+   "muda": false
+  },
+  {
+   "opportunity_id": "FCNN6UY0",
+   "de": "Hayden Neloms",
+   "para": "Hayden Neloms",
+   "fit_dono": 88.37,
+   "fit_novo": 88.37,
+   "muda": false
+  },
+  {
+   "opportunity_id": "FEEOZHT8",
+   "de": "Jonathan Berthelot",
+   "para": "Jonathan Berthelot",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "FEL7FQQG",
+   "de": "Cecily Lampkin",
+   "para": "Anna Snelling",
+   "fit_dono": 79.92,
+   "fit_novo": 66.92,
+   "muda": true
+  },
+  {
+   "opportunity_id": "FGSBCJSC",
+   "de": "Boris Faz",
+   "para": "Boris Faz",
+   "fit_dono": 90.91,
+   "fit_novo": 90.91,
+   "muda": false
+  },
+  {
+   "opportunity_id": "FJHKS2T2",
+   "de": "Donn Cantrell",
+   "para": "Donn Cantrell",
+   "fit_dono": 64.48,
+   "fit_novo": 64.48,
+   "muda": false
+  },
+  {
+   "opportunity_id": "FMRVHL9O",
+   "de": "Anna Snelling",
+   "para": "Anna Snelling",
+   "fit_dono": 68.25,
+   "fit_novo": 68.25,
+   "muda": false
+  },
+  {
+   "opportunity_id": "FNLAOXF8",
+   "de": "Darcel Schlecht",
+   "para": "Donn Cantrell",
+   "fit_dono": 63.8,
+   "fit_novo": 62.69,
+   "muda": true
+  },
+  {
+   "opportunity_id": "FU2PQZR4",
+   "de": "Rosalina Dieter",
+   "para": "Carl Lin",
+   "fit_dono": 50.0,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "FVVATY89",
+   "de": "Cecily Lampkin",
+   "para": "Cecily Lampkin",
+   "fit_dono": 82.15,
+   "fit_novo": 82.15,
+   "muda": false
+  },
+  {
+   "opportunity_id": "FW2CVY2X",
+   "de": "Maureen Marcano",
+   "para": "Marty Freudenburg",
+   "fit_dono": 80.52,
+   "fit_novo": 72.95,
+   "muda": true
+  },
+  {
+   "opportunity_id": "FY0SHNZY",
+   "de": "Cecily Lampkin",
+   "para": "Anna Snelling",
+   "fit_dono": 79.92,
+   "fit_novo": 66.92,
+   "muda": true
+  },
+  {
+   "opportunity_id": "G4B3UCWQ",
+   "de": "Boris Faz",
+   "para": "Boris Faz",
+   "fit_dono": 90.91,
+   "fit_novo": 90.91,
+   "muda": false
+  },
+  {
+   "opportunity_id": "G7K3HJAT",
+   "de": "Darcel Schlecht",
+   "para": "Donn Cantrell",
+   "fit_dono": 63.8,
+   "fit_novo": 62.69,
+   "muda": true
+  },
+  {
+   "opportunity_id": "G99CS23F",
+   "de": "Darcel Schlecht",
+   "para": "Donn Cantrell",
+   "fit_dono": 63.8,
+   "fit_novo": 62.69,
+   "muda": true
+  },
+  {
+   "opportunity_id": "GEQ8IGKW",
+   "de": "Rosie Papadopoulos",
+   "para": "Reed Clapper",
+   "fit_dono": 79.19,
+   "fit_novo": 77.54,
+   "muda": true
+  },
+  {
+   "opportunity_id": "GI94RTL5",
+   "de": "Garret Kinder",
+   "para": "Garret Kinder",
+   "fit_dono": 82.21,
+   "fit_novo": 82.21,
+   "muda": false
+  },
+  {
+   "opportunity_id": "GLQLEZJM",
+   "de": "Versie Hillebrand",
+   "para": "Versie Hillebrand",
+   "fit_dono": 74.01,
+   "fit_novo": 74.01,
+   "muda": false
+  },
+  {
+   "opportunity_id": "GM5X0CSG",
+   "de": "Versie Hillebrand",
+   "para": "Versie Hillebrand",
+   "fit_dono": 74.01,
+   "fit_novo": 74.01,
+   "muda": false
+  },
+  {
+   "opportunity_id": "GNN53C6D",
+   "de": "Maureen Marcano",
+   "para": "Marty Freudenburg",
+   "fit_dono": 80.52,
+   "fit_novo": 72.95,
+   "muda": true
+  },
+  {
+   "opportunity_id": "GR9S7VHI",
+   "de": "Darcel Schlecht",
+   "para": "Donn Cantrell",
+   "fit_dono": 63.8,
+   "fit_novo": 62.69,
+   "muda": true
+  },
+  {
+   "opportunity_id": "GSBUIL1E",
+   "de": "Versie Hillebrand",
+   "para": "Versie Hillebrand",
+   "fit_dono": 74.01,
+   "fit_novo": 74.01,
+   "muda": false
+  },
+  {
+   "opportunity_id": "GSOR2INK",
+   "de": "Versie Hillebrand",
+   "para": "Versie Hillebrand",
+   "fit_dono": 74.01,
+   "fit_novo": 74.01,
+   "muda": false
+  },
+  {
+   "opportunity_id": "H046CU4Z",
+   "de": "Darcel Schlecht",
+   "para": "Donn Cantrell",
+   "fit_dono": 63.8,
+   "fit_novo": 62.69,
+   "muda": true
+  },
+  {
+   "opportunity_id": "HD6YD6P9",
+   "de": "Cecily Lampkin",
+   "para": "Anna Snelling",
+   "fit_dono": 79.92,
+   "fit_novo": 66.92,
+   "muda": true
+  },
+  {
+   "opportunity_id": "HFVWQIMF",
+   "de": "Boris Faz",
+   "para": "Daniell Hammack",
+   "fit_dono": 90.91,
+   "fit_novo": 83.73,
+   "muda": true
+  },
+  {
+   "opportunity_id": "HKMMBDMW",
+   "de": "Corliss Cosme",
+   "para": "Marty Freudenburg",
+   "fit_dono": 74.62,
+   "fit_novo": 65.01,
+   "muda": true
+  },
+  {
+   "opportunity_id": "HLE798LQ",
+   "de": "Darcel Schlecht",
+   "para": "Carl Lin",
+   "fit_dono": 63.8,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "HOXD9TTL",
+   "de": "Darcel Schlecht",
+   "para": "Carl Lin",
+   "fit_dono": 63.8,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "HP50ZWIZ",
+   "de": "Versie Hillebrand",
+   "para": "Versie Hillebrand",
+   "fit_dono": 74.01,
+   "fit_novo": 74.01,
+   "muda": false
+  },
+  {
+   "opportunity_id": "HP8IWA1E",
+   "de": "Jonathan Berthelot",
+   "para": "Jonathan Berthelot",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "HSGGBG9J",
+   "de": "Niesha Huffines",
+   "para": "Niesha Huffines",
+   "fit_dono": 61.57,
+   "fit_novo": 61.57,
+   "muda": false
+  },
+  {
+   "opportunity_id": "HUG2KAHE",
+   "de": "Darcel Schlecht",
+   "para": "Carl Lin",
+   "fit_dono": 63.8,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "HW367OVT",
+   "de": "Versie Hillebrand",
+   "para": "Markita Hansen",
+   "fit_dono": 74.01,
+   "fit_novo": 69.49,
+   "muda": true
+  },
+  {
+   "opportunity_id": "HWKJ7TFJ",
+   "de": "Cecily Lampkin",
+   "para": "Anna Snelling",
+   "fit_dono": 79.92,
+   "fit_novo": 66.92,
+   "muda": true
+  },
+  {
+   "opportunity_id": "HZVVOITE",
+   "de": "Boris Faz",
+   "para": "Daniell Hammack",
+   "fit_dono": 90.91,
+   "fit_novo": 83.73,
+   "muda": true
+  },
+  {
+   "opportunity_id": "I2LEEFAM",
+   "de": "Cecily Lampkin",
+   "para": "Anna Snelling",
+   "fit_dono": 79.92,
+   "fit_novo": 66.92,
+   "muda": true
+  },
+  {
+   "opportunity_id": "I43F0Z77",
+   "de": "Gladys Colclough",
+   "para": "Gladys Colclough",
+   "fit_dono": 62.14,
+   "fit_novo": 62.14,
+   "muda": false
+  },
+  {
+   "opportunity_id": "I79B9KJ2",
+   "de": "Anna Snelling",
+   "para": "Anna Snelling",
+   "fit_dono": 66.92,
+   "fit_novo": 66.92,
+   "muda": false
+  },
+  {
+   "opportunity_id": "I8NC3RFB",
+   "de": "Jonathan Berthelot",
+   "para": "Jonathan Berthelot",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "I93XL6Q9",
+   "de": "Reed Clapper",
+   "para": "Reed Clapper",
+   "fit_dono": 74.69,
+   "fit_novo": 74.69,
+   "muda": false
+  },
+  {
+   "opportunity_id": "IAV71BEX",
+   "de": "Garret Kinder",
+   "para": "Garret Kinder",
+   "fit_dono": 85.77,
+   "fit_novo": 85.77,
+   "muda": false
+  },
+  {
+   "opportunity_id": "IEMOIN3K",
+   "de": "Anna Snelling",
+   "para": "Niesha Huffines",
+   "fit_dono": 66.92,
+   "fit_novo": 57.32,
+   "muda": true
+  },
+  {
+   "opportunity_id": "IHKIAB1W",
+   "de": "Cecily Lampkin",
+   "para": "Cecily Lampkin",
+   "fit_dono": 82.15,
+   "fit_novo": 82.15,
+   "muda": false
+  },
+  {
+   "opportunity_id": "IKR0NSUE",
+   "de": "Versie Hillebrand",
+   "para": "Markita Hansen",
+   "fit_dono": 74.01,
+   "fit_novo": 69.49,
+   "muda": true
+  },
+  {
+   "opportunity_id": "IMN2GUYV",
+   "de": "Corliss Cosme",
+   "para": "Marty Freudenburg",
+   "fit_dono": 74.62,
+   "fit_novo": 65.01,
+   "muda": true
+  },
+  {
+   "opportunity_id": "IRTO8ZJW",
+   "de": "Anna Snelling",
+   "para": "Niesha Huffines",
+   "fit_dono": 66.92,
+   "fit_novo": 57.32,
+   "muda": true
+  },
+  {
+   "opportunity_id": "IUM2FVA1",
+   "de": "Jonathan Berthelot",
+   "para": "Jonathan Berthelot",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "IVTNXNYP",
+   "de": "Darcel Schlecht",
+   "para": "Carl Lin",
+   "fit_dono": 63.8,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "IXW68X6Z",
+   "de": "Jonathan Berthelot",
+   "para": "Violet Mclelland",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "J5IF7CT6",
+   "de": "Jonathan Berthelot",
+   "para": "Violet Mclelland",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "J5IXJWVU",
+   "de": "Donn Cantrell",
+   "para": "Donn Cantrell",
+   "fit_dono": 64.95,
+   "fit_novo": 64.95,
+   "muda": false
+  },
+  {
+   "opportunity_id": "JC7DDV56",
+   "de": "Versie Hillebrand",
+   "para": "Markita Hansen",
+   "fit_dono": 74.01,
+   "fit_novo": 69.49,
+   "muda": true
+  },
+  {
+   "opportunity_id": "JCRT0QHO",
+   "de": "Anna Snelling",
+   "para": "Niesha Huffines",
+   "fit_dono": 66.92,
+   "fit_novo": 57.32,
+   "muda": true
+  },
+  {
+   "opportunity_id": "JF4MEWPX",
+   "de": "Darcel Schlecht",
+   "para": "Carl Lin",
+   "fit_dono": 63.8,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "JHNDPI2N",
+   "de": "Reed Clapper",
+   "para": "Donn Cantrell",
+   "fit_dono": 67.48,
+   "fit_novo": 63.17,
+   "muda": true
+  },
+  {
+   "opportunity_id": "JLZCOLIE",
+   "de": "Jonathan Berthelot",
+   "para": "Violet Mclelland",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "JQ338VQC",
+   "de": "Rosalina Dieter",
+   "para": "Carl Lin",
+   "fit_dono": 50.0,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "JQBN7PXK",
+   "de": "Garret Kinder",
+   "para": "Garret Kinder",
+   "fit_dono": 85.77,
+   "fit_novo": 85.77,
+   "muda": false
+  },
+  {
+   "opportunity_id": "JSTHYUCD",
+   "de": "Versie Hillebrand",
+   "para": "Carl Lin",
+   "fit_dono": 74.01,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "JVXGG70X",
+   "de": "Maureen Marcano",
+   "para": "Marty Freudenburg",
+   "fit_dono": 80.52,
+   "fit_novo": 72.95,
+   "muda": true
+  },
+  {
+   "opportunity_id": "JZ4QLP1W",
+   "de": "Versie Hillebrand",
+   "para": "Versie Hillebrand",
+   "fit_dono": 81.26,
+   "fit_novo": 81.26,
+   "muda": false
+  },
+  {
+   "opportunity_id": "K7L1RE8B",
+   "de": "Versie Hillebrand",
+   "para": "Carl Lin",
+   "fit_dono": 74.01,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "K8ITR8PA",
+   "de": "Maureen Marcano",
+   "para": "Marty Freudenburg",
+   "fit_dono": 80.52,
+   "fit_novo": 72.95,
+   "muda": true
+  },
+  {
+   "opportunity_id": "KFSKQ291",
+   "de": "Garret Kinder",
+   "para": "Garret Kinder",
+   "fit_dono": 82.27,
+   "fit_novo": 82.27,
+   "muda": false
+  },
+  {
+   "opportunity_id": "KIKV29M0",
+   "de": "Maureen Marcano",
+   "para": "Marty Freudenburg",
+   "fit_dono": 80.52,
+   "fit_novo": 72.95,
+   "muda": true
+  },
+  {
+   "opportunity_id": "KKUHAY4O",
+   "de": "Jonathan Berthelot",
+   "para": "Violet Mclelland",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "KN4LCS4D",
+   "de": "Versie Hillebrand",
+   "para": "Carl Lin",
+   "fit_dono": 74.01,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "KO7JWXCT",
+   "de": "Boris Faz",
+   "para": "Rosie Papadopoulos",
+   "fit_dono": 90.91,
+   "fit_novo": 80.66,
+   "muda": true
+  },
+  {
+   "opportunity_id": "KOPIWJO5",
+   "de": "Anna Snelling",
+   "para": "Niesha Huffines",
+   "fit_dono": 66.92,
+   "fit_novo": 57.32,
+   "muda": true
+  },
+  {
+   "opportunity_id": "KQPNPH8A",
+   "de": "Maureen Marcano",
+   "para": "Marty Freudenburg",
+   "fit_dono": 80.52,
+   "fit_novo": 72.95,
+   "muda": true
+  },
+  {
+   "opportunity_id": "KTSP63I0",
+   "de": "Jonathan Berthelot",
+   "para": "Violet Mclelland",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "L5PS6S68",
+   "de": "Jonathan Berthelot",
+   "para": "Violet Mclelland",
+   "fit_dono": 100.0,
+   "fit_novo": 100.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "L7PPTHLF",
+   "de": "Anna Snelling",
+   "para": "Niesha Huffines",
+   "fit_dono": 66.92,
+   "fit_novo": 57.32,
+   "muda": true
+  },
+  {
+   "opportunity_id": "LABZ0UGB",
+   "de": "Anna Snelling",
+   "para": "Niesha Huffines",
+   "fit_dono": 66.92,
+   "fit_novo": 57.32,
+   "muda": true
+  },
+  {
+   "opportunity_id": "LEJWV2Y5",
+   "de": "Reed Clapper",
+   "para": "Reed Clapper",
+   "fit_dono": 74.37,
+   "fit_novo": 74.37,
+   "muda": false
+  },
+  {
+   "opportunity_id": "LFD1ZGJ8",
+   "de": "Boris Faz",
+   "para": "Rosie Papadopoulos",
+   "fit_dono": 90.91,
+   "fit_novo": 80.66,
+   "muda": true
+  },
+  {
+   "opportunity_id": "LIB4KUZJ",
+   "de": "Jonathan Berthelot",
+   "para": "Gladys Colclough",
+   "fit_dono": 100.0,
+   "fit_novo": 88.18,
+   "muda": true
+  },
+  {
+   "opportunity_id": "LKDSEQ2Q",
+   "de": "Niesha Huffines",
+   "para": "Niesha Huffines",
+   "fit_dono": 62.62,
+   "fit_novo": 62.62,
+   "muda": false
+  },
+  {
+   "opportunity_id": "LZW4N9KF",
+   "de": "Marty Freudenburg",
+   "para": "Carol Thompson",
+   "fit_dono": 64.96,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "M22PCEKY",
+   "de": "Darcel Schlecht",
+   "para": "Carol Thompson",
+   "fit_dono": 63.8,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "M4WW6I1S",
+   "de": "Versie Hillebrand",
+   "para": "Carol Thompson",
+   "fit_dono": 74.01,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "M5ZYQFGR",
+   "de": "Jonathan Berthelot",
+   "para": "Gladys Colclough",
+   "fit_dono": 100.0,
+   "fit_novo": 88.18,
+   "muda": true
+  },
+  {
+   "opportunity_id": "M64OQCC3",
+   "de": "Versie Hillebrand",
+   "para": "Carol Thompson",
+   "fit_dono": 74.01,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "M7UNLZEP",
+   "de": "Rosie Papadopoulos",
+   "para": "Reed Clapper",
+   "fit_dono": 79.19,
+   "fit_novo": 77.54,
+   "muda": true
+  },
+  {
+   "opportunity_id": "MFU6Y5HX",
+   "de": "Versie Hillebrand",
+   "para": "Carol Thompson",
+   "fit_dono": 74.01,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "MI3MV7PU",
+   "de": "Reed Clapper",
+   "para": "Carol Thompson",
+   "fit_dono": 70.26,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "MJK3UJ1B",
+   "de": "Violet Mclelland",
+   "para": "Gladys Colclough",
+   "fit_dono": 100.0,
+   "fit_novo": 88.18,
+   "muda": true
+  },
+  {
+   "opportunity_id": "MNCY3CKD",
+   "de": "Anna Snelling",
+   "para": "Anna Snelling",
+   "fit_dono": 81.17,
+   "fit_novo": 81.17,
+   "muda": false
+  },
+  {
+   "opportunity_id": "MON9ZE47",
+   "de": "Rosalina Dieter",
+   "para": "Carol Thompson",
+   "fit_dono": 50.0,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "MR08TTTT",
+   "de": "Donn Cantrell",
+   "para": "Carol Thompson",
+   "fit_dono": 62.69,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "MTGV7WOM",
+   "de": "Anna Snelling",
+   "para": "Niesha Huffines",
+   "fit_dono": 66.92,
+   "fit_novo": 57.32,
+   "muda": true
+  },
+  {
+   "opportunity_id": "N6BT2U29",
+   "de": "Boris Faz",
+   "para": "Rosie Papadopoulos",
+   "fit_dono": 90.91,
+   "fit_novo": 80.66,
+   "muda": true
+  },
+  {
+   "opportunity_id": "N6JMQG0E",
+   "de": "Versie Hillebrand",
+   "para": "Carol Thompson",
+   "fit_dono": 74.01,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "NB67WD27",
+   "de": "Donn Cantrell",
+   "para": "Carol Thompson",
+   "fit_dono": 62.69,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "NBE5EMSV",
+   "de": "Donn Cantrell",
+   "para": "Carol Thompson",
+   "fit_dono": 62.69,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "NDJBDONI",
+   "de": "Violet Mclelland",
+   "para": "Gladys Colclough",
+   "fit_dono": 100.0,
+   "fit_novo": 88.18,
+   "muda": true
+  },
+  {
+   "opportunity_id": "NKFG3KKP",
+   "de": "Marty Freudenburg",
+   "para": "Marty Freudenburg",
+   "fit_dono": 72.95,
+   "fit_novo": 72.95,
+   "muda": false
+  },
+  {
+   "opportunity_id": "NR2EDMKC",
+   "de": "Violet Mclelland",
+   "para": "Gladys Colclough",
+   "fit_dono": 100.0,
+   "fit_novo": 88.18,
+   "muda": true
+  },
+  {
+   "opportunity_id": "NSGU1K3N",
+   "de": "Markita Hansen",
+   "para": "Carol Thompson",
+   "fit_dono": 69.49,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "NST2FEF3",
+   "de": "Boris Faz",
+   "para": "Rosie Papadopoulos",
+   "fit_dono": 90.91,
+   "fit_novo": 80.66,
+   "muda": true
+  },
+  {
+   "opportunity_id": "NSYCCHCJ",
+   "de": "Donn Cantrell",
+   "para": "Carol Thompson",
+   "fit_dono": 62.69,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "NT38RBZY",
+   "de": "Corliss Cosme",
+   "para": "Marty Freudenburg",
+   "fit_dono": 74.62,
+   "fit_novo": 65.01,
+   "muda": true
+  },
+  {
+   "opportunity_id": "NUEPXB8Z",
+   "de": "Daniell Hammack",
+   "para": "Rosie Papadopoulos",
+   "fit_dono": 83.73,
+   "fit_novo": 80.66,
+   "muda": true
+  },
+  {
+   "opportunity_id": "NVH71LD4",
+   "de": "Donn Cantrell",
+   "para": "Carol Thompson",
+   "fit_dono": 62.69,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "NWPSEF2I",
+   "de": "Anna Snelling",
+   "para": "Niesha Huffines",
+   "fit_dono": 66.92,
+   "fit_novo": 57.32,
+   "muda": true
+  },
+  {
+   "opportunity_id": "NXJNQ3Z9",
+   "de": "Cecily Lampkin",
+   "para": "Cecily Lampkin",
+   "fit_dono": 85.72,
+   "fit_novo": 85.72,
+   "muda": false
+  },
+  {
+   "opportunity_id": "O6NIPA7N",
+   "de": "Markita Hansen",
+   "para": "Carol Thompson",
+   "fit_dono": 69.49,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "O7MBZPN4",
+   "de": "Markita Hansen",
+   "para": "Carol Thompson",
+   "fit_dono": 69.49,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "O8JCYJSV",
+   "de": "Cecily Lampkin",
+   "para": "Cecily Lampkin",
+   "fit_dono": 85.72,
+   "fit_novo": 85.72,
+   "muda": false
+  },
+  {
+   "opportunity_id": "OA3RDG12",
+   "de": "Daniell Hammack",
+   "para": "Rosie Papadopoulos",
+   "fit_dono": 83.73,
+   "fit_novo": 80.66,
+   "muda": true
+  },
+  {
+   "opportunity_id": "OAECXU4A",
+   "de": "Anna Snelling",
+   "para": "Niesha Huffines",
+   "fit_dono": 66.92,
+   "fit_novo": 57.32,
+   "muda": true
+  },
+  {
+   "opportunity_id": "OAMIMSUU",
+   "de": "Cecily Lampkin",
+   "para": "Cecily Lampkin",
+   "fit_dono": 82.15,
+   "fit_novo": 82.15,
+   "muda": false
+  },
+  {
+   "opportunity_id": "ODSFN0YA",
+   "de": "Marty Freudenburg",
+   "para": "Marty Freudenburg",
+   "fit_dono": 72.95,
+   "fit_novo": 72.95,
+   "muda": false
+  },
+  {
+   "opportunity_id": "OEG8QG42",
+   "de": "Garret Kinder",
+   "para": "Garret Kinder",
+   "fit_dono": 82.27,
+   "fit_novo": 82.27,
+   "muda": false
+  },
+  {
+   "opportunity_id": "OH0HJ6KK",
+   "de": "Violet Mclelland",
+   "para": "Gladys Colclough",
+   "fit_dono": 100.0,
+   "fit_novo": 88.18,
+   "muda": true
+  },
+  {
+   "opportunity_id": "OIBR7UA7",
+   "de": "Markita Hansen",
+   "para": "Carol Thompson",
+   "fit_dono": 69.49,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "OIIFWY81",
+   "de": "Reed Clapper",
+   "para": "Reed Clapper",
+   "fit_dono": 74.37,
+   "fit_novo": 74.37,
+   "muda": false
+  },
+  {
+   "opportunity_id": "OJWGRIXN",
+   "de": "Anna Snelling",
+   "para": "Niesha Huffines",
+   "fit_dono": 66.92,
+   "fit_novo": 57.32,
+   "muda": true
+  },
+  {
+   "opportunity_id": "OM60BJ4S",
+   "de": "Niesha Huffines",
+   "para": "Niesha Huffines",
+   "fit_dono": 57.32,
+   "fit_novo": 57.32,
+   "muda": false
+  },
+  {
+   "opportunity_id": "OQ1P1OLH",
+   "de": "Donn Cantrell",
+   "para": "Carol Thompson",
+   "fit_dono": 62.69,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "OQX98BBL",
+   "de": "Niesha Huffines",
+   "para": "Niesha Huffines",
+   "fit_dono": 57.32,
+   "fit_novo": 57.32,
+   "muda": false
+  },
+  {
+   "opportunity_id": "OT0GOR3I",
+   "de": "Rosie Papadopoulos",
+   "para": "Reed Clapper",
+   "fit_dono": 79.19,
+   "fit_novo": 78.64,
+   "muda": true
+  },
+  {
+   "opportunity_id": "OXKLRULK",
+   "de": "Markita Hansen",
+   "para": "Carol Thompson",
+   "fit_dono": 69.49,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "OYRF34VN",
+   "de": "Violet Mclelland",
+   "para": "Gladys Colclough",
+   "fit_dono": 100.0,
+   "fit_novo": 88.18,
+   "muda": true
+  },
+  {
+   "opportunity_id": "P0B49XCI",
+   "de": "Niesha Huffines",
+   "para": "Niesha Huffines",
+   "fit_dono": 61.57,
+   "fit_novo": 61.57,
+   "muda": false
+  },
+  {
+   "opportunity_id": "P25KLAD2",
+   "de": "Garret Kinder",
+   "para": "Garret Kinder",
+   "fit_dono": 87.96,
+   "fit_novo": 87.96,
+   "muda": false
+  },
+  {
+   "opportunity_id": "P43NZA0V",
+   "de": "Markita Hansen",
+   "para": "Carol Thompson",
+   "fit_dono": 69.49,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "P4D8H19O",
+   "de": "Niesha Huffines",
+   "para": "Niesha Huffines",
+   "fit_dono": 62.62,
+   "fit_novo": 62.62,
+   "muda": false
+  },
+  {
+   "opportunity_id": "P6Z4X54S",
+   "de": "Daniell Hammack",
+   "para": "Rosie Papadopoulos",
+   "fit_dono": 83.73,
+   "fit_novo": 80.66,
+   "muda": true
+  },
+  {
+   "opportunity_id": "P95E1DOX",
+   "de": "Niesha Huffines",
+   "para": "Carol Thompson",
+   "fit_dono": 57.32,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "PAUK1IU0",
+   "de": "Donn Cantrell",
+   "para": "Carol Thompson",
+   "fit_dono": 62.69,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "PCXGIH9X",
+   "de": "Marty Freudenburg",
+   "para": "Marty Freudenburg",
+   "fit_dono": 72.95,
+   "fit_novo": 72.95,
+   "muda": false
+  },
+  {
+   "opportunity_id": "PELBIQ95",
+   "de": "Donn Cantrell",
+   "para": "Elizabeth Anderson",
+   "fit_dono": 62.69,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "PES548QV",
+   "de": "Daniell Hammack",
+   "para": "Rosie Papadopoulos",
+   "fit_dono": 83.73,
+   "fit_novo": 80.66,
+   "muda": true
+  },
+  {
+   "opportunity_id": "PF7M8CG2",
+   "de": "Violet Mclelland",
+   "para": "Gladys Colclough",
+   "fit_dono": 100.0,
+   "fit_novo": 88.18,
+   "muda": true
+  },
+  {
+   "opportunity_id": "PGN9I1HU",
+   "de": "Donn Cantrell",
+   "para": "Elizabeth Anderson",
+   "fit_dono": 62.69,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "PRUFERA6",
+   "de": "Daniell Hammack",
+   "para": "Rosie Papadopoulos",
+   "fit_dono": 83.73,
+   "fit_novo": 80.66,
+   "muda": true
+  },
+  {
+   "opportunity_id": "Q5RRTVJK",
+   "de": "Markita Hansen",
+   "para": "Elizabeth Anderson",
+   "fit_dono": 69.49,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "Q620I4AZ",
+   "de": "Niesha Huffines",
+   "para": "Elizabeth Anderson",
+   "fit_dono": 57.32,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "Q62STRQQ",
+   "de": "Niesha Huffines",
+   "para": "Elizabeth Anderson",
+   "fit_dono": 57.32,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "Q9CASEJL",
+   "de": "Markita Hansen",
+   "para": "Elizabeth Anderson",
+   "fit_dono": 69.49,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "QMRDG7WP",
+   "de": "Daniell Hammack",
+   "para": "Rosie Papadopoulos",
+   "fit_dono": 83.73,
+   "fit_novo": 80.66,
+   "muda": true
+  },
+  {
+   "opportunity_id": "QN1UL4N3",
+   "de": "Marty Freudenburg",
+   "para": "Marty Freudenburg",
+   "fit_dono": 72.95,
+   "fit_novo": 72.95,
+   "muda": false
+  },
+  {
+   "opportunity_id": "QR63ME8L",
+   "de": "Donn Cantrell",
+   "para": "Elizabeth Anderson",
+   "fit_dono": 62.69,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "QVWEPN6J",
+   "de": "Gladys Colclough",
+   "para": "Elizabeth Anderson",
+   "fit_dono": 57.3,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "QY7GTG6Y",
+   "de": "Niesha Huffines",
+   "para": "Elizabeth Anderson",
+   "fit_dono": 57.32,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "R0MBBXL8",
+   "de": "Violet Mclelland",
+   "para": "Gladys Colclough",
+   "fit_dono": 100.0,
+   "fit_novo": 88.18,
+   "muda": true
+  },
+  {
+   "opportunity_id": "R0Q5BZ9Y",
+   "de": "Rosie Papadopoulos",
+   "para": "Elizabeth Anderson",
+   "fit_dono": 75.24,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "R14YE68N",
+   "de": "Maureen Marcano",
+   "para": "Maureen Marcano",
+   "fit_dono": 82.37,
+   "fit_novo": 82.37,
+   "muda": false
+  },
+  {
+   "opportunity_id": "R1HFBU5H",
+   "de": "Donn Cantrell",
+   "para": "Elizabeth Anderson",
+   "fit_dono": 62.69,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "R6HYAPR6",
+   "de": "Kary Hendrixson",
+   "para": "Elizabeth Anderson",
+   "fit_dono": 67.66,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "R8V3ALA8",
+   "de": "Corliss Cosme",
+   "para": "Marty Freudenburg",
+   "fit_dono": 74.62,
+   "fit_novo": 65.01,
+   "muda": true
+  },
+  {
+   "opportunity_id": "RGW7PKJ6",
+   "de": "Cecily Lampkin",
+   "para": "Cecily Lampkin",
+   "fit_dono": 82.15,
+   "fit_novo": 82.15,
+   "muda": false
+  },
+  {
+   "opportunity_id": "RH0FJYPZ",
+   "de": "Niesha Huffines",
+   "para": "Elizabeth Anderson",
+   "fit_dono": 57.32,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "RJ21Q4HO",
+   "de": "Niesha Huffines",
+   "para": "Niesha Huffines",
+   "fit_dono": 72.9,
+   "fit_novo": 72.9,
+   "muda": false
+  },
+  {
+   "opportunity_id": "RKP2DVSU",
+   "de": "Garret Kinder",
+   "para": "Garret Kinder",
+   "fit_dono": 83.95,
+   "fit_novo": 83.95,
+   "muda": false
+  },
+  {
+   "opportunity_id": "RLDCYEJU",
+   "de": "Violet Mclelland",
+   "para": "Gladys Colclough",
+   "fit_dono": 100.0,
+   "fit_novo": 88.18,
+   "muda": true
+  },
+  {
+   "opportunity_id": "RMJG8OS2",
+   "de": "Donn Cantrell",
+   "para": "Elizabeth Anderson",
+   "fit_dono": 62.69,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "ROM4I2T0",
+   "de": "Reed Clapper",
+   "para": "Reed Clapper",
+   "fit_dono": 72.28,
+   "fit_novo": 72.28,
+   "muda": false
+  },
+  {
+   "opportunity_id": "RPCZJOE2",
+   "de": "Gladys Colclough",
+   "para": "Elizabeth Anderson",
+   "fit_dono": 57.3,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "S1U1RD6K",
+   "de": "Reed Clapper",
+   "para": "Elizabeth Anderson",
+   "fit_dono": 68.14,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "S4V0T890",
+   "de": "Reed Clapper",
+   "para": "Elizabeth Anderson",
+   "fit_dono": 67.48,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "S6BD2RV6",
+   "de": "Gladys Colclough",
+   "para": "Elizabeth Anderson",
+   "fit_dono": 57.3,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "SAUIIUTV",
+   "de": "Rosie Papadopoulos",
+   "para": "Rosie Papadopoulos",
+   "fit_dono": 80.66,
+   "fit_novo": 80.66,
+   "muda": false
+  },
+  {
+   "opportunity_id": "SFR7RG9V",
+   "de": "Niesha Huffines",
+   "para": "Elizabeth Anderson",
+   "fit_dono": 57.32,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "SGI0VM1F",
+   "de": "Marty Freudenburg",
+   "para": "Marty Freudenburg",
+   "fit_dono": 72.95,
+   "fit_novo": 72.95,
+   "muda": false
+  },
+  {
+   "opportunity_id": "SH4FSTJV",
+   "de": "Gladys Colclough",
+   "para": "Elizabeth Anderson",
+   "fit_dono": 57.3,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "SJE81OUR",
+   "de": "Violet Mclelland",
+   "para": "Gladys Colclough",
+   "fit_dono": 100.0,
+   "fit_novo": 88.18,
+   "muda": true
+  },
+  {
+   "opportunity_id": "SPTF1MZ4",
+   "de": "Gladys Colclough",
+   "para": "Elizabeth Anderson",
+   "fit_dono": 57.3,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "SRYX0U85",
+   "de": "Violet Mclelland",
+   "para": "Gladys Colclough",
+   "fit_dono": 100.0,
+   "fit_novo": 88.18,
+   "muda": true
+  },
+  {
+   "opportunity_id": "SU8FTFLS",
+   "de": "Gladys Colclough",
+   "para": "Gladys Colclough",
+   "fit_dono": 88.18,
+   "fit_novo": 88.18,
+   "muda": false
+  },
+  {
+   "opportunity_id": "SYP74C5W",
+   "de": "Rosie Papadopoulos",
+   "para": "Rosie Papadopoulos",
+   "fit_dono": 80.66,
+   "fit_novo": 80.66,
+   "muda": false
+  },
+  {
+   "opportunity_id": "T12MT0HL",
+   "de": "Rosie Papadopoulos",
+   "para": "Reed Clapper",
+   "fit_dono": 80.66,
+   "fit_novo": 72.79,
+   "muda": true
+  },
+  {
+   "opportunity_id": "T3T4OE0A",
+   "de": "Garret Kinder",
+   "para": "Garret Kinder",
+   "fit_dono": 82.21,
+   "fit_novo": 82.21,
+   "muda": false
+  },
+  {
+   "opportunity_id": "TAKHOTRW",
+   "de": "Donn Cantrell",
+   "para": "Elizabeth Anderson",
+   "fit_dono": 62.69,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "TBNPWPNE",
+   "de": "Gladys Colclough",
+   "para": "Elizabeth Anderson",
+   "fit_dono": 57.3,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "TFCQZ28G",
+   "de": "Gladys Colclough",
+   "para": "Gladys Colclough",
+   "fit_dono": 88.18,
+   "fit_novo": 88.18,
+   "muda": false
+  },
+  {
+   "opportunity_id": "TFPZNRS3",
+   "de": "Gladys Colclough",
+   "para": "Mei-Mei Johns",
+   "fit_dono": 57.3,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "TJ64MOUR",
+   "de": "Niesha Huffines",
+   "para": "Mei-Mei Johns",
+   "fit_dono": 57.32,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "TK9J8AOZ",
+   "de": "Cecily Lampkin",
+   "para": "Cecily Lampkin",
+   "fit_dono": 82.15,
+   "fit_novo": 82.15,
+   "muda": false
+  },
+  {
+   "opportunity_id": "TLJWMKEO",
+   "de": "Anna Snelling",
+   "para": "Anna Snelling",
+   "fit_dono": 67.44,
+   "fit_novo": 67.44,
+   "muda": false
+  },
+  {
+   "opportunity_id": "TLZGG7G5",
+   "de": "Reed Clapper",
+   "para": "Reed Clapper",
+   "fit_dono": 76.58,
+   "fit_novo": 76.58,
+   "muda": false
+  },
+  {
+   "opportunity_id": "TN4KM3D1",
+   "de": "Reed Clapper",
+   "para": "Reed Clapper",
+   "fit_dono": 74.37,
+   "fit_novo": 74.37,
+   "muda": false
+  },
+  {
+   "opportunity_id": "TR7WLH5Q",
+   "de": "Gladys Colclough",
+   "para": "Mei-Mei Johns",
+   "fit_dono": 57.3,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "TS9QPHNA",
+   "de": "Donn Cantrell",
+   "para": "Mei-Mei Johns",
+   "fit_dono": 62.69,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "TWWD62O3",
+   "de": "Gladys Colclough",
+   "para": "Mei-Mei Johns",
+   "fit_dono": 57.3,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "U0U1RIMI",
+   "de": "Niesha Huffines",
+   "para": "Mei-Mei Johns",
+   "fit_dono": 57.32,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "UD1GNRL4",
+   "de": "Niesha Huffines",
+   "para": "Mei-Mei Johns",
+   "fit_dono": 57.32,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "UDAUS3DF",
+   "de": "Rosalina Dieter",
+   "para": "Mei-Mei Johns",
+   "fit_dono": 50.0,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "UEI0RABV",
+   "de": "Donn Cantrell",
+   "para": "Mei-Mei Johns",
+   "fit_dono": 62.69,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "UFZFCBOS",
+   "de": "Reed Clapper",
+   "para": "Mei-Mei Johns",
+   "fit_dono": 67.71,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "UH9TR8Y1",
+   "de": "Marty Freudenburg",
+   "para": "Marty Freudenburg",
+   "fit_dono": 72.95,
+   "fit_novo": 72.95,
+   "muda": false
+  },
+  {
+   "opportunity_id": "UIP7MXOR",
+   "de": "Donn Cantrell",
+   "para": "Mei-Mei Johns",
+   "fit_dono": 62.69,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "UK00OVV2",
+   "de": "Gladys Colclough",
+   "para": "Mei-Mei Johns",
+   "fit_dono": 57.3,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "UMD1BA4S",
+   "de": "Hayden Neloms",
+   "para": "Hayden Neloms",
+   "fit_dono": 85.69,
+   "fit_novo": 85.69,
+   "muda": false
+  },
+  {
+   "opportunity_id": "UND13JS5",
+   "de": "Kary Hendrixson",
+   "para": "Mei-Mei Johns",
+   "fit_dono": 67.66,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "URRD7VUB",
+   "de": "Rosalina Dieter",
+   "para": "Mei-Mei Johns",
+   "fit_dono": 50.0,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "UY93W9NZ",
+   "de": "Donn Cantrell",
+   "para": "Mei-Mei Johns",
+   "fit_dono": 62.69,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "UZ7DU3D9",
+   "de": "Marty Freudenburg",
+   "para": "Marty Freudenburg",
+   "fit_dono": 72.95,
+   "fit_novo": 72.95,
+   "muda": false
+  },
+  {
+   "opportunity_id": "V2V69I86",
+   "de": "Niesha Huffines",
+   "para": "Mei-Mei Johns",
+   "fit_dono": 57.32,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "V5PKXYWS",
+   "de": "Marty Freudenburg",
+   "para": "Marty Freudenburg",
+   "fit_dono": 72.95,
+   "fit_novo": 72.95,
+   "muda": false
+  },
+  {
+   "opportunity_id": "V9JDJ861",
+   "de": "Gladys Colclough",
+   "para": "Mei-Mei Johns",
+   "fit_dono": 57.3,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "VAM56BG4",
+   "de": "Cassey Cress",
+   "para": "Mei-Mei Johns",
+   "fit_dono": 53.83,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "VJILDVVF",
+   "de": "Cassey Cress",
+   "para": "Mei-Mei Johns",
+   "fit_dono": 61.08,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "VMXGBINH",
+   "de": "Rosie Papadopoulos",
+   "para": "Reed Clapper",
+   "fit_dono": 80.66,
+   "fit_novo": 72.79,
+   "muda": true
+  },
+  {
+   "opportunity_id": "VUFZB941",
+   "de": "Niesha Huffines",
+   "para": "Mei-Mei Johns",
+   "fit_dono": 57.32,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "VZ28EXFN",
+   "de": "Niesha Huffines",
+   "para": "Mei-Mei Johns",
+   "fit_dono": 57.32,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "W2K1S9N3",
+   "de": "Anna Snelling",
+   "para": "Anna Snelling",
+   "fit_dono": 67.59,
+   "fit_novo": 67.59,
+   "muda": false
+  },
+  {
+   "opportunity_id": "WAT7H38N",
+   "de": "Gladys Colclough",
+   "para": "Mei-Mei Johns",
+   "fit_dono": 57.3,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "WE2CEE8A",
+   "de": "Cecily Lampkin",
+   "para": "Cecily Lampkin",
+   "fit_dono": 82.15,
+   "fit_novo": 82.15,
+   "muda": false
+  },
+  {
+   "opportunity_id": "WI5RHGX9",
+   "de": "Gladys Colclough",
+   "para": "Natalya Ivanova",
+   "fit_dono": 57.3,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "WJ7HDR4Q",
+   "de": "Gladys Colclough",
+   "para": "Gladys Colclough",
+   "fit_dono": 88.18,
+   "fit_novo": 88.18,
+   "muda": false
+  },
+  {
+   "opportunity_id": "WJK0O5J9",
+   "de": "Reed Clapper",
+   "para": "Natalya Ivanova",
+   "fit_dono": 68.29,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "WNWI8RJU",
+   "de": "Gladys Colclough",
+   "para": "Gladys Colclough",
+   "fit_dono": 88.18,
+   "fit_novo": 88.18,
+   "muda": false
+  },
+  {
+   "opportunity_id": "WR9CQB8E",
+   "de": "Rosalina Dieter",
+   "para": "Natalya Ivanova",
+   "fit_dono": 50.0,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "WTD6O2OR",
+   "de": "Garret Kinder",
+   "para": "Garret Kinder",
+   "fit_dono": 82.27,
+   "fit_novo": 82.27,
+   "muda": false
+  },
+  {
+   "opportunity_id": "X2REWR7J",
+   "de": "Rosie Papadopoulos",
+   "para": "Reed Clapper",
+   "fit_dono": 80.66,
+   "fit_novo": 72.79,
+   "muda": true
+  },
+  {
+   "opportunity_id": "X3KQZM1K",
+   "de": "Rosalina Dieter",
+   "para": "Natalya Ivanova",
+   "fit_dono": 50.0,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "X4THRRSJ",
+   "de": "Gladys Colclough",
+   "para": "Gladys Colclough",
+   "fit_dono": 88.18,
+   "fit_novo": 88.18,
+   "muda": false
+  },
+  {
+   "opportunity_id": "XARW0KTX",
+   "de": "Rosie Papadopoulos",
+   "para": "Reed Clapper",
+   "fit_dono": 80.66,
+   "fit_novo": 72.79,
+   "muda": true
+  },
+  {
+   "opportunity_id": "XETF5BVH",
+   "de": "Cassey Cress",
+   "para": "Natalya Ivanova",
+   "fit_dono": 54.45,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "XGMTNND1",
+   "de": "Rosie Papadopoulos",
+   "para": "Reed Clapper",
+   "fit_dono": 80.66,
+   "fit_novo": 72.79,
+   "muda": true
+  },
+  {
+   "opportunity_id": "XRJ54GNR",
+   "de": "Donn Cantrell",
+   "para": "Natalya Ivanova",
+   "fit_dono": 62.69,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "XS7B6QT7",
+   "de": "Rosalina Dieter",
+   "para": "Natalya Ivanova",
+   "fit_dono": 50.0,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "XS7L2AQE",
+   "de": "Anna Snelling",
+   "para": "Anna Snelling",
+   "fit_dono": 72.22,
+   "fit_novo": 72.22,
+   "muda": false
+  },
+  {
+   "opportunity_id": "XT9QCG8T",
+   "de": "Anna Snelling",
+   "para": "Anna Snelling",
+   "fit_dono": 67.59,
+   "fit_novo": 67.59,
+   "muda": false
+  },
+  {
+   "opportunity_id": "XTXMQMRC",
+   "de": "Niesha Huffines",
+   "para": "Natalya Ivanova",
+   "fit_dono": 57.32,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "XVQ3OA99",
+   "de": "Donn Cantrell",
+   "para": "Natalya Ivanova",
+   "fit_dono": 62.69,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "Y0EKPBLQ",
+   "de": "Rosalina Dieter",
+   "para": "Natalya Ivanova",
+   "fit_dono": 50.0,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "Y533QVR5",
+   "de": "Donn Cantrell",
+   "para": "Natalya Ivanova",
+   "fit_dono": 62.69,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "Y7WAFW9D",
+   "de": "Gladys Colclough",
+   "para": "Gladys Colclough",
+   "fit_dono": 88.18,
+   "fit_novo": 88.18,
+   "muda": false
+  },
+  {
+   "opportunity_id": "Y9EBNML6",
+   "de": "Reed Clapper",
+   "para": "Natalya Ivanova",
+   "fit_dono": 70.26,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "YBWUG6QP",
+   "de": "Kary Hendrixson",
+   "para": "Marty Freudenburg",
+   "fit_dono": 73.05,
+   "fit_novo": 67.74,
+   "muda": true
+  },
+  {
+   "opportunity_id": "YI92HVHO",
+   "de": "Gladys Colclough",
+   "para": "Gladys Colclough",
+   "fit_dono": 88.18,
+   "fit_novo": 88.18,
+   "muda": false
+  },
+  {
+   "opportunity_id": "YIU1B39V",
+   "de": "Donn Cantrell",
+   "para": "Natalya Ivanova",
+   "fit_dono": 62.69,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "YL29KX3L",
+   "de": "Gladys Colclough",
+   "para": "Natalya Ivanova",
+   "fit_dono": 62.14,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "YMI68O7S",
+   "de": "Gladys Colclough",
+   "para": "Natalya Ivanova",
+   "fit_dono": 62.14,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "YVFK9Q0W",
+   "de": "Gladys Colclough",
+   "para": "Gladys Colclough",
+   "fit_dono": 65.0,
+   "fit_novo": 65.0,
+   "muda": false
+  },
+  {
+   "opportunity_id": "YYMKOAVY",
+   "de": "Rosalina Dieter",
+   "para": "Natalya Ivanova",
+   "fit_dono": 50.0,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "YYUJ1DCF",
+   "de": "Gladys Colclough",
+   "para": "Gladys Colclough",
+   "fit_dono": 88.18,
+   "fit_novo": 88.18,
+   "muda": false
+  },
+  {
+   "opportunity_id": "Z4JQEOMT",
+   "de": "Vicki Laflamme",
+   "para": "Natalya Ivanova",
+   "fit_dono": 55.4,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "Z6VQW8TB",
+   "de": "Vicki Laflamme",
+   "para": "Natalya Ivanova",
+   "fit_dono": 55.4,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "Z89NKUC7",
+   "de": "Reed Clapper",
+   "para": "Donn Cantrell",
+   "fit_dono": 67.48,
+   "fit_novo": 63.17,
+   "muda": true
+  },
+  {
+   "opportunity_id": "Z99W80UY",
+   "de": "Anna Snelling",
+   "para": "Anna Snelling",
+   "fit_dono": 69.44,
+   "fit_novo": 69.44,
+   "muda": false
+  },
+  {
+   "opportunity_id": "Z9CW6K35",
+   "de": "Rosalina Dieter",
+   "para": "Natalya Ivanova",
+   "fit_dono": 50.0,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "ZB3JRI67",
+   "de": "Vicki Laflamme",
+   "para": "Natalya Ivanova",
+   "fit_dono": 55.4,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "ZGTCQT1A",
+   "de": "Rosie Papadopoulos",
+   "para": "Reed Clapper",
+   "fit_dono": 75.24,
+   "fit_novo": 75.05,
+   "muda": true
+  },
+  {
+   "opportunity_id": "ZHPJ73Q6",
+   "de": "Cecily Lampkin",
+   "para": "Cecily Lampkin",
+   "fit_dono": 82.15,
+   "fit_novo": 82.15,
+   "muda": false
+  },
+  {
+   "opportunity_id": "ZIMT5RQ2",
+   "de": "Wilburn Farren",
+   "para": "Natalya Ivanova",
+   "fit_dono": 50.0,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "ZKJIVMSG",
+   "de": "Reed Clapper",
+   "para": "Natalya Ivanova",
+   "fit_dono": 67.48,
+   "fit_novo": 50.0,
+   "muda": true
+  },
+  {
+   "opportunity_id": "ZQRBJVZF",
+   "de": "Garret Kinder",
+   "para": "Garret Kinder",
+   "fit_dono": 82.21,
+   "fit_novo": 82.21,
+   "muda": false
+  }
+ ]
+}

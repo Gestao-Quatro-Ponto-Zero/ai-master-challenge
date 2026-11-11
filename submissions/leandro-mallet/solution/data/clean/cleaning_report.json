@@ -1,0 +1,44 @@
+{
+  "reference_date": "2017-12-31",
+  "fixes": {
+    "sector_renamed": 12,
+    "product_renamed": 1480
+  },
+  "size_band_cuts": {
+    "revenue_musd": [
+      692.19,
+      2173.98
+    ],
+    "employees": [
+      1428.0,
+      4540.0
+    ]
+  },
+  "counts": {
+    "deals": 8800,
+    "by_stage": {
+      "Won": 4238,
+      "Lost": 2473,
+      "Engaging": 1589,
+      "Prospecting": 500
+    },
+    "open_without_account": 1425,
+    "open": 2089,
+    "agents_in_team": 35,
+    "agents_with_deals": 30,
+    "agents_without_deals": [
+      "Carl Lin",
+      "Carol Thompson",
+      "Elizabeth Anderson",
+      "Mei-Mei Johns",
+      "Natalya Ivanova"
+    ],
+    "accounts": 85
+  },
+  "date_range": {
+    "engage_min": "2016-10-20",
+    "engage_max": "2017-12-27",
+    "close_min": "2017-03-01",
+    "close_max": "2017-12-31"
+  }
+}
