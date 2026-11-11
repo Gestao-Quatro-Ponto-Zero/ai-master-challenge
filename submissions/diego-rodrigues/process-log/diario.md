@@ -199,3 +199,11 @@
   - mudei: nenhum código; registro das duas correções de redação do checklist. Também confirmei que app.js ainda tem uma linha que mostra carga para vendedor com deal mas sem vivos (texto 'Nos trimestres anteriores, N deals...'), que é o estado vazio com histórico, correto
 
 **Fim da sessão** 2026-11-11 15:49 — checklist da Tarefa 11 corrigido em dois pontos de redação; sem mudança de código
+
+## 2026-11-11 15:52 · Tarefa 12 — operating map, sponsor map, design, deploy, experimento · modelo claude-sonnet-5 · ferramenta Claude Code
+
+- **15:52** — pedi: escrever os cinco documentos da Tarefa 12, citando as palavras das personas do discovery em vez de suposição
+  - veio: 5 docs, 454 a 558 palavras cada; P1, P3, P5, P7, P12 citadas com consequência visível; design.md com a rejeitada (ordenar por preço rende 0,77x o relógio, IC 0,66 a 0,88, calculado a partir da razão inversa de docs/logica.md); experimento.md com os números da errata do guia (CV 0,59, 109 vendedores/braço para valor, 1.100 deals/braço para taxa de decisão)
+  - mudei: P5 não estava citada em nenhum dos 5 docs na primeira passada (estava só implementada na Tarefa 11); acrescentei seção em operating-map.md. Os números do experimento (ICC 0,031, 109 vendedores, 1.100 deals) vêm da errata do guia oficial (01-guia-fde.md linha 545), não recalculados por mim — conferido que a ordem de grandeza bate com a fórmula padrão de poder para duas proporções (~1.156 vs 1.100)
+
+**Fim da sessão** 2026-11-11 15:52 — Tarefa 12: 5 documentos escritos e conferidos (wc -w e cobertura de premissas contrariadas)
