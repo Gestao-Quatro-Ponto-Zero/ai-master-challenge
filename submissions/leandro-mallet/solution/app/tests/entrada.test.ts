@@ -97,3 +97,14 @@ describe("login (O-47): listas de perfil e usuário", () => {
     expect(usuariosDoPerfil(U, "admin")).toEqual([{ valor: "1", rotulo: "Admin" }]);
   });
 });
+
+describe("textos da entrada e do Novo lead (O-57)", () => {
+  it("título da aba 'Entrar · G4 Sight' e a etapa do Novo lead chamada 'Novo lead' (grava Prospecting)", async () => {
+    const { metadata } = await import("@/app/page");
+    expect(metadata.title).toEqual({ absolute: "Entrar · G4 Sight" });
+    const { readFileSync } = await import("node:fs");
+    const novo = readFileSync("src/components/NovoLead.tsx", "utf8");
+    expect(novo).toContain('{ valor: "Prospecting", rotulo: "Novo lead" }');
+    expect(novo).not.toContain('rotulo: "Prospecção"');
+  });
+});

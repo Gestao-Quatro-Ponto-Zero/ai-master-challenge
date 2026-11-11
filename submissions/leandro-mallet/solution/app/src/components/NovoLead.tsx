@@ -101,7 +101,7 @@ export function NovoLead({ papel, produtos, empresas, vendedores }: Props) {
                 onMudar={(v) => setEstagio(v as "Prospecting" | "Engaging")}
                 className="w-full font-normal"
                 opcoes={[
-                  { valor: "Prospecting", rotulo: "Prospecção" },
+                  { valor: "Prospecting", rotulo: "Novo lead" },
                   { valor: "Engaging", rotulo: "Em negociação (abre hoje)" },
                 ]}
               />

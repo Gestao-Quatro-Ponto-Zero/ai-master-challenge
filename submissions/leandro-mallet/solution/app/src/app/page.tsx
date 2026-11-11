@@ -2,7 +2,8 @@ import { EscolhaPerfil } from "@/components/EscolhaPerfil";
 import { contagemPorVendedor, listarUsuarios } from "@/server/repositorio";
 import { usuarioAtual } from "@/server/sessao";
 
-export const metadata = { title: "Quem é você?" };
+// Título da aba. "absolute": o modelo "%s · G4 Sight" do layout não vale para a página da raiz.
+export const metadata = { title: { absolute: "Entrar · G4 Sight" } };
 
 /** Só caminhos internos do app valem como destino depois da escolha. */
 function destinoSeguro(voltar: string | undefined): string {
