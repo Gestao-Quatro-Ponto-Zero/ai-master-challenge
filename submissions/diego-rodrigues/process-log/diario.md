@@ -87,3 +87,11 @@
   - mudei: nada no código; anotação sobre a fonte da regra
 
 **Fim da sessão** 2026-11-11 14:31 — crédito ao PR #242 registrado: a regra do prazo do trimestre vem de lá
+
+## 2026-11-11 14:34 · Tarefa 3 — motor/aprender.py · modelo claude-sonnet-5-5 · ferramenta Claude Code
+
+- **14:34** — pedi: implementar datas_analogas, tabela_destino, carga_referencia e tabela_vazia_para seguindo a Tarefa 3 do plano v2
+  - veio: aprender.py com 7/7 testes verdes de primeira; tabela conferida linha a linha contra a seção B do eda-06 (1.117/395, 0,354, 9 faixas); 3.618 deals acima de 15 dias com 0 decisões em 28 dias
+  - mudei: tabela_vazia_para recebe também os rótulos das faixas (o plano só tem hoje), senão a tabela vazia não tem linhas; _ctx, que o plano usa sem definir, ficou no arquivo de teste
+
+**Fim da sessão** 2026-11-11 14:34 — Tarefa 3 verde: 7 testes, suíte 17/17
