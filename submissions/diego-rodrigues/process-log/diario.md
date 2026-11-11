@@ -247,3 +247,11 @@
   - mudei: DOIS ERROS NA FRASE DO CFO QUE O PLANO MANDA USAR, ambos corrigidos: (1) 'o que sobra vivo cabe numa lista de cinco deals por vendedor' e FALSO - 11 dos 17 vendedores com deal vivo tem mais de 5, e so 77 dos 115 vivos cabem em listas de cinco; troquei por '115 negocios em 17 dos 35 vendedores'. (2) 'intervalo de confianca que nao cruza zero' esta errado para uma razao: o IC [1,13; 1,52] nao cruza UM, nao zero; corrigido. Tambem declarei que os US$ 1.416 vem de simulacao historica, nao de operacao real
 
 **Fim da sessão** 2026-11-11 16:16 — resumo executivo escrito; dois erros da frase do CFO do plano corrigidos
+
+## 2026-11-11 16:41 · Tarefa 13 · etapa 3 — README.md · modelo claude-sonnet-5 · ferramenta Claude Code
+
+- **16:41** — pedi: fechar o README.md com o template oficial, numeros de numeros-saida.txt, URL da Vercel, tabela de ferramentas e prints
+  - veio: README criado (nao existia desde a Tarefa 0); 998 palavras; LinkedIn fornecido pelo Diego durante a etapa; URL da Vercel confere (200); 6 prints citados existem
+  - mudei: a linha de benchmark do plano (credito ao PR #242) foi substituida por texto consistente com docs/logica.md, que ja registra que nao verificamos o PR. Marquei a verificacao independente como pendente (nao feita ainda, e a proxima etapa), nao como concluida -- erro que eu mesmo cometi na primeira versao do arquivo e corrigi antes de commitar. Tabela de ferramentas usa os modelos reais do diario (6 modelos Claude Code + Copilot + 3 baselines), nao a lista fixa do template
+
+**Fim da sessão** 2026-11-11 16:41 — README.md criado e fechado; verificacao independente fica para a proxima etapa
