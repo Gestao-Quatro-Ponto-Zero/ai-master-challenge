@@ -214,7 +214,7 @@ timeline
 
 **Fase de construção, tarefa por tarefa.** Procedência e recorte temporal; janela de validade e tabela de destino aprendidas do histórico, com censura; filas, ordem e explicação por negócio; contrato JSON com hash e relatório de desvio; backtest com três medidas, intervalo de confiança por reamostragem de vendedor e permutação de atributos; briefing com validador determinístico; servidor local e três telas, corrigidas depois de eu olhar os próprios prints, não só os testes; documentos de operação citando as transcrições do discovery; deploy, verificação independente e documentação final.
 
-Todas as iterações estão no histórico deste repositório, em 39 commits na branch `submission/diego-rodrigues`, e as conversas exportadas em [process-log/chat-exports/](process-log/chat-exports/).
+Todas as iterações estão no histórico deste repositório, em 44 commits na branch `submission/diego-rodrigues`, e as conversas exportadas em [process-log/chat-exports/](process-log/chat-exports/).
 
 ### Onde a IA errou e como corrigi
 
@@ -237,7 +237,7 @@ Lista completa em [process-log/o-que-eu-acrescentei.md](process-log/o-que-eu-acr
 
 - [ ] Screenshots das conversas com IA — as conversas estão exportadas em texto, em [process-log/chat-exports/](process-log/chat-exports/); os arquivos em `process-log/screenshots/` são prints **do produto**, não de conversas
 - [x] Chat exports: [process-log/chat-exports/](process-log/chat-exports/), com índice por sessão, data, modelo e etapa
-- [x] Git history: 39 commits na branch `submission/diego-rodrigues`
+- [x] Git history: 44 commits na branch `submission/diego-rodrigues`
 - [x] Narrativa escrita: [process-log/diario.md](process-log/diario.md), gravado por sessão, na hora
 - [x] Verificação independente dos números: [process-log/verificacao/relatorio.md](process-log/verificacao/relatorio.md)
 - [x] Outro: baselines de três modelos sem dado na mão, documentos de planejamento e o inventário de modelos em [process-log/MODELOS.md](process-log/MODELOS.md)
