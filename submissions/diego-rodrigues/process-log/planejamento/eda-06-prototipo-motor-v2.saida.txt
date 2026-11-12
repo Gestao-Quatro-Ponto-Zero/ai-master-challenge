@@ -1,0 +1,108 @@
+
+====================================================================================================
+A. Qualidade do dado (o que a tela do gestor mostra)
+====================================================================================================
+linhas cujo nome de produto difere do catálogo: 1480 | apelidos: ['GTXPro']
+sem par no catálogo (preço nulo): 0
+contas com setor 'technolgy': 12 | contas com país 'Philipines': 1
+abertos sem conta: 1425 | Prospecting sem data: 500
+linhas: 8800 | ids duplicados: 0 | fechamento anterior ao engajamento: 0
+primeiro fechamento registrado: 2017-03-01 | último: 2017-12-31 | vendedores no cadastro: 35 | com algum deal: 30
+
+====================================================================================================
+B. O que o motor aprendeu em 2018-01-01 (semana 1 do trimestre)
+====================================================================================================
+ciclo_max: 138 | fechamentos conhecidos: 6711 | depois do prazo do trimestre: 1 | regra do trimestre ativa: True
+datas análogas: ['2017-10-01', '2017-07-01', '2017-04-01'] | razão fechado/tabela: 0.9965
+            n  d28  g28  dtri  gtri  p_decide  p_ganha_tri
+fx                                                        
+1-15     1117  395  184   949   556     0.354        0.498
+106-120   147    0    0     0     0     0.000        0.000
+121-138   156    0    0     0     0     0.000        0.000
+16-30     870    0    0   691   460     0.000        0.529
+31-45     775    0    0   581   381     0.000        0.492
+46-60     683    0    0   423   247     0.000        0.362
+61-75     657    0    0   195   117     0.000        0.178
+76-90     183    0    0    43    24     0.000        0.131
+91-105    147    0    0     2     0     0.000        0.000
+carga de referência: vendedores 30 | mediana 33.0 | mínimo 12.0 | máximo 77.0
+
+====================================================================================================
+C. Resultado da pontuação
+====================================================================================================
+filas: {'encerrar': 1474, 'iniciar': 500, 'preparar': 108, 'fechar': 7} | total: 2089
+estado: {'vencido': 1474, 'sem_data': 500, 'vivo': 115} | vencidos por idade: 1301 | vencidos só pelo prazo do trimestre: 173
+valor de tabela por fila: {'encerrar': 3656299, 'fechar': 16385, 'iniciar': 1073986, 'preparar': 219545}
+valor esperado no trimestre: US$ 65482.05 | nos próximos 28 dias: US$ 2699.05
+deals em foco: 127 | vendedores com deal aberto: 27 | índice dos vivos: de 1 a 100
+violações de monotonia entre índice e ordem da fila: 0 (precisa ser 0)
+
+====================================================================================================
+D. A fila 'fechar' inteira nesta data (os únicos deals com chance medida de decidir em 28 dias)
+====================================================================================================
+opportunity_id      sales_agent        product  idade  dias_restantes   fx  sales_price  p_decide  ve_28  ve_tri   fila  posicao  em_foco  indice
+      NGTVHTFH        Boris Faz         GTXPro   13.0            89.0 1-15         4821      0.35 794.15 2399.71 fechar        1     True    98.0
+      RDHTQLNI     Cassey Cress   GTX Plus Pro   11.0            89.0 1-15         5482      0.35 903.03 2728.73 fechar        1     True   100.0
+      DB801ISB     Elease Gluck     MG Special   10.0            89.0 1-15           55      0.35   9.06   27.38 fechar        1     True    95.0
+      HB740BLB    Hayden Neloms     MG Special   12.0            89.0 1-15           55      0.35   9.06   27.38 fechar        1     True    95.0
+      RTWE19SU  Kary Hendrixson         GTXPro   15.0            89.0 1-15         4821      0.35 794.15 2399.71 fechar        1     True    98.0
+      T6MPH7JC Violet Mclelland     MG Special   15.0            89.0 1-15           55      0.35   9.06   27.38 fechar        1     True    95.0
+      HCQK8NQ8   Wilburn Farren GTX Plus Basic   12.0            89.0 1-15         1096      0.35 180.54  545.55 fechar        1     True    97.0
+
+Leitura: é a primeira semana do trimestre. Nos três trimestres anteriores, nenhum dos 3.618 deals
+com mais de 15 dias decidiu nas quatro semanas seguintes a essa data. A ferramenta diz isso em vez
+de mandar o vendedor ligar para quem a história mostra que não decide agora.
+
+====================================================================================================
+E. Três vendedores, a lista que cada um veria
+====================================================================================================
+
+Maureen Marcano — filas {'encerrar': 66, 'preparar': 6}
+opportunity_id     sales_agent        product  idade  dias_restantes    fx  sales_price  p_decide  ve_28  ve_tri     fila  posicao  em_foco  indice
+      T7N0RX05 Maureen Marcano   GTX Plus Pro   58.0            80.0 46-60         5482       0.0    0.0 1982.51 preparar        1     True    89.0
+      HXGDBNAV Maureen Marcano    MG Advanced   68.0            70.0 61-75         3393       0.0    0.0  604.23 preparar        2     True    65.0
+      62PCN0KS Maureen Marcano GTX Plus Basic   46.0            89.0 46-60         1096       0.0    0.0  396.36 preparar        3     True    51.0
+      G1W97XZA Maureen Marcano GTX Plus Basic   49.0            89.0 46-60         1096       0.0    0.0  396.36 preparar        4     True    51.0
+      GMY4U7RD Maureen Marcano      GTX Basic   23.0            89.0 16-30          550       0.0    0.0  290.80 preparar        5     True    49.0
+
+Boris Faz — filas {'encerrar': 52, 'preparar': 4, 'fechar': 1}
+opportunity_id sales_agent      product  idade  dias_restantes    fx  sales_price  p_decide  ve_28  ve_tri     fila  posicao  em_foco  indice
+      NGTVHTFH   Boris Faz       GTXPro   13.0            89.0  1-15         4821      0.35 794.15 2399.71   fechar        1     True    98.0
+      I5VHXAWW   Boris Faz GTX Plus Pro   56.0            82.0 46-60         5482      0.00   0.00 1982.51 preparar        1     True    89.0
+      BREOLQD9   Boris Faz  MG Advanced   46.0            89.0 46-60         3393      0.00   0.00 1227.04 preparar        2     True    81.0
+      EP5QRHID   Boris Faz  MG Advanced   89.0            49.0 76-90         3393      0.00   0.00  444.98 preparar        3     True    55.0
+      W4XB23IP   Boris Faz    GTX Basic   53.0            85.0 46-60          550      0.00   0.00  198.90 preparar        4     True    42.0
+
+Darcel Schlecht — filas {'iniciar': 111, 'encerrar': 83}
+opportunity_id     sales_agent      product  idade  dias_restantes  fx  sales_price  p_decide  ve_28  ve_tri    fila  posicao  em_foco  indice
+      28EJ0L9T Darcel Schlecht GTX Plus Pro    NaN             NaN NaN         5482       NaN    NaN     NaN iniciar        1     True     NaN
+      6RQUXORL Darcel Schlecht GTX Plus Pro    NaN             NaN NaN         5482       NaN    NaN     NaN iniciar        2     True     NaN
+      74LCNGIK Darcel Schlecht GTX Plus Pro    NaN             NaN NaN         5482       NaN    NaN     NaN iniciar        3     True     NaN
+      A4TA5P1B Darcel Schlecht GTX Plus Pro    NaN             NaN NaN         5482       NaN    NaN     NaN iniciar        4     True     NaN
+      CVMNBKGH Darcel Schlecht GTX Plus Pro    NaN             NaN NaN         5482       NaN    NaN     NaN iniciar        5     True     NaN
+
+====================================================================================================
+F. Backtest as-of com a ordem exata do motor (segundas a cada 4 semanas, jul a dez/2017, 5 por vendedor)
+====================================================================================================
+     corte  semana_tri  vivos  fila_fechar  $relogio  acerto_relogio  $preco_prazo  acerto_preco_prazo  $preco_138  acerto_preco_138  $aleatorio  acerto_aleatorio  $oraculo
+2017-07-03           1   1364          385    111287           0.173         71909               0.093       60945             0.080       19622             0.067    161425
+2017-07-31           5   1893         1887    198278           0.240        143942               0.180      156995             0.193       61865             0.147    573958
+2017-08-28           9   1845         1845    334837           0.413        193424               0.187      226298             0.233       83821             0.233    631666
+2017-09-25          13   1852          962     88130           0.100         85087               0.080       79605             0.073       18730             0.053    280949
+2017-10-23           4   1916         1916    133640           0.147        150104               0.160      152193             0.160       85327             0.147    477967
+2017-11-20           8   1591         1432    231152           0.287        197996               0.227      191853             0.220       65155             0.220    540362
+soma: {'$relogio': 1097324, '$preco_prazo': 842462, '$preco_138': 867889, '$aleatorio': 334520, '$oraculo': 2666327}
+  relogio / preco_prazo = 1.303   IC 95% [1.134, 1.517]   (bootstrap por vendedor, 30 vendedores, 5.000 reamostras, semente 7)
+  relogio / preco_138 = 1.264   IC 95% [1.131, 1.437]   (bootstrap por vendedor, 30 vendedores, 5.000 reamostras, semente 7)
+  relogio / aleatorio = 3.280   IC 95% [2.526, 4.390]   (bootstrap por vendedor, 30 vendedores, 5.000 reamostras, semente 7)
+  fração do teto (oráculo que conhece o futuro): relogio 0.412 | preco_prazo 0.316
+  taxa média de acerto: relogio 0.227 | preco_prazo 0.154 | preco_138 0.16 | aleatorio 0.144
+
+====================================================================================================
+G. A ferramenta muda de recomendação conforme a altura do trimestre (duas datas, mesma regra)
+====================================================================================================
+2017-08-28 (semana 9 do trimestre): filas {'fechar': 1845, 'encerrar': 396} | análogas ['2017-05-28']
+2017-10-02 (semana 1 do trimestre): filas {'preparar': 1349, 'encerrar': 717, 'fechar': 368} | análogas ['2017-07-02', '2017-04-02']
+
+Semana 9: quase todo deal vivo entra em 'fechar'. Semana 1: a maioria vai para 'preparar'.
+Nenhum limiar foi escrito à mão: os dois quadros saem da mesma tabela aprendida das datas análogas.

@@ -1,0 +1,157 @@
+
+====================================================================================================
+A. Fechamentos por mês do trimestre e tipo de ciclo (rápido: até 30 dias; lento: mais de 30)
+====================================================================================================
+                  n  taxa_ganho      valor
+lento mes_tri                             
+False 1        1779       0.490  2150844.0
+      2         656       0.535   771106.0
+      3         728       0.816  1410975.0
+True  2        1702       0.552  2243609.0
+      3        1846       0.803  3429000.0
+maior ciclo de um fechamento ocorrido no 1º mês de um trimestre: 13 dias
+             size          mean       
+lento       False  True   False  True 
+close_date                            
+2017-03     171.0  476.0  0.865  0.805
+2017-04     586.0    NaN  0.486    NaN
+2017-05     226.0  579.0  0.496  0.563
+2017-06     187.0  454.0  0.845  0.822
+2017-07     627.0    NaN  0.491    NaN
+2017-08     208.0  577.0  0.558  0.572
+2017-09     196.0  439.0  0.781  0.797
+2017-10     566.0    NaN  0.493    NaN
+2017-11     222.0  546.0  0.554  0.518
+2017-12     174.0  477.0  0.776  0.788
+
+====================================================================================================
+B. Semana do trimestre dos fechamentos lentos (quando a janela abre e quando a taxa de ganho sobe)
+====================================================================================================
+sem_tri          5        6        7        8        9        10       11       12     13      14
+n           242.000  383.000  367.000  409.000  427.000  426.000  433.000  427.000  401.0  33.000
+taxa_ganho    0.558    0.569    0.559    0.557    0.607    0.789    0.801    0.801    0.8   0.909
+
+====================================================================================================
+C. Regra do prazo do trimestre, conferida só com o que se sabia em cada data
+====================================================================================================
+2017-07-01: fechamentos conhecidos 2679 | depois do fim do trimestre seguinte ao engajamento: 0 | maior ciclo conhecido: 138
+2017-10-01: fechamentos conhecidos 4726 | depois do fim do trimestre seguinte ao engajamento: 0 | maior ciclo conhecido: 138
+2018-01-01: fechamentos conhecidos 6711 | depois do fim do trimestre seguinte ao engajamento: 1 | maior ciclo conhecido: 138
+
+====================================================================================================
+D. Tabela de destino para 2018-01-01 (datas análogas: 01/10, 01/07 e 01/04 de 2017), horizonte de 28 dias
+====================================================================================================
+            n  decidiram  ganharam  p_decide  p_ganho
+fx                                                   
+0-15     1117        395       184     0.354    0.466
+16-30     870          0         0     0.000    0.466
+31-45     775          0         0     0.000    0.466
+46-60     683          0         0     0.000    0.466
+61-75     657          0         0     0.000    0.466
+76-90     183          0         0     0.000    0.466
+91-105    147          0         0     0.000    0.466
+106-120   147          0         0     0.000    0.466
+121-138   156          0         0     0.000    0.466
+>138      690          0         0     0.000    0.466
+2017-10-01 decidem em 28 dias por faixa: {'0-15': 0.33, '16-30': 0.0, '31-45': 0.0, '46-60': 0.0, '61-75': 0.0, '76-90': 0.0, '91-105': 0.0, '106-120': 0.0, '121-138': 0.0, '>138': 0.0}
+2017-07-01 decidem em 28 dias por faixa: {'0-15': 0.38, '16-30': 0.0, '31-45': 0.0, '46-60': 0.0, '61-75': 0.0, '76-90': 0.0, '91-105': 0.0, '106-120': 0.0, '121-138': 0.0, '>138': 0.0}
+2017-04-01 decidem em 28 dias por faixa: {'0-15': 0.35, '16-30': 0.0, '31-45': 0.0, '46-60': 0.0, '61-75': 0.0, '76-90': 0.0, '91-105': 0.0, '106-120': 0.0, '121-138': 0.0, '>138': 0.0}
+deals com 16 a 138 dias em início de trimestre: 3618 observações, 0 decidiram em 28 dias
+
+====================================================================================================
+E. Destino até o fim do trimestre para quem está aberto no 1º dia dele (três trimestres somados)
+====================================================================================================
+            n  decide_no_tri  ganha_no_tri
+fx                                        
+0-15     1117          0.850         0.498
+16-30     870          0.794         0.529
+31-45     775          0.750         0.492
+46-60     683          0.619         0.362
+61-75     657          0.297         0.178
+76-90     183          0.235         0.131
+91-105    147          0.014         0.000
+106-120   147          0.000         0.000
+121-138   156          0.000         0.000
+>138      690          0.000         0.000
+
+====================================================================================================
+F. Backtest as-of: segundas a cada 4 semanas (janelas de 28 dias que não se sobrepõem), jul a dez/2017, top 5 por vendedor
+====================================================================================================
+     corte  sem_tri  analogas  vivos  $relogio  $preco_prazo  $preco_138  $plano_v1  $aleatorio  $oraculo
+2017-07-03        1         1   1364    103073         54159       48677      21928       14519    161425
+2017-07-31        5         1   1893    194885        165889      135067     177514       64155    573958
+2017-08-28        9         1   1845    330016        187942      208548     241959       60979    631666
+2017-09-25       13         2   1852     84737         85087       85748      68535       38672    280949
+2017-10-23        4         2   1916    133640        137051      146711     125444       68471    477967
+2017-11-20        8         2   1591    224366        217835      197335     150104       89573    540362
+     corte  sem_tri  acerto_relogio  acerto_preco_prazo  acerto_preco_138  acerto_plano_v1  acerto_aleatorio
+2017-07-03        1           0.160               0.067             0.060            0.027             0.047
+2017-07-31        5           0.233               0.180             0.167            0.193             0.220
+2017-08-28        9           0.407               0.180             0.207            0.260             0.173
+2017-09-25       13           0.093               0.080             0.080            0.060             0.093
+2017-10-23        4           0.147               0.147             0.153            0.127             0.140
+2017-11-20        8           0.273               0.253             0.227            0.160             0.220
+soma: {'$relogio': 1070717, '$preco_prazo': 847963, '$preco_138': 822086, '$plano_v1': 785484, '$aleatorio': 336369, '$oraculo': 2666327}
+  relogio / preco_prazo = 1.26   IC 95% [1.11, 1.47]   (bootstrap por vendedor, 30 vendedores, 5.000 reamostras, semente 7)
+  relogio / preco_138 = 1.30   IC 95% [1.14, 1.52]   (bootstrap por vendedor, 30 vendedores, 5.000 reamostras, semente 7)
+  relogio / plano_v1 = 1.36   IC 95% [1.21, 1.57]   (bootstrap por vendedor, 30 vendedores, 5.000 reamostras, semente 7)
+  preco_prazo / plano_v1 = 1.08   IC 95% [0.95, 1.24]   (bootstrap por vendedor, 30 vendedores, 5.000 reamostras, semente 7)
+  relogio / aleatorio = 3.18   IC 95% [2.46, 4.23]   (bootstrap por vendedor, 30 vendedores, 5.000 reamostras, semente 7)
+  fração do teto (oráculo que conhece o futuro): relogio 0.40 | preco_prazo 0.32 | plano_v1 0.29
+
+====================================================================================================
+G. Estabilidade: todas as segundas de jul a dez/2017 (janelas se sobrepõem; serve para ver o padrão, não para o IC)
+====================================================================================================
+               $relogio  $preco_prazo  $plano_v1  relogio/preco_prazo  relogio/plano_v1  segundas
+grupo                                                                                            
+semanas 1-4      954810        747141     493401                 1.28              1.94         8
+semanas 5-9     2188547       1884406    1836426                 1.16              1.19        10
+semanas 10-14    864603        530129     637827                 1.63              1.36         4
+relógio acima de preço+prazo em 16 de 22 segundas
+taxa de acerto média: relógio 0.224 | preço+prazo 0.155 | plano v1 0.144 | aleatório 0.161
+
+====================================================================================================
+H. Foto em 2018-01-01 pelas regras do v2
+====================================================================================================
+abertos no CRM: 2089 deals, US$ 4,966,215
+Engaging vivos: 115 deals, US$ 235,930 (4.8% do aberto)
+Engaging vencidos: 1474 deals, US$ 3,656,299; dos quais com até 138 dias mas fora do prazo do trimestre: 173
+Prospecting (sem data): 500 deals, US$ 1,073,986
+vivos por vendedor do cadastro: mediana 0.0 | máximo 12 | vendedores com zero: 18 de 35
+vivos por região: {'East': 45, 'West': 70} | vivos por faixa: {'0-15': 7, '16-30': 10, '31-45': 12, '46-60': 27, '61-75': 26, '76-90': 28, '91-105': 5}
+esperado no trimestre a partir dos vivos: 54 decidem, 33 ganhos, US$ 65,482
+com chance de decidir nos próximos 28 dias: 7 deals
+
+====================================================================================================
+I. Carteira de abertura: quanto dos ganhos de cada trimestre veio dos deals já abertos no 1º dia
+====================================================================================================
+2017-04-01: abertos com até 90 dias 1277 | ganhos no trimestre 1254, da carteira de abertura 617 (49%), US$ 1,559,305 de 3,086,111
+2017-07-01: abertos com até 90 dias 1330 | ganhos no trimestre 1257, da carteira de abertura 609 (48%), US$ 1,441,450 de 2,982,255
+2017-10-01: abertos com até 90 dias 1678 | ganhos no trimestre 1196, da carteira de abertura 559 (47%), US$ 1,251,928 de 2,802,496
+
+====================================================================================================
+J. Deals engajados dentro de um 1º mês de trimestre: quantos decidem no próprio mês (hipótese para os 500 de Prospecting)
+====================================================================================================
+         engajados  decide_no_mes  ganha_no_mes
+mes_eng                                        
+2017-04        874          0.529         0.261
+2017-07       1198          0.399         0.196
+2017-10        761          0.583         0.296
+somados: 48.9% decidem no mês, 24.3% são ganhos no mês
+se os 500 de Prospecting fossem engajados no início de janeiro e se comportassem assim: US$ 260,820 (ordem de grandeza; premissa, não medição)
+
+====================================================================================================
+K. Carga de referência por vendedor (Lei de Little): deals em andamento que depois fecharam
+====================================================================================================
+mediana por data: {'2017-05-15': 34.0, '2017-06-15': 28.0, '2017-07-15': 34.0, '2017-08-15': 30.0, '2017-09-15': 29.0, '2017-10-15': 34.0, '2017-11-15': 28.0}
+mediana geral: 31.0 | quartis: [22.0, 39.0]
+conferência por Little: 5.12 fechamentos por semana por vendedor x 48 dias de ciclo médio / 7 = 35 deals em andamento
+vivos hoje por vendedor ativo: mediana 2.5
+
+====================================================================================================
+L. Atributos continuam sem sinal quando se controla o mês do trimestre? (permutação estratificada, 300 rodadas, semente 7)
+====================================================================================================
+  account                          variância observada 0.00235 | permutada 0.00333 | p = 0.98
+  sales_agent                      variância observada 0.00134 | permutada 0.00118 | p = 0.28
+  ['sales_agent', 'product']       variância observada 0.00642 | permutada 0.00632 | p = 0.45
+  product                          variância observada 0.00037 | permutada 0.00139 | p = 0.76
