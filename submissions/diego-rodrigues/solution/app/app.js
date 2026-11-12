@@ -201,7 +201,7 @@ function blocoAcoes(d) {
 function itemFoco(d) {
   const fatos = [
     linhaFato('Valor de tabela', usd(d.valor_tabela)),
-    d.idade != null ? linhaFato('Idade', d.idade + ' dias') : null,
+    d.idade != null ? linhaFato('Duração', d.idade + ' dias') : null,
     d.dias_restantes != null ? linhaFato('Prazo', d.dias_restantes + ' dias') : null,
     d.p_decide != null ? linhaFato('Chance de decidir em 28 dias', pct(d.p_decide)) : null,
   ];
@@ -399,7 +399,7 @@ function renderComoDecide() {
   corpo.append(h('div', { class: 'bloco-tela' },
     h('h3', {}, 'Quando um deal costuma decidir'),
     h('p', {}, `Aprendido nas datas ${s.datas_analogas.map(dataBr).join(', ')}: para cada deal que estava aberto, o que aconteceu nas quatro semanas seguintes e até o fim do trimestre.`),
-    tabelaSimples('Por faixa de idade', ['Faixa (dias)', 'Deals observados', 'Decidem em 28 dias', 'Ganham até o fim do trimestre', 'Faixa juntada'],
+    tabelaSimples('Por faixa de duração', ['Faixa (dias)', 'Deals observados', 'Decidem em 28 dias', 'Ganham até o fim do trimestre', 'Faixa juntada'],
       s.tabela_destino.map(f => [f.faixa, nf.format(f.n), pct(f.p_decide), pct(f.p_ganha_trimestre), f.agrupada ? 'sim' : 'não'])),
     h('p', {}, `Ciclo máximo observado: ${s.janela.ciclo_max} dias. A regra do fim do trimestre seguinte está ${s.janela.usa_prazo_trimestre ? 'ativa' : 'desligada'} (${s.janela.fechamentos_apos_prazo} de ${nf.format(s.janela.n_fechamentos)} fechamentos passaram desse prazo).`),
   ));
@@ -442,7 +442,7 @@ function renderComoDecide() {
       h('ul', { class: 'lista-simples' },
         h('li', {}, `Ciclo máximo de um deal: ${s.janela.ciclo_max} dias.`),
         h('li', {}, 'Se o fim do trimestre seguinte encerra o deal.'),
-        h('li', {}, 'A chance de decidir por faixa de idade, nas datas análogas.'),
+        h('li', {}, 'A chance de decidir por faixa de duração, nas datas análogas.'),
         h('li', {}, 'A carga de deals que cada vendedor costuma ter.'))),
     h('div', {},
       h('h3', {}, 'O que é configuração'),

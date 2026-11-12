@@ -8,7 +8,7 @@
 |---|---|---|---|
 | US$ 4,97 mi · 2.089 negócios | **73,6%** · US$ 3,66 mi · 1.474 negócios | **115 negócios** · US$ 236 mil | **1,30×** · IC 95% de 1,13 a 1,52 ([como foi medido](docs/experimento.md)) |
 
-**Janela de decisão** é o prazo dentro do qual, no histórico deste CRM, todo negócio fechou: até 138 dias de idade e até o fim do trimestre seguinte ao do primeiro contato. Dos 6.711 negócios fechados no export, nenhum foi ganho depois desse ponto.
+**Janela de decisão** é o prazo dentro do qual, no histórico deste CRM, todo negócio fechou: até 138 dias de duração e até o fim do trimestre seguinte ao do primeiro contato. Dos 6.711 negócios fechados no export, nenhum foi ganho depois desse ponto.
 
 Todo número desta página sai de script guardado no repositório e foi recalculado por um revisor independente, com código próprio, a partir dos CSVs ([process-log/verificacao/relatorio.md](process-log/verificacao/relatorio.md)).
 
@@ -24,7 +24,7 @@ Todo número desta página sai de script guardado no repositório e foi recalcul
 
 ## Executive Summary
 
-Construí uma fila de trabalho para a segunda-feira do vendedor, que roda sobre os quatro CSVs reais do CRM e explica cada posição em frases que ele consegue checar. A descoberta que mudou o produto é que nenhum atributo do negócio prevê quem ganha — conta, vendedor, gerente, região, setor, porte e produto foram testados contra o resultado real e nenhum mostrou sinal estatístico (p-valor de 0,05 ou mais em todos) —, mas a idade do negócio combinada com a altura do trimestre prevê **quando** ele decide. Por essa régua, 73,6% do valor aberto já passou do ponto em que, no histórico deste export, qualquer negócio foi ganho. A recomendação é priorizar por valor de tabela multiplicado pela chance aprendida de decidir na janela, o que no teste de volta ao passado capturou 1,30 vez o valor da melhor alternativa honesta, com intervalo de confiança que não cruza 1, e medir esse ganho num piloto com grupo de controle antes de expandir. O que a ferramenta não sabe está declarado em cada negócio: registro de atividade, desconto, motivo de perda e os 500 negócios em Prospecting sem data de engajamento, que somam US$ 1,07 mi e sobre os quais ela não opina.
+Construí uma fila de trabalho para a segunda-feira do vendedor, que roda sobre os quatro CSVs reais do CRM e explica cada posição em frases que ele consegue checar. A descoberta que mudou o produto é que nenhum atributo do negócio prevê quem ganha — conta, vendedor, gerente, região, setor, porte e produto foram testados contra o resultado real e nenhum mostrou sinal estatístico (p-valor de 0,05 ou mais em todos) —, mas a duração do negócio combinada com a altura do trimestre prevê **quando** ele decide. Por essa régua, 73,6% do valor aberto já passou do ponto em que, no histórico deste export, qualquer negócio foi ganho. A recomendação é priorizar por valor de tabela multiplicado pela chance aprendida de decidir na janela, o que no teste de volta ao passado capturou 1,30 vez o valor da melhor alternativa honesta, com intervalo de confiança que não cruza 1, e medir esse ganho num piloto com grupo de controle antes de expandir. O que a ferramenta não sabe está declarado em cada negócio: registro de atividade, desconto, motivo de perda e os 500 negócios em Prospecting sem data de engajamento, que somam US$ 1,07 mi e sobre os quais ela não opina.
 
 Resumo completo, com a conta de horas tratada como premissa declarada: [docs/resumo-executivo.md](docs/resumo-executivo.md).
 
@@ -91,7 +91,7 @@ flowchart LR
     CSV[("4 CSVs do CRM<br/>licença CC0")] --> C["carregar<br/>procedência e qualidade"]
     C --> R["recortar<br/>apaga o futuro"]
     R --> J["janela<br/>138 dias + fim do trimestre"]
-    R --> AP["aprender<br/>tabela de destino<br/>por idade e trimestre"]
+    R --> AP["aprender<br/>tabela de destino<br/>por duração e trimestre"]
     J --> P["pontuar<br/>quatro filas e ordem"]
     AP --> P
     P --> X["explicar<br/>Valor · Momento · Prazo<br/>+ o que não sei"]

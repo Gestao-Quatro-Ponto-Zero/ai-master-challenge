@@ -27,7 +27,7 @@ Em qualquer negócio, clique em **Por que este deal**. Aparecem três cartões e
 ![Por que este deal](../process-log/screenshots/03-por-que.png)
 
 - **Valor:** o preço de tabela e a posição do negócio na fila do vendedor.
-- **Momento:** nas viradas de trimestre anteriores, quantos de cada 100 negócios dessa idade decidiram nas quatro semanas seguintes.
+- **Momento:** nas viradas de trimestre anteriores, quantos de cada 100 negócios dessa duração decidiram nas quatro semanas seguintes.
 - **Prazo:** quantos dias faltam até o limite do fim do trimestre.
 - **Não sei:** o registro de atividade, o desconto e a quantidade negociados, o motivo de perda de negócios parecidos e, quando falta, a conta no CRM.
 
@@ -49,7 +49,7 @@ Clique na aba **O time**. Use os filtros **Região**, **Gerente** e **Vendedor**
 
 Clique na aba **Como decide**. É a tela para quem quer conferir a conta:
 
-- a **tabela de destino por faixa de idade**: quantos negócios foram observados, quantos decidem em 28 dias e quantos ganham até o fim do trimestre;
+- a **tabela de destino por faixa de duração**: quantos negócios foram observados, quantos decidem em 28 dias e quantos ganham até o fim do trimestre;
 - o **backtest** por data de corte e somado, com valor ganho, taxa de acerto e fração do teto para cada política;
 - a **permutação de atributos**, com o p-valor de cada um. Nenhum fica abaixo de 0,05, e é por isso que a ferramenta não tenta dizer quem ganha.
 

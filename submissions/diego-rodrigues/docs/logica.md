@@ -8,9 +8,9 @@ O backtest volta a seis datas do segundo semestre de 2017 (de 3 de julho a 20 de
 
 Comparamos cinco políticas, cada uma escolhendo até 5 deals por vendedor:
 
-- **Relógio** (a ferramenta): ordena pela fila e, dentro da fila, pelo valor esperado — preço de tabela multiplicado pela chance aprendida na faixa de idade e na altura do trimestre. Não é ordenar só pelo tempo: uma versão que ignorasse o valor e ordenasse só pela chance perde para preço e prazo (razão 0,66). O que vence preço e prazo é o valor ponderado pela chance, não o tempo sozinho.
+- **Relógio** (a ferramenta): ordena pela fila e, dentro da fila, pelo valor esperado — preço de tabela multiplicado pela chance aprendida na faixa de duração e na altura do trimestre. Não é ordenar só pelo tempo: uma versão que ignorasse o valor e ordenasse só pela chance perde para preço e prazo (razão 0,66). O que vence preço e prazo é o valor ponderado pela chance, não o tempo sozinho.
 - **Preço e prazo**: maior preço de tabela entre os vivos, com desempate pelo prazo. É a melhor alternativa simples que a equipe usaria hoje.
-- **Preço, até 138 dias**: maior preço entre os deals com menos de 138 dias de idade. É o que a regra de ciclo sozinha faria.
+- **Preço, até 138 dias**: maior preço entre os deals com menos de 138 dias de duração. É o que a regra de ciclo sozinha faria.
 - **Aleatório**: sorteio entre os vivos, média de 200 rodadas. Cada rodada sorteia com um número de controle fixo, então o resultado se repete.
 - **Oráculo**: quem conhece o futuro. É o teto.
 
@@ -31,7 +31,7 @@ A ferramenta captura 41% do teto. Preço e prazo captura 32%.
 
 Razão de valor ganho, relógio sobre preço e prazo: **1,30**, com intervalo de confiança de 95% entre **1,13** e **1,52**. O intervalo não cruza 1. A reamostragem é por vendedor, porque é o vendedor que torna os deals independentes entre si. Relógio sobre preço, até 138 dias: 1,26 (IC de 1,13 a 1,44).
 
-O ciclo máximo (138 dias) e a tabela de destino por faixa de idade são aprendidos do histórico conhecido em cada data. A regra do fim do trimestre é diferente: o formato (fim do trimestre seguinte ao engajamento) é escolhido à mão; o histórico só decide se ela liga ou desliga (ver "Aprendido do histórico e configurado à mão" abaixo). A tabela de destino é calculada nas datas análogas (início de cada trimestre anterior); por isso uma faixa de idade alta com `p_decide` perto de zero é uma propriedade dessa posição no trimestre, não da idade isolada — na metade de um trimestre, a mesma faixa decide bem mais.
+O ciclo máximo (138 dias) e a tabela de destino por faixa de duração são aprendidos do histórico conhecido em cada data. A regra do fim do trimestre é diferente: o formato (fim do trimestre seguinte ao engajamento) é escolhido à mão; o histórico só decide se ela liga ou desliga (ver "Aprendido do histórico e configurado à mão" abaixo). A tabela de destino é calculada nas datas análogas (início de cada trimestre anterior); por isso uma faixa de duração alta com `p_decide` perto de zero é uma propriedade dessa posição no trimestre, não da duração isolada — na metade de um trimestre, a mesma faixa decide bem mais.
 
 ## Regras rejeitadas e o número que as derrubou
 
@@ -69,9 +69,9 @@ Um segundo ponto menor, sem efeito sobre o resultado em produção: `motor/carre
 
 ## Aprendido do histórico e configurado à mão
 
-- **Aprendido, em cada data**: ciclo máximo (138 dias na data de referência), se a regra do fim do trimestre está ativa (ativa quando menos de 0,1% dos fechamentos passam do prazo), tabela de destino por faixa de idade e carga de referência por vendedor. O que é aprendido aqui é o liga/desliga e os números, não o formato da regra.
+- **Aprendido, em cada data**: ciclo máximo (138 dias na data de referência), se a regra do fim do trimestre está ativa (ativa quando menos de 0,1% dos fechamentos passam do prazo), tabela de destino por faixa de duração e carga de referência por vendedor. O que é aprendido aqui é o liga/desliga e os números, não o formato da regra.
 - **Escolhido à mão e confirmado pelo histórico**: o formato "fim do trimestre seguinte ao engajamento" é uma hipótese de calendário nossa, testada contra o dado — não uma regra que o dado descobriu sozinho. A evidência dentro deste export é forte (6.710 dos 6.711 fechamentos conhecidos cabem nela), mas é uma hipótese confirmada, não uma regra aprendida do zero. Dizer "aprendida, não escrita à mão" para essa metade é impreciso; o correto é "a forma é nossa, o liga/desliga é do dado".
-- **Configuração de operação**, em `solution/config.json`: 28 dias de horizonte, 5 deals por vendedor na lista do dia, chance mínima de 5% para entrar em "fechar", bordas das faixas de idade, mínimo de 30 observações por faixa, tolerância de 0,1% para a regra do trimestre, mínimo de 500 fechamentos para ativar essa regra.
+- **Configuração de operação**, em `solution/config.json`: 28 dias de horizonte, 5 deals por vendedor na lista do dia, chance mínima de 5% para entrar em "fechar", bordas das faixas de duração, mínimo de 30 observações por faixa, tolerância de 0,1% para a regra do trimestre, mínimo de 500 fechamentos para ativar essa regra.
 
 Uma faixa com menos de 30 observações é juntada com a vizinha mais velha. Isso afeta uma data do backtest (31 de julho, faixas de 106 a 138 dias). Sem essa regra, o protótipo põe 1.887 deals em `fechar` nessa data; com ela, são 1.893. Os valores de ouro do protótipo foram mantidos onde a regra não mexe (relógio, preço e oráculo). O aleatório mudou porque passou a sortear por deal, e não por posição na lista.
 

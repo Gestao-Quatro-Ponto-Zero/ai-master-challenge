@@ -15,7 +15,7 @@ Preço também perde na taxa de acerto: 15,4% contra 22,7% do relógio (`docs/nu
 
 ## Princípios
 
-- **O score nunca promete quem ganha.** Só diz quando, historicamente, deals dessa idade decidiram. É a distinção que a Consultora do Empresário pede em B6: "não me diga quem vai ganhar... me dê contexto suficiente para eu saber onde vale colocar minha energia hoje" (P9).
+- **O score nunca promete quem ganha.** Só diz quando, historicamente, deals dessa duração decidiram. É a distinção que a Consultora do Empresário pede em B6: "não me diga quem vai ganhar... me dê contexto suficiente para eu saber onde vale colocar minha energia hoje" (P9).
 - **Todo número citado sai de `avaliacao/numeros.py`.** Nenhum número aparece na tela, no README ou nos docs sem essa fonte única.
 - **Nenhum valor de corte escrito à mão.** Ciclo máximo e tabela de destino são aprendidos do histórico conhecido na data; `config.json` só guarda escolha de operação (horizonte, foco por vendedor, chance mínima), nunca leitura dos dados. Exceção declarada: a forma da regra do fim do trimestre (fim do trimestre seguinte ao engajamento) é uma hipótese de calendário escolhida por nós, testada contra o dado; só o liga/desliga dessa regra é aprendido (`docs/logica.md`).
 

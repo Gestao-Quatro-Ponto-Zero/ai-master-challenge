@@ -21,7 +21,7 @@ pip install -r requirements.txt -r requirements-ia.txt
 | `data/` | Os quatro CSVs do desafio (licença CC0) e `metadata.csv` |
 | `motor/carregar.py` | Carga com procedência e relatório de qualidade; `recortar` apaga o futuro |
 | `motor/janela.py` | Janela de validade: ciclo máximo aprendido e prazo do trimestre |
-| `motor/aprender.py` | Tabela de destino por faixa de idade, com censura |
+| `motor/aprender.py` | Tabela de destino por faixa de duração, com censura |
 | `motor/pontuar.py` | Quatro filas (fechar, preparar, iniciar, encerrar), ordem e índice |
 | `motor/explicar.py` | Cartões Valor, Momento e Prazo, e a lista "o que não sei" |
 | `avaliacao/` | Backtest, permutação de atributos e `numeros.py` (fonte única dos números) |
