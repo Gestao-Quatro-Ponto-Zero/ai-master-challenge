@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lead Scorer</title>
+  <meta name="color-scheme" content="light dark">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap">
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="topo">
+    <div class="topo-interno">
+      <div class="topo-marca">
+        <h1>Lead Scorer</h1>
+        <p id="topo-data" class="topo-data"></p>
+      </div>
+      <div class="relogio">
+        <ol id="relogio-semanas" class="semanas" aria-hidden="true"></ol>
+        <p id="relogio-legenda" class="relogio-legenda"></p>
+      </div>
+    </div>
+  </header>
+
+  <p id="faixa-demo" class="faixa-demo" hidden>Demo pública com dados fictícios (CC0). Ações não são gravadas.</p>
+
+  <nav class="abas" aria-label="Telas">
+    <a href="#segunda" data-tela="segunda">Segunda-feira</a>
+    <a href="#time" data-tela="time">O time</a>
+    <a href="#como-decide" data-tela="como-decide">Como decide</a>
+  </nav>
+
+  <main id="conteudo" tabindex="-1">
+    <p id="aviso" class="aviso" role="status" aria-live="polite"></p>
+
+    <section id="tela-segunda" class="tela" aria-labelledby="titulo-segunda" hidden>
+      <h2 id="titulo-segunda" class="sr-only">Segunda-feira</h2>
+      <div class="seletor">
+        <label for="sel-vendedor">Vendedor</label>
+        <select id="sel-vendedor"></select>
+      </div>
+      <div id="segunda-corpo"></div>
+    </section>
+
+    <section id="tela-time" class="tela tela-larga" aria-labelledby="titulo-time" hidden>
+      <h2 id="titulo-time">O time</h2>
+      <form class="filtros" onsubmit="return false">
+        <div><label for="f-regiao">Região</label><select id="f-regiao"></select></div>
+        <div><label for="f-gerente">Gerente</label><select id="f-gerente"></select></div>
+        <div><label for="f-vendedor">Vendedor</label><select id="f-vendedor"></select></div>
+      </form>
+      <div id="time-corpo"></div>
+    </section>
+
+    <section id="tela-como-decide" class="tela tela-larga" aria-labelledby="titulo-como" hidden>
+      <h2 id="titulo-como">Como decide</h2>
+      <div id="como-corpo"></div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

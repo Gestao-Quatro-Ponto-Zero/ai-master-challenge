@@ -1,0 +1,45 @@
+1. Backtest por corte (fonte: avaliacao/backtest.py)
+   2017-07-03  vivos  1364  fechar   385  relógio   111287  preço/prazo    71909  aleatório (média)      18727  oráculo   161425
+   2017-07-31  vivos  1893  fechar  1893  relógio   198278  preço/prazo   143942  aleatório (média)      66354  oráculo   573958
+   2017-08-28  vivos  1845  fechar  1845  relógio   334837  preço/prazo   193424  aleatório (média)      76206  oráculo   631666
+   2017-09-25  vivos  1852  fechar   962  relógio    88130  preço/prazo    85087  aleatório (média)      23710  oráculo   280949
+   2017-10-23  vivos  1916  fechar  1916  relógio   133640  preço/prazo   150104  aleatório (média)      52606  oráculo   477967
+   2017-11-20  vivos  1591  fechar  1432  relógio   231152  preço/prazo   197996  aleatório (média)      81018  oráculo   540362
+
+2. Valor total ganho (fonte: avaliacao/backtest.py)
+   valor_relogio               1,097,324
+   valor_preco_prazo             842,462
+   valor_preco_138               867,889
+   valor_oraculo               2,666,327
+   valor_aleatorio               318,622
+
+3. Taxa média de acerto (fonte: avaliacao/backtest.py)
+   acerto_relogio         0.227
+   acerto_preco_prazo     0.154
+   acerto_preco_138       0.160
+   acerto_oraculo         0.831
+   acerto_aleatorio       0.147
+   relógio ÷ aleatório (taxa de acerto) = 1.54
+
+4. Fração do teto, o oráculo que conhece o futuro = 1 (fonte: avaliacao/backtest.py)
+   relogio      0.412
+   preco_prazo  0.316
+
+5. Razão de valor ganho com IC 95%, reamostragem de vendedores (fonte: avaliacao/backtest.py)
+   relogio / preco_prazo      1.303   IC 95% [1.134, 1.517]
+   relogio / preco_138        1.264   IC 95% [1.131, 1.437]
+
+6. Atributos do deal: p-valor de 1000 repetições, controle por mês do trimestre (fonte: avaliacao/permutacao.py)
+   conta                                      p = 0.524
+   vendedor                                   p = 0.141
+   gerente                                    p = 0.482
+   região                                     p = 0.299
+   setor da conta                             p = 0.541
+   porte da conta (quartil de funcionários)   p = 0.983
+   produto                                    p = 0.465
+   vendedor × produto                         p = 0.485
+   vendedor, controlado também por gerente    p = 0.116
+
+7. Campo conta preenchido depois do desfecho (fonte: data/sales_pipeline.csv)
+   fechados sem conta: 0 de 6711
+   abertos sem conta:  1425 de 2089

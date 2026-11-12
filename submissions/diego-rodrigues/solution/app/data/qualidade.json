@@ -1,0 +1,27 @@
+{
+ "abertos_sem_conta": 1425,
+ "apelidos_de_produto": {
+  "GTXPro": "GTX Pro"
+ },
+ "maior_data": "2017-12-31",
+ "paises_corrigidos": {
+  "Philipines": "Philippines"
+ },
+ "primeiro_fechamento": "2017-03-01",
+ "produtos_sem_par": [],
+ "prospecting_sem_data": 500,
+ "setores_corrigidos": {
+  "technolgy": "technology"
+ },
+ "total_linhas": 8800,
+ "vendedores_cadastro": 35,
+ "vendedores_com_deal": 30,
+ "vendedores_com_deal_aberto": 27,
+ "vendedores_sem_deal": [
+  "Carl Lin",
+  "Carol Thompson",
+  "Elizabeth Anderson",
+  "Mei-Mei Johns",
+  "Natalya Ivanova"
+ ]
+}

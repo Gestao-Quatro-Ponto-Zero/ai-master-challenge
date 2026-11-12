@@ -1,0 +1,11 @@
+{
+  "horizonte_dias": 28,
+  "foco_por_vendedor": 5,
+  "p_decide_min": 0.05,
+  "bordas_faixa": [15, 30, 45, 60, 75, 90, 105, 120],
+  "n_min_faixa": 30,
+  "tolerancia_prazo_trimestre": 0.001,
+  "min_fechamentos_para_prazo": 500,
+  "semente": 7,
+  "hoje": null
+}

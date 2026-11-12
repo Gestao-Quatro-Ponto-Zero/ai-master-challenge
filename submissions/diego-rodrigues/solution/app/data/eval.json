@@ -1,0 +1,186 @@
+{
+ "acerto_medio": {
+  "acerto_aleatorio": 0.14742222222222223,
+  "acerto_oraculo": 0.831111111111111,
+  "acerto_preco_138": 0.16,
+  "acerto_preco_prazo": 0.15444444444444444,
+  "acerto_relogio": 0.22666666666666666
+ },
+ "fracao_do_teto": {
+  "preco_prazo": 0.31596349585028394,
+  "relogio": 0.41154892104381796
+ },
+ "parametros": {
+  "numero_controle": 7,
+  "reamostragens_intervalo": 5000,
+  "repeticoes_permutacao": 1000,
+  "rodadas_aleatorio": 200
+ },
+ "permutacao": {
+  "conta": {
+   "p": 0.5244755244755245,
+   "sinal": false
+  },
+  "gerente": {
+   "p": 0.48151848151848153,
+   "sinal": false
+  },
+  "porte da conta (quartil de funcionários)": {
+   "p": 0.983016983016983,
+   "sinal": false
+  },
+  "produto": {
+   "p": 0.4645354645354645,
+   "sinal": false
+  },
+  "região": {
+   "p": 0.2987012987012987,
+   "sinal": false
+  },
+  "setor da conta": {
+   "p": 0.5414585414585414,
+   "sinal": false
+  },
+  "vendedor": {
+   "p": 0.14085914085914086,
+   "sinal": false
+  },
+  "vendedor × produto": {
+   "p": 0.48451548451548454,
+   "sinal": false
+  }
+ },
+ "permutacao_vendedor_controlado_por_gerente": {
+  "p": 0.11588411588411589,
+  "sinal": false
+ },
+ "razoes": {
+  "relogio / preco_138": {
+   "ic_inferior": 1.130811481890124,
+   "ic_superior": 1.4365909489485165,
+   "razao": 1.2643598432518444
+  },
+  "relogio / preco_prazo": {
+   "ic_inferior": 1.1341739353250888,
+   "ic_superior": 1.5167896663963596,
+   "razao": 1.3025204697659953
+  }
+ },
+ "somas": {
+  "valor_aleatorio": 318621.585,
+  "valor_oraculo": 2666327.0,
+  "valor_preco_138": 867889.0,
+  "valor_preco_prazo": 842462.0,
+  "valor_relogio": 1097324.0
+ },
+ "tabela": [
+  {
+   "acerto_aleatorio": 0.0545,
+   "acerto_oraculo": 0.4266666666666667,
+   "acerto_preco_138": 0.08,
+   "acerto_preco_prazo": 0.09333333333333334,
+   "acerto_relogio": 0.17333333333333334,
+   "corte": "2017-07-03",
+   "fila_fechar": 385,
+   "semana_do_trimestre": 1,
+   "valor_aleatorio": 18726.73,
+   "valor_oraculo": 161425,
+   "valor_preco_138": 60945,
+   "valor_preco_prazo": 71909,
+   "valor_relogio": 111287,
+   "vencidos_ganhos": 0,
+   "vivos": 1364
+  },
+  {
+   "acerto_aleatorio": 0.18876666666666664,
+   "acerto_oraculo": 0.9933333333333333,
+   "acerto_preco_138": 0.19333333333333333,
+   "acerto_preco_prazo": 0.18,
+   "acerto_relogio": 0.24,
+   "corte": "2017-07-31",
+   "fila_fechar": 1893,
+   "semana_do_trimestre": 5,
+   "valor_aleatorio": 66353.84,
+   "valor_oraculo": 573958,
+   "valor_preco_138": 156995,
+   "valor_preco_prazo": 143942,
+   "valor_relogio": 198278,
+   "vencidos_ganhos": 0,
+   "vivos": 1893
+  },
+  {
+   "acerto_aleatorio": 0.2132666666666667,
+   "acerto_oraculo": 0.98,
+   "acerto_preco_138": 0.23333333333333334,
+   "acerto_preco_prazo": 0.18666666666666668,
+   "acerto_relogio": 0.41333333333333333,
+   "corte": "2017-08-28",
+   "fila_fechar": 1845,
+   "semana_do_trimestre": 9,
+   "valor_aleatorio": 76205.94,
+   "valor_oraculo": 631666,
+   "valor_preco_138": 226298,
+   "valor_preco_prazo": 193424,
+   "valor_relogio": 334837,
+   "vencidos_ganhos": 0,
+   "vivos": 1845
+  },
+  {
+   "acerto_aleatorio": 0.062266666666666665,
+   "acerto_oraculo": 0.6666666666666666,
+   "acerto_preco_138": 0.07333333333333333,
+   "acerto_preco_prazo": 0.08,
+   "acerto_relogio": 0.1,
+   "corte": "2017-09-25",
+   "fila_fechar": 962,
+   "semana_do_trimestre": 13,
+   "valor_aleatorio": 23710.375,
+   "valor_oraculo": 280949,
+   "valor_preco_138": 79605,
+   "valor_preco_prazo": 85087,
+   "valor_relogio": 88130,
+   "vencidos_ganhos": 0,
+   "vivos": 1852
+  },
+  {
+   "acerto_aleatorio": 0.13566666666666666,
+   "acerto_oraculo": 0.94,
+   "acerto_preco_138": 0.16,
+   "acerto_preco_prazo": 0.16,
+   "acerto_relogio": 0.14666666666666667,
+   "corte": "2017-10-23",
+   "fila_fechar": 1916,
+   "semana_do_trimestre": 4,
+   "valor_aleatorio": 52606.22,
+   "valor_oraculo": 477967,
+   "valor_preco_138": 152193,
+   "valor_preco_prazo": 150104,
+   "valor_relogio": 133640,
+   "vencidos_ganhos": 0,
+   "vivos": 1916
+  },
+  {
+   "acerto_aleatorio": 0.23006666666666667,
+   "acerto_oraculo": 0.98,
+   "acerto_preco_138": 0.22,
+   "acerto_preco_prazo": 0.22666666666666666,
+   "acerto_relogio": 0.2866666666666667,
+   "corte": "2017-11-20",
+   "fila_fechar": 1432,
+   "semana_do_trimestre": 8,
+   "valor_aleatorio": 81018.48,
+   "valor_oraculo": 540362,
+   "valor_preco_138": 191853,
+   "valor_preco_prazo": 197996,
+   "valor_relogio": 231152,
+   "vencidos_ganhos": 0,
+   "vivos": 1591
+  }
+ ],
+ "vazamento_do_campo_conta": {
+  "abertos": 2089,
+  "abertos_sem_conta": 1425,
+  "fechados": 6711,
+  "fechados_sem_conta": 0
+ }
+}

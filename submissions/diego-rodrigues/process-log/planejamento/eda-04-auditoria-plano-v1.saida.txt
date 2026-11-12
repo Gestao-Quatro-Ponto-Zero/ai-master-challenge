@@ -1,0 +1,63 @@
+
+====================================================================================================
+A. Vendedores: cadastro x pipeline x abertos (o v1 pina 35 em três testes)
+====================================================================================================
+no cadastro (sales_teams): 35
+com algum deal no pipeline: 30
+com deal aberto: 27
+no cadastro sem nenhum deal: ['Carl Lin', 'Carol Thompson', 'Elizabeth Anderson', 'Mei-Mei Johns', 'Natalya Ivanova']
+com histórico mas sem deal aberto: ['Donn Cantrell', 'Garret Kinder', 'Reed Clapper']
+Prospecting por região: {'Central': 500}
+
+====================================================================================================
+B. Data de referência: o EDA usou 31/12, o produto usa 01/01 (o v1 pina 1.291 com hoje = 01/01)
+====================================================================================================
+31/12/2017 (EDA): idade>138 = 1291 | 0-30 = 18 | 31-90 = 92 | 91-138 = 188
+01/01/2018 (produto): idade>138 = 1301 | 0-30 = 17 | 31-90 = 93 | 91-138 = 178
+dia da semana de 01/01/2018: Monday
+deals fechados com ciclo exatamente 138: 2 (por isso o corte é > 138, não >= 138)
+
+====================================================================================================
+C. 'Chance de decidir em 30 dias': fórmula do v1 (só fechados) x tábua de vida com os abertos em risco
+====================================================================================================
+ idade  em_risco  real_decide_30d  v1_decide_30d
+     0      8283            0.381          0.471
+    15      5465            0.097          0.141
+    30      5089            0.106          0.162
+    60      4495            0.356          0.550
+    90      2794            0.429          0.864
+   120      1388            0.156          1.000
+   138       772            0.003          1.000
+Leitura: aos 120 dias o v1 mostraria 100 em 100; o real é ~16 em 100. É viés de sobrevivência dentro da própria tabela.
+
+====================================================================================================
+D. Capacidade do v1: fechamentos em 90 dias / (90/7) x 1,5, piso 5, teto 25
+====================================================================================================
+cap_dia (quantos vendedores em cada valor): {1: 12, 2: 19, 3: 3, 4: 1}
+cap_semana mediana: 7.0 | o guia e a tela-rascunho falam em 5 por dia e 20 a 25 por semana
+fila 'vivo' do v1 por vendedor: mediana 0.0 | com zero: 18 de 35 | total: 171
+
+====================================================================================================
+E. O '3x o aleatório' é poder de previsão ou mistura de preço?
+====================================================================================================
+valor ganho: top 5 por preço / aleatório = 2.73x
+taxa de acerto (ganhou em 90 dias): por preço 0.368 | aleatório 0.357
+preço médio do top 5 por preço / preço médio de todos os vivos = 2.87x
+Leitura: o múltiplo de valor é a razão de preços. A taxa de acerto é a mesma. Não é previsão.
+
+====================================================================================================
+F. Poder do piloto 'metade dos vendedores de uma região, +10% de valor ganho'
+====================================================================================================
+valor ganho por vendedor por trimestre: CV médio 0.59 | correlação entre trimestres 0.90
+5 vendedores por braço: menor efeito detectável 104%; ajustando pelo trimestre anterior 47%
+15 vendedores por braço: menor efeito detectável 60%; ajustando pelo trimestre anterior 27%
+para detectar +10% com ajuste: 109 vendedores por braço (a empresa tem 30 ativos)
+alternativa, sorteio por deal dentro do vendedor: 1100 deals por braço detectam +5 pontos na taxa de decisão em 28 dias
+
+====================================================================================================
+G. De onde vêm 'US$ 3,66 mi / 74%' e 'US$ 236 mil' do guia
+====================================================================================================
+pipeline aberto a preço de tabela: US$ 4,966,215
+regra só de 138 dias: vencido US$ 3,227,151 (65.0% do aberto) em 1301 deals; vivos 288 deals
+regra de 138 dias + prazo do trimestre: vencido US$ 3,656,299 (73.6%) | vivos 115 deals, US$ 235,930
+Leitura: os valores do guia são os da segunda regra, rotulados como se fossem da primeira.

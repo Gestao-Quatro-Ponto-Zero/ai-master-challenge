@@ -1,0 +1,147 @@
+
+==============================================================================
+1. Qualidade do dado
+==============================================================================
+linhas no pipeline: 8800
+linhas cujo produto não casa literalmente com o catálogo: 1480 {'GTXPro': 1480}
+linhas sem preço após normalizar espaço/caixa: 0
+abertos no export: 2089 | abertos sem conta: 1425 | fechados sem conta: 0 de 6711
+Prospecting sem engage_date: 500 de 500
+Engaging sem engage_date: 0 | abertos com close_date: 0
+maior close_date: 2017-12-31 | menor close_date: 2017-03-01
+vendedores: cadastro 35 | com algum deal 30 | com deal aberto 27
+
+==============================================================================
+2. Robustez da regra de 'vencido' (export inteiro)
+==============================================================================
+ciclo (dias) dos 6.711 fechados: {'count': 6711.0, 'mean': 48.0, 'std': 41.1, 'min': 1.0, '25%': 8.0, '50%': 45.0, '75%': 85.0, 'max': 138.0}
+fechamentos por ciclo, 120-138 dias: {120: 24, 121: 22, 122: 21, 123: 14, 124: 19, 125: 17, 126: 20, 127: 15, 128: 4, 129: 3, 130: 5, 131: 7, 132: 8, 133: 3, 134: 9, 135: 3, 136: 10, 137: 11, 138: 2}
+fechados DEPOIS do fim do trimestre seguinte ao engajamento: 1 de 6711
+opportunity_id engage_date close_date deal_stage  ciclo
+      Q7C5MJ4W  2017-06-30 2017-11-01       Lost    124
+fração que fecha no mesmo trimestre do engajamento: 0.525
+folga (dias entre close e prazo) dos GANHOS, percentis 0/1/5/50: {0.0: 0.0, 0.01: 1.0, 0.05: 8.0, 0.5: 92.0}
+
+==============================================================================
+3. Pipeline em 01/01/2018 (build de referência)
+==============================================================================
+ciclo máximo aprendido = 138 | regra do trimestre ativa = True (fração fora do prazo = 0.00015)
+vencido   n= 1474 valor=US$ 3.656.299 (73.6%)
+vivo      n=  115 valor=US$ 235.930 (4.8%)
+sem_data  n=  500 valor=US$ 1.073.986 (21.6%)
+total aberto: US$ 4.966.215 n= 2089
+vencidos só pela idade (> ciclo máx): 1301 | só pelo prazo: 173
+vendedores com deal vivo: 17 | com > 5 vivos: 11
+checagem: os mesmos abertos do export? True
+
+==============================================================================
+4. Achado central: algum 'vencido' foi ganho depois?
+==============================================================================
+2017-07-03  fechados conhecidos= 2721  ciclo_max=138  trimestre_ativa=True  abertos= 2214  vivos= 1364  vencidos=  350
+2017-07-31  fechados conhecidos= 3287  ciclo_max=138  trimestre_ativa=True  abertos= 2743  vivos= 1893  vencidos=  350
+2017-08-28  fechados conhecidos= 4003  ciclo_max=138  trimestre_ativa=True  abertos= 2741  vivos= 1845  vencidos=  396
+2017-09-25  fechados conhecidos= 4597  ciclo_max=138  trimestre_ativa=True  abertos= 2863  vivos= 1852  vencidos=  511
+2017-10-23  fechados conhecidos= 5118  ciclo_max=138  trimestre_ativa=True  abertos= 3133  vivos= 1916  vencidos=  717
+2017-11-20  fechados conhecidos= 5769  ciclo_max=138  trimestre_ativa=True  abertos= 2824  vivos= 1591  vencidos=  733
+negócios distintos classificados como vencidos em algum corte: 734
+desfecho real no export: {'Engaging': 733, 'Lost': 1}
+vencidos ganhos com close_date >= corte da classificação: 0
+variante só-ciclo-máximo: distintos 733 | ganhos depois: 0
+variante convenção <= c (só trimestre): distintos 717 | ganhos (qualquer data): 0
+
+==============================================================================
+5. Vazamento temporal: amostra de cortes
+==============================================================================
+2017-05-15: fechados visíveis com close_date >= c: 0 | abertos com estágio Won/Lost: 0 | abertos com close_date preenchido: 0 | visíveis com engage_date >= c: 0 | ciclo_max aprendido: 138 (export inteiro: 138)
+2017-08-28: fechados visíveis com close_date >= c: 0 | abertos com estágio Won/Lost: 0 | abertos com close_date preenchido: 0 | visíveis com engage_date >= c: 0 | ciclo_max aprendido: 138 (export inteiro: 138)
+2017-10-23: fechados visíveis com close_date >= c: 0 | abertos com estágio Won/Lost: 0 | abertos com close_date preenchido: 0 | visíveis com engage_date >= c: 0 | ciclo_max aprendido: 138 (export inteiro: 138)
+
+==============================================================================
+6. Viés de sobrevivência: chance de decidir em 28 dias por faixa de idade
+==============================================================================
+         n_ingenua  decide_ingenua  n_correta  decide_correta  p_ingenua  p_correta
+faixa                                                                              
+0-15         84994           29071      12293            3417      0.342      0.278
+16-30        54447            6153       9571             728      0.113      0.076
+31-45        52183           11778       9522            1433      0.226      0.150
+46-60        47933           19704       9088            2452      0.411      0.270
+61-75        39678           24113       7984            2975      0.608      0.373
+76-90        27356           20939       6367            2549      0.765      0.400
+91-105       14794           13274       4694            1626      0.897      0.346
+106-120       5989            5925       3426             721      0.989      0.210
+121+          1367            1367      13853             157      1.000      0.011
+
+==============================================================================
+7. Backtest simplificado (versão do revisor, NÃO é o motor)
+==============================================================================
+2017-07-03 vivos=1364 relogio_rev=0 preco_prazo=20,622 folga=16,231
+2017-07-31 vivos=1893 relogio_rev=124,125 preco_prazo=194,567 folga=211,214
+2017-08-28 vivos=1845 relogio_rev=182,579 preco_prazo=237,701 folga=288,826
+2017-09-25 vivos=1852 relogio_rev=63,104 preco_prazo=71,334 folga=86,847
+2017-10-23 vivos=1916 relogio_rev=57,529 preco_prazo=122,732 folga=107,758
+2017-11-20 vivos=1591 relogio_rev=101,971 preco_prazo=151,730 folga=110,179
+                valor  ganhos    n  acerto
+pol                                       
+folga        821055.0     168  900   0.187
+preco_prazo  798686.0     128  900   0.142
+relogio_rev  529308.0     194  900   0.216
+razão relogio_rev / preco_prazo = 0.663  IC95% bootstrap por vendedor [0.499, 0.854]
+razão relogio_rev / folga = 0.645  IC95% bootstrap por vendedor [0.503, 0.807]
+
+==============================================================================
+7b. Backtest com a regra DOCUMENTADA do relógio, reimplementada pelo revisor
+==============================================================================
+2017-07-03 vivos=1364 fechar=385 relogio=111,287 preco_prazo_desc=71,909 preco_prazo_asc=33,535
+2017-07-31 vivos=1893 fechar=1893 relogio=198,278 preco_prazo_desc=143,942 preco_prazo_asc=169,924
+2017-08-28 vivos=1845 fechar=1845 relogio=334,837 preco_prazo_desc=193,424 preco_prazo_asc=263,226
+2017-09-25 vivos=1852 fechar=962 relogio=88,130 preco_prazo_desc=85,087 preco_prazo_asc=84,320
+2017-10-23 vivos=1916 fechar=1916 relogio=133,640 preco_prazo_desc=150,104 preco_prazo_asc=114,480
+2017-11-20 vivos=1591 fechar=1432 relogio=231,152 preco_prazo_desc=197,996 preco_prazo_asc=150,104
+                    valor  ganhos    n  acerto_media_cortes
+pol                                                        
+preco_prazo_asc    815589     135  900                0.150
+preco_prazo_desc   842462     139  900                0.154
+relogio           1097324     204  900                0.227
+razão relogio / preco_prazo_desc = 1.303  IC95% bootstrap por vendedor [1.141, 1.514]
+razão relogio / preco_prazo_asc = 1.345  IC95% bootstrap por vendedor [1.196, 1.536]
+diferença relogio - preco_prazo_desc: 254862
+
+==============================================================================
+8b. Atributos x 'ganhou em 28d' (1 registro por deal vivo com conta, 1º corte) — desenho do documento
+==============================================================================
+registros: 3001 | taxa de ganho em 28d: 0.129
+account          permutação(500, estratificada por mês do trimestre) p=0.485
+sales_agent      permutação(500, estratificada por mês do trimestre) p=0.150
+manager          permutação(500, estratificada por mês do trimestre) p=0.455
+regional_office  permutação(500, estratificada por mês do trimestre) p=0.289
+sector           permutação(500, estratificada por mês do trimestre) p=0.521
+porte            permutação(500, estratificada por mês do trimestre) p=0.581
+pk               permutação(500, estratificada por mês do trimestre) p=0.417
+
+==============================================================================
+8. Atributos x ganhar (só fechados; teste do revisor)
+==============================================================================
+taxa de ganho geral entre fechados: 0.632 n = 6711
+account          grupos= 85  min/max taxa=0.531/0.750  qui2 p=0.943  permutação(300) p=0.967
+sales_agent      grupos= 30  min/max taxa=0.550/0.704  qui2 p=0.264  permutação(300) p=0.226
+manager          grupos=  6  min/max taxa=0.621/0.644  qui2 p=0.788  permutação(300) p=0.784
+regional_office  grupos=  3  min/max taxa=0.626/0.639  qui2 p=0.610  permutação(300) p=0.661
+sector           grupos= 10  min/max taxa=0.612/0.648  qui2 p=0.970  permutação(300) p=0.973
+porte            grupos=  4  min/max taxa=0.614/0.641  qui2 p=0.363  permutação(300) p=0.342
+produto          grupos=  7  min/max taxa=0.600/0.648  qui2 p=0.372  permutação(300) p=0.405
+
+==============================================================================
+9. Taxa-base de decisão em 28 dias, um registro por negócio
+==============================================================================
+6 cortes de 28d: negócios vivos distintos = 3839; decidiram em 28d do 1º corte vivo = 0.173
+todas as aparições deal x corte: n=10461, decidiram=0.230
+
+==============================================================================
+10. Aritmética derivada do resumo executivo
+==============================================================================
+1.097.324 - 842.462 = 254862 | por vendedor por corte (30 x 6): 1415.9
+horas de equilíbrio a US$ 25/h: 56.6
+horas de equilíbrio a US$ 50/h: 28.3
+horas de equilíbrio a US$ 100/h: 14.2
+razão de acertos 0,227/0,147 = 1.544 | fração do teto: 0.412 0.316
+n por braço (2 proporções, 17,3% -> 22,3%, alfa 5%, poder 80%): 993
