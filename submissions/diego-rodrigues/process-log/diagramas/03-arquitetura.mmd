@@ -1,0 +1,13 @@
+flowchart LR
+    CSV[("4 CSVs do CRM<br/>licença CC0")] --> C["carregar<br/>procedência e qualidade"]
+    C --> R["recortar<br/>apaga o futuro"]
+    R --> J["janela<br/>138 dias + fim do trimestre"]
+    R --> AP["aprender<br/>tabela de destino<br/>por duração e trimestre"]
+    J --> P["pontuar<br/>quatro filas e ordem"]
+    AP --> P
+    P --> X["explicar<br/>Valor · Momento · Prazo<br/>+ o que não sei"]
+    X --> B["build.py<br/>JSON com hash"]
+    R --> AV["avaliacao<br/>backtest em 6 cortes<br/>e permutação"]
+    AV --> B
+    IA["ia/ briefing<br/>desligado nesta entrega"] -.-> B
+    B --> APP["app estático<br/>três telas · Vercel"]

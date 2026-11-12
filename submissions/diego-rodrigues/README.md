@@ -34,13 +34,9 @@ Resumo completo, com a conta de horas tratada como premissa declarada: [docs/res
 
 ### O problema em uma imagem
 
-```mermaid
-pie showData
-    title Pipeline aberto em 01/01/2018, a preço de tabela (US$)
-    "Passou da janela de decisão — 1.474 negócios" : 3656299
-    "Prospecting sem data — 500 negócios" : 1073986
-    "Vivo — 115 negócios" : 235930
-```
+![Pipeline aberto em 01/01/2018: a maior parte já passou da janela de decisão](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/diagramas/01-pipeline-aberto.png?raw=true)
+
+<sub>Código-fonte: [01-pipeline-aberto.mmd](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/diagramas/01-pipeline-aberto.mmd)</sub>
 
 **Por que dá para afirmar que esse valor já não fecha.** A afirmação se apoia em três provas, todas conferidas por um revisor independente com código próprio ([process-log/verificacao/relatorio.md](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/verificacao/relatorio.md)):
 
@@ -52,14 +48,9 @@ O que isso não prova também está escrito. Dos 734, 733 não foram perdidos: f
 
 ### Como usar em 60 segundos
 
-```mermaid
-flowchart LR
-    A["Abrir a demo"] --> B["Aba Segunda-feira<br/>escolher o vendedor"]
-    B --> C["Foco da semana<br/>até 5 negócios"]
-    C --> D["Abrir 'Por que este deal'<br/>Valor · Momento · Prazo"]
-    D --> E["Aba O time<br/>filtrar região ou gerente"]
-    E --> F["Aba Como decide<br/>tabela, backtest, p-valores"]
-```
+![Como usar a demo em 60 segundos](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/diagramas/02-como-usar-60s.png?raw=true)
+
+<sub>Código-fonte: [02-como-usar-60s.mmd](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/diagramas/02-como-usar-60s.mmd)</sub>
 
 Passo a passo com prints de cada tela: [docs/como-usar-a-demo.md](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/docs/como-usar-a-demo.md).
 
@@ -86,21 +77,9 @@ Cada negócio aberto cai em uma de quatro filas, e a ordem dentro da fila é o q
 
 ### Arquitetura
 
-```mermaid
-flowchart LR
-    CSV[("4 CSVs do CRM<br/>licença CC0")] --> C["carregar<br/>procedência e qualidade"]
-    C --> R["recortar<br/>apaga o futuro"]
-    R --> J["janela<br/>138 dias + fim do trimestre"]
-    R --> AP["aprender<br/>tabela de destino<br/>por duração e trimestre"]
-    J --> P["pontuar<br/>quatro filas e ordem"]
-    AP --> P
-    P --> X["explicar<br/>Valor · Momento · Prazo<br/>+ o que não sei"]
-    X --> B["build.py<br/>JSON com hash"]
-    R --> AV["avaliacao<br/>backtest em 6 cortes<br/>e permutação"]
-    AV --> B
-    IA["ia/ briefing<br/>desligado nesta entrega"] -.-> B
-    B --> APP["app estático<br/>três telas · Vercel"]
-```
+![Arquitetura: do CSV ao app estático](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/diagramas/03-arquitetura.png?raw=true)
+
+<sub>Código-fonte: [03-arquitetura.mmd](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/diagramas/03-arquitetura.mmd)</sub>
 
 `recortar` é a única porta de entrada do dado e apaga tudo o que é posterior à data de referência, e é a mesma função usada em produção e no backtest. O caminho crítico é determinístico: o mesmo dado gera o mesmo JSON, com o mesmo hash. A geração de briefings com IA está implementada e testada em `solution/ia/`, com validador que confere cada número contra os fatos, mas **não está ligada**: a conta da API não tem créditos e a primeira chamada real foi recusada, então todos os textos publicados vêm de template.
 
@@ -112,15 +91,9 @@ Cada módulo do motor foi escrito com teste antes do código, e cada um foi conf
 
 **O discovery foi ensaiado com quatro personas sintéticas, não conduzido com vendedores reais.** Como não tenho acesso à área comercial, construí informantes em vez de supor o que eles diriam. Parti de uma pesquisa em fontes abertas sobre a cultura comercial e o comportamento de vendedores, recortei quatro arquétipos e um líder, e montei um agente para ser entrevistado.
 
-```mermaid
-flowchart TB
-    PESQ["Pesquisa em fontes abertas<br/>cultura e comportamento comercial"] --> ARQ["Quatro arquétipos de vendedor<br/>+ um líder"]
-    ARQ --> AG["Agente informante<br/>com três travas"]
-    AG --> PRE["Pré-registro das premissas<br/>commitado antes da 1ª pergunta"]
-    PRE --> ENT["Entrevistas<br/>em conversas separadas"]
-    ENT --> CAL["Calibração<br/>perguntas de resposta já conhecida"]
-    CAL --> PROD["Premissa com teste,<br/>nunca fato"]
-```
+![Caminho do discovery, com personas sintéticas](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/diagramas/04-discovery.png?raw=true)
+
+<sub>Código-fonte: [04-discovery.mmd](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/diagramas/04-discovery.mmd)</sub>
 
 As três travas existem porque o agente foi construído sobre o mesmo dataset do desafio, e isso abre a porta para validação circular — a ferramenta confirmando a si mesma. Primeira: persona como vendedor e agente como consultor do dado rodam em conversas separadas, para a resposta de processo não vir contaminada pelo número. Segunda: o pré-registro das premissas foi commitado antes da primeira pergunta, de modo que uma confirmação posterior não pudesse ser reescrita como "eu já sabia". Terceira: nenhuma resposta virou fato, apenas premissa com teste definido.
 
@@ -185,17 +158,9 @@ Lista completa, incluindo ausência de login, ausência de escrita no CRM e o qu
 
 A IA foi parceira de decomposição, implementação, crítica e documentação ao longo de duas fases: um dia de planejamento, em que o plano foi escrito, revisado por três ângulos e reescrito antes de qualquer linha de código, e um dia de construção, com teste antes do código em cada módulo. As decisões comerciais, os critérios de validade, a verificação dos números e a aceitação ou recusa de cada sugestão ficaram sob julgamento humano. Dezesseis erros da IA estão registrados com o teste ou a verificação que pegou cada um. O registro completo, com a linha do tempo e o mapa das evidências, está em [process-log/README.md](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/README.md).
 
-```mermaid
-timeline
-    title Do problema ao Pull Request
-    10/11 noite : Leitura do desafio e primeiro plano (Fable 5.1)
-                : Comparação dos desafios e dos PRs existentes (Fable 5.2)
-    11/11 manhã : Plano v2, revisão técnica e análise exploratória
-                : Pesquisa de cultura comercial (Perplexity) e personas sintéticas
-                : Fork, estrutura, baseline de três modelos e pré-registro
-    11/11 tarde : Motor com teste antes do código, backtest, telas e deploy
-    11/11 noite : Verificação independente, revisão externa, documentos e PR
-```
+![Linha do tempo: do problema ao Pull Request](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/diagramas/05-linha-do-tempo.png?raw=true)
+
+<sub>Código-fonte: [05-linha-do-tempo.mmd](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/diagramas/05-linha-do-tempo.mmd)</sub>
 
 ### Ferramentas usadas
 
