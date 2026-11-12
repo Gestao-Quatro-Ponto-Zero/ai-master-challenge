@@ -1,4 +1,18 @@
-# Submissão — Diego Rodrigues — Challenge 003
+# Submissão — Diego Rodrigues — Challenge 003 · Lead Scorer
+
+> **Para o CEO, em uma frase:** pelo histórico, três quartos do pipeline que o time reporta já não fecha mais; esta ferramenta mostra os 115 negócios que ainda podem decidir e em que ordem atacar na segunda-feira.
+
+**Demo pública:** https://lead-scorer-diego.vercel.app · **Testar em 60 segundos:** [docs/como-usar-a-demo.md](docs/como-usar-a-demo.md) · **Como usei IA:** [process-log/](process-log/)
+
+| Pipeline aberto | Já passou da janela de decisão | Vivo de verdade | Ganho no backtest vs. ordenar por preço |
+|---|---|---|---|
+| US$ 4,97 mi · 2.089 negócios | **73,6%** · US$ 3,66 mi · 1.474 negócios | **115 negócios** · US$ 236 mil | **1,30×** · IC 95% de 1,13 a 1,52 ([como foi medido](docs/experimento.md)) |
+
+**Janela de decisão** é o prazo dentro do qual, no histórico deste CRM, todo negócio fechou: até 138 dias de idade e até o fim do trimestre seguinte ao do primeiro contato. Dos 6.711 negócios fechados no export, nenhum foi ganho depois desse ponto.
+
+Todo número desta página sai de script guardado no repositório e foi recalculado por um revisor independente, com código próprio, a partir dos CSVs ([process-log/verificacao/relatorio.md](process-log/verificacao/relatorio.md)).
+
+---
 
 ## Sobre mim
 
@@ -10,82 +24,223 @@
 
 ## Executive Summary
 
-Três quartos do pipeline aberto (US$ 3,66 mi dos US$ 4,97 mi, 73,6%) está em negócios que, no histórico, nunca decidiram: dos 734 distintos classificados como vencidos nos seis cortes do backtest, nenhum foi ganho em momento algum do export (733 nunca fecharam; o único que fechou foi perdido — detalhe em `docs/logica.md`). O que sobra vivo são 115 negócios, em 17 dos 35 vendedores. Priorizar esses negócios por valor de tabela multiplicado pela chance aprendida de decidir — o ciclo máximo é aprendido do histórico, a forma da regra do trimestre é escolhida à mão e confirmada pelo histórico — rende 1,30 vez o valor da melhor alternativa honesta (ordenar só por preço e prazo), com intervalo de confiança de 95% que não cruza 1 (1,13 a 1,52). Nenhum atributo do negócio prevê quem ganha; a recomendação não é "quem vai fechar", é "quando este negócio costuma decidir". Resumo completo, com a conta de horas como premissa declarada: [`docs/resumo-executivo.md`](docs/resumo-executivo.md).
+Construí uma fila de trabalho para a segunda-feira do vendedor, que roda sobre os quatro CSVs reais do CRM e explica cada posição em frases que ele consegue checar. A descoberta que mudou o produto é que nenhum atributo do negócio prevê quem ganha — conta, vendedor, gerente, região, setor, porte e produto foram testados contra o resultado real e nenhum mostrou sinal estatístico (p-valor de 0,05 ou mais em todos) —, mas a idade do negócio combinada com a altura do trimestre prevê **quando** ele decide. Por essa régua, 73,6% do valor aberto já passou do ponto em que, no histórico deste export, qualquer negócio foi ganho. A recomendação é priorizar por valor de tabela multiplicado pela chance aprendida de decidir na janela, o que no teste de volta ao passado capturou 1,30 vez o valor da melhor alternativa honesta, com intervalo de confiança que não cruza 1, e medir esse ganho num piloto com grupo de controle antes de expandir. O que a ferramenta não sabe está declarado em cada negócio: registro de atividade, desconto, motivo de perda e os 500 negócios em Prospecting sem data de engajamento, que somam US$ 1,07 mi e sobre os quais ela não opina.
+
+Resumo completo, com a conta de horas tratada como premissa declarada: [docs/resumo-executivo.md](docs/resumo-executivo.md).
 
 ---
 
 ## Solução
 
-**Demo pública:** https://lead-scorer-diego.vercel.app (dados fictícios, CC0; ações não são gravadas na demo)
+### O problema em uma imagem
+
+```mermaid
+pie showData
+    title Pipeline aberto em 01/01/2018, a preço de tabela (US$)
+    "Passou da janela de decisão — 1.474 negócios" : 3656299
+    "Prospecting sem data — 500 negócios" : 1073986
+    "Vivo — 115 negócios" : 235930
+```
+
+**Por que dá para afirmar que esse valor já não fecha.** A afirmação se apoia em três provas, todas conferidas por um revisor independente com código próprio ([process-log/verificacao/relatorio.md](process-log/verificacao/relatorio.md)):
+
+1. **O histórico inteiro.** Dos 6.711 negócios fechados no export, nenhum fechou com mais de 138 dias, e só um fechou depois do fim do trimestre seguinte. Esse um foi perdido.
+2. **O teste de volta ao passado.** Em seis datas de 2017, a ferramenta classificou 734 negócios distintos como vencidos. Nenhum deles foi ganho depois, em momento algum do export.
+3. **A tentativa de derrubar o número.** O revisor refez a conta só com o limite de 138 dias (733 negócios) e com a fronteira trocada de `<` para `<=` (717 negócios). Em nenhuma das variantes aparece um vencido ganho.
+
+O que isso não prova também está escrito. Dos 734, 733 não foram perdidos: ficaram parados até o fim do export, e não se sabe por quê. A regra descreve este CRM com precisão, mas pode ser um padrão do gerador de dados sintéticos. Por isso o piloto mede o efeito em operação real, e `drift.py` avisa se o próximo export mudar a regra ([docs/logica.md](docs/logica.md), seção "O que 'nenhum vencido foi ganho' prova").
+
+### Como usar em 60 segundos
+
+```mermaid
+flowchart LR
+    A["Abrir a demo"] --> B["Aba Segunda-feira<br/>escolher o vendedor"]
+    B --> C["Foco da semana<br/>até 5 negócios"]
+    C --> D["Abrir 'Por que este deal'<br/>Valor · Momento · Prazo"]
+    D --> E["Aba O time<br/>filtrar região ou gerente"]
+    E --> F["Aba Como decide<br/>tabela, backtest, p-valores"]
+```
+
+Passo a passo com prints de cada tela: [docs/como-usar-a-demo.md](docs/como-usar-a-demo.md).
+
+![A tela de segunda-feira, em desktop](process-log/screenshots/01-segunda-desktop.png)
+
+### Como o score decide
+
+Cada negócio aberto cai em uma de quatro filas, e a ordem dentro da fila é o que vira prioridade. A ação aparece como verbo, não como nota.
+
+| Fila | Quando o negócio cai aqui | O que o vendedor lê | Ordenada por | Negócios hoje |
+|---|---|---|---|---|
+| **Fechar** | vivo, com 5% ou mais de chance de decidir em 28 dias | Ligar e propor data de fechamento | valor × chance de ganhar em 28 dias | 7 |
+| **Preparar** | vivo, com chance abaixo de 5% | Avançar uma etapa: próxima reunião ou proposta | valor × chance de ganhar até o fim do trimestre | 108 |
+| **Iniciar** | em Prospecting, sem data de engajamento | Registrar data de engajamento e fazer o primeiro contato | valor de tabela | 500 |
+| **Encerrar** | passou de 138 dias ou do fim do trimestre seguinte | Confirmar ou fechar como perdido no CRM | valor de tabela | 1.474 |
+
+**Decidir e ganhar não são a mesma coisa.** *Decidir* é o negócio fechar, ganho ou perdido. *Ganhar* conta só o fechamento ganho. A chance de decidir separa as filas: um negócio que deve sair do lugar nas próximas quatro semanas vai para Fechar, onde vale ligar agora. Dentro de cada fila, a ordem usa o valor multiplicado pela chance de ganhar, porque, entre os negócios que vão andar, primeiro vêm os que mais valem.
+
+**Por que isto não é ordenar por valor.** Ordenar só por preço de tabela e prazo é a melhor alternativa honesta medida no backtest, e é o que a operação faz hoje; o motor captura 1,30 vez o valor dela. Ordenar só pela chance de decidir, sem multiplicar pelo valor, é pior que o preço (razão de 0,66). O ganho vem de combinar os dois, não de trocar um pelo outro.
+
+**Prioridade não é probabilidade.** O índice de 0 a 100 é a posição relativa do negócio entre os vivos da carteira, não a chance de ele ser ganho. A ferramenta não diz quem ganha, porque o dado não sustenta essa afirmação.
+
+![A explicação de um negócio, com o que a ferramenta não sabe](process-log/screenshots/03-por-que.png)
+
+### Arquitetura
+
+```mermaid
+flowchart LR
+    CSV[("4 CSVs do CRM<br/>licença CC0")] --> C["carregar<br/>procedência e qualidade"]
+    C --> R["recortar<br/>apaga o futuro"]
+    R --> J["janela<br/>138 dias + fim do trimestre"]
+    R --> AP["aprender<br/>tabela de destino<br/>por idade e trimestre"]
+    J --> P["pontuar<br/>quatro filas e ordem"]
+    AP --> P
+    P --> X["explicar<br/>Valor · Momento · Prazo<br/>+ o que não sei"]
+    X --> B["build.py<br/>JSON com hash"]
+    R --> AV["avaliacao<br/>backtest em 6 cortes<br/>e permutação"]
+    AV --> B
+    IA["ia/ briefing<br/>desligado nesta entrega"] -.-> B
+    B --> APP["app estático<br/>três telas · Vercel"]
+```
+
+`recortar` é a única porta de entrada do dado e apaga tudo o que é posterior à data de referência, e é a mesma função usada em produção e no backtest. O caminho crítico é determinístico: o mesmo dado gera o mesmo JSON, com o mesmo hash. A geração de briefings com IA está implementada e testada em `solution/ia/`, com validador que confere cada número contra os fatos, mas **não está ligada**: a conta da API não tem créditos e a primeira chamada real foi recusada, então todos os textos publicados vêm de template.
 
 ### Abordagem
 
-O motor é um pipeline determinístico em três fronteiras: `recortar` (única porta de entrada — apaga o futuro, usada igual em produção e no backtest), `aprender` (histórico conhecido → janela de validade + tabela de destino por faixa de idade) e `pontuar` (tabela + deals abertos → fila, ordem, índice). Comecei pela procedência do dado (Tarefa 1) porque um merge ingênuo de produto já derrubaria 1.480 linhas de pipeline; segui tarefa por tarefa do plano em `projects/pessoal/transicao-carreira-ia/g4-challenge-003/02-plano-implementacao.md`, com TDD em cada módulo do motor e verificação contra os dados reais antes de cada commit — não só contra os testes escritos.
+Comecei pela procedência do dado, não pelo modelo. Um merge ingênuo do catálogo de produto derrubaria 1.480 linhas de pipeline por causa de um apelido ("GTXPro" contra "GTX Pro"), e descobrir isso na primeira tarefa evitou construir em cima de um recorte errado. Em seguida fixei a fronteira temporal numa única função, porque vazamento de futuro é o erro que mais barato se comete e mais caro se descobre.
 
-O discovery (`docs/discovery.md`) foi ensaiado com quatro personas sintéticas e um líder, não entrevistas reais: protocolo, pré-registro e calibração contra números já medidos, para separar o que a persona podia me dizer do que não podia.
+Cada módulo do motor foi escrito com teste antes do código, e cada um foi conferido contra os valores de ouro de um protótipo rodado na fase de análise, não apenas contra os testes que eu mesmo havia escrito. Essa diferença importa: teste que passa prova consistência interna, e comparar com o protótipo prova que o resultado é o esperado. O plano tarefa a tarefa está em [process-log/planejamento/02-plano-implementacao.md](process-log/planejamento/02-plano-implementacao.md), e a revisão que o reescreveu em [process-log/planejamento/03-revisao-tecnica.md](process-log/planejamento/03-revisao-tecnica.md).
+
+**O discovery foi ensaiado com quatro personas sintéticas, não conduzido com vendedores reais.** Como não tenho acesso à área comercial, construí informantes em vez de supor o que eles diriam. Parti de uma pesquisa em fontes abertas sobre a cultura comercial e o comportamento de vendedores, recortei quatro arquétipos e um líder, e montei um agente para ser entrevistado.
+
+```mermaid
+flowchart TB
+    PESQ["Pesquisa em fontes abertas<br/>cultura e comportamento comercial"] --> ARQ["Quatro arquétipos de vendedor<br/>+ um líder"]
+    ARQ --> AG["Agente informante<br/>com três travas"]
+    AG --> PRE["Pré-registro das premissas<br/>commitado antes da 1ª pergunta"]
+    PRE --> ENT["Entrevistas<br/>em conversas separadas"]
+    ENT --> CAL["Calibração<br/>perguntas de resposta já conhecida"]
+    CAL --> PROD["Premissa com teste,<br/>nunca fato"]
+```
+
+As três travas existem porque o agente foi construído sobre o mesmo dataset do desafio, e isso abre a porta para validação circular — a ferramenta confirmando a si mesma. Primeira: persona como vendedor e agente como consultor do dado rodam em conversas separadas, para a resposta de processo não vir contaminada pelo número. Segunda: o pré-registro das premissas foi commitado antes da primeira pergunta, de modo que uma confirmação posterior não pudesse ser reescrita como "eu já sabia". Terceira: nenhuma resposta virou fato, apenas premissa com teste definido.
+
+Medi a confiabilidade do informante com perguntas cuja resposta eu já conhecia, e ele falhou em cinco delas, inventando situações vividas e acesso a dados que não tinha. Isso está registrado como categoria própria de erro. Protocolo, transcrições e calibração em [docs/discovery.md](docs/discovery.md); a configuração do agente, com as travas, em [process-log/agente-personas-config.md](process-log/agente-personas-config.md).
+
+**A metodologia FDE nas decisões, não no jargão**
+
+| Princípio | O que isso virou aqui | Onde conferir |
+|---|---|---|
+| Número antes da tecnologia | medi quanto do pipeline está morto antes de desenhar qualquer tela | [docs/resumo-executivo.md](docs/resumo-executivo.md) |
+| Usuário e decisão operacional | a unidade é "o que eu faço na segunda-feira", não "score do lead" | [docs/operating-map.md](docs/operating-map.md) |
+| Baseline antes de confiança | três modelos sem dado na mão, mais backtest contra a regra de preço | [process-log/baseline/](process-log/baseline/), [docs/experimento.md](docs/experimento.md) |
+| Determinístico antes de agente | nenhum LLM no caminho crítico do score | `solution/motor/` |
+| Verificação independente | números recalculados com código próprio, a partir dos CSVs | [process-log/verificacao/relatorio.md](process-log/verificacao/relatorio.md) |
+| Explicação para adoção | cada negócio diz por que está ali e o que a ferramenta não sabe | [docs/logica.md](docs/logica.md) |
+| Piloto antes de escala | sorteio por negócio dentro do vendedor, com poder calculado | [docs/experimento.md](docs/experimento.md) |
+| Reutilizável contra específico | motor e contrato configuráveis; a regra do trimestre é deste CRM | [docs/contrato.md](docs/contrato.md) |
 
 ### Resultados / Findings
 
-- **Motor:** `solution/motor/` (carregar, janela, aprender, pontuar, explicar), 59 testes, TDD tarefa a tarefa.
-- **Avaliação:** `solution/avaliacao/` — backtest as-of com 3 métricas e IC por bootstrap de vendedor, permutação para descartar atributos como sinal. Único erro de método que encontrei sozinho: o campo de conta só é preenchido após o desfecho (0 de 6.711 fechados sem conta, 1.425 de 2.089 abertos sem conta), e isso vazava sinal falso para "vendedor" no primeiro teste — corrigido em `docs/logica.md`.
-- **Produto:** `solution/app/` (3 telas, mobile-first, estado vazio como primeira classe), `solution/run.py` (um comando, servidor local, ações gravadas), `solution/ia/` (briefing validado contra os fatos antes de ser exibido, com o Haiku 5.5 da Anthropic como geração desenhada e testada, e template determinístico como fallback). **Estado atual: a IA não está ligada.** A conta da API não tem créditos, e a primeira chamada real foi recusada. Por isso, os textos publicados são de template validado. A chave nunca vai para o navegador, e os requisitos para ligar a IA em produção (plano com API, orçamento de tokens, limite de gasto, monitoramento e avaliação do texto) estão em [`docs/deploy-passos.md`](docs/deploy-passos.md#para-produção).
-- **Prints:** `process-log/screenshots/` (desktop 1366px e mobile 390px).
+| Medida | Definição | Baseline | Resultado | Limitação |
+|---|---|---|---|---|
+| Valor capturado | valor ganho pelos negócios priorizados, somando seis cortes | ordenar por preço de tabela e prazo | **1,30×**, IC 95% de 1,13 a 1,52 | vence em cinco dos seis cortes; o que sustenta a conclusão é o intervalo, não a repetição |
+| Taxa de acerto | fração dos priorizados que foi ganha | 15,4% | **22,7%** | resultado offline, sobre dados históricos |
+| Pipeline sem chance histórica | negócios além da janela de decisão | — | 734 distintos classificados como vencidos, **nenhum ganho** | descreve este export; 733 seguem sem decisão até o fim dele |
+| Atributos como sinal | permutação de cada atributo contra o resultado real, mil vezes | p < 0,05 indicaria sinal | **nenhum atributo abaixo de 0,05** | o campo de conta só é preenchido após o desfecho, e isso vazava sinal falso para "vendedor" até ser corrigido |
+
+A diferença entre as duas ordens equivale a US$ 1.416 por vendedor a cada quatro semanas. Esse é o valor que a ferramenta precisa não consumir em tempo de vendedor para se pagar, e a conversão em horas depende de um custo-hora que não temos, por isso o resumo executivo apresenta três cenários em vez de um número único.
+
+### Como rodar
+
+```bash
+cd submissions/diego-rodrigues/solution
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt -r requirements-ia.txt
+python -m pytest -q                        # 68 testes, cerca de 90 segundos
+python build.py --hoje 2018-01-01          # gera app/data/ com hash determinístico
+python run.py --hoje 2018-01-01 --sem-ia   # build e servidor local em http://localhost:8000
+```
+
+O segundo arquivo de requisitos instala o cliente da Anthropic, necessário apenas para os três testes do módulo de IA. Sem ele, rode o núcleo com `python -m pytest -q --ignore=tests/test_briefing.py --ignore=tests/test_gerar_ia.py --ignore=tests/test_validar.py`, que são 52 testes e não pede chave de API. Backtest, permutação, relatório de desvio e solução de problemas estão em [solution/README.md](solution/README.md).
 
 ### Recomendações
 
-A frase de negócio, com a conta por trás em [`docs/resumo-executivo.md`](docs/resumo-executivo.md): priorizar por valor esperado na janela de decisão do trimestre, não por valor de tabela sozinho; medir o ganho num piloto com grupo de controle antes de expandir (`docs/experimento.md`); e tratar os 500 deals em Prospecting sem data (US$ 1,07 mi) como a maior lacuna sobre a qual a ferramenta não opina.
+1. **Usar a fila de segunda-feira já, sem meta atrelada.** Os 115 negócios vivos estão em 17 dos 35 vendedores, e 11 deles têm mais de cinco. A lista cabe na rotina sem mudar processo nenhum, e a adoção se mede por quem volta espontaneamente na terceira ou quarta semana, não por quem abre a tela no primeiro dia.
+2. **Medir antes de expandir.** O piloto sorteia negócios dentro de cada vendedor, o que faz cada um ser seu próprio controle e neutraliza a maior fonte de ruído. São cerca de 1.100 negócios por braço, aproximadamente 16 semanas, com taxa de decisão em 28 dias como métrica primária e valor ganho apenas como secundária. A regra de parada está escrita em [docs/experimento.md](docs/experimento.md).
+3. **Tratar os 500 negócios em Prospecting sem data como problema de processo, não de modelo.** São US$ 1,07 mi sobre os quais nenhuma ferramenta consegue opinar, porque não se sabe quando começaram. A correção é no registro, dentro do CRM.
 
 ### Limitações
 
-Lista completa e honesta em [`docs/limitacoes.md`](docs/limitacoes.md).
+- **O dataset é sintético e público** (CC0, Kaggle), com cerca de três trimestres de história. O ciclo de 138 dias e a regra do fim do trimestre podem ser artefato do gerador dos dados, e é por isso que `drift.py` existe: se o próximo export mudar esses números, o comando avisa em vez de a ferramenta seguir calada.
+- **1.425 dos 2.089 negócios abertos não têm conta no CRM**, porque o campo só é preenchido após o desfecho. Isso descartou o atributo como sinal e também significa que boa parte do pipeline aberto não tem com que cruzar porte, setor ou histórico de relacionamento.
+- **Não há registro de atividade, desconto, quantidade negociada nem motivo de perda.** O cartão "o que o score não sabe" existe para declarar essa lacuna em cada negócio.
+- **O backtest é offline e não prova impacto causal.** Ele mostra concentração histórica no dataset analisado; aumento de conversão em operação real é o que o piloto mede.
+- **O discovery é ensaiado com personas sintéticas.** As premissas de adoção seguem sem teste com pessoas reais, e cada premissa confirmada por uma persona continua sendo premissa.
+
+Lista completa, incluindo ausência de login, ausência de escrita no CRM e o que falta para ligar a IA em produção: [docs/limitacoes.md](docs/limitacoes.md).
 
 ---
 
 ## Process Log — Como usei IA
 
+A IA foi parceira de decomposição, implementação, crítica e documentação ao longo de duas fases: um dia de planejamento, em que o plano foi escrito, revisado por três ângulos e reescrito antes de qualquer linha de código, e um dia de construção, com teste antes do código em cada módulo. As decisões comerciais, os critérios de validade, a verificação dos números e a aceitação ou recusa de cada sugestão ficaram sob julgamento humano. Dezesseis erros da IA estão registrados com o teste ou a verificação que pegou cada um. O registro completo, com a linha do tempo e o mapa das evidências, está em [process-log/README.md](process-log/README.md).
+
+```mermaid
+timeline
+    title Do problema ao Pull Request
+    10/11 noite : Leitura do desafio e primeiro plano (Fable 5.1)
+                : Comparação dos desafios e dos PRs existentes (Fable 5.2)
+    11/11 manhã : Plano v2, revisão técnica e análise exploratória
+                : Pesquisa de cultura comercial (Perplexity) e personas sintéticas
+                : Fork, estrutura, baseline de três modelos e pré-registro
+    11/11 tarde : Motor com teste antes do código, backtest, telas e deploy
+    11/11 noite : Verificação independente, revisão externa, documentos e PR
+```
+
 ### Ferramentas usadas
 
-| Ferramenta | Para que usou |
+| Ferramenta | Para que usei |
 |------------|--------------|
-| Claude Code — `claude-sonnet-4-6`, `claude-sonnet-5-5`, `claude-sonnet-5`, `claude-opus-5`, `claude-haiku-5-5`, `claude-haiku-4-5-20251001` | Implementação do motor com TDD (Tarefas 1 a 10), telas (Tarefa 11), documentos de operação e experimento (Tarefa 12), deploy, resumo executivo e README (Tarefa 13). Cada modelo está registrado com as tarefas em que rodou em [`process-log/MODELOS.md`](process-log/MODELOS.md). As trocas foram feitas pelo Diego entre etapas, por custo e qualidade. |
-| API da Anthropic, `claude-haiku-5-5` (planejada, **não executada**) | geração dos textos de briefing no `run.py`, com limite de tokens. Implementada e testada com cliente falso; a primeira chamada real foi recusada por falta de créditos. Não há texto da IA publicado. |
-| Microsoft 365 Copilot (Premium), GPT Sol 6.1 | Agente de persona do discovery (Tarefa 0B) — informante sintético, nunca fonte de fato. |
-| Nemotron-3.5-lightning (via OpenRouter), Gemini 3.1, ChatGPT 6.1 Sol | Baseline sem ferramentas (Tarefa 0), para medir o que um modelo propõe sem o dado na mão. |
-
-Inventário completo, com versão exata e papel: [`process-log/MODELOS.md`](process-log/MODELOS.md).
+| **Claude Code** — `claude-fable-5-1`, `claude-fable-5-2`, `claude-opus-5`, `claude-opus-5-5`, `claude-sonnet-5-5`, `claude-sonnet-5`, `claude-sonnet-4-6`, `claude-haiku-5-5`, `claude-haiku-4-5-20251001` | Planejamento e revisão do plano (Fable, em esforço alto e extra-alto), implementação do motor com teste antes do código, telas, documentos de operação, deploy, verificação independente e este README. A troca de modelo foi feita por mim entre etapas, por custo e qualidade: Fable e Opus no que exige raciocínio ou prosa lida por humano, Haiku no que é mecânico. Inventário com versão exata e tarefa em [process-log/MODELOS.md](process-log/MODELOS.md). |
+| **API da Anthropic**, `claude-haiku-5-5` — planejada e **não executada** | Geração dos textos de briefing, com limite de tokens e teto de chamadas. Implementada e testada com cliente falso; a primeira chamada real foi recusada por falta de créditos, então nenhum texto de IA foi publicado. |
+| **Perplexity** | Pesquisa em fontes abertas sobre a cultura comercial e os arquétipos de vendedor, que virou insumo das personas. A síntese não entrou como fato: [process-log/fontes-cultura-g4.md](process-log/fontes-cultura-g4.md). |
+| **Microsoft 365 Copilot (Premium)**, GPT Sol 6.1 | Agente com as quatro personas sintéticas do discovery, usado como informante, nunca como fonte de fato. Configuração e travas contra validação circular em [process-log/agente-personas-config.md](process-log/agente-personas-config.md). |
+| **Nemotron-3.5-lightning** (via OpenRouter), **Gemini 3.1**, **ChatGPT 6.1 Sol** | Baseline sem ferramentas, antes de abrir o dado, para medir o que um modelo propõe sem nada na mão: [process-log/baseline/](process-log/baseline/). |
+| **ChatGPT Sol 5.6**, em modo de raciocínio estendido | Revisão externa da entrega contra o pedido do desafio, que devolveu um plano de ajustes depois triado contra o repositório. |
 
 ### Workflow
 
-1. Procedência do dado e recorte temporal sem vazamento (Tarefa 1), com TDD: testes escritos e vistos falhar antes do código.
-2. Janela de validade e tabela de destino (Tarefas 2–3): o ciclo máximo e a tabela são aprendidos do histórico; a forma da regra do fim do trimestre é escolhida à mão e confirmada pelo histórico, não descoberta do zero (detalhe em `docs/logica.md`).
-3. Fila, ordem e explicação por deal (Tarefas 4–5), cada uma verificada contra os valores de ouro do protótipo (`analise/eda-06-prototipo-motor-v2.saida.txt`) antes do commit.
-4. Build do contrato JSON e relatório de desvio (Tarefas 6 e 8).
-5. Backtest com três políticas e IC, permutação de atributos (Tarefa 7) — onde encontrei e corrigi o vazamento do campo de conta.
-6. Briefing com validador determinístico (Tarefa 9). A geração com Haiku 5.5 foi implementada com limites de tokens e teto de chamadas, e testada com cliente falso; a primeira chamada real foi recusada por falta de créditos, então a IA não está ligada nesta submissão. Servidor local (Tarefa 10), três telas (Tarefa 11) — corrigidas depois de olhar os próprios prints, não só os testes.
-7. Operating map, sponsor map, design, deploy e experimento citando as transcrições do discovery (Tarefa 12).
-8. Deploy, resumo executivo, limitações e este README (Tarefa 13).
+**Fase de planejamento, antes de qualquer código.** Li o desafio e os Pull Requests já enviados, escrevi um plano com o Fable 5.1 e então pedi ao Fable 5.2, em esforço extra-alto, para atacá-lo por três ângulos: engenharia de dados, software e operação comercial. O plano v2 nasceu dessa revisão, e a análise exploratória que a acompanhou derrubou a tese inicial: eu procurava quem ganha, e o dado mostrou que isso não existe ali. A pesquisa de cultura comercial e as personas sintéticas vieram em seguida, com o pré-registro das premissas commitado antes da primeira pergunta, justamente para que uma confirmação depois não virasse "eu já sabia".
+
+**Fase de construção, tarefa por tarefa.** Procedência e recorte temporal; janela de validade e tabela de destino aprendidas do histórico, com censura; filas, ordem e explicação por negócio; contrato JSON com hash e relatório de desvio; backtest com três medidas, intervalo de confiança por reamostragem de vendedor e permutação de atributos; briefing com validador determinístico; servidor local e três telas, corrigidas depois de eu olhar os próprios prints, não só os testes; documentos de operação citando as transcrições do discovery; deploy, verificação independente e documentação final.
+
+Todas as iterações estão no histórico deste repositório, em 39 commits na branch `submission/diego-rodrigues`, e as conversas exportadas em [process-log/chat-exports/](process-log/chat-exports/).
 
 ### Onde a IA errou e como corrigi
 
-Lista completa, com o teste ou a verificação que pegou cada erro: [`process-log/onde-a-ia-errou.md`](process-log/onde-a-ia-errou.md). Destaques:
+Lista completa, cada item com o teste ou a verificação que o pegou: [process-log/onde-a-ia-errou.md](process-log/onde-a-ia-errou.md). Quatro que mudaram o resultado:
 
-- A fórmula ingênua de chance de decidir dava 100% aos 120 dias por contar só fechados; corrigida com a tabela censurada (`test_nao_ha_vies_de_sobrevivencia`).
-- O campo de conta vazava sinal falso para "vendedor" no teste de permutação (0,012 virou 0,141 ao filtrar deals sem conta).
-- Uma frase do plano ("o que sobra vivo cabe numa lista de cinco por vendedor") não se sustentava: 11 dos 17 vendedores com deal vivo têm mais de cinco; corrigida no resumo executivo com o número medido.
-- "Intervalo de confiança que não cruza zero", também do plano, estava errado para uma razão: o intervalo não cruza **um**.
+- A fórmula de chance de decidir contava apenas negócios já fechados e chegava a 100% aos 120 dias. Corrigida com uma tabela censurada, e fixada pelo teste `test_nao_ha_vies_de_sobrevivencia`.
+- O teste de permutação dava sinal ao atributo "vendedor" por causa dos negócios sem conta: ao filtrar, o p-valor foi de 0,012 para 0,141. O campo de conta só é preenchido após o desfecho, então usá-lo era olhar o futuro.
+- Uma frase do plano dizia que o que sobra vivo cabe numa lista de cinco por vendedor. Não se sustenta: 11 dos 17 vendedores com negócio vivo têm mais de cinco, e o resumo executivo foi corrigido com o número medido.
+- A atribuição da regra do trimestre a um Pull Request público estava errada e não havia sido verificada. Conferi com script próprio e corrigi a atribuição.
+
+Além desses, cinco erros são das personas sintéticas, que inventaram situações concretas e acessos a dados que não tinham. Estão registrados na mesma lista, separados dos meus, porque são de natureza diferente.
 
 ### O que eu adicionei que a IA sozinha não faria
 
-Lista completa: [`process-log/o-que-eu-acrescentei.md`](process-log/o-que-eu-acrescentei.md).
+Lista completa em [process-log/o-que-eu-acrescentei.md](process-log/o-que-eu-acrescentei.md). Em resumo: trocar a pergunta de "quem vai ganhar" para "quando este negócio decide", depois que o dado recusou a primeira; recusar o atalho de comparar com uma ordem aleatória, que mediria mistura de preço e não previsão; exigir intervalo de confiança em toda razão entre políticas, e corrigir a leitura de que o intervalo de uma razão não cruza zero, e sim um; desenhar o piloto por sorteio dentro do vendedor depois de descobrir que por região não haveria poder estatístico; manter a IA fora do caminho crítico do score, para preservar reprodutibilidade; e declarar em cada negócio o que a ferramenta não sabe, em vez de esconder a lacuna atrás de um número.
 
 ---
 
 ## Evidências
 
-- [x] Prints das três telas, desktop e mobile: `process-log/screenshots/`
-- [x] Diário de sessões, na hora: `process-log/diario.md`
-- [x] Git history: este repositório, branch `submission/diego-rodrigues`
-- [ ] Relatório de verificação independente: `process-log/verificacao/` (etapa seguinte desta tarefa)
+- [ ] Screenshots das conversas com IA — as conversas estão exportadas em texto, em [process-log/chat-exports/](process-log/chat-exports/); os arquivos em `process-log/screenshots/` são prints **do produto**, não de conversas
+- [x] Chat exports: [process-log/chat-exports/](process-log/chat-exports/), com índice por sessão, data, modelo e etapa
+- [x] Git history: 39 commits na branch `submission/diego-rodrigues`
+- [x] Narrativa escrita: [process-log/diario.md](process-log/diario.md), gravado por sessão, na hora
+- [x] Verificação independente dos números: [process-log/verificacao/relatorio.md](process-log/verificacao/relatorio.md)
+- [x] Outro: baselines de três modelos sem dado na mão, documentos de planejamento e o inventário de modelos em [process-log/MODELOS.md](process-log/MODELOS.md)
 - [ ] Screen recording do workflow
 
 ---
