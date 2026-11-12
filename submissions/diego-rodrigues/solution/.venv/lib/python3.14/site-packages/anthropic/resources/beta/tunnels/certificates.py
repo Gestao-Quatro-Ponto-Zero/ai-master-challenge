@@ -1,0 +1,803 @@
+from __future__ import annotations
+
+from typing import List
+from itertools import chain
+
+import httpx2
+
+from ...._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
+from ...._utils import is_given, path_template, strip_not_given
+from ...._compat import cached_property
+from ...._resource import SyncAPIResource, AsyncAPIResource
+from ...._response import (
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+)
+from ....pagination import SyncPageCursor, AsyncPageCursor
+from ...._base_client import AsyncPaginator, make_request_options
+from ....types.anthropic_beta_param import AnthropicBetaParam
+from ....types.beta.tunnels.beta_tunnel_certificate import BetaTunnelCertificate
+
+__all__ = ["Certificates", "AsyncCertificates"]
+
+
+class Certificates(SyncAPIResource):
+    @cached_property
+    def with_raw_response(self) -> CertificatesWithRawResponse:
+        """
+        This property can be used as a prefix for any HTTP method call to return
+        the raw response object instead of the parsed content.
+
+        For more information, see https://platform.claude.com/docs/en/api/sdks/python
+        """
+        return CertificatesWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> CertificatesWithStreamingResponse:
+        """
+        An alternative to `.with_raw_response` that doesn't eagerly read the response body.
+
+        For more information, see https://platform.claude.com/docs/en/api/sdks/python
+        """
+        return CertificatesWithStreamingResponse(self)
+
+    def create(
+        self,
+        tunnel_id: str,
+        *,
+        ca_certificate_pem: str,
+        betas: List[AnthropicBetaParam] | Omit = omit,
+        workspace_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx2.Timeout | None | NotGiven = not_given,
+    ) -> BetaTunnelCertificate:
+        """The Tunnels API is in research preview.
+
+        It requires the
+        `anthropic-beta: mcp-tunnels-2026-06-22` header and may change without a
+        deprecation period. It supersedes the Admin API endpoints at
+        `/v1/organizations/tunnels`, which remain available during a migration window.
+
+        Registers a public CA certificate on a tunnel. Anthropic verifies the gateway's
+        server certificate against this CA when it terminates the inner TLS session. A
+        tunnel holds at most two non-archived certificates.
+
+        Args:
+          tunnel_id: ID of the tunnel (`tnl_...`).
+
+          ca_certificate_pem: PEM-encoded X.509 CA certificate. Must contain exactly one certificate and no
+              private-key material. Maximum 8KB.
+
+          betas: This endpoint is in beta: requests must send `mcp-tunnels-2026-06-22` in this
+              header.
+
+          workspace_id: Optional header to select the Workspace for this request. The value is a
+              Workspace ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+
+              Only needed for credentials that can act on more than one Workspace. A
+              credential that belongs to a specific Workspace may omit it; if sent, it must
+              match that Workspace.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not tunnel_id:
+            raise ValueError(f"Expected a non-empty value for `tunnel_id` but received {tunnel_id!r}")
+        extra_headers = {
+            **strip_not_given(
+                {
+                    "anthropic-beta": ",".join(chain((str(e) for e in betas), ["mcp-tunnels-2026-06-22"]))
+                    if is_given(betas)
+                    else not_given,
+                    "anthropic-workspace-id": workspace_id,
+                }
+            ),
+            **(extra_headers or {}),
+        }
+        extra_headers = {"anthropic-beta": "mcp-tunnels-2026-06-22", **(extra_headers or {})}
+        return self._post(
+            path_template("/v1/tunnels/{tunnel_id}/certificates", tunnel_id=tunnel_id),
+            body={"ca_certificate_pem": ca_certificate_pem},
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                qualifiers={"beta": "true"},
+                span_name="anthropic.tunnels.certificates.create",
+                span_route="/v1/tunnels/{tunnel_id}/certificates",
+                span_attributes={"anthropic.tunnel.id": tunnel_id},
+                span_created_id="anthropic.tunnel.certificate.id",
+            ),
+            cast_to=BetaTunnelCertificate,
+        )
+
+    def retrieve(
+        self,
+        certificate_id: str,
+        *,
+        tunnel_id: str,
+        betas: List[AnthropicBetaParam] | Omit = omit,
+        workspace_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx2.Timeout | None | NotGiven = not_given,
+    ) -> BetaTunnelCertificate:
+        """The Tunnels API is in research preview.
+
+        It requires the
+        `anthropic-beta: mcp-tunnels-2026-06-22` header and may change without a
+        deprecation period. It supersedes the Admin API endpoints at
+        `/v1/organizations/tunnels`, which remain available during a migration window.
+
+        Fetches a tunnel certificate by ID.
+
+        Args:
+          tunnel_id: ID of the tunnel (`tnl_...`).
+
+          certificate_id: ID of the certificate (`tcrt_...`).
+
+          betas: This endpoint is in beta: requests must send `mcp-tunnels-2026-06-22` in this
+              header.
+
+          workspace_id: Optional header to select the Workspace for this request. The value is a
+              Workspace ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+
+              Only needed for credentials that can act on more than one Workspace. A
+              credential that belongs to a specific Workspace may omit it; if sent, it must
+              match that Workspace.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not tunnel_id:
+            raise ValueError(f"Expected a non-empty value for `tunnel_id` but received {tunnel_id!r}")
+        if not certificate_id:
+            raise ValueError(f"Expected a non-empty value for `certificate_id` but received {certificate_id!r}")
+        extra_headers = {
+            **strip_not_given(
+                {
+                    "anthropic-beta": ",".join(chain((str(e) for e in betas), ["mcp-tunnels-2026-06-22"]))
+                    if is_given(betas)
+                    else not_given,
+                    "anthropic-workspace-id": workspace_id,
+                }
+            ),
+            **(extra_headers or {}),
+        }
+        extra_headers = {"anthropic-beta": "mcp-tunnels-2026-06-22", **(extra_headers or {})}
+        return self._get(
+            path_template(
+                "/v1/tunnels/{tunnel_id}/certificates/{certificate_id}",
+                tunnel_id=tunnel_id,
+                certificate_id=certificate_id,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                qualifiers={"beta": "true"},
+                span_name="anthropic.tunnels.certificates.retrieve",
+                span_route="/v1/tunnels/{tunnel_id}/certificates/{certificate_id}",
+                span_attributes={"anthropic.tunnel.id": tunnel_id, "anthropic.tunnel.certificate.id": certificate_id},
+            ),
+            cast_to=BetaTunnelCertificate,
+        )
+
+    def list(
+        self,
+        tunnel_id: str,
+        *,
+        include_archived: bool | Omit = omit,
+        limit: int | Omit = omit,
+        page: str | Omit = omit,
+        betas: List[AnthropicBetaParam] | Omit = omit,
+        workspace_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx2.Timeout | None | NotGiven = not_given,
+    ) -> SyncPageCursor[BetaTunnelCertificate]:
+        """The Tunnels API is in research preview.
+
+        It requires the
+        `anthropic-beta: mcp-tunnels-2026-06-22` header and may change without a
+        deprecation period. It supersedes the Admin API endpoints at
+        `/v1/organizations/tunnels`, which remain available during a migration window.
+
+        Lists the certificates registered on a tunnel. Archived certificates are
+        excluded unless include_archived is set.
+
+        Args:
+          tunnel_id: ID of the tunnel (`tnl_...`).
+
+          include_archived: Whether to include archived certificates in the results. Defaults to false.
+
+          limit: Maximum number of certificates to return per page. Defaults to 20, maximum 1000.
+
+          page: Opaque pagination cursor from a previous `list_tunnel_certificates` response.
+
+          betas: This endpoint is in beta: requests must send `mcp-tunnels-2026-06-22` in this
+              header.
+
+          workspace_id: Optional header to select the Workspace for this request. The value is a
+              Workspace ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+
+              Only needed for credentials that can act on more than one Workspace. A
+              credential that belongs to a specific Workspace may omit it; if sent, it must
+              match that Workspace.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not tunnel_id:
+            raise ValueError(f"Expected a non-empty value for `tunnel_id` but received {tunnel_id!r}")
+        extra_headers = {
+            **strip_not_given(
+                {
+                    "anthropic-beta": ",".join(chain((str(e) for e in betas), ["mcp-tunnels-2026-06-22"]))
+                    if is_given(betas)
+                    else not_given,
+                    "anthropic-workspace-id": workspace_id,
+                }
+            ),
+            **(extra_headers or {}),
+        }
+        extra_headers = {"anthropic-beta": "mcp-tunnels-2026-06-22", **(extra_headers or {})}
+        return self._get_api_list(
+            path_template("/v1/tunnels/{tunnel_id}/certificates", tunnel_id=tunnel_id),
+            page=SyncPageCursor[BetaTunnelCertificate],
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query={
+                    "include_archived": include_archived,
+                    "limit": limit,
+                    "page": page,
+                },
+                qualifiers={"beta": "true"},
+                span_name="anthropic.tunnels.certificates.list",
+                span_route="/v1/tunnels/{tunnel_id}/certificates",
+                span_attributes={"anthropic.tunnel.id": tunnel_id},
+            ),
+            model=BetaTunnelCertificate,
+        )
+
+    def archive(
+        self,
+        certificate_id: str,
+        *,
+        tunnel_id: str,
+        betas: List[AnthropicBetaParam] | Omit = omit,
+        workspace_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx2.Timeout | None | NotGiven = not_given,
+    ) -> BetaTunnelCertificate:
+        """The Tunnels API is in research preview.
+
+        It requires the
+        `anthropic-beta: mcp-tunnels-2026-06-22` header and may change without a
+        deprecation period. It supersedes the Admin API endpoints at
+        `/v1/organizations/tunnels`, which remain available during a migration window.
+
+        Archives a tunnel certificate, removing it from the set Anthropic trusts for the
+        tunnel. The certificate record is retained. Archiving the last non-archived
+        certificate is permitted; the tunnel rejects MCP traffic until a new certificate
+        is added.
+
+        Args:
+          tunnel_id: ID of the tunnel (`tnl_...`).
+
+          certificate_id: ID of the certificate to archive (`tcrt_...`).
+
+          betas: This endpoint is in beta: requests must send `mcp-tunnels-2026-06-22` in this
+              header.
+
+          workspace_id: Optional header to select the Workspace for this request. The value is a
+              Workspace ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+
+              Only needed for credentials that can act on more than one Workspace. A
+              credential that belongs to a specific Workspace may omit it; if sent, it must
+              match that Workspace.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not tunnel_id:
+            raise ValueError(f"Expected a non-empty value for `tunnel_id` but received {tunnel_id!r}")
+        if not certificate_id:
+            raise ValueError(f"Expected a non-empty value for `certificate_id` but received {certificate_id!r}")
+        extra_headers = {
+            **strip_not_given(
+                {
+                    "anthropic-beta": ",".join(chain((str(e) for e in betas), ["mcp-tunnels-2026-06-22"]))
+                    if is_given(betas)
+                    else not_given,
+                    "anthropic-workspace-id": workspace_id,
+                }
+            ),
+            **(extra_headers or {}),
+        }
+        extra_headers = {"anthropic-beta": "mcp-tunnels-2026-06-22", **(extra_headers or {})}
+        return self._post(
+            path_template(
+                "/v1/tunnels/{tunnel_id}/certificates/{certificate_id}/archive",
+                tunnel_id=tunnel_id,
+                certificate_id=certificate_id,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                qualifiers={"beta": "true"},
+                span_name="anthropic.tunnels.certificates.archive",
+                span_route="/v1/tunnels/{tunnel_id}/certificates/{certificate_id}/archive",
+                span_attributes={"anthropic.tunnel.id": tunnel_id, "anthropic.tunnel.certificate.id": certificate_id},
+            ),
+            cast_to=BetaTunnelCertificate,
+        )
+
+
+class AsyncCertificates(AsyncAPIResource):
+    @cached_property
+    def with_raw_response(self) -> AsyncCertificatesWithRawResponse:
+        """
+        This property can be used as a prefix for any HTTP method call to return
+        the raw response object instead of the parsed content.
+
+        For more information, see https://platform.claude.com/docs/en/api/sdks/python
+        """
+        return AsyncCertificatesWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncCertificatesWithStreamingResponse:
+        """
+        An alternative to `.with_raw_response` that doesn't eagerly read the response body.
+
+        For more information, see https://platform.claude.com/docs/en/api/sdks/python
+        """
+        return AsyncCertificatesWithStreamingResponse(self)
+
+    async def create(
+        self,
+        tunnel_id: str,
+        *,
+        ca_certificate_pem: str,
+        betas: List[AnthropicBetaParam] | Omit = omit,
+        workspace_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx2.Timeout | None | NotGiven = not_given,
+    ) -> BetaTunnelCertificate:
+        """The Tunnels API is in research preview.
+
+        It requires the
+        `anthropic-beta: mcp-tunnels-2026-06-22` header and may change without a
+        deprecation period. It supersedes the Admin API endpoints at
+        `/v1/organizations/tunnels`, which remain available during a migration window.
+
+        Registers a public CA certificate on a tunnel. Anthropic verifies the gateway's
+        server certificate against this CA when it terminates the inner TLS session. A
+        tunnel holds at most two non-archived certificates.
+
+        Args:
+          tunnel_id: ID of the tunnel (`tnl_...`).
+
+          ca_certificate_pem: PEM-encoded X.509 CA certificate. Must contain exactly one certificate and no
+              private-key material. Maximum 8KB.
+
+          betas: This endpoint is in beta: requests must send `mcp-tunnels-2026-06-22` in this
+              header.
+
+          workspace_id: Optional header to select the Workspace for this request. The value is a
+              Workspace ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+
+              Only needed for credentials that can act on more than one Workspace. A
+              credential that belongs to a specific Workspace may omit it; if sent, it must
+              match that Workspace.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not tunnel_id:
+            raise ValueError(f"Expected a non-empty value for `tunnel_id` but received {tunnel_id!r}")
+        extra_headers = {
+            **strip_not_given(
+                {
+                    "anthropic-beta": ",".join(chain((str(e) for e in betas), ["mcp-tunnels-2026-06-22"]))
+                    if is_given(betas)
+                    else not_given,
+                    "anthropic-workspace-id": workspace_id,
+                }
+            ),
+            **(extra_headers or {}),
+        }
+        extra_headers = {"anthropic-beta": "mcp-tunnels-2026-06-22", **(extra_headers or {})}
+        return await self._post(
+            path_template("/v1/tunnels/{tunnel_id}/certificates", tunnel_id=tunnel_id),
+            body={"ca_certificate_pem": ca_certificate_pem},
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                qualifiers={"beta": "true"},
+                span_name="anthropic.tunnels.certificates.create",
+                span_route="/v1/tunnels/{tunnel_id}/certificates",
+                span_attributes={"anthropic.tunnel.id": tunnel_id},
+                span_created_id="anthropic.tunnel.certificate.id",
+            ),
+            cast_to=BetaTunnelCertificate,
+        )
+
+    async def retrieve(
+        self,
+        certificate_id: str,
+        *,
+        tunnel_id: str,
+        betas: List[AnthropicBetaParam] | Omit = omit,
+        workspace_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx2.Timeout | None | NotGiven = not_given,
+    ) -> BetaTunnelCertificate:
+        """The Tunnels API is in research preview.
+
+        It requires the
+        `anthropic-beta: mcp-tunnels-2026-06-22` header and may change without a
+        deprecation period. It supersedes the Admin API endpoints at
+        `/v1/organizations/tunnels`, which remain available during a migration window.
+
+        Fetches a tunnel certificate by ID.
+
+        Args:
+          tunnel_id: ID of the tunnel (`tnl_...`).
+
+          certificate_id: ID of the certificate (`tcrt_...`).
+
+          betas: This endpoint is in beta: requests must send `mcp-tunnels-2026-06-22` in this
+              header.
+
+          workspace_id: Optional header to select the Workspace for this request. The value is a
+              Workspace ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+
+              Only needed for credentials that can act on more than one Workspace. A
+              credential that belongs to a specific Workspace may omit it; if sent, it must
+              match that Workspace.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not tunnel_id:
+            raise ValueError(f"Expected a non-empty value for `tunnel_id` but received {tunnel_id!r}")
+        if not certificate_id:
+            raise ValueError(f"Expected a non-empty value for `certificate_id` but received {certificate_id!r}")
+        extra_headers = {
+            **strip_not_given(
+                {
+                    "anthropic-beta": ",".join(chain((str(e) for e in betas), ["mcp-tunnels-2026-06-22"]))
+                    if is_given(betas)
+                    else not_given,
+                    "anthropic-workspace-id": workspace_id,
+                }
+            ),
+            **(extra_headers or {}),
+        }
+        extra_headers = {"anthropic-beta": "mcp-tunnels-2026-06-22", **(extra_headers or {})}
+        return await self._get(
+            path_template(
+                "/v1/tunnels/{tunnel_id}/certificates/{certificate_id}",
+                tunnel_id=tunnel_id,
+                certificate_id=certificate_id,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                qualifiers={"beta": "true"},
+                span_name="anthropic.tunnels.certificates.retrieve",
+                span_route="/v1/tunnels/{tunnel_id}/certificates/{certificate_id}",
+                span_attributes={"anthropic.tunnel.id": tunnel_id, "anthropic.tunnel.certificate.id": certificate_id},
+            ),
+            cast_to=BetaTunnelCertificate,
+        )
+
+    def list(
+        self,
+        tunnel_id: str,
+        *,
+        include_archived: bool | Omit = omit,
+        limit: int | Omit = omit,
+        page: str | Omit = omit,
+        betas: List[AnthropicBetaParam] | Omit = omit,
+        workspace_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx2.Timeout | None | NotGiven = not_given,
+    ) -> AsyncPaginator[BetaTunnelCertificate, AsyncPageCursor[BetaTunnelCertificate]]:
+        """The Tunnels API is in research preview.
+
+        It requires the
+        `anthropic-beta: mcp-tunnels-2026-06-22` header and may change without a
+        deprecation period. It supersedes the Admin API endpoints at
+        `/v1/organizations/tunnels`, which remain available during a migration window.
+
+        Lists the certificates registered on a tunnel. Archived certificates are
+        excluded unless include_archived is set.
+
+        Args:
+          tunnel_id: ID of the tunnel (`tnl_...`).
+
+          include_archived: Whether to include archived certificates in the results. Defaults to false.
+
+          limit: Maximum number of certificates to return per page. Defaults to 20, maximum 1000.
+
+          page: Opaque pagination cursor from a previous `list_tunnel_certificates` response.
+
+          betas: This endpoint is in beta: requests must send `mcp-tunnels-2026-06-22` in this
+              header.
+
+          workspace_id: Optional header to select the Workspace for this request. The value is a
+              Workspace ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+
+              Only needed for credentials that can act on more than one Workspace. A
+              credential that belongs to a specific Workspace may omit it; if sent, it must
+              match that Workspace.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not tunnel_id:
+            raise ValueError(f"Expected a non-empty value for `tunnel_id` but received {tunnel_id!r}")
+        extra_headers = {
+            **strip_not_given(
+                {
+                    "anthropic-beta": ",".join(chain((str(e) for e in betas), ["mcp-tunnels-2026-06-22"]))
+                    if is_given(betas)
+                    else not_given,
+                    "anthropic-workspace-id": workspace_id,
+                }
+            ),
+            **(extra_headers or {}),
+        }
+        extra_headers = {"anthropic-beta": "mcp-tunnels-2026-06-22", **(extra_headers or {})}
+        return self._get_api_list(
+            path_template("/v1/tunnels/{tunnel_id}/certificates", tunnel_id=tunnel_id),
+            page=AsyncPageCursor[BetaTunnelCertificate],
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query={
+                    "include_archived": include_archived,
+                    "limit": limit,
+                    "page": page,
+                },
+                qualifiers={"beta": "true"},
+                span_name="anthropic.tunnels.certificates.list",
+                span_route="/v1/tunnels/{tunnel_id}/certificates",
+                span_attributes={"anthropic.tunnel.id": tunnel_id},
+            ),
+            model=BetaTunnelCertificate,
+        )
+
+    async def archive(
+        self,
+        certificate_id: str,
+        *,
+        tunnel_id: str,
+        betas: List[AnthropicBetaParam] | Omit = omit,
+        workspace_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx2.Timeout | None | NotGiven = not_given,
+    ) -> BetaTunnelCertificate:
+        """The Tunnels API is in research preview.
+
+        It requires the
+        `anthropic-beta: mcp-tunnels-2026-06-22` header and may change without a
+        deprecation period. It supersedes the Admin API endpoints at
+        `/v1/organizations/tunnels`, which remain available during a migration window.
+
+        Archives a tunnel certificate, removing it from the set Anthropic trusts for the
+        tunnel. The certificate record is retained. Archiving the last non-archived
+        certificate is permitted; the tunnel rejects MCP traffic until a new certificate
+        is added.
+
+        Args:
+          tunnel_id: ID of the tunnel (`tnl_...`).
+
+          certificate_id: ID of the certificate to archive (`tcrt_...`).
+
+          betas: This endpoint is in beta: requests must send `mcp-tunnels-2026-06-22` in this
+              header.
+
+          workspace_id: Optional header to select the Workspace for this request. The value is a
+              Workspace ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+
+              Only needed for credentials that can act on more than one Workspace. A
+              credential that belongs to a specific Workspace may omit it; if sent, it must
+              match that Workspace.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not tunnel_id:
+            raise ValueError(f"Expected a non-empty value for `tunnel_id` but received {tunnel_id!r}")
+        if not certificate_id:
+            raise ValueError(f"Expected a non-empty value for `certificate_id` but received {certificate_id!r}")
+        extra_headers = {
+            **strip_not_given(
+                {
+                    "anthropic-beta": ",".join(chain((str(e) for e in betas), ["mcp-tunnels-2026-06-22"]))
+                    if is_given(betas)
+                    else not_given,
+                    "anthropic-workspace-id": workspace_id,
+                }
+            ),
+            **(extra_headers or {}),
+        }
+        extra_headers = {"anthropic-beta": "mcp-tunnels-2026-06-22", **(extra_headers or {})}
+        return await self._post(
+            path_template(
+                "/v1/tunnels/{tunnel_id}/certificates/{certificate_id}/archive",
+                tunnel_id=tunnel_id,
+                certificate_id=certificate_id,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                qualifiers={"beta": "true"},
+                span_name="anthropic.tunnels.certificates.archive",
+                span_route="/v1/tunnels/{tunnel_id}/certificates/{certificate_id}/archive",
+                span_attributes={"anthropic.tunnel.id": tunnel_id, "anthropic.tunnel.certificate.id": certificate_id},
+            ),
+            cast_to=BetaTunnelCertificate,
+        )
+
+
+class CertificatesWithRawResponse:
+    def __init__(self, certificates: Certificates) -> None:
+        self._certificates = certificates
+
+        self.create = to_raw_response_wrapper(
+            certificates.create,
+        )
+        self.retrieve = to_raw_response_wrapper(
+            certificates.retrieve,
+        )
+        self.list = to_raw_response_wrapper(
+            certificates.list,
+        )
+        self.archive = to_raw_response_wrapper(
+            certificates.archive,
+        )
+
+
+class AsyncCertificatesWithRawResponse:
+    def __init__(self, certificates: AsyncCertificates) -> None:
+        self._certificates = certificates
+
+        self.create = async_to_raw_response_wrapper(
+            certificates.create,
+        )
+        self.retrieve = async_to_raw_response_wrapper(
+            certificates.retrieve,
+        )
+        self.list = async_to_raw_response_wrapper(
+            certificates.list,
+        )
+        self.archive = async_to_raw_response_wrapper(
+            certificates.archive,
+        )
+
+
+class CertificatesWithStreamingResponse:
+    def __init__(self, certificates: Certificates) -> None:
+        self._certificates = certificates
+
+        self.create = to_streamed_response_wrapper(
+            certificates.create,
+        )
+        self.retrieve = to_streamed_response_wrapper(
+            certificates.retrieve,
+        )
+        self.list = to_streamed_response_wrapper(
+            certificates.list,
+        )
+        self.archive = to_streamed_response_wrapper(
+            certificates.archive,
+        )
+
+
+class AsyncCertificatesWithStreamingResponse:
+    def __init__(self, certificates: AsyncCertificates) -> None:
+        self._certificates = certificates
+
+        self.create = async_to_streamed_response_wrapper(
+            certificates.create,
+        )
+        self.retrieve = async_to_streamed_response_wrapper(
+            certificates.retrieve,
+        )
+        self.list = async_to_streamed_response_wrapper(
+            certificates.list,
+        )
+        self.archive = async_to_streamed_response_wrapper(
+            certificates.archive,
+        )

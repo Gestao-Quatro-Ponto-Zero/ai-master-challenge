@@ -1,0 +1,3 @@
+{
+  "tests/test_backtest.py::test_atributos_continuam_sem_sinal": true
+}

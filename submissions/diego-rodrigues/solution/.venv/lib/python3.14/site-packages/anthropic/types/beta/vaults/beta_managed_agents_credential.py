@@ -1,0 +1,52 @@
+from typing import Dict, Union, Optional
+from datetime import datetime
+from typing_extensions import Literal, Annotated, TypeAlias
+
+from ...._models import BaseModel, UnionDiscriminator
+from .beta_managed_agents_mcp_oauth_auth_response import BetaManagedAgentsMCPOAuthAuthResponse
+from .beta_managed_agents_static_bearer_auth_response import BetaManagedAgentsStaticBearerAuthResponse
+from .beta_managed_agents_environment_variable_auth_response import BetaManagedAgentsEnvironmentVariableAuthResponse
+
+__all__ = ["BetaManagedAgentsCredential", "Auth"]
+
+Auth: TypeAlias = Annotated[
+    Union[
+        BetaManagedAgentsMCPOAuthAuthResponse,
+        BetaManagedAgentsStaticBearerAuthResponse,
+        BetaManagedAgentsEnvironmentVariableAuthResponse,
+    ],
+    UnionDiscriminator("type"),
+]
+
+
+class BetaManagedAgentsCredential(BaseModel):
+    """A credential stored in a vault.
+
+    Sensitive fields are never returned in responses.
+    """
+
+    id: str
+    """The unique ID of the credential (`vcrd_...`)."""
+
+    archived_at: Optional[datetime] = None
+    """When the credential was archived. Null if not archived."""
+
+    auth: Auth
+    """Authentication configuration for this credential."""
+
+    created_at: datetime
+    """A timestamp in RFC 3339 format"""
+
+    metadata: Dict[str, str]
+    """Arbitrary key-value metadata attached to the credential."""
+
+    type: Literal["vault_credential"]
+
+    updated_at: datetime
+    """A timestamp in RFC 3339 format"""
+
+    vault_id: str
+    """Identifier of the vault this credential belongs to."""
+
+    display_name: Optional[str] = None
+    """Human-readable name for the credential."""

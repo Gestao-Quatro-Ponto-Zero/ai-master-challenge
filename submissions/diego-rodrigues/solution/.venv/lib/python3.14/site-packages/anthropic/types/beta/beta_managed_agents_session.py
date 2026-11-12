@@ -1,0 +1,80 @@
+from typing import Dict, List, Optional
+from datetime import datetime
+from typing_extensions import Literal
+
+from ..._models import BaseModel
+from .beta_managed_agents_budget_limit import BetaManagedAgentsBudgetLimit
+from .beta_managed_agents_session_agent import BetaManagedAgentsSessionAgent
+from .beta_managed_agents_session_stats import BetaManagedAgentsSessionStats
+from .beta_managed_agents_session_usage import BetaManagedAgentsSessionUsage
+from .sessions.beta_managed_agents_session_resource import BetaManagedAgentsSessionResource
+from .beta_managed_agents_outcome_evaluation_resource import BetaManagedAgentsOutcomeEvaluationResource
+
+__all__ = ["BetaManagedAgentsSession"]
+
+
+class BetaManagedAgentsSession(BaseModel):
+    """A Managed Agents `session`."""
+
+    id: str
+
+    agent: BetaManagedAgentsSessionAgent
+    """Resolved `agent` definition for a `session`.
+
+    Snapshot of the `agent` at `session` creation time.
+    """
+
+    archived_at: Optional[datetime] = None
+    """When the session was archived. Null if not archived."""
+
+    budget: Optional[BetaManagedAgentsBudgetLimit] = None
+    """The session's enforced spend ceiling, or null when no budget is set."""
+
+    created_at: datetime
+    """A timestamp in RFC 3339 format"""
+
+    environment_id: str
+
+    metadata: Dict[str, str]
+
+    outcome_evaluations: List[BetaManagedAgentsOutcomeEvaluationResource]
+    """Per-outcome evaluation state.
+
+    One entry per `define_outcome` event sent to the session.
+    """
+
+    resources: List[BetaManagedAgentsSessionResource]
+
+    stats: BetaManagedAgentsSessionStats
+    """Timing statistics for the session."""
+
+    status: Literal["rescheduling", "running", "idle", "terminated"]
+    """
+    - `rescheduling` - Transient error occurred, retrying automatically.
+    - `running` - Agent is actively executing.
+    - `idle` - Agent is waiting for input, including user messages or tool
+      confirmations. Sessions start in idle.
+    - `terminated` - Session has ended, either due to an error or completion.
+    """
+
+    title: Optional[str] = None
+
+    type: Literal["session"]
+
+    updated_at: datetime
+    """A timestamp in RFC 3339 format"""
+
+    usage: BetaManagedAgentsSessionUsage
+    """Cumulative token usage for the session."""
+
+    vault_ids: List[str]
+    """Vault IDs attached to the session at creation.
+
+    Empty when no vaults were supplied.
+    """
+
+    deployment_id: Optional[str] = None
+    """Deployment ID when the session was created from a deployment reference.
+
+    Null otherwise.
+    """

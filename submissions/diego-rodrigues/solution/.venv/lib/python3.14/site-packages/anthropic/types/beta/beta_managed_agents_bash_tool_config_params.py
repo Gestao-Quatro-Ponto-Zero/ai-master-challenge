@@ -1,0 +1,35 @@
+from __future__ import annotations
+
+from typing import Union, Optional
+from typing_extensions import Literal, Required, TypeAlias, TypedDict
+
+from .beta_managed_agents_auto_policy_param import BetaManagedAgentsAutoPolicyParam
+from .beta_managed_agents_always_ask_policy_param import BetaManagedAgentsAlwaysAskPolicyParam
+from .beta_managed_agents_always_allow_policy_param import BetaManagedAgentsAlwaysAllowPolicyParam
+
+__all__ = ["BetaManagedAgentsBashToolConfigParams", "PermissionPolicy"]
+
+PermissionPolicy: TypeAlias = Union[
+    BetaManagedAgentsAlwaysAllowPolicyParam, BetaManagedAgentsAlwaysAskPolicyParam, BetaManagedAgentsAutoPolicyParam
+]
+
+
+class BetaManagedAgentsBashToolConfigParams(TypedDict, total=False):
+    """Configuration override for the bash tool."""
+
+    name: Required[Literal["bash"]]
+    """Must be "bash"."""
+
+    enabled: Optional[bool]
+    """Whether this tool is enabled and available to Claude.
+
+    Overrides the default_config setting.
+    """
+
+    permission_policy: Optional[PermissionPolicy]
+    """Permission policy for this tool.
+
+    Controls whether tool calls are auto-approved or require confirmation.
+    """
+
+    type: Literal["bash"]

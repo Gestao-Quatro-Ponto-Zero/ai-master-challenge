@@ -1,0 +1,486 @@
+# Note: initially copied from https://github.com/florimondmanca/httpx-sse/blob/master/src/httpx_sse/_decoders.py
+from __future__ import annotations
+
+import sys
+import json
+import inspect
+from copy import copy
+from types import TracebackType
+from typing import TYPE_CHECKING, Any, Generic, TypeVar, Iterator, Optional, AsyncIterator, cast
+from typing_extensions import Self, Protocol, TypeGuard, override, get_origin, runtime_checkable
+
+import httpx2
+
+from ._utils import extract_type_var_from_base
+from ._compat import cached_property
+
+if TYPE_CHECKING:
+    from ._client import Anthropic, AsyncAnthropic
+    from ._models import FinalRequestOptions
+    from ._tracing import StreamObserver
+
+
+_T = TypeVar("_T")
+
+
+class Stream(Generic[_T]):
+    """Provides the core interface to iterate over a synchronous stream response."""
+
+    response: httpx2.Response
+    _options: Optional[FinalRequestOptions] = None
+    _decoder: SSEBytesDecoder
+
+    def __init__(
+        self,
+        *,
+        cast_to: type[_T],
+        response: httpx2.Response,
+        client: Anthropic,
+        options: Optional[FinalRequestOptions] = None,
+    ) -> None:
+        self.response = response
+        self._cast_to = cast_to
+        self._client = client
+        self._options = options
+        self._decoder = client._make_sse_decoder()
+
+    @cached_property
+    def _iterator(self) -> Iterator[_T]:
+        # On a copy, as a generator that referred to this stream would form a cycle with it, which would leave it to
+        # the garbage collector to close a dropped stream. Made on first use to copy what a subclass sets in `__init__`.
+        return copy(self).__stream__()
+
+    @property
+    def _observer(self) -> Optional[StreamObserver]:
+        # A stand-in for the response, such as a mock with a `spec`, may have no `stream`.
+        return getattr(getattr(self.response, "stream", None), "stream_observer", None)
+
+    def __next__(self) -> _T:
+        item = self._iterator.__next__()
+        if (observer := self._observer) is not None:
+            observer.item(item)
+        return item
+
+    def __iter__(self) -> Iterator[_T]:
+        for item in self._iterator:
+            if (observer := self._observer) is not None:
+                observer.item(item)
+            yield item
+
+    def _iter_events(self) -> Iterator[ServerSentEvent]:
+        yield from self._decoder.iter_bytes(self.response.iter_bytes())
+
+    @staticmethod
+    def raw_events(response: httpx2.Response) -> Iterator[ServerSentEvent]:
+        """Iterate the raw Server-Sent Events from `response`, before any JSON
+        parsing or event-name filtering.
+
+        This reads the response body directly, so the response is consumed.
+        """
+        return SSEDecoder().iter_bytes(response.iter_bytes())
+
+    def __stream__(self) -> Iterator[_T]:
+        cast_to = cast(Any, self._cast_to)
+        response = self.response
+        process_data = self._client._process_response_data
+        iterator = self._iter_events()
+
+        if (observer := self._observer) is not None:
+            observer.begin()
+
+        try:
+            for sse in iterator:
+                if sse.event == "ping":
+                    continue
+
+                if sse.event is None:
+                    continue
+
+                if sse.event == "error":
+                    body = sse.data
+
+                    try:
+                        body = sse.json()
+                        err_msg = f"{body}"
+                    except Exception:
+                        err_msg = sse.data or f"Error code: {response.status_code}"
+
+                    raise self._client._make_status_error(
+                        err_msg,
+                        body=body,
+                        response=self.response,
+                    )
+
+                if not sse.data:
+                    continue
+
+                yield process_data(data=sse.json(), cast_to=cast_to, response=response)
+            if (observer := self._observer) is not None:
+                observer.end("read")
+        except Exception as err:
+            if (observer := self._observer) is not None:
+                observer.end("failed", err)
+            raise
+        finally:
+            if sys.is_finalizing():
+                # Closing at interpreter shutdown can crash CPython 3.13; mark it closed instead.
+                response.is_closed = True
+            else:
+                # Ensure the response is closed even if the consumer doesn't read all data
+                response.close()
+
+    def __enter__(self) -> Self:
+        return self
+
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -> None:
+        self.close()
+
+    def close(self) -> None:
+        """
+        Close the response and release the connection.
+
+        Automatically called if the response body is read to completion.
+        """
+        if (observer := self._observer) is not None:
+            observer.end("closed")
+        self.response.close()
+
+
+class AsyncStream(Generic[_T]):
+    """Provides the core interface to iterate over an asynchronous stream response."""
+
+    response: httpx2.Response
+    _options: Optional[FinalRequestOptions] = None
+    _decoder: SSEDecoder | SSEBytesDecoder
+
+    def __init__(
+        self,
+        *,
+        cast_to: type[_T],
+        response: httpx2.Response,
+        client: AsyncAnthropic,
+        options: Optional[FinalRequestOptions] = None,
+    ) -> None:
+        self.response = response
+        self._cast_to = cast_to
+        self._client = client
+        self._options = options
+        self._decoder = client._make_sse_decoder()
+
+    @cached_property
+    def _iterator(self) -> AsyncIterator[_T]:
+        # On a copy, as a generator that referred to this stream would form a cycle with it, which would leave it to
+        # the garbage collector to close a dropped stream. Made on first use to copy what a subclass sets in `__init__`.
+        return copy(self).__stream__()
+
+    @property
+    def _observer(self) -> Optional[StreamObserver]:
+        # A stand-in for the response, such as a mock with a `spec`, may have no `stream`.
+        return getattr(getattr(self.response, "stream", None), "stream_observer", None)
+
+    async def __anext__(self) -> _T:
+        item = await self._iterator.__anext__()
+        if (observer := self._observer) is not None:
+            observer.item(item)
+        return item
+
+    async def __aiter__(self) -> AsyncIterator[_T]:
+        async for item in self._iterator:
+            if (observer := self._observer) is not None:
+                observer.item(item)
+            yield item
+
+    async def _iter_events(self) -> AsyncIterator[ServerSentEvent]:
+        async for sse in self._decoder.aiter_bytes(self.response.aiter_bytes()):
+            yield sse
+
+    @staticmethod
+    def raw_events(response: httpx2.Response) -> AsyncIterator[ServerSentEvent]:
+        """Iterate the raw Server-Sent Events from `response`, before any JSON
+        parsing or event-name filtering.
+
+        This reads the response body directly, so the response is consumed.
+        """
+        return SSEDecoder().aiter_bytes(response.aiter_bytes())
+
+    async def __stream__(self) -> AsyncIterator[_T]:
+        cast_to = cast(Any, self._cast_to)
+        response = self.response
+        process_data = self._client._process_response_data
+        iterator = self._iter_events()
+
+        if (observer := self._observer) is not None:
+            observer.begin()
+
+        try:
+            async for sse in iterator:
+                if sse.event == "ping":
+                    continue
+
+                if sse.event is None:
+                    continue
+
+                if sse.event == "error":
+                    body = sse.data
+
+                    try:
+                        body = sse.json()
+                        err_msg = f"{body}"
+                    except Exception:
+                        err_msg = sse.data or f"Error code: {response.status_code}"
+
+                    raise self._client._make_status_error(
+                        err_msg,
+                        body=body,
+                        response=self.response,
+                    )
+
+                if not sse.data:
+                    continue
+
+                yield process_data(data=sse.json(), cast_to=cast_to, response=response)
+            if (observer := self._observer) is not None:
+                observer.end("read")
+        except Exception as err:
+            if (observer := self._observer) is not None:
+                observer.end("failed", err)
+            raise
+        finally:
+            if sys.is_finalizing():
+                # Closing at interpreter shutdown can crash CPython 3.13; mark it closed instead.
+                response.is_closed = True
+            else:
+                # Ensure the response is closed even if the consumer doesn't read all data
+                await response.aclose()
+
+    async def __aenter__(self) -> Self:
+        return self
+
+    async def __aexit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -> None:
+        await self.close()
+
+    async def close(self) -> None:
+        """
+        Close the response and release the connection.
+
+        Automatically called if the response body is read to completion.
+        """
+        if (observer := self._observer) is not None:
+            observer.end("closed")
+        await self.response.aclose()
+
+
+class ServerSentEvent:
+    def __init__(
+        self,
+        *,
+        event: str | None = None,
+        data: str | None = None,
+        id: str | None = None,
+        retry: int | None = None,
+        raw: list[str] | None = None,
+    ) -> None:
+        if data is None:
+            data = ""
+
+        self._id = id
+        self._data = data
+        self._event = event or None
+        self._retry = retry
+        self._raw = raw if raw is not None else []
+
+    @property
+    def event(self) -> str | None:
+        return self._event
+
+    @property
+    def id(self) -> str | None:
+        return self._id
+
+    @property
+    def retry(self) -> int | None:
+        return self._retry
+
+    @property
+    def data(self) -> str:
+        return self._data
+
+    @property
+    def raw(self) -> list[str]:
+        """The original wire lines this event was decoded from, without trailing newlines.
+
+        Includes SSE fields the decoder does not otherwise model (comment lines,
+        unknown fields). Empty for events that were constructed rather than decoded.
+        """
+        return self._raw
+
+    def json(self) -> Any:
+        return json.loads(self.data)
+
+    @override
+    def __repr__(self) -> str:
+        return f"ServerSentEvent(event={self.event}, data={self.data}, id={self.id}, retry={self.retry})"
+
+
+class SSEDecoder:
+    _data: list[str]
+    _event: str | None
+    _retry: int | None
+    _last_event_id: str | None
+    _raw: list[str]
+
+    def __init__(self) -> None:
+        self._event = None
+        self._data = []
+        self._last_event_id = None
+        self._retry = None
+        self._raw = []
+
+    def iter_bytes(self, iterator: Iterator[bytes]) -> Iterator[ServerSentEvent]:
+        """Given an iterator that yields raw binary data, iterate over it & yield every event encountered"""
+        for chunk in self._iter_chunks(iterator):
+            # Split before decoding so splitlines() only uses \r and \n
+            for raw_line in chunk.splitlines():
+                line = raw_line.decode("utf-8")
+                sse = self.decode(line)
+                if sse:
+                    yield sse
+
+    def _iter_chunks(self, iterator: Iterator[bytes]) -> Iterator[bytes]:
+        """Given an iterator that yields raw binary data, iterate over it and yield individual SSE chunks"""
+        data = b""
+        for chunk in iterator:
+            for line in chunk.splitlines(keepends=True):
+                data += line
+                if data.endswith((b"\r\r", b"\n\n", b"\r\n\r\n")):
+                    yield data
+                    data = b""
+        if data:
+            yield data
+
+    async def aiter_bytes(self, iterator: AsyncIterator[bytes]) -> AsyncIterator[ServerSentEvent]:
+        """Given an iterator that yields raw binary data, iterate over it & yield every event encountered"""
+        async for chunk in self._aiter_chunks(iterator):
+            # Split before decoding so splitlines() only uses \r and \n
+            for raw_line in chunk.splitlines():
+                line = raw_line.decode("utf-8")
+                sse = self.decode(line)
+                if sse:
+                    yield sse
+
+    async def _aiter_chunks(self, iterator: AsyncIterator[bytes]) -> AsyncIterator[bytes]:
+        """Given an iterator that yields raw binary data, iterate over it and yield individual SSE chunks"""
+        data = b""
+        async for chunk in iterator:
+            for line in chunk.splitlines(keepends=True):
+                data += line
+                if data.endswith((b"\r\r", b"\n\n", b"\r\n\r\n")):
+                    yield data
+                    data = b""
+        if data:
+            yield data
+
+    def decode(self, line: str) -> ServerSentEvent | None:
+        # See: https://html.spec.whatwg.org/multipage/server-sent-events.html#event-stream-interpretation  # noqa: E501
+
+        if not line:
+            if not self._event and not self._data and not self._last_event_id and self._retry is None:
+                self._raw = []
+                return None
+
+            sse = ServerSentEvent(
+                event=self._event,
+                data="\n".join(self._data),
+                id=self._last_event_id,
+                retry=self._retry,
+                raw=self._raw,
+            )
+
+            # NOTE: as per the SSE spec, do not reset last_event_id.
+            self._event = None
+            self._data = []
+            self._retry = None
+            self._raw = []
+
+            return sse
+
+        self._raw.append(line)
+
+        if line.startswith(":"):
+            return None
+
+        fieldname, _, value = line.partition(":")
+
+        if value.startswith(" "):
+            value = value[1:]
+
+        if fieldname == "event":
+            self._event = value
+        elif fieldname == "data":
+            self._data.append(value)
+        elif fieldname == "id":
+            if "\0" in value:
+                pass
+            else:
+                self._last_event_id = value
+        elif fieldname == "retry":
+            try:
+                self._retry = int(value)
+            except (TypeError, ValueError):
+                pass
+        else:
+            pass  # Field is ignored.
+
+        return None
+
+
+@runtime_checkable
+class SSEBytesDecoder(Protocol):
+    def iter_bytes(self, iterator: Iterator[bytes]) -> Iterator[ServerSentEvent]:
+        """Given an iterator that yields raw binary data, iterate over it & yield every event encountered"""
+        ...
+
+    def aiter_bytes(self, iterator: AsyncIterator[bytes]) -> AsyncIterator[ServerSentEvent]:
+        """Given an async iterator that yields raw binary data, iterate over it & yield every event encountered"""
+        ...
+
+
+def is_stream_class_type(typ: type) -> TypeGuard[type[Stream[object]] | type[AsyncStream[object]]]:
+    """TypeGuard for determining whether or not the given type is a subclass of `Stream` / `AsyncStream`"""
+    origin = get_origin(typ) or typ
+    return inspect.isclass(origin) and issubclass(origin, (Stream, AsyncStream))
+
+
+def extract_stream_chunk_type(
+    stream_cls: type,
+    *,
+    failure_message: str | None = None,
+) -> type:
+    """Given a type like `Stream[T]`, returns the generic type variable `T`.
+
+    This also handles the case where a concrete subclass is given, e.g.
+    ```py
+    class MyStream(Stream[bytes]):
+        ...
+
+    extract_stream_chunk_type(MyStream) -> bytes
+    ```
+    """
+    from ._base_client import Stream, AsyncStream
+
+    return extract_type_var_from_base(
+        stream_cls,
+        index=0,
+        generic_bases=cast("tuple[type, ...]", (Stream, AsyncStream)),
+        failure_message=failure_message,
+    )

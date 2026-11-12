@@ -1,0 +1,215 @@
+{
+ "custo_estimado_usd": 0.0,
+ "gerado_em": "2026-11-11T16:12:11",
+ "gestores": {
+  "Cara Losch": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Semana 1 do trimestre, 6 vendedores no cadastro.\n2 deals do time com chance medida de decidir nas próximas semanas; 195 deals vencidos.\nValor aberto US$ 495.950, valor vivo US$ 46.147, valor vencido US$ 449.803."
+  },
+  "Celia Rouche": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Semana 1 do trimestre, 6 vendedores no cadastro.\n2 deals do time com chance medida de decidir nas próximas semanas; 305 deals vencidos.\nValor aberto US$ 1.004.925, valor vivo US$ 42.417, valor vencido US$ 962.508."
+  },
+  "Dustin Brinkmann": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Semana 1 do trimestre, 5 vendedores no cadastro.\n193 deals vencidos no time.\nValor aberto US$ 585.616, valor vivo US$ 0, valor vencido US$ 282.707."
+  },
+  "Melvin Marxen": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Semana 1 do trimestre, 6 vendedores no cadastro.\n215 deals vencidos no time.\nValor aberto US$ 1.312.792, valor vivo US$ 0, valor vencido US$ 541.715."
+  },
+  "Rocco Neubert": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Semana 1 do trimestre, 6 vendedores no cadastro.\n2 deals do time com chance medida de decidir nas próximas semanas; 193 deals vencidos.\nValor aberto US$ 573.636, valor vivo US$ 50.900, valor vencido US$ 522.736."
+  },
+  "Summer Sewald": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Semana 1 do trimestre, 6 vendedores no cadastro.\n1 deal do time com chance medida de decidir nas próximas semanas; 373 deals vencidos.\nValor aberto US$ 993.296, valor vivo US$ 96.466, valor vencido US$ 896.830."
+  }
+ },
+ "modelo": "template",
+ "recusas": [],
+ "vendedores": {
+  "Anna Snelling": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Anna Snelling, não há nenhum deal vivo na sua carteira nesta semana (semana 1 do trimestre). 55 deals sem data de engajamento: comece registrando o primeiro contato."
+  },
+  "Boris Faz": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Boris Faz, semana 1 do trimestre.\nVocê tem 1 deal com chance medida de decidir nas próximas semanas.\n4 deals vivos decidem mais tarde no trimestre: vale avançar uma etapa.\n52 deals venceram a janela (valor de tabela US$ 125.817): confirme ou encerre no CRM."
+  },
+  "Carl Lin": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Carl Lin, não há nenhum deal vivo na sua carteira nesta semana (semana 1 do trimestre). Também não há deals para iniciar."
+  },
+  "Carol Thompson": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Carol Thompson, não há nenhum deal vivo na sua carteira nesta semana (semana 1 do trimestre). Também não há deals para iniciar."
+  },
+  "Cassey Cress": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Cassey Cress, semana 1 do trimestre.\nVocê tem 1 deal com chance medida de decidir nas próximas semanas.\n7 deals vivos decidem mais tarde no trimestre: vale avançar uma etapa.\n77 deals venceram a janela (valor de tabela US$ 201.843): confirme ou encerre no CRM."
+  },
+  "Cecily Lampkin": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Cecily Lampkin, não há nenhum deal vivo na sua carteira nesta semana (semana 1 do trimestre). 24 deals sem data de engajamento: comece registrando o primeiro contato."
+  },
+  "Corliss Cosme": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Corliss Cosme, semana 1 do trimestre.\n8 deals vivos decidem mais tarde no trimestre: vale avançar uma etapa.\n73 deals venceram a janela (valor de tabela US$ 200.838): confirme ou encerre no CRM."
+  },
+  "Daniell Hammack": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Daniell Hammack, semana 1 do trimestre.\n8 deals vivos decidem mais tarde no trimestre: vale avançar uma etapa.\n64 deals venceram a janela (valor de tabela US$ 195.076): confirme ou encerre no CRM."
+  },
+  "Darcel Schlecht": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Darcel Schlecht, não há nenhum deal vivo na sua carteira nesta semana (semana 1 do trimestre). 111 deals sem data de engajamento: comece registrando o primeiro contato."
+  },
+  "Donn Cantrell": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Donn Cantrell, não há nenhum deal vivo na sua carteira nesta semana (semana 1 do trimestre). Também não há deals para iniciar."
+  },
+  "Elease Gluck": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Elease Gluck, semana 1 do trimestre.\nVocê tem 1 deal com chance medida de decidir nas próximas semanas.\n4 deals vivos decidem mais tarde no trimestre: vale avançar uma etapa.\n46 deals venceram a janela (valor de tabela US$ 250.333): confirme ou encerre no CRM."
+  },
+  "Elizabeth Anderson": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Elizabeth Anderson, não há nenhum deal vivo na sua carteira nesta semana (semana 1 do trimestre). Também não há deals para iniciar."
+  },
+  "Garret Kinder": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Garret Kinder, não há nenhum deal vivo na sua carteira nesta semana (semana 1 do trimestre). Também não há deals para iniciar."
+  },
+  "Gladys Colclough": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Gladys Colclough, não há nenhum deal vivo na sua carteira nesta semana (semana 1 do trimestre). 49 deals sem data de engajamento: comece registrando o primeiro contato."
+  },
+  "Hayden Neloms": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Hayden Neloms, semana 1 do trimestre.\nVocê tem 1 deal com chance medida de decidir nas próximas semanas.\n1 deal vivo decide mais tarde no trimestre: vale avançar uma etapa.\n48 deals venceram a janela (valor de tabela US$ 123.420): confirme ou encerre no CRM."
+  },
+  "James Ascencio": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "James Ascencio, semana 1 do trimestre.\n3 deals vivos decidem mais tarde no trimestre: vale avançar uma etapa.\n58 deals venceram a janela (valor de tabela US$ 176.431): confirme ou encerre no CRM."
+  },
+  "Jonathan Berthelot": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Jonathan Berthelot, não há nenhum deal vivo na sua carteira nesta semana (semana 1 do trimestre). 48 deals sem data de engajamento: comece registrando o primeiro contato."
+  },
+  "Kami Bicknell": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Kami Bicknell, semana 1 do trimestre.\n10 deals vivos decidem mais tarde no trimestre: vale avançar uma etapa.\n80 deals venceram a janela (valor de tabela US$ 170.873): confirme ou encerre no CRM."
+  },
+  "Kary Hendrixson": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Kary Hendrixson, semana 1 do trimestre.\nVocê tem 1 deal com chance medida de decidir nas próximas semanas.\n11 deals vivos decidem mais tarde no trimestre: vale avançar uma etapa.\n91 deals venceram a janela (valor de tabela US$ 243.966): confirme ou encerre no CRM."
+  },
+  "Lajuana Vencill": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Lajuana Vencill, não há nenhum deal vivo na sua carteira nesta semana (semana 1 do trimestre). 40 deals sem data de engajamento: comece registrando o primeiro contato."
+  },
+  "Markita Hansen": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Markita Hansen, semana 1 do trimestre.\n11 deals vivos decidem mais tarde no trimestre: vale avançar uma etapa.\n68 deals venceram a janela (valor de tabela US$ 267.745): confirme ou encerre no CRM."
+  },
+  "Marty Freudenburg": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Marty Freudenburg, não há nenhum deal vivo na sua carteira nesta semana (semana 1 do trimestre). 54 deals sem data de engajamento: comece registrando o primeiro contato."
+  },
+  "Maureen Marcano": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Maureen Marcano, semana 1 do trimestre.\n6 deals vivos decidem mais tarde no trimestre: vale avançar uma etapa.\n66 deals venceram a janela (valor de tabela US$ 127.512): confirme ou encerre no CRM."
+  },
+  "Mei-Mei Johns": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Mei-Mei Johns, não há nenhum deal vivo na sua carteira nesta semana (semana 1 do trimestre). Também não há deals para iniciar."
+  },
+  "Moses Frase": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Moses Frase, não há nenhum deal vivo na sua carteira nesta semana (semana 1 do trimestre). 31 deals sem data de engajamento: comece registrando o primeiro contato."
+  },
+  "Natalya Ivanova": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Natalya Ivanova, não há nenhum deal vivo na sua carteira nesta semana (semana 1 do trimestre). Também não há deals para iniciar."
+  },
+  "Niesha Huffines": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Niesha Huffines, não há nenhum deal vivo na sua carteira nesta semana (semana 1 do trimestre). 34 deals sem data de engajamento: comece registrando o primeiro contato."
+  },
+  "Reed Clapper": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Reed Clapper, não há nenhum deal vivo na sua carteira nesta semana (semana 1 do trimestre). Também não há deals para iniciar."
+  },
+  "Rosalina Dieter": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Rosalina Dieter, semana 1 do trimestre.\n5 deals vivos decidem mais tarde no trimestre: vale avançar uma etapa.\n45 deals venceram a janela (valor de tabela US$ 115.556): confirme ou encerre no CRM."
+  },
+  "Rosie Papadopoulos": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Rosie Papadopoulos, semana 1 do trimestre.\n2 deals vivos decidem mais tarde no trimestre: vale avançar uma etapa.\n37 deals venceram a janela (valor de tabela US$ 107.043): confirme ou encerre no CRM."
+  },
+  "Versie Hillebrand": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Versie Hillebrand, não há nenhum deal vivo na sua carteira nesta semana (semana 1 do trimestre). 54 deals sem data de engajamento: comece registrando o primeiro contato."
+  },
+  "Vicki Laflamme": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Vicki Laflamme, semana 1 do trimestre.\n6 deals vivos decidem mais tarde no trimestre: vale avançar uma etapa.\n98 deals venceram a janela (valor de tabela US$ 205.454): confirme ou encerre no CRM."
+  },
+  "Violet Mclelland": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Violet Mclelland, semana 1 do trimestre.\nVocê tem 1 deal com chance medida de decidir nas próximas semanas.\n7 deals vivos decidem mais tarde no trimestre: vale avançar uma etapa.\n60 deals venceram a janela (valor de tabela US$ 78.174): confirme ou encerre no CRM."
+  },
+  "Wilburn Farren": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Wilburn Farren, semana 1 do trimestre.\nVocê tem 1 deal com chance medida de decidir nas próximas semanas.\n5 deals vivos decidem mais tarde no trimestre: vale avançar uma etapa.\n25 deals venceram a janela (valor de tabela US$ 63.748): confirme ou encerre no CRM."
+  },
+  "Zane Levy": {
+   "motivo": null,
+   "origem": "template",
+   "texto": "Zane Levy, semana 1 do trimestre.\n10 deals vivos decidem mais tarde no trimestre: vale avançar uma etapa.\n78 deals venceram a janela (valor de tabela US$ 178.048): confirme ou encerre no CRM."
+  }
+ }
+}

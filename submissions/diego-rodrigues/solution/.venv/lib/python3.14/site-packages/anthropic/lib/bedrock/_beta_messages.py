@@ -1,0 +1,109 @@
+from __future__ import annotations
+
+from ..._compat import cached_property
+from ..._resource import SyncAPIResource, AsyncAPIResource
+from ..._response import (
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+)
+from ...resources.beta import Messages as FirstPartyMessagesAPI, AsyncMessages as FirstPartyAsyncMessagesAPI
+
+__all__ = ["Messages", "AsyncMessages"]
+
+
+class Messages(SyncAPIResource):
+    create = FirstPartyMessagesAPI.create
+    parse = FirstPartyMessagesAPI.parse
+    stream = FirstPartyMessagesAPI.stream
+    tool_runner = FirstPartyMessagesAPI.tool_runner
+    thread = FirstPartyMessagesAPI.thread
+
+    @cached_property
+    def with_raw_response(self) -> MessagesWithRawResponse:
+        """
+        This property can be used as a prefix for any HTTP method call to return the
+        the raw response object instead of the parsed content.
+
+        For more information, see https://platform.claude.com/docs/en/cli-sdks-libraries/sdks/python#accessing-raw-response-data-for-example-headers
+        """
+        return MessagesWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> MessagesWithStreamingResponse:
+        """
+        An alternative to `.with_raw_response` that doesn't eagerly read the response body.
+
+        For more information, see https://platform.claude.com/docs/en/cli-sdks-libraries/sdks/python#streaming-response-body
+        """
+        return MessagesWithStreamingResponse(self)
+
+
+class AsyncMessages(AsyncAPIResource):
+    create = FirstPartyAsyncMessagesAPI.create
+    parse = FirstPartyAsyncMessagesAPI.parse
+    stream = FirstPartyAsyncMessagesAPI.stream
+    tool_runner = FirstPartyAsyncMessagesAPI.tool_runner
+    thread = FirstPartyAsyncMessagesAPI.thread
+
+    @cached_property
+    def with_raw_response(self) -> AsyncMessagesWithRawResponse:
+        """
+        This property can be used as a prefix for any HTTP method call to return the
+        the raw response object instead of the parsed content.
+
+        For more information, see https://platform.claude.com/docs/en/cli-sdks-libraries/sdks/python#accessing-raw-response-data-for-example-headers
+        """
+        return AsyncMessagesWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncMessagesWithStreamingResponse:
+        """
+        An alternative to `.with_raw_response` that doesn't eagerly read the response body.
+
+        For more information, see https://platform.claude.com/docs/en/cli-sdks-libraries/sdks/python#streaming-response-body
+        """
+        return AsyncMessagesWithStreamingResponse(self)
+
+
+class MessagesWithRawResponse:
+    def __init__(self, messages: Messages) -> None:
+        self._messages = messages
+
+        self.create = to_raw_response_wrapper(
+            messages.create,
+        )
+        self.parse = to_raw_response_wrapper(
+            messages.parse,
+        )
+
+
+class AsyncMessagesWithRawResponse:
+    def __init__(self, messages: AsyncMessages) -> None:
+        self._messages = messages
+
+        self.create = async_to_raw_response_wrapper(
+            messages.create,
+        )
+        self.parse = async_to_raw_response_wrapper(
+            messages.parse,
+        )
+
+
+class MessagesWithStreamingResponse:
+    def __init__(self, messages: Messages) -> None:
+        self._messages = messages
+
+        self.create = to_streamed_response_wrapper(
+            messages.create,
+        )
+
+
+class AsyncMessagesWithStreamingResponse:
+    def __init__(self, messages: AsyncMessages) -> None:
+        self._messages = messages
+
+        self.create = async_to_streamed_response_wrapper(
+            messages.create,
+        )

@@ -1,0 +1,34 @@
+from typing import Optional
+from datetime import datetime
+from typing_extensions import Literal
+
+from ...._models import BaseModel
+
+__all__ = ["BetaManagedAgentsSessionThreadCreatedEvent"]
+
+
+class BetaManagedAgentsSessionThreadCreatedEvent(BaseModel):
+    """Emitted when a child thread is created.
+
+    Written to the parent thread's output stream so clients observing the session see child creation.
+    """
+
+    id: str
+    """Unique identifier for this event."""
+
+    agent_name: str
+    """Name of the callable agent the thread runs."""
+
+    processed_at: datetime
+    """Timestamp when the thread was created."""
+
+    session_thread_id: str
+    """Public `sthr_` ID of the newly created thread."""
+
+    type: Literal["session.thread_created"]
+
+    workflow_run_id: Optional[str] = None
+    """
+    Identifier of the workflow run that created the thread, or `null` for any other
+    thread.
+    """

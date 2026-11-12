@@ -1,0 +1,108 @@
+from __future__ import annotations
+
+import logging
+import threading
+from typing import Generator, AsyncGenerator
+from typing_extensions import override
+
+import httpx2
+
+from ._cache import TokenCache
+from ._constants import OAUTH_API_BETA_HEADER
+
+__all__ = ["AccessTokenAuth"]
+
+log: logging.Logger = logging.getLogger(__name__)
+
+_warn_once_lock = threading.Lock()
+_warn_once_seen: set[str] = set()
+
+
+def _warn_once(key: str, message: str, *args: object) -> None:
+    """Emit a log warning at most once per `key` per process."""
+    with _warn_once_lock:
+        if key in _warn_once_seen:
+            return
+        _warn_once_seen.add(key)
+    log.warning(message, *args)
+
+
+def warn_env_static_shadows_auto_discovery(env_var: str) -> None:
+    """Warn that an `ANTHROPIC_API_KEY` / `ANTHROPIC_AUTH_TOKEN` from the
+    environment is shadowing the SDK's profile / federation auto-discovery.
+
+    Per the credential-precedence spec, a static-credential env var silently
+    disables the auto-discovered federation and profile paths. Surface a
+    one-shot warning so migrating users can see why their `ANTHROPIC_PROFILE`
+    or WIF env vars are being ignored.
+    """
+    _warn_once(
+        f"env-shadow:{env_var}",
+        "%s is set and takes precedence over the SDK's profile / federation "
+        "auto-discovery; unset %s to use the auto-discovered credential.",
+        env_var,
+        env_var,
+    )
+
+
+def warn_env_api_key_shadows_env_auth_token() -> None:
+    """Warn that `ANTHROPIC_AUTH_TOKEN` is ignored because `ANTHROPIC_API_KEY` is set as well."""
+    _warn_once(
+        "env-shadow:ANTHROPIC_API_KEY:ANTHROPIC_AUTH_TOKEN",
+        "Anthropic: ANTHROPIC_API_KEY and ANTHROPIC_AUTH_TOKEN are both set. Using ANTHROPIC_API_KEY.",
+    )
+
+
+class AccessTokenAuth(httpx2.Auth):
+    """Adapts a `TokenCache` to httpx's `httpx2.Auth` protocol.
+
+    Used by `anthropic.Anthropic.custom_auth` to inject `Authorization: Bearer`
+    plus the OAuth beta header on every request, with proactive refresh handled by
+    `TokenCache`.
+
+    If the outgoing request already carries an `Authorization` or `X-Api-Key`
+    header, this auth flow is a no-op.
+    """
+
+    requires_response_body = False
+
+    def __init__(self, token_cache: TokenCache) -> None:
+        self._token_cache = token_cache
+
+    @staticmethod
+    def _has_static_credential(request: httpx2.Request) -> bool:
+        return bool(request.headers.get("X-Api-Key") or request.headers.get("Authorization"))
+
+    def _apply(self, request: httpx2.Request, token: str) -> None:
+        request.headers["Authorization"] = f"Bearer {token}"
+        existing_beta = request.headers.get("anthropic-beta", "")
+        # Tokenize the comma-separated header so dedupe matches whole flag
+        # names rather than substrings — `oauth-2025-04-20` would otherwise
+        # spuriously match a future `oauth-2025-04-20b`.
+        #
+        # The flag we inject here is the *API* beta (oauth-2025-04-20), which
+        # unlocks `Authorization: Bearer` auth on the API. The *federation*
+        # beta (oidc-federation-2026-04-01) is a separate header sent
+        # only on jwt-bearer POSTs to /v1/oauth/token — see _workload.py.
+        existing_flags = [flag.strip() for flag in existing_beta.split(",") if flag.strip()]
+        if OAUTH_API_BETA_HEADER not in existing_flags:
+            existing_flags.append(OAUTH_API_BETA_HEADER)
+            request.headers["anthropic-beta"] = ",".join(existing_flags)
+
+    @override
+    def sync_auth_flow(self, request: httpx2.Request) -> Generator[httpx2.Request, httpx2.Response, None]:
+        if self._has_static_credential(request):
+            yield request
+            return
+        token = self._token_cache.get_token()
+        self._apply(request, token)
+        yield request
+
+    @override
+    async def async_auth_flow(self, request: httpx2.Request) -> AsyncGenerator[httpx2.Request, httpx2.Response]:
+        if self._has_static_credential(request):
+            yield request
+            return
+        token = await self._token_cache.async_get_token()
+        self._apply(request, token)
+        yield request

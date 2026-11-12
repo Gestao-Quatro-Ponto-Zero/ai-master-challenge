@@ -1,0 +1,11 @@
+from __future__ import annotations
+
+from typing_extensions import Literal, Required, TypedDict
+
+__all__ = ["BetaManagedAgentsEffortMediumParam"]
+
+
+class BetaManagedAgentsEffortMediumParam(TypedDict, total=False):
+    """Medium effort. Balances latency and reasoning depth."""
+
+    type: Required[Literal["medium"]]

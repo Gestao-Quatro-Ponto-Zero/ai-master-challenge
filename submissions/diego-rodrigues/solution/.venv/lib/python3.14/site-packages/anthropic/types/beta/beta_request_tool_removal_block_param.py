@@ -1,0 +1,31 @@
+from __future__ import annotations
+
+from typing import Union, Optional
+from typing_extensions import Literal, Required, TypeAlias, TypedDict
+
+from .beta_cache_control_ephemeral_param import BetaCacheControlEphemeralParam
+from .beta_tool_change_tool_reference_param import BetaToolChangeToolReferenceParam
+from .beta_tool_change_mcp_tool_reference_param import BetaToolChangeMCPToolReferenceParam
+from .beta_tool_change_mcp_toolset_reference_param import BetaToolChangeMCPToolsetReferenceParam
+
+__all__ = ["BetaRequestToolRemovalBlockParam", "Tool"]
+
+Tool: TypeAlias = Union[
+    BetaToolChangeToolReferenceParam, BetaToolChangeMCPToolReferenceParam, BetaToolChangeMCPToolsetReferenceParam
+]
+
+
+class BetaRequestToolRemovalBlockParam(TypedDict, total=False):
+    """Mid-conversation directive to withdraw a tool.
+
+    ``tool`` references a tool (or MCP toolset) by name: one declared in the
+    request's ``tools`` or defined earlier in ``messages``. It is no longer
+    offered to the model from this point in the conversation onward.
+    """
+
+    tool: Required[Tool]
+
+    type: Required[Literal["tool_removal"]]
+
+    cache_control: Optional[BetaCacheControlEphemeralParam]
+    """Create a cache control breakpoint at this content block."""

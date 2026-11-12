@@ -2,7 +2,7 @@
 
 > **Para quem executa com agente:** SUB-SKILL OBRIGATÓRIA — use `superpowers:subagent-driven-development` (recomendado) ou `superpowers:executing-plans` para implementar tarefa por tarefa. Os passos usam caixas (`- [ ]`) para acompanhamento.
 >
-> **v2 de 11/11/2026.** Reescrito depois da revisão técnica em [03-revisao-tecnica.md](03-revisao-tecnica.md), que conferiu o v1 contra o dataset e achou seis números pinados errados, um viés de sobrevivência na tabela de probabilidade, a ausência do prazo do trimestre, uma métrica de sucesso que mede mistura de preço e um piloto sem poder estatístico. Leia a revisão antes da primeira tarefa: ela explica **por que** cada decisão abaixo é o que é. O v1 está em `archives/02-plano-implementacao-v1.md`.
+> **v2 de 11/11/2026.** Reescrito depois da revisão técnica em [03-revisao-tecnica.md](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/planejamento/03-revisao-tecnica.md), que conferiu o v1 contra o dataset e achou seis números pinados errados, um viés de sobrevivência na tabela de probabilidade, a ausência do prazo do trimestre, uma métrica de sucesso que mede mistura de preço e um piloto sem poder estatístico. Leia a revisão antes da primeira tarefa: ela explica **por que** cada decisão abaixo é o que é. O v1 está em `archives/02-plano-implementacao-v1.md`.
 
 **Goal:** Entregar em 11/11/2026 o PR `[Submission] Diego Rodrigues — Challenge 003` com uma ferramenta de priorização de deals que roda com um comando, tem URL pública, score cujo ganho sobre a melhor alternativa honesta é medido com intervalo de confiança, discovery ensaiado com premissas pré-registradas, briefing por IA validado, kit de deploy e registro de processo auditável.
 
@@ -10,7 +10,7 @@
 
 **Tech Stack:** Python 3.12+ (compatível com 3.9), pandas, pytest, `http.server` (stdlib), `anthropic` (opcional, só no build), HTML/CSS/JS sem framework, Vercel CLI.
 
-**Spec:** [01-guia-fde.md](01-guia-fde.md) (seções 4 a 8 e 10; os números das seções 3, 3.4 e 8 estão corrigidos pela errata no fim do guia), [03-revisao-tecnica.md](03-revisao-tecnica.md) e [04-discovery-personas.md](04-discovery-personas.md) (protocolo e roteiro da Tarefa 0B). Evidência: `analise/eda-04`, `eda-05` e `eda-06`, com as saídas `.saida.txt`.
+**Spec:** `01-guia-fde.md` (seções 4 a 8 e 10; os números das seções 3, 3.4 e 8 estão corrigidos pela errata no fim do guia), [03-revisao-tecnica.md](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/planejamento/03-revisao-tecnica.md) e `04-discovery-personas.md` (protocolo e roteiro da Tarefa 0B). Evidência: `analise/eda-04`, `eda-05` e `eda-06`, com as saídas `.saida.txt`.
 
 ## Global Constraints
 
@@ -87,7 +87,7 @@ git commit -m "chore(003): estrutura, dados CC0 com procedência, baseline em do
 
 ### Tarefa 0B: Discovery ensaiado com personas sintéticas
 
-> Numerada 0B, e não 1, para não renumerar as tarefas já referenciadas em Review Focus e na revisão técnica. Roteiro completo, protocolo e perguntas prontas para colar: [04-discovery-personas.md](04-discovery-personas.md). Caixa de tempo: 75 minutos, ou 40 na versão curta da seção 9 daquele documento.
+> Numerada 0B, e não 1, para não renumerar as tarefas já referenciadas em Review Focus e na revisão técnica. Roteiro completo, protocolo e perguntas prontas para colar: `04-discovery-personas.md`. Caixa de tempo: 75 minutos, ou 40 na versão curta da seção 9 daquele documento.
 >
 > Esta tarefa não bloqueia o motor (Tarefas 1 a 8), que já está especificado. O que ela muda é o texto da interface, o desenho do estado vazio, a tela do time, o `design.md`, o `sponsor-map.md`, o rollout e as limitações. Por isso roda cedo e é consumida tarde.
 

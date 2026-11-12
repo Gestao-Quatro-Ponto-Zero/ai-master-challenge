@@ -21,4 +21,4 @@ Status: **confirmada** (a persona e/ou o dado sustentam a premissa), **contraria
 
 ## Pendências nas tarefas do produto
 
-Pendências por tarefa, com teste de validação: [pendencias-produto.md](pendencias-produto.md).
+Pendências por tarefa, com teste de validação: [pendencias-produto.md](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/docs/pendencias-produto.md).

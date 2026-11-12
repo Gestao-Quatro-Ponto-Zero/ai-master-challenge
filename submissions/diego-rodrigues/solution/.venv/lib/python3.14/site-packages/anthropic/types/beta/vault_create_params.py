@@ -1,0 +1,35 @@
+from __future__ import annotations
+
+from typing import Dict, List
+from typing_extensions import Required, TypedDict
+
+from ..anthropic_beta_param import AnthropicBetaParam
+
+__all__ = ["VaultCreateParams"]
+
+
+class VaultCreateParams(TypedDict, total=False):
+    display_name: Required[str]
+    """Human-readable name for the vault. 1-255 characters."""
+
+    metadata: Dict[str, str]
+    """Arbitrary key-value metadata to attach to the vault.
+
+    Maximum 16 pairs, keys up to 64 chars, values up to 512 chars.
+    """
+
+    betas: List[AnthropicBetaParam]
+    """
+    This endpoint is in beta: requests must send `managed-agents-2026-04-01` in this
+    header.
+    """
+
+    workspace_id: str
+    """Optional header to select the Workspace for this request.
+
+    The value is a Workspace ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+
+    Only needed for credentials that can act on more than one Workspace. A
+    credential that belongs to a specific Workspace may omit it; if sent, it must
+    match that Workspace.
+    """

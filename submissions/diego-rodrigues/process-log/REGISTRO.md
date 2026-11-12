@@ -16,7 +16,7 @@
 | Nemotron-3.5-lightning, Gemini 3.1, ChatGPT 6.1 Sol | baselines sem ferramenta (Tarefa 0) | comparar o que um modelo propõe sem o dado na mão, para mostrar o que o dado desmente |
 | ChatGPT Sol 5.6, modo de raciocínio estendido | revisão externa da submissão quase pronta, contra o pedido do desafio | segundo olhar, de outra família de modelo, depois que a construção estava terminada |
 
-Inventário com versão exata, sessões e custo: [MODELOS.md](MODELOS.md).
+Inventário com versão exata, sessões e custo: [MODELOS.md](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/MODELOS.md).
 
 ## Workflow
 
@@ -40,19 +40,19 @@ Inventário com versão exata, sessões e custo: [MODELOS.md](MODELOS.md).
 
 ## Onde a IA errou
 
-Cada item com o que foi proposto, o mecanismo que pegou e o teste ou a verificação que fixa: [onde-a-ia-errou.md](onde-a-ia-errou.md). Destaques: o vazamento do campo de conta, que dava sinal falso ao vendedor (0,012 virou 0,141 ao filtrar); a base de 22% que era taxa de acerto e não taxa de decisão (correta: 17,3%); e a atribuição da regra do trimestre a um PR que não tinha essa regra, nem verificado.
+Cada item com o que foi proposto, o mecanismo que pegou e o teste ou a verificação que fixa: [onde-a-ia-errou.md](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/onde-a-ia-errou.md). Destaques: o vazamento do campo de conta, que dava sinal falso ao vendedor (0,012 virou 0,141 ao filtrar); a base de 22% que era taxa de acerto e não taxa de decisão (correta: 17,3%); e a atribuição da regra do trimestre a um PR que não tinha essa regra, nem verificado.
 
 ## O que eu acrescentei
 
-O julgamento que a IA sozinha não traria, com as rejeições e as perguntas que mudei: [o-que-eu-acrescentei.md](o-que-eu-acrescentei.md).
+O julgamento que a IA sozinha não traria, com as rejeições e as perguntas que mudei: [o-que-eu-acrescentei.md](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/o-que-eu-acrescentei.md).
 
 ## Verificação independente
 
-**Feita.** Protocolo, script e relatório: [verificacao/](verificacao/). O revisor (`claude-opus-5-5`, como subagente) escreveu código próprio a partir dos quatro CSVs, sem importar `solution/motor` nem `solution/avaliacao`, e recalculou cada número citado — todos bateram. É a mesma família dos modelos que implementaram, o que o protocolo do `LEIA.md` desaconselha; essa ressalva está registrada no próprio relatório. Quatro ressalvas foram apontadas e corrigidas no commit `66171cb`.
+**Feita.** Protocolo, script e relatório: [verificacao/](https://github.com/DiegoAlves-data/ai-master-challenge/tree/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/verificacao). O revisor (`claude-opus-5-5`, como subagente) escreveu código próprio a partir dos quatro CSVs, sem importar `solution/motor` nem `solution/avaliacao`, e recalculou cada número citado — todos bateram. É a mesma família dos modelos que implementaram, o que o protocolo do `LEIA.md` desaconselha; essa ressalva está registrada no próprio relatório. Quatro ressalvas foram apontadas e corrigidas no commit `66171cb`.
 
 ## Evidências
 
-- Diário por sessão, gravado na hora: [diario.md](diario.md)
+- Diário por sessão, gravado na hora: [diario.md](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/diario.md)
 - Prints das três telas, em 1366 e 390 px: `screenshots/`
 - Histórico git: `git log --oneline` (branch `submission/diego-rodrigues`)
-- Saída dos scripts de número: [numeros-saida.txt](../docs/numeros-saida.txt)
+- Saída dos scripts de número: [numeros-saida.txt](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/docs/numeros-saida.txt)

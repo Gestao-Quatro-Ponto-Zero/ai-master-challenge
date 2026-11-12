@@ -1,6 +1,6 @@
 # Revisão técnica do plano v1 (11/11/2026)
 
-> Revisão do [02-plano-implementacao.md](02-plano-implementacao.md) na versão de 10/11, por arquitetura de dados, engenharia de software e modelo de negócio. Cada achado foi conferido por script próprio: [analise/eda-04-auditoria-plano-v1.py](eda-04-auditoria-plano-v1.py), [analise/eda-05-relogio-do-trimestre.py](eda-05-relogio-do-trimestre.py) e [analise/eda-06-prototipo-motor-v2.py](eda-06-prototipo-motor-v2.py), com as saídas `.saida.txt` ao lado. Nada aqui vem de leitura; tudo vem de execução.
+> Revisão do [02-plano-implementacao.md](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/planejamento/02-plano-implementacao.md) na versão de 10/11, por arquitetura de dados, engenharia de software e modelo de negócio. Cada achado foi conferido por script próprio: [analise/eda-04-auditoria-plano-v1.py](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/planejamento/eda-04-auditoria-plano-v1.py), [analise/eda-05-relogio-do-trimestre.py](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/planejamento/eda-05-relogio-do-trimestre.py) e [analise/eda-06-prototipo-motor-v2.py](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/planejamento/eda-06-prototipo-motor-v2.py), com as saídas `.saida.txt` ao lado. Nada aqui vem de leitura; tudo vem de execução.
 >
 > O plano v1 era bom no que é raro (process log, backtest, honestidade sobre o que não se sabe) e frágio justamente no que ele mais prometia: a estatística. O v2 nasceu desta revisão.
 
@@ -98,7 +98,7 @@ O sorteio continua na tabela, como piso, com a nota de que o múltiplo contra el
 
 ## 5. O sinal que ninguém usou: o relógio do trimestre
 
-Este é o achado novo da revisão. Conferido em [eda-05](eda-05-relogio-do-trimestre.py), seções A, B, D, E e F.
+Este é o achado novo da revisão. Conferido em [eda-05](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/planejamento/eda-05-relogio-do-trimestre.py), seções A, B, D, E e F.
 
 **O fato.** Nenhum deal com ciclo acima de 30 dias fechou no primeiro mês de um trimestre. Nenhum. O maior ciclo de um fechamento ocorrido num 1º mês é **13 dias**. Nos três trimestres medidos, dos **3.618 deals com 16 a 138 dias abertos no 1º dia de um trimestre, zero decidiram nas quatro semanas seguintes**.
 

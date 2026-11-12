@@ -1,0 +1,25 @@
+from typing import Union
+from typing_extensions import Annotated, TypeAlias
+
+from ..._models import BaseModel, UnionDiscriminator
+from .beta_managed_agents_auto_policy import BetaManagedAgentsAutoPolicy
+from .beta_managed_agents_always_ask_policy import BetaManagedAgentsAlwaysAskPolicy
+from .beta_managed_agents_always_allow_policy import BetaManagedAgentsAlwaysAllowPolicy
+
+__all__ = ["BetaManagedAgentsMCPToolConfig", "PermissionPolicy"]
+
+PermissionPolicy: TypeAlias = Annotated[
+    Union[BetaManagedAgentsAlwaysAllowPolicy, BetaManagedAgentsAlwaysAskPolicy, BetaManagedAgentsAutoPolicy],
+    UnionDiscriminator("type"),
+]
+
+
+class BetaManagedAgentsMCPToolConfig(BaseModel):
+    """Resolved configuration for a specific MCP tool."""
+
+    enabled: bool
+
+    name: str
+
+    permission_policy: PermissionPolicy
+    """Permission policy for tool execution."""

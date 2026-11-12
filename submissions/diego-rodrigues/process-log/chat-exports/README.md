@@ -2,9 +2,9 @@
 
 Export gerado por script a partir dos registros locais do Claude Code. Resultados de ferramenta e instruções de sistema foram omitidos; termos de outros clientes e dados pessoais foram substituídos por `[removido]`. Nenhuma mensagem foi reescrita.
 
-As conversas de outras ferramentas (Perplexity, ChatGPT, Copilot, Gemini) não têm registro local e não estão nesta pasta; o que saiu delas está em [../baseline/](../baseline/), [../fontes-cultura-g4.md](../fontes-cultura-g4.md) e [../agente-personas-config.md](../agente-personas-config.md).
+As conversas de outras ferramentas (Perplexity, ChatGPT, Copilot, Gemini) não têm registro local e não estão nesta pasta; o que saiu delas está em [../baseline/](https://github.com/DiegoAlves-data/ai-master-challenge/tree/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/baseline), [../fontes-cultura-g4.md](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/fontes-cultura-g4.md) e [../agente-personas-config.md](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/agente-personas-config.md).
 
-A coluna "Fase" segue a linha do tempo de [../README.md](../README.md): planejamento, construção e revisão final. As "Tarefas" são as do [plano de implementação](../planejamento/02-plano-implementacao.md).
+A coluna "Fase" segue a linha do tempo de [../README.md](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/README.md): planejamento, construção e revisão final. As "Tarefas" são as do [plano de implementação](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/planejamento/02-plano-implementacao.md).
 
 | Arquivo | Ferramenta e modelo | Data e horário (Brasília) | Mensagens do Diego | Fase | O que esta conversa mostra |
 |---|---|---|---|---|---|

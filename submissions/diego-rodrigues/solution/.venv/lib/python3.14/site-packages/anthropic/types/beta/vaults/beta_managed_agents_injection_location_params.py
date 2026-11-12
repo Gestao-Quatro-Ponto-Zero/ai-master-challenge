@@ -1,0 +1,15 @@
+from __future__ import annotations
+
+from typing_extensions import TypedDict
+
+__all__ = ["BetaManagedAgentsInjectionLocationParams"]
+
+
+class BetaManagedAgentsInjectionLocationParams(TypedDict, total=False):
+    """Where in the outbound request the secret value may be substituted."""
+
+    body: bool
+    """Substitute when the placeholder appears in the request body."""
+
+    header: bool
+    """Substitute when the placeholder appears in a request header value."""

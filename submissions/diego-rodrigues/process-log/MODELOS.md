@@ -27,7 +27,7 @@ Antes de abrir o repositório do desafio, o plano foi escrito e revisado inteira
 | `claude-haiku-5-5` | HTML interno com as etapas, o passo a passo e o modelo recomendado para cada uma | Claude Code (terminal) | não | incluído na assinatura |
 | Perplexity | pesquisa em fontes abertas sobre a cultura comercial e os arquétipos de vendedor, insumo das personas sintéticas | interface web, colado pelo Diego | não — fontes públicas | gratuito |
 
-Conversas exportadas: [chat-exports/](chat-exports/). Documentos que essa fase produziu: [planejamento/](planejamento/).
+Conversas exportadas: [chat-exports/](https://github.com/DiegoAlves-data/ai-master-challenge/tree/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/chat-exports). Documentos que essa fase produziu: [planejamento/](https://github.com/DiegoAlves-data/ai-master-challenge/tree/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/planejamento).
 
 ## Revisão final da submissão
 

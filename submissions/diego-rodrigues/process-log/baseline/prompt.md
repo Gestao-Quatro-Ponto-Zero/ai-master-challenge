@@ -74,7 +74,7 @@ Construa algo que um vendedor possa usar. Não importa a tecnologia — importa 
 
 ### 3. Process log (obrigatório)
 
-Evidências de como você usou IA para construir. Leia o [Guia de Submissão](../../../../submission-guide.md).
+Evidências de como você usou IA para construir. Leia o [Guia de Submissão](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submission-guide.md).
 
 Este challenge é especialmente interessante para quem usa "vibe coding" — Cursor, Claude Code, Replit Agent, v0, etc. **Mostre o processo.**
 

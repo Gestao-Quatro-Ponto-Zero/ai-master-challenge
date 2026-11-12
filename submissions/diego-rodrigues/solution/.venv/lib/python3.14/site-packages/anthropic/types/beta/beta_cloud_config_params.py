@@ -1,0 +1,33 @@
+from __future__ import annotations
+
+from typing import Union, Optional
+from typing_extensions import Literal, Required, TypeAlias, TypedDict
+
+from .beta_packages_params import BetaPackagesParams
+from .beta_limited_network_params import BetaLimitedNetworkParams
+from .beta_unrestricted_network_param import BetaUnrestrictedNetworkParam
+
+__all__ = ["BetaCloudConfigParams", "Networking"]
+
+Networking: TypeAlias = Union[BetaUnrestrictedNetworkParam, BetaLimitedNetworkParams]
+
+
+class BetaCloudConfigParams(TypedDict, total=False):
+    """Request params for `cloud` environment configuration.
+
+    Fields default to null; on update, omitted fields preserve the
+    existing value.
+    """
+
+    type: Required[Literal["cloud"]]
+    """Environment type"""
+
+    networking: Optional[Networking]
+    """Network configuration policy. Omit on update to preserve the existing value."""
+
+    packages: Optional[BetaPackagesParams]
+    """Package manager configuration.
+
+    Under `limited` networking, requires `networking.allow_package_managers` to be
+    `true`. Omit on update to preserve the existing value.
+    """

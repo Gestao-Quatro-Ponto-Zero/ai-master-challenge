@@ -1,0 +1,16 @@
+from typing_extensions import Literal
+
+from ..._models import BaseModel
+
+__all__ = ["BetaWebhookDeploymentUnpausedEventData"]
+
+
+class BetaWebhookDeploymentUnpausedEventData(BaseModel):
+    id: str
+    """ID of the deployment that triggered the event."""
+
+    organization_id: str
+
+    type: Literal["deployment.unpaused"]
+
+    workspace_id: str

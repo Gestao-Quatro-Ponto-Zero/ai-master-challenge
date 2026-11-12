@@ -1,0 +1,47 @@
+from typing import List, Union, Optional
+from datetime import datetime
+from typing_extensions import Literal, Annotated, TypeAlias
+
+from ...._models import BaseModel, UnionDiscriminator
+from .beta_managed_agents_text_block import BetaManagedAgentsTextBlock
+from .beta_managed_agents_image_block import BetaManagedAgentsImageBlock
+from .beta_managed_agents_document_block import BetaManagedAgentsDocumentBlock
+from .beta_managed_agents_redacted_block import BetaManagedAgentsRedactedBlock
+
+__all__ = ["BetaManagedAgentsAgentThreadMessageReceivedEvent", "Content"]
+
+Content: TypeAlias = Annotated[
+    Union[
+        BetaManagedAgentsTextBlock,
+        BetaManagedAgentsImageBlock,
+        BetaManagedAgentsDocumentBlock,
+        BetaManagedAgentsRedactedBlock,
+    ],
+    UnionDiscriminator("type"),
+]
+
+
+class BetaManagedAgentsAgentThreadMessageReceivedEvent(BaseModel):
+    """
+    Delivery event written to the target thread's input stream when an agent-to-agent message arrives.
+    """
+
+    id: str
+    """Unique identifier for this event."""
+
+    content: List[Content]
+    """Message content blocks."""
+
+    from_session_thread_id: str
+    """Public `sthr_` ID of the thread that sent the message."""
+
+    processed_at: datetime
+    """Timestamp when the message was received."""
+
+    type: Literal["agent.thread_message_received"]
+
+    from_agent_name: Optional[str] = None
+    """Name of the callable agent this message came from.
+
+    Absent when received from the primary agent.
+    """

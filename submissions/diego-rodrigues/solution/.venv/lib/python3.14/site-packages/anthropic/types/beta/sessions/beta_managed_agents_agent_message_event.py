@@ -1,0 +1,28 @@
+from typing import List, Union
+from datetime import datetime
+from typing_extensions import Literal, Annotated, TypeAlias
+
+from ...._models import BaseModel, UnionDiscriminator
+from .beta_managed_agents_text_block import BetaManagedAgentsTextBlock
+from .beta_managed_agents_redacted_block import BetaManagedAgentsRedactedBlock
+
+__all__ = ["BetaManagedAgentsAgentMessageEvent", "Content"]
+
+Content: TypeAlias = Annotated[
+    Union[BetaManagedAgentsTextBlock, BetaManagedAgentsRedactedBlock], UnionDiscriminator("type")
+]
+
+
+class BetaManagedAgentsAgentMessageEvent(BaseModel):
+    """An agent response event in the session conversation."""
+
+    id: str
+    """Unique identifier for this event."""
+
+    content: List[Content]
+    """Array of text blocks comprising the agent response."""
+
+    processed_at: datetime
+    """Timestamp when this response was generated."""
+
+    type: Literal["agent.message"]

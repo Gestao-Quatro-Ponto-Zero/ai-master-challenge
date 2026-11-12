@@ -1,6 +1,6 @@
 # Solução — Lead Scorer
 
-Para o revisor técnico. Visão de negócio e resultados: [../README.md](../README.md).
+Para o revisor técnico. Visão de negócio e resultados: [../README.md](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/README.md).
 
 Motor determinístico em Python (pandas) que lê os quatro CSVs do CRM, aprende a janela de decisão e a tabela de destino do histórico, e entrega uma fila por vendedor com explicação por negócio. O front é estático e só lê JSON.
 
@@ -32,7 +32,7 @@ pip install -r requirements.txt -r requirements-ia.txt
 | `app/` | Front estático (HTML, JS, CSS) e os JSON gerados |
 | `config.json`, `janela.json` | Parâmetros e janela aprendida |
 
-Fluxo: `carregar` → `recortar` → `janela` e `aprender` → `pontuar` → `explicar` → `build.py` → `app/data/*.json` → front. O front não contém regra de negócio; campos do contrato em [../docs/contrato.md](../docs/contrato.md).
+Fluxo: `carregar` → `recortar` → `janela` e `aprender` → `pontuar` → `explicar` → `build.py` → `app/data/*.json` → front. O front não contém regra de negócio; campos do contrato em [../docs/contrato.md](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/docs/contrato.md).
 
 ## Comandos
 
@@ -54,15 +54,15 @@ python -m pytest -q --ignore=tests/test_briefing.py --ignore=tests/test_gerar_ia
 
 ## Artefatos gerados
 
-`build.py` grava em `app/data/`: `scored.json` (negócios, filas, vendedores, tabela de destino), `qualidade.json`, `eval.json` (resultado da avaliação), `briefings.json` e `hash.txt`. O mesmo dado gera os mesmos bytes e o mesmo hash. `python -m avaliacao.numeros` imprime os números com rótulo e fonte e regrava `eval.json`; a saída de referência está em [../docs/numeros-saida.txt](../docs/numeros-saida.txt).
+`build.py` grava em `app/data/`: `scored.json` (negócios, filas, vendedores, tabela de destino), `qualidade.json`, `eval.json` (resultado da avaliação), `briefings.json` e `hash.txt`. O mesmo dado gera os mesmos bytes e o mesmo hash. `python -m avaliacao.numeros` imprime os números com rótulo e fonte e regrava `eval.json`; a saída de referência está em [../docs/numeros-saida.txt](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/docs/numeros-saida.txt).
 
 ## Como reproduzir os números
 
-Os resultados desta versão foram conferidos em ambiente limpo, nesta ordem: 68 testes passando; `build.py --hoje 2018-01-01` sem diferença em `app/data/`, com hash `1d22a7f4…eeae20`, igual ao publicado; `python -m avaliacao.numeros` com saída idêntica a `docs/numeros-saida.txt`; `drift.py` sem desvio. Um segundo cálculo, com código próprio e sem importar este motor, está em [../process-log/verificacao/](../process-log/verificacao/).
+Os resultados desta versão foram conferidos em ambiente limpo, nesta ordem: 68 testes passando; `build.py --hoje 2018-01-01` sem diferença em `app/data/`, com hash `1d22a7f4…eeae20`, igual ao publicado; `python -m avaliacao.numeros` com saída idêntica a `docs/numeros-saida.txt`; `drift.py` sem desvio. Um segundo cálculo, com código próprio e sem importar este motor, está em [../process-log/verificacao/](https://github.com/DiegoAlves-data/ai-master-challenge/tree/submission/diego-rodrigues/submissions/diego-rodrigues/process-log/verificacao).
 
 ## Módulo de IA (opcional)
 
-`ia/briefing.py` gera o texto de abertura de cada vendedor com o Haiku 5.5, e `ia/validar.py` recusa qualquer texto cujos números não batam com os fatos, caindo para o modelo fixo. A chave `ANTHROPIC_API_KEY` fica só no ambiente do build e nunca vai ao navegador. **Nesta entrega a IA não está ligada:** a conta da API não tinha créditos e a primeira chamada foi recusada, então `--sem-ia` é o caminho documentado. O caminho crítico do score não depende de IA. Requisitos para ligar em produção: [../docs/deploy-passos.md](../docs/deploy-passos.md).
+`ia/briefing.py` gera o texto de abertura de cada vendedor com o Haiku 5.5, e `ia/validar.py` recusa qualquer texto cujos números não batam com os fatos, caindo para o modelo fixo. A chave `ANTHROPIC_API_KEY` fica só no ambiente do build e nunca vai ao navegador. **Nesta entrega a IA não está ligada:** a conta da API não tinha créditos e a primeira chamada foi recusada, então `--sem-ia` é o caminho documentado. O caminho crítico do score não depende de IA. Requisitos para ligar em produção: [../docs/deploy-passos.md](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/docs/deploy-passos.md).
 
 ## Solução de problemas
 
@@ -72,4 +72,4 @@ Os resultados desta versão foram conferidos em ambiente limpo, nesta ordem: 68 
 
 ## Segurança e decisões técnicas
 
-Sem chave no repositório nem no front; a demo pública não faz chamadas externas. Sem login: qualquer pessoa com o endereço vê os dados de todos os vendedores, aceitável para dados fictícios e inaceitável em operação real. A janela e a tabela são aprendidas do histórico e `recortar` é a única entrada do dado, igual em produção e no backtest, para que o futuro não vaze. Parâmetros em `config.json`; limites completos em [../docs/limitacoes.md](../docs/limitacoes.md).
+Sem chave no repositório nem no front; a demo pública não faz chamadas externas. Sem login: qualquer pessoa com o endereço vê os dados de todos os vendedores, aceitável para dados fictícios e inaceitável em operação real. A janela e a tabela são aprendidas do histórico e `recortar` é a única entrada do dado, igual em produção e no backtest, para que o futuro não vaze. Parâmetros em `config.json`; limites completos em [../docs/limitacoes.md](https://github.com/DiegoAlves-data/ai-master-challenge/blob/submission/diego-rodrigues/submissions/diego-rodrigues/docs/limitacoes.md).

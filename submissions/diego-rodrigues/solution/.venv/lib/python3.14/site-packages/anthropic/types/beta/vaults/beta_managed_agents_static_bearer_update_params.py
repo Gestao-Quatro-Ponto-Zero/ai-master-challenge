@@ -1,0 +1,18 @@
+from __future__ import annotations
+
+from typing import Optional
+from typing_extensions import Literal, Required, TypedDict
+
+__all__ = ["BetaManagedAgentsStaticBearerUpdateParams"]
+
+
+class BetaManagedAgentsStaticBearerUpdateParams(TypedDict, total=False):
+    """Parameters for updating a static bearer token credential.
+
+    The `mcp_server_url` is immutable.
+    """
+
+    type: Required[Literal["static_bearer"]]
+
+    token: Optional[str]
+    """The new static bearer token to replace the stored one."""

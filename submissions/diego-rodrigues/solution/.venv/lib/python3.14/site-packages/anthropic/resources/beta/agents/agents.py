@@ -1,0 +1,1114 @@
+from __future__ import annotations
+
+from typing import Dict, List, Union, Iterable, Optional
+from datetime import datetime
+from itertools import chain
+
+import httpx2
+
+from .versions import (
+    Versions,
+    AsyncVersions,
+    VersionsWithRawResponse,
+    AsyncVersionsWithRawResponse,
+    VersionsWithStreamingResponse,
+    AsyncVersionsWithStreamingResponse,
+)
+from ...._types import Body, Omit, Query, Headers, NotGiven, omit, not_given
+from ...._utils import is_given, path_template, strip_not_given
+from ...._compat import cached_property
+from ...._resource import SyncAPIResource, AsyncAPIResource
+from ...._response import (
+    to_raw_response_wrapper,
+    to_streamed_response_wrapper,
+    async_to_raw_response_wrapper,
+    async_to_streamed_response_wrapper,
+)
+from ....pagination import SyncPageCursor, AsyncPageCursor
+from ....types.beta import (
+    BetaManagedAgentsMultiagentParams,
+    BetaManagedAgentsExecutionIdentityParams,
+    agent_create_params,
+    agent_update_params,
+)
+from ...._base_client import AsyncPaginator, make_request_options
+from ....types.anthropic_beta_param import AnthropicBetaParam
+from ....types.beta.beta_managed_agents_agent import BetaManagedAgentsAgent
+from ....types.beta.beta_managed_agents_skill_params import BetaManagedAgentsSkillParams
+from ....types.beta.beta_managed_agents_multiagent_params import BetaManagedAgentsMultiagentParams
+from ....types.beta.beta_managed_agents_url_mcp_server_params import BetaManagedAgentsURLMCPServerParams
+from ....types.beta.beta_managed_agents_execution_identity_params import BetaManagedAgentsExecutionIdentityParams
+
+__all__ = ["Agents", "AsyncAgents"]
+
+
+class Agents(SyncAPIResource):
+    @cached_property
+    def versions(self) -> Versions:
+        return Versions(self._client)
+
+    @cached_property
+    def with_raw_response(self) -> AgentsWithRawResponse:
+        """
+        This property can be used as a prefix for any HTTP method call to return
+        the raw response object instead of the parsed content.
+
+        For more information, see https://platform.claude.com/docs/en/api/sdks/python
+        """
+        return AgentsWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AgentsWithStreamingResponse:
+        """
+        An alternative to `.with_raw_response` that doesn't eagerly read the response body.
+
+        For more information, see https://platform.claude.com/docs/en/api/sdks/python
+        """
+        return AgentsWithStreamingResponse(self)
+
+    def create(
+        self,
+        *,
+        model: agent_create_params.Model,
+        name: str,
+        description: Optional[str] | Omit = omit,
+        execution_identity: Optional[BetaManagedAgentsExecutionIdentityParams] | Omit = omit,
+        mcp_servers: Iterable[BetaManagedAgentsURLMCPServerParams] | Omit = omit,
+        metadata: Dict[str, str] | Omit = omit,
+        multiagent: Optional[BetaManagedAgentsMultiagentParams] | Omit = omit,
+        skills: Iterable[BetaManagedAgentsSkillParams] | Omit = omit,
+        system: Optional[str] | Omit = omit,
+        tools: Iterable[agent_create_params.Tool] | Omit = omit,
+        betas: List[AnthropicBetaParam] | Omit = omit,
+        workspace_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx2.Timeout | None | NotGiven = not_given,
+    ) -> BetaManagedAgentsAgent:
+        """Create Agent
+
+        Args:
+          model: Model identifier.
+
+        Accepts the
+              [model string](https://platform.claude.com/docs/en/about-claude/models/overview#latest-models-comparison),
+              e.g. `claude-opus-5-5`, or a `model_config` object for additional configuration
+              control
+
+          name: Human-readable name for the agent.
+
+          description: Description of what the agent does.
+
+          execution_identity: Execution principal for runs of this agent. Omitting it, sending null, or
+              sending `{"type": "service_account"}` stores the default.
+
+          mcp_servers: MCP servers this agent connects to. Maximum 20. Names must be unique within the
+              array. Every server must be referenced by an `mcp_toolset` in `tools`;
+              unreferenced servers are rejected. See the
+              [MCP connector guide](https://platform.claude.com/docs/en/managed-agents/mcp-connector).
+
+          metadata: Arbitrary key-value metadata. Maximum 16 pairs, keys up to 64 chars, values up
+              to 512 chars.
+
+          multiagent: Multiagent orchestration configuration.
+
+          skills: Skills available to the agent.
+
+          system: System prompt for the agent.
+
+          tools: Tool configurations available to the agent. Maximum of 256 tools across all
+              toolsets allowed.
+
+          betas: This endpoint is in beta: requests must send `managed-agents-2026-04-01` in this
+              header.
+
+          workspace_id: Optional header to select the Workspace for this request. The value is a
+              Workspace ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+
+              Only needed for credentials that can act on more than one Workspace. A
+              credential that belongs to a specific Workspace may omit it; if sent, it must
+              match that Workspace.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        extra_headers = {
+            **strip_not_given(
+                {
+                    "anthropic-beta": ",".join(chain((str(e) for e in betas), ["managed-agents-2026-04-01"]))
+                    if is_given(betas)
+                    else not_given,
+                    "anthropic-workspace-id": workspace_id,
+                }
+            ),
+            **(extra_headers or {}),
+        }
+        extra_headers = {"anthropic-beta": "managed-agents-2026-04-01", **(extra_headers or {})}
+        return self._post(
+            "/v1/agents",
+            body={
+                "model": model,
+                "name": name,
+                "description": description,
+                "execution_identity": execution_identity,
+                "mcp_servers": mcp_servers,
+                "metadata": metadata,
+                "multiagent": multiagent,
+                "skills": skills,
+                "system": system,
+                "tools": tools,
+            },
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                qualifiers={"beta": "true"},
+                span_name="anthropic.agents.create",
+                span_route="/v1/agents",
+                span_created_id="gen_ai.agent.id",
+            ),
+            cast_to=BetaManagedAgentsAgent,
+        )
+
+    def retrieve(
+        self,
+        agent_id: str,
+        *,
+        version: int | Omit = omit,
+        betas: List[AnthropicBetaParam] | Omit = omit,
+        workspace_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx2.Timeout | None | NotGiven = not_given,
+    ) -> BetaManagedAgentsAgent:
+        """
+        Get Agent
+
+        Args:
+          agent_id: Unique identifier of the agent to retrieve.
+
+          version: Agent version. Omit for the most recent version. Must be at least 1 if
+              specified.
+
+          betas: This endpoint is in beta: requests must send `managed-agents-2026-04-01` in this
+              header.
+
+          workspace_id: Optional header to select the Workspace for this request. The value is a
+              Workspace ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+
+              Only needed for credentials that can act on more than one Workspace. A
+              credential that belongs to a specific Workspace may omit it; if sent, it must
+              match that Workspace.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not agent_id:
+            raise ValueError(f"Expected a non-empty value for `agent_id` but received {agent_id!r}")
+        extra_headers = {
+            **strip_not_given(
+                {
+                    "anthropic-beta": ",".join(chain((str(e) for e in betas), ["managed-agents-2026-04-01"]))
+                    if is_given(betas)
+                    else not_given,
+                    "anthropic-workspace-id": workspace_id,
+                }
+            ),
+            **(extra_headers or {}),
+        }
+        extra_headers = {"anthropic-beta": "managed-agents-2026-04-01", **(extra_headers or {})}
+        return self._get(
+            path_template("/v1/agents/{agent_id}", agent_id=agent_id),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query={"version": version},
+                qualifiers={"beta": "true"},
+                span_name="anthropic.agents.retrieve",
+                span_route="/v1/agents/{agent_id}",
+                span_attributes={"gen_ai.agent.id": agent_id},
+            ),
+            cast_to=BetaManagedAgentsAgent,
+        )
+
+    def update(
+        self,
+        agent_id: str,
+        *,
+        description: Optional[str] | Omit = omit,
+        execution_identity: Optional[BetaManagedAgentsExecutionIdentityParams] | Omit = omit,
+        mcp_servers: Optional[Iterable[BetaManagedAgentsURLMCPServerParams]] | Omit = omit,
+        metadata: Optional[Dict[str, Optional[str]]] | Omit = omit,
+        model: agent_update_params.Model | Omit = omit,
+        multiagent: Optional[BetaManagedAgentsMultiagentParams] | Omit = omit,
+        name: str | Omit = omit,
+        skills: Optional[Iterable[BetaManagedAgentsSkillParams]] | Omit = omit,
+        system: Optional[str] | Omit = omit,
+        tools: Optional[Iterable[agent_update_params.Tool]] | Omit = omit,
+        version: int | Omit = omit,
+        betas: List[AnthropicBetaParam] | Omit = omit,
+        workspace_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx2.Timeout | None | NotGiven = not_given,
+    ) -> BetaManagedAgentsAgent:
+        """
+        Update Agent
+
+        Args:
+          agent_id: Unique identifier of the agent to update.
+
+          description: Description. Omit to preserve; send empty string or null to clear.
+
+          execution_identity: Execution principal for runs of this agent. Full replacement. Omit to preserve;
+              send null or `{"type": "service_account"}` to restore the default.
+
+          mcp_servers: MCP servers. Full replacement. Omit to preserve; send empty array or `null` to
+              clear. Names must be unique. Maximum 20. Every server must be referenced by an
+              `mcp_toolset` in the agent's resulting `tools`; unreferenced servers are
+              rejected. See the
+              [MCP connector guide](https://platform.claude.com/docs/en/managed-agents/mcp-connector).
+
+          metadata: Metadata patch. Set a key to a string to upsert it, or to null to delete it.
+              Omit the field to preserve. The stored bag is limited to 16 keys (up to 64 chars
+              each) with values up to 512 chars.
+
+          model: Model identifier. Accepts the
+              [model string](https://platform.claude.com/docs/en/about-claude/models/overview#latest-models-comparison),
+              e.g. `claude-opus-5-5`, or a `model_config` object for additional configuration
+              control. Omit to preserve. Cannot be cleared.
+
+          multiagent: Multiagent orchestration configuration. Full replacement. Omit to preserve; send
+              null to clear.
+
+          name: Human-readable name. Must be non-empty. Omit to preserve. Cannot be cleared.
+
+          skills: Skills. Full replacement. Omit to preserve; send empty array or null to clear.
+
+          system: System prompt. Omit to preserve; send empty string or null to clear.
+
+          tools: Tool configurations available to the agent. Full replacement. Omit to preserve;
+              send empty array or null to clear. Maximum of 256 tools across all toolsets
+              allowed.
+
+          version: The agent's current version, used to prevent concurrent overwrites. Obtain this
+              value from a create or retrieve response. Must be at least 1 if specified. When
+              supplied, the request fails if it does not match the server's current version;
+              omit to apply the update unconditionally.
+
+          betas: This endpoint is in beta: requests must send `managed-agents-2026-04-01` in this
+              header.
+
+          workspace_id: Optional header to select the Workspace for this request. The value is a
+              Workspace ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+
+              Only needed for credentials that can act on more than one Workspace. A
+              credential that belongs to a specific Workspace may omit it; if sent, it must
+              match that Workspace.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not agent_id:
+            raise ValueError(f"Expected a non-empty value for `agent_id` but received {agent_id!r}")
+        extra_headers = {
+            **strip_not_given(
+                {
+                    "anthropic-beta": ",".join(chain((str(e) for e in betas), ["managed-agents-2026-04-01"]))
+                    if is_given(betas)
+                    else not_given,
+                    "anthropic-workspace-id": workspace_id,
+                }
+            ),
+            **(extra_headers or {}),
+        }
+        extra_headers = {"anthropic-beta": "managed-agents-2026-04-01", **(extra_headers or {})}
+        return self._post(
+            path_template("/v1/agents/{agent_id}", agent_id=agent_id),
+            body={
+                "description": description,
+                "execution_identity": execution_identity,
+                "mcp_servers": mcp_servers,
+                "metadata": metadata,
+                "model": model,
+                "multiagent": multiagent,
+                "name": name,
+                "skills": skills,
+                "system": system,
+                "tools": tools,
+                "version": version,
+            },
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                qualifiers={"beta": "true"},
+                span_name="anthropic.agents.update",
+                span_route="/v1/agents/{agent_id}",
+                span_attributes={"gen_ai.agent.id": agent_id},
+            ),
+            cast_to=BetaManagedAgentsAgent,
+        )
+
+    def list(
+        self,
+        *,
+        created_at_gte: Union[str, datetime] | Omit = omit,
+        created_at_lte: Union[str, datetime] | Omit = omit,
+        include_archived: bool | Omit = omit,
+        limit: int | Omit = omit,
+        page: str | Omit = omit,
+        betas: List[AnthropicBetaParam] | Omit = omit,
+        workspace_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx2.Timeout | None | NotGiven = not_given,
+    ) -> SyncPageCursor[BetaManagedAgentsAgent]:
+        """
+        List Agents
+
+        Args:
+          created_at_gte: Return agents created at or after this time (inclusive).
+
+          created_at_lte: Return agents created at or before this time (inclusive).
+
+          include_archived: Include archived agents in results. Defaults to false.
+
+          limit: Maximum results per page. Default 20, maximum 100.
+
+          page: Opaque pagination cursor from a previous response.
+
+          betas: This endpoint is in beta: requests must send `managed-agents-2026-04-01` in this
+              header.
+
+          workspace_id: Optional header to select the Workspace for this request. The value is a
+              Workspace ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+
+              Only needed for credentials that can act on more than one Workspace. A
+              credential that belongs to a specific Workspace may omit it; if sent, it must
+              match that Workspace.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        extra_headers = {
+            **strip_not_given(
+                {
+                    "anthropic-beta": ",".join(chain((str(e) for e in betas), ["managed-agents-2026-04-01"]))
+                    if is_given(betas)
+                    else not_given,
+                    "anthropic-workspace-id": workspace_id,
+                }
+            ),
+            **(extra_headers or {}),
+        }
+        extra_headers = {"anthropic-beta": "managed-agents-2026-04-01", **(extra_headers or {})}
+        return self._get_api_list(
+            "/v1/agents",
+            page=SyncPageCursor[BetaManagedAgentsAgent],
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query={
+                    "created_at[gte]": created_at_gte,
+                    "created_at[lte]": created_at_lte,
+                    "include_archived": include_archived,
+                    "limit": limit,
+                    "page": page,
+                },
+                qualifiers={"beta": "true"},
+                span_name="anthropic.agents.list",
+                span_route="/v1/agents",
+            ),
+            model=BetaManagedAgentsAgent,
+        )
+
+    def archive(
+        self,
+        agent_id: str,
+        *,
+        betas: List[AnthropicBetaParam] | Omit = omit,
+        workspace_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx2.Timeout | None | NotGiven = not_given,
+    ) -> BetaManagedAgentsAgent:
+        """
+        Archive Agent
+
+        Args:
+          agent_id: Unique identifier of the agent to archive.
+
+          betas: This endpoint is in beta: requests must send `managed-agents-2026-04-01` in this
+              header.
+
+          workspace_id: Optional header to select the Workspace for this request. The value is a
+              Workspace ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+
+              Only needed for credentials that can act on more than one Workspace. A
+              credential that belongs to a specific Workspace may omit it; if sent, it must
+              match that Workspace.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not agent_id:
+            raise ValueError(f"Expected a non-empty value for `agent_id` but received {agent_id!r}")
+        extra_headers = {
+            **strip_not_given(
+                {
+                    "anthropic-beta": ",".join(chain((str(e) for e in betas), ["managed-agents-2026-04-01"]))
+                    if is_given(betas)
+                    else not_given,
+                    "anthropic-workspace-id": workspace_id,
+                }
+            ),
+            **(extra_headers or {}),
+        }
+        extra_headers = {"anthropic-beta": "managed-agents-2026-04-01", **(extra_headers or {})}
+        return self._post(
+            path_template("/v1/agents/{agent_id}/archive", agent_id=agent_id),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                qualifiers={"beta": "true"},
+                span_name="anthropic.agents.archive",
+                span_route="/v1/agents/{agent_id}/archive",
+                span_attributes={"gen_ai.agent.id": agent_id},
+            ),
+            cast_to=BetaManagedAgentsAgent,
+        )
+
+
+class AsyncAgents(AsyncAPIResource):
+    @cached_property
+    def versions(self) -> AsyncVersions:
+        return AsyncVersions(self._client)
+
+    @cached_property
+    def with_raw_response(self) -> AsyncAgentsWithRawResponse:
+        """
+        This property can be used as a prefix for any HTTP method call to return
+        the raw response object instead of the parsed content.
+
+        For more information, see https://platform.claude.com/docs/en/api/sdks/python
+        """
+        return AsyncAgentsWithRawResponse(self)
+
+    @cached_property
+    def with_streaming_response(self) -> AsyncAgentsWithStreamingResponse:
+        """
+        An alternative to `.with_raw_response` that doesn't eagerly read the response body.
+
+        For more information, see https://platform.claude.com/docs/en/api/sdks/python
+        """
+        return AsyncAgentsWithStreamingResponse(self)
+
+    async def create(
+        self,
+        *,
+        model: agent_create_params.Model,
+        name: str,
+        description: Optional[str] | Omit = omit,
+        execution_identity: Optional[BetaManagedAgentsExecutionIdentityParams] | Omit = omit,
+        mcp_servers: Iterable[BetaManagedAgentsURLMCPServerParams] | Omit = omit,
+        metadata: Dict[str, str] | Omit = omit,
+        multiagent: Optional[BetaManagedAgentsMultiagentParams] | Omit = omit,
+        skills: Iterable[BetaManagedAgentsSkillParams] | Omit = omit,
+        system: Optional[str] | Omit = omit,
+        tools: Iterable[agent_create_params.Tool] | Omit = omit,
+        betas: List[AnthropicBetaParam] | Omit = omit,
+        workspace_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx2.Timeout | None | NotGiven = not_given,
+    ) -> BetaManagedAgentsAgent:
+        """Create Agent
+
+        Args:
+          model: Model identifier.
+
+        Accepts the
+              [model string](https://platform.claude.com/docs/en/about-claude/models/overview#latest-models-comparison),
+              e.g. `claude-opus-5-5`, or a `model_config` object for additional configuration
+              control
+
+          name: Human-readable name for the agent.
+
+          description: Description of what the agent does.
+
+          execution_identity: Execution principal for runs of this agent. Omitting it, sending null, or
+              sending `{"type": "service_account"}` stores the default.
+
+          mcp_servers: MCP servers this agent connects to. Maximum 20. Names must be unique within the
+              array. Every server must be referenced by an `mcp_toolset` in `tools`;
+              unreferenced servers are rejected. See the
+              [MCP connector guide](https://platform.claude.com/docs/en/managed-agents/mcp-connector).
+
+          metadata: Arbitrary key-value metadata. Maximum 16 pairs, keys up to 64 chars, values up
+              to 512 chars.
+
+          multiagent: Multiagent orchestration configuration.
+
+          skills: Skills available to the agent.
+
+          system: System prompt for the agent.
+
+          tools: Tool configurations available to the agent. Maximum of 256 tools across all
+              toolsets allowed.
+
+          betas: This endpoint is in beta: requests must send `managed-agents-2026-04-01` in this
+              header.
+
+          workspace_id: Optional header to select the Workspace for this request. The value is a
+              Workspace ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+
+              Only needed for credentials that can act on more than one Workspace. A
+              credential that belongs to a specific Workspace may omit it; if sent, it must
+              match that Workspace.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        extra_headers = {
+            **strip_not_given(
+                {
+                    "anthropic-beta": ",".join(chain((str(e) for e in betas), ["managed-agents-2026-04-01"]))
+                    if is_given(betas)
+                    else not_given,
+                    "anthropic-workspace-id": workspace_id,
+                }
+            ),
+            **(extra_headers or {}),
+        }
+        extra_headers = {"anthropic-beta": "managed-agents-2026-04-01", **(extra_headers or {})}
+        return await self._post(
+            "/v1/agents",
+            body={
+                "model": model,
+                "name": name,
+                "description": description,
+                "execution_identity": execution_identity,
+                "mcp_servers": mcp_servers,
+                "metadata": metadata,
+                "multiagent": multiagent,
+                "skills": skills,
+                "system": system,
+                "tools": tools,
+            },
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                qualifiers={"beta": "true"},
+                span_name="anthropic.agents.create",
+                span_route="/v1/agents",
+                span_created_id="gen_ai.agent.id",
+            ),
+            cast_to=BetaManagedAgentsAgent,
+        )
+
+    async def retrieve(
+        self,
+        agent_id: str,
+        *,
+        version: int | Omit = omit,
+        betas: List[AnthropicBetaParam] | Omit = omit,
+        workspace_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx2.Timeout | None | NotGiven = not_given,
+    ) -> BetaManagedAgentsAgent:
+        """
+        Get Agent
+
+        Args:
+          agent_id: Unique identifier of the agent to retrieve.
+
+          version: Agent version. Omit for the most recent version. Must be at least 1 if
+              specified.
+
+          betas: This endpoint is in beta: requests must send `managed-agents-2026-04-01` in this
+              header.
+
+          workspace_id: Optional header to select the Workspace for this request. The value is a
+              Workspace ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+
+              Only needed for credentials that can act on more than one Workspace. A
+              credential that belongs to a specific Workspace may omit it; if sent, it must
+              match that Workspace.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not agent_id:
+            raise ValueError(f"Expected a non-empty value for `agent_id` but received {agent_id!r}")
+        extra_headers = {
+            **strip_not_given(
+                {
+                    "anthropic-beta": ",".join(chain((str(e) for e in betas), ["managed-agents-2026-04-01"]))
+                    if is_given(betas)
+                    else not_given,
+                    "anthropic-workspace-id": workspace_id,
+                }
+            ),
+            **(extra_headers or {}),
+        }
+        extra_headers = {"anthropic-beta": "managed-agents-2026-04-01", **(extra_headers or {})}
+        return await self._get(
+            path_template("/v1/agents/{agent_id}", agent_id=agent_id),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query={"version": version},
+                qualifiers={"beta": "true"},
+                span_name="anthropic.agents.retrieve",
+                span_route="/v1/agents/{agent_id}",
+                span_attributes={"gen_ai.agent.id": agent_id},
+            ),
+            cast_to=BetaManagedAgentsAgent,
+        )
+
+    async def update(
+        self,
+        agent_id: str,
+        *,
+        description: Optional[str] | Omit = omit,
+        execution_identity: Optional[BetaManagedAgentsExecutionIdentityParams] | Omit = omit,
+        mcp_servers: Optional[Iterable[BetaManagedAgentsURLMCPServerParams]] | Omit = omit,
+        metadata: Optional[Dict[str, Optional[str]]] | Omit = omit,
+        model: agent_update_params.Model | Omit = omit,
+        multiagent: Optional[BetaManagedAgentsMultiagentParams] | Omit = omit,
+        name: str | Omit = omit,
+        skills: Optional[Iterable[BetaManagedAgentsSkillParams]] | Omit = omit,
+        system: Optional[str] | Omit = omit,
+        tools: Optional[Iterable[agent_update_params.Tool]] | Omit = omit,
+        version: int | Omit = omit,
+        betas: List[AnthropicBetaParam] | Omit = omit,
+        workspace_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx2.Timeout | None | NotGiven = not_given,
+    ) -> BetaManagedAgentsAgent:
+        """
+        Update Agent
+
+        Args:
+          agent_id: Unique identifier of the agent to update.
+
+          description: Description. Omit to preserve; send empty string or null to clear.
+
+          execution_identity: Execution principal for runs of this agent. Full replacement. Omit to preserve;
+              send null or `{"type": "service_account"}` to restore the default.
+
+          mcp_servers: MCP servers. Full replacement. Omit to preserve; send empty array or `null` to
+              clear. Names must be unique. Maximum 20. Every server must be referenced by an
+              `mcp_toolset` in the agent's resulting `tools`; unreferenced servers are
+              rejected. See the
+              [MCP connector guide](https://platform.claude.com/docs/en/managed-agents/mcp-connector).
+
+          metadata: Metadata patch. Set a key to a string to upsert it, or to null to delete it.
+              Omit the field to preserve. The stored bag is limited to 16 keys (up to 64 chars
+              each) with values up to 512 chars.
+
+          model: Model identifier. Accepts the
+              [model string](https://platform.claude.com/docs/en/about-claude/models/overview#latest-models-comparison),
+              e.g. `claude-opus-5-5`, or a `model_config` object for additional configuration
+              control. Omit to preserve. Cannot be cleared.
+
+          multiagent: Multiagent orchestration configuration. Full replacement. Omit to preserve; send
+              null to clear.
+
+          name: Human-readable name. Must be non-empty. Omit to preserve. Cannot be cleared.
+
+          skills: Skills. Full replacement. Omit to preserve; send empty array or null to clear.
+
+          system: System prompt. Omit to preserve; send empty string or null to clear.
+
+          tools: Tool configurations available to the agent. Full replacement. Omit to preserve;
+              send empty array or null to clear. Maximum of 256 tools across all toolsets
+              allowed.
+
+          version: The agent's current version, used to prevent concurrent overwrites. Obtain this
+              value from a create or retrieve response. Must be at least 1 if specified. When
+              supplied, the request fails if it does not match the server's current version;
+              omit to apply the update unconditionally.
+
+          betas: This endpoint is in beta: requests must send `managed-agents-2026-04-01` in this
+              header.
+
+          workspace_id: Optional header to select the Workspace for this request. The value is a
+              Workspace ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+
+              Only needed for credentials that can act on more than one Workspace. A
+              credential that belongs to a specific Workspace may omit it; if sent, it must
+              match that Workspace.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not agent_id:
+            raise ValueError(f"Expected a non-empty value for `agent_id` but received {agent_id!r}")
+        extra_headers = {
+            **strip_not_given(
+                {
+                    "anthropic-beta": ",".join(chain((str(e) for e in betas), ["managed-agents-2026-04-01"]))
+                    if is_given(betas)
+                    else not_given,
+                    "anthropic-workspace-id": workspace_id,
+                }
+            ),
+            **(extra_headers or {}),
+        }
+        extra_headers = {"anthropic-beta": "managed-agents-2026-04-01", **(extra_headers or {})}
+        return await self._post(
+            path_template("/v1/agents/{agent_id}", agent_id=agent_id),
+            body={
+                "description": description,
+                "execution_identity": execution_identity,
+                "mcp_servers": mcp_servers,
+                "metadata": metadata,
+                "model": model,
+                "multiagent": multiagent,
+                "name": name,
+                "skills": skills,
+                "system": system,
+                "tools": tools,
+                "version": version,
+            },
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                qualifiers={"beta": "true"},
+                span_name="anthropic.agents.update",
+                span_route="/v1/agents/{agent_id}",
+                span_attributes={"gen_ai.agent.id": agent_id},
+            ),
+            cast_to=BetaManagedAgentsAgent,
+        )
+
+    def list(
+        self,
+        *,
+        created_at_gte: Union[str, datetime] | Omit = omit,
+        created_at_lte: Union[str, datetime] | Omit = omit,
+        include_archived: bool | Omit = omit,
+        limit: int | Omit = omit,
+        page: str | Omit = omit,
+        betas: List[AnthropicBetaParam] | Omit = omit,
+        workspace_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx2.Timeout | None | NotGiven = not_given,
+    ) -> AsyncPaginator[BetaManagedAgentsAgent, AsyncPageCursor[BetaManagedAgentsAgent]]:
+        """
+        List Agents
+
+        Args:
+          created_at_gte: Return agents created at or after this time (inclusive).
+
+          created_at_lte: Return agents created at or before this time (inclusive).
+
+          include_archived: Include archived agents in results. Defaults to false.
+
+          limit: Maximum results per page. Default 20, maximum 100.
+
+          page: Opaque pagination cursor from a previous response.
+
+          betas: This endpoint is in beta: requests must send `managed-agents-2026-04-01` in this
+              header.
+
+          workspace_id: Optional header to select the Workspace for this request. The value is a
+              Workspace ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+
+              Only needed for credentials that can act on more than one Workspace. A
+              credential that belongs to a specific Workspace may omit it; if sent, it must
+              match that Workspace.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        extra_headers = {
+            **strip_not_given(
+                {
+                    "anthropic-beta": ",".join(chain((str(e) for e in betas), ["managed-agents-2026-04-01"]))
+                    if is_given(betas)
+                    else not_given,
+                    "anthropic-workspace-id": workspace_id,
+                }
+            ),
+            **(extra_headers or {}),
+        }
+        extra_headers = {"anthropic-beta": "managed-agents-2026-04-01", **(extra_headers or {})}
+        return self._get_api_list(
+            "/v1/agents",
+            page=AsyncPageCursor[BetaManagedAgentsAgent],
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                query={
+                    "created_at[gte]": created_at_gte,
+                    "created_at[lte]": created_at_lte,
+                    "include_archived": include_archived,
+                    "limit": limit,
+                    "page": page,
+                },
+                qualifiers={"beta": "true"},
+                span_name="anthropic.agents.list",
+                span_route="/v1/agents",
+            ),
+            model=BetaManagedAgentsAgent,
+        )
+
+    async def archive(
+        self,
+        agent_id: str,
+        *,
+        betas: List[AnthropicBetaParam] | Omit = omit,
+        workspace_id: str | Omit = omit,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx2.Timeout | None | NotGiven = not_given,
+    ) -> BetaManagedAgentsAgent:
+        """
+        Archive Agent
+
+        Args:
+          agent_id: Unique identifier of the agent to archive.
+
+          betas: This endpoint is in beta: requests must send `managed-agents-2026-04-01` in this
+              header.
+
+          workspace_id: Optional header to select the Workspace for this request. The value is a
+              Workspace ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+
+              Only needed for credentials that can act on more than one Workspace. A
+              credential that belongs to a specific Workspace may omit it; if sent, it must
+              match that Workspace.
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not agent_id:
+            raise ValueError(f"Expected a non-empty value for `agent_id` but received {agent_id!r}")
+        extra_headers = {
+            **strip_not_given(
+                {
+                    "anthropic-beta": ",".join(chain((str(e) for e in betas), ["managed-agents-2026-04-01"]))
+                    if is_given(betas)
+                    else not_given,
+                    "anthropic-workspace-id": workspace_id,
+                }
+            ),
+            **(extra_headers or {}),
+        }
+        extra_headers = {"anthropic-beta": "managed-agents-2026-04-01", **(extra_headers or {})}
+        return await self._post(
+            path_template("/v1/agents/{agent_id}/archive", agent_id=agent_id),
+            options=make_request_options(
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                qualifiers={"beta": "true"},
+                span_name="anthropic.agents.archive",
+                span_route="/v1/agents/{agent_id}/archive",
+                span_attributes={"gen_ai.agent.id": agent_id},
+            ),
+            cast_to=BetaManagedAgentsAgent,
+        )
+
+
+class AgentsWithRawResponse:
+    def __init__(self, agents: Agents) -> None:
+        self._agents = agents
+
+        self.create = to_raw_response_wrapper(
+            agents.create,
+        )
+        self.retrieve = to_raw_response_wrapper(
+            agents.retrieve,
+        )
+        self.update = to_raw_response_wrapper(
+            agents.update,
+        )
+        self.list = to_raw_response_wrapper(
+            agents.list,
+        )
+        self.archive = to_raw_response_wrapper(
+            agents.archive,
+        )
+
+    @cached_property
+    def versions(self) -> VersionsWithRawResponse:
+        return VersionsWithRawResponse(self._agents.versions)
+
+
+class AsyncAgentsWithRawResponse:
+    def __init__(self, agents: AsyncAgents) -> None:
+        self._agents = agents
+
+        self.create = async_to_raw_response_wrapper(
+            agents.create,
+        )
+        self.retrieve = async_to_raw_response_wrapper(
+            agents.retrieve,
+        )
+        self.update = async_to_raw_response_wrapper(
+            agents.update,
+        )
+        self.list = async_to_raw_response_wrapper(
+            agents.list,
+        )
+        self.archive = async_to_raw_response_wrapper(
+            agents.archive,
+        )
+
+    @cached_property
+    def versions(self) -> AsyncVersionsWithRawResponse:
+        return AsyncVersionsWithRawResponse(self._agents.versions)
+
+
+class AgentsWithStreamingResponse:
+    def __init__(self, agents: Agents) -> None:
+        self._agents = agents
+
+        self.create = to_streamed_response_wrapper(
+            agents.create,
+        )
+        self.retrieve = to_streamed_response_wrapper(
+            agents.retrieve,
+        )
+        self.update = to_streamed_response_wrapper(
+            agents.update,
+        )
+        self.list = to_streamed_response_wrapper(
+            agents.list,
+        )
+        self.archive = to_streamed_response_wrapper(
+            agents.archive,
+        )
+
+    @cached_property
+    def versions(self) -> VersionsWithStreamingResponse:
+        return VersionsWithStreamingResponse(self._agents.versions)
+
+
+class AsyncAgentsWithStreamingResponse:
+    def __init__(self, agents: AsyncAgents) -> None:
+        self._agents = agents
+
+        self.create = async_to_streamed_response_wrapper(
+            agents.create,
+        )
+        self.retrieve = async_to_streamed_response_wrapper(
+            agents.retrieve,
+        )
+        self.update = async_to_streamed_response_wrapper(
+            agents.update,
+        )
+        self.list = async_to_streamed_response_wrapper(
+            agents.list,
+        )
+        self.archive = async_to_streamed_response_wrapper(
+            agents.archive,
+        )
+
+    @cached_property
+    def versions(self) -> AsyncVersionsWithStreamingResponse:
+        return AsyncVersionsWithStreamingResponse(self._agents.versions)
