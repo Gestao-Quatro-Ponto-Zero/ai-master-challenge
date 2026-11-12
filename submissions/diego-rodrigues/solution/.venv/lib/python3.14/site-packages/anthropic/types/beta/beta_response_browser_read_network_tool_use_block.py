@@ -1,8 +1,0 @@
-from .beta_browser_read_network_tool_use_block import BetaBrowserReadNetworkToolUseBlock
-
-__all__ = ["BetaResponseBrowserReadNetworkToolUseBlock"]
-
-BetaResponseBrowserReadNetworkToolUseBlock = BetaBrowserReadNetworkToolUseBlock
-"""
-BetaResponseBrowserReadNetworkToolUseBlock has been renamed to BetaBrowserReadNetworkToolUseBlock
-"""

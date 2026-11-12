@@ -1,8 +1,0 @@
-from .beta_browser_javascript_exec_tool_use_block import BetaBrowserJavascriptExecToolUseBlock
-
-__all__ = ["BetaResponseBrowserJavascriptExecToolUseBlock"]
-
-BetaResponseBrowserJavascriptExecToolUseBlock = BetaBrowserJavascriptExecToolUseBlock
-"""
-BetaResponseBrowserJavascriptExecToolUseBlock has been renamed to BetaBrowserJavascriptExecToolUseBlock
-"""

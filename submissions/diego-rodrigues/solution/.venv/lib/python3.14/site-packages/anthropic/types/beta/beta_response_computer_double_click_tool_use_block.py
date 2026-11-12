@@ -1,8 +1,0 @@
-from .beta_computer_double_click_tool_use_block import BetaComputerDoubleClickToolUseBlock
-
-__all__ = ["BetaResponseComputerDoubleClickToolUseBlock"]
-
-BetaResponseComputerDoubleClickToolUseBlock = BetaComputerDoubleClickToolUseBlock
-"""
-BetaResponseComputerDoubleClickToolUseBlock has been renamed to BetaComputerDoubleClickToolUseBlock
-"""

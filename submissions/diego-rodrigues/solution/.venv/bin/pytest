@@ -1,6 +1,0 @@
-#!/Users/diegorodrigues/Documents/ai-master-challenge/submissions/diego-rodrigues/solution/.venv/bin/python3.14
-import sys
-from _pytest.config import _console_main
-if __name__ == '__main__':
-    sys.argv[0] = sys.argv[0].removesuffix('.exe')
-    sys.exit(_console_main())

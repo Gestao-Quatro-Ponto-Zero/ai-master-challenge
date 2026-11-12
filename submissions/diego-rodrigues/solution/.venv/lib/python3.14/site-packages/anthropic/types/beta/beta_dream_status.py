@@ -1,5 +1,0 @@
-from typing_extensions import Literal, TypeAlias
-
-__all__ = ["BetaDreamStatus"]
-
-BetaDreamStatus: TypeAlias = Literal["pending", "running", "completed", "failed", "canceled"]

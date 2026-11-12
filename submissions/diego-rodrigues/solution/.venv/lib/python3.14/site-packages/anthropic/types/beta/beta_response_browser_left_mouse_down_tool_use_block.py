@@ -1,8 +1,0 @@
-from .beta_browser_left_mouse_down_tool_use_block import BetaBrowserLeftMouseDownToolUseBlock
-
-__all__ = ["BetaResponseBrowserLeftMouseDownToolUseBlock"]
-
-BetaResponseBrowserLeftMouseDownToolUseBlock = BetaBrowserLeftMouseDownToolUseBlock
-"""
-BetaResponseBrowserLeftMouseDownToolUseBlock has been renamed to BetaBrowserLeftMouseDownToolUseBlock
-"""
