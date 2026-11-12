@@ -10,9 +10,11 @@
 
 | Ferramenta | Para quê | Por que esta e não outra |
 |---|---|---|
-| Claude Code, seis modelos Claude (Sonnet 4.6, Sonnet 5, Sonnet 5.5, Opus 5, Haiku 5.5, Haiku 4.5) | motor, testes, backtest, telas, deploy, documentos e process log | roda no terminal com acesso aos arquivos e ao git, então cada iteração fica no histórico; a troca de modelo foi feita pelo Diego entre etapas, por custo e qualidade |
+| Claude Code, nove modelos Claude (Fable 5.1, Fable 5.2, Sonnet 4.6, Sonnet 5, Sonnet 5.5, Opus 5, Opus 5.5, Haiku 5.5, Haiku 4.5) | plano, revisão do plano, motor, testes, backtest, telas, deploy, documentos, verificação independente e process log | roda no terminal com acesso aos arquivos e ao git, então cada iteração fica no histórico; a troca de modelo foi feita pelo Diego entre etapas, por custo e qualidade |
 | Microsoft 365 Copilot (Premium), GPT Sol 6.1 | agente de persona do discovery, informante sintético — **não é fonte de fato** | personas de arquétipo para ensaiar perguntas; a confiabilidade foi medida com calibração de resposta já conhecida |
+| Perplexity | pesquisa em fontes abertas sobre a cultura comercial e os arquétipos de vendedor, antes de montar as personas | fontes públicas, para não supor o comportamento do time comercial |
 | Nemotron-3.5-lightning, Gemini 3.1, ChatGPT 6.1 Sol | baselines sem ferramenta (Tarefa 0) | comparar o que um modelo propõe sem o dado na mão, para mostrar o que o dado desmente |
+| ChatGPT Sol 5.6, modo de raciocínio estendido | revisão externa da submissão quase pronta, contra o pedido do desafio | segundo olhar, de outra família de modelo, depois que a construção estava terminada |
 
 Inventário com versão exata, sessões e custo: [MODELOS.md](MODELOS.md).
 
@@ -46,7 +48,7 @@ O julgamento que a IA sozinha não traria, com as rejeições e as perguntas que
 
 ## Verificação independente
 
-Protocolo, script e relatório: [verificacao/](verificacao/). **Pendente:** é a etapa 6 da Tarefa 13 e ainda não foi feita. O `LEIA.md` existe; o relatório não.
+**Feita.** Protocolo, script e relatório: [verificacao/](verificacao/). O revisor (`claude-opus-5-5`, como subagente) escreveu código próprio a partir dos quatro CSVs, sem importar `solution/motor` nem `solution/avaliacao`, e recalculou cada número citado — todos bateram. É a mesma família dos modelos que implementaram, o que o protocolo do `LEIA.md` desaconselha; essa ressalva está registrada no próprio relatório. Quatro ressalvas foram apontadas e corrigidas no commit `66171cb`.
 
 ## Evidências
 

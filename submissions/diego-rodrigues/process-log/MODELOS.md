@@ -15,6 +15,28 @@ Baselines sem ferramenta (Tarefa 0, passo 4), para comparar propostas sem o dado
 
 Os modelos foram trocados pelo Diego entre etapas, por escolha de custo e de qualidade. A coluna "sessões" reproduz o que o diário registra no início de cada sessão; trocas no meio de uma mesma sessão não aparecem nele.
 
+## Fase de planejamento (antes do fork)
+
+Antes de abrir o repositório do desafio, o plano foi escrito e revisado inteiramente dentro do Claude Code, com modelos diferentes dos usados na construção.
+
+| Modelo (id exato) | Papel | Como foi acessado | Dado sensível exposto | Custo estimado |
+|---|---|---|---|---|
+| `claude-fable-5-1` | primeiro plano de ação para o desafio 003, a partir da descrição da vaga | Claude Code (terminal) | não | incluído na assinatura |
+| `claude-fable-5-2`, esforço extra-alto | comparação dos desafios 03 e 04 contra os PRs já enviados; revisão do plano inicial por três ângulos (engenharia de dados, software, operação comercial), origem do plano v2 | Claude Code (terminal) | não | incluído na assinatura |
+| `claude-fable-5-2`, `claude-opus-5`, `claude-sonnet-4-6` | plano v2 detalhado e análise exploratória inicial | Claude Code (terminal) | não | incluído na assinatura |
+| `claude-haiku-5-5` | HTML interno com as etapas, o passo a passo e o modelo recomendado para cada uma | Claude Code (terminal) | não | incluído na assinatura |
+| Perplexity | pesquisa em fontes abertas sobre a cultura comercial e os arquétipos de vendedor, insumo das personas sintéticas | interface web, colado pelo Diego | não — fontes públicas | gratuito |
+
+Conversas exportadas: [chat-exports/](chat-exports/). Documentos que essa fase produziu: [planejamento/](planejamento/).
+
+## Revisão final da submissão
+
+| Modelo (id exato) | Papel | Como foi acessado | Dado sensível exposto | Custo estimado |
+|---|---|---|---|---|
+| ChatGPT Sol 5.6, modo de raciocínio estendido ("think deeper") | revisão externa da entrega contra o pedido do desafio, devolveu um plano de 20 prompts de ajuste | interface web, arquivos e prints enviados manualmente pelo Diego | dados do produto (CSVs fictícios, CC0) e prints da demo; nenhum dado pessoal | gratuito/assinatura pessoal |
+| `claude-opus-5-5`, `claude-haiku-5-5`, `claude-sonnet-5-5`, `claude-sonnet-5` | auditoria do repositório, triagem do plano de 20 prompts (adotar/adaptar/descartar), execução do README, dos documentos de apoio, deste process log e do PR | Claude Code (terminal) | não | incluído na assinatura |
+| `claude-opus-5-5` | verificação independente dos números, como subagente revisor; mesma família dos modelos que implementaram, o que o protocolo de `verificacao/LEIA.md` desaconselha — ver a ressalva no relatório | Claude Code (terminal, subagente) | não — só CSVs públicos e documentos da submissão | incluído na assinatura |
+
 ## Informantes sintéticos (personas, usuários simulados, agentes entrevistados)
 
 Um agente que você entrevista é um modelo, e entra neste inventário como qualquer outro — com uma coluna a mais, porque o risco dele é diferente: ele devolve resposta fluente e cordial para qualquer pergunta, e se foi construído a partir dos mesmos dados que você analisou, a "confirmação" que ele dá é circular.
