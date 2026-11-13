@@ -1,0 +1,140 @@
+{
+ "version": "1.0.0",
+ "created_at": "2026-11-09",
+ "sklearn_version": "1.9.1",
+ "python": "3.11.17",
+ "dataset": {
+  "path": "data/all_tickets_processed_improved_v3.csv",
+  "sha256": "044fdace33fa564e1e60453f2941dafc95539c99878b0d32746950394b9dd4d4",
+  "n_original": 47837,
+  "n_clean": 46993,
+  "split_sizes": {
+   "train": 33237,
+   "val": 6990,
+   "test": 6766
+  },
+  "seed": 42
+ },
+ "classifier": {
+  "file": "classifier_pipeline.pkl",
+  "selected": {
+   "model": "M2_tfidf_linearsvc",
+   "params": {
+    "C": 0.5
+   },
+   "val_f1_macro": 0.8412,
+   "val_f1_weighted": 0.8447,
+   "val_accuracy": 0.8446,
+   "train_f1_macro": 0.9795,
+   "fit_s": 9.2
+  },
+  "calibration": "CalibratedClassifierCV(method='isotonic', cv=5)",
+  "tfidf": {
+   "max_features": 50000,
+   "ngram_range": [
+    1,
+    2
+   ],
+   "sublinear_tf": true,
+   "preprocessor": "text_prep.preprocess"
+  },
+  "classes": [
+   "Access",
+   "Administrative rights",
+   "HR Support",
+   "Hardware",
+   "Internal Project",
+   "Miscellaneous",
+   "Purchase",
+   "Storage"
+  ]
+ },
+ "test_metrics": {
+  "n": 6766,
+  "f1_macro": 0.8403,
+  "f1_weighted": 0.8453,
+  "accuracy": 0.8456,
+  "ece": 0.0749,
+  "dummy_f1_macro": 0.0556,
+  "per_class": {
+   "Access": {
+    "precision": 0.8986,
+    "recall": 0.8808,
+    "f1": 0.8896,
+    "support": 1057
+   },
+   "Administrative rights": {
+    "precision": 0.8719,
+    "recall": 0.673,
+    "f1": 0.7597,
+    "support": 263
+   },
+   "HR Support": {
+    "precision": 0.8489,
+    "recall": 0.8691,
+    "f1": 0.8589,
+    "support": 1551
+   },
+   "Hardware": {
+    "precision": 0.8158,
+    "recall": 0.8428,
+    "f1": 0.8291,
+    "support": 1934
+   },
+   "Internal Project": {
+    "precision": 0.8704,
+    "recall": 0.8317,
+    "f1": 0.8506,
+    "support": 315
+   },
+   "Miscellaneous": {
+    "precision": 0.8161,
+    "recall": 0.8341,
+    "f1": 0.825,
+    "support": 1043
+   },
+   "Purchase": {
+    "precision": 0.8732,
+    "recall": 0.8364,
+    "f1": 0.8544,
+    "support": 214
+   },
+   "Storage": {
+    "precision": 0.878,
+    "recall": 0.8329,
+    "f1": 0.8549,
+    "support": 389
+   }
+  }
+ },
+ "thresholds": {
+  "threshold_alto": 0.7,
+  "threshold_baixo": 0.55,
+  "rule": "menor limiar do grid cuja precisão no VAL >= meta; metas: AUTOMATIC 0.95, piso p/ sugestão 0.9",
+  "test_at_alto": {
+   "threshold": 0.7,
+   "coverage": 0.6556,
+   "precision": 0.9583,
+   "n": 4436,
+   "f1_macro_covered": 0.9549
+  },
+  "test_at_baixo": {
+   "threshold": 0.55,
+   "coverage": 0.8297,
+   "precision": 0.91,
+   "n": 5614,
+   "f1_macro_covered": 0.9093
+  },
+  "note": "Metas de precisão (0,95 / 0,90) são proposta para validação de negócio; os limiares derivam delas empiricamente no conjunto de validação."
+ },
+ "domain_detector": {
+  "file": "domain_detector.pkl",
+  "t_uncertain": 0.801,
+  "t_oos": 0.1839,
+  "abstain_quantile": 0.01,
+  "min_tokens": 2,
+  "val_f1_macro_at_0_5": 1.0,
+  "warning": "Validação perfeitamente separável (negativos sintéticos do D1). Métrica NÃO representa desempenho real; limiares = 1º percentil no val in-domain."
+ },
+ "load_requirements": "Os .pkl referenciam text_prep.py e domain_detector.py — mantenha-os no PYTHONPATH."
+}

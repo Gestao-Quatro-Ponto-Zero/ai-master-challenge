@@ -1,0 +1,1306 @@
+{
+ "shape": [
+  47837,
+  2
+ ],
+ "nulls": {
+  "Document": 0,
+  "Topic_group": 0
+ },
+ "dup_exact": 0,
+ "dup_doc": 0,
+ "dup_norm": 0,
+ "dup_first15w": 646,
+ "first15w_groups_conflicting_label": 38,
+ "first15w_groups": 365,
+ "dist": {
+  "Hardware": [
+   13617,
+   0.2847
+  ],
+  "HR Support": [
+   10915,
+   0.2282
+  ],
+  "Access": [
+   7125,
+   0.1489
+  ],
+  "Miscellaneous": [
+   7060,
+   0.1476
+  ],
+  "Storage": [
+   2777,
+   0.0581
+  ],
+  "Purchase": [
+   2464,
+   0.0515
+  ],
+  "Internal Project": [
+   2119,
+   0.0443
+  ],
+  "Administrative rights": [
+   1760,
+   0.0368
+  ]
+ },
+ "imbalance_ratio": 7.74,
+ "words": {
+  "n": 47837,
+  "min": 2,
+  "p25": 17.0,
+  "median": 26.0,
+  "p75": 46.0,
+  "p90": 91.0,
+  "max": 981
+ },
+ "chars": {
+  "n": 47837,
+  "min": 7,
+  "p25": 110.0,
+  "median": 175.0,
+  "p75": 304.0,
+  "p90": 612.0,
+  "max": 7015
+ },
+ "words_by_cat": {
+  "Access": {
+   "n": 7125,
+   "min": 2,
+   "p25": 15.0,
+   "median": 22.0,
+   "p75": 38.0,
+   "p90": 70.0,
+   "max": 934
+  },
+  "Administrative rights": {
+   "n": 1760,
+   "min": 3,
+   "p25": 19.0,
+   "median": 30.0,
+   "p75": 55.0,
+   "p90": 108.0,
+   "max": 981
+  },
+  "HR Support": {
+   "n": 10915,
+   "min": 2,
+   "p25": 16.0,
+   "median": 24.0,
+   "p75": 41.0,
+   "p90": 82.0,
+   "max": 817
+  },
+  "Hardware": {
+   "n": 13617,
+   "min": 2,
+   "p25": 19.0,
+   "median": 32.0,
+   "p75": 60.0,
+   "p90": 125.0,
+   "max": 931
+  },
+  "Internal Project": {
+   "n": 2119,
+   "min": 4,
+   "p25": 17.0,
+   "median": 24.0,
+   "p75": 40.0,
+   "p90": 76.0,
+   "max": 876
+  },
+  "Miscellaneous": {
+   "n": 7060,
+   "min": 2,
+   "p25": 17.0,
+   "median": 27.0,
+   "p75": 48.0,
+   "p90": 91.0,
+   "max": 953
+  },
+  "Purchase": {
+   "n": 2464,
+   "min": 2,
+   "p25": 22.0,
+   "median": 30.0,
+   "p75": 38.0,
+   "p90": 59.0,
+   "max": 418
+  },
+  "Storage": {
+   "n": 2777,
+   "min": 5,
+   "p25": 14.0,
+   "median": 21.0,
+   "p75": 37.0,
+   "p90": 68.0,
+   "max": 497
+  }
+ },
+ "kw_len_cat": 0.0,
+ "lt5w": 133,
+ "lt5w_by_cat": {
+  "Hardware": 40,
+  "Access": 37,
+  "HR Support": 35,
+  "Miscellaneous": 13,
+  "Administrative rights": 4,
+  "Purchase": 3,
+  "Internal Project": 1
+ },
+ "lt5w_examples": [
+  [
+   "annual leave se ca",
+   "HR Support"
+  ],
+  [
+   "access hi please thank",
+   "HR Support"
+  ],
+  [
+   "new starter please",
+   "HR Support"
+  ],
+  [
+   "access dear browse thank",
+   "HR Support"
+  ],
+  [
+   "reactivate access card va",
+   "Access"
+  ],
+  [
+   "holiday leave normal va",
+   "HR Support"
+  ],
+  [
+   "manager change change process",
+   "Miscellaneous"
+  ],
+  [
+   "new starter starter",
+   "HR Support"
+  ]
+ ],
+ "lt10w": 2291,
+ "gt300w": 413,
+ "has_upper": 0.0,
+ "has_digit": 0.0,
+ "vocab_total": 12327,
+ "hapax": 2715,
+ "top20_global": [
+  [
+   "please",
+   70212
+  ],
+  [
+   "pm",
+   28902
+  ],
+  [
+   "hi",
+   28498
+  ],
+  [
+   "regards",
+   27212
+  ],
+  [
+   "thank",
+   24962
+  ],
+  [
+   "for",
+   24456
+  ],
+  [
+   "hello",
+   23025
+  ],
+  [
+   "you",
+   21828
+  ],
+  [
+   "re",
+   21034
+  ],
+  [
+   "thanks",
+   19852
+  ],
+  [
+   "sent",
+   14717
+  ],
+  [
+   "kind",
+   13241
+  ],
+  [
+   "access",
+   13153
+  ],
+  [
+   "help",
+   11173
+  ],
+  [
+   "tuesday",
+   10896
+  ],
+  [
+   "with",
+   10555
+  ],
+  [
+   "wednesday",
+   10428
+  ],
+  [
+   "dear",
+   10320
+  ],
+  [
+   "thursday",
+   9935
+  ],
+  [
+   "can",
+   9526
+  ]
+ ],
+ "vocab_by_cat": {
+  "Hardware": {
+   "vocab": 10242,
+   "tokens": 766270,
+   "ttr": 0.0134
+  },
+  "HR Support": {
+   "vocab": 5706,
+   "tokens": 412223,
+   "ttr": 0.0138
+  },
+  "Access": {
+   "vocab": 5698,
+   "tokens": 253650,
+   "ttr": 0.0225
+  },
+  "Miscellaneous": {
+   "vocab": 6051,
+   "tokens": 303255,
+   "ttr": 0.02
+  },
+  "Storage": {
+   "vocab": 3727,
+   "tokens": 95556,
+   "ttr": 0.039
+  },
+  "Purchase": {
+   "vocab": 3003,
+   "tokens": 86074,
+   "ttr": 0.0349
+  },
+  "Internal Project": {
+   "vocab": 3399,
+   "tokens": 79901,
+   "ttr": 0.0425
+  },
+  "Administrative rights": {
+   "vocab": 3596,
+   "tokens": 88637,
+   "ttr": 0.0406
+  }
+ },
+ "distinctive": {
+  "Hardware": [
+   [
+    "socket",
+    0.005,
+    0.0,
+    43.0
+   ],
+   [
+    "room",
+    0.045,
+    0.002,
+    28.2
+   ],
+   [
+    "charger",
+    0.009,
+    0.0,
+    26.6
+   ],
+   [
+    "bag",
+    0.004,
+    0.0,
+    24.2
+   ],
+   [
+    "patched",
+    0.004,
+    0.0,
+    21.2
+   ],
+   [
+    "sound",
+    0.004,
+    0.0,
+    21.1
+   ],
+   [
+    "conference",
+    0.011,
+    0.001,
+    20.6
+   ],
+   [
+    "excited",
+    0.005,
+    0.0,
+    19.5
+   ],
+   [
+    "rooms",
+    0.019,
+    0.001,
+    18.6
+   ],
+   [
+    "hp",
+    0.005,
+    0.0,
+    18.4
+   ]
+  ],
+  "HR Support": [
+   [
+    "forwarder",
+    0.023,
+    0.0,
+    123.1
+   ],
+   [
+    "seat",
+    0.023,
+    0.0,
+    53.6
+   ],
+   [
+    "resolutions",
+    0.01,
+    0.0,
+    52.4
+   ],
+   [
+    "unplanned",
+    0.014,
+    0.0,
+    47.5
+   ],
+   [
+    "allowance",
+    0.006,
+    0.0,
+    39.2
+   ],
+   [
+    "assistants",
+    0.019,
+    0.001,
+    37.3
+   ],
+   [
+    "starter",
+    0.189,
+    0.005,
+    36.6
+   ],
+   [
+    "timecard",
+    0.049,
+    0.002,
+    23.8
+   ],
+   [
+    "recreate",
+    0.011,
+    0.001,
+    19.6
+   ],
+   [
+    "token",
+    0.023,
+    0.001,
+    18.5
+   ]
+  ],
+  "Access": [
+   [
+    "confluence",
+    0.196,
+    0.004,
+    54.2
+   ],
+   [
+    "git",
+    0.049,
+    0.001,
+    39.5
+   ],
+   [
+    "expire",
+    0.049,
+    0.001,
+    38.4
+   ],
+   [
+    "license",
+    0.094,
+    0.003,
+    36.8
+   ],
+   [
+    "reset",
+    0.103,
+    0.003,
+    32.1
+   ],
+   [
+    "studio",
+    0.038,
+    0.001,
+    30.9
+   ],
+   [
+    "repository",
+    0.048,
+    0.002,
+    30.3
+   ],
+   [
+    "repositories",
+    0.015,
+    0.0,
+    30.2
+   ],
+   [
+    "visitor",
+    0.024,
+    0.001,
+    25.5
+   ],
+   [
+    "unlock",
+    0.015,
+    0.001,
+    21.6
+   ]
+  ],
+  "Miscellaneous": [
+   [
+    "copier",
+    0.012,
+    0.0,
+    167.2
+   ],
+   [
+    "paper",
+    0.007,
+    0.0,
+    31.9
+   ],
+   [
+    "mailing",
+    0.032,
+    0.001,
+    22.9
+   ],
+   [
+    "approving",
+    0.01,
+    0.001,
+    17.1
+   ],
+   [
+    "scanner",
+    0.012,
+    0.001,
+    15.4
+   ],
+   [
+    "tray",
+    0.008,
+    0.001,
+    12.8
+   ],
+   [
+    "notifications",
+    0.023,
+    0.002,
+    11.5
+   ],
+   [
+    "reject",
+    0.024,
+    0.002,
+    10.8
+   ],
+   [
+    "flow",
+    0.036,
+    0.004,
+    10.3
+   ],
+   [
+    "approvals",
+    0.027,
+    0.003,
+    9.5
+   ]
+  ],
+  "Storage": [
+   [
+    "decline",
+    0.257,
+    0.002,
+    118.3
+   ],
+   [
+    "wants",
+    0.268,
+    0.003,
+    103.3
+   ],
+   [
+    "archiving",
+    0.018,
+    0.0,
+    57.8
+   ],
+   [
+    "folder",
+    0.288,
+    0.006,
+    49.9
+   ],
+   [
+    "reduce",
+    0.037,
+    0.001,
+    35.9
+   ],
+   [
+    "maximum",
+    0.042,
+    0.001,
+    35.8
+   ],
+   [
+    "size",
+    0.101,
+    0.003,
+    34.7
+   ],
+   [
+    "accept",
+    0.272,
+    0.008,
+    34.0
+   ],
+   [
+    "increase",
+    0.096,
+    0.003,
+    33.7
+   ],
+   [
+    "folders",
+    0.073,
+    0.003,
+    23.2
+   ]
+  ],
+  "Purchase": [
+   [
+    "receipts",
+    0.473,
+    0.001,
+    363.3
+   ],
+   [
+    "ordered",
+    0.47,
+    0.001,
+    349.3
+   ],
+   [
+    "purchased",
+    0.653,
+    0.002,
+    332.7
+   ],
+   [
+    "consideration",
+    0.442,
+    0.002,
+    206.6
+   ],
+   [
+    "replenishment",
+    0.051,
+    0.0,
+    176.4
+   ],
+   [
+    "po",
+    0.706,
+    0.006,
+    124.7
+   ],
+   [
+    "lite",
+    0.035,
+    0.0,
+    122.8
+   ],
+   [
+    "mandatory",
+    0.444,
+    0.004,
+    120.6
+   ],
+   [
+    "retina",
+    0.03,
+    0.0,
+    104.5
+   ],
+   [
+    "video",
+    0.342,
+    0.005,
+    73.1
+   ]
+  ],
+  "Internal Project": [
+   [
+    "pipeline",
+    0.12,
+    0.001,
+    127.8
+   ],
+   [
+    "codes",
+    0.182,
+    0.005,
+    33.4
+   ],
+   [
+    "opportunity",
+    0.082,
+    0.004,
+    21.4
+   ],
+   [
+    "pas",
+    0.322,
+    0.016,
+    20.5
+   ],
+   [
+    "project",
+    0.517,
+    0.027,
+    19.5
+   ],
+   [
+    "known",
+    0.058,
+    0.003,
+    19.2
+   ],
+   [
+    "code",
+    0.586,
+    0.032,
+    18.4
+   ],
+   [
+    "unknown",
+    0.028,
+    0.002,
+    17.0
+   ],
+   [
+    "setup",
+    0.213,
+    0.015,
+    14.2
+   ],
+   [
+    "pre",
+    0.032,
+    0.003,
+    11.5
+   ]
+  ],
+  "Administrative rights": [
+   [
+    "upgrading",
+    0.076,
+    0.001,
+    140.1
+   ],
+   [
+    "icons",
+    0.033,
+    0.0,
+    84.1
+   ],
+   [
+    "outlook",
+    0.282,
+    0.003,
+    83.4
+   ],
+   [
+    "upgrade",
+    0.377,
+    0.005,
+    71.5
+   ],
+   [
+    "upgraded",
+    0.07,
+    0.001,
+    65.7
+   ],
+   [
+    "forced",
+    0.055,
+    0.001,
+    54.0
+   ],
+   [
+    "endpoint",
+    0.041,
+    0.001,
+    41.8
+   ],
+   [
+    "windows",
+    0.255,
+    0.007,
+    37.7
+   ],
+   [
+    "article",
+    0.03,
+    0.001,
+    28.9
+   ],
+   [
+    "becomes",
+    0.037,
+    0.001,
+    24.6
+   ]
+  ]
+ },
+ "top15_by_cat": {
+  "Hardware": [
+   "please",
+   "hi",
+   "regards",
+   "hello",
+   "thank",
+   "thanks",
+   "for",
+   "pm",
+   "you",
+   "sent",
+   "re",
+   "help",
+   "kind",
+   "with",
+   "can"
+  ],
+  "HR Support": [
+   "please",
+   "thank",
+   "hi",
+   "pm",
+   "hello",
+   "regards",
+   "thanks",
+   "for",
+   "access",
+   "help",
+   "re",
+   "dear",
+   "new",
+   "starter",
+   "oracle"
+  ],
+  "Access": [
+   "please",
+   "hi",
+   "pm",
+   "thank",
+   "hello",
+   "regards",
+   "thanks",
+   "access",
+   "for",
+   "re",
+   "confluence",
+   "dear",
+   "user",
+   "help",
+   "tuesday"
+  ],
+  "Miscellaneous": [
+   "please",
+   "hi",
+   "thank",
+   "regards",
+   "pm",
+   "hello",
+   "thanks",
+   "for",
+   "change",
+   "add",
+   "kind",
+   "re",
+   "to",
+   "dear",
+   "you"
+  ],
+  "Storage": [
+   "please",
+   "access",
+   "to",
+   "pm",
+   "hi",
+   "thank",
+   "hello",
+   "regards",
+   "folder",
+   "thanks",
+   "accept",
+   "wants",
+   "decline",
+   "mailbox",
+   "for"
+  ],
+  "Purchase": [
+   "please",
+   "administrator",
+   "log",
+   "po",
+   "regards",
+   "purchase",
+   "purchased",
+   "dear",
+   "kind",
+   "new",
+   "order",
+   "pm",
+   "receive",
+   "item",
+   "receipts"
+  ],
+  "Internal Project": [
+   "please",
+   "hi",
+   "code",
+   "pm",
+   "project",
+   "thanks",
+   "thank",
+   "regards",
+   "new",
+   "pas",
+   "attached",
+   "hello",
+   "create",
+   "oracle",
+   "officer"
+  ],
+  "Administrative rights": [
+   "please",
+   "regards",
+   "hi",
+   "hello",
+   "thank",
+   "upgrade",
+   "you",
+   "for",
+   "sent",
+   "with",
+   "outlook",
+   "thanks",
+   "windows",
+   "have",
+   "re"
+  ]
+ },
+ "pairs": [
+  {
+   "a": "Hardware",
+   "b": "Miscellaneous",
+   "jaccard_top200": 0.533,
+   "cosine_tf": 0.886
+  },
+  {
+   "a": "HR Support",
+   "b": "Miscellaneous",
+   "jaccard_top200": 0.504,
+   "cosine_tf": 0.851
+  },
+  {
+   "a": "Hardware",
+   "b": "HR Support",
+   "jaccard_top200": 0.439,
+   "cosine_tf": 0.847
+  },
+  {
+   "a": "Hardware",
+   "b": "Access",
+   "jaccard_top200": 0.533,
+   "cosine_tf": 0.835
+  },
+  {
+   "a": "Access",
+   "b": "Miscellaneous",
+   "jaccard_top200": 0.493,
+   "cosine_tf": 0.832
+  },
+  {
+   "a": "HR Support",
+   "b": "Access",
+   "jaccard_top200": 0.46,
+   "cosine_tf": 0.806
+  },
+  {
+   "a": "Hardware",
+   "b": "Administrative rights",
+   "jaccard_top200": 0.515,
+   "cosine_tf": 0.792
+  },
+  {
+   "a": "Miscellaneous",
+   "b": "Internal Project",
+   "jaccard_top200": 0.504,
+   "cosine_tf": 0.749
+  },
+  {
+   "a": "Hardware",
+   "b": "Storage",
+   "jaccard_top200": 0.465,
+   "cosine_tf": 0.731
+  },
+  {
+   "a": "HR Support",
+   "b": "Internal Project",
+   "jaccard_top200": 0.379,
+   "cosine_tf": 0.722
+  },
+  {
+   "a": "Miscellaneous",
+   "b": "Storage",
+   "jaccard_top200": 0.476,
+   "cosine_tf": 0.714
+  },
+  {
+   "a": "Access",
+   "b": "Storage",
+   "jaccard_top200": 0.46,
+   "cosine_tf": 0.71
+  },
+  {
+   "a": "Access",
+   "b": "Internal Project",
+   "jaccard_top200": 0.449,
+   "cosine_tf": 0.709
+  },
+  {
+   "a": "HR Support",
+   "b": "Storage",
+   "jaccard_top200": 0.379,
+   "cosine_tf": 0.699
+  },
+  {
+   "a": "Miscellaneous",
+   "b": "Administrative rights",
+   "jaccard_top200": 0.365,
+   "cosine_tf": 0.694
+  },
+  {
+   "a": "Hardware",
+   "b": "Internal Project",
+   "jaccard_top200": 0.423,
+   "cosine_tf": 0.693
+  },
+  {
+   "a": "HR Support",
+   "b": "Administrative rights",
+   "jaccard_top200": 0.351,
+   "cosine_tf": 0.666
+  },
+  {
+   "a": "Access",
+   "b": "Administrative rights",
+   "jaccard_top200": 0.347,
+   "cosine_tf": 0.64
+  },
+  {
+   "a": "Storage",
+   "b": "Internal Project",
+   "jaccard_top200": 0.434,
+   "cosine_tf": 0.607
+  },
+  {
+   "a": "Storage",
+   "b": "Administrative rights",
+   "jaccard_top200": 0.316,
+   "cosine_tf": 0.548
+  },
+  {
+   "a": "Miscellaneous",
+   "b": "Purchase",
+   "jaccard_top200": 0.25,
+   "cosine_tf": 0.522
+  },
+  {
+   "a": "Internal Project",
+   "b": "Administrative rights",
+   "jaccard_top200": 0.286,
+   "cosine_tf": 0.509
+  },
+  {
+   "a": "HR Support",
+   "b": "Purchase",
+   "jaccard_top200": 0.223,
+   "cosine_tf": 0.496
+  },
+  {
+   "a": "Access",
+   "b": "Purchase",
+   "jaccard_top200": 0.262,
+   "cosine_tf": 0.496
+  },
+  {
+   "a": "Hardware",
+   "b": "Purchase",
+   "jaccard_top200": 0.242,
+   "cosine_tf": 0.492
+  },
+  {
+   "a": "Purchase",
+   "b": "Internal Project",
+   "jaccard_top200": 0.266,
+   "cosine_tf": 0.468
+  },
+  {
+   "a": "Storage",
+   "b": "Purchase",
+   "jaccard_top200": 0.231,
+   "cosine_tf": 0.432
+  },
+  {
+   "a": "Purchase",
+   "b": "Administrative rights",
+   "jaccard_top200": 0.187,
+   "cosine_tf": 0.37
+  }
+ ],
+ "probes": {
+  "password": {
+   "n": 1646,
+   "expected": "Access",
+   "pct_expected": 0.708,
+   "top_classes": {
+    "Access": 0.708,
+    "Hardware": 0.199,
+    "Administrative rights": 0.07
+   }
+  },
+  "laptop": {
+   "n": 1685,
+   "expected": "Hardware",
+   "pct_expected": 0.851,
+   "top_classes": {
+    "Hardware": 0.851,
+    "Administrative rights": 0.071,
+    "Access": 0.043
+   }
+  },
+  "purchase": {
+   "n": 2128,
+   "expected": "Purchase",
+   "pct_expected": 0.788,
+   "top_classes": {
+    "Purchase": 0.788,
+    "HR Support": 0.118,
+    "Hardware": 0.063
+   }
+  },
+  "order": {
+   "n": 4303,
+   "expected": "Purchase",
+   "pct_expected": 0.314,
+   "top_classes": {
+    "Purchase": 0.314,
+    "Hardware": 0.267,
+    "Access": 0.122
+   }
+  },
+  "administrator": {
+   "n": 3287,
+   "expected": "Administrative rights",
+   "pct_expected": 0.012,
+   "top_classes": {
+    "Purchase": 0.602,
+    "Hardware": 0.151,
+    "HR Support": 0.102
+   }
+  },
+  "admin": {
+   "n": 297,
+   "expected": "Administrative rights",
+   "pct_expected": 0.037,
+   "top_classes": {
+    "Access": 0.33,
+    "HR Support": 0.199,
+    "Hardware": 0.168
+   }
+  },
+  "disk": {
+   "n": 311,
+   "expected": "Storage",
+   "pct_expected": 0.103,
+   "top_classes": {
+    "Hardware": 0.469,
+    "Administrative rights": 0.174,
+    "Miscellaneous": 0.132
+   }
+  },
+  "storage": {
+   "n": 797,
+   "expected": "Storage",
+   "pct_expected": 0.322,
+   "top_classes": {
+    "Storage": 0.322,
+    "HR Support": 0.319,
+    "Hardware": 0.251
+   }
+  },
+  "salary": {
+   "n": 90,
+   "expected": "HR Support",
+   "pct_expected": 0.378,
+   "top_classes": {
+    "HR Support": 0.378,
+    "Hardware": 0.311,
+    "Miscellaneous": 0.111
+   }
+  },
+  "project": {
+   "n": 2307,
+   "expected": "Internal Project",
+   "pct_expected": 0.475,
+   "top_classes": {
+    "Internal Project": 0.475,
+    "Miscellaneous": 0.163,
+    "Access": 0.122
+   }
+  }
+ },
+ "samples": {
+  "Hardware": [
+   "account users thursday pm hi guys please log please keep informed outcomes thank re browser si safari ca respect thursday care ca comment ii known issue ca la moment re pot ii best regards engineer ext date thursday re a",
+   "extension cord tuesday november pm extension cord requested extension cord received thanks senior developer",
+   "unable to all staff sent tuesday moving hi guys really believe should be able send managed please remove restrictions for him thanks leader en sent tuesday rights send hello can you please investigate why cannot send acc"
+  ],
+  "HR Support": [
+   "oracle time reporting proposals for enhancement march proposals enhancement enhance view after selecting code task details automatically populated task select leave single option task details annual leave multiple codes ",
+   "access to restricted area thursday july pm restricted area hello please provide restricted area starting july person thank po",
+   "time sheet reject for sheet reject dear please reject sheet submitted by must redo because thursday friday he leave thank"
+  ],
+  "Access": [
+   "issues with access card sent monday february re access card hey thanks for confirmation but card still work checked nothing thanks manager sent monday february access card hello per attached communication card already ac",
+   "license for visual studio license visual studio hi guys automation training urgent license visual studio regards application engineer",
+   "buyer role for us march buyer role hi guys please buyer role thank kind regards"
+  ],
+  "Miscellaneous": [
+   "investigate has been assigned to service improvement task has assigned improvement hello please advise how got assigned improvement figure out user himself assigned improvement teams how come he has thank task has assign",
+   "expense report not showing oracle for manager approval sent tuesday november expense report showing for manager approval hello guys we seem have issue with expense report report submitted by had line manager change past ",
+   "feedback survey ticket rating rule issue sn sent wednesday march high satisfaction score for thames issue hi when we asked for surveys be implemented there was requirements sheet if remember correctly possibility rate yo"
+  ],
+  "Storage": [
+   "your mailbox is almost full wednesday november mailbox almost importance high dear please extend size mailbox thanks wednesday november mailbox almost importance high mailbox almost mb mb size maximum size please reduce ",
+   "access to the network shared location wednesday february pm share hi please provide share location infrastructure meeting presentations thanks best regards senior infrastructure engineer",
+   "problems accessing folder on while on called advised she cannot access folder while working connected through"
+  ],
+  "Purchase": [
+   "to location po report location po report hi kindly asking update po reports add location next location great order which po affected by inactivating locations prod please thank much analyst",
+   "po thursday november pm po good evening please log installing item please perform receipt thank administrator phone thursday november pm la la computer po black cooler notebook engineer",
+   "po po dear purchased please log allocation after receive item please take consideration mandatory receipts section order receive item ordered how video link kind regards administrator"
+  ],
+  "Internal Project": [
+   "pas project setup contract signed due going she has approve please advise invoicing done by per advice raised commercial friday february pm setup has assigned hello please stream assign thank analyst thursday february pm",
+   "oracle pas new project setup dear please create attached code client appreciate done by tomorrow thank officer",
+   "new project code pas sow december code hi please create code per attached files thank blvd"
+  ],
+  "Administrative rights": [
+   "outlook not starting starting hi please log ticket for help issue with start please assign ticket queue thanks engineer ext",
+   "need to install install hello purposes install please let how install regards software engineer blvd floor district",
+   "outlook configuration default address left panel cannot access calendar or any other navigation option any more"
+  ]
+ },
+ "hr_terms_pct": {
+  "Hardware": 0.057,
+  "HR Support": 0.201,
+  "Access": 0.043,
+  "Miscellaneous": 0.1,
+  "Storage": 0.047,
+  "Purchase": 0.014,
+  "Internal Project": 0.077,
+  "Administrative rights": 0.032
+ },
+ "d1_vocab": 6233,
+ "d1_token_coverage_by_d2": 0.8053,
+ "d1_type_coverage_by_d2": 0.5784,
+ "d1_top300_in_d2_top300": 98,
+ "d1_cols": [
+  "Ticket ID",
+  "Customer Name",
+  "Customer Email",
+  "Customer Age",
+  "Customer Gender",
+  "Product Purchased",
+  "Date of Purchase",
+  "Ticket Type",
+  "Ticket Subject",
+  "Ticket Description",
+  "Ticket Status",
+  "Resolution",
+  "Ticket Priority",
+  "Ticket Channel",
+  "First Response Time",
+  "Time to Resolution",
+  "Customer Satisfaction Rating"
+ ],
+ "common_cols": [],
+ "d1_frt_hour_flat": {
+  "chi2": 37.96601769911504,
+  "p": 0.025686429572144384
+ }
+}

@@ -1,0 +1,309 @@
+[
+  {
+    "screenshot": "01_access_automatic.png",
+    "input": "I cannot log into my account, my password expired and I need help to access the VPN.",
+    "api_status": 200,
+    "response": {
+      "domain": "IT_INTERNAL",
+      "category": "Access",
+      "confidence": 0.9623,
+      "priority": "MEDIUM",
+      "decision": "AUTOMATIC",
+      "queue": "Roteamento Automático — Access",
+      "justification": "Domínio IT identificado. Categoria sugerida: Access (confiança: 96.2%). Prioridade estimada: MEDIUM. Regra aplicada: confiança 0.962 >= 0.7. Confiança alta — roteamento automático sugerido.",
+      "top3": [
+        [
+          "Access",
+          0.9623
+        ],
+        [
+          "Hardware",
+          0.0321
+        ],
+        [
+          "Storage",
+          0.0036
+        ]
+      ],
+      "rule_triggered": "R8_HIGH_CONFIDENCE",
+      "rule_reason": "confiança 0.962 >= 0.7",
+      "model_version": "1.0.0",
+      "timestamp": "2026-11-09T03:13:15.315302+00:00",
+      "priority_detail": {
+        "priority": "MEDIUM",
+        "justification": "base por categoria 'Access' = MEDIUM",
+        "matched": {
+          "critical": [],
+          "high": [],
+          "medium": []
+        }
+      },
+      "domain_detail": {
+        "domain": "IT_INTERNAL",
+        "p_it": 0.9656,
+        "detector_conf": 0.9656,
+        "max_sim_train": 0.4409,
+        "n_tokens": 6,
+        "reason": "P(IT)=0.966; confiança 0.966 >= 0.801; sim 0.441 >= 0.184"
+      }
+    }
+  },
+  {
+    "screenshot": "02_refund_b2c_humano.png",
+    "input": "I want a refund for my order, the product arrived broken and I was charged twice.",
+    "api_status": 200,
+    "response": {
+      "domain": "INDETERMINATE",
+      "category": null,
+      "confidence": 0.783,
+      "priority": "MEDIUM",
+      "decision": "HUMAN_REQUIRED",
+      "queue": "Triagem Manual — Domínio Não Identificado",
+      "justification": "Domínio identificado: INDETERMINATE. Chamado fora do escopo do classificador IT. Prioridade estimada: MEDIUM. Regra aplicada: domínio INDETERMINATE. Revisão humana necessária antes de qualquer ação.",
+      "top3": [
+        [
+          "Hardware",
+          0.783
+        ],
+        [
+          "Storage",
+          0.1054
+        ],
+        [
+          "Access",
+          0.0508
+        ]
+      ],
+      "rule_triggered": "R2_DOMAIN_NOT_IT",
+      "rule_reason": "domínio INDETERMINATE",
+      "model_version": "1.0.0",
+      "timestamp": "2026-11-09T03:13:17.689917+00:00",
+      "priority_detail": {
+        "priority": "MEDIUM",
+        "justification": "base por categoria 'Hardware' = MEDIUM; sinal leve de urgência: \\bbroken\\b",
+        "matched": {
+          "critical": [],
+          "high": [],
+          "medium": [
+            "\\bbroken\\b"
+          ]
+        }
+      },
+      "domain_detail": {
+        "domain": "INDETERMINATE",
+        "p_it": 0.2431,
+        "detector_conf": 0.7569,
+        "max_sim_train": 0.2466,
+        "n_tokens": 8,
+        "reason": "confiança do detector 0.757 < t_uncertain 0.801"
+      }
+    }
+  },
+  {
+    "screenshot": "03_incidente_critico_escalate.png",
+    "input": "Our entire network is down, nobody in the office can work, production systems are offline.",
+    "api_status": 200,
+    "response": {
+      "domain": "INDETERMINATE",
+      "category": null,
+      "confidence": 0.8364,
+      "priority": "CRITICAL",
+      "decision": "HUMAN_REQUIRED",
+      "queue": "Triagem Manual — Domínio Não Identificado",
+      "justification": "Domínio identificado: INDETERMINATE. Chamado fora do escopo do classificador IT. Prioridade estimada: CRITICAL. Regra aplicada: domínio INDETERMINATE. Revisão humana necessária antes de qualquer ação.",
+      "top3": [
+        [
+          "Hardware",
+          0.8364
+        ],
+        [
+          "HR Support",
+          0.0647
+        ],
+        [
+          "Miscellaneous",
+          0.0356
+        ]
+      ],
+      "rule_triggered": "R2_DOMAIN_NOT_IT",
+      "rule_reason": "domínio INDETERMINATE",
+      "model_version": "1.0.0",
+      "timestamp": "2026-11-09T03:13:20.090812+00:00",
+      "priority_detail": {
+        "priority": "CRITICAL",
+        "justification": "base por categoria 'Hardware' = MEDIUM; padrão de incidente amplo/crítico: \\b(entire|whole|all)\\b.{0,30}\\b(network|system|systems|office|company|servers?)\\b.{0,30}\\b(down|outage|offline|unavailable)\\b",
+        "matched": {
+          "critical": [
+            "\\b(entire|whole|all)\\b.{0,30}\\b(network|system|systems|office|company|servers?)\\b.{0,30}\\b(down|outage|offline|unavailable)\\b",
+            "\\b(network|system|server|servers|site|production)\\b.{0,15}\\b(is |are )?(down|outage|offline)\\b"
+          ],
+          "high": [],
+          "medium": []
+        }
+      },
+      "domain_detail": {
+        "domain": "INDETERMINATE",
+        "p_it": 0.619,
+        "detector_conf": 0.619,
+        "max_sim_train": 0.2737,
+        "n_tokens": 7,
+        "reason": "confiança do detector 0.619 < t_uncertain 0.801"
+      }
+    }
+  },
+  {
+    "screenshot": "04_admin_rights_humano.png",
+    "input": "I need admin access on my laptop to install software.",
+    "api_status": 200,
+    "response": {
+      "domain": "IT_INTERNAL",
+      "category": "Hardware",
+      "confidence": 0.6406,
+      "priority": "MEDIUM",
+      "decision": "HUMAN_REQUIRED",
+      "queue": "Revisão Humana — Hardware",
+      "justification": "Domínio IT identificado. Categoria sugerida: Hardware (confiança: 64.1%). Prioridade estimada: MEDIUM. Regra aplicada: privilégios administrativos exigem aprovação humana — termo de privilégio no texto (\\badmin(istrator|istrative)?\\b). Revisão humana necessária antes de qualquer ação.",
+      "top3": [
+        [
+          "Hardware",
+          0.6406
+        ],
+        [
+          "Administrative rights",
+          0.1789
+        ],
+        [
+          "HR Support",
+          0.1421
+        ]
+      ],
+      "rule_triggered": "R4_ADMIN_RIGHTS",
+      "rule_reason": "privilégios administrativos exigem aprovação humana — termo de privilégio no texto (\\badmin(istrator|istrative)?\\b)",
+      "model_version": "1.0.0",
+      "timestamp": "2026-11-09T03:13:22.490303+00:00",
+      "priority_detail": {
+        "priority": "MEDIUM",
+        "justification": "base por categoria 'Hardware' = MEDIUM",
+        "matched": {
+          "critical": [],
+          "high": [],
+          "medium": []
+        }
+      },
+      "domain_detail": {
+        "domain": "IT_INTERNAL",
+        "p_it": 0.9682,
+        "detector_conf": 0.9682,
+        "max_sim_train": 0.3922,
+        "n_tokens": 5,
+        "reason": "P(IT)=0.968; confiança 0.968 >= 0.801; sim 0.392 >= 0.184"
+      }
+    }
+  },
+  {
+    "screenshot": "05_texto_curto_humano.png",
+    "input": "help",
+    "api_status": 200,
+    "response": {
+      "domain": "INDETERMINATE",
+      "category": null,
+      "confidence": 0.7445,
+      "priority": "MEDIUM",
+      "decision": "HUMAN_REQUIRED",
+      "queue": "Triagem Manual — Domínio Não Identificado",
+      "justification": "Domínio identificado: INDETERMINATE. Chamado fora do escopo do classificador IT. Prioridade estimada: MEDIUM. Regra aplicada: domínio INDETERMINATE. Revisão humana necessária antes de qualquer ação.",
+      "top3": [
+        [
+          "Hardware",
+          0.7445
+        ],
+        [
+          "HR Support",
+          0.1077
+        ],
+        [
+          "Access",
+          0.093
+        ]
+      ],
+      "rule_triggered": "R2_DOMAIN_NOT_IT",
+      "rule_reason": "domínio INDETERMINATE",
+      "model_version": "1.0.0",
+      "timestamp": "2026-11-09T03:13:24.898247+00:00",
+      "priority_detail": {
+        "priority": "MEDIUM",
+        "justification": "base por categoria 'Hardware' = MEDIUM",
+        "matched": {
+          "critical": [],
+          "high": [],
+          "medium": []
+        }
+      },
+      "domain_detail": {
+        "domain": "INDETERMINATE",
+        "p_it": 0.9272,
+        "detector_conf": 0.9272,
+        "max_sim_train": 0,
+        "n_tokens": 0,
+        "reason": "apenas 0 token(s) útil(eis) após pré-processamento (< 2)"
+      }
+    }
+  },
+  {
+    "screenshot": "06_fora_escopo.png",
+    "input": "Can you book a table for the company lunch on Friday?",
+    "api_status": 200,
+    "response": {
+      "domain": "IT_INTERNAL",
+      "category": "Hardware",
+      "confidence": 0.7483,
+      "priority": "MEDIUM",
+      "decision": "AUTOMATIC",
+      "queue": "Roteamento Automático — Hardware",
+      "justification": "Domínio IT identificado. Categoria sugerida: Hardware (confiança: 74.8%). Prioridade estimada: MEDIUM. Regra aplicada: confiança 0.748 >= 0.7. Confiança alta — roteamento automático sugerido.",
+      "top3": [
+        [
+          "Hardware",
+          0.7483
+        ],
+        [
+          "HR Support",
+          0.1046
+        ],
+        [
+          "Access",
+          0.0951
+        ]
+      ],
+      "rule_triggered": "R8_HIGH_CONFIDENCE",
+      "rule_reason": "confiança 0.748 >= 0.7",
+      "model_version": "1.0.0",
+      "timestamp": "2026-11-09T03:13:27.257245+00:00",
+      "priority_detail": {
+        "priority": "MEDIUM",
+        "justification": "base por categoria 'Hardware' = MEDIUM",
+        "matched": {
+          "critical": [],
+          "high": [],
+          "medium": []
+        }
+      },
+      "domain_detail": {
+        "domain": "IT_INTERNAL",
+        "p_it": 0.9258,
+        "detector_conf": 0.9258,
+        "max_sim_train": 0.2529,
+        "n_tokens": 4,
+        "reason": "P(IT)=0.926; confiança 0.926 >= 0.801; sim 0.253 >= 0.184"
+      }
+    }
+  },
+  {
+    "screenshot": "07_pagina_metricas.png",
+    "page": "/metricas"
+  },
+  {
+    "screenshot": "08_pagina_sobre.png",
+    "page": "/sobre"
+  }
+]

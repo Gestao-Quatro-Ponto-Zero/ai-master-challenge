@@ -1,0 +1,178 @@
+# AUDITORIA DE LIBERAÇÃO — CHALLENGE 002 (FASES P1–P4)
+
+## Objetivo
+
+Realize uma auditoria geral, objetiva e baseada em evidências de tudo o que foi desenvolvido nas Fases 1, 2, 3 e 4 do Challenge 002 — Redesign de Suporte.
+
+**O objetivo NÃO é reconstruir o projeto, desenvolver novas funcionalidades ou executar novamente experimentos já concluídos.**
+
+Precisamos responder a uma única pergunta:
+
+**O projeto está suficientemente correto, consistente e completo para avançar à Fase 5 — Pacote de Submissão?**
+
+Se estiver, aprove o avanço. Se não estiver, identifique exclusivamente os problemas que impedem essa aprovação.
+
+## 1. Restrições de execução
+
+Para economizar créditos e preservar o trabalho já realizado:
+
+- Utilize prioritariamente os arquivos, relatórios, métricas, resultados e evidências existentes.
+- Não treine novamente os modelos.
+- Não refaça a análise exploratória dos datasets.
+- Não execute novamente comparações extensas de modelos.
+- Não reconstrua a aplicação.
+- Não altere arquivos durante esta auditoria.
+- Não faça melhorias estéticas ou funcionalidades adicionais.
+- Não execute testes extensivos quando os resultados existentes forem suficientes.
+- Faça apenas verificações pontuais e de baixo custo quando necessárias para confirmar alguma inconsistência relevante.
+
+Se não houver evidência suficiente para confirmar uma informação, registre isso explicitamente. Não invente resultados nem considere algo correto apenas porque está descrito em um relatório.
+
+## 2. Critérios de auditoria
+
+Avalie os cinco blocos abaixo.
+
+### BLOCO A — Dados e diagnóstico (P1 e P2)
+
+Verifique:
+
+1. Os dois datasets foram corretamente identificados, utilizados e documentados?
+2. A auditoria de qualidade dos dados está coerente com os resultados apresentados?
+3. As limitações do Dataset 1 foram reconhecidas corretamente?
+4. O projeto evita apresentar dados sintéticos ou inconsistentes como indicadores operacionais reais?
+5. As conclusões sobre gargalos, satisfação, tempos e desperdícios possuem sustentação nos dados?
+6. A utilização do Dataset 2 respeita sua natureza de chamados internos de TI?
+7. A limpeza dos dados possui rastreabilidade suficiente, especialmente quanto aos 235 registros anteriormente identificados e aos 278 registros posteriormente colocados em quarentena?
+
+**Atenção:** o Dataset 1 apresentou evidências fortes de conteúdo sintético e inconsistências temporais. Não tente forçar conclusões operacionais que os dados não sustentam. Verifique se o trabalho apresenta essa limitação de maneira transparente e se diferencia achados observáveis de hipóteses.
+
+### BLOCO B — Diagnóstico e redesign operacional (P3)
+
+Verifique:
+
+1. Os três pilares do redesign possuem justificativa concreta?
+2. A matriz diferencia corretamente automação, assistência por IA e atuação humana?
+3. As decisões de automação são coerentes com os dados disponíveis?
+4. Os dois domínios (B2C e TI) estão corretamente separados?
+5. O fluxo operacional proposto corresponde ao problema apresentado?
+6. Os KPIs possuem definições claras e possibilidade real de medição?
+7. As regras de prioridade, escalonamento e revisão humana são coerentes?
+8. O ROI utiliza premissas matematicamente consistentes?
+9. A diferença entre capacidade produtiva recuperada e economia financeira efetiva está preservada?
+10. As limitações dos datasets e dos benchmarks utilizados estão documentadas?
+
+Dê atenção especial à inconsistência anteriormente identificada entre 146 horas produtivas e 182 horas pagas no cálculo do custo por hora, além de possíveis duplicidades na contabilização do tempo de triagem.
+
+Não refaça toda a modelagem financeira. Verifique os cálculos e as premissas existentes e informe se o ROI pode ser defendido.
+
+### BLOCO C — Modelo e segurança (P4A)
+
+Utilize os resultados existentes para verificar:
+
+1. O pipeline utiliza corretamente a separação entre treino, validação e teste?
+2. Existe evidência de ausência de sobreposição entre os conjuntos?
+3. O F1-macro de 0,840 está apresentado corretamente?
+4. As métricas por categoria e os resultados de cobertura e precisão são coerentes entre os arquivos?
+5. Os limiares de 95% e 90% estão identificados como metas propostas, e não requisitos já validados pelo negócio?
+6. A diferença entre os resultados de cobertura assistida (83,0% e 83,4%) e precisão assistida (91,0% e 90,1%) está reconciliada?
+7. A categoria Administrative rights possui suas limitações documentadas?
+8. A diferença de desempenho entre textos semelhantes aos do treinamento e textos novos está corretamente apresentada?
+9. Os casos de teste com falha estão registrados sem manipulação?
+10. As regras de segurança impedem decisões automáticas inadequadas?
+
+**Falhas que exigem atenção especial:**
+
+- Pedido de compra em linguagem natural classificado como Hardware.
+- Administrative rights classificado incorretamente como HR Support.
+- Mensagem ambígua classificada automaticamente como Internal Project.
+- Mensagem fora de escopo classificada como TI.
+- Reserva de almoço encaminhada automaticamente como chamado de TI.
+
+O detector de domínio não possui validação representativa suficiente. Verifique se isso está explicitamente documentado e se existe alguma proteção efetiva contra encaminhamento automático de mensagens cujo domínio não foi validado.
+
+Uma confiança elevada na categoria não deve ser tratada como prova de que o domínio está correto.
+
+Não considere uma regra de contenção suficiente se ela apenas muda a decisão operacional, mas mantém uma classificação incorreta que pode confundir o agente.
+
+### BLOCO D — Aplicação e integração (P4B)
+
+Verifique:
+
+1. A aplicação Next.js e a API FastAPI estão corretamente integradas?
+2. A classificação exibida corresponde ao resultado real do modelo?
+3. Os indicadores da interface correspondem às métricas documentadas?
+4. A interface deixa claro que o sistema recomenda classificações e encaminhamentos, mas não executa ações reais?
+5. As regras de segurança estão refletidas na experiência do usuário?
+6. Os erros conhecidos não são ocultados?
+7. O aplicativo possui instruções suficientes para execução?
+8. A documentação identifica corretamente as dependências e limitações de execução?
+9. Existem inconsistências importantes entre interface, API e arquivos de resultados?
+
+Não é necessário reconstruir ou aprimorar visualmente o aplicativo nesta auditoria.
+
+### BLOCO E — Conformidade com o Challenge e o Guia de Submissão
+
+Utilize o enunciado do Challenge 002 e o Guia de Submissão como critérios obrigatórios.
+
+Verifique:
+
+1. A solução atende ao objetivo de diagnóstico, redesign e demonstração funcional?
+2. O uso dos dois datasets está explicado de maneira coerente?
+3. O protótipo demonstra funcionalidade real, e não somente exemplos estáticos?
+4. O Process Log documenta ferramentas, decisões, iterações, erros da IA e correções realizadas?
+5. As evidências apresentadas são autênticas e rastreáveis?
+6. Existe documentação suficiente para outra pessoa compreender e executar o projeto?
+7. O pacote de submissão ainda precisa de quais elementos da Fase 5?
+
+Não execute a Fase 5 nesta etapa. Apenas identifique o que deverá ser preparado depois da aprovação.
+
+## 3. Formato obrigatório do resultado
+
+Apresente o resultado em uma tabela objetiva:
+
+| Item | Veredito | Evidência | Ação necessária |
+|---|---|---|---|
+| Exemplo | APROVADO | Arquivo, métrica ou teste | Nenhuma |
+
+Utilize exclusivamente três vereditos:
+
+- **APROVADO:** correto, consistente e suficientemente comprovado.
+- **REPROVADO:** existe erro, inconsistência ou risco que exige correção antes da submissão.
+- **NÃO COMPROVADO:** faltam evidências suficientes para aprovar a afirmação.
+
+Para cada reprovação ou item não comprovado, informe:
+
+- O que está errado ou não foi demonstrado.
+- Qual arquivo, resultado ou evidência sustenta a conclusão.
+- Qual é a correção mínima necessária.
+- Se a correção exige novos cálculos, novos dados ou apenas ajustes documentais.
+
+Diferencie problemas bloqueadores de melhorias que não impedem a submissão.
+
+## 4. Decisão final
+
+Ao terminar, apresente obrigatoriamente uma destas decisões:
+
+**DECISÃO A — LIBERADO PARA FASE 5**
+
+Somente se não existirem erros ou riscos relevantes sem tratamento e se os requisitos obrigatórios estiverem suficientemente demonstrados.
+
+**DECISÃO B — NÃO LIBERADO PARA FASE 5**
+
+Se existir pelo menos um problema bloqueador ou requisito obrigatório sem comprovação.
+
+Se a decisão for B, apresente uma lista curta e priorizada das correções necessárias, sem sugerir reconstrução desnecessária do projeto.
+
+## 5. Regras finais
+
+- Seja crítico e objetivo.
+- Não aprove um item por conveniência.
+- Não reprove algo apenas por não ser sofisticado.
+- Não confunda limitação conhecida com erro de implementação.
+- Não transforme hipótese em resultado comprovado.
+- Não esconda falhas já identificadas.
+- Não invente validações, métricas ou evidências.
+- Não altere nenhum arquivo nesta execução.
+- Não consuma créditos com experimentos que não sejam indispensáveis à decisão.
+
+**A entrega desta etapa é exclusivamente um relatório de auditoria e uma decisão fundamentada de liberação para a Fase 5.**

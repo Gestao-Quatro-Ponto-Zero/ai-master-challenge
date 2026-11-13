@@ -1,0 +1,937 @@
+{
+ "shape": [
+  8469,
+  17
+ ],
+ "nulls": {
+  "Ticket ID": 0,
+  "Customer Name": 0,
+  "Customer Email": 0,
+  "Customer Age": 0,
+  "Customer Gender": 0,
+  "Product Purchased": 0,
+  "Date of Purchase": 0,
+  "Ticket Type": 0,
+  "Ticket Subject": 0,
+  "Ticket Description": 0,
+  "Ticket Status": 0,
+  "Resolution": 5700,
+  "Ticket Priority": 0,
+  "Ticket Channel": 0,
+  "First Response Time": 2819,
+  "Time to Resolution": 5700,
+  "Customer Satisfaction Rating": 5700
+ },
+ "dup_exact": 0,
+ "dup_excl_id": 0,
+ "dup_name_email": 0,
+ "dup_email": 149,
+ "dup_desc": 392,
+ "email_domains": {
+  "example.com": 2904,
+  "example.org": 2796,
+  "example.net": 2769
+ },
+ "name_suffix": 164,
+ "gof": {
+  "Ticket Type": {
+   "chi2": 7.43,
+   "p": 0.1149,
+   "k": 5,
+   "min": 1634,
+   "max": 1752,
+   "ratio": 1.072
+  },
+  "Ticket Channel": {
+   "chi2": 1.35,
+   "p": 0.7179,
+   "k": 4,
+   "min": 2073,
+   "max": 2143,
+   "ratio": 1.034
+  },
+  "Ticket Priority": {
+   "chi2": 4.59,
+   "p": 0.2048,
+   "k": 4,
+   "min": 2063,
+   "max": 2192,
+   "ratio": 1.063
+  },
+  "Ticket Status": {
+   "chi2": 2.23,
+   "p": 0.3279,
+   "k": 3,
+   "min": 2769,
+   "max": 2881,
+   "ratio": 1.04
+  },
+  "Customer Gender": {
+   "chi2": 9.99,
+   "p": 0.0068,
+   "k": 3,
+   "min": 2686,
+   "max": 2896,
+   "ratio": 1.078
+  },
+  "Ticket Subject": {
+   "chi2": 27.86,
+   "p": 0.0225,
+   "k": 16,
+   "min": 478,
+   "max": 576,
+   "ratio": 1.205
+  },
+  "Product Purchased": {
+   "chi2": 40.82,
+   "p": 0.4784,
+   "k": 42,
+   "min": 178,
+   "max": 240,
+   "ratio": 1.348
+  },
+  "Customer Age": {
+   "chi2": 50.08,
+   "p": 0.5497,
+   "k": 53,
+   "min": 137,
+   "max": 186,
+   "ratio": 1.358
+  },
+  "Customer Satisfaction Rating": {
+   "chi2": 1.67,
+   "p": 0.7968,
+   "k": 5,
+   "min": 543,
+   "max": 580,
+   "ratio": 1.068
+  }
+ },
+ "age_range": [
+  18,
+  70
+ ],
+ "indep": {
+  "Ticket Priority x Ticket Channel": {
+   "chi2": 15.48,
+   "p": 0.0785,
+   "dof": 9,
+   "cramers_v": 0.0247,
+   "n": 8469
+  },
+  "Ticket Priority x Ticket Type": {
+   "chi2": 10.63,
+   "p": 0.5613,
+   "dof": 12,
+   "cramers_v": 0.0205,
+   "n": 8469
+  },
+  "Ticket Type x Ticket Subject": {
+   "chi2": 39.57,
+   "p": 0.9807,
+   "dof": 60,
+   "cramers_v": 0.0342,
+   "n": 8469
+  },
+  "Ticket Type x Ticket Channel": {
+   "chi2": 11.85,
+   "p": 0.4578,
+   "dof": 12,
+   "cramers_v": 0.0216,
+   "n": 8469
+  },
+  "Ticket Priority x Ticket Status": {
+   "chi2": 8.15,
+   "p": 0.227,
+   "dof": 6,
+   "cramers_v": 0.0219,
+   "n": 8469
+  },
+  "Ticket Channel x Ticket Status": {
+   "chi2": 3.3,
+   "p": 0.771,
+   "dof": 6,
+   "cramers_v": 0.0139,
+   "n": 8469
+  },
+  "Ticket Type x Ticket Status": {
+   "chi2": 9.03,
+   "p": 0.3394,
+   "dof": 8,
+   "cramers_v": 0.0231,
+   "n": 8469
+  },
+  "Customer Gender x Ticket Type": {
+   "chi2": 5.85,
+   "p": 0.6641,
+   "dof": 8,
+   "cramers_v": 0.0186,
+   "n": 8469
+  },
+  "Product Purchased x Ticket Subject": {
+   "chi2": 629.44,
+   "p": 0.3345,
+   "dof": 615,
+   "cramers_v": 0.0704,
+   "n": 8469
+  },
+  "Ticket Priority x Customer Satisfaction Rating": {
+   "chi2": 12.59,
+   "p": 0.3996,
+   "dof": 12,
+   "cramers_v": 0.0389,
+   "n": 2769
+  },
+  "Ticket Channel x Customer Satisfaction Rating": {
+   "chi2": 11.73,
+   "p": 0.4675,
+   "dof": 12,
+   "cramers_v": 0.0376,
+   "n": 2769
+  },
+  "Ticket Type x Customer Satisfaction Rating": {
+   "chi2": 19.24,
+   "p": 0.2565,
+   "dof": 16,
+   "cramers_v": 0.0417,
+   "n": 2769
+  }
+ },
+ "subj_type_pct": {
+  "Refund request": {
+   "Billing inquiry": 0.174,
+   "Cancellation request": 0.219,
+   "Product inquiry": 0.212,
+   "Refund request": 0.207,
+   "Technical issue": 0.189
+  },
+  "Cancellation request": {
+   "Billing inquiry": 0.168,
+   "Cancellation request": 0.211,
+   "Product inquiry": 0.175,
+   "Refund request": 0.224,
+   "Technical issue": 0.222
+  },
+  "Payment issue": {
+   "Billing inquiry": 0.203,
+   "Cancellation request": 0.215,
+   "Product inquiry": 0.173,
+   "Refund request": 0.198,
+   "Technical issue": 0.211
+  },
+  "Software bug": {
+   "Billing inquiry": 0.213,
+   "Cancellation request": 0.192,
+   "Product inquiry": 0.195,
+   "Refund request": 0.195,
+   "Technical issue": 0.206
+  },
+  "Hardware issue": {
+   "Billing inquiry": 0.183,
+   "Cancellation request": 0.199,
+   "Product inquiry": 0.194,
+   "Refund request": 0.236,
+   "Technical issue": 0.188
+  }
+ },
+ "refund_subject_not_refund_type": 0.793,
+ "software_with_battery_or_hardware": 92,
+ "software_n": 577,
+ "frt_range": [
+  "2023-05-31 21:55:39",
+  "2023-06-02 00:54:21"
+ ],
+ "ttr_range": [
+  "2023-05-31 21:53:30",
+  "2023-06-02 00:55:33"
+ ],
+ "frt_on_0601_pct": 0.9623,
+ "frt_n": 5650,
+ "same_seconds_pct": 1.0,
+ "purchase_range": [
+  "2020-01-01",
+  "2021-12-30"
+ ],
+ "delta_n": 2769,
+ "delta_neg": 1365,
+ "delta_zero": 2,
+ "delta_desc": {
+  "count": 2769.0,
+  "mean": -0.058,
+  "std": 9.564,
+  "min": -23.233,
+  "25%": -6.933,
+  "50%": 0.167,
+  "75%": 6.483,
+  "max": 23.467
+ },
+ "delta_ks_uniform_pm24": {
+  "D": 0.1413,
+  "p": 0.0
+ },
+ "delta_minutes_integer_pct": 1.0,
+ "frt_hour_gof": {
+  "chi2": 125.48,
+  "p": 0.0,
+  "k": 24,
+  "min": 96,
+  "max": 292,
+  "ratio": 3.042
+ },
+ "desc_unique": 8077,
+ "placeholder_pct": 1.0,
+ "first_sentence_unique": 16,
+ "first_sentence_top5": {
+  "I'm having an issue with the {product_purchased}.": 5868,
+  "I'm unable to access my {product_purchased} account.": 189,
+  "I've forgotten my password for my {product_purchased} account, and the password reset option is not working.": 186,
+  "The {product_purchased} is unable to establish a stable internet connection.": 184,
+  "I'm encountering a software bug in the {product_purchased}.": 183
+ },
+ "first_sentence_top10_cover": 0.8865,
+ "res_unique": 2769,
+ "res_n": 2769,
+ "res_words_median": 5.0,
+ "res_with_support_term_pct": 0.0,
+ "desc_words": {
+  "count": 8469.0,
+  "mean": 46.5,
+  "std": 8.5,
+  "min": 21.0,
+  "25%": 43.0,
+  "50%": 49.0,
+  "75%": 52.0,
+  "90%": 55.0,
+  "max": 63.0
+ },
+ "subject_keyword_hit": {
+  "Battery life": {
+   "in_subject": 0.077,
+   "other_subjects": 0.073
+  },
+  "Network problem": {
+   "in_subject": 0.067,
+   "other_subjects": 0.069
+  },
+  "Data loss": {
+   "in_subject": 0.181,
+   "other_subjects": 0.165
+  },
+  "Display issue": {
+   "in_subject": 0.121,
+   "other_subjects": 0.104
+  },
+  "Account access": {
+   "in_subject": 0.106,
+   "other_subjects": 0.095
+  }
+ },
+ "status": {
+  "Pending Customer Response": 2881,
+  "Open": 2819,
+  "Closed": 2769
+ },
+ "vol": {
+  "Ticket Channel": {
+   "Email": [
+    2143,
+    0.253
+   ],
+   "Phone": [
+    2132,
+    0.2517
+   ],
+   "Social media": [
+    2121,
+    0.2504
+   ],
+   "Chat": [
+    2073,
+    0.2448
+   ]
+  },
+  "Ticket Type": {
+   "Refund request": [
+    1752,
+    0.2069
+   ],
+   "Technical issue": [
+    1747,
+    0.2063
+   ],
+   "Cancellation request": [
+    1695,
+    0.2001
+   ],
+   "Product inquiry": [
+    1641,
+    0.1938
+   ],
+   "Billing inquiry": [
+    1634,
+    0.1929
+   ]
+  },
+  "Ticket Priority": {
+   "Medium": [
+    2192,
+    0.2588
+   ],
+   "Critical": [
+    2129,
+    0.2514
+   ],
+   "High": [
+    2085,
+    0.2462
+   ],
+   "Low": [
+    2063,
+    0.2436
+   ]
+  },
+  "Ticket Subject": {
+   "Refund request": [
+    576,
+    0.068
+   ],
+   "Software bug": [
+    574,
+    0.0678
+   ],
+   "Product compatibility": [
+    567,
+    0.067
+   ],
+   "Delivery problem": [
+    561,
+    0.0662
+   ],
+   "Hardware issue": [
+    547,
+    0.0646
+   ],
+   "Battery life": [
+    542,
+    0.064
+   ],
+   "Network problem": [
+    539,
+    0.0636
+   ],
+   "Installation support": [
+    530,
+    0.0626
+   ],
+   "Product setup": [
+    529,
+    0.0625
+   ],
+   "Payment issue": [
+    526,
+    0.0621
+   ],
+   "Product recommendation": [
+    517,
+    0.061
+   ],
+   "Account access": [
+    509,
+    0.0601
+   ],
+   "Peripheral compatibility": [
+    496,
+    0.0586
+   ],
+   "Data loss": [
+    491,
+    0.058
+   ],
+   "Cancellation request": [
+    487,
+    0.0575
+   ],
+   "Display issue": [
+    478,
+    0.0564
+   ]
+  }
+ },
+ "delta_all": {
+  "n": 2769,
+  "p25": -6.93,
+  "median": 0.17,
+  "p75": 6.48,
+  "p90": 12.77,
+  "p95": 16.06
+ },
+ "delta_valid": {
+  "n": 1404,
+  "p25": 3.0,
+  "median": 6.34,
+  "p75": 11.35,
+  "p90": 16.0,
+  "p95": 18.51
+ },
+ "delta_valid_by_Ticket Channel": {
+  "Chat": {
+   "n": 355,
+   "p25": 2.92,
+   "median": 6.52,
+   "p75": 11.32,
+   "p90": 16.07,
+   "p95": 18.49
+  },
+  "Email": {
+   "n": 374,
+   "p25": 3.0,
+   "median": 6.41,
+   "p75": 11.38,
+   "p90": 15.78,
+   "p95": 18.62
+  },
+  "Phone": {
+   "n": 327,
+   "p25": 3.04,
+   "median": 6.05,
+   "p75": 10.64,
+   "p90": 15.14,
+   "p95": 17.32
+  },
+  "Social media": {
+   "n": 348,
+   "p25": 3.04,
+   "median": 6.43,
+   "p75": 12.33,
+   "p90": 16.92,
+   "p95": 19.08
+  }
+ },
+ "delta_all_by_Ticket Channel": {
+  "Chat": {
+   "n": 674,
+   "p25": -6.78,
+   "median": 0.52,
+   "p75": 6.98,
+   "p90": 12.95,
+   "p95": 16.53
+  },
+  "Email": {
+   "n": 720,
+   "p25": -6.57,
+   "median": 0.37,
+   "p75": 7.04,
+   "p90": 12.72,
+   "p95": 15.86
+  },
+  "Phone": {
+   "n": 691,
+   "p25": -7.12,
+   "median": -0.78,
+   "p75": 5.48,
+   "p90": 11.75,
+   "p95": 14.96
+  },
+  "Social media": {
+   "n": 684,
+   "p25": -7.24,
+   "median": 0.35,
+   "p75": 6.47,
+   "p90": 14.13,
+   "p95": 17.09
+  }
+ },
+ "kw_valid_Ticket Channel": {
+  "H": 1.0436,
+  "p": 0.7907
+ },
+ "neg_share_by_Ticket Channel": {
+  "Chat": 0.473,
+  "Email": 0.481,
+  "Phone": 0.527,
+  "Social media": 0.491
+ },
+ "delta_valid_by_Ticket Priority": {
+  "Critical": {
+   "n": 374,
+   "p25": 2.79,
+   "median": 5.98,
+   "p75": 10.58,
+   "p90": 15.21,
+   "p95": 17.99
+  },
+  "High": {
+   "n": 355,
+   "p25": 3.02,
+   "median": 7.12,
+   "p75": 12.58,
+   "p90": 17.11,
+   "p95": 18.66
+  },
+  "Low": {
+   "n": 334,
+   "p25": 3.14,
+   "median": 7.08,
+   "p75": 11.4,
+   "p90": 16.82,
+   "p95": 19.01
+  },
+  "Medium": {
+   "n": 341,
+   "p25": 2.98,
+   "median": 5.87,
+   "p75": 10.65,
+   "p90": 15.35,
+   "p95": 17.78
+  }
+ },
+ "delta_all_by_Ticket Priority": {
+  "Critical": {
+   "n": 726,
+   "p25": -7.18,
+   "median": 0.35,
+   "p75": 6.07,
+   "p90": 12.44,
+   "p95": 15.27
+  },
+  "High": {
+   "n": 705,
+   "p25": -7.4,
+   "median": 0.07,
+   "p75": 7.12,
+   "p90": 14.07,
+   "p95": 17.14
+  },
+  "Low": {
+   "n": 644,
+   "p25": -6.49,
+   "median": 0.35,
+   "p75": 7.36,
+   "p90": 13.36,
+   "p95": 16.92
+  },
+  "Medium": {
+   "n": 694,
+   "p25": -6.55,
+   "median": -0.3,
+   "p75": 5.68,
+   "p90": 11.62,
+   "p95": 15.25
+  }
+ },
+ "kw_valid_Ticket Priority": {
+  "H": 6.4683,
+  "p": 0.0909
+ },
+ "neg_share_by_Ticket Priority": {
+  "Critical": 0.485,
+  "High": 0.496,
+  "Low": 0.481,
+  "Medium": 0.509
+ },
+ "delta_valid_by_Ticket Type": {
+  "Billing inquiry": {
+   "n": 273,
+   "p25": 2.58,
+   "median": 5.27,
+   "p75": 10.13,
+   "p90": 15.4,
+   "p95": 18.1
+  },
+  "Cancellation request": {
+   "n": 265,
+   "p25": 3.27,
+   "median": 6.37,
+   "p75": 11.42,
+   "p90": 15.94,
+   "p95": 18.12
+  },
+  "Product inquiry": {
+   "n": 257,
+   "p25": 3.05,
+   "median": 6.98,
+   "p75": 10.8,
+   "p90": 15.86,
+   "p95": 18.69
+  },
+  "Refund request": {
+   "n": 304,
+   "p25": 3.16,
+   "median": 6.71,
+   "p75": 11.99,
+   "p90": 17.24,
+   "p95": 19.05
+  },
+  "Technical issue": {
+   "n": 305,
+   "p25": 2.7,
+   "median": 6.38,
+   "p75": 11.22,
+   "p90": 15.43,
+   "p95": 17.93
+  }
+ },
+ "delta_all_by_Ticket Type": {
+  "Billing inquiry": {
+   "n": 544,
+   "p25": -6.14,
+   "median": 0.11,
+   "p75": 5.29,
+   "p90": 11.58,
+   "p95": 15.41
+  },
+  "Cancellation request": {
+   "n": 516,
+   "p25": -7.28,
+   "median": 0.39,
+   "p75": 6.5,
+   "p90": 13.11,
+   "p95": 15.98
+  },
+  "Product inquiry": {
+   "n": 533,
+   "p25": -6.93,
+   "median": -0.48,
+   "p75": 6.5,
+   "p90": 12.15,
+   "p95": 15.74
+  },
+  "Refund request": {
+   "n": 596,
+   "p25": -6.97,
+   "median": 0.26,
+   "p75": 7.0,
+   "p90": 13.92,
+   "p95": 17.28
+  },
+  "Technical issue": {
+   "n": 580,
+   "p25": -6.71,
+   "median": 0.48,
+   "p75": 6.77,
+   "p90": 12.96,
+   "p95": 15.52
+  }
+ },
+ "kw_valid_Ticket Type": {
+  "H": 6.5707,
+  "p": 0.1604
+ },
+ "neg_share_by_Ticket Type": {
+  "Billing inquiry": 0.498,
+  "Cancellation request": 0.486,
+  "Product inquiry": 0.518,
+  "Refund request": 0.49,
+  "Technical issue": 0.474
+ },
+ "combos_total": 80,
+ "combo_n_median": 17.0,
+ "top10": [
+  {
+   "Ticket Channel": "Chat",
+   "Ticket Priority": "Low",
+   "Ticket Type": "Technical issue",
+   "n": 15,
+   "median": 13.23,
+   "p90": 16.7
+  },
+  {
+   "Ticket Channel": "Phone",
+   "Ticket Priority": "High",
+   "Ticket Type": "Refund request",
+   "n": 13,
+   "median": 12.65,
+   "p90": 17.87
+  },
+  {
+   "Ticket Channel": "Chat",
+   "Ticket Priority": "High",
+   "Ticket Type": "Refund request",
+   "n": 22,
+   "median": 12.45,
+   "p90": 18.4
+  },
+  {
+   "Ticket Channel": "Email",
+   "Ticket Priority": "Medium",
+   "Ticket Type": "Product inquiry",
+   "n": 14,
+   "median": 9.67,
+   "p90": 13.17
+  },
+  {
+   "Ticket Channel": "Phone",
+   "Ticket Priority": "Low",
+   "Ticket Type": "Cancellation request",
+   "n": 10,
+   "median": 9.25,
+   "p90": 16.07
+  },
+  {
+   "Ticket Channel": "Social media",
+   "Ticket Priority": "Medium",
+   "Ticket Type": "Billing inquiry",
+   "n": 14,
+   "median": 9.24,
+   "p90": 17.51
+  },
+  {
+   "Ticket Channel": "Email",
+   "Ticket Priority": "High",
+   "Ticket Type": "Billing inquiry",
+   "n": 11,
+   "median": 9.22,
+   "p90": 13.07
+  },
+  {
+   "Ticket Channel": "Email",
+   "Ticket Priority": "High",
+   "Ticket Type": "Cancellation request",
+   "n": 16,
+   "median": 9.16,
+   "p90": 16.28
+  },
+  {
+   "Ticket Channel": "Social media",
+   "Ticket Priority": "Low",
+   "Ticket Type": "Product inquiry",
+   "n": 23,
+   "median": 9.13,
+   "p90": 17.92
+  },
+  {
+   "Ticket Channel": "Social media",
+   "Ticket Priority": "High",
+   "Ticket Type": "Refund request",
+   "n": 20,
+   "median": 8.94,
+   "p90": 19.97
+  }
+ ],
+ "combos_n_ge10": 79,
+ "top10_bottom_median_ref": 2.71,
+ "critical": {
+  "closed": 726,
+  "total": 2129,
+  "neg": 352,
+  "le4h_valid": 0.369,
+  "le8h_valid": 0.6417,
+  "le12h_valid": 0.7888,
+  "le24h_valid": 1.0,
+  "le48h_valid": 1.0,
+  "le72h_valid": 1.0
+ },
+ "critical_valid_n": 374,
+ "sat_dist": {
+  "1.0": 553,
+  "2.0": 549,
+  "3.0": 580,
+  "4.0": 543,
+  "5.0": 544
+ },
+ "sat_median": 3.0,
+ "sat_spearman_all": {
+  "rho": 0.0217,
+  "p": 0.2539
+ },
+ "sat_spearman_valid": {
+  "rho": 0.0026,
+  "p": 0.9213
+ },
+ "sat_by_band": [
+  {
+   "band": "0-2h",
+   "n": 223,
+   "median": 3.0,
+   "mean": 3.027,
+   "pct_1_2": 0.381,
+   "pct_4_5": 0.422
+  },
+  {
+   "band": "2-4h",
+   "n": 258,
+   "median": 3.0,
+   "mean": 2.988,
+   "pct_1_2": 0.388,
+   "pct_4_5": 0.38
+  },
+  {
+   "band": "4-8h",
+   "n": 357,
+   "median": 3.0,
+   "mean": 3.056,
+   "pct_1_2": 0.378,
+   "pct_4_5": 0.42
+  },
+  {
+   "band": "8-12h",
+   "n": 246,
+   "median": 3.0,
+   "mean": 3.102,
+   "pct_1_2": 0.366,
+   "pct_4_5": 0.431
+  },
+  {
+   "band": "12-16h",
+   "n": 178,
+   "median": 3.0,
+   "mean": 2.933,
+   "pct_1_2": 0.416,
+   "pct_4_5": 0.371
+  },
+  {
+   "band": "16-24h",
+   "n": 142,
+   "median": 3.0,
+   "mean": 3.028,
+   "pct_1_2": 0.401,
+   "pct_4_5": 0.415
+  }
+ ],
+ "sat_by_priority": {
+  "Critical": {
+   "n": 726,
+   "median": 3.0,
+   "mean": 2.959
+  },
+  "High": {
+   "n": 705,
+   "median": 3.0,
+   "mean": 2.983
+  },
+  "Low": {
+   "n": 644,
+   "median": 3.0,
+   "mean": 3.053
+  },
+  "Medium": {
+   "n": 694,
+   "median": 3.0,
+   "mean": 2.977
+  }
+ },
+ "sat_by_channel": {
+  "Chat": {
+   "n": 674,
+   "median": 3.0,
+   "mean": 3.083
+  },
+  "Email": {
+   "n": 720,
+   "median": 3.0,
+   "mean": 2.964
+  },
+  "Phone": {
+   "n": 691,
+   "median": 3.0,
+   "mean": 2.952
+  },
+  "Social media": {
+   "n": 684,
+   "median": 3.0,
+   "mean": 2.969
+  }
+ },
+ "sat_age_spearman": -0.004,
+ "iqr_outliers_valid": 0
+}

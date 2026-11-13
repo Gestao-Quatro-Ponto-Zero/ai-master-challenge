@@ -1,0 +1,42 @@
+[
+ {
+  "sector": "IT services",
+  "period": "2019",
+  "value": 140000000000.0
+ },
+ {
+  "sector": "IT services",
+  "period": "2026",
+  "value": 205000000000.0
+ },
+ {
+  "sector": "Petroleum products",
+  "period": "2019",
+  "value": 41000000000.0
+ },
+ {
+  "sector": "Petroleum products",
+  "period": "2026",
+  "value": 84000000000.0
+ },
+ {
+  "sector": "Pharma",
+  "period": "2019",
+  "value": 19000000000.0
+ },
+ {
+  "sector": "Pharma",
+  "period": "2026",
+  "value": 31000000000.0
+ },
+ {
+  "sector": "Electronics",
+  "period": "2019",
+  "value": 9000000000.0
+ },
+ {
+  "sector": "Electronics",
+  "period": "2026",
+  "value": 38000000000.0
+ }
+]

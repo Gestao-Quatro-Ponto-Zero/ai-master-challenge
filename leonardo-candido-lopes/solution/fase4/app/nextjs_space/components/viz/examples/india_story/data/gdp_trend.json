@@ -1,0 +1,62 @@
+[
+ {
+  "year": "FY17",
+  "services": 4.2,
+  "industry": 1.9,
+  "agriculture": 0.7
+ },
+ {
+  "year": "FY18",
+  "services": 4.0,
+  "industry": 1.7,
+  "agriculture": 0.6
+ },
+ {
+  "year": "FY19",
+  "services": 3.6,
+  "industry": 1.3,
+  "agriculture": 0.4
+ },
+ {
+  "year": "FY20",
+  "services": 2.1,
+  "industry": 0.6,
+  "agriculture": 0.5
+ },
+ {
+  "year": "FY21",
+  "services": -4.3,
+  "industry": -1.4,
+  "agriculture": 0.4
+ },
+ {
+  "year": "FY22",
+  "services": 5.1,
+  "industry": 2.6,
+  "agriculture": 0.3
+ },
+ {
+  "year": "FY23",
+  "services": 4.4,
+  "industry": 1.6,
+  "agriculture": 0.4
+ },
+ {
+  "year": "FY24",
+  "services": 4.5,
+  "industry": 2.5,
+  "agriculture": 0.2
+ },
+ {
+  "year": "FY25",
+  "services": 3.9,
+  "industry": 1.6,
+  "agriculture": 0.5
+ },
+ {
+  "year": "FY26",
+  "services": 4.3,
+  "industry": 1.9,
+  "agriculture": 0.6
+ }
+]

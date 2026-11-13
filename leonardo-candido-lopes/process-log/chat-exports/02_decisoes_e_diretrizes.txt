@@ -1,0 +1,329 @@
+Beleza! Analisei as oito decisões apresentadas na seção 8 do seu relatório de auditoria. Vou responder individualmente e explicar os direcionamentos que quero seguir antes de avançarmos.
+
+Quero que você considere estas respostas como minhas decisões para a continuidade do projeto. Depois delas, estão as instruções para a execução da Fase 3.
+
+### 1. Tratamento do Dataset 1 como sintético
+
+**Minha decisão: SIM.**
+
+Vamos tratar o Dataset 1 como um conjunto com fortes evidências de artificialidade, sem utilizá-lo para calcular KPIs reais de tempo de resolução, SLA ou produtividade.
+
+Quero que a auditoria seja apresentada como um dos principais achados do projeto. Entretanto, tenha cuidado com a linguagem: apresente as evidências encontradas e explique por que elas sustentam essa conclusão, sem afirmar que existe uma comprovação documental da origem sintética dos dados.
+
+A decisão é priorizar a integridade analítica, mesmo que isso signifique não utilizar determinadas informações disponíveis no dataset.
+
+### 2. Dataset principal do protótipo
+
+**Minha decisão: SIM.**
+
+Utilize o Dataset 2 como base principal para desenvolver o protótipo de triagem e roteamento de chamados.
+
+Ele possui maior consistência para esse objetivo, apresenta oito categorias identificáveis e permite desenvolver e avaliar um classificador de texto.
+
+O Dataset 1 continuará sendo utilizado para contextualização, auditoria e análise dos limites dos dados, mas não deverá ser artificialmente integrado ao treinamento do classificador.
+
+### 3. Manutenção das oito classes
+
+**Minha decisão: manter inicialmente as oito classes originais.**
+
+Não quero consolidar ou renomear categorias antes de termos evidências suficientes.
+
+Primeiro, desenvolva o modelo mantendo a taxonomia original. Depois, analise a matriz de confusão, os erros recorrentes, a precisão e o recall de cada categoria.
+
+A partir desses resultados, poderemos avaliar se faz sentido consolidar categorias ou encaminhar determinadas classes para revisão humana.
+
+Em especial, quero atenção à categoria Miscellaneous, pois ela pode exigir um tratamento diferente das demais.
+
+### 4. Limpeza do Dataset 2
+
+**Minha decisão: retirar os registros problemáticos do treinamento, mas preservar os dados originais.**
+
+Quero que você investigue os dois problemas identificados:
+
+- Os 133 textos com menos de cinco palavras.
+- Os 38 grupos de quase-duplicatas com rótulos conflitantes.
+
+Esses registros não devem entrar automaticamente no treinamento sem uma avaliação de qualidade.
+
+Entretanto, não quero exclusão indiscriminada nem perda de rastreabilidade.
+
+Siga estas orientações:
+
+1. Preserve integralmente o dataset original.
+2. Identifique e documente os registros afetados.
+3. Exclua temporariamente do treinamento os registros cuja qualidade ou classificação não possa ser considerada confiável.
+4. Não remova automaticamente todos os integrantes de um grupo de quase-duplicatas sem avaliar o conflito.
+5. Registre quantos registros efetivamente foram retirados, qual foi o critério e qual o impacto percentual sobre o corpus.
+
+Se possível, mantenha uma comparação entre o cenário com os registros problemáticos e o cenário após o tratamento, para avaliar se a limpeza realmente melhora a qualidade do modelo.
+
+### 5. Tratamento do desbalanceamento das classes
+
+**Minha decisão: utilizar pesos por classe como abordagem inicial.**
+
+O desbalanceamento de aproximadamente 7,7 vezes precisa ser considerado durante o treinamento.
+
+Comece com pesos por classe, evitando aplicar reamostragem sem demonstrar que ela é necessária.
+
+A métrica prioritária será F1-macro, e não simplesmente acurácia.
+
+Quero acompanhar:
+
+- F1-macro.
+- Precisão por classe.
+- Recall por classe.
+- F1-score por classe.
+- Matriz de confusão.
+- Análise dos erros de classificação.
+
+Também quero que você utilize uma divisão de treinamento e teste consciente dos grupos de quase-duplicatas, evitando que textos praticamente iguais apareçam simultaneamente nos dois conjuntos e provoquem vazamento de informação.
+
+### 6. Mapeamento entre Dataset 1 e Dataset 2
+
+**Minha decisão: criar uma fila Financeiro/Comercial separada do classificador de TI.**
+
+Não quero forçar uma correspondência entre categorias de atendimento ao consumidor e categorias de suporte interno de TI.
+
+Os datasets representam domínios diferentes, e essa diferença precisa ser respeitada.
+
+Os assuntos como:
+
+- Reembolso.
+- Pagamento.
+- Entrega.
+- Cancelamento.
+- Recomendação de produtos.
+
+Devem ser direcionados para uma estrutura própria de atendimento Financeiro/Comercial, fora das oito classes do classificador de TI.
+
+O protótipo deverá reconhecer quando uma solicitação estiver fora do escopo do classificador e encaminhá-la para a fila adequada ou revisão humana.
+
+Apresente essa limitação de forma transparente. Não quero uma integração artificial apenas para aparentar que os dois datasets trabalham juntos.
+
+### 7. Premissas para o cálculo de ROI
+
+**Minha decisão: utilizar benchmarks públicos e premissas editáveis.**
+
+Não quero utilizar números fictícios como se fossem resultados reais da minha experiência profissional ou da operação analisada.
+
+Caso encontre referências públicas confiáveis sobre custos operacionais, produtividade, atendimento ou automação, poderá utilizá-las como referência, desde que:
+
+- Apresente a fonte.
+- Informe o contexto do benchmark.
+- Explique a aplicabilidade ao cenário analisado.
+- Deixe os valores editáveis.
+- Identifique claramente o que é dado observado e o que é premissa.
+
+Quero três cenários:
+
+1. Conservador.
+2. Base.
+3. Otimista.
+
+O cálculo deverá distinguir capacidade operacional recuperada de economia financeira efetivamente realizada.
+
+Não considere horas economizadas automaticamente como redução de despesas.
+
+Caso não existam dados suficientes para uma estimativa confiável, deixe isso explícito e apresente as variáveis necessárias para o cálculo.
+
+### 8. Enquadramento do redesign operacional
+
+**Minha decisão: SIM.**
+
+Quero estruturar o redesign sobre três pilares:
+
+1. **Triagem inteligente:** classificação, identificação de prioridade e direcionamento adequado dos chamados.
+2. **Autoatendimento:** resolução automatizada de solicitações padronizadas, recorrentes e de baixo risco.
+3. **Instrumentação de SLA:** monitoramento dos indicadores, identificação de gargalos e acompanhamento contínuo da operação.
+
+Existe também uma conexão importante com uma experiência profissional anterior minha: o redesenho de um processo chamado Link de Análise Especial, no qual o tempo de execução passou de aproximadamente 2 a 5 dias para tempo real.
+
+Esse caso pode ajudar a contextualizar minha visão sobre transformação de processos, mas não deve ser apresentado como resultado deste projeto nem como evidência quantitativa dos datasets analisados.
+
+Se mencionar essa experiência, deixe claro que se trata de um exemplo profissional externo à análise atual.
+
+---
+
+## PARTE 2 — EXECUÇÃO DA FASE 3
+
+Agora que as oito decisões estão definidas, quero que você avance para a construção do diagnóstico executivo e da proposta de redesign operacional.
+
+Pense como se estivesse apresentando esse projeto diretamente ao COO de uma empresa que precisa decidir se deve investir nessa transformação.
+
+Não quero apenas uma descrição acadêmica sobre inteligência artificial. Quero uma proposta de negócio tecnicamente fundamentada, com diagnóstico, decisões, impacto operacional, riscos e viabilidade econômica.
+
+### 1. Diagnóstico executivo
+
+Construa um diagnóstico completo da operação de atendimento com base nas informações efetivamente disponíveis.
+
+Apresente:
+
+- Principais problemas identificados.
+- Limitações dos dados.
+- Gargalos operacionais que podem ser sustentados pelas evidências.
+- Oportunidades de melhoria.
+- Impactos potenciais sobre produtividade, qualidade e experiência do cliente.
+- Quais indicadores podem ser calculados e quais não podem.
+
+Não transforme hipóteses em fatos.
+
+Diferencie claramente:
+- Evidência observada.
+- Interpretação dos dados.
+- Hipótese operacional.
+- Projeção de melhoria.
+
+### 2. Redesign da operação
+
+Desenhe uma proposta de funcionamento da operação após a transformação.
+
+Considere os três pilares aprovados:
+
+- Triagem inteligente.
+- Autoatendimento.
+- Instrumentação de SLA.
+
+Quero visualizar como um chamado entra, é interpretado, classificado, priorizado e encaminhado.
+
+Considere também os casos que precisam de intervenção humana.
+
+A proposta deve demonstrar como a IA se integra à operação, e não apenas apresentar uma lista de ferramentas tecnológicas.
+
+### 3. Matriz de automação
+
+Construa uma matriz que identifique:
+
+| Tipo de atividade | Tratamento proposto | Justificativa | Necessidade de intervenção humana |
+|---|---|---|---|
+
+Diferencie atividades que podem ser automatizadas integralmente, parcialmente ou que devem permanecer sob responsabilidade humana.
+
+Não automatize processos apenas porque existe capacidade técnica para isso.
+
+Considere riscos de erro, impacto para o cliente, ambiguidade e necessidade de julgamento humano.
+
+### 4. Fluxo operacional
+
+Crie um fluxograma visual do funcionamento proposto.
+
+O fluxo deverá demonstrar:
+
+- Entrada do chamado.
+- Interpretação do texto.
+- Identificação do domínio.
+- Classificação.
+- Avaliação de confiança.
+- Priorização.
+- Encaminhamento.
+- Possibilidade de autoatendimento.
+- Escalonamento humano.
+- Registro dos resultados para melhoria contínua.
+
+Inclua caminhos alternativos para solicitações fora do escopo do classificador e situações em que a confiança da previsão seja insuficiente.
+
+### 5. Indicadores de desempenho
+
+Defina quais indicadores deverão ser acompanhados após a implementação.
+
+Considere, quando aplicável:
+
+- Volume de chamados.
+- Distribuição por categoria e canal.
+- Tempo de primeira resposta.
+- Tempo de resolução.
+- Cumprimento de SLA.
+- Taxa de resolução no primeiro contato.
+- Taxa de automação bem-sucedida.
+- Taxa de escalonamento humano.
+- Taxa de reabertura.
+- Satisfação do cliente.
+- Erros de classificação.
+
+Para cada indicador, apresente definição, fórmula, finalidade e dados necessários.
+
+Não apresente metas numéricas arbitrárias como se fossem resultados comprovados. Quando sugerir metas, identifique-as como propostas iniciais que precisarão de validação após a instrumentação da operação.
+
+### 6. Viabilidade econômica e ROI
+
+Desenvolva uma análise econômica parametrizada.
+
+Utilize os três cenários aprovados: conservador, base e otimista.
+
+Considere, no mínimo:
+
+- Volume mensal de chamados.
+- Percentual de chamados elegíveis à automação.
+- Taxa de sucesso da automação.
+- Tempo economizado por chamado.
+- Custo-hora dos profissionais.
+- Custo mensal das ferramentas de IA.
+- Custos de implementação.
+- Custos de manutenção.
+- Retrabalho decorrente de erros.
+
+Apresente as fórmulas utilizadas e permita a alteração das premissas.
+
+Separe:
+- Horas de capacidade recuperada.
+- Valor econômico potencial dessa capacidade.
+- Economia financeira efetivamente realizada.
+- Custos totais da solução.
+- ROI estimado.
+
+Não invente valores de operação. Caso precise utilizar benchmarks, apresente suas fontes e deixe as premissas editáveis.
+
+### 7. Riscos e governança
+
+Apresente os principais riscos da solução, incluindo:
+
+- Classificações incorretas.
+- Respostas inadequadas.
+- Vazamento de informações.
+- Dependência excessiva de automação.
+- Falta de supervisão humana.
+- Viés nos dados.
+- Degradação de desempenho.
+- Falhas de integração.
+
+Para cada risco, indique uma medida de mitigação.
+
+Considere também monitoramento contínuo, auditoria e possibilidade de intervenção humana.
+
+### 8. Entregáveis da Fase 3
+
+Quero receber:
+
+1. Diagnóstico executivo completo.
+2. Proposta de redesign operacional.
+3. Matriz de automação e intervenção humana.
+4. Fluxograma visual da operação.
+5. Definição dos KPIs e da instrumentação.
+6. Modelo de ROI com três cenários e premissas editáveis.
+7. Matriz de riscos e medidas de mitigação.
+8. Registro das decisões metodológicas e limitações.
+
+Organize os arquivos de forma profissional e mantenha a rastreabilidade entre as análises, os dados utilizados e as conclusões apresentadas.
+
+Se houver gráficos, tabelas ou diagramas, eles devem contribuir efetivamente para a compreensão da proposta.
+
+---
+
+## ORIENTAÇÕES FINAIS
+
+Alguns pontos são especialmente importantes:
+
+- Preserve os datasets originais e os arquivos de auditoria.
+- Não altere resultados anteriores para adequá-los à narrativa.
+- Não invente dados, fontes, benchmarks ou resultados.
+- Não apresente projeções como resultados realizados.
+- Mantenha a distinção entre o atendimento B2C do Dataset 1 e o suporte interno de TI do Dataset 2.
+- Documente as decisões e justificativas metodológicas.
+- Priorize clareza executiva, consistência técnica e aplicabilidade operacional.
+
+**Importante: ainda não desenvolva o protótipo nesta etapa.**
+
+Primeiro quero concluir e revisar o diagnóstico, o redesign e a proposta econômica. O protótipo funcional será a próxima fase, construída com base nas decisões e nos resultados desta etapa.
+
+Ao finalizar, apresente um resumo executivo do que foi produzido, os principais achados e eventuais decisões que ainda dependam de validação minha.
+
+Vamos avançar.

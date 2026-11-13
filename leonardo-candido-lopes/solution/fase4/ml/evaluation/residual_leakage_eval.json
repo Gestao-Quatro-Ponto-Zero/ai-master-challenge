@@ -1,0 +1,12 @@
+{
+ "com_vizinho_treino": {
+  "n": 1026,
+  "f1_macro": 0.9211,
+  "accuracy": 0.9191
+ },
+ "sem_vizinho_treino": {
+  "n": 5740,
+  "f1_macro": 0.8204,
+  "accuracy": 0.8324
+ }
+}
