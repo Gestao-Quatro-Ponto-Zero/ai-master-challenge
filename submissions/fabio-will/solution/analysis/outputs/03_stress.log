@@ -1,0 +1,10 @@
+baseline {'accuracy': 0.8558, 'ece': 0.0111, 'thresholds': {'t_auto': 0.79, 't_assist': 0.44, 't_ood_similarity': 0.2398, 'c_min_coverage': 0.55}, 'confidence_only_tiers': {'auto': {'share': 0.7259, 'precision': 0.9528}, 'assist': {'share': 0.2386, 'precision': 0.6303}, 'human': {'share': 0.0355, 'precision': 0.3882}}, 'reasons': {np.str_('confianca_alta'): 4119, np.str_('confianca_baixa'): 243, np.str_('confianca_media'): 723, np.str_('fila_privilegiada'): 193, np.str_('possivel_conteudo_sensivel'): 1090, np.str_('sem_historico_parecido'): 157, np.str_('sequencia_incomum'): 131, np.str_('trecho_sensivel'): 517, np.str_('vocabulario_desconhecido'): 3}, 'tiers': {'auto': {'share': 0.574, 'precision': 0.9619}, 'assist': {'share': 0.3516, 'precision': 0.7376}, 'human': {'share': 0.0744, 'precision': 0.5955}}, 'assist_top2_accuracy': 0.9267, 'guard_false_rejection': 0.0406}
+E1 Enxurrada de tickets de outro domínio {'without_guard': {'auto_share': 0.5101, 'median_confidence': 0.795, 'top_prediction_share': 0.8528}, 'with_guard': {'auto_share': 0.1071, 'human_share': 0.683}}
+E2 Surge uma fila que o modelo não conhece {'without_guard': {'auto_share': 0.3135}, 'with_guard': {'auto_share': 0.3108}}
+E3 Ticket de acesso privilegiado ou de RH na fila errada 
+C1 Incidente multiplica uma categoria 
+C2 Texto com erro de digitação 
+M1 Ticket curto ou vago 
+M2 Ticket em português num modelo treinado em inglês 
+M3 Filas vizinhas que se confundem 
+L1 Categorias pequenas e calibração por fila 

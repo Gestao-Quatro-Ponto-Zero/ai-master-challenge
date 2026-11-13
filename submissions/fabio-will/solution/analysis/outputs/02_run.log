@@ -1,0 +1,8 @@
+majority               acc=0.2846 macroF1=0.0554 ece=0.7154 fit=1.7s
+complement_nb          acc=0.7947 macroF1=0.7833 ece=0.3112 fit=1.7s
+logreg_word            acc=0.8558 macroF1=0.8555 ece=0.0111 fit=4.6s
+svm_word_calibrated    acc=0.8602 macroF1=0.8589 ece=0.0473 fit=3.9s
+logreg_char            acc=0.8456 macroF1=0.8480 ece=0.0162 fit=21.2s
+gate: t_auto=0.79 t_assist=0.3 → {'auto': {'share': 0.7259, 'precision': 0.9528}, 'assist': {'share': 0.2712, 'precision': 0.6017}, 'human': {'share': 0.0029, 'precision': 0.3333}}
+domain shift: {'records': 8469, 'predicted_distribution': {'Access': 607, 'Administrative rights': 383, 'HR Support': 69, 'Hardware': 7222, 'Internal Project': 10, 'Miscellaneous': 158, 'Purchase': 5, 'Storage': 15}, 'median_confidence': 0.795, 'would_auto_route_share': 0.5101, 'would_go_to_human_share': 0.0019, 'in_domain_median_confidence': 0.96}
+size trade-off: [{'max_features': 3000, 'accuracy': 0.8488, 'macro_f1': 0.8498}, {'max_features': 6000, 'accuracy': 0.8495, 'macro_f1': 0.8482}, {'max_features': 10000, 'accuracy': 0.8558, 'macro_f1': 0.8555}, {'max_features': 20000, 'accuracy': 0.8544, 'macro_f1': 0.8543}]

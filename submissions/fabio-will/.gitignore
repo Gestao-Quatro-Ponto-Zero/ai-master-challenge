@@ -1,0 +1,15 @@
+# Datasets come from Kaggle (see solution/data/README.md); never committed.
+solution/data/*.csv
+# Local environments and build output
+.venv/
+solution/.venv/
+__pycache__/
+.pytest_cache/
+solution/app/node_modules/
+solution/app/.next/
+solution/app/out/
+solution/app/.vercel/
+solution/app/next-env.d.ts
+solution/app/*.tsbuildinfo
+.DS_Store
+.env*

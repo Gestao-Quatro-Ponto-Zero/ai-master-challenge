@@ -1,0 +1,10 @@
+Dataset 1: 8469 records (29808 CSV lines)
+  timestamps span 27.0h; resolution before first response: 49.3%
+  CSAT uniformity p=0.7968; |delta| vs CSAT rho=[0.0053, 0.7807]
+  CSAT drivers p-values: {'Ticket Priority': 0.6287, 'Ticket Channel': 0.2785, 'Ticket Type': 0.6993, 'Product Purchased': 0.6674, 'Customer Gender': 0.6255}
+  where_flow_stalls: worst of 80 cells = {'channel': 'Email', 'priority': 'Low', 'type': 'Technical issue', 'value': 10.31, 'n': 30} vs overall 6.7; permutation p=0.5177
+  what_moves_csat: worst of 80 cells = {'channel': 'Phone', 'priority': 'High', 'type': 'Refund request', 'value': 2.29, 'n': 31} vs overall 2.99; permutation p=0.1764
+  placeholder in description: 100.0%; resolution/description word overlap: 1.4%
+Dataset 2: 47837 records; duplicates 0; conflicting labels 0
+  tokens median 26 (p10 12, p90 91); stopwords present 45.35%
+→ outputs/audit.json

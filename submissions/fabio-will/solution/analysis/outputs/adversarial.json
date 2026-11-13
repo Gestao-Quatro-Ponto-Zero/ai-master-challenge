@@ -1,0 +1,424 @@
+{
+  "victims": {
+    "Administrative rights": {
+      "tickets": 264,
+      "white_box": {
+        "Hardware": {
+          "words_used": [
+            "monitor",
+            "ram",
+            "laptop",
+            "room",
+            "phone",
+            "certificate",
+            "memory",
+            "calls",
+            "meeting",
+            "connection",
+            "booking",
+            "documents"
+          ],
+          "curve": [
+            {
+              "words": 0,
+              "escaped_auto_pct": 2.3,
+              "escaped_before_pentest_pct": 3.0,
+              "assist_pct": 87.1,
+              "human_pct": 10.6
+            },
+            {
+              "words": 1,
+              "escaped_auto_pct": 11.4,
+              "escaped_before_pentest_pct": 18.2,
+              "assist_pct": 78.8,
+              "human_pct": 9.8
+            },
+            {
+              "words": 2,
+              "escaped_auto_pct": 14.4,
+              "escaped_before_pentest_pct": 37.1,
+              "assist_pct": 78.4,
+              "human_pct": 7.2
+            },
+            {
+              "words": 3,
+              "escaped_auto_pct": 14.0,
+              "escaped_before_pentest_pct": 48.1,
+              "assist_pct": 77.3,
+              "human_pct": 8.7
+            },
+            {
+              "words": 5,
+              "escaped_auto_pct": 14.4,
+              "escaped_before_pentest_pct": 66.3,
+              "assist_pct": 76.1,
+              "human_pct": 9.5
+            },
+            {
+              "words": 8,
+              "escaped_auto_pct": 14.0,
+              "escaped_before_pentest_pct": 82.2,
+              "assist_pct": 75.4,
+              "human_pct": 10.6
+            },
+            {
+              "words": 12,
+              "escaped_auto_pct": 13.3,
+              "escaped_before_pentest_pct": 86.0,
+              "assist_pct": 73.9,
+              "human_pct": 12.9
+            }
+          ]
+        },
+        "Miscellaneous": {
+          "words_used": [
+            "change",
+            "approval",
+            "approve",
+            "add",
+            "groups",
+            "tickets",
+            "ticket",
+            "approved",
+            "name",
+            "approver",
+            "contract",
+            "owner"
+          ],
+          "curve": [
+            {
+              "words": 0,
+              "escaped_auto_pct": 2.3,
+              "escaped_before_pentest_pct": 3.0,
+              "assist_pct": 87.1,
+              "human_pct": 10.6
+            },
+            {
+              "words": 1,
+              "escaped_auto_pct": 3.0,
+              "escaped_before_pentest_pct": 4.5,
+              "assist_pct": 85.2,
+              "human_pct": 11.7
+            },
+            {
+              "words": 2,
+              "escaped_auto_pct": 11.0,
+              "escaped_before_pentest_pct": 18.2,
+              "assist_pct": 77.3,
+              "human_pct": 11.7
+            },
+            {
+              "words": 3,
+              "escaped_auto_pct": 13.3,
+              "escaped_before_pentest_pct": 29.9,
+              "assist_pct": 76.9,
+              "human_pct": 9.8
+            },
+            {
+              "words": 5,
+              "escaped_auto_pct": 15.5,
+              "escaped_before_pentest_pct": 56.8,
+              "assist_pct": 78.4,
+              "human_pct": 6.1
+            },
+            {
+              "words": 8,
+              "escaped_auto_pct": 15.2,
+              "escaped_before_pentest_pct": 74.2,
+              "assist_pct": 77.3,
+              "human_pct": 7.6
+            },
+            {
+              "words": 12,
+              "escaped_auto_pct": 15.5,
+              "escaped_before_pentest_pct": 82.6,
+              "assist_pct": 76.1,
+              "human_pct": 8.3
+            }
+          ]
+        }
+      },
+      "black_box": [
+        {
+          "words": 0,
+          "escaped_auto_pct": 2.3,
+          "escaped_before_pentest_pct": 3.0,
+          "assist_pct": 87.1,
+          "human_pct": 10.6
+        },
+        {
+          "words": 1,
+          "escaped_auto_pct": 8.3,
+          "escaped_before_pentest_pct": 13.6,
+          "assist_pct": 82.2,
+          "human_pct": 9.5
+        },
+        {
+          "words": 2,
+          "escaped_auto_pct": 11.7,
+          "escaped_before_pentest_pct": 18.9,
+          "assist_pct": 82.6,
+          "human_pct": 5.7
+        },
+        {
+          "words": 3,
+          "escaped_auto_pct": 11.0,
+          "escaped_before_pentest_pct": 16.7,
+          "assist_pct": 82.6,
+          "human_pct": 6.4
+        },
+        {
+          "words": 5,
+          "escaped_auto_pct": 14.8,
+          "escaped_before_pentest_pct": 42.4,
+          "assist_pct": 79.5,
+          "human_pct": 5.7
+        },
+        {
+          "words": 8,
+          "escaped_auto_pct": 14.4,
+          "escaped_before_pentest_pct": 47.0,
+          "assist_pct": 77.7,
+          "human_pct": 8.0
+        },
+        {
+          "words": 12,
+          "escaped_auto_pct": 14.8,
+          "escaped_before_pentest_pct": 59.1,
+          "assist_pct": 76.9,
+          "human_pct": 8.3
+        }
+      ],
+      "interleaved_black_box": {
+        "words": 1,
+        "escaped_auto_pct": 1.9,
+        "escaped_before_pentest_pct": 95.8,
+        "assist_pct": 0.4,
+        "human_pct": 97.7
+      }
+    },
+    "HR Support": {
+      "tickets": 1638,
+      "white_box": {
+        "Hardware": {
+          "words_used": [
+            "laptop",
+            "monitor",
+            "phone",
+            "ram",
+            "room",
+            "meeting",
+            "connection",
+            "connect",
+            "cable",
+            "keyboard",
+            "documents",
+            "log"
+          ],
+          "curve": [
+            {
+              "words": 0,
+              "escaped_auto_pct": 1.1,
+              "escaped_before_pentest_pct": 1.6,
+              "assist_pct": 23.6,
+              "human_pct": 4.9
+            },
+            {
+              "words": 1,
+              "escaped_auto_pct": 4.9,
+              "escaped_before_pentest_pct": 8.1,
+              "assist_pct": 39.7,
+              "human_pct": 4.2
+            },
+            {
+              "words": 2,
+              "escaped_auto_pct": 8.6,
+              "escaped_before_pentest_pct": 27.5,
+              "assist_pct": 51.8,
+              "human_pct": 2.9
+            },
+            {
+              "words": 3,
+              "escaped_auto_pct": 9.9,
+              "escaped_before_pentest_pct": 39.0,
+              "assist_pct": 58.4,
+              "human_pct": 2.9
+            },
+            {
+              "words": 5,
+              "escaped_auto_pct": 10.0,
+              "escaped_before_pentest_pct": 65.1,
+              "assist_pct": 76.2,
+              "human_pct": 3.2
+            },
+            {
+              "words": 8,
+              "escaped_auto_pct": 10.4,
+              "escaped_before_pentest_pct": 81.4,
+              "assist_pct": 81.6,
+              "human_pct": 2.8
+            },
+            {
+              "words": 12,
+              "escaped_auto_pct": 10.4,
+              "escaped_before_pentest_pct": 90.2,
+              "assist_pct": 83.5,
+              "human_pct": 3.5
+            }
+          ]
+        },
+        "Miscellaneous": {
+          "words_used": [
+            "change",
+            "approval",
+            "approve",
+            "ticket",
+            "groups",
+            "add",
+            "contract",
+            "owner",
+            "approved",
+            "tickets",
+            "mailing",
+            "name"
+          ],
+          "curve": [
+            {
+              "words": 0,
+              "escaped_auto_pct": 1.1,
+              "escaped_before_pentest_pct": 1.6,
+              "assist_pct": 23.6,
+              "human_pct": 4.9
+            },
+            {
+              "words": 1,
+              "escaped_auto_pct": 2.4,
+              "escaped_before_pentest_pct": 3.6,
+              "assist_pct": 32.4,
+              "human_pct": 5.7
+            },
+            {
+              "words": 2,
+              "escaped_auto_pct": 7.1,
+              "escaped_before_pentest_pct": 17.6,
+              "assist_pct": 46.6,
+              "human_pct": 3.3
+            },
+            {
+              "words": 3,
+              "escaped_auto_pct": 9.4,
+              "escaped_before_pentest_pct": 36.9,
+              "assist_pct": 57.1,
+              "human_pct": 2.6
+            },
+            {
+              "words": 5,
+              "escaped_auto_pct": 9.9,
+              "escaped_before_pentest_pct": 62.1,
+              "assist_pct": 72.9,
+              "human_pct": 2.7
+            },
+            {
+              "words": 8,
+              "escaped_auto_pct": 9.7,
+              "escaped_before_pentest_pct": 82.4,
+              "assist_pct": 82.7,
+              "human_pct": 3.3
+            },
+            {
+              "words": 12,
+              "escaped_auto_pct": 9.3,
+              "escaped_before_pentest_pct": 91.2,
+              "assist_pct": 85.2,
+              "human_pct": 4.6
+            }
+          ]
+        }
+      },
+      "black_box": [
+        {
+          "words": 0,
+          "escaped_auto_pct": 1.1,
+          "escaped_before_pentest_pct": 1.6,
+          "assist_pct": 23.6,
+          "human_pct": 4.9
+        },
+        {
+          "words": 1,
+          "escaped_auto_pct": 4.9,
+          "escaped_before_pentest_pct": 8.1,
+          "assist_pct": 39.7,
+          "human_pct": 4.2
+        },
+        {
+          "words": 2,
+          "escaped_auto_pct": 6.3,
+          "escaped_before_pentest_pct": 11.5,
+          "assist_pct": 45.1,
+          "human_pct": 3.0
+        },
+        {
+          "words": 3,
+          "escaped_auto_pct": 5.7,
+          "escaped_before_pentest_pct": 9.1,
+          "assist_pct": 42.7,
+          "human_pct": 3.2
+        },
+        {
+          "words": 5,
+          "escaped_auto_pct": 10.1,
+          "escaped_before_pentest_pct": 41.6,
+          "assist_pct": 62.7,
+          "human_pct": 2.3
+        },
+        {
+          "words": 8,
+          "escaped_auto_pct": 10.1,
+          "escaped_before_pentest_pct": 53.0,
+          "assist_pct": 71.6,
+          "human_pct": 2.9
+        },
+        {
+          "words": 12,
+          "escaped_auto_pct": 10.0,
+          "escaped_before_pentest_pct": 66.8,
+          "assist_pct": 78.1,
+          "human_pct": 2.9
+        }
+      ],
+      "interleaved_black_box": {
+        "words": 1,
+        "escaped_auto_pct": 7.1,
+        "escaped_before_pentest_pct": 100.0,
+        "assist_pct": 0.1,
+        "human_pct": 92.9
+      }
+    }
+  },
+  "black_box_words": [
+    "laptop",
+    "screen",
+    "printer",
+    "keyboard",
+    "monitor",
+    "mouse",
+    "cable",
+    "battery",
+    "dock",
+    "headset",
+    "charger",
+    "replacement"
+  ],
+  "never_auto": [
+    "Administrative rights"
+  ],
+  "sensitive": [
+    "Administrative rights",
+    "HR Support"
+  ],
+  "segment_guard": {
+    "words": 8,
+    "threshold": 0.7
+  },
+  "coherence_floor": 0.094
+}
