@@ -1,0 +1,338 @@
+[
+ {
+  "id": 1,
+  "tipo": "obrigatorio",
+  "input_text": "I cannot log into my account",
+  "predicted_domain": "IT_INTERNAL",
+  "predicted_category": "Access",
+  "category_raw": "Access",
+  "category_reliable": false,
+  "confidence": 0.9128,
+  "max_sim_train": 0.4744,
+  "priority": "MEDIUM",
+  "decision": "ASSISTED",
+  "rule_triggered": "R9_DOMAIN_NOT_VALIDATED",
+  "pass_criteria": {
+   "category": "Access",
+   "domain": [
+    "IT_INTERNAL"
+   ]
+  },
+  "test_pass": true,
+  "notes": "ok"
+ },
+ {
+  "id": 2,
+  "tipo": "obrigatorio",
+  "input_text": "My laptop screen is flickering",
+  "predicted_domain": "IT_INTERNAL",
+  "predicted_category": "Hardware",
+  "category_raw": "Hardware",
+  "category_reliable": false,
+  "confidence": 0.9867,
+  "max_sim_train": 0.3864,
+  "priority": "MEDIUM",
+  "decision": "ASSISTED",
+  "rule_triggered": "R9_DOMAIN_NOT_VALIDATED",
+  "pass_criteria": {
+   "category": "Hardware",
+   "domain": [
+    "IT_INTERNAL"
+   ]
+  },
+  "test_pass": true,
+  "notes": "ok"
+ },
+ {
+  "id": 3,
+  "tipo": "obrigatorio",
+  "input_text": "I need to order 5 new monitors for the team",
+  "predicted_domain": "IT_INTERNAL",
+  "predicted_category": "Hardware",
+  "category_raw": "Hardware",
+  "category_reliable": false,
+  "confidence": 0.9792,
+  "max_sim_train": 0.6126,
+  "priority": "MEDIUM",
+  "decision": "ASSISTED",
+  "rule_triggered": "R9_DOMAIN_NOT_VALIDATED",
+  "pass_criteria": {
+   "category": "Purchase",
+   "domain": [
+    "IT_INTERNAL"
+   ]
+  },
+  "test_pass": false,
+  "notes": "cat Hardware!=Purchase"
+ },
+ {
+  "id": 4,
+  "tipo": "obrigatorio",
+  "input_text": "I need access to the shared folder for project files",
+  "predicted_domain": "IT_INTERNAL",
+  "predicted_category": "Storage",
+  "category_raw": "Storage",
+  "category_reliable": false,
+  "confidence": 0.9804,
+  "max_sim_train": 0.6995,
+  "priority": "LOW",
+  "decision": "ASSISTED",
+  "rule_triggered": "R9_DOMAIN_NOT_VALIDATED",
+  "pass_criteria": {
+   "category": "Storage",
+   "domain": [
+    "IT_INTERNAL"
+   ]
+  },
+  "test_pass": true,
+  "notes": "ok"
+ },
+ {
+  "id": 5,
+  "tipo": "obrigatorio",
+  "input_text": "Please give me admin access to the server",
+  "predicted_domain": "IT_INTERNAL",
+  "predicted_category": "HR Support",
+  "category_raw": "HR Support",
+  "category_reliable": false,
+  "confidence": 0.7447,
+  "max_sim_train": 0.663,
+  "priority": "LOW",
+  "decision": "HUMAN_REQUIRED",
+  "rule_triggered": "R4_ADMIN_RIGHTS",
+  "pass_criteria": {
+   "category": "Administrative rights",
+   "decision": [
+    "HUMAN_REQUIRED"
+   ]
+  },
+  "test_pass": false,
+  "notes": "cat HR Support!=Administrative rights"
+ },
+ {
+  "id": 6,
+  "tipo": "obrigatorio",
+  "input_text": "I want a refund for my defective product order #1234",
+  "predicted_domain": "FINANCIAL_COMMERCIAL",
+  "predicted_category": "Hardware",
+  "category_raw": "Hardware",
+  "category_reliable": true,
+  "confidence": 0.3198,
+  "max_sim_train": 0.292,
+  "priority": "MEDIUM",
+  "decision": "HUMAN_REQUIRED",
+  "rule_triggered": "R2_DOMAIN_NOT_IT",
+  "pass_criteria": {
+   "domain": [
+    "FINANCIAL_COMMERCIAL"
+   ],
+   "decision": [
+    "HUMAN_REQUIRED"
+   ]
+  },
+  "test_pass": true,
+  "notes": "ok"
+ },
+ {
+  "id": 7,
+  "tipo": "obrigatorio",
+  "input_text": "Something is wrong with my setup",
+  "predicted_domain": "IT_INTERNAL",
+  "predicted_category": "Internal Project",
+  "category_raw": "Internal Project",
+  "category_reliable": false,
+  "confidence": 0.8451,
+  "max_sim_train": 0.2668,
+  "priority": "LOW",
+  "decision": "ASSISTED",
+  "rule_triggered": "R9_DOMAIN_NOT_VALIDATED",
+  "pass_criteria": {
+   "decision_not": [
+    "AUTOMATIC"
+   ]
+  },
+  "test_pass": true,
+  "notes": "ok"
+ },
+ {
+  "id": 8,
+  "tipo": "obrigatorio",
+  "input_text": "help",
+  "predicted_domain": "INDETERMINATE",
+  "predicted_category": "Hardware",
+  "category_raw": "Hardware",
+  "category_reliable": true,
+  "confidence": 0.7445,
+  "max_sim_train": 0.0,
+  "priority": "MEDIUM",
+  "decision": "HUMAN_REQUIRED",
+  "rule_triggered": "R2_DOMAIN_NOT_IT",
+  "pass_criteria": {
+   "domain": [
+    "INDETERMINATE"
+   ],
+   "decision": [
+    "HUMAN_REQUIRED"
+   ]
+  },
+  "test_pass": true,
+  "notes": "ok"
+ },
+ {
+  "id": 9,
+  "tipo": "obrigatorio",
+  "input_text": "What time is the company lunch today?",
+  "predicted_domain": "IT_INTERNAL",
+  "predicted_category": "HR Support",
+  "category_raw": "HR Support",
+  "category_reliable": true,
+  "confidence": 0.6629,
+  "max_sim_train": 0.2073,
+  "priority": "MEDIUM",
+  "decision": "ASSISTED",
+  "rule_triggered": "R7_MID_CONFIDENCE",
+  "pass_criteria": {
+   "domain": [
+    "OUT_OF_SCOPE",
+    "INDETERMINATE"
+   ],
+   "decision": [
+    "HUMAN_REQUIRED"
+   ]
+  },
+  "test_pass": false,
+  "notes": "dom IT_INTERNAL∉['OUT_OF_SCOPE', 'INDETERMINATE']; dec ASSISTED∉['HUMAN_REQUIRED']"
+ },
+ {
+  "id": 10,
+  "tipo": "obrigatorio",
+  "input_text": "Our entire network is down — no one can access anything",
+  "predicted_domain": "IT_INTERNAL",
+  "predicted_category": "HR Support",
+  "category_raw": "HR Support",
+  "category_reliable": false,
+  "confidence": 0.5346,
+  "max_sim_train": 0.3212,
+  "priority": "CRITICAL",
+  "decision": "ESCALATE",
+  "rule_triggered": "R3_CRITICAL_LOW_CONF",
+  "pass_criteria": {
+   "priority": [
+    "CRITICAL"
+   ],
+   "decision_not": [
+    "AUTOMATIC"
+   ]
+  },
+  "test_pass": true,
+  "notes": "ok"
+ },
+ {
+  "id": 11,
+  "tipo": "adicional",
+  "input_text": "My account was hacked and there were unauthorized charges",
+  "predicted_domain": "IT_INTERNAL",
+  "predicted_category": "Access",
+  "category_raw": "Access",
+  "category_reliable": false,
+  "confidence": 0.7519,
+  "max_sim_train": 0.3369,
+  "priority": "HIGH",
+  "decision": "ESCALATE",
+  "rule_triggered": "R1_ACCOUNT_COMPROMISE",
+  "pass_criteria": {
+   "decision": [
+    "ESCALATE"
+   ]
+  },
+  "test_pass": true,
+  "notes": "ok"
+ },
+ {
+  "id": 12,
+  "tipo": "adicional",
+  "input_text": "I need to request paternity leave and update my beneficiaries",
+  "predicted_domain": "IT_INTERNAL",
+  "predicted_category": "HR Support",
+  "category_raw": "HR Support",
+  "category_reliable": false,
+  "confidence": 0.8291,
+  "max_sim_train": 0.4164,
+  "priority": "LOW",
+  "decision": "ASSISTED",
+  "rule_triggered": "R9_DOMAIN_NOT_VALIDATED",
+  "pass_criteria": {
+   "category": "HR Support",
+   "domain": [
+    "IT_INTERNAL"
+   ]
+  },
+  "test_pass": true,
+  "notes": "ok"
+ },
+ {
+  "id": 13,
+  "tipo": "adicional",
+  "input_text": "The deadline for the Q4 migration project needs to be updated",
+  "predicted_domain": "IT_INTERNAL",
+  "predicted_category": "Internal Project",
+  "category_raw": "Internal Project",
+  "category_reliable": false,
+  "confidence": 0.5028,
+  "max_sim_train": 0.3747,
+  "priority": "MEDIUM",
+  "decision": "HUMAN_REQUIRED",
+  "rule_triggered": "R5_LOW_CONFIDENCE",
+  "pass_criteria": {
+   "category": "Internal Project",
+   "domain": [
+    "IT_INTERNAL"
+   ]
+  },
+  "test_pass": true,
+  "notes": "ok"
+ },
+ {
+  "id": 14,
+  "tipo": "adicional",
+  "input_text": "Não consigo acessar minha pasta de trabalho no servidor",
+  "predicted_domain": "OUT_OF_SCOPE",
+  "predicted_category": "Hardware",
+  "category_raw": "Hardware",
+  "category_reliable": true,
+  "confidence": 0.3929,
+  "max_sim_train": 0.0,
+  "priority": "MEDIUM",
+  "decision": "HUMAN_REQUIRED",
+  "rule_triggered": "R2_DOMAIN_NOT_IT",
+  "pass_criteria": {
+   "decision": [
+    "HUMAN_REQUIRED"
+   ]
+  },
+  "test_pass": true,
+  "notes": "ok"
+ },
+ {
+  "id": 15,
+  "tipo": "adicional",
+  "input_text": "lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo",
+  "predicted_domain": "IT_INTERNAL",
+  "predicted_category": "Hardware",
+  "category_raw": "Hardware",
+  "category_reliable": false,
+  "confidence": 0.4481,
+  "max_sim_train": 0.2386,
+  "priority": "MEDIUM",
+  "decision": "HUMAN_REQUIRED",
+  "rule_triggered": "R5_LOW_CONFIDENCE",
+  "pass_criteria": {
+   "decision": [
+    "HUMAN_REQUIRED"
+   ],
+   "no_crash": true
+  },
+  "test_pass": true,
+  "notes": "ok"
+ }
+]

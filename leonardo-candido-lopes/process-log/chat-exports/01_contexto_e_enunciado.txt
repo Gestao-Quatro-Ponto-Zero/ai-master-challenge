@@ -1,0 +1,175 @@
+AI Master Challenge
+O teste para quem vai transformar áreas inteiras usando IA.
+
+O G4 está construindo um novo tipo de profissional: o AI Master. Uma pessoa capaz de entrar em qualquer área — vendas, suporte, marketing, operações — e usar IA generativa para resolver problemas reais de forma transformacional.
+
+Este repositório contém os desafios do processo seletivo.
+O que é um AI Master?
+Um AI Master é um "one-person team" que:
+- Entende o problema de negócio antes de abrir qualquer ferramenta
+- Usa IA generativa como alavanca, não como muleta
+- Entrega soluções funcionais — não apresentações bonitas
+- Sabe o que automatizar e o que não automatizar
+Não estamos testando se você sabe usar ChatGPT. Estamos testando se você consegue resolver problemas complexos usando IA como ferramenta estratégica.
+Como funciona
+1. Fork este repositório
+2. Escolha um desafio da pasta /challenges
+3. Leia o README completo do challenge
+4. Resolva usando qualquer ferramenta de IA que quiser
+5. Coloque sua solução em submissions/seu-nome/
+6. Abra um Pull Request — detalhes em CONTRIBUTING.md
+Regras
+- Use IA. Esperamos que você use. Queremos ver como você usa.
+- Qualquer ferramenta é permitida. Claude, ChatGPT, Gemini, Cursor, Claude Code, Copilot, scripts custom, APIs — tanto faz.
+- Envie evidências do seu processo. A solução sozinha não basta. Precisamos ver como você chegou lá.
+- Sem evidência de processo = desclassificado.
+Sobre o baseline
+Nós já rodamos cada challenge em múltiplos modelos de IA (Claude, GPT, Gemini) para gerar respostas de referência. Esse é o nosso baseline. Se você simplesmente colar o brief em qualquer IA e enviar o resultado, sua resposta vai ser parecida com algo que já temos.
+
+Parecido com o baseline não é suficiente. Esperamos que a sua entrega supere substancialmente o que a IA produz sozinha — em profundidade de análise, em julgamento, em qualidade de execução, ou em criatividade da solução.
+
+O valor de um AI Master não é saber pedir pra IA. É saber o que pedir, quando desconfiar, o que ajustar, e o que só um humano com contexto consegue fazer.
+O que NÃO estamos avaliando
+- Conhecimento de uma linguagem de programação específica
+- Memorização de frameworks ou metodologias
+- Experiência prévia no setor de educação
+- Se você usou a ferramenta X ou Y
+O que estamos avaliando
+- Você entendeu o problema antes de sair executando?
+- Usou IA de forma inteligente ou só deu copy-paste?
+- O resultado resolve o problema de verdade?
+- Alguém consegue entender e agir com base no que você entregou?
+Desafios disponíveis
+- 001 — Diagnóstico de Churn · Dados / Analytics
+- 002 — Redesign de Suporte · Operações / CX
+- 003 — Lead Scorer · Vendas / RevOps
+- 004 — Estratégia Social Media · Marketing
+Cada desafio tem seu próprio README com contexto completo, links para dados, e critérios de qualidade. Veja o índice de challenges para ajuda na escolha.
+
+Time budget
+Cada desafio foi projetado para ser resolvido em 4 a 6 horas. Não há cronômetro — mas soluções que levaram 40 horas não recebem pontos extras por isso.
+
+Valorizamos inteligência no uso do tempo, não quantidade de horas.
+Submissão
+A submissão é feita exclusivamente via Pull Request. Isso faz parte do teste.
+1. Fork → branch submission/seu-nome → pasta submissions/seu-nome/
+2. Use o template de submissão para estruturar sua entrega
+3. Abra o PR seguindo as instruções em CONTRIBUTING.md
+4. Leia o Guia de Submissão para detalhes sobre o que enviar
+Se você não sabe abrir um Pull Request, esse é um bom momento pra aprender. Um AI Master resolve esse tipo de problema em 10 minutos.
+
+FAQ
+Posso fazer mais de um desafio? Pode, mas preferimos um bem feito do que dois superficiais.
+
+Posso usar IA pra tudo? Sim. O ponto não é fazer sem IA. É usar IA melhor do que a média.
+
+Se eu só colar o problema no ChatGPT e enviar a resposta? Nós já fizemos isso — com vários modelos. Temos as respostas. Se a sua for parecida, você não agregou nada. Próximo.
+
+Quanto tempo tenho? Recomendamos 4-6 horas. Envie quando estiver pronto — não há deadline fixo para o desafio (mas vagas são limitadas).
+
+Preciso saber programar? Não necessariamente. Mas um AI Master que consegue "vibe code" uma solução funcional tem vantagem sobre um que só escreve documento.
+Sobre o G4
+O G4 é a maior plataforma de educação executiva do Brasil. Formamos líderes e gestores com metodologias práticas baseadas em empresas de alto crescimento.
+
+Estamos construindo o futuro do trabalho com IA — e precisamos de pessoas que construam junto.
+
+O G4 nasceu de uma constatação simples: crescer empresas no Brasil exige mais do que teoria. Exige método, repertório e decisões sustentadas por experiências reais.
+
+Hoje, evoluímos para uma estrutura que ajuda líderes e empresas a tomar melhores decisões, sustentar crescimento e ampliar seu impacto.
+
+E agora estamos criando uma nova posição para acompanhar uma das maiores transformações do mercado: AI Master.
+
+🎯 Sobre a posição
+
+O AI Master é um cargo novo no G4. Estamos criando essa posição porque acreditamos que profissionais capazes de aplicar Inteligência Artificial para resolver problemas reais de negócio estarão entre os perfis mais valiosos dos próximos anos.
+
+Você terá atuação como Super Individual Contributor, utilizando IA como seu verdadeiro sistema operacional — do diagnóstico à implementação e mensuração de resultados.
+
+Será uma posição com reporte direto à liderança executiva do G4 Educação, autonomia e alto nível de ownership.
+
+📍 Modelo: Presencial | São Paulo
+
+💰 Remuneração: R$ 10.000 a R$ 40.000/mês + bônus e benefícios
+
+🎁 Benefício flexível: R$ 1.000 no cartão iFood Benefícios
+
+💡 O que você vai fazer
+
+Sua atuação estará dividida em cinco grandes frentes:
+
+Mapeamento
+
+Identificar problemas relevantes, separar oportunidades reais de ruídos e entender onde a IA pode gerar impacto.
+
+Orquestração técnica
+
+Combinar LLMs, APIs, dados, automações, agentes, RAG e pipelines para solucionar problemas complexos.
+
+Entrega end-to-end
+
+Conduzir a solução do diagnóstico à implementação e ao resultado, com alto nível de autonomia.
+
+Sustentação e melhoria contínua
+
+Monitorar resultados, ajustar soluções, garantir adoção e evoluir continuamente o que foi construído.
+
+Comunicação executiva
+
+Transformar problemas complexos em entregas claras, objetivas e capazes de gerar decisões.
+
+🔎 O que buscamos
+
+Essa é uma posição para quem faz acontecer e consegue provar o impacto gerado.
+
+Buscamos profissionais com:
+- Experiência comprovada com resultados quantificáveis;
+- Uso avançado de IA generativa e automação;
+- Experiência com agentes, RAG, integrações ou pipelines;
+- Forte raciocínio estruturado e visão de negócio;
+- Perfil analítico, com conhecimento de dados, SQL ou Python;
+- Excelente comunicação executiva;
+- Autonomia, protagonismo e forte senso de ownership;
+- Disponibilidade para atuação presencial full-time em São Paulo.
+
+⭐ Será um diferencial
+- Experiência em consultoria estratégica, operações ou growth;
+- Formação em engenharia, computação, estatística, matemática ou áreas correlatas;
+- Portfólio de IA aplicada a problemas reais;
+- Conhecimento de diferentes stacks de LLMs, automação e dados;
+- Capacidade de construir ferramentas e protótipos funcionais sem depender de um time de engenharia.
+
+🧠 Como funciona o processo seletivo
+
+Após a candidatura, você receberá por e-mail as orientações para as próximas etapas:
+
+1. Teste prático
+
+Você escolherá um case dentro do repositório da vaga no GitHub e deverá solucioná-lo utilizando IA, deixando claro seu papel e como a IA foi utilizada.
+
+2. Teste lógico
+
+Aprovado no case, você avançará para o teste lógico.
+
+3. Entrevistas
+
+Aprovado nas avaliações, você seguirá para as conversas com o time.
+
+🎁 Benefícios G4
+- R$ 1.000 de benefício flexível no iFood Benefícios;
+- Assistência Médica Alice, sem coparticipação;
+- 30 dias de descanso remunerado após 12 meses;
+- Licença maternidade e paternidade estendida;
+- Acesso aos conteúdos online e Imersões do G4;
+- Gympass e TotalPass;
+- Reservatório de Dopamina;
+- Telemedicina com médicos e psicólogos pela Starbem;
+- Aplicativo de atividade física VIK;
+- Acesso à plataforma Viver de AI;
+- Acesso à FluencyPass.
+
+🚀 Se você usa IA para resolver problemas difíceis de negócio — e consegue mostrar o resultado — queremos conhecer você.
+
+Candidate-se e venha ajudar a construir o que essa nova posição pode se tornar dentro do G4.
+
+
+ Fala mano tudo bem Eu preciso de uma ajuda sua com um negócio que que acontece tava que vagando pelo Linkin eu tenho lincolding né e passando por algumas vagas eu vi que tinha uma vaga em cima na vaga no ver cobra que está eu te mandei tudo aí basicamente o que aconteceu tá no primeiro parágrafo é da vaga no com os desafios 300 o segundo parágrafo ele é a descrição da vaga no LinkedIn tá e que que acontece que eu quero me mostrar que eu quero fazer com você eu quero que você me ajuda a resolver os problemas eu vou fazer com você eu vou resolver e eu depois eu vou validar com outras viado o problema porque eu quero ser diferente eu sei que muita gente não vai usar você guarda com isso aqui como como vai dar para resolver o pessoal vai usar chatgpt Cláudio eles não já falaram que já jogaram em várias apis eu não vou garantir que eles vão ter usado abax mas eu sei que quase ninguém vai usar eu quero me diferenciada concorrência principalmente porque você consegue passar por muitas e muitos processos tá o que eu quero fazer aqui eu vou fazer esse negócio junto com você tá você vai me ajudar a resolver isso essa função você vai me ajudar a resolver só que eu quero que toda a decisão seja baseado em dados qualquer coisa tem que ter uma referência tem que ter uma fonte e qualquer informação não é tipo assim ah porque você tem que validar não ou é ou não é ou é x ou é Y entendeu eu quero estar certo eu quero passar nisso eu quero de verdade passar nisso eu quero mostrar que eu realmente sei mexer com isso sem realmente validar o resultado sabe e não quero ficar enrolando muito nesse negócio então se eu puder me ajudar vai ser

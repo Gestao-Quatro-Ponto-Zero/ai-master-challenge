@@ -1,0 +1,286 @@
+{
+  "title": "Revenue grew 18% while churn fell to a two-year low.",
+  "eyebrow": "Acme \u00b7 Q3 2026 business review",
+  "subtitle": "ARR, retention and every one of our 420 customers across all regions. Hover any dot to explore; use the region tabs to focus.",
+  "data_as_of": "2026-10-08T06:00:00Z",
+  "theme": "editorial",
+  "sources": [
+    {
+      "id": "snowflake_finance",
+      "label": "Snowflake \u00b7 finance.arr_monthly"
+    },
+    {
+      "id": "hubspot",
+      "label": "HubSpot \u00b7 deals"
+    },
+    {
+      "id": "upload_accounts",
+      "label": "accounts_q3.xlsx (uploaded)"
+    }
+  ],
+  "filters": [
+    {
+      "id": "region",
+      "type": "tabs",
+      "label": "Region",
+      "field": "region",
+      "options": [
+        "All",
+        "NA",
+        "EMEA",
+        "APAC"
+      ],
+      "default": "All",
+      "applies_to": [
+        "kpi_arr",
+        "kpi_nrr",
+        "kpi_churn",
+        "kpi_logos",
+        "arr_trend",
+        "movers",
+        "landscape",
+        "book",
+        "health"
+      ]
+    }
+  ],
+  "tiles": [
+    {
+      "id": "kpi_arr",
+      "type": "kpi",
+      "span": 3,
+      "data": "kpis",
+      "where": {
+        "metric": "arr"
+      },
+      "accent": "ink"
+    },
+    {
+      "id": "kpi_nrr",
+      "type": "kpi",
+      "span": 3,
+      "data": "kpis",
+      "where": {
+        "metric": "nrr"
+      },
+      "accent": "accent"
+    },
+    {
+      "id": "kpi_churn",
+      "type": "kpi",
+      "span": 3,
+      "data": "kpis",
+      "where": {
+        "metric": "churn"
+      },
+      "accent": "accent-2"
+    },
+    {
+      "id": "kpi_logos",
+      "type": "kpi",
+      "span": 3,
+      "data": "kpis",
+      "where": {
+        "metric": "logos"
+      },
+      "accent": "accent"
+    },
+    {
+      "id": "arr_trend",
+      "type": "area",
+      "span": 8,
+      "title": "ARR by month",
+      "insight": "Expansion revenue doubled after the Enterprise tier launched in May.",
+      "data": "arr_trend",
+      "x": "month",
+      "series": [
+        {
+          "field": "existing",
+          "label": "Existing"
+        },
+        {
+          "field": "expansion",
+          "label": "Expansion"
+        },
+        {
+          "field": "new",
+          "label": "New"
+        }
+      ],
+      "stacked": true,
+      "unit": "$M",
+      "annotations": [
+        {
+          "x": "2026-02",
+          "label": "Pricing change"
+        },
+        {
+          "x": "2026-05",
+          "label": "Enterprise tier"
+        }
+      ],
+      "source": "snowflake_finance",
+      "query": "queries/arr_trend.sql",
+      "subtitle": "Monthly, Oct 2025 \u2013 Sep 2026, $M",
+      "bands": [
+        {
+          "from": "2026-05",
+          "to": "2026-09",
+          "label": "Post-launch"
+        }
+      ],
+      "end_values": true
+    },
+    {
+      "id": "slope",
+      "type": "slope",
+      "span": 4,
+      "title": "Enterprise did the heavy lifting",
+      "subtitle": "ARR by segment, Q2 \u2192 Q3 2026, $M",
+      "insight": "Enterprise added $4.7M; self-serve is the only segment shrinking.",
+      "data": "arr_slope",
+      "category": "segment",
+      "period": "period",
+      "value": "arr",
+      "unit": "$M",
+      "source": "snowflake_finance",
+      "query": "SELECT segment, quarter, SUM(arr)/1e6 FROM finance.arr_quarterly WHERE quarter IN ('2026-Q2','2026-Q3') GROUP BY 1,2"
+    },
+    {
+      "id": "movers",
+      "type": "lollipop",
+      "span": 5,
+      "title": "Biggest movers this quarter",
+      "subtitle": "ARR change vs Q2, top 14 by absolute change",
+      "insight": "Expansion is concentrated: 6 accounts drove 41% of net new ARR.",
+      "data": "accounts",
+      "category": "account",
+      "value": "change",
+      "color": "region",
+      "format": "currency_compact",
+      "limit": 14,
+      "source": "upload_accounts",
+      "query": "SELECT account, region, arr - arr_prev AS change FROM accounts ORDER BY ABS(change) DESC LIMIT 14"
+    },
+    {
+      "id": "landscape",
+      "type": "bubble",
+      "span": 7,
+      "title": "Where growth lives",
+      "subtitle": "Each bubble is a customer \u00b7 size = ARR \u00b7 guides at the medians",
+      "insight": "Large, fast-growing accounts cluster top-right: the expansion motion is working in Enterprise.",
+      "data": "accounts",
+      "category": "account",
+      "x": "growth",
+      "x_label": "Growth vs Q2",
+      "x_format": "percent_delta",
+      "y": "tenure_months",
+      "y_label": "Tenure (months)",
+      "y_format": "integer",
+      "size": "arr",
+      "size_label": "ARR",
+      "size_format": "currency_compact",
+      "color": "segment",
+      "label_top": 6,
+      "source": "upload_accounts",
+      "query": "SELECT account, segment, arr, growth, tenure_months FROM accounts"
+    },
+    {
+      "id": "book",
+      "type": "beeswarm",
+      "span": 7,
+      "title": "Every customer, by ARR",
+      "subtitle": "420 accounts on a log scale \u00b7 colour = region",
+      "insight": "The book is top-heavy: the 20 largest accounts are 38% of ARR.",
+      "data": "accounts",
+      "category": "account",
+      "value": "arr",
+      "color": "region",
+      "sub": "segment",
+      "scale": "log",
+      "format": "currency_compact",
+      "radius": 4.5,
+      "label_top": 3,
+      "ticks": [
+        10000,
+        100000,
+        1000000,
+        5000000
+      ],
+      "source": "upload_accounts",
+      "query": "SELECT account, region, segment, arr FROM accounts"
+    },
+    {
+      "id": "health",
+      "type": "dots",
+      "span": 5,
+      "title": "Account health, one dot per customer",
+      "subtitle": "Grouped by segment \u00b7 colour = health",
+      "insight": "Risk sits almost entirely in self-serve; Enterprise is 90% healthy.",
+      "data": "accounts",
+      "category": "account",
+      "group": "segment",
+      "groups": [
+        "Enterprise",
+        "Mid-Market",
+        "SMB",
+        "Self-serve"
+      ],
+      "color": "health",
+      "color_order": [
+        "Healthy",
+        "Watch",
+        "At risk"
+      ],
+      "source": "upload_accounts",
+      "query": "SELECT account, segment, health FROM accounts"
+    },
+    {
+      "id": "cohort_retention",
+      "type": "heatmap",
+      "span": 6,
+      "title": "Cohort retention",
+      "insight": "Cohorts from March onward retain ~4 pts better at month 6.",
+      "data": "cohort_retention",
+      "x": "age",
+      "y": "cohort",
+      "value": "retention",
+      "format": "percent",
+      "x_label": "Months since signup",
+      "source": "snowflake_finance",
+      "query": "queries/cohort_retention.sql",
+      "subtitle": "Share of each monthly cohort still active"
+    },
+    {
+      "id": "region_trends",
+      "type": "small_multiples",
+      "span": 6,
+      "title": "ARR by region",
+      "insight": "APAC is the fastest-growing region at +66% \u2014 from the smallest base.",
+      "data": "region_trends",
+      "facet": "region",
+      "x": "month",
+      "value": "arr",
+      "unit": "$M",
+      "source": "snowflake_finance",
+      "query": "queries/region_trends.sql",
+      "subtitle": "Monthly ARR per region, $M \u00b7 shared y-axis",
+      "reference": {
+        "value": 12,
+        "label": "Plan target $12M"
+      }
+    }
+  ],
+  "colors": {
+    "NA": "accent",
+    "EMEA": "accent-2",
+    "APAC": "accent-3",
+    "Enterprise": "accent",
+    "Self-serve": "neg",
+    "Mid-Market": "accent-2",
+    "SMB": "accent-3",
+    "Healthy": "accent",
+    "Watch": "accent-2",
+    "At risk": "neg"
+  }
+}

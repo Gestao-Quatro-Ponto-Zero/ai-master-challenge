@@ -1,0 +1,9 @@
+scikit-learn==1.9.1
+pandas==2.3.3
+numpy==1.26.4
+scipy==1.17.1
+nltk==3.10.4
+joblib==1.6.0
+matplotlib==3.11.2
+plotly==5.24.1
+# Python 3.11.17

@@ -1,0 +1,244 @@
+{
+ "n_d1_template_sentences_removed": 94,
+ "neg_subjects": [
+  "Refund request",
+  "Delivery problem",
+  "Payment issue",
+  "Product recommendation",
+  "Cancellation request"
+ ],
+ "n_neg_total": 2667,
+ "n_neg_train": 2000,
+ "n_neg_val": 667,
+ "n_pos_train": 8001,
+ "n_pos_val": 2001,
+ "excluded_note": "Assuntos técnicos B2C do D1 (Software bug, Hardware issue, Account access, Network problem etc.) NÃO usados no treino: ambíguos com TI.",
+ "val_f1_macro_at_0_5": 1.0,
+ "val_report": {
+  "FC": {
+   "precision": 1.0,
+   "recall": 1.0,
+   "f1-score": 1.0,
+   "support": 667.0
+  },
+  "IT": {
+   "precision": 1.0,
+   "recall": 1.0,
+   "f1-score": 1.0,
+   "support": 2001.0
+  },
+  "accuracy": 1.0,
+  "macro avg": {
+   "precision": 1.0,
+   "recall": 1.0,
+   "f1-score": 1.0,
+   "support": 2668.0
+  },
+  "weighted avg": {
+   "precision": 1.0,
+   "recall": 1.0,
+   "f1-score": 1.0,
+   "support": 2668.0
+  }
+ },
+ "threshold_table_val": [
+  {
+   "t": 0.05,
+   "it_cov": 1.0,
+   "it_prec": 0.9377,
+   "fc_cov": 0.8006,
+   "fc_prec": 1.0
+  },
+  {
+   "t": 0.1,
+   "it_cov": 1.0,
+   "it_prec": 0.9747,
+   "fc_cov": 0.922,
+   "fc_prec": 1.0
+  },
+  {
+   "t": 0.15,
+   "it_cov": 1.0,
+   "it_prec": 0.9847,
+   "fc_cov": 0.9535,
+   "fc_prec": 1.0
+  },
+  {
+   "t": 0.2,
+   "it_cov": 1.0,
+   "it_prec": 0.9906,
+   "fc_cov": 0.9715,
+   "fc_prec": 1.0
+  },
+  {
+   "t": 0.25,
+   "it_cov": 1.0,
+   "it_prec": 0.9926,
+   "fc_cov": 0.9775,
+   "fc_prec": 1.0
+  },
+  {
+   "t": 0.3,
+   "it_cov": 1.0,
+   "it_prec": 0.9965,
+   "fc_cov": 0.9895,
+   "fc_prec": 1.0
+  },
+  {
+   "t": 0.35,
+   "it_cov": 1.0,
+   "it_prec": 0.998,
+   "fc_cov": 0.994,
+   "fc_prec": 1.0
+  },
+  {
+   "t": 0.4,
+   "it_cov": 1.0,
+   "it_prec": 0.9995,
+   "fc_cov": 0.9985,
+   "fc_prec": 1.0
+  },
+  {
+   "t": 0.45,
+   "it_cov": 1.0,
+   "it_prec": 1.0,
+   "fc_cov": 1.0,
+   "fc_prec": 1.0
+  },
+  {
+   "t": 0.5,
+   "it_cov": 1.0,
+   "it_prec": 1.0,
+   "fc_cov": 1.0,
+   "fc_prec": 1.0
+  },
+  {
+   "t": 0.55,
+   "it_cov": 1.0,
+   "it_prec": 1.0,
+   "fc_cov": 1.0,
+   "fc_prec": 1.0
+  },
+  {
+   "t": 0.6,
+   "it_cov": 0.9995,
+   "it_prec": 1.0,
+   "fc_cov": 1.0,
+   "fc_prec": 0.9985
+  },
+  {
+   "t": 0.65,
+   "it_cov": 0.999,
+   "it_prec": 1.0,
+   "fc_cov": 1.0,
+   "fc_prec": 0.997
+  },
+  {
+   "t": 0.7,
+   "it_cov": 0.9985,
+   "it_prec": 1.0,
+   "fc_cov": 1.0,
+   "fc_prec": 0.9955
+  },
+  {
+   "t": 0.75,
+   "it_cov": 0.998,
+   "it_prec": 1.0,
+   "fc_cov": 1.0,
+   "fc_prec": 0.994
+  },
+  {
+   "t": 0.8,
+   "it_cov": 0.996,
+   "it_prec": 1.0,
+   "fc_cov": 1.0,
+   "fc_prec": 0.9881
+  },
+  {
+   "t": 0.85,
+   "it_cov": 0.988,
+   "it_prec": 1.0,
+   "fc_cov": 1.0,
+   "fc_prec": 0.9653
+  },
+  {
+   "t": 0.9,
+   "it_cov": 0.96,
+   "it_prec": 1.0,
+   "fc_cov": 1.0,
+   "fc_prec": 0.8929
+  },
+  {
+   "t": 0.95,
+   "it_cov": 0.7876,
+   "it_prec": 1.0,
+   "fc_cov": 1.0,
+   "fc_prec": 0.6108
+  }
+ ],
+ "t_uncertain": 0.801,
+ "t_oos": 0.1839,
+ "abstain_quantile": 0.01,
+ "min_tokens": 2,
+ "val_conf_quantiles": [
+  0.5887,
+  0.801,
+  0.901,
+  0.9703
+ ],
+ "val_sim_quantiles": [
+  0.1405,
+  0.1839,
+  0.2299,
+  0.49
+ ],
+ "d1_technical_sample500_domains": {
+  "FINANCIAL_COMMERCIAL": 256,
+  "INDETERMINATE": 208,
+  "IT_INTERNAL": 36
+ },
+ "top_features_IT": [
+  "access",
+  "engin",
+  "log",
+  "attach",
+  "senior",
+  "manag",
+  "oracl",
+  "assign",
+  "connect",
+  "creat",
+  "offic",
+  "ext",
+  "laptop",
+  "approv",
+  "develop",
+  "chang",
+  "administr",
+  "confluenc",
+  "en",
+  "monitor"
+ ],
+ "top_features_FC": [
+  "product",
+  "payment",
+  "deliveri problem",
+  "payment issu",
+  "ve",
+  "deliveri",
+  "refund",
+  "refund request",
+  "cancel request",
+  "request",
+  "product recommend",
+  "cancel",
+  "recommend",
+  "issu",
+  "problem",
+  "use",
+  "email",
+  "softwar updat",
+  "ve notic",
+  "face intermitt"
+ ]
+}

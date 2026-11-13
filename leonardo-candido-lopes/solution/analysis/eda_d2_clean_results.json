@@ -1,0 +1,274 @@
+{
+ "boilerplate_list_size": 356,
+ "tokens_removed_pct": 0.3813,
+ "empty_after_clean": 8,
+ "lt3_after_clean": 402,
+ "top10_clean": {
+  "Hardware": [
+   "engineer",
+   "issue",
+   "access",
+   "let",
+   "log",
+   "ext",
+   "senior",
+   "work",
+   "working",
+   "information"
+  ],
+  "HR Support": [
+   "access",
+   "new",
+   "starter",
+   "oracle",
+   "form",
+   "attached",
+   "error",
+   "leave",
+   "officer",
+   "date"
+  ],
+  "Access": [
+   "access",
+   "confluence",
+   "user",
+   "password",
+   "create",
+   "account",
+   "engineer",
+   "ext",
+   "card",
+   "senior"
+  ],
+  "Miscellaneous": [
+   "change",
+   "add",
+   "let",
+   "manager",
+   "engineer",
+   "approval",
+   "details",
+   "ext",
+   "approve",
+   "analyst"
+  ],
+  "Storage": [
+   "access",
+   "folder",
+   "accept",
+   "wants",
+   "decline",
+   "mailbox",
+   "shared",
+   "requests",
+   "engineer",
+   "size"
+  ],
+  "Purchase": [
+   "administrator",
+   "log",
+   "purchase",
+   "purchased",
+   "new",
+   "order",
+   "receive",
+   "item",
+   "receipts",
+   "ordered"
+  ],
+  "Internal Project": [
+   "code",
+   "project",
+   "new",
+   "pas",
+   "attached",
+   "create",
+   "oracle",
+   "officer",
+   "setup",
+   "form"
+  ],
+  "Administrative rights": [
+   "upgrade",
+   "outlook",
+   "windows",
+   "issues",
+   "ext",
+   "issue",
+   "update",
+   "error",
+   "software",
+   "install"
+  ]
+ },
+ "pairs_clean": [
+  {
+   "a": "Hardware",
+   "b": "Miscellaneous",
+   "jaccard_top200": 0.498,
+   "cosine_tf": 0.625
+  },
+  {
+   "a": "Hardware",
+   "b": "Access",
+   "jaccard_top200": 0.498,
+   "cosine_tf": 0.56
+  },
+  {
+   "a": "Hardware",
+   "b": "HR Support",
+   "jaccard_top200": 0.356,
+   "cosine_tf": 0.53
+  },
+  {
+   "a": "Hardware",
+   "b": "Administrative rights",
+   "jaccard_top200": 0.413,
+   "cosine_tf": 0.492
+  },
+  {
+   "a": "HR Support",
+   "b": "Miscellaneous",
+   "jaccard_top200": 0.394,
+   "cosine_tf": 0.48
+  },
+  {
+   "a": "Access",
+   "b": "Miscellaneous",
+   "jaccard_top200": 0.404,
+   "cosine_tf": 0.451
+  },
+  {
+   "a": "Hardware",
+   "b": "Storage",
+   "jaccard_top200": 0.46,
+   "cosine_tf": 0.437
+  },
+  {
+   "a": "HR Support",
+   "b": "Access",
+   "jaccard_top200": 0.338,
+   "cosine_tf": 0.413
+  },
+  {
+   "a": "Miscellaneous",
+   "b": "Internal Project",
+   "jaccard_top200": 0.439,
+   "cosine_tf": 0.37
+  },
+  {
+   "a": "Hardware",
+   "b": "Internal Project",
+   "jaccard_top200": 0.379,
+   "cosine_tf": 0.35
+  },
+  {
+   "a": "HR Support",
+   "b": "Internal Project",
+   "jaccard_top200": 0.329,
+   "cosine_tf": 0.334
+  },
+  {
+   "a": "Access",
+   "b": "Storage",
+   "jaccard_top200": 0.423,
+   "cosine_tf": 0.326
+  },
+  {
+   "a": "Miscellaneous",
+   "b": "Administrative rights",
+   "jaccard_top200": 0.278,
+   "cosine_tf": 0.309
+  },
+  {
+   "a": "Miscellaneous",
+   "b": "Storage",
+   "jaccard_top200": 0.449,
+   "cosine_tf": 0.304
+  },
+  {
+   "a": "HR Support",
+   "b": "Storage",
+   "jaccard_top200": 0.329,
+   "cosine_tf": 0.295
+  },
+  {
+   "a": "Access",
+   "b": "Administrative rights",
+   "jaccard_top200": 0.303,
+   "cosine_tf": 0.285
+  },
+  {
+   "a": "Access",
+   "b": "Internal Project",
+   "jaccard_top200": 0.399,
+   "cosine_tf": 0.275
+  },
+  {
+   "a": "HR Support",
+   "b": "Administrative rights",
+   "jaccard_top200": 0.254,
+   "cosine_tf": 0.265
+  },
+  {
+   "a": "Hardware",
+   "b": "Purchase",
+   "jaccard_top200": 0.246,
+   "cosine_tf": 0.237
+  },
+  {
+   "a": "Storage",
+   "b": "Administrative rights",
+   "jaccard_top200": 0.262,
+   "cosine_tf": 0.193
+  },
+  {
+   "a": "Miscellaneous",
+   "b": "Purchase",
+   "jaccard_top200": 0.22,
+   "cosine_tf": 0.182
+  },
+  {
+   "a": "Storage",
+   "b": "Internal Project",
+   "jaccard_top200": 0.389,
+   "cosine_tf": 0.176
+  },
+  {
+   "a": "Internal Project",
+   "b": "Administrative rights",
+   "jaccard_top200": 0.216,
+   "cosine_tf": 0.157
+  },
+  {
+   "a": "HR Support",
+   "b": "Purchase",
+   "jaccard_top200": 0.198,
+   "cosine_tf": 0.152
+  },
+  {
+   "a": "Access",
+   "b": "Purchase",
+   "jaccard_top200": 0.235,
+   "cosine_tf": 0.146
+  },
+  {
+   "a": "Purchase",
+   "b": "Internal Project",
+   "jaccard_top200": 0.22,
+   "cosine_tf": 0.108
+  },
+  {
+   "a": "Purchase",
+   "b": "Administrative rights",
+   "jaccard_top200": 0.19,
+   "cosine_tf": 0.107
+  },
+  {
+   "a": "Storage",
+   "b": "Purchase",
+   "jaccard_top200": 0.201,
+   "cosine_tf": 0.102
+  }
+ ]
+}

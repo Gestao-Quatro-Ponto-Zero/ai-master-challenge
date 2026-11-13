@@ -1,0 +1,67 @@
+[
+ {
+  "metric": "gdp",
+  "label": "Nominal GDP (illustrative)",
+  "value": 4300000000000.0,
+  "format": "currency_compact",
+  "delta": 0.094,
+  "delta_label": "vs FY25",
+  "spark": [
+   2.7,
+   2.9,
+   3.2,
+   3.5,
+   3.9,
+   4.3
+  ]
+ },
+ {
+  "metric": "growth",
+  "label": "Real GDP growth, FY26",
+  "value": 0.071,
+  "format": "percent",
+  "delta": 0.006,
+  "delta_label": "vs FY25",
+  "spark": [
+   0.037,
+   0.087,
+   0.072,
+   0.082,
+   0.065,
+   0.071
+  ]
+ },
+ {
+  "metric": "upi",
+  "label": "UPI transactions / month",
+  "value": 19800000000.0,
+  "format": "number",
+  "delta": 0.31,
+  "delta_label": "y/y",
+  "spark": [
+   2.1,
+   4.6,
+   7.9,
+   11.2,
+   15.1,
+   19.8
+  ]
+ },
+ {
+  "metric": "inflation",
+  "label": "CPI inflation",
+  "value": 0.041,
+  "format": "percent",
+  "delta": -0.013,
+  "delta_label": "vs FY25",
+  "good_when": "down",
+  "spark": [
+   0.066,
+   0.055,
+   0.067,
+   0.054,
+   0.049,
+   0.041
+  ]
+ }
+]

@@ -1,0 +1,85 @@
+{
+  "format": "story",
+  "title": "India added a trillion dollars of output in five years — and most of it was digital.",
+  "eyebrow": "India · 2026 economic story (illustrative data)",
+  "subtitle": "A guided tour through growth, states, cities and the payments boom. Arrow keys or swipe to move; press esc for the map.",
+  "data_as_of": "2026-10-08T06:00:00Z",
+  "theme": "editorial",
+  "sources": [
+    { "id": "mospi", "label": "MoSPI · national accounts (illustrative)" },
+    { "id": "npci", "label": "NPCI · UPI monthly statistics (illustrative)" },
+    { "id": "rbi", "label": "RBI · state finances (illustrative)" }
+  ],
+  "filters": [
+    {
+      "id": "region",
+      "type": "tabs",
+      "label": "Region",
+      "field": "region",
+      "options": ["All", "North", "South", "West", "East"],
+      "default": "All",
+      "applies_to": ["states_size", "states_growth"]
+    }
+  ],
+  "colors": { "Services": "accent", "Industry": "accent-2", "Agriculture": "accent-3" },
+  "tiles": [
+    { "id": "kpi_gdp", "type": "kpi", "data": "kpis", "where": { "metric": "gdp" }, "accent": "ink" },
+    { "id": "kpi_growth", "type": "kpi", "data": "kpis", "where": { "metric": "growth" }, "accent": "accent" },
+    { "id": "kpi_upi", "type": "kpi", "data": "kpis", "where": { "metric": "upi" }, "accent": "accent-2" },
+    { "id": "kpi_inflation", "type": "kpi", "data": "kpis", "where": { "metric": "inflation" }, "accent": "accent-3" },
+    {
+      "id": "gdp_trend", "type": "area",
+      "title": "Where growth came from",
+      "subtitle": "Contribution to real GDP growth by sector, FY17 – FY26, percentage points",
+      "insight": "Services carried the recovery: 4.3 of the 6.8 points of growth in FY26.",
+      "data": "gdp_trend", "x": "year",
+      "series": [ { "field": "services", "label": "Services" }, { "field": "industry", "label": "Industry" }, { "field": "agriculture", "label": "Agriculture" } ],
+      "stacked": true, "unit": "pp", "end_values": true,
+      "annotations": [ { "x": "FY21", "label": "Pandemic" } ],
+      "source": "mospi", "query": "queries/gdp_trend.sql"
+    },
+    {
+      "id": "states_size", "type": "bar",
+      "title": "Largest state economies",
+      "subtitle": "Gross state domestic product, FY26, USD",
+      "data": "states", "category": "state", "value": "gsdp", "format": "currency_compact", "sort": "desc", "signed": false,
+      "source": "rbi", "query": "queries/states.sql"
+    },
+    {
+      "id": "states_growth", "type": "lollipop",
+      "title": "Fastest-growing states",
+      "subtitle": "Real GSDP growth, FY26",
+      "insight": "The south and west grow fastest; the east is catching up from a smaller base.",
+      "data": "states", "category": "state", "value": "growth", "color": "region", "format": "percent", "limit": 16,
+      "source": "rbi", "query": "queries/states.sql"
+    },
+    {
+      "id": "upi_volume", "type": "area",
+      "title": "UPI transactions per month",
+      "subtitle": "Billions of transactions, Jan 2020 – Sep 2026",
+      "data": "upi", "x": "month",
+      "series": [ { "field": "transactions", "label": "Transactions" } ],
+      "unit": "bn", "end_values": true,
+      "source": "npci", "query": "queries/upi.sql"
+    },
+    {
+      "id": "exports_slope", "type": "slope",
+      "title": "Exports, 2019 → 2026",
+      "subtitle": "Goods and services exports by sector, USD",
+      "insight": "Electronics quadrupled; IT services still carry half of the total.",
+      "data": "exports", "category": "sector", "period": "period", "value": "value", "format": "currency_compact",
+      "source": "mospi", "query": "queries/exports.sql"
+    }
+  ],
+  "scenes": [
+    { "id": "cover", "title": "India, 2026", "html": "scenes/cover.html", "class": "as-cover as-bleed", "frame": { "x": 0, "y": 0, "w": 1600, "h": 900 } },
+    { "id": "glance", "title": "At a glance", "html": "scenes/glance.html", "frame": { "x": 1800, "y": 0, "w": 1600, "h": 900 } },
+    { "id": "growth", "title": "Where growth came from", "html": "scenes/growth.html", "frame": { "x": 3600, "y": 0, "w": 1600, "h": 900 } },
+    { "id": "states", "title": "The states", "html": "scenes/states.html", "frame": { "x": 3600, "y": 1100, "w": 1600, "h": 900 } },
+    { "id": "cities", "title": "The cities", "html": "scenes/cities.html", "class": "as-dark", "frame": { "x": 1800, "y": 1100, "w": 1600, "h": 900, "rotate": -2 } },
+    { "id": "digital", "title": "The payments boom", "html": "scenes/digital.html", "frame": { "x": 0, "y": 1100, "w": 1600, "h": 900 } },
+    { "id": "timeline", "title": "How it happened", "html": "scenes/timeline.html", "frame": { "x": 0, "y": 2200, "w": 1600, "h": 900 } },
+    { "id": "outlook", "title": "What comes next", "html": "scenes/outlook.html", "class": "as-accent", "frame": { "x": 1800, "y": 2200, "w": 1600, "h": 900, "scale": 1.1 } }
+  ],
+  "path": ["cover", "glance", "growth", "states", "cities", "digital", "timeline", "outlook"]
+}

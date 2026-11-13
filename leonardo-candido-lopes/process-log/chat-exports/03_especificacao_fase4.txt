@@ -1,0 +1,290 @@
+Abacus, vamos avançar para a construção do protótipo funcional.
+
+Antes de começar, considere que os documentos da Fase 3 foram auditados. A arquitetura geral foi aprovada, mas existem correções obrigatórias que precisam ser incorporadas nesta etapa.
+
+O objetivo agora não é produzir outro relatório conceitual. Quero um sistema funcional, demonstrável, tecnicamente justificável e com evidências reproduzíveis.
+
+Pense como alguém responsável por apresentar essa solução a um COO e a uma banca técnica exigente.
+
+## 1. Diretrizes obrigatórias da auditoria anterior
+
+Preserve a arquitetura dos três pilares:
+
+1. Triagem inteligente.
+2. Autoatendimento seletivo.
+3. Instrumentação e rastreabilidade.
+
+Entretanto, incorpore as seguintes correções:
+
+**A. Separação entre evidência e hipótese**
+
+Não trate frequência de palavras como prova de que uma tarefa pode ser automatizada.
+
+Exemplo: encontrar termos relacionados a pastas na categoria Storage não comprova que existe um fluxo de aprovação de acesso a pastas.
+
+Antes de implementar qualquer recomendação de automação, examine exemplos reais, identifique subtipos e verifique se a ação proposta é efetivamente sustentada pelos registros.
+
+**B. Separação dos domínios**
+
+O Dataset 1 representa suporte B2C de eletrônicos; o Dataset 2 representa suporte interno de TI.
+
+Não misture as taxonomias nem force o classificador de TI a classificar solicitações financeiras, comerciais ou de entrega.
+
+Trate os domínios como frentes distintas dentro de uma arquitetura capaz de encaminhar solicitações para o fluxo adequado.
+
+A integração entre elas deve ser apresentada como proposta arquitetural, não como característica comprovada de uma mesma operação.
+
+**C. Confiança e abstenção**
+
+Os limiares 0,60 e 0,85 da Fase 3 são apenas propostas iniciais. Não os trate como valores tecnicamente validados.
+
+Avalie a calibração do modelo e a relação entre precisão e cobertura.
+
+Defina os critérios de encaminhamento automático com base no desempenho observado e no risco de cada categoria.
+
+O sistema deve poder responder que não possui confiança suficiente e encaminhar o chamado para revisão humana.
+
+**D. Automação seletiva**
+
+Não implemente execução automática de ações sensíveis.
+
+Redefinição de senha, permissões, privilégios e decisões financeiras precisam respeitar controles de identidade, autorização e auditoria.
+
+O protótipo pode simular ou recomendar procedimentos, mas deve deixar claro quando uma ação exige aprovação humana.
+
+**E. Integridade dos dados**
+
+O Dataset 2 possui 47.837 registros originais. A auditoria anterior reportou 47.602 registros após limpeza.
+
+Explique a diferença de 235 registros.
+
+Documente quais registros foram removidos, mantidos ou colocados em quarentena, com critérios explícitos.
+
+Não exclua grupos de quase-duplicatas ou textos curtos indiscriminadamente.
+
+Faça análise de sensibilidade para demonstrar se as decisões de limpeza alteram o desempenho do classificador.
+
+## 2. Auditoria final dos dados antes do treinamento
+
+Antes de treinar, revise o pipeline de preparação.
+
+Quero:
+
+- total original de registros;
+- total após cada etapa de limpeza;
+- distribuição das oito categorias;
+- quantidade de textos curtos;
+- quantidade de duplicatas e quase-duplicatas;
+- grupos com rótulos conflitantes;
+- tratamento aplicado a cada grupo;
+- justificativa de cada exclusão;
+- distribuição final de treino, validação e teste.
+
+Utilize divisão por grupos para impedir que textos duplicados ou quase-duplicados relacionados apareçam simultaneamente em treino e teste.
+
+A divisão precisa preservar a independência dos conjuntos e evitar vazamento de informação.
+
+Não faça oversampling antes da divisão dos dados.
+
+Se utilizar pesos por classe, documente a configuração.
+
+## 3. Construção e avaliação do classificador
+
+Treine um classificador real para as oito categorias do Dataset 2:
+
+- Hardware
+- HR Support
+- Access
+- Miscellaneous
+- Storage
+- Purchase
+- Internal Project
+- Administrative rights
+
+Comece por um baseline simples e reproduzível, preferencialmente TF-IDF com regressão logística ou outro modelo linear adequado.
+
+Depois, avalie se existe justificativa para utilizar uma abordagem mais avançada.
+
+Não escolha um modelo apenas por sofisticação.
+
+Apresente obrigatoriamente:
+
+1. F1-macro.
+2. Precisão por categoria.
+3. Recall por categoria.
+4. F1 por categoria.
+5. Matriz de confusão.
+6. Comparação com o baseline.
+7. Análise dos principais erros.
+8. Métricas de calibração, quando aplicável.
+9. Análise de precisão em diferentes níveis de cobertura.
+10. Resultados de testes com textos curtos, ambíguos e fora do padrão.
+
+Não utilize acurácia isolada como evidência de qualidade.
+
+Se o modelo apresentar desempenho insuficiente em determinada categoria, isso deve ser informado. Não esconda limitações para melhorar a apresentação.
+
+## 4. Construção do protótipo funcional
+
+Desenvolva uma interface simples, profissional e demonstrável.
+
+O usuário deve conseguir inserir um chamado manualmente e receber uma análise completa.
+
+A interface precisa apresentar:
+
+**Entrada**
+- Campo de texto para inserir o chamado.
+- Possibilidade de selecionar o canal de origem, se isso fizer parte do desenho.
+
+**Análise**
+- Domínio identificado.
+- Categoria prevista.
+- Confiança do modelo.
+- Prioridade sugerida.
+- Justificativa da classificação.
+- Indicação de possível ambiguidade ou domínio fora do escopo.
+
+**Decisão operacional**
+- Automático.
+- Assistido.
+- Humano.
+
+A decisão precisa considerar categoria, confiança, prioridade, domínio e risco da atividade.
+
+**Recomendação**
+- Fila sugerida.
+- Procedimento recomendado.
+- Resposta sugerida, quando houver base suficiente.
+- Indicação explícita de aprovação humana quando necessária.
+
+**Rastreabilidade**
+- Texto original.
+- Resultado da classificação.
+- Modelo e versão utilizados.
+- Confiança.
+- Decisão operacional.
+- Motivo do encaminhamento.
+- Registro de eventual revisão humana.
+
+A interface não deve apresentar uma recomendação como se fosse uma resolução confirmada.
+
+## 5. Mecanismo de domínio fora do escopo
+
+Implemente uma camada de detecção de domínio antes da classificação nas oito categorias.
+
+Ela deve distinguir:
+
+- TI interna;
+- Financeiro/Comercial B2C;
+- Fora do escopo;
+- Indeterminado.
+
+Não dependa exclusivamente de uma lista fixa de palavras-chave.
+
+Implemente e teste casos em que palavras semelhantes apareçam em contextos diferentes.
+
+Quando não houver evidência suficiente, o sistema deve abster-se e encaminhar para análise humana.
+
+Não classifique automaticamente um chamado B2C nas categorias de TI.
+
+## 6. Regras de decisão e segurança
+
+Implemente regras claras para impedir automações inadequadas.
+
+Exemplos:
+
+- Solicitação de privilégio administrativo: revisão humana obrigatória.
+- Problema com conta privilegiada: revisão humana obrigatória.
+- Indício de comprometimento de conta: escalonamento.
+- Incidente crítico: não encaminhar para autoatendimento.
+- Baixa confiança: revisão humana.
+- Domínio indeterminado: revisão humana.
+- Solicitação financeira: fila dedicada e decisão humana.
+
+Para reset de senha, demonstre apenas o fluxo seguro de recomendação, com verificação de identidade como requisito. Não realize alterações reais em contas.
+
+Diferencie claramente classificação, recomendação, autorização e execução.
+
+## 7. Testes funcionais e demonstração
+
+Crie um conjunto de casos de teste representativos.
+
+Inclua:
+
+- um chamado simples de Access;
+- um chamado de Hardware;
+- um chamado de Purchase;
+- um chamado de Storage;
+- um chamado de Administrative rights;
+- um chamado B2C de reembolso;
+- um chamado ambíguo entre Hardware e Miscellaneous;
+- um texto curto e insuficiente;
+- um chamado fora do escopo;
+- um incidente de alta criticidade.
+
+Para cada caso, mostre:
+
+- entrada;
+- resultado esperado;
+- resultado obtido;
+- decisão operacional;
+- justificativa;
+- aprovação ou falha do teste.
+
+Não invente resultados. Execute os testes e registre o que realmente aconteceu.
+
+## 8. Entregáveis
+
+Organize a entrega em uma pasta própria da Fase 4, preservando os arquivos anteriores.
+
+Quero:
+
+1. Protótipo funcional.
+2. Código-fonte.
+3. Modelo treinado ou instruções reproduzíveis para treiná-lo.
+4. Pipeline de preparação de dados.
+5. Scripts de avaliação.
+6. Métricas e matriz de confusão.
+7. Casos de teste e resultados reais.
+8. Documentação técnica.
+9. Instruções de instalação e execução.
+10. Evidências visuais da interface em funcionamento.
+11. Registro das limitações conhecidas.
+12. Atualização do Process Log, com decisões, tentativas, falhas e correções reais.
+
+Não invente testes, logs, métricas ou resultados.
+
+## 9. Critérios de qualidade
+
+Priorize nesta ordem:
+
+1. Correção técnica.
+2. Reprodutibilidade.
+3. Segurança e governança.
+4. Utilidade operacional.
+5. Clareza da interface.
+6. Sofisticação tecnológica.
+
+Não sacrifique nenhum dos cinco primeiros para melhorar o sexto.
+
+Se alguma funcionalidade não puder ser implementada de maneira confiável dentro do escopo, apresente a limitação e proponha uma alternativa funcional menor.
+
+Não avance para integrações reais com sistemas externos, execução de ações sensíveis ou implantação em produção. O objetivo é um protótipo demonstrável.
+
+## 10. Encerramento da fase
+
+Ao concluir, apresente:
+
+- o que foi efetivamente construído;
+- o que funciona;
+- o que não funciona;
+- resultados reais dos testes;
+- limitações do modelo;
+- decisões técnicas tomadas;
+- arquivos gerados e localização;
+- instruções para executar o protótipo;
+- pontos que precisam de validação antes de qualquer implantação.
+
+A entrega deve ser suficientemente sólida para que um avaliador técnico consiga examinar o código, reproduzir os resultados e testar o sistema sem depender de explicações verbais do autor.
+
+**Diretriz final:** não quero um protótipo que apenas pareça inteligente. Quero um protótipo que demonstre, com dados e testes, o que consegue fazer, onde falha e quando deve deixar a decisão para um ser humano.

@@ -1,0 +1,203 @@
+[
+ {
+  "id": 1,
+  "tipo": "obrigatorio",
+  "input_text": "I cannot log into my account",
+  "expected_domain": "IT_INTERNAL",
+  "expected_category": "Access",
+  "pass_criteria": {
+   "category": "Access",
+   "domain": [
+    "IT_INTERNAL"
+   ]
+  }
+ },
+ {
+  "id": 2,
+  "tipo": "obrigatorio",
+  "input_text": "My laptop screen is flickering",
+  "expected_domain": "IT_INTERNAL",
+  "expected_category": "Hardware",
+  "pass_criteria": {
+   "category": "Hardware",
+   "domain": [
+    "IT_INTERNAL"
+   ]
+  }
+ },
+ {
+  "id": 3,
+  "tipo": "obrigatorio",
+  "input_text": "I need to order 5 new monitors for the team",
+  "expected_domain": "IT_INTERNAL",
+  "expected_category": "Purchase",
+  "pass_criteria": {
+   "category": "Purchase",
+   "domain": [
+    "IT_INTERNAL"
+   ]
+  }
+ },
+ {
+  "id": 4,
+  "tipo": "obrigatorio",
+  "input_text": "I need access to the shared folder for project files",
+  "expected_domain": "IT_INTERNAL",
+  "expected_category": "Storage",
+  "pass_criteria": {
+   "category": "Storage",
+   "domain": [
+    "IT_INTERNAL"
+   ]
+  }
+ },
+ {
+  "id": 5,
+  "tipo": "obrigatorio",
+  "input_text": "Please give me admin access to the server",
+  "expected_domain": "IT_INTERNAL",
+  "expected_category": "Administrative rights",
+  "pass_criteria": {
+   "category": "Administrative rights",
+   "decision": [
+    "HUMAN_REQUIRED"
+   ]
+  }
+ },
+ {
+  "id": 6,
+  "tipo": "obrigatorio",
+  "input_text": "I want a refund for my defective product order #1234",
+  "expected_domain": "FINANCIAL_COMMERCIAL",
+  "expected_category": null,
+  "pass_criteria": {
+   "domain": [
+    "FINANCIAL_COMMERCIAL"
+   ],
+   "decision": [
+    "HUMAN_REQUIRED"
+   ]
+  }
+ },
+ {
+  "id": 7,
+  "tipo": "obrigatorio",
+  "input_text": "Something is wrong with my setup",
+  "expected_domain": "IT_INTERNAL",
+  "expected_category": "Hardware|Miscellaneous",
+  "pass_criteria": {
+   "decision_not": [
+    "AUTOMATIC"
+   ]
+  }
+ },
+ {
+  "id": 8,
+  "tipo": "obrigatorio",
+  "input_text": "help",
+  "expected_domain": "INDETERMINATE",
+  "expected_category": null,
+  "pass_criteria": {
+   "domain": [
+    "INDETERMINATE"
+   ],
+   "decision": [
+    "HUMAN_REQUIRED"
+   ]
+  }
+ },
+ {
+  "id": 9,
+  "tipo": "obrigatorio",
+  "input_text": "What time is the company lunch today?",
+  "expected_domain": "OUT_OF_SCOPE",
+  "expected_category": null,
+  "pass_criteria": {
+   "domain": [
+    "OUT_OF_SCOPE",
+    "INDETERMINATE"
+   ],
+   "decision": [
+    "HUMAN_REQUIRED"
+   ]
+  }
+ },
+ {
+  "id": 10,
+  "tipo": "obrigatorio",
+  "input_text": "Our entire network is down — no one can access anything",
+  "expected_domain": "IT_INTERNAL",
+  "expected_category": "Access|Hardware",
+  "pass_criteria": {
+   "priority": [
+    "CRITICAL"
+   ],
+   "decision_not": [
+    "AUTOMATIC"
+   ]
+  }
+ },
+ {
+  "id": 11,
+  "tipo": "adicional",
+  "input_text": "My account was hacked and there were unauthorized charges",
+  "expected_domain": "INDETERMINATE",
+  "expected_category": null,
+  "pass_criteria": {
+   "decision": [
+    "ESCALATE"
+   ]
+  }
+ },
+ {
+  "id": 12,
+  "tipo": "adicional",
+  "input_text": "I need to request paternity leave and update my beneficiaries",
+  "expected_domain": "IT_INTERNAL",
+  "expected_category": "HR Support",
+  "pass_criteria": {
+   "category": "HR Support",
+   "domain": [
+    "IT_INTERNAL"
+   ]
+  }
+ },
+ {
+  "id": 13,
+  "tipo": "adicional",
+  "input_text": "The deadline for the Q4 migration project needs to be updated",
+  "expected_domain": "IT_INTERNAL",
+  "expected_category": "Internal Project",
+  "pass_criteria": {
+   "category": "Internal Project",
+   "domain": [
+    "IT_INTERNAL"
+   ]
+  }
+ },
+ {
+  "id": 14,
+  "tipo": "adicional",
+  "input_text": "Não consigo acessar minha pasta de trabalho no servidor",
+  "expected_domain": "IT_INTERNAL",
+  "expected_category": "Storage",
+  "pass_criteria": {
+   "decision": [
+    "HUMAN_REQUIRED"
+   ]
+  }
+ },
+ {
+  "id": 15,
+  "tipo": "adicional",
+  "input_text": "lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo bar baz 1234 !!! xyz lorem ipsum dolor sit amet zxqv blorf qwerty asdfgh foo",
+  "expected_domain": "OUT_OF_SCOPE",
+  "expected_category": null,
+  "pass_criteria": {
+   "decision": [
+    "HUMAN_REQUIRED"
+   ],
+   "no_crash": true
+  }
+ }
+]

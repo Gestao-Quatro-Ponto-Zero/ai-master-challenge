@@ -1,0 +1,1013 @@
+{
+ "total_original": 47837,
+ "garbage": 0,
+ "short_lt5": 133,
+ "short_by_words": {
+  "2": 14,
+  "3": 35,
+  "4": 84
+ },
+ "short_by_class": {
+  "Hardware": 40,
+  "Access": 37,
+  "HR Support": 35,
+  "Miscellaneous": 13,
+  "Administrative rights": 4,
+  "Purchase": 3,
+  "Internal Project": 1
+ },
+ "short_examples_first5": [
+  {
+   "row_id": 439,
+   "Document": "annual leave se ca",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 526,
+   "Document": "access hi please thank",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 561,
+   "Document": "new starter please",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 754,
+   "Document": "access dear browse thank",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 759,
+   "Document": "reactivate access card va",
+   "Topic_group": "Access"
+  }
+ ],
+ "short_examples_all": [
+  {
+   "row_id": 439,
+   "Document": "annual leave se ca",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 526,
+   "Document": "access hi please thank",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 561,
+   "Document": "new starter please",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 754,
+   "Document": "access dear browse thank",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 759,
+   "Document": "reactivate access card va",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 775,
+   "Document": "holiday leave normal va",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 960,
+   "Document": "manager change change process",
+   "Topic_group": "Miscellaneous"
+  },
+  {
+   "row_id": 1203,
+   "Document": "new starter starter",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 1285,
+   "Document": "transfer form testing unit",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 1472,
+   "Document": "subscription subscription professional azure",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 2004,
+   "Document": "account hi please credentials",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 2006,
+   "Document": "remove restrictions restrictions",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 2302,
+   "Document": "leaver december leaver form",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 2526,
+   "Document": "password reset contacted change",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 2567,
+   "Document": "snow account for snow",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 2796,
+   "Document": "keyboard kind regards tester",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 3069,
+   "Document": "windows install install",
+   "Topic_group": "Administrative rights"
+  },
+  {
+   "row_id": 3246,
+   "Document": "allocate for assign",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 3476,
+   "Document": "password request re advice",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 3618,
+   "Document": "list hi ask thank",
+   "Topic_group": "Miscellaneous"
+  },
+  {
+   "row_id": 3888,
+   "Document": "confluence account confluence",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 3998,
+   "Document": "now account chow chow",
+   "Topic_group": "Miscellaneous"
+  },
+  {
+   "row_id": 4215,
+   "Document": "open si",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 4247,
+   "Document": "cable cable provided",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 4414,
+   "Document": "ram upgrade la merci",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 4635,
+   "Document": "account developer",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 4761,
+   "Document": "to cable for cable",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 4829,
+   "Document": "monitor monitor monitor",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 4923,
+   "Document": "include me include va",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 5105,
+   "Document": "adapters to for needed",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 5251,
+   "Document": "ultima ultima mouse si",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 5320,
+   "Document": "monitor monitor va monitor",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 5768,
+   "Document": "for va mine ca",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 5856,
+   "Document": "new ad path accounts",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 6065,
+   "Document": "extra ram la va",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 6107,
+   "Document": "account face brow",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 6182,
+   "Document": "mouse po engineer",
+   "Topic_group": "Purchase"
+  },
+  {
+   "row_id": 6204,
+   "Document": "leaver october please license",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 6450,
+   "Document": "possible possible",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 6682,
+   "Document": "and account hi regards",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 7203,
+   "Document": "new account per form",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 7370,
+   "Document": "card card ii merci",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 7779,
+   "Document": "new starter license assigned",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 8295,
+   "Document": "laptop dear testing merci",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 8379,
+   "Document": "password reset request contacted",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 8701,
+   "Document": "create external contacts create",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 8799,
+   "Document": "cont care",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 8890,
+   "Document": "card card va va",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 9276,
+   "Document": "card access card va",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 9336,
+   "Document": "unlock account locked",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 9447,
+   "Document": "password hi guys",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 9795,
+   "Document": "and access please user",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 9841,
+   "Document": "access si la",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 9945,
+   "Document": "hookers hookers forwarded thanks",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 10520,
+   "Document": "import from fusion import",
+   "Topic_group": "Internal Project"
+  },
+  {
+   "row_id": 10596,
+   "Document": "leaver leaver",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 10655,
+   "Document": "for pm la la",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 10932,
+   "Document": "unsafe july pm unsafe",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 11612,
+   "Document": "relocate relocate",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 12576,
+   "Document": "credentials mates credentials",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 12908,
+   "Document": "transfer request ad architecture",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 14470,
+   "Document": "speakers needed wednesday",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 14910,
+   "Document": "add to add getting",
+   "Topic_group": "Miscellaneous"
+  },
+  {
+   "row_id": 15096,
+   "Document": "cards re card sorry",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 15242,
+   "Document": "access tuesday hello thank",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 15528,
+   "Document": "enable enable",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 15681,
+   "Document": "print print assign",
+   "Topic_group": "Miscellaneous"
+  },
+  {
+   "row_id": 16165,
+   "Document": "bonus add filter bonus",
+   "Topic_group": "Miscellaneous"
+  },
+  {
+   "row_id": 16406,
+   "Document": "password reset mange",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 16740,
+   "Document": "password reset called",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 16996,
+   "Document": "password reset request name",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 17141,
+   "Document": "problem severely without success",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 17149,
+   "Document": "reset called advised his",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 17463,
+   "Document": "create customer users users",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 17992,
+   "Document": "access to needs",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 18332,
+   "Document": "create repository thank",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 18905,
+   "Document": "deactivate jabber deactivate jabber",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 19148,
+   "Document": "certification certification owner",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 20352,
+   "Document": "increase ram increase",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 21821,
+   "Document": "leavers leavers infrastructure",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 22010,
+   "Document": "monthly report prepare report",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 22172,
+   "Document": "timecards timecards",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 22402,
+   "Document": "leaver center leaver center",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 22403,
+   "Document": "leaver sonar leaver sonar",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 23125,
+   "Document": "access to tool",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 23348,
+   "Document": "cable tester",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 25007,
+   "Document": "marked as please attached",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 25077,
+   "Document": "extension cord december prize",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 25122,
+   "Document": "account december pm la",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 25727,
+   "Document": "new job title senior",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 26447,
+   "Document": "issues synchronizing freezing",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 27154,
+   "Document": "need laptop encrypting encrypting",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 28067,
+   "Document": "access to needs write",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 29184,
+   "Document": "hp charger thursday va",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 29662,
+   "Document": "new purchase po po",
+   "Topic_group": "Purchase"
+  },
+  {
+   "row_id": 29681,
+   "Document": "installation officer",
+   "Topic_group": "Purchase"
+  },
+  {
+   "row_id": 29736,
+   "Document": "leaver kale building closed",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 29796,
+   "Document": "cord request tuesday si",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 30244,
+   "Document": "access hi officer",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 30534,
+   "Document": "notification upgrade upgrade",
+   "Topic_group": "Administrative rights"
+  },
+  {
+   "row_id": 30535,
+   "Document": "no to other reachable",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 30766,
+   "Document": "sn contact for sn",
+   "Topic_group": "Miscellaneous"
+  },
+  {
+   "row_id": 30952,
+   "Document": "account sn creation",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 33467,
+   "Document": "de tuesday july pm",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 33471,
+   "Document": "update passwords update passwords",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 33544,
+   "Document": "test test test test",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 33981,
+   "Document": "reset for mistake booking",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 35023,
+   "Document": "locked locked unable log",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 36283,
+   "Document": "notification notification",
+   "Topic_group": "Miscellaneous"
+  },
+  {
+   "row_id": 36619,
+   "Document": "bug bug",
+   "Topic_group": "Miscellaneous"
+  },
+  {
+   "row_id": 37497,
+   "Document": "de manager",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 38545,
+   "Document": "oracle pot imagine",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 38648,
+   "Document": "laptop crash fails up",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 38918,
+   "Document": "license license suite pot",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 39704,
+   "Document": "errors rebuild required",
+   "Topic_group": "Miscellaneous"
+  },
+  {
+   "row_id": 40638,
+   "Document": "network issues issues",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 40728,
+   "Document": "test test ignore",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 40912,
+   "Document": "net framework sent framework",
+   "Topic_group": "Miscellaneous"
+  },
+  {
+   "row_id": 41862,
+   "Document": "rebuild laptop laptop",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 41988,
+   "Document": "issue issue",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 42201,
+   "Document": "help activate help activate",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 42225,
+   "Document": "log issues log issues",
+   "Topic_group": "Administrative rights"
+  },
+  {
+   "row_id": 43335,
+   "Document": "laptop hinge laptop hinge",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 43697,
+   "Document": "connection down working",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 43711,
+   "Document": "box contract expired expired",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 44611,
+   "Document": "pc reboot automatically provide",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 44648,
+   "Document": "not connecting connecting respond",
+   "Topic_group": "Hardware"
+  },
+  {
+   "row_id": 45659,
+   "Document": "ticket for ticket for",
+   "Topic_group": "Miscellaneous"
+  },
+  {
+   "row_id": 45981,
+   "Document": "  please for error message",
+   "Topic_group": "HR Support"
+  },
+  {
+   "row_id": 46073,
+   "Document": "sync problem synchronizing",
+   "Topic_group": "Access"
+  },
+  {
+   "row_id": 46712,
+   "Document": "add com please add",
+   "Topic_group": "Miscellaneous"
+  },
+  {
+   "row_id": 47542,
+   "Document": "outlook not responding responding",
+   "Topic_group": "Administrative rights"
+  },
+  {
+   "row_id": 47771,
+   "Document": "oracle issue screen attached",
+   "Topic_group": "HR Support"
+  }
+ ],
+ "dup_exact_doc_label": 0,
+ "dup_exact_doc": 0,
+ "dup_normalized": 0,
+ "prefix_groups": 365,
+ "prefix_records_in_groups": 1011,
+ "prefix_conflict_groups": 38,
+ "prefix_conflict_records": 102,
+ "prefix_conflict_label_patterns": {
+  "HR Support | Hardware": 8,
+  "Hardware | Miscellaneous": 7,
+  "Hardware | Storage": 6,
+  "HR Support | Miscellaneous": 6,
+  "Hardware | Miscellaneous | Storage": 2,
+  "Administrative rights | Miscellaneous": 2,
+  "Access | Miscellaneous": 2,
+  "Access | Administrative rights": 1,
+  "Access | Internal Project": 1,
+  "HR Support | Hardware | Miscellaneous": 1,
+  "Access | Hardware": 1,
+  "Access | Hardware | Purchase": 1
+ },
+ "prefix_conflict_examples": [
+  {
+   "prefix": "access request for a list or library library requesting library links library manage setting library",
+   "labels": {
+    "Hardware": 5,
+    "Storage": 3,
+    "Miscellaneous": 1
+   }
+  },
+  {
+   "prefix": "access request for a list or library november library requesting library links library manage setting",
+   "labels": {
+    "Hardware": 1,
+    "Storage": 1
+   }
+  },
+  {
+   "prefix": "access request for a list or library october pm library requesting library links library manage",
+   "labels": {
+    "Hardware": 1,
+    "Storage": 1
+   }
+  },
+  {
+   "prefix": "access request for a list or library pm library requesting library links library manage setting",
+   "labels": {
+    "Storage": 1,
+    "Hardware": 1
+   }
+  },
+  {
+   "prefix": "access request for a list or library thursday pm library requesting library links library manage",
+   "labels": {
+    "Storage": 3,
+    "Hardware": 2,
+    "Miscellaneous": 2
+   }
+  },
+  {
+   "prefix": "access request for a list or library tuesday pm library requesting library links library manage",
+   "labels": {
+    "Hardware": 1,
+    "Storage": 1
+   }
+  },
+  {
+   "prefix": "access request for a list or library wednesday library requesting library links library manage setting",
+   "labels": {
+    "Storage": 1,
+    "Hardware": 1
+   }
+  },
+  {
+   "prefix": "access request for a list or library wednesday pm library requesting library links library manage",
+   "labels": {
+    "Hardware": 2,
+    "Storage": 1
+   }
+  },
+  {
+   "prefix": "access request for a site thursday pm site requesting links site manage setting site please",
+   "labels": {
+    "HR Support": 1,
+    "Hardware": 1
+   }
+  },
+  {
+   "prefix": "access request for a site tuesday december pm site requesting links site manage setting site",
+   "labels": {
+    "Hardware": 1,
+    "HR Support": 1
+   }
+  }
+ ],
+ "cos98_conflict_records": 211,
+ "cos98_overlap_prefix": 35,
+ "cos90_conflict_records": 805,
+ "split_groups": 42163,
+ "split_max_group_size": 728,
+ "split_max_group_size_clean": 612,
+ "split_groups_multi": 1639,
+ "final_clean": 46993,
+ "split_sizes": {
+  "train": 33237,
+  "val": 6990,
+  "test": 6766
+ },
+ "split_pct": {
+  "train": 0.7073,
+  "val": 0.1487,
+  "test": 0.144
+ },
+ "dist_by_split": {
+  "test": {
+   "Access": 1057,
+   "Administrative rights": 263,
+   "HR Support": 1551,
+   "Hardware": 1934,
+   "Internal Project": 315,
+   "Miscellaneous": 1043,
+   "Purchase": 214,
+   "Storage": 389
+  },
+  "train": {
+   "Access": 4959,
+   "Administrative rights": 1227,
+   "HR Support": 7555,
+   "Hardware": 9460,
+   "Internal Project": 1473,
+   "Miscellaneous": 4865,
+   "Purchase": 1759,
+   "Storage": 1939
+  },
+  "val": {
+   "Access": 1061,
+   "Administrative rights": 255,
+   "HR Support": 1604,
+   "Hardware": 2028,
+   "Internal Project": 308,
+   "Miscellaneous": 1050,
+   "Purchase": 270,
+   "Storage": 414
+  }
+ },
+ "dist_pct_by_split": {
+  "test": {
+   "Access": 0.1562,
+   "Administrative rights": 0.0389,
+   "HR Support": 0.2292,
+   "Hardware": 0.2858,
+   "Internal Project": 0.0466,
+   "Miscellaneous": 0.1542,
+   "Purchase": 0.0316,
+   "Storage": 0.0575
+  },
+  "train": {
+   "Access": 0.1492,
+   "Administrative rights": 0.0369,
+   "HR Support": 0.2273,
+   "Hardware": 0.2846,
+   "Internal Project": 0.0443,
+   "Miscellaneous": 0.1464,
+   "Purchase": 0.0529,
+   "Storage": 0.0583
+  },
+  "val": {
+   "Access": 0.1518,
+   "Administrative rights": 0.0365,
+   "HR Support": 0.2295,
+   "Hardware": 0.2901,
+   "Internal Project": 0.0441,
+   "Miscellaneous": 0.1502,
+   "Purchase": 0.0386,
+   "Storage": 0.0592
+  }
+ },
+ "dist_final": {
+  "Hardware": 13422,
+  "HR Support": 10710,
+  "Access": 7077,
+  "Miscellaneous": 6958,
+  "Storage": 2742,
+  "Purchase": 2243,
+  "Internal Project": 2096,
+  "Administrative rights": 1745
+ },
+ "max_abs_dev_pp_by_split": {
+  "train": 0.52,
+  "val": 0.91,
+  "test": 1.61
+ },
+ "leakage_check": {
+  "train_val_groups": 0,
+  "train_val_norm_text": 0,
+  "train_val_prefix15": 0,
+  "train_test_groups": 0,
+  "train_test_norm_text": 0,
+  "train_test_prefix15": 0,
+  "val_test_groups": 0,
+  "val_test_norm_text": 0,
+  "val_test_prefix15": 0,
+  "pairs_cos>=0.90_across_splits": 0,
+  "pairs_cos_0.80-0.90_across_splits_residual": 13751,
+  "test_rows_with_train_neighbor_cos>=0.80": 1026
+ },
+ "class_weights_train": {
+  "Access": 0.8378,
+  "Administrative rights": 3.386,
+  "HR Support": 0.5499,
+  "Hardware": 0.4392,
+  "Internal Project": 2.8205,
+  "Miscellaneous": 0.854,
+  "Purchase": 2.3619,
+  "Storage": 2.1427
+ },
+ "comparison": {
+  "conservador_principal": {
+   "removidos_ou_quarentena": 844,
+   "restantes": 46993
+  },
+  "agressivo": {
+   "removidos_ou_quarentena": 1520,
+   "restantes": 46317,
+   "inclui": "lixo + conflitos prefixo + conflitos cosseno>=0.90 + curtos<5 palavras + quase-dup mesmo rótulo"
+  },
+  "auditoria_anterior_fase3": {
+   "removidos": 235,
+   "restantes": 47602,
+   "composicao": "133 curtos (<5 palavras) + 102 em 38 grupos prefixo-15 conflitantes"
+  }
+ },
+ "reconcile_235": {
+  "short_lt5": 133,
+  "prefix_conflict_records": 102,
+  "overlap": 0,
+  "union": 235
+ },
+ "log": [
+  {
+   "step": "1_nulos",
+   "antes": 47837,
+   "depois": 47837,
+   "removidos": 0,
+   "criterio": "Document ou Topic_group nulo",
+   "decisao": "excluir (nenhum encontrado)"
+  },
+  {
+   "step": "2_lixo",
+   "antes": 47837,
+   "depois": 47837,
+   "removidos": 0,
+   "criterio": "<= 2 caracteres alfanuméricos",
+   "decisao": "excluir"
+  },
+  {
+   "step": "2b_curtos",
+   "antes": 47837,
+   "depois": 47837,
+   "removidos": 0,
+   "criterio": "< 5 palavras",
+   "decisao": "manter com flag short_flag; sensibilidade com/sem"
+  },
+  {
+   "step": "3_dup_exatas",
+   "antes": 47837,
+   "depois": 47837,
+   "removidos": 0,
+   "criterio": "Document+Topic_group idênticos (e texto normalizado idêntico)",
+   "decisao": "manter 1 (nenhuma encontrada)"
+  },
+  {
+   "step": "4_conflitantes",
+   "antes": 47837,
+   "depois": 47559,
+   "removidos": 278,
+   "criterio": "grupo prefixo-15 com >1 rótulo OU par cosseno>=0.98 com rótulos diferentes",
+   "decisao": "quarentena (fora de treino/val/teste)"
+  },
+  {
+   "step": "5_quase_dup_mesmo_rotulo",
+   "antes": 47559,
+   "depois": 46993,
+   "removidos": 566,
+   "criterio": "mesmo prefixo-15 e mesmo rótulo",
+   "decisao": "manter 1 representante"
+  }
+ ],
+ "params": {
+  "SEED": 42,
+  "SHORT_WORDS": 5,
+  "GARBAGE_CHARS": 2,
+  "PREFIX_N": 15,
+  "COS_CONFLICT": 0.98,
+  "COS_PAIRS": 0.8,
+  "COS_GROUP": 0.9,
+  "COS_AGGR": 0.9,
+  "n_splits": 20
+ },
+ "runtime_s": 81.5
+}
