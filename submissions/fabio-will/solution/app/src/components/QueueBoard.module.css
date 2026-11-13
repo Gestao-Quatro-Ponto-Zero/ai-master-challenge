@@ -1,0 +1,385 @@
+.board {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.listCol {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.mobileSort {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  font: 600 14px/1 var(--font-sans);
+  color: var(--muted);
+}
+
+.mobileSort select {
+  width: auto;
+  min-width: 220px;
+}
+
+.toolbar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 16px;
+  border-radius: var(--pill);
+  border: 1px solid var(--line-strong);
+  background: var(--white);
+  color: var(--navy);
+  font: 700 14px/1 var(--font-sans);
+  cursor: pointer;
+}
+
+.filter[aria-pressed='true'] {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: var(--paper);
+}
+
+.count {
+  font-variant-numeric: tabular-nums;
+  opacity: 0.75;
+}
+
+.table td {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent; /* the row already shows selection; no blue flash on tap */
+}
+
+.table tbody tr:hover {
+  background: var(--paper-3);
+}
+
+.active {
+  background: #eef2f5;
+  box-shadow: inset 3px 0 0 var(--gold);
+}
+
+.rowButton {
+  all: unset;
+  -webkit-tap-highlight-color: transparent;
+  display: grid;
+  gap: 2px;
+  cursor: pointer;
+  max-width: 44ch;
+}
+
+.rowButton:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.id {
+  font: 700 12px/1.3 var(--font-sans);
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.excerpt {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: var(--ink);
+}
+
+.conf {
+  display: grid;
+  gap: 6px;
+  justify-items: end;
+}
+
+.done {
+  display: block;
+  margin-top: 6px;
+  font-size: 12.5px;
+  color: var(--ok);
+  font-weight: 600;
+}
+
+.session {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.panel {
+  position: sticky;
+  top: 84px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  display: grid;
+  gap: 16px;
+  max-height: calc(100vh - 104px);
+  overflow: auto;
+}
+
+.panelHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.reason {
+  margin: 0;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.hint {
+  margin: -8px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.block {
+  display: grid;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.block h3 {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.ticketText {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.note {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.probs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.probs li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(80px, 1.2fr) 44px;
+  gap: 10px;
+  align-items: center;
+  font-size: 14.5px;
+}
+
+.probs li span:last-child {
+  text-align: right;
+}
+
+.terms {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.similar {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.similar li {
+  display: grid;
+  gap: 4px;
+  justify-items: start;
+}
+
+.simText {
+  font-size: 14px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: grid;
+  gap: 8px;
+}
+
+.change {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.truth {
+  margin: 4px 0 0;
+  font-size: 13.5px;
+  color: var(--muted);
+}
+
+/* Mobile sheet: a native modal dialog, so focus trap, Esc and the backdrop come from the browser. */
+.sheet {
+  width: 100%;
+  max-width: 640px;
+  max-height: 88dvh;
+  margin: auto auto 0;
+  padding: 0;
+  border: 0;
+  border-radius: 20px 20px 0 0;
+  background: var(--white);
+  color: var(--ink);
+  box-shadow: 0 -12px 40px rgba(0, 31, 53, 0.22);
+  overscroll-behavior: contain;
+}
+
+.sheet[open] {
+  animation: sheet-up 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.sheet::backdrop {
+  background: rgba(0, 31, 53, 0.55);
+}
+
+.sheetHead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px 16px;
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
+}
+
+.sheetHead :global(.btn) {
+  min-height: 40px;
+  padding: 8px 14px;
+}
+
+.grabber {
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  width: 40px;
+  height: 4px;
+  margin-left: -20px;
+  border-radius: 4px;
+  background: var(--line-strong);
+}
+
+.sheetBody {
+  display: grid;
+  gap: 16px;
+  padding: 18px 20px calc(28px + env(safe-area-inset-bottom));
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet[open] {
+    animation: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .board {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .panel {
+    display: none;
+  }
+}
+
+/* Phone: each ticket becomes a card instead of a squeezed table row. */
+@media (max-width: 720px) {
+  .mobileSort {
+    display: inline-flex;
+  }
+
+  .table thead {
+    display: none;
+  }
+
+  .table,
+  .table tbody,
+  .table tr {
+    display: block;
+    width: 100%;
+  }
+
+  .table tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .table td {
+    display: block;
+    border: 0;
+    padding: 0;
+  }
+
+  .table td:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .table td:nth-child(3) {
+    grid-column: 1 / -1;
+    order: 3;
+  }
+
+  .conf {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    justify-items: start;
+  }
+
+  .rowButton {
+    max-width: none;
+  }
+
+  .active {
+    box-shadow: inset 3px 0 0 var(--gold);
+  }
+}

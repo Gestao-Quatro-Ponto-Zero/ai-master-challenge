@@ -1,0 +1,30 @@
+/** Short explanations behind the "i" icons. One source, so the same idea is explained the same way on every page. */
+export const EXPLAIN = {
+  confidence: 'Probabilidade que o modelo dá para a fila sugerida. Ela é calibrada: entre os tickets com 90% de confiança, cerca de 9 em 10 estão certos.',
+  route:
+    'O que acontece com o ticket: segue sozinho (automático), vai para o agente com duas sugestões (assistido) ou para triagem do zero (humano). Quem decide é a política de travas, na ordem.',
+  suggestedQueue: 'A fila com maior probabilidade, entre as 8 filas do histórico de TI.',
+  ticketId: 'Identificador do ticket na amostra. A ordem original segue o conjunto de teste.',
+  ticketText: 'O texto como está no dataset público: já vem em minúsculas e com parte das palavras comuns removidas.',
+  topQueues: 'As três filas com maior probabilidade. No assistido, o agente escolhe entre as duas primeiras.',
+  why: 'Palavras e pares de palavras do ticket que mais aumentaram a pontuação da fila escolhida. É a conta do próprio modelo, não um texto gerado.',
+  similar: 'Tickets do treino mais parecidos com este, pela similaridade do vocabulário. Ajudam o agente a conferir a fila sem abrir outro sistema.',
+  agentDecision:
+    'Confirmar, trocar a fila ou escalar. Cada troca conta como override, e a taxa de override por fila é o primeiro alarme de que o modelo envelheceu.',
+  vocabulary: 'Parte das palavras do ticket que o modelo viu no treino. Abaixo de 55% o ticket vai para humano: costuma ser outro idioma ou ruído.',
+  autoThreshold: 'Confiança mínima para seguir sozinho. Foi escolhida na validação para dar 95% de precisão, e o teste confirmou 96%.',
+  auto: 'Vai direto para a fila sugerida, sem triagem humana. Só acontece quando a confiança passa do limiar e nenhuma trava dispara.',
+  assist: 'O agente vê as duas filas mais prováveis e confirma com um clique. Poupa a leitura do zero e mantém uma pessoa na decisão.',
+  human: 'Triagem feita por uma pessoa, do zero. Acontece quando o modelo não confia o bastante ou quando uma trava dispara.',
+  testSet: 'Tickets reais que ficaram fora do treino e da escolha dos limiares. Os números desta página foram medidos neles.',
+  ece: 'Erro de calibração esperado: a diferença média entre a confiança que o modelo diz e o acerto real. Quanto mais perto de zero, mais a confiança significa algo.',
+  falseRejection: 'Tickets normais que as travas mandam para humano sem precisar. É o custo de segurança, medido no tráfego comum.',
+  confidenceOnly: 'Quanto seguiria sozinho se a única regra fosse o limiar de confiança, sem nenhuma trava.',
+  severity: 'A severidade é o impacto se a trava falhar, não a chance de acontecer.',
+  macroF1: 'Média do F1 de cada fila com o mesmo peso para todas. Fila pequena conta tanto quanto fila grande.',
+  accuracy: 'Parte dos tickets de teste em que a fila sugerida é a fila real.',
+  fitTime: 'Tempo para treinar o modelo nos 33 mil tickets, num notebook.',
+  inferTime: 'Milissegundos para classificar mil tickets. Todos são rápidos o bastante para tempo real.',
+  support: 'Quantos tickets dessa fila existem no conjunto de teste.',
+  autoShare: 'Parte dos tickets dessa fila que segue sozinha com a política inteira.',
+} as const

@@ -1,0 +1,32 @@
+{
+  "name": "mesa-de-suporte",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Support console prototype for the G4 AI Master Challenge 002: triage with a confidence gate, guards and human review.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build && node scripts/csp-hashes.mjs",
+    "start": "npx serve@14.2.4 out",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "check": "npm run typecheck && npm run test && npm run build",
+    "serve": "node scripts/serve-prod.mjs",
+    "pentest": "node scripts/pentest.mjs"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "dependencies": {
+    "next": "16.4.3",
+    "react": "19.2.9",
+    "react-dom": "19.2.9"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.7",
+    "puppeteer-core": "25.16.0",
+    "typescript": "5.9.3",
+    "vitest": "5.0.5"
+  }
+}

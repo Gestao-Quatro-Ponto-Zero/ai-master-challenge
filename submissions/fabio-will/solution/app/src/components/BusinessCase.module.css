@@ -1,0 +1,110 @@
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.form {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  display: grid;
+  gap: 18px;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.fieldHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14.5px;
+}
+
+.fieldHead output {
+  font-weight: 800;
+  color: var(--navy);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.field input[type='range'] {
+  width: 100%;
+  accent-color: var(--navy);
+  min-height: 32px;
+  cursor: pointer;
+}
+
+.output {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+
+.headline {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  background: rgba(185, 145, 91, 0.35);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid rgba(185, 145, 91, 0.35);
+}
+
+.headline div {
+  background: var(--navy);
+  padding: 18px 20px;
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.headline b {
+  font: italic 400 clamp(24px, 2.6vw, 32px)/1.1 var(--font-accent);
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.headline span {
+  font-size: 13.5px;
+  color: rgba(245, 244, 243, 0.86);
+}
+
+.formula {
+  display: grid;
+  gap: 8px;
+  background: var(--white);
+  border-left: 3px solid var(--gold);
+  padding: 14px 18px;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.formula p {
+  margin: 0;
+}
+
+@media (max-width: 960px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .headline {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.headline :global(.infotip-btn) {
+  color: rgba(245, 244, 243, 0.78);
+}
+
+.headline :global(.infotip-btn:hover),
+.headline :global(.infotip-btn[aria-expanded='true']) {
+  color: var(--paper);
+  background: rgba(245, 244, 243, 0.12);
+}
