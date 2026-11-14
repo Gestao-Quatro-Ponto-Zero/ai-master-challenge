@@ -615,3 +615,287 @@ então o ganho vem de informação útil, não de tamanho.
 
 **Mudança no fluxo:** etapa 2 virou "Recepção e conversa" (a IA recebe de forma humanizada e pergunta até a confiança
 passar de 0,8); etapa 3 passa para uma pessoa só depois do número máximo de perguntas, novo parâmetro a definir.
+
+## Rodada 49 (2026-11-11 11:43 BRT): commit da parte 2
+
+**Jó (literal):** "Sim, commita". Commit local `7a601fa`, sem push.
+
+## Rodada 50 (2026-11-11 11:45 BRT): escopo do protótipo
+
+**Pedido do Jó (literal):** "acredito que precisamos alem do roteador a ia conversacional, qndo precisar me fala que eu gero o token do deepseek, m fala se precisamos aprrensetar o painel das conversas e o dashboard"
+
+**Leitura do brief (seção 3 e critérios):** protótipo é diferencial, não obrigatório; dashboard aparece só como um dos
+exemplos. O critério que pesa é "funciona com dados reais, não com 3 exemplos cherry-picked", e o primeiro critério
+é "usou ambos os datasets? o poder está no cruzamento". Recomendação enviada ao Jó: IA conversacional + roteador +
+painel das conversas numa página só, rodando também em lote sobre o teste real; dashboard enxuto com os 5 indicadores
+de linha de base do Dataset 1, ao lado das decisões do roteador. Chave da DeepSeek só em arquivo .env fora do repo,
+com modo sem chave para o avaliador rodar.
+
+## Rodada 51 (2026-11-11 11:53 BRT): protótipo construído, aguardando a chave da DeepSeek
+
+**Pedido do Jó (literal):** "Aprovado" (escopo da rodada 50).
+
+**O que foi feito:** `solution/prototipo/` com config, modelo (mesma separação e modelo do relatório), roteador
+(funções puras), conversa (DeepSeek ou modo sem IA), lote e página Streamlit com Conversa, Painel do atendente e
+Dashboard. 19 testes passando. Lote nos 9.568 tickets reais do teste: 68,4% roteados pela IA com 96,4% de acerto,
+31,6% para triagem humana, iguais ao relatório. Dashboard confere com os relatórios (33,3%, 692, 49,0%, 32,7%, 49,3%).
+
+**Achados durante a construção:**
+- O texto do Dataset 1 não prevê o tipo do ticket (19,7% de acerto contra 20,7% da linha de base), então a trava de
+  reembolso, cancelamento e alteração de cobrança é por regra, com a IA conversacional sinalizando também.
+- Erro do modelo encontrado no teste do protótipo: "hello i need help" recebia 0,82 de confiança em Hardware e seria
+  roteado sem o cliente ter dito o problema. Corrigido com a trava de texto sem conteúdo (a IA pede a descrição); 3
+  testes novos cobrem o caso.
+- Erro meu corrigido: uma substituição automática de formato reescreveu a própria função de formato e a página
+  quebrou com recursão infinita; pego no teste da página e corrigido antes de mostrar.
+
+## Rodada 52 (2026-11-11 11:58 BRT): IA conversacional ligada e testada
+
+**Jó (literal):** "feito, pode testar" (chave da DeepSeek gravada por ele em arquivo fora do repositório).
+
+**Teste com a DeepSeek, 9 conversas:** saudação faz a IA pedir o problema; "notebook não liga depois da atualização"
+vai para Hardware com 0,89; reembolso de monitor com defeito e cancelamento de assinatura vão para "pessoa decide e
+executa"; pedido de senha de administrador gera pergunta de esclarecimento com 0,46.
+
+**Erro encontrado e corrigido:** a conversa "preciso de uma coisa / é sobre o sistema / não sei explicar direito / é
+urgente" terminava roteada para Hardware com 0,89 de confiança, sem o cliente ter dito o problema. A contagem de palavras
+úteis não pega português vago. Correção: a própria IA informa se o problema foi descrito (campo problema_descrito); com
+isso a mesma conversa vai para uma pessoa depois de 3 perguntas. "Preciso de ajuda com uma pasta" também deixou de ser
+roteado direto (1,00 em Armazenamento) e passou a pedir detalhe antes.
+
+## Rodada 53 (2026-11-11 12:07 BRT): régua de validação antes do commit
+
+**Pedido do Jó (literal):** "passa a régua de validação antes de comitar"
+
+**O que foi feito:** régua da Creagle (`_REGUA-VALIDACAO-PRODUCAO.md`) aplicada ao protótipo, enquadrado como classe A
+se fosse produção. Checklist com evidência em `docs/regua-validacao-prototipo.md`. 36 testes (eram 19), integração com
+a DeepSeek simulada em 9 tipos de falha, bateria de IA real com 16 conversas (16 de 16), E2E da página, carga do lote
+(9.568 tickets em 3,6 s, 309 MB), varredura de chave vazia. Pendente: homologação do Jó.
+
+**Achados corrigidos:** pedido de dinheiro recebia pergunta de categoria (agora vai direto para pessoa); desistência
+virava pergunta (destino novo "cliente desistiu"); falha da IA derrubava a conversa (agora pessoa assume); filtro de
+travessão nas respostas. Erro meu: a primeira bateria testava desistência depois de a conversa já ter sido
+encaminhada; roteiro corrigido. A bateria tinha passado nas checagens automáticas mesmo com o problema da pergunta
+de categoria: ele só apareceu lendo as respostas uma a uma.
+
+## Rodada 54 (2026-11-11 12:10 BRT): página no ar para homologação
+
+**Pedido do Jó (literal):** "Sobe a página". Porta 8082 tirada do registro de portas da netcup (primeira livre, conferida com `ss`), só em 127.0.0.1, exposta por túnel efêmero do Cloudflare. `curl -sI` no link: HTTP/2 200; `/_stcore/health`: ok. Porta registrada no mesmo turno como temporária.
+
+## Rodada 55 (2026-11-11 12:22 BRT): nome, coleta de contato e marca fora da tela
+
+**Pedido do Jó (literal):** "inclui na conversa, pergunta pelo nome e a partir dali trata pelo nome com pacimonia.. antes de passar para um humano, pergunta cpf utilizado na compra, telefone de contato e email.. tbm tirra a palavra deepseek la de cima"
+
+**Decisão de desenho (Claude):** CPF, telefone e e-mail não passam pela IA externa, pela regra do Jó de 2026-11-03
+(dado pessoal só em IA local no Brasil). A coleta é feita pelo código, com validação (dígito verificador do CPF, DDD,
+formato do e-mail), uma segunda chance para dado inválido e a opção de recusar. O nome vai à IA como [NOME] e o código
+decide quando ele pode aparecer (no máximo uma vez a cada três respostas). Números e e-mails digitados no meio do
+relato também são trocados por marcadores antes de ir à IA. Log com contato mascarado. A coleta vale para todo
+encaminhamento a pessoas (fila, pessoa executa, triagem), não para quem desiste.
+
+**Validação:** 64 testes (eram 36), com teste que prova que nenhum dado pessoal aparece no que vai à IA; bateria de IA
+real 16 de 16; conversas lidas uma a uma. Ajuste de tom: depois do nome, "Prazer, Ana. Entendi o seu caso." antes de
+pedir o CPF. Erro meu: um comando para reiniciar a página derrubou o próprio terminal (o padrão de busca do processo
+casava com o comando); refeito por número de processo, página de volta no mesmo link com HTTP/2 200.
+
+## Rodada 56 (2026-11-11 12:38 BRT): painel com ID, busca, motivo claro e fila em português
+
+**Pedido do Jó (literal):** "no painel do atendente, cria um id de identificação da chamada, pra facilitar a busca, tbm cria um campo de busca pelo o id, no modo tira a linguagem usada e coloca atendimento por IA, os motivos precisam ficar mais claro, com menos informação técnica da ia e mais informação da chamada. atualiza isso e ja classifica as chamadas anteriores para eu trazer correções"
+**Mensagem do Jó no meio do trabalho (literal):** "na fila de triagem humana trraz tudo para o portugues"
+
+**O que foi feito:** ID sequencial ATD-xxxxx em toda chamada (`registro.py`), busca que aceita "ATD-00044", "atd44"
+ou "44", horário em Brasília, origem da chamada (atendimento pela página, teste interno, teste automático) com filtro
+"só atendimentos", "Atendimento por IA" no lugar do modo, e motivo escrito para o atendente (o que o cliente pediu e
+por que a chamada está onde está), com a regra técnica guardada à parte. A IA passou a devolver um resumo em português
+do pedido, sem dado pessoal. As 67 chamadas antigas foram reclassificadas com cópia de segurança antes: 1 atendimento
+do Jó (ATD-00044, iPhone), 43 testes internos e 23 testes automáticos, pela regra de horário registrada no script. Os
+200 tickets da fila de triagem foram traduzidos e guardados; a primeira tradução saiu literal demais e foi refeita
+pedindo frases naturais sem fato novo; um lote voltou com número de itens errado, foi descartado e refeito.
+79 testes passando (eram 64).
+
+## Rodada 57 (2026-11-11 13:42 BRT): painel e dashboard redesenhados
+
+**Pedido do Jó (literal):** "ainda no painel do atendente, precisamos melhorar a experencia do usuario, existe 67 chamados mas eu só consigo ver o que aconteceu com detalhes em 10. tbm não ficou claro pra que serve a fila de triagem humana: tickets reais do teste.. tbm não entenndi o pq você  colocou o botao mostra só atendimentos (sem o teste) quero conseguir analisar todas as chamadas e o painel precisa ficar intuitivo e com um visual pensando em UX.. ja no dashbord, ele tbm está bem fraquinho, precisa melhorar a experiencia dele, deixar mais intuitivo e trazer graficos e filtros para facilitar a compreesao"
+
+**Como foi feito:** skill ui-ux-pro-max (sistema de design para painel de operação denso em dados: azul para dados,
+âmbar para destaque, cor sempre com texto, ícones vetoriais no lugar de emoji, barras ordenadas com valor escrito,
+filtro em toda visão). Painel: lista de todas as chamadas com seleção de linha e detalhe ao lado (conversa inteira,
+motivo, contato mascarado), filtros de ID, situação, assunto e "quem gerou a chamada" com explicação, contadores por
+situação. A fila de triagem saiu do painel e virou a aba "Fila do time (simulação)" do dashboard, com explicação.
+Dashboard em 4 abas: Operação hoje (filtros de canal, prioridade e tipo, situação por recorte, notas), Simulação com a
+IA (controle de limite que recalcula tudo, curva de encaminhamento e acerto, % por assunto), Fila do time e Chamadas
+do protótipo. Conferido no navegador: o gráfico de situação por canal saiu espremido (só 2 de 4 canais com nome) e foi
+corrigido. 79 testes passando.
+
+## Rodada 58 (2026-11-11 13:45 BRT): ordem do detalhe da chamada
+
+**Pedido do Jó (literal):** "na aba do painel coloca  a caixa da connversa em cima e a caixa com o id e motivo e dados do cliente em baixo". Ordem invertida no detalhe da chamada; título da conversa passou a trazer o ID.
+
+## Rodada 59 (2026-11-11 14:53 BRT): correções por chamada e IA resolvendo sozinha
+
+**Pedido do Jó (literal):** "clicou na linha, tem que mudar a conversa a lateral, mas pode manter qndo assinala tbm 
+id 67 alem dos dados precisa perguntas qual é o sistema, perguntou e entedeu, vai até o final do suporte explicando pra ela e confirmando que ela conseguiu compartilhar 
+id 66 qndo a pessoa fala que não sabe explicar, não use frases como: fico feliz em te audar, o foco ddeve ser na resolucao.. e as perrguntas tem que ser expecificas, como: qual é o sistema que você  precisa de ajuda? onde exatamente você  está com dificuldade? consegue me mandar um print da tela ? e vai até o final nesse caso de suporte de software 
+id 63 a primeira msg veio em ingles, precisa manter tudo em portugues 
+toda vez que eu entrar em uma nova conversa, puxa ela pra cima automaticamente 
+id 62 alem dos dados você  tem que solicitar qual é o pedido exato que esta pedindo o reembolso 
+is 61 tem que pedir o valor e qual foi o pedido que gerou a cobranca duplicada 
+
+correige todas as outras conversas considerando esses feedbacks.. unica passagem para o time é cancelamento e reembolso o restante você  trata tudo sozinho"
+
+**O que foi feito:** a IA passou a conduzir o suporte até o cliente confirmar que resolveu: perguntas específicas,
+uma por vez (qual sistema, onde exatamente, qual mensagem aparece na tela), e solução em passos numerados com
+confirmação. Só reembolso e cancelamento passam para o time; cobrança em dobro ou indevida conta como reembolso.
+Antes do CPF, telefone e e-mail, o código pede o pedido exato (reembolso), o que cancelar (cancelamento) ou o valor e
+o pedido (cobrança). Conversa sempre em português; o caso da chamada 63 foi refeito em português. Trava no código
+para frase de cortesia vazia ("sem problema", "fico feliz em ajudar"). Cada mensagem atualiza a chamada, então o
+painel mostra as em andamento. Painel: clique em qualquer célula da linha troca a conversa (a caixa de seleção
+continua valendo) e a conversa abre sempre do começo, conferido no navegador. As 67 chamadas antigas ficam com a
+situação "Robô anterior"; cada caso refeito aponta a chamada antiga que refaz (59 a 67 viraram 71 a 83; 44 virou 84).
+
+**Validação:** 101 testes (eram 79). Bateria real com cliente simulado pela DeepSeek até o fim: 16 de 17. Falhou o
+notebook que não liga depois de todos os testes: defeito físico, que a regra não prevê; a IA mandou a cliente abrir
+atendimento na Dell e a conversa não fechou (laço de despedidas). Decisão pendente com o Jó. Na primeira rodada da
+bateria saíram "Sem problema." (corrigido com a trava) e um falso alarme da checagem de dado pessoal ("e-mail" como
+assunto do Outlook; checagem corrigida). Erro meu: `pkill -f` de novo derrubou o próprio terminal ao parar a
+bateria; limpeza refeita em comando separado e regra gravada na memória.
+
+**Não feito, com motivo:** print da tela. A DeepSeek não lê imagem e print pode trazer dado pessoal, que pela regra
+de 2026-11-03 só vai para IA local no Brasil; a IA pede o texto da tela. As abas "Simulação com a IA" e "Fila do time"
+do dashboard ainda falam de roteamento por fila, que a conversa não usa mais.
+
+## Rodada 60 (2026-11-11 15:41 BRT): defeito de aparelho vai para a assistência técnica autorizada
+
+**Pedido do Jó (literal):** "o caso do id 84 é caso de suporte, a instrucao esta correta mas tem que destinar ele pra uma assistencia tecnoca autorizada da empresa"
+
+**O que foi feito:** destino novo "assistência técnica". Quando o problema é de aparelho com sinal de defeito
+(bateria, aquecimento, carregamento, não liga, peça, tela) ou o cliente fala em garantia, a IA dá os passos de
+verificação e o sistema encaminha o cliente à assistência técnica autorizada da empresa, mesmo que o sintoma tenha
+aliviado, com o número do atendimento. O texto final é fixo: a rede autorizada não está nos dados e a IA não pode
+inventar endereço nem prazo (placeholder registrado no LEIAME). A IA não manda mais o cliente para o suporte do
+fabricante, o que fecha o laço de despedidas do notebook da rodada 59. Chamada refeita já sai da contagem como
+"Robô anterior".
+
+**Validação:** 105 testes. Bateria nos três casos de aparelho: na primeira passada, o notebook foi encaminhado só
+com perguntas, sem nenhum passo; trava no código (só encaminha depois de ao menos um passo numerado) e nova passada,
+3 de 3: iPhone ATD-00090 (refaz a 84) e notebook ATD-00088 na assistência depois dos passos, monitor ATD-00089 com
+cabo solto resolvido pela IA, sem ir para a assistência. Observação para o Jó: o notebook ligou depois do reset e
+mesmo assim foi para a assistência, pela mesma regra do iPhone.
+
+## Rodada 61 (2026-11-11 17:29 BRT): pergunta de abertura mais aberta
+
+**Pedido do Jó (literal):** "trocar essa frase  Qual é o sistema, programa ou aparelho com que você precisa de ajuda? para: como posso te ajudar hoje"
+
+**O que foi feito:** depois do nome, a IA pergunta "Como posso te ajudar hoje?" (texto fixo em `conversa.py`). As
+perguntas específicas (qual sistema, em que tela, qual mensagem) continuam valendo nas rodadas seguintes, quando o
+relato vem vago. A frase antiga segue só na resposta de reserva, quando a IA não entende o relato.
+
+**Validação:** 105 testes; página reiniciada na 8082, link do túnel respondendo 200.
+
+## Pedido de 2026-11-11 17:34 BRT: apagar uma conversa de teste
+
+**Pedido do Jó (literal):** "deleta a conversa id 91"
+
+**O que foi feito:** a ATD-00091 (teste do próprio Jó, parada na pergunta do nome) foi removida de
+`saida/conversas.jsonl`, com backup antes. O próximo ID parte do maior registrado, então a numeração não repete.
+
+## Endereço fixo do protótipo (2026-11-11 19:16 BRT)
+
+**Perguntas do Jó (literais):** "o link no claoudfire não pode cair?" / "Autorizo" / "abrre a pagiina que precisa ser feito isso e se possivel ja deixa pre prenchido pra eu só avancar" / "poss copiar o id do tunel aqui?" / "eu tenho que colocar o token no meio do comando?"
+
+**O que foi feito:** o túnel temporário (trycloudflare) mudava de endereço a cada reinício e não tinha garantia. O
+protótipo passou para `https://g4.creagle.com.br`, num túnel nomeado do Cloudflare, e a página e o túnel viraram
+serviços que voltam sozinhos. Com o link público, a IA ganhou teto de gasto: 40 mil tokens por conversa e 600 mil por
+dia; passou do teto, uma pessoa assume, como na IA fora do ar (2 testes novos, 107 no total).
+
+## Régua de validação com o link público (2026-11-11 19:25 BRT)
+
+**Perguntas do Jó (literais):** "acha valido colocar um login e senha ?" / "não precisa, passa a regua de validacao"
+
+**Decisão:** sem login e sem aviso de dado fictício (o avaliador do G4 abre pelo PR público; senha publicada não
+protege e senha à parte atrapalha a avaliação). Risco aceito: o painel mostra a todos o nome digitado por quem testou.
+
+**O que a régua achou e foi corrigido:** (1) com várias pessoas ao mesmo tempo, o registro perdia conversas (20
+simultâneas viraram 4, com erro de leitura e gasto contado pela metade): trava única de escrita e gravação atômica,
+200 simultâneas sem perda; (2) texto digitado podia virar imagem externa ou link disfarçado no painel: desarmado na
+exibição; (3) visitante veria traceback com caminho interno: desligado. 109 testes. Carga e estresse pelo link,
+recuperação depois de derrubar página e túnel à força (7 s e 8 s), folga do host conferida. Soak de 6 h em curso.
+Detalhe em `docs/regua-validacao-prototipo.md`.
+
+## O que é homologação (2026-11-11 23:16 BRT)
+
+**Pergunta do Jó (literal):** "o que é exatamente a homologação, é a aprovação do desenvolvimento?"
+
+**Resposta:** sim, é o aceite do dono da demanda. A régua técnica prova que o protótipo aguenta e não quebra; a
+homologação prova que ele faz o que o Jó pediu, testado por ele no link real. Sem o aceite por escrito o trabalho não
+conta como pronto e não é commitado.
+
+## Filtros do painel: reembolso e cancelamento (2026-11-11 23:39 BRT)
+
+**Pergunta do Jó (literal):** "percebi pelos filtros que não tem nenhum case de cancelamento e reembolso mas só tem 9 resolvida pela ia, pq?"
+
+**Dado (91 chamadas no registro):** 73 aparecem como robô anterior (gravadas antes das correções de 11/11 ou já
+refeitas). Só 18 são do robô atual: 9 resolvidas pela IA, 4 aguardando decisão do time, 2 na assistência técnica,
+2 desistências e 1 em atendimento. Os reembolsos e cancelamentos existem: são as 4 chamadas ATD-00071 a ATD-00074,
+que aparecem como "Aguarda decisão do time", nome que não deixa claro que se trata de reembolso ou cancelamento.
+
+**Pedido do Jó (literal, 2026-11-11 23:45 BRT):** "Sim, renomeia"
+
+**O que foi feito:** a situação "Aguarda decisão do time" passou a se chamar "Reembolso ou cancelamento (time
+decide)" no painel e no filtro (`app.py` e `registro.py`). 109 testes passando; página reiniciada e link com 200.
+
+## Endereço da assistência técnica (2026-11-12 07:48 BRT)
+
+**Pedido do Jó (literal):** "id 88 faltou o endeeco da assistecia que ela precisa levar"
+
+**Dado:** o texto de encaminhamento é fixo e não tinha endereço de propósito: a base do case não traz endereço da
+assistência e a IA não pode inventar. **O que foi feito:** o endereço passou a vir de configuração
+(`ASSISTENCIA_ENDERECO`) e entra no fim do texto ("Leve o aparelho a: ..."); 110 testes. Falta o Jó definir o endereço.
+
+**Pedido do Jó (literal, 2026-11-12 07:49 BRT):** "id 87 tbm precisa do endereco, o endereco da assistecia é sempre o mais proximo do endereco de cadastro da pessoa. tem que confirmar com ela se ela esta no endereco da nota/cadastro e manda o endereco da assistencia mais proximo"
+
+**Dado:** nenhuma das bases do case tem endereço. O Dataset 1 traz nome, e-mail, idade, gênero, produto e data da
+compra; o Dataset 2 só o texto do ticket. Não há cadastro com endereço nem rede de assistências: as duas precisam
+ser criadas como base de demonstração. Proposta levada ao Jó antes de construir.
+
+**Pedido do Jó (literal):** "Autorizo"
+
+**O que foi feito (16:38 BRT):** defeito de aparelho agora pede o CPF, busca o cadastro, confirma se o cliente está no
+endereço (mostra só bairro e cidade) ou pede o CEP, e indica a assistência autorizada mais perto, com endereço e
+número do atendimento (`assistencias.py`, mensagens fixas, nada disso vai para a IA). Cadastro (10) e rede (9) são de
+exemplo, marcados como tal no LEIAME. Mais perto = maior começo de CEP igual. O endereço configurável fixo da
+primeira tentativa saiu. 118 testes. Refeitas com a DeepSeek real: ATD-00093 refaz a 87 (CPF de cadastro em
+Campinas, "sim", assistência de Campinas) e ATD-00094 refaz a 88 (CPF sem cadastro, CEP 13083-970, Campinas).
+
+## Régua da assistência mais perto (2026-11-12 16:52 BRT)
+
+**Pedido do Jó (literal):** "passa a regua de validacao"
+
+**Resultado:** 124 testes; E2E no link com a DeepSeek real (CPF do Rio, "não, estou em Curitiba", CEP de Curitiba,
+assistência de Curitiba); bateria completa 16 de 17. Dois achados no E2E, corrigidos: a máscara do CPF aparecia
+como "..003-88" no painel (asteriscos viravam formatação) e a frase "em Rio de Janeiro". Falha da bateria sem
+relação com a mudança: no caso do Outlook, a IA deixou "Trabalhar Offline" para o fim (14 respostas). Detalhe em
+`docs/regua-validacao-prototipo.md`, terceira passada.
+
+## Verificações simples primeiro (2026-11-14 08:15 BRT)
+
+**Pedido do Jó (literal):** "Sim, ajusta"
+
+**O que foi feito:** regra nova no prompt da IA: começar pelas verificações que o cliente faz em segundos (modo
+offline ou avião, internet, cabo e tomada, fechar e abrir o programa, reiniciar) e só depois as demoradas
+(reinstalar, recriar perfil, arquivo de dados). Motivo: na bateria da rodada 62, o caso do Outlook levou 14
+respostas e 30.385 tokens para chegar em "Trabalhar Offline". 124 testes; bateria completa rodada de novo.
+**Resultado:** rodada 63 completa, 16 de 17: Outlook resolvido em 5 respostas (eram 14) e tokens médios de 5.800
+para 4.424. Efeito colateral: a impressora com "Erro" na fila foi mandada à assistência sem tentar a solução de
+programa; o critério da extração passou a exigir a tentativa de programa antes de tratar erro de tela como defeito.
+Duas rodadas focadas: 8 de 8 no destino certo. Falso alarme "pede print" (Print Spooler) corrigido na checagem.
+
+## Fechamento da entrega (2026-11-14 18:10 BRT)
+
+**Pedido do Jó (literal):** "executa tudo o que falta para fechar e me manda o relatorio do passo a passo para encerrar o processo e enviar"
+
+**O que foi feito:** abas do dashboard renomeadas para refletir a regra da rodada 59 ("Simulação com a IA" virou
+"Classificador de assunto" e "Fila do time" virou "Assunto incerto"): o classificador só marca o assunto da chamada,
+não decide para onde a conversa vai. Bateria completa rodada de novo depois do último ajuste da extração
+(`docs/bateria-ia-rodada64.md`). README da submissão escrito no modelo do G4, com o link do protótipo. Commit local
+só dos arquivos da entrega. Push e PR ficam com o Jó, por serem envio público.

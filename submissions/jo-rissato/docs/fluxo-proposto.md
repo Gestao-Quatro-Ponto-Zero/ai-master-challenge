@@ -4,6 +4,23 @@ Aprovado pelo Jó em 2026-11-11 (rodada 47), com a recepção conversacional acr
 etapa. O que é decisão e não achado do dado está marcado como **decisão**. O que ainda não tem valor definido
 está marcado como **a definir**.
 
+## Revisão da rodada 59 (2026-11-11, decisão do Jó)
+
+Depois de ler as conversas do protótipo, o Jó mudou o papel da IA: ela trata tudo sozinha, até o cliente confirmar
+que resolveu, e **só reembolso e cancelamento passam para o time** (cobrança em dobro ou indevida conta como
+reembolso). Efeito nas etapas abaixo, que ficam como histórico da versão aprovada na rodada 47:
+
+- Etapa 2 passa a ser suporte completo: perguntas específicas (qual sistema, onde exatamente, qual mensagem aparece)
+  e solução em passos, com confirmação a cada passo.
+- Etapa 3 deixa de rotear por fila na conversa. O classificador e o limite 0,8 continuam marcando o assunto e
+  medindo a simulação em lote; não decidem mais para onde a conversa vai.
+- Etapa 6 ganha o detalhe do pedido antes do contato: pedido exato no reembolso, o que cancelar no cancelamento,
+  valor e pedido na cobrança.
+- Única outra passagem para pessoa: IA fora do ar (não há quem converse com o cliente).
+- Defeito de aparelho (rodada 60, decisão do Jó sobre a chamada 84): depois dos passos de verificação, o cliente
+  é encaminhado à assistência técnica autorizada da empresa, mesmo que o sintoma tenha aliviado. A rede autorizada
+  não está nos dados e fica como placeholder.
+
 | # | Etapa | IA | Pessoa | Por que existe (dado) |
 |---|---|---|---|---|
 | 1 | Entrada | Registra data e hora de abertura, canal e cliente em todo ticket, de qualquer canal | Nenhuma | Nenhum ticket tem data de abertura hoje (lacuna 3); sem ela não há tempo de espera nem tendência |
