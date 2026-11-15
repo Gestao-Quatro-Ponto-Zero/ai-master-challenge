@@ -1,0 +1,579 @@
+/* Foco da semana (prancha 02). Classes com prefixo foco-. */
+
+/* O invólucro não cria caixa: cabeçalho e corpo seguem o espaçamento do painel. */
+.foco {
+  display: contents;
+}
+
+/* Resumo à direita do cabeçalho */
+.foco-summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  width: 520px;
+  max-width: 100%;
+  padding-top: 6px;
+}
+
+.foco-summary:empty {
+  display: none;
+}
+
+.foco-summary__kpis {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px var(--space-16);
+  flex-wrap: wrap;
+  color: var(--color-text-muted);
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+}
+
+.foco-summary__big {
+  color: var(--color-text);
+  font-size: var(--fs-20);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+.foco-summary__strong {
+  color: var(--color-text);
+  font-weight: var(--fw-extrabold);
+  font-variant-numeric: tabular-nums;
+}
+
+.foco-summary__sentence {
+  color: var(--color-text-muted);
+  font-size: var(--fs-12);
+  line-height: 17px;
+}
+
+@media (max-width: 1360px) {
+  .foco-summary {
+    width: 440px;
+  }
+}
+
+/* Lista */
+.foco-list {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  container: foco-list / inline-size;
+}
+
+.foco-filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8) var(--space-16);
+  flex-wrap: wrap;
+  padding: 14px 0 6px;
+}
+
+.foco-filters__left {
+  display: flex;
+  align-items: center;
+  gap: 6px var(--space-12);
+  flex-wrap: wrap;
+}
+
+.foco-filters__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  margin-left: auto;
+  text-align: right;
+}
+
+.foco-filters__sep {
+  width: 1px;
+  height: 18px;
+  background: var(--color-border);
+}
+
+.foco-filters__count,
+.foco-filters__sort {
+  color: var(--color-text-muted);
+  font-size: var(--fs-13);
+  line-height: 18px;
+}
+
+.foco-filters__count {
+  font-variant-numeric: tabular-nums;
+}
+
+.foco-chip-janela {
+  border-color: var(--color-ink);
+  color: var(--color-text);
+  font-weight: var(--fw-bold);
+}
+
+.foco-chip-janela[aria-pressed="true"] {
+  background: var(--color-surface);
+  border-color: var(--color-ink);
+}
+
+.foco-stale-intro {
+  max-width: 72ch;
+  padding-top: 14px;
+  color: var(--color-text-muted);
+  font-size: var(--fs-13);
+  line-height: var(--lh-13);
+}
+
+.foco-panel > .state {
+  margin-top: var(--space-16);
+}
+
+/* Colunas: score, deal, idade, chance e ações (mesma grade no cabeçalho e nas linhas) */
+.foco-head,
+.foco-row__line {
+  display: flex;
+  align-items: center;
+}
+
+.foco-head__grid,
+.foco-row__toggle {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) 204px 92px;
+  grid-template-areas: "score main age chance";
+  align-items: center;
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.foco-head--stale .foco-head__grid,
+.foco-row--stale .foco-row__toggle {
+  grid-template-columns: 52px minmax(0, 1fr) 104px;
+  grid-template-areas: "score main age";
+}
+
+.foco-head {
+  padding: 10px 0 var(--space-8);
+}
+
+.foco-head__age {
+  padding-left: var(--space-12);
+}
+
+.foco-head__chance {
+  text-align: right;
+}
+
+.foco-head__actions {
+  width: 68px;
+  flex-shrink: 0;
+}
+
+.foco-head--stale .foco-head__actions {
+  width: 236px;
+  padding-left: var(--space-12);
+}
+
+/* Linha */
+.foco-row {
+  border-top: 1px solid var(--color-border);
+}
+
+.foco-row.is-open {
+  padding-bottom: 14px;
+}
+
+.foco-row__line {
+  min-height: 66px;
+  cursor: pointer;
+}
+
+.foco-row__toggle {
+  align-self: stretch;
+  padding-block: var(--space-12);
+  border-radius: var(--radius-8);
+}
+
+.foco-row__score {
+  grid-area: score;
+  color: var(--color-text);
+  font-size: var(--fs-20);
+  line-height: 28px;
+  font-weight: var(--fw-extrabold);
+  letter-spacing: var(--tracking-tight);
+  font-variant-numeric: tabular-nums;
+}
+
+.foco-row__score--none {
+  color: var(--color-text-subtle);
+}
+
+.foco-row__main {
+  grid-area: main;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.foco-row__title {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+}
+
+.foco-row__title b {
+  color: var(--color-text);
+}
+
+.foco-row__meta {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: var(--fs-13);
+  line-height: 18px;
+}
+
+.foco-row__age {
+  grid-area: age;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding-left: var(--space-12);
+}
+
+.foco-row__age-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-8);
+  max-width: 176px;
+}
+
+.foco-row__age .age-ruler {
+  max-width: 176px;
+}
+
+.foco-row__days {
+  color: var(--color-text);
+  font-size: var(--fs-13);
+  line-height: 18px;
+  font-weight: var(--fw-bold);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.foco-row__position {
+  color: var(--color-text-muted);
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  font-weight: var(--fw-semibold);
+  white-space: nowrap;
+}
+
+.foco-row__chance {
+  grid-area: chance;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.foco-row__pct {
+  color: var(--color-text);
+  font-size: var(--fs-16);
+  line-height: var(--lh-14);
+  font-weight: var(--fw-extrabold);
+  font-variant-numeric: tabular-nums;
+}
+
+.foco-row__sub {
+  color: var(--color-text-muted);
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+}
+
+.foco-row__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  width: 68px;
+  flex-shrink: 0;
+}
+
+.foco-row__chevron {
+  display: flex;
+  color: var(--color-text-muted);
+  transition: transform var(--duration) var(--ease);
+}
+
+.foco-row.is-open .foco-row__chevron {
+  transform: rotate(180deg);
+}
+
+.foco-row__line:hover .foco-row__chevron {
+  color: var(--color-text);
+}
+
+/* Botão circular "Marcar como tratado" */
+.foco-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-pill);
+}
+
+.foco-check__ring {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--color-text-subtle);
+  border-radius: var(--radius-pill);
+  color: transparent;
+  transition: background-color var(--duration) var(--ease), border-color var(--duration) var(--ease);
+}
+
+.foco-check:hover .foco-check__ring {
+  border-color: var(--color-text);
+  color: var(--color-text-subtle);
+}
+
+.foco-check[aria-pressed="true"] .foco-check__ring {
+  border-color: var(--color-win);
+  background: var(--color-win);
+  color: var(--color-on-ink);
+}
+
+/* Tratado: linha esmaecida */
+.foco-row.is-treated .foco-row__score {
+  color: var(--color-text-subtle);
+}
+
+.foco-row.is-treated .foco-row__title b,
+.foco-row.is-treated .foco-row__days,
+.foco-row.is-treated .foco-row__pct {
+  color: var(--color-text-muted);
+}
+
+.foco-row.is-treated .foco-row__title b {
+  text-decoration: line-through;
+  text-decoration-color: var(--color-text-subtle);
+}
+
+/* Sem desfecho: decisão local */
+.foco-row__actions--stale {
+  width: 236px;
+  gap: 6px;
+  padding-left: var(--space-12);
+}
+
+.foco-row--stale.is-decided .foco-row__title b {
+  color: var(--color-text-muted);
+}
+
+/* Bloco aberto: por que, de onde vem, o que não entra */
+.foco-detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  padding: 18px var(--space-20);
+  border-radius: var(--radius-12);
+  background: var(--color-chrome);
+  cursor: auto;
+}
+
+.foco-detail__cols {
+  display: flex;
+  gap: 28px;
+}
+
+.foco-detail__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.foco-detail__label {
+  color: var(--color-text-muted);
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.foco-detail__label--strong {
+  color: var(--color-text);
+}
+
+.foco-detail__text,
+.foco-detail__action {
+  color: var(--color-text);
+  font-size: var(--fs-13);
+  line-height: var(--lh-13);
+}
+
+.foco-detail__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-12) var(--space-16);
+  flex-wrap: wrap;
+  padding-top: 14px;
+  border-top: 1px solid var(--color-border);
+}
+
+.foco-detail__action {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
+.foco-detail__buttons {
+  display: flex;
+  gap: var(--space-8);
+  flex-wrap: wrap;
+}
+
+/* Rodapé da lista */
+.foco-foot {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-24);
+  padding-top: var(--space-16);
+  border-top: 1px solid var(--color-border);
+}
+
+.foco-foot__notes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.foco-legend {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.foco-legend__swatch {
+  width: 22px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--color-window);
+  flex-shrink: 0;
+}
+
+.foco-legend,
+.foco-note {
+  color: var(--color-text-muted);
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+}
+
+.foco-more {
+  flex-shrink: 0;
+  padding: 2px 0;
+}
+
+/* Lista média (perto de 1280 px de tela): colunas de idade e chance mais curtas */
+@container foco-list (max-width: 680px) {
+  .foco-head__grid,
+  .foco-row__toggle {
+    grid-template-columns: 52px minmax(0, 1fr) 156px 72px;
+  }
+
+  .foco-head--stale .foco-head__grid,
+  .foco-row--stale .foco-row__toggle {
+    grid-template-columns: 52px minmax(0, 1fr) 88px;
+  }
+
+  .foco-row__age-top,
+  .foco-row__age .age-ruler {
+    max-width: 132px;
+  }
+
+  .foco-row__age-top {
+    flex-wrap: wrap;
+    row-gap: 0;
+  }
+
+  .foco-head:not(.foco-head--stale) .foco-head__actions,
+  .foco-row__actions:not(.foco-row__actions--stale) {
+    width: 64px;
+  }
+}
+
+/* Lista estreita (coluna de 520 px ou menos): idade e chance descem para a segunda linha */
+@container foco-list (max-width: 520px) {
+  .foco-head {
+    display: none;
+  }
+
+  .foco-row__toggle {
+    grid-template-columns: 48px minmax(0, 1fr) auto;
+    grid-template-areas:
+      "score main main"
+      ". age chance";
+    row-gap: 10px;
+  }
+
+  .foco-row--stale .foco-row__toggle {
+    flex-basis: 100%;
+    grid-template-columns: 48px minmax(0, 1fr);
+    grid-template-areas:
+      "score main"
+      ". age";
+    row-gap: 4px;
+  }
+
+  .foco-row__age {
+    padding-left: 0;
+  }
+
+  .foco-row__line {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .foco-row__actions {
+    padding-top: var(--space-12);
+  }
+
+  .foco-row__actions--stale {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 0 0 var(--space-12) 40px;
+  }
+
+  .foco-row__actions--stale .foco-row__chevron {
+    margin-left: auto;
+  }
+
+  .foco-detail {
+    padding: var(--space-16);
+  }
+
+  .foco-detail__cols {
+    flex-direction: column;
+    gap: var(--space-12);
+  }
+
+  .foco-foot {
+    flex-direction: column;
+    gap: var(--space-12);
+  }
+
+  .foco-filters__right {
+    margin-left: 0;
+    align-items: flex-start;
+    text-align: left;
+  }
+}

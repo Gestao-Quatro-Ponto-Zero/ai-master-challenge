@@ -1,0 +1,455 @@
+/* Meu time (prancha 03 · Gestor). Classes com prefixo time-. */
+
+/* Cabeçalho: seletores de escopo */
+.time-filters {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  min-height: 36px;
+}
+
+.time-filters__row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-8);
+}
+
+.time-filters__note {
+  color: var(--color-text-muted);
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  font-weight: var(--fw-medium);
+}
+
+.time-body {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  min-width: 0;
+}
+
+/* Números do escopo */
+.time-numbers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.time-numbers__row {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-24) var(--space-40);
+  flex-wrap: wrap;
+}
+
+.time-numbers__main {
+  flex: 1 1 280px;
+  min-width: 0;
+}
+
+.time-numbers__side {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-24) var(--space-40);
+  flex-wrap: wrap;
+}
+
+.time-numbers__side > .kpi {
+  width: 168px;
+}
+
+.time-numbers__side > .kpi + .kpi {
+  width: 188px;
+}
+
+.time-numbers__side .kpi__value {
+  font-size: var(--fs-20);
+  line-height: 30px;
+}
+
+.time-numbers__bar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.time-numbers__legend {
+  font-size: var(--fs-13);
+  line-height: 18px;
+  font-weight: var(--fw-medium);
+}
+
+.time-numbers__live {
+  color: var(--color-text);
+  font-weight: var(--fw-semibold);
+}
+
+/* Seções da coluna principal */
+.time-main {
+  gap: 36px;
+}
+
+.time-section {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.time-section__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-16);
+  flex-wrap: wrap;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.time-section__title {
+  font-size: var(--fs-20);
+  line-height: var(--lh-20);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: -0.01em;
+}
+
+.time-section__intro {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Tabela por vendedor */
+.time-table {
+  min-width: 520px;
+}
+
+.time-table th {
+  padding-top: 14px;
+  padding-bottom: var(--space-8);
+}
+
+.time-table td {
+  height: 78px;
+  padding-block: var(--space-8);
+}
+
+/* As células das pontas mantêm o respiro lateral: sem ele, o fundo da linha em destaque encostava no
+   avatar e na taxa de ganho. */
+.time-table tbody tr.is-clickable:hover td:first-child {
+  border-radius: var(--radius-10) 0 0 var(--radius-10);
+}
+
+.time-table tbody tr.is-clickable:hover td:last-child {
+  border-radius: 0 var(--radius-10) var(--radius-10) 0;
+}
+
+.time-col-bar {
+  width: 264px;
+}
+
+/* Abaixo de 1440 px o cabeçalho pode quebrar linha: "Vivo dentro do declarado" numa linha só fazia a
+   tabela de todos os gestores rolar de lado em 1280 px. */
+@media (max-width: 1439px) {
+  .time-table th {
+    white-space: normal;
+  }
+}
+
+.time-col-expected {
+  width: 104px;
+  font-weight: var(--fw-semibold);
+}
+
+.time-col-rate {
+  width: 148px;
+}
+
+.time-row__who {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+}
+
+.time-row__who .avatar {
+  width: 32px;
+  height: 32px;
+}
+
+.time-row__names {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.time-row__sub {
+  color: var(--color-text-muted);
+  font-size: var(--fs-13);
+  line-height: 18px;
+  font-weight: var(--fw-medium);
+}
+
+.time-row__link {
+  color: inherit;
+}
+
+.time-row__link:hover,
+.table tbody tr.is-clickable:hover .time-row__link {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Barra de cada vendedor: largura proporcional ao maior declarado do escopo */
+.time-bar {
+  position: relative;
+  width: 100%;
+  max-width: 240px;
+  height: 10px;
+}
+
+.time-bar__declared,
+.time-bar__live {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 10px;
+  min-width: 10px;
+  border-radius: var(--radius-pill);
+}
+
+.time-bar__declared {
+  border: 1.5px dashed var(--color-undecided);
+}
+
+.time-bar__live {
+  background: var(--color-ink);
+}
+
+[data-time-mode="declarado"] .time-bar__declared {
+  border: 0;
+  background: var(--color-ink);
+}
+
+[data-time-mode="declarado"] .time-bar__live,
+[data-time-mode="real"] .time-bar__declared {
+  display: none;
+}
+
+/* Cada leitura (lado a lado, declarado, real) mostra o seu número e o seu cabeçalho. */
+[data-time-mode="lado"] [data-mode-text]:not([data-mode-text="lado"]),
+[data-time-mode="declarado"] [data-mode-text]:not([data-mode-text="declarado"]),
+[data-time-mode="real"] [data-mode-text]:not([data-mode-text="real"]) {
+  display: none;
+}
+
+.time-bar__text {
+  margin-top: var(--space-8);
+  color: var(--color-text-muted);
+  font-size: var(--fs-13);
+  line-height: 18px;
+  font-weight: var(--fw-medium);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.time-bar__text b {
+  color: var(--color-text);
+  font-weight: var(--fw-bold);
+}
+
+.time-rate__cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.time-rate {
+  color: var(--color-text);
+  font-size: var(--fs-16);
+  line-height: 22px;
+  font-weight: var(--fw-extrabold);
+}
+
+.time-rate__sub {
+  color: var(--color-text-muted);
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  font-weight: var(--fw-medium);
+}
+
+/* Legenda */
+.time-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: var(--space-16);
+  color: var(--color-text-muted);
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  font-weight: var(--fw-medium);
+}
+
+.time-legend__keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px var(--space-16);
+}
+
+/* No desenho (03), as chaves ficam à esquerda e a nota da taxa à direita, na mesma linha. */
+@media (min-width: 1180px) {
+  .time-legend {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2px var(--space-16);
+  }
+
+  .time-legend > p:last-child:not(:nth-child(2)) {
+    flex-basis: 100%;
+  }
+}
+
+.time-legend__key {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.time-legend__live,
+.time-legend__rest {
+  width: 22px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  flex-shrink: 0;
+}
+
+.time-legend__live {
+  background: var(--color-ink);
+}
+
+.time-legend__rest {
+  border: 1.5px dashed var(--color-undecided);
+}
+
+/* Mensagem pronta */
+.time-message {
+  gap: var(--space-12);
+}
+
+.time-message__card {
+  display: flex;
+  gap: 14px;
+  padding: var(--space-16) 18px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-12);
+}
+
+.time-message__card > .avatar {
+  width: 32px;
+  height: 32px;
+}
+
+.time-message__body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.time-message__text {
+  color: var(--color-text);
+  font-size: var(--fs-14);
+  line-height: 21px;
+  font-weight: var(--fw-medium);
+  overflow-wrap: anywhere;
+}
+
+.time-message__actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 6px;
+}
+
+.time-message__hint {
+  color: var(--color-text-muted);
+  font-size: var(--fs-13);
+  line-height: 18px;
+  font-weight: var(--fw-medium);
+}
+
+/* Pauta da Gabi */
+.time-agenda {
+  gap: 14px;
+}
+
+@media (max-width: 1439px) {
+  /* Entre 1180 e 1440 px a coluna da Gabi encolhe um pouco para a tabela caber sem rolar. */
+  .time-columns {
+    grid-template-columns: minmax(0, 1fr) 264px;
+    gap: var(--space-32);
+  }
+
+  .time-table th,
+  .time-table td {
+    padding-inline: var(--space-8);
+  }
+
+  .time-col-seller {
+    min-width: 160px;
+  }
+
+  .time-col-bar {
+    width: 168px;
+  }
+
+  .time-col-expected {
+    width: 88px;
+  }
+
+  .time-col-rate {
+    width: 128px;
+  }
+
+  .time-bar__text {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 1179px) {
+  .time-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 1279px) {
+  .time-numbers__side {
+    gap: var(--space-24);
+  }
+}
+
+@media (max-width: 599px) {
+  .time-filters,
+  .time-filters__row {
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .time-numbers__side > .kpi,
+  .time-numbers__side > .kpi + .kpi {
+    width: auto;
+  }
+
+  .time-numbers__side > .kpi--divided {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .time-message__card > .avatar {
+    display: none;
+  }
+}

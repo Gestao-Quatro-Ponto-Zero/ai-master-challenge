@@ -1,0 +1,544 @@
+/* Tela Clientes (pranchas 06 e 06b). Classes com prefixo "clientes-". */
+
+.clientes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+  min-width: 0;
+}
+
+/* Filtros: regional e busca */
+.clientes-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-12) var(--space-16);
+  flex-wrap: wrap;
+}
+
+.clientes-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 0 1 280px;
+  min-width: 0;
+}
+
+.clientes-search > svg {
+  position: absolute;
+  left: var(--space-12);
+  color: var(--color-text-subtle);
+  pointer-events: none;
+}
+
+.clientes-search__input {
+  width: 100%;
+  height: 34px;
+  padding: 0 var(--space-12) 0 36px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-8);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--fs-13);
+  line-height: 18px;
+  font-weight: var(--fw-medium);
+}
+
+.clientes-search__input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.clientes-search__input:hover {
+  border-color: var(--color-text-subtle);
+}
+
+.clientes-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-20);
+  min-width: 0;
+}
+
+/* Tabela */
+.clientes-table {
+  min-width: 560px;
+}
+
+.clientes-table th:first-child,
+.clientes-table td:first-child {
+  width: 100%;
+}
+
+.clientes-table td {
+  padding-block: 14px;
+}
+
+.clientes-table td.is-num {
+  font-weight: var(--fw-medium);
+}
+
+.clientes-table td.clientes-table__value {
+  font-weight: var(--fw-bold);
+}
+
+.clientes-table td.clientes-table__muted {
+  color: var(--color-text-muted);
+}
+
+.clientes-table tbody tr.is-selected .cell-sub {
+  color: var(--color-text-muted);
+}
+
+.clientes-link {
+  display: inline-block;
+  border-radius: var(--radius-6);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.clientes-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.clientes-notes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 80ch;
+  color: var(--color-text-muted);
+  font-size: var(--fs-12);
+  line-height: 17px;
+  font-weight: var(--fw-medium);
+}
+
+/* Painel lateral do cliente */
+.side-panel.clientes-painel .side-panel__title {
+  overflow-wrap: anywhere;
+}
+
+.side-panel.clientes-painel .side-panel__sub {
+  font-weight: var(--fw-medium);
+}
+
+.side-panel.clientes-painel .side-panel__body {
+  gap: var(--space-20);
+}
+
+.side-panel.clientes-painel .tabpanel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-20);
+}
+
+/* No painel (06b) a contagem da aba é menor e fica escura na aba aberta. */
+.side-panel.clientes-painel .tab__count {
+  font-size: var(--fs-12);
+}
+
+.side-panel.clientes-painel .tab[aria-selected="true"] .tab__count {
+  color: var(--color-text);
+}
+
+.clientes-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.clientes-block--ruled {
+  padding-top: var(--space-20);
+  border-top: 1px solid var(--color-border);
+}
+
+.clientes-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.clientes-hero__value {
+  color: var(--color-text);
+  font-size: var(--fs-40);
+  line-height: var(--lh-40);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: var(--tracking-tight);
+  font-variant-numeric: tabular-nums;
+}
+
+.clientes-hero__sub,
+.clientes-muted {
+  color: var(--color-text-muted);
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+  font-weight: var(--fw-medium);
+}
+
+.clientes-block .clientes-muted {
+  font-size: var(--fs-13);
+  line-height: var(--lh-13);
+}
+
+.clientes-stats {
+  display: flex;
+  gap: var(--space-24);
+}
+
+.clientes-stats > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.clientes-stats > .clientes-stats__wide {
+  flex: 0 1 auto;
+}
+
+.clientes-stats__wide .clientes-stats__big {
+  white-space: nowrap;
+}
+
+.clientes-stats__value {
+  color: var(--color-text);
+  font-size: var(--fs-20);
+  line-height: var(--lh-20);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+.clientes-stats__big {
+  color: var(--color-text);
+  font-size: var(--fs-28);
+  line-height: var(--lh-28);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: var(--tracking-tight);
+  font-variant-numeric: tabular-nums;
+}
+
+.clientes-stats__big.is-win {
+  color: var(--color-win);
+}
+
+.clientes-stats__big.is-loss {
+  color: var(--color-loss);
+}
+
+.clientes-stats__label {
+  color: var(--color-text-muted);
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  font-weight: var(--fw-medium);
+}
+
+/* O que mais compra */
+.clientes-products {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.clientes-product {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.clientes-product__line {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-12);
+}
+
+.clientes-product__name {
+  color: var(--color-text);
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+  font-weight: var(--fw-semibold);
+}
+
+.clientes-product__meta {
+  color: var(--color-text-muted);
+  font-size: var(--fs-13);
+  line-height: 18px;
+  font-weight: var(--fw-medium);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.clientes-bar {
+  display: flex;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--color-fill);
+}
+
+.clientes-bar__fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--color-ink);
+}
+
+/* Cadastro */
+.clientes-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.clientes-facts__row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-12);
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+}
+
+.clientes-facts__row dt {
+  color: var(--color-text-muted);
+  font-weight: var(--fw-medium);
+}
+
+.clientes-facts__row dd {
+  color: var(--color-text);
+  font-weight: var(--fw-semibold);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Em aberto */
+.clientes-painel .alert {
+  align-items: flex-start;
+}
+
+.clientes-alert__title {
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+  font-weight: var(--fw-bold);
+}
+
+.clientes-alert__body {
+  margin-top: var(--space-4);
+  font-size: var(--fs-13);
+  line-height: var(--lh-13);
+  font-weight: var(--fw-medium);
+}
+
+.clientes-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.clientes-group-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-12);
+  padding-bottom: var(--space-8);
+}
+
+.clientes-group-head .eyebrow:last-child:not(:first-child) {
+  text-align: right;
+}
+
+.clientes-group__empty {
+  padding-block: 10px;
+  border-top: 1px solid var(--color-border);
+}
+
+.clientes-rows:focus-visible {
+  border-radius: var(--radius-8);
+}
+
+.clientes-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  padding-block: 10px;
+  border-top: 1px solid var(--color-border);
+}
+
+.clientes-rows--stale .clientes-row {
+  border-top: 1px dashed var(--color-undecided);
+}
+
+.clientes-row__score {
+  width: 32px;
+  flex-shrink: 0;
+  color: var(--color-text);
+  font-size: var(--fs-20);
+  line-height: 24px;
+  font-weight: var(--fw-extrabold);
+  letter-spacing: var(--tracking-tight);
+  font-variant-numeric: tabular-nums;
+}
+
+.clientes-row__score--none {
+  color: var(--color-undecided);
+}
+
+.clientes-row__main {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.clientes-row__title {
+  color: var(--color-text-muted);
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+  font-weight: var(--fw-medium);
+  overflow-wrap: anywhere;
+}
+
+.clientes-row__title b {
+  color: var(--color-text);
+  font-weight: var(--fw-bold);
+}
+
+.clientes-row__meta {
+  color: var(--color-text-muted);
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  font-weight: var(--fw-medium);
+  overflow-wrap: anywhere;
+}
+
+.clientes-strong {
+  color: var(--color-text);
+  font-weight: var(--fw-bold);
+}
+
+.clientes-other-region {
+  color: var(--color-gold-strong);
+  font-weight: var(--fw-bold);
+}
+
+.clientes-row__side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 64px;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.clientes-row__chance {
+  color: var(--color-text);
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+.clientes-row__days {
+  color: var(--color-text-muted);
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  font-weight: var(--fw-medium);
+  white-space: nowrap;
+}
+
+.clientes-row--stale .clientes-row__days {
+  font-size: var(--fs-13);
+  line-height: 18px;
+  font-weight: var(--fw-semibold);
+}
+
+/* Fechadas */
+.clientes-chart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.clientes-chart__bars,
+.clientes-chart__labels {
+  display: flex;
+  gap: var(--space-8);
+}
+
+.clientes-chart__bars {
+  align-items: flex-end;
+  height: 52px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.clientes-chart__bar {
+  flex: 1 1 0%;
+  border-radius: var(--radius-6) var(--radius-6) 0 0;
+  background: var(--color-cold);
+}
+
+.clientes-chart__bar.is-quarter-end {
+  background: var(--color-ink);
+}
+
+.clientes-chart__labels span {
+  flex: 1 1 0%;
+  min-width: 0;
+  color: var(--color-text-muted);
+  font-size: var(--fs-12);
+  line-height: 14px;
+  font-weight: var(--fw-medium);
+  text-align: center;
+}
+
+.clientes-chart__labels span.is-quarter-end {
+  color: var(--color-text);
+  font-weight: var(--fw-bold);
+}
+
+.clientes-row__date {
+  flex: 0 0 48px;
+  color: var(--color-text-muted);
+  font-size: var(--fs-13);
+  line-height: 18px;
+  font-weight: var(--fw-semibold);
+}
+
+.clientes-row__result {
+  min-width: 80px;
+  flex-shrink: 0;
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+  font-weight: var(--fw-bold);
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.clientes-row__result.is-win {
+  color: var(--color-win);
+}
+
+.clientes-row__result.is-loss {
+  color: var(--color-loss);
+}
+
+.btn.clientes-more {
+  height: 40px;
+  font-size: var(--fs-14);
+}
+
+@media (max-width: 899px) {
+  .clientes-search {
+    flex-basis: 100%;
+  }
+}
+
+@media (max-width: 599px) {
+  .clientes-stats {
+    gap: var(--space-16);
+  }
+
+  .clientes-hero__value {
+    font-size: var(--fs-28);
+    line-height: var(--lh-28);
+  }
+}

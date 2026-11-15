@@ -1,0 +1,347 @@
+/* Qualidade dos dados (prancha 10). Prefixo dq-. */
+
+.dq {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-32);
+  min-width: 0;
+}
+
+/* Cobertura: quatro números com a régua de tinta no topo */
+.dq-coverage__list {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 1fr));
+  gap: var(--space-32);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dq-coverage__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+  padding-top: var(--space-16);
+  border-top: 2px solid var(--color-ink);
+}
+
+.dq-coverage__value {
+  color: var(--color-text);
+  font-size: var(--fs-28);
+  line-height: var(--lh-28);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: var(--tracking-tight);
+  font-variant-numeric: tabular-nums;
+}
+
+.dq-coverage__detail {
+  color: var(--color-text-muted);
+  font-size: var(--fs-13);
+  line-height: var(--lh-13);
+  font-weight: var(--fw-medium);
+}
+
+/* Particularidades: número, o que acontece na base, o que o app faz */
+.dq-items {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.dq-items__head,
+.dq-item {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr) 300px;
+  gap: var(--space-32);
+}
+
+.dq-items__head {
+  padding-bottom: 10px;
+}
+
+.dq-items__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.dq-item {
+  align-items: start;
+  padding-block: 18px;
+  border-top: 1px solid var(--color-border);
+}
+
+.dq-item__number {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.dq-item__value {
+  color: var(--color-text);
+  font-size: var(--fs-28);
+  line-height: var(--lh-28);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: var(--tracking-tight);
+  font-variant-numeric: tabular-nums;
+}
+
+.dq-item__scope {
+  color: var(--color-text-muted);
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  font-weight: var(--fw-medium);
+}
+
+.dq-item__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.dq-item__title {
+  color: var(--color-text);
+  font-size: var(--fs-16);
+  line-height: 22px;
+  font-weight: var(--fw-bold);
+}
+
+.dq-item__body {
+  color: var(--color-text-muted);
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+  font-weight: var(--fw-medium);
+}
+
+.dq-item__action {
+  min-width: 0;
+}
+
+.dq-item__action-text {
+  color: var(--color-text);
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+  font-weight: var(--fw-medium);
+}
+
+/* O rótulo da ação só aparece quando a linha vira bloco; na grade larga o cabeçalho já diz. */
+.dq-item__action-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Campo a campo e regionais */
+.dq-details {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 420px;
+  gap: var(--space-40);
+  align-items: start;
+}
+
+.dq-fields {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.dq-fields__title {
+  padding-bottom: 10px;
+}
+
+.dq-fields__list {
+  margin: 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.dq-field {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: var(--space-20);
+  align-items: start;
+  padding-block: var(--space-12);
+  border-top: 1px solid var(--color-border);
+}
+
+.dq-field__name {
+  color: var(--color-text);
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+  font-weight: var(--fw-bold);
+}
+
+.dq-field__text {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+  font-weight: var(--fw-medium);
+}
+
+.dq-side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-20);
+  min-width: 0;
+}
+
+.dq-regions {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+}
+
+.dq-regions thead th {
+  padding: 0 0 10px;
+  color: var(--color-text-muted);
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.dq-regions tbody th,
+.dq-regions tbody td {
+  padding: 10px 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.dq-regions tbody tr:last-child th,
+.dq-regions tbody tr:last-child td {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.dq-regions__name {
+  color: var(--color-text);
+  font-weight: var(--fw-bold);
+  text-align: left;
+}
+
+.dq-regions .dq-regions__num {
+  width: 80px;
+  padding-left: var(--space-16);
+  color: var(--color-text);
+  font-weight: var(--fw-medium);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.dq-regions .dq-regions__num--wide {
+  width: 110px;
+}
+
+.dq-regions__stale {
+  font-weight: var(--fw-bold);
+}
+
+.dq-side__sentence {
+  color: var(--color-text-muted);
+  font-size: var(--fs-13);
+  line-height: var(--lh-13);
+  font-weight: var(--fw-medium);
+}
+
+.dq-fixes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: 14px var(--space-16);
+  border-radius: var(--radius-12);
+  background: var(--color-chrome);
+}
+
+.dq-fixes__title {
+  color: var(--color-text);
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+  font-weight: var(--fw-bold);
+}
+
+.dq-fixes__text {
+  color: var(--color-text-muted);
+  font-size: var(--fs-13);
+  line-height: var(--lh-13);
+  font-weight: var(--fw-medium);
+}
+
+/* Até 1279 px a grade das particularidades estreita a coluna da ação. */
+@media (max-width: 1279px) {
+  .dq-items__head,
+  .dq-item {
+    grid-template-columns: 150px minmax(0, 1fr) 240px;
+    gap: var(--space-24);
+  }
+}
+
+/* Abaixo de 1180 px: colunas empilham e cada particularidade vira bloco. */
+@media (max-width: 1179px) {
+  .dq-coverage__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: var(--space-24);
+  }
+
+  .dq-items__head {
+    display: none;
+  }
+
+  .dq-item {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+    padding-block: var(--space-20);
+  }
+
+  .dq-item__number {
+    flex-direction: row;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-12);
+  }
+
+  .dq-item__action {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+    padding: var(--space-12) 14px;
+    border-radius: var(--radius-10);
+    background: var(--color-chrome);
+  }
+
+  .dq-item__action-label {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+
+  .dq-details {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-32);
+  }
+}
+
+@media (max-width: 599px) {
+  .dq-coverage__list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dq-field {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+}
