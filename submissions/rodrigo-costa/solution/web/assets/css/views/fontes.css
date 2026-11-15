@@ -1,0 +1,300 @@
+/* Configurações · Fontes de dados (prancha 07) */
+
+.fontes-body {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  min-width: 0;
+}
+
+/* No estudo a coluna de requisitos tem 360 px e 40 px de respiro */
+.fontes-layout {
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: var(--space-40);
+}
+
+.fontes-main {
+  gap: 28px;
+}
+
+.fontes-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  min-width: 0;
+}
+
+.fontes-section__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-12);
+  flex-wrap: wrap;
+}
+
+.fontes-section__status {
+  color: var(--color-text-muted);
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  font-weight: var(--fw-semibold);
+}
+
+/* Caixa com linhas separadas por fio */
+.fontes-box {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-12);
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+.fontes-box__empty {
+  padding: var(--space-16) var(--space-20);
+  color: var(--color-text-muted);
+  font-size: var(--fs-13);
+  line-height: var(--lh-13);
+}
+
+/* Fonte em uso */
+.fontes-active {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px var(--space-20);
+}
+
+.fontes-active__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: var(--radius-10);
+  background: var(--color-ink);
+  color: var(--color-on-ink);
+}
+
+.fontes-active__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.fontes-active__title {
+  font-size: var(--fs-16);
+  line-height: 22px;
+  font-weight: var(--fw-bold);
+}
+
+.fontes-active__detail {
+  color: var(--color-text-muted);
+  font-size: var(--fs-13);
+  line-height: 18px;
+  font-weight: var(--fw-medium);
+}
+
+.fontes-active .badge {
+  padding: var(--space-4) 10px;
+}
+
+.fontes-file {
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+  padding: var(--space-12) var(--space-20);
+  border-top: 1px solid var(--color-border);
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+}
+
+.fontes-file__name {
+  width: 156px;
+  flex-shrink: 0;
+  font-weight: var(--fw-bold);
+  overflow-wrap: anywhere;
+}
+
+.fontes-file__desc {
+  flex: 1 1 0%;
+  min-width: 0;
+  color: var(--color-text-muted);
+  font-weight: var(--fw-medium);
+}
+
+.fontes-file__count {
+  min-width: 120px;
+  flex-shrink: 0;
+  text-align: right;
+  font-weight: var(--fw-bold);
+}
+
+/* Integrações de CRM */
+.fontes-crm {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: var(--space-12) var(--space-20);
+}
+
+.fontes-crm + .fontes-crm {
+  border-top: 1px solid var(--color-border);
+}
+
+.fontes-crm__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-10);
+  background: var(--color-chrome);
+  color: var(--color-text-muted);
+  font-size: var(--fs-13);
+  line-height: var(--lh-12);
+  font-weight: var(--fw-extrabold);
+}
+
+.fontes-crm__text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.fontes-crm__name {
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+  font-weight: var(--fw-bold);
+}
+
+.fontes-crm__brings {
+  color: var(--color-text-muted);
+  font-size: var(--fs-13);
+  line-height: 18px;
+  font-weight: var(--fw-medium);
+}
+
+.btn.fontes-crm__connect {
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: var(--radius-8);
+  cursor: not-allowed;
+}
+
+/* Coluna: o que uma integração real precisa trazer */
+.fontes-req {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.fontes-req__head {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fontes-req__title {
+  font-size: var(--fs-20);
+  line-height: var(--lh-20);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: -0.01em;
+}
+
+.fontes-req__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fontes-req__item {
+  display: flex;
+  gap: var(--space-12);
+  padding-top: 14px;
+  border-top: 1px solid var(--color-border);
+}
+
+.fontes-req__num {
+  width: 20px;
+  flex-shrink: 0;
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+  font-weight: var(--fw-extrabold);
+}
+
+.fontes-req__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.fontes-req__item-title {
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+  font-weight: var(--fw-bold);
+}
+
+.fontes-req__item-body {
+  color: var(--color-text-muted);
+  font-size: var(--fs-13);
+  line-height: var(--lh-13);
+  font-weight: var(--fw-medium);
+}
+
+.fontes-req .note {
+  font-weight: var(--fw-medium);
+}
+
+@media (max-width: 1179px) {
+  .fontes-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Em tela estreita o arquivo empilha nome, descrição e contagem */
+@media (max-width: 599px) {
+  .fontes-file {
+    flex-wrap: wrap;
+    row-gap: var(--space-4);
+  }
+
+  .fontes-file__name {
+    width: auto;
+    flex: 1 1 auto;
+  }
+
+  .fontes-file__count {
+    min-width: 0;
+  }
+
+  .fontes-file__desc {
+    order: 3;
+    flex-basis: 100%;
+  }
+
+  .fontes-active {
+    flex-wrap: wrap;
+  }
+
+  .fontes-active__text {
+    flex-basis: calc(100% - 54px);
+  }
+
+  .fontes-crm {
+    align-items: flex-start;
+    gap: var(--space-12);
+    padding-inline: var(--space-16);
+  }
+}

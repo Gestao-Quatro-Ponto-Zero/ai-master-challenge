@@ -1,0 +1,97 @@
+/* Tokens do estudo de UX (prancha 00 Fundamentos). Toda cor, tamanho e raio da interface sai daqui. */
+:root {
+  /* Cores */
+  --color-surface: #FFFFFF;
+  --color-chrome: #F3F4F6;
+  --color-fill: #EAECEF;
+  --color-border: #E3E6EA;
+  --color-text: #0B1D2E;
+  --color-text-muted: #5A6673;
+  --color-text-subtle: #8B95A1;
+  --color-ink: #0B1D2E;
+  --color-on-ink: #FFFFFF;
+  --color-on-ink-muted: #A9B4C0;
+  --color-gold: #C29A5B;
+  --color-gold-strong: #8A6327;
+  --color-gold-soft: #F5EEE2;
+  --color-cold: #7C8FA6;
+  --color-undecided: #7C8FA6;
+  --color-window: #6B7A8C;
+  --color-compare: #6B7A8C;
+  --color-win: #1E7B50;
+  --color-win-soft: #E6F3EC;
+  --color-loss: #B5473C;
+  --color-loss-soft: #F8E9E7;
+
+  /* Derivadas (só misturas dos tokens acima) */
+  --color-inert: color-mix(in srgb, var(--color-text-subtle) 60%, var(--color-chrome));
+  --color-on-ink-dash: color-mix(in srgb, var(--color-on-ink) 45%, transparent);
+  --color-backdrop: color-mix(in srgb, var(--color-ink) 28%, transparent);
+  --shadow-sm: 0 1px 2px color-mix(in srgb, var(--color-ink) 10%, transparent);
+  --shadow-pop: 0 12px 32px color-mix(in srgb, var(--color-ink) 14%, transparent),
+    0 2px 6px color-mix(in srgb, var(--color-ink) 8%, transparent);
+  --shadow-panel: -12px 0 32px color-mix(in srgb, var(--color-ink) 6%, transparent);
+
+  /* Tipografia */
+  --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fs-12: 12px;
+  --fs-13: 13px;
+  --fs-14: 14px;
+  --fs-16: 16px;
+  --fs-20: 20px;
+  --fs-28: 28px;
+  --fs-40: 40px;
+  --fs-56: 56px;
+  --lh-12: 16px;
+  --lh-13: 19px;
+  --lh-14: 20px;
+  --lh-16: 24px;
+  --lh-20: 26px;
+  --lh-28: 34px;
+  --lh-40: 48px;
+  --lh-56: 62px;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-extrabold: 800;
+  --tracking-label: 0.06em;
+  --tracking-tight: -0.02em;
+
+  /* Raios */
+  --radius-6: 6px;
+  --radius-8: 8px;
+  --radius-10: 10px;
+  --radius-12: 12px;
+  --radius-16: 16px;
+  --radius-pill: 999px;
+
+  /* Espaços */
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-64: 64px;
+
+  /* Moldura */
+  --rail-width: 60px;
+  --menu-width: 248px;
+  --side-panel-width: 440px;
+  --aside-width: 300px;
+  --topbar-height: 56px;
+
+  --focus-ring: 0 0 0 2px var(--color-surface), 0 0 0 4px var(--color-ink);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --duration: 160ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration: 0ms;
+  }
+}

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+  <meta name="description" content="Vendas · Lead Scorer: conceito de priorização de deals para vendedores e gestores, feito para o AI Master Challenge.">
+  <meta name="color-scheme" content="light">
+  <title>Vendas · Lead Scorer</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%230B1D2E'/%3E%3Cpolyline points='19 9 13 15 10 12 5 17' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="/assets/css/tokens.css">
+  <link rel="stylesheet" href="/assets/css/base.css">
+  <link rel="stylesheet" href="/assets/css/shell.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="/assets/css/views/login.css">
+  <link rel="stylesheet" href="/assets/css/views/foco.css">
+  <link rel="stylesheet" href="/assets/css/views/pipeline.css">
+  <link rel="stylesheet" href="/assets/css/views/clientes.css">
+  <link rel="stylesheet" href="/assets/css/views/time.css">
+  <link rel="stylesheet" href="/assets/css/views/maquina.css">
+  <link rel="stylesheet" href="/assets/css/views/score.css">
+  <link rel="stylesheet" href="/assets/css/views/chegamos.css">
+  <link rel="stylesheet" href="/assets/css/views/qualidade.css">
+  <link rel="stylesheet" href="/assets/css/views/fontes.css">
+  <link rel="modulepreload" href="/assets/js/core/dom.js">
+  <link rel="modulepreload" href="/assets/js/core/ui.js">
+  <script type="module" src="/assets/js/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo" data-skip>Pular para o conteúdo</a>
+
+  <div id="boot" class="boot">
+    <div class="boot__box"><p class="muted">Carregando o app…</p></div>
+  </div>
+
+  <div class="shell" id="shell" hidden>
+    <header class="topbar" data-topbar></header>
+    <div class="nav-drawer" id="nav-drawer">
+      <nav class="rail" aria-label="Áreas do sistema" data-rail></nav>
+      <aside class="sidemenu" aria-label="Menu lateral" data-sidemenu></aside>
+    </div>
+    <div class="drawer-backdrop" data-drawer-backdrop hidden></div>
+    <main class="main" id="conteudo" tabindex="-1">
+      <div class="panel" id="panel"></div>
+    </main>
+  </div>
+
+  <main id="login-root" class="login-root" tabindex="-1" hidden></main>
+
+  <noscript>
+    <p class="boot__box">Este app precisa de JavaScript ligado para funcionar.</p>
+  </noscript>
+</body>
+</html>

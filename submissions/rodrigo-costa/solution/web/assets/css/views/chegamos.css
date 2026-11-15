@@ -1,0 +1,162 @@
+/* Como chegamos aqui (prancha 09) */
+.chegamos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-32);
+  min-width: 0;
+}
+
+/* Faixa de 6 etapas */
+.chegamos__steps {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: var(--space-20);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chegamos__step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding-top: var(--space-12);
+  border-top: 1px solid var(--color-border);
+  min-width: 0;
+}
+
+.chegamos__step-num {
+  color: var(--color-text-muted);
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  font-weight: var(--fw-bold);
+}
+
+.chegamos__step-title {
+  color: var(--color-text);
+  font-size: var(--fs-16);
+  line-height: var(--lh-14);
+  font-weight: var(--fw-bold);
+}
+
+.chegamos__step-text {
+  color: var(--color-text-muted);
+  font-size: var(--fs-13);
+  line-height: 18px;
+  font-weight: var(--fw-medium);
+}
+
+/* Três colunas */
+.chegamos__cols {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-32);
+}
+
+.chegamos__col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.chegamos__col--gold {
+  flex-grow: 1.2;
+}
+
+.chegamos__col-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-16) 0 var(--space-4);
+  border-top: 2px solid var(--color-border);
+}
+
+.chegamos__col--gold .chegamos__col-head {
+  border-top-color: var(--color-gold);
+}
+
+.chegamos__col--ink .chegamos__col-head {
+  border-top-color: var(--color-ink);
+}
+
+.chegamos__col--loss .chegamos__col-head {
+  border-top-color: var(--color-loss);
+}
+
+.chegamos__col-label {
+  color: var(--color-text-muted);
+  font-size: var(--fs-12);
+  line-height: var(--lh-12);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.chegamos__col--gold .chegamos__col-label {
+  color: var(--color-gold-strong);
+}
+
+.chegamos__col--loss .chegamos__col-label {
+  color: var(--color-loss);
+}
+
+.chegamos__col-title {
+  color: var(--color-text);
+  font-size: var(--fs-20);
+  line-height: var(--lh-20);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: -0.01em;
+}
+
+.chegamos__items {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chegamos__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding-top: var(--space-12);
+  border-top: 1px solid var(--color-border);
+}
+
+.chegamos__item-title {
+  color: var(--color-text);
+  font-size: var(--fs-14);
+  line-height: var(--lh-14);
+  font-weight: var(--fw-bold);
+}
+
+.chegamos__item-text {
+  color: var(--color-text-muted);
+  font-size: var(--fs-13);
+  line-height: var(--lh-13);
+  font-weight: var(--fw-medium);
+}
+
+@media (max-width: 1180px) {
+  .chegamos__steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: var(--space-24);
+  }
+
+  .chegamos__cols {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-40);
+  }
+}
+
+@media (max-width: 599px) {
+  .chegamos__steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-20) var(--space-16);
+  }
+}
