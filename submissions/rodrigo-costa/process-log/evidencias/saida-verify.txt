@@ -1,0 +1,248 @@
+$ python3 verify.py
+
+== Base ==
+o que                                                                              app                 conferência  bate?
+deals                                                                            8.800                       8.800  sim
+deals Won                                                                        4.238                       4.238  sim
+deals Lost                                                                       2.473                       2.473  sim
+deals Engaging                                                                   1.589                       1.589  sim
+deals Prospecting                                                                  500                         500  sim
+clientes                                                                            85                          85  sim
+vendedores com deals                                                                30                          30  sim
+período (primeira entrada, último fechamento)                   2016-10-20, 2017-12-31      2016-10-20, 2017-12-31  sim
+
+== Empresa em 2017-12-04 ==
+o que                                                                              app                 conferência  bate?
+deals abertos (sem Prospecting)                                                  2.078                       2.078  sim
+vivos                                                                            1.299                       1.299  sim
+sem desfecho                                                                       779                         779  sim
+valor declarado (US$)                                                     5.006.104,00                5.006.104,00  sim
+valor vivo (US$)                                                          2.945.683,00                2.945.683,00  sim
+valor sem desfecho (US$)                                                  2.060.421,00                2.060.421,00  sim
+receita esperada em 30 dias (US$)                                           929.173,69                  929.173,69  sim
+deals quentes                                                                      279                         279  sim
+maior ciclo conhecido (dias)                                                       138                         138  sim
+tabela, faixa 0–14: chance                                                    0,166835                    0,166835  sim
+tabela, faixa 0–14: casos                                                          989                         989  sim
+tabela, faixa 15–30: chance                                                   0,060345                    0,060345  sim
+tabela, faixa 15–30: casos                                                         812                         812  sim
+tabela, faixa 31–45: chance                                                   0,101781                    0,101781  sim
+tabela, faixa 31–45: casos                                                         786                         786  sim
+tabela, faixa 46–60: chance                                                   0,353333                    0,353333  sim
+tabela, faixa 46–60: casos                                                         450                         450  sim
+tabela, faixa 61–75: chance                                                   0,501279                    0,501279  sim
+tabela, faixa 61–75: casos                                                         391                         391  sim
+tabela, faixa 76–90: chance                                                   0,506112                    0,506112  sim
+tabela, faixa 76–90: casos                                                         409                         409  sim
+tabela, faixa 91–105: chance                                                  0,491279                    0,491279  sim
+tabela, faixa 91–105: casos                                                        344                         344  sim
+tabela, faixa 106–120: chance                                                 0,350000                    0,350000  sim
+tabela, faixa 106–120: casos                                                       220                         220  sim
+tabela, faixa 121–138: chance                                                 0,187970                    0,187970  sim
+tabela, faixa 121–138: casos                                                       133                         133  sim
+tabela, faixa 139+: chance                                                    0,000000                    0,000000  sim
+tabela, faixa 139+: casos                                                          522                         522  sim
+
+== Empresa em 2017-07-03 ==
+o que                                                                              app                 conferência  bate?
+deals abertos (sem Prospecting)                                                  1.714                       1.714  sim
+vivos                                                                            1.556                       1.556  sim
+sem desfecho                                                                       158                         158  sim
+valor declarado (US$)                                                     4.296.511,00                4.296.511,00  sim
+valor vivo (US$)                                                          3.843.026,00                3.843.026,00  sim
+valor sem desfecho (US$)                                                    453.485,00                  453.485,00  sim
+receita esperada em 30 dias (US$)                                           232.683,96                  232.683,96  sim
+deals quentes                                                                      342                         342  sim
+maior ciclo conhecido (dias)                                                       138                         138  sim
+tabela, faixa 0–14: chance                                                    0,183801                    0,183801  sim
+tabela, faixa 0–14: casos                                                          321                         321  sim
+tabela, faixa 15–30: chance                                                   0,006135                    0,006135  sim
+tabela, faixa 15–30: casos                                                         326                         326  sim
+tabela, faixa 31–45: chance                                                   0,010753                    0,010753  sim
+tabela, faixa 31–45: casos                                                         279                         279  sim
+tabela, faixa 46–60: chance                                                   0,028571                    0,028571  sim
+tabela, faixa 46–60: casos                                                         210                         210  sim
+tabela, faixa 61–75: chance                                                   0,035714                    0,035714  sim
+tabela, faixa 61–75: casos                                                         112                         112  sim
+tabela, faixa 76–90: chance                                                   0,000000                    0,000000  sim
+tabela, faixa 76–90: casos                                                          53                          53  sim
+tabela, faixa 91–105: chance                                                  0,166667                    0,166667  sim
+tabela, faixa 91–105: casos                                                        180                         180  sim
+tabela, faixa 106–120: chance                                                 0,020833                    0,020833  sim
+tabela, faixa 106–120: casos                                                        96                          96  sim
+tabela, faixa 121–138: chance                                                 0,000000                    0,000000  sim
+tabela, faixa 121–138: casos                                                        73                          73  sim
+tabela, faixa 139+: chance                                                    0,000000                    0,000000  sim
+tabela, faixa 139+: casos                                                           39                          39  sim
+
+== Empresa em 2017-10-02 ==
+o que                                                                              app                 conferência  bate?
+deals abertos (sem Prospecting)                                                  2.434                       2.434  sim
+vivos                                                                            1.895                       1.895  sim
+sem desfecho                                                                       539                         539  sim
+valor declarado (US$)                                                     5.835.655,00                5.835.655,00  sim
+valor vivo (US$)                                                          4.444.055,00                4.444.055,00  sim
+valor sem desfecho (US$)                                                  1.391.600,00                1.391.600,00  sim
+receita esperada em 30 dias (US$)                                           207.966,07                  207.966,07  sim
+deals quentes                                                                      397                         397  sim
+maior ciclo conhecido (dias)                                                       138                         138  sim
+tabela, faixa 0–14: chance                                                    0,185507                    0,185507  sim
+tabela, faixa 0–14: casos                                                          690                         690  sim
+tabela, faixa 15–30: chance                                                   0,003268                    0,003268  sim
+tabela, faixa 15–30: casos                                                         612                         612  sim
+tabela, faixa 31–45: chance                                                   0,007299                    0,007299  sim
+tabela, faixa 31–45: casos                                                         548                         548  sim
+tabela, faixa 46–60: chance                                                   0,025641                    0,025641  sim
+tabela, faixa 46–60: casos                                                         429                         429  sim
+tabela, faixa 61–75: chance                                                   0,025316                    0,025316  sim
+tabela, faixa 61–75: casos                                                         237                         237  sim
+tabela, faixa 76–90: chance                                                   0,000000                    0,000000  sim
+tabela, faixa 76–90: casos                                                         130                         130  sim
+tabela, faixa 91–105: chance                                                  0,000000                    0,000000  sim
+tabela, faixa 91–105: casos                                                         89                          89  sim
+tabela, faixa 106–120: chance                                                 0,000000                    0,000000  sim
+tabela, faixa 106–120: casos                                                        92                          92  sim
+tabela, faixa 121–138: chance                                                 0,000000                    0,000000  sim
+tabela, faixa 121–138: casos                                                        85                          85  sim
+tabela, faixa 139+: chance                                                    0,000000                    0,000000  sim
+tabela, faixa 139+: casos                                                          161                         161  sim
+
+== Vendedor Daniell Hammack em 2017-12-04 ==
+o que                                                                              app                 conferência  bate?
+abertos                                                                             85                          85  sim
+vivos                                                                               38                          38  sim
+sem desfecho                                                                        47                          47  sim
+valor declarado (US$)                                                       253.368,00                  253.368,00  sim
+valor vivo (US$)                                                            106.459,00                  106.459,00  sim
+valor sem desfecho (US$)                                                    146.909,00                  146.909,00  sim
+receita esperada em 30 dias (US$)                                            42.161,65                   42.161,65  sim
+faixa quente: deals                                                                 16                          16  sim
+faixa quente: com cliente                                                            7                           7  sim
+faixa morno: deals                                                                  17                          17  sim
+faixa morno: com cliente                                                            10                          10  sim
+faixa frio: deals                                                                    5                           5  sim
+faixa frio: com cliente                                                              4                           4  sim
+faixa sem_desfecho: deals                                                           47                          47  sim
+faixa sem_desfecho: com cliente                                                     17                          17  sim
+vendas fechadas antes da data                                                      103                         103  sim
+perdas fechadas antes da data                                                       70                          70  sim
+taxa de ganho oficial                                                         0,595376                    0,595376  sim
+taxa de ganho contando os sem desfecho                                        0,468182                    0,468182  sim
+deal 1 da lista                                                                                                     sim
+    app:         LFI3BGEE score 98 chance 0,501279 US$ 2.748,01
+    conferência: LFI3BGEE score 98 chance 0,501279 US$ 2.748,01
+deal 2 da lista                                                                                                     sim
+    app:         HF1GSBT4 score 97 chance 0,491279 US$ 2.693,19
+    conferência: HF1GSBT4 score 97 chance 0,491279 US$ 2.693,19
+deal 3 da lista                                                                                                     sim
+    app:         9DY57A6F score 96 chance 0,506112 US$ 2.439,97
+    conferência: 9DY57A6F score 96 chance 0,506112 US$ 2.439,97
+deal 4 da lista                                                                                                     sim
+    app:         HP9TUR60 score 96 chance 0,506112 US$ 2.439,97
+    conferência: HP9TUR60 score 96 chance 0,506112 US$ 2.439,97
+deal 5 da lista                                                                                                     sim
+    app:         XZKZYO55 score 94 chance 0,501279 US$ 2.416,66
+    conferência: XZKZYO55 score 94 chance 0,501279 US$ 2.416,66
+deal 6 da lista                                                                                                     sim
+    app:         IDKBZCAF score 94 chance 0,501279 US$ 2.416,66
+    conferência: IDKBZCAF score 94 chance 0,501279 US$ 2.416,66
+deal 7 da lista                                                                                                     sim
+    app:         YPSXMDRH score 94 chance 0,501279 US$ 2.416,66
+    conferência: YPSXMDRH score 94 chance 0,501279 US$ 2.416,66
+deal 8 da lista                                                                                                     sim
+    app:         D3HUUVPL score 94 chance 0,501279 US$ 2.416,66
+    conferência: D3HUUVPL score 94 chance 0,501279 US$ 2.416,66
+deal 9 da lista                                                                                                     sim
+    app:         S53EVWFC score 91 chance 0,491279 US$ 2.368,46
+    conferência: S53EVWFC score 91 chance 0,491279 US$ 2.368,46
+deal 10 da lista                                                                                                    sim
+    app:         5J7T0GZU score 86 chance 0,353333 US$ 1.703,42
+    conferência: 5J7T0GZU score 86 chance 0,353333 US$ 1.703,42
+
+== Time de Rocco Neubert em 2017-12-04 ==
+o que                                                                              app                 conferência  bate?
+vendedores                                                                           5                           5  sim
+abertos                                                                            307                         307  sim
+vivos                                                                              169                         169  sim
+sem desfecho                                                                       138                         138  sim
+quentes                                                                             55                          55  sim
+valor declarado (US$)                                                       824.840,00                  824.840,00  sim
+valor vivo (US$)                                                            438.104,00                  438.104,00  sim
+valor sem desfecho (US$)                                                    386.736,00                  386.736,00  sim
+receita esperada em 30 dias (US$)                                           153.814,92                  153.814,92  sim
+parte viva do valor                                                           0,531138                    0,531138  sim
+
+== Prova (22 segundas, top 10 por vendedor) ==
+o que                                                                              app                 conferência  bate?
+segundas                                                                            22                          22  sim
+primeira e última segunda                                       2017-07-03, 2017-11-27      2017-07-03, 2017-11-27  sim
+listas                                                                             659                         659  sim
+score: receita (US$)                                                      6.994.434,25                6.994.434,25  sim
+score: vendas                                                              1437,612284                 1437,612284  sim
+só por valor: receita (US$)                                               4.932.579,30                4.932.579,30  sim
+só por valor: vendas                                                        879,668099                  879,668099  sim
+valor sem os sem desfecho: receita (US$)                                  5.723.130,90                5.723.130,90  sim
+valor sem os sem desfecho: vendas                                          1053,132938                 1053,132938  sim
+idem, mais novo primeiro: receita (US$)                                   5.822.826,83                5.822.826,83  sim
+idem, mais novo primeiro: vendas                                           1069,333333                 1069,333333  sim
+sorteio: receita (US$)                                                    2.046.742,27                2.046.742,27  sim
+sorteio: vendas                                                             867,272006                  867,272006  sim
+ganho do score contra só por valor                                            0,418007                    0,418007  sim
+segundas em que o score vence (só por valor)                                        22                          22  sim
+ganho do score contra valor sem os sem desfecho                               0,222134                    0,222134  sim
+segundas em que o score vence (valor sem os sem desfecho)                           20                          20  sim
+ganho do score contra idem, mais novo primeiro                                0,201209                    0,201209  sim
+segundas em que o score vence (idem, mais novo primeiro)                            17                          17  sim
+segundas em que perde (valor sem os sem desfecho)                        30 out, 6 nov               30 out, 6 nov  sim
+julho a setembro: segundas                                                          13                          13  sim
+julho a setembro: ganho contra só por valor                                   0,420563                    0,420563  sim
+julho a setembro: ganho contra valor sem os sem desfecho                      0,295185                    0,295185  sim
+julho a setembro: ganho contra idem, mais novo primeiro                       0,354614                    0,354614  sim
+outubro e novembro: segundas                                                         9                           9  sim
+outubro e novembro: ganho contra só por valor                                 0,413200                    0,413200  sim
+outubro e novembro: ganho contra valor sem os sem desfecho                    0,104357                    0,104357  sim
+outubro e novembro: ganho contra idem, mais novo primeiro                    -0,010644                   -0,010644  sim
+por segunda: valores que não batem (de 198)                                          0                           0  sim
+
+== Máquina do tempo de Daniell Hammack em 2017-12-04 ==
+o que                                                                              app                 conferência  bate?
+lista do score: deals                                                                                               sim
+    app:         LFI3BGEE, HF1GSBT4, 9DY57A6F, HP9TUR60, XZKZYO55, IDKBZCAF, YPSXMDRH, D3HUUVPL, S53EVWFC, 5J7T0GZU
+    conferência: LFI3BGEE, HF1GSBT4, 9DY57A6F, HP9TUR60, XZKZYO55, IDKBZCAF, YPSXMDRH, D3HUUVPL, S53EVWFC, 5J7T0GZU
+lista do score: vendas                                                               5                           5  sim
+lista do score: receita (US$)                                                25.687,00                   25.687,00  sim
+lista só por valor: deals                                                                                           sim
+    app:         UAE5ZC7O, QM6VR1H5, M16D8PYH, DZ57QIQN, RQULJHTU, FM505XD5, 0KEO3OP7, Q2CLAKLM, KJHM27ZM, HEWKNHTH
+    conferência: UAE5ZC7O, QM6VR1H5, M16D8PYH, DZ57QIQN, RQULJHTU, FM505XD5, 0KEO3OP7, Q2CLAKLM, KJHM27ZM, HEWKNHTH
+lista só por valor: vendas                                                           0                           0  sim
+lista só por valor: receita (US$)                                                 0,00                        0,00  sim
+valor sem os sem desfecho, empate dividido: vendas                            4,266667                    4,266667  sim
+valor sem os sem desfecho, empate dividido: receita (US$)                    21.631,47                   21.631,47  sim
+
+== Qualidade dos dados ==
+o que                                                                              app                 conferência  bate?
+deals que entraram antes de 2017-03-01                                           1.185                       1.185  sim
+deals abertos sem cliente                                                        1.425                       1.425  sim
+parte dos abertos sem cliente (%)                                                   68                          68  sim
+deals fechados sem cliente                                                           0                           0  sim
+vivos sem cliente em 2017-12-04                                                    549                         549  sim
+desses, fechados até o fim da base                                                   0                           0  sim
+vivos com cliente em 2017-12-04                                                    750                         750  sim
+desses, vendas até o fim da base                                                   404                         404  sim
+maior ciclo da base (dias)                                                         138                         138  sim
+abertos em 2017-12-04                                                            2.078                       2.078  sim
+desses, sem desfecho                                                               779                         779  sim
+abertos com mais de 30 dias em 2017-04-01                                          673                         673  sim
+abertos com mais de 30 dias em 2017-07-01                                        1.015                       1.015  sim
+abertos com mais de 30 dias em 2017-10-01                                        1.750                       1.750  sim
+soma dos três dias                                                               3.438                       3.438  sim
+desses, fechados no mesmo mês                                                        0                           0  sim
+vendas entre os fechamentos do último mês do trimestre (%)                          81                          81  sim
+vendas entre os fechamentos dos outros meses (%)                                    52                          52  sim
+
+189 conferências, 189 bateram. Tempo: 1.2 s.
+(código de saída: 0)
+
+--- Controle negativo: a mesma conferência com o horizonte trocado de 30 para 31 dias (só na segunda implementação) ---
+189 conferências, 154 bateram, 35 NÃO bateram. Tempo: 1.3 s.
+(código de saída: 1)
