@@ -101,4 +101,6 @@ CREATE TABLE parametros (
 ) STRICT;
 INSERT INTO parametros VALUES
   ('data_corte', '2024-12-31 00:00:00',
-   'Data de corte da análise (31/12/2024). O dia inteiro entra: eventos até 2024-12-31 23:59:59 estão dentro da janela.');
+   'Data de corte da análise (31/12/2024). O dia inteiro entra: eventos até 2024-12-31 23:59:59 estão dentro da janela.'),
+  ('data_inicio', '2023-01-01 00:00:00',
+   'Primeiro dia da janela mensal (jan/2023, mês do primeiro cadastro de conta). A vw_mes gera um mês por linha daqui até data_corte.');

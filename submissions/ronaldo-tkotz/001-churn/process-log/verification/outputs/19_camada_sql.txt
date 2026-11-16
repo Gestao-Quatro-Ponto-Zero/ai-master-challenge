@@ -21,6 +21,7 @@ VIEWS
   vw_churn_detalhe     linhas=   600  colunas=15
   vw_conta             linhas=   500  colunas=36
   vw_dq_ocorrencias    linhas= 29495  colunas=3
+  vw_mes               linhas=    24  colunas=9
   vw_ticket_detalhe    linhas=  2000  colunas=15
   vw_uso_detalhe       linhas= 25000  colunas=22
 
@@ -52,6 +53,7 @@ CHECAGENS
     V04                         0/5       vw_assinatura: linhas, MRR, ARR, registros de uso e erros iguais à origem
     V05                         0/10      vw_conta: linhas e 9 totais (assinaturas, MRR, ARR, uso, erros, tickets, escalados, eventos, refund) iguais à origem
     V06                         0/24      vw_dq_ocorrencias: checagens cuja contagem de ocorrências difere de dq_checks.violacoes  -> cobre as 24 checagens com ocorrência por linha; E10-E12, E14 e E0* são contagens agregadas
+    V07                         0/4       vw_mes: 24 meses, eventos, pares conta-mês com evento e contas ativas no último mês iguais à origem
   [alerta]
     E11                         0         todas: datas fora da janela 2023-01-01 a 2024-12-31 23:59:59
     E13                        21/24979   feature_usage: usage_id repetido (conteúdo diferente nas duas linhas)  -> mantidas as 2 linhas de cada id; chave substituta usage_pk + chave natural (usage_id, subscription_id)

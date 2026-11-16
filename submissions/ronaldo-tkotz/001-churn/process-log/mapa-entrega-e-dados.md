@@ -139,6 +139,9 @@ Nenhuma tabela contém estes dados. Qualquer resposta que dependa deles fica for
 
 ## 5. Decisões em aberto, do humano
 
-1. **Definição de churn:** qual dos três sinais usar (`churn_flag` da conta, `end_date` da assinatura ou `churn_events`), ou que combinação deles. Adiada até o dado aparecer na análise (D17).
-2. **"Ativa no mês":** a regra da view mensal (D16).
-3. **Política de alertas:** incluir tudo por padrão e mostrar os dois números quando um alerta mudar o resultado. Foi a proposta da IA, ainda sem decisão.
+Todas decididas.
+
+1. **Definição de churn (D20):** churn é o que consta em `churn_events`.
+2. **Unidade e repetição (D21):** o número principal é o de contas com evento (352), e o volume no tempo é o de eventos (600). Todo evento vale, cada um no seu mês.
+3. **"Ativa no mês" (D21):** a conta tem uma assinatura vigente em algum dia do mês. Está implementada na `vw_mes`.
+4. **Política de alertas (D21):** tudo entra por padrão, e quando um alerta muda o resultado mostram-se os dois números. Na `vw_mes`, isso aparece como as colunas `taxa_churn_contas` e `taxa_churn_contas_na_base`.

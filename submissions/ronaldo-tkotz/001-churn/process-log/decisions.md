@@ -174,3 +174,33 @@
   - O README do dataset (Kaggle) declara que os dados são **sintéticos** e que a lógica temporal validada é "signup ≤ subscription ≤ churn". As duas regras declaradas se confirmam no banco: T07 = 0 e T09 = 0.
   - O README não declara regra temporal para uso nem para tickets, e é exatamente aí que estão as ocorrências (T06, T08 e D18).
 - **Decisão humana:** manter as ocorrências só destacadas e não tratá-las agora. Antes da análise exploratória, o humano vai desenhar o dashboard (o que é importante apresentar) e trabalhar de trás para frente: dashboard → análises → engenharia de dados.
+
+## D20 — Churn é o que está em `churn_events` (decisão humana)
+- **Humano decidiu:** ao desenhar o dashboard, fixou que churn é o que consta em `ravenstack_churn_events.csv`, para manter a consistência com o enunciado e a proposta do desafio. O `churn_flag` da conta e o `end_date`/`churn_flag` da assinatura deixam de ser fonte da definição.
+- **Fatos da tabela sob essa definição (consulta ad hoc no banco):**
+  - 600 eventos em 352 contas, de 2023-01-25 a 2024-12-31 (o último cai no próprio dia de corte).
+  - Por ano: 2023 tem 73 eventos (64 contas) e 2024 tem 527 eventos (327 contas).
+  - Eventos por conta: 177 contas com 1, 116 com 2, 47 com 3, 10 com 4 e 2 com 5.
+  - `is_reactivation = 1` em 61 eventos.
+  - Uma conta tem dois eventos na mesma data.
+- **Consequência direta nas checagens:** as 277 contas com evento e `churn_flag = 0` (N05) entram como churn. As 35 contas com `churn_flag = 1` e sem evento (N04) ficam fora.
+- **Ainda em aberto (humano):**
+  - A unidade de contagem: evento ou conta.
+  - O tratamento de contas com mais de um evento.
+  - O denominador de uma taxa, se houver taxa.
+
+## D21 — Contagem, repetição, "ativa no mês" e alertas (decisão humana sobre propostas da IA)
+- **IA levantou os fatos antes da pergunta (consulta ad hoc):**
+  - Só 6 dos 600 eventos têm `churn_date` igual a um `end_date` de assinatura da conta.
+  - 545 eventos ocorrem com a conta tendo assinatura vigente na data, e 524 têm uma assinatura da conta iniciada depois do evento.
+  - As 500 contas, inclusive as 352 com evento, têm ao menos uma assinatura sem `end_date`.
+  - O intervalo entre eventos consecutivos da mesma conta vai de 0 a 640 dias (média de 102, em 248 pares).
+- **Humano decidiu, entre opções apresentadas com uma recomendada:**
+  1. **Unidade:** o número principal é o de contas com evento (352), e o volume no tempo é o de eventos (600). Os dois sempre rotulados.
+  2. **Repetição:** todo evento vale. Cada evento conta no seu mês. Na contagem por conta, a conta entra uma vez em cada mês em que teve evento.
+  3. **Ativa no mês:** a conta tem ao menos uma assinatura com `start_date` ≤ fim do mês e `end_date` nula ou ≥ início do mês. A base vai de 2 contas (jan/2023) a 500 (dez/2024).
+  4. **Alertas:** tudo entra por padrão. Quando um alerta muda o resultado, mostram-se os dois números, com e sem os registros afetados.
+- **IA implementou:** a `vw_mes` em `solution/sql/04_views.sql`, com uma linha por mês de jan/2023 a dez/2024 (parâmetros `data_inicio` e `data_corte`).
+  - Colunas: contas ativas, eventos, contas com evento, contas com evento fora da base e as duas taxas.
+  - Reconciliação bloqueante V07: 4 medidas, todas iguais à origem.
+- **Fato que a decisão 4 já cobre:** 30 dos 547 pares conta-mês com evento são de contas sem assinatura vigente naquele mês, todos até jun/2024. Por isso a view traz `taxa_churn_contas` (todas) e `taxa_churn_contas_na_base` (só as que estão na base). Elas diferem em 14 dos 24 meses e são iguais de jul a dez/2024.

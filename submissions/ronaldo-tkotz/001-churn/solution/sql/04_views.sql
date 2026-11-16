@@ -156,6 +156,45 @@ UNION ALL SELECT 'N07', 'subscriptions', s.subscription_id FROM subscriptions s 
 UNION ALL SELECT 'N08', 'subscriptions', subscription_id FROM subscriptions WHERE is_trial = 1 AND mrr_amount > 0
 UNION ALL SELECT 'N09', 'subscriptions', subscription_id FROM subscriptions WHERE mrr_amount = 0;
 
+-- ================= 5. Uma linha por mês (D21) =================
+-- Churn = churn_events (D20); todo evento vale, inclusive repetidos da mesma conta.
+-- Conta ativa no mês = tem >= 1 assinatura com start_date <= fim do mês e (end_date nula ou >= início do mês).
+-- Numerador por conta: contas distintas com evento no mês. Parte delas não tem assinatura vigente no mês
+-- (churn_contas_fora_da_base); por isso a view traz as duas taxas (política de alertas, D21).
+CREATE VIEW vw_mes AS
+WITH RECURSIVE m(ini) AS (
+  SELECT (SELECT valor FROM parametros WHERE nome = 'data_inicio')
+  UNION ALL
+  SELECT datetime(ini, '+1 month') FROM m
+  WHERE datetime(ini, '+1 month') <= (SELECT valor FROM parametros WHERE nome = 'data_corte')
+),
+mm AS (SELECT ini, datetime(ini, '+1 month', '-1 second') AS fim FROM m),
+ativa AS (
+  SELECT mm.ini, s.account_id FROM mm JOIN subscriptions s
+    ON s.start_date <= mm.fim AND (s.end_date IS NULL OR s.end_date >= mm.ini)
+  GROUP BY mm.ini, s.account_id
+),
+ev AS (
+  SELECT mm.ini, c.account_id, count(*) AS n FROM mm JOIN churn_events c
+    ON c.churn_date BETWEEN mm.ini AND mm.fim
+  GROUP BY mm.ini, c.account_id
+)
+SELECT
+  substr(mm.ini, 1, 7)                                                     AS mes,
+  mm.ini                                                                   AS mes_inicio,
+  mm.fim                                                                   AS mes_fim,
+  (SELECT count(*) FROM ativa a WHERE a.ini = mm.ini)                      AS contas_ativas,
+  (SELECT coalesce(sum(n), 0) FROM ev WHERE ev.ini = mm.ini)               AS churn_eventos,
+  (SELECT count(*) FROM ev WHERE ev.ini = mm.ini)                          AS churn_contas,
+  (SELECT count(*) FROM ev WHERE ev.ini = mm.ini
+     AND NOT EXISTS (SELECT 1 FROM ativa a WHERE a.ini = ev.ini AND a.account_id = ev.account_id)) AS churn_contas_fora_da_base,
+  round(1.0 * (SELECT count(*) FROM ev WHERE ev.ini = mm.ini)
+        / nullif((SELECT count(*) FROM ativa a WHERE a.ini = mm.ini), 0), 4) AS taxa_churn_contas,
+  round(1.0 * (SELECT count(*) FROM ev WHERE ev.ini = mm.ini
+                 AND EXISTS (SELECT 1 FROM ativa a WHERE a.ini = ev.ini AND a.account_id = ev.account_id))
+        / nullif((SELECT count(*) FROM ativa a WHERE a.ini = mm.ini), 0), 4) AS taxa_churn_contas_na_base
+FROM mm;
+
 -- ================= Reconciliação das views (bloqueante) =================
 -- violacoes = número de medidas da view que não batem com a origem (0 = todas batem).
 DELETE FROM dq_checks WHERE check_id LIKE 'V%';
@@ -193,4 +232,12 @@ UNION ALL SELECT 'V06','view','vw_dq_ocorrencias','checagens cuja contagem de oc
     WHERE d.check_id IN ('E13','R01','R02','R03','R04','R05','T01','T02','T03','T04','T05','T06','T07','T08','T09',
                          'N01','N02','N03','N04','N05','N06','N07','N08','N09')
       AND d.violacoes <> (SELECT count(*) FROM vw_dq_ocorrencias o WHERE o.check_id = d.check_id)),
-  24, 'cobre as 24 checagens com ocorrência por linha; E10-E12, E14 e E0* são contagens agregadas';
+  24, 'cobre as 24 checagens com ocorrência por linha; E10-E12, E14 e E0* são contagens agregadas'
+UNION ALL SELECT 'V07','view','vw_mes','24 meses, eventos, pares conta-mês com evento e contas ativas no último mês iguais à origem','bloqueante',
+  ((SELECT count(*) FROM vw_mes) <> 24)
+  + ((SELECT sum(churn_eventos) FROM vw_mes) <> (SELECT count(*) FROM churn_events
+       WHERE churn_date <= (SELECT datetime(valor, '+1 day', '-1 second') FROM parametros WHERE nome = 'data_corte')))
+  + ((SELECT sum(churn_contas) FROM vw_mes) <> (SELECT count(*) FROM (SELECT DISTINCT account_id, substr(churn_date, 1, 7) FROM churn_events)))
+  + ((SELECT contas_ativas FROM vw_mes ORDER BY mes DESC LIMIT 1) <> (SELECT count(DISTINCT account_id) FROM subscriptions
+       WHERE start_date <= '2024-12-31 23:59:59' AND (end_date IS NULL OR end_date >= '2024-12-01 00:00:00'))),
+  4, NULL;
