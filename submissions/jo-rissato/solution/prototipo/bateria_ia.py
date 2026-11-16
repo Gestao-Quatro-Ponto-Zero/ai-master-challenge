@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import re
 import statistics
+import time
 import sys
 from datetime import datetime, timezone
 
@@ -178,15 +179,48 @@ def cliente_simulado(cenario: str, c: Conversa) -> str:
     return r.json()["choices"][0]["message"]["content"].strip()
 
 
-def main(saida: str, filtros: list[str], canal: str = "chat") -> None:
+_DIGITO = ["zero", "um", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove"]
+_VOZ_CLIENTE: list = []
+
+
+def falado(m: str, etapa: str) -> str:
+    """Como uma pessoa dita o dado ao telefone: número dígito por dígito, e-mail com "arroba" e "ponto"."""
+    import voz
+    if etapa in voz.ETAPAS_NUMERO and sum(ch.isdigit() for ch in m) >= 8:
+        return ", ".join(_DIGITO[int(ch)] for ch in m if ch.isdigit())
+    if etapa == "email" and "@" in m:
+        return m.replace("@", " arroba ").replace(".", " ponto ")
+    return m
+
+
+def pela_voz(m: str, etapa: str, trocas: list, tempos: list) -> str:
+    """Ligação por voz (2026-11-16): a fala do cliente vira áudio e volta pela mesma transcrição e pela mesma
+    conversão de ditado da página. O cliente fala com outra voz (cadu) que a atendente (faber), como numa ligação
+    de verdade. Registra o que chegou diferente do que foi dito, para medir o efeito real da voz."""
+    import voz
+    if not _VOZ_CLIENTE:
+        from piper import PiperVoice
+        arq = voz.VOZ_PIPER.with_name("pt_BR-cadu-medium.onnx")
+        _VOZ_CLIENTE.append(PiperVoice.load(str(arq)) if arq.exists() else None)
+    audio = voz.sintetizar(falado(m, etapa), voz=_VOZ_CLIENTE[0])
+    t = time.monotonic()
+    texto = voz.ditado(voz.transcrever(audio, etapa=etapa), etapa)
+    tempos.append(time.monotonic() - t)
+    if re.sub(r"\W+", "", texto.lower()) != re.sub(r"\W+", "", m.lower()):
+        trocas.append((m, texto))
+    return texto
+
+
+def main(saida: str, filtros: list[str], canal: str = "chat", por_voz: bool = False) -> None:
     if not chave_deepseek():
         raise SystemExit("sem DEEPSEEK_API_KEY: a bateria precisa da IA real")
     modelo = carregar()
     linhas, latencias, tokens, falhas, rodadas_ia, destinos = [], [], [], 0, [], []
+    trocas, tempos_voz, dados_pedidos, dados_aceitos = [], [], 0, 0
     casos = [c for c in CASOS if not filtros or any(f.lower() in c[0].lower() for f in filtros)]
     for n_caso, (nome, msgs, cenario, esperados, detalhes, _abertura) in enumerate(casos):
         rede = REDES[n_caso % len(REDES)] if canal == "rede social" else None
-        c = Conversa(modelo, origem="bateria", canal=canal, rede=rede)
+        c = Conversa(modelo, origem="bateria", canal=canal, rede=rede, voz=por_voz)
         problemas, roteiro = [], list(msgs)
         while not c.encerrada and len(c.rodadas) < MAX_RODADAS:
             if c.etapa == "nome" and c.rodadas and c.rodadas[-1].decisao.destino == IDENTIFICACAO:
@@ -204,7 +238,11 @@ def main(saida: str, filtros: list[str], canal: str = "chat") -> None:
                 m = cliente_simulado(cenario, c)
             else:
                 break
-            r = c.receber(m)
+            antes = c.etapa
+            r = c.receber(pela_voz(m, antes, trocas, tempos_voz) if por_voz else m)
+            if antes in ("cpf", "telefone", "email"):
+                dados_pedidos += 1
+                dados_aceitos += c.contato[antes] is not None
             if r.tipo in ("relato", "identificação") and r.decisao.destino in (ATENDENDO, RESOLVIDA, ENCERRADA) \
                     and re.search(PEDE_DADO, r.resposta, re.I):
                 problemas.append(f"IA pediu dado pessoal: \"{r.resposta[:80]}\"")
@@ -240,7 +278,8 @@ def main(saida: str, filtros: list[str], canal: str = "chat") -> None:
     p95 = lat[max(0, int(round(0.95 * len(lat))) - 1)]
     md = ["# Bateria de testes de IA (régua 2.11)", "",
           f"Rodada em {datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC contra a DeepSeek (`deepseek-chat`), canal "
-          f"**{canal}**, {len(casos)} conversas, regras de {VERSAO_ROBO}: a IA atende até resolver; reembolso e "
+          f"**{canal}**{' por voz (fala do cliente sintetizada e transcrita na máquina)' if por_voz else ''}, "
+          f"{len(casos)} conversas, regras de {VERSAO_ROBO}: a IA atende até resolver; reembolso e "
           "cancelamento passam para o time; defeito de aparelho vai à assistência autorizada; assunto incerto (abaixo "
           f"de {LIMITE_CONFIANCA}) passa para uma pessoa; comando restrito vai ao departamento especializado.", "",
           f"**Resultado:** {len(casos) - falhas} de {len(casos)} passaram.", "",
@@ -254,11 +293,21 @@ def main(saida: str, filtros: list[str], canal: str = "chat") -> None:
           f"| p95 de latência | {p95:.2f} s |",
           f"| Respostas da IA por conversa (média) | {statistics.mean(rodadas_ia):.1f} |",
           f"| Tokens por conversa (média) | {statistics.mean(tokens):.0f} |",
-          f"| Tokens por conversa (máximo) | {max(tokens)} |", "",
+          f"| Tokens por conversa (máximo) | {max(tokens)} |", ""]
+    if por_voz:
+        tv = sorted(tempos_voz)
+        md[-1:-1] = [f"| Falas transcritas | {len(tv)} |", f"| Falas que a transcrição mudou | {len(trocas)} |",
+                     f"| Mediana da transcrição | {statistics.median(tv):.2f} s |",
+                     f"| Pior transcrição | {tv[-1]:.2f} s |",
+                     f"| Falas de CPF, telefone e e-mail aceitas pelo validador | {dados_aceitos} de {dados_pedidos} |"]
+    md += [
           "Os tokens contam só a IA de atendimento, não o cliente simulado. Custo em reais: tokens × preço da "
           "DeepSeek no dia; o preço não é fixado aqui.", "",
           "| Destino | Conversas |", "|---|---|"]
     md += [f"| {d} | {destinos.count(d)} |" for d in sorted(set(destinos))]
+    if trocas:
+        md += ["", "Falas que a transcrição mudou (dito → transcrito):", "", "| Dito | Transcrito |", "|---|---|"]
+        md += [f"| {a.replace('|', '/')} | {b.replace('|', '/')} |" for a, b in trocas]
     md += ["", "| Chamada | Canal | Caso | Destino | Confiança | Resultado | Conversa |",
            "|---|---|---|---|---|---|---|"] + linhas + [""]
     with open(saida, "w") as fh:
@@ -274,4 +323,9 @@ if __name__ == "__main__":
         del args[i:i + 2]
     if canal not in CANAIS:
         raise SystemExit(f"canal inválido: {canal}")
-    main(sys.argv[1], args, canal)
+    por_voz = "--voz" in args
+    if por_voz:
+        args.remove("--voz")
+        if canal != "telefone":
+            raise SystemExit("--voz só vale com --canal telefone")
+    main(sys.argv[1], args, canal, por_voz)

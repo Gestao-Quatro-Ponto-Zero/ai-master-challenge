@@ -975,3 +975,33 @@ resolver 55% das conversas de suporte (22 de 40, rodada 66) e Outlook, impressor
 
 **Decisão:** limite único de 0,8 para todos os assuntos. Prioridade em segurança: assunto incerto sempre com uma
 pessoa, que fecha com o posicionamento. Nada alterado no código.
+
+## Ligação por voz no canal telefone (2026-11-16 17:34 a 18:40 BRT)
+
+**Pergunta do Jó (literal, 17:34 BRT):** "o canal do tlefone teria que simular uma ligacao mesmo.. conseguimos?"
+
+**Diagnóstico e proposta:** o telefone era texto digitado como transcrição. Proposta: botão Ligar, fala do cliente
+pelo microfone do navegador, transcrição na própria máquina (a voz é dado pessoal e não vai à IA externa), resposta
+falada por voz local. Número de telefone real (Twilio) descartado: exige conta e custo e não acrescenta para a
+avaliação.
+
+**Resposta do Jó (literal, 17:42 BRT):** "Sim, faz"
+
+**Escolhas medidas:** faster-whisper "small" contra "base" em 5 frases do suporte: o base trocou palavras ("e-meios",
+"imprimi"), o small acertou com o vocabulário do suporte. Voz da atendente: Piper pt_BR faber, local. Memória com os
+dois modelos: 884 MB; teto do serviço de 768 MB para 1,5 GB.
+
+**Bateria por voz (telefone, 22 casos por rodada):** a fala do cliente é sintetizada e passa pela mesma transcrição da
+página.
+
+| Rodada | Passou | Dados de contato aceitos | O que mudou antes |
+|---|---|---|---|
+| 67 | 21 de 22 | não medido; CPF, telefone e e-mail chegavam por extenso | primeira versão |
+| 68 | 21 de 22 | 18 de 36 falas | ditado convertido; cliente dita dígito por dígito, com voz diferente da atendente |
+| 69 | 20 de 22 | 24 de 24 | contexto da transcrição por etapa |
+| 70 | 20 de 22 | 24 de 24 | muleta de fala deixa de virar nome |
+
+As falhas das rodadas 69 e 70 vêm da transcrição ("reembolso" saiu "rainbows"; "em quantos dias" saiu "enquanto os
+dias"), não das regras: os 4 comandos restritos foram ao departamento em todas as rodadas e nenhuma resposta
+prometeu resultado. Limites e números na quinta passada da régua (docs/regua-validacao-prototipo.md). 191 testes.
+

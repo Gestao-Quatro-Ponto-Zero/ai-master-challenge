@@ -51,3 +51,14 @@ def chave_deepseek() -> str | None:
                     if valor:
                         return valor
     return None
+
+# Ligação por voz no canal telefone (Jó, 2026-11-16: "o canal do telefone teria que simular uma ligação mesmo").
+# Tudo roda nesta máquina: a voz do cliente é dado pessoal e não vai para IA externa; só o texto transcrito segue o
+# caminho de sempre, com nome, CPF, telefone e e-mail mascarados.
+# Transcrição: faster-whisper "small" em int8 na CPU. Medido em 2026-11-16 com 5 frases do suporte: "small" acertou
+# Outlook, reembolso e impressora; "base" trocou palavras ("e-meios", "imprimi").
+WHISPER_MODELO = os.getenv("WHISPER_MODELO", "small")
+# Voz da atendente: Piper, voz pt_BR "faber" (rhasspy/piper-voices), fora do git por ser binário de 60 MB.
+VOZ_PIPER = Path(os.getenv("VOZ_PIPER", REPO.parent / "dados/voz/pt_BR-faber-medium.onnx"))
+# Fala longa demais não é turno de ligação; o limite também protege a CPU do link público.
+MAX_SEGUNDOS_FALA = 60

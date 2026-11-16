@@ -7,6 +7,7 @@ Implementa as etapas 2, 5 e 6 do fluxo aprovado, com a revisão da rodada 59, (`
 
 ```bash
 pip install pandas scikit-learn joblib streamlit requests pytest
+pip install faster-whisper "av<16" piper-tts   # ligação por voz no telefone (opcional)
 python modelo.py        # treina com os 80% de treino do Dataset 2 (mesma separação do relatório)
 python lote.py          # roteia os 9.568 tickets reais do teste e imprime o resumo
 pytest -q tests         # regras, dados pessoais e conversa com a IA simulada
@@ -62,6 +63,29 @@ A conversa roda em chat, e-mail, rede social (com a rede de entrada: Instagram, 
 telefone. As regras são as mesmas; muda a forma: e-mail com saudação, assinatura e até 5 passos; telefone com fala
 curta, passos falados ("Passo 1: ...") e transcrição no painel com o resultado da ligação; rede social curta, com a
 etiqueta da rede. Na aba Conversa, o canal é escolhido antes da primeira mensagem.
+
+### Ligação por voz (telefone)
+
+No canal telefone, o botão **Ligar** abre uma ligação simulada (Jó, 2026-11-16): a atendente fala, o cliente responde
+pelo microfone do navegador e a conversa segue as mesmas regras. Tudo roda na máquina do protótipo (`voz.py`):
+
+- Transcrição com faster-whisper `small` em int8 na CPU, em português e com o vocabulário do suporte (Outlook,
+  reembolso, CPF...). O áudio não é gravado e não vai para nenhuma IA externa; o texto transcrito passa pelas mesmas
+  máscaras de nome, CPF, telefone e e-mail do texto digitado.
+- Voz da atendente com o Piper (voz `pt_BR-faber-medium`, de rhasspy/piper-voices), baixada para fora do git:
+
+```bash
+mkdir -p ../../../../../dados/voz && cd ../../../../../dados/voz
+for f in pt_BR-faber-medium.onnx pt_BR-faber-medium.onnx.json; do
+  curl -sSLO "https://huggingface.co/rhasspy/piper-voices/resolve/main/pt/pt_BR/faber/medium/$f"; done
+```
+
+- Caminhos e modelo por variável: `VOZ_PIPER` e `WHISPER_MODELO`. Sem os pacotes ou sem a voz, o botão não aparece e
+  o telefone segue como transcrição digitada.
+- Limites: fala de até 60 s por vez; uma transcrição por vez (cerca de 4 s para 7 s de fala; 4 falas simultâneas
+  levam até 16 s). O serviço precisa de cerca de 1 GB de RAM com os dois modelos carregados.
+- Bateria por voz: `python bateria_ia.py ../../docs/bateria-ia-rodadaNN-telefone-voz.md --canal telefone --voz`
+  (a fala do cliente é sintetizada e passa pela mesma transcrição da página).
 
 ## Versão em apresentação
 

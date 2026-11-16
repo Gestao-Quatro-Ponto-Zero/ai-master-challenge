@@ -198,3 +198,61 @@ Nos 10 casos de suporte (40 conversas na rodada 66), a IA resolveu 22 (55%), man
 Outlook (caso "Ofensa", 3 de 4), impressora (caso "Revelar instruções", 4 de 4), iPhone (4 de 4) e Excel (4 de 4):
 o classificador foi treinado com TI interna (Dataset 2) e fica abaixo de 0,8 nesses relatos de cliente, mesmo quando
 a IA saberia resolver. Decisão do Jó em 2026-11-16 11:43 BRT: manter 0,8 para todos os assuntos, inclusive suporte técnico.
+
+## Quinta passada: ligação por voz no telefone (2026-11-16 18:40 BRT)
+
+Pedido do Jó (17:34 BRT): o canal telefone precisa simular uma ligação de verdade. Mudança validada: botão Ligar no
+canal telefone; a atendente fala (Piper, voz pt_BR faber) e o cliente responde pelo microfone do navegador; a fala é
+transcrita na própria máquina (faster-whisper small, int8, CPU) e entra na conversa como texto, com as mesmas regras e
+máscaras. O áudio não é gravado e não vai para IA externa.
+
+```
+[x] 2.1 Funcional            191 testes pytest verdes (37 novos): áudio inválido não chega ao modelo (vazio, não WAV,
+                             curto, mais de 60 s, grande), transcrição em português com contexto da etapa, fala sem
+                             marcação nem link, ditado de CPF, telefone, CEP e e-mail convertido para o validador,
+                             muleta de fala ("E aí, né?") não vira nome, registro marcado como voz só no telefone,
+                             ida e volta real voz → transcrição
+[x] 2.2 Integração + falhas  voz da atendente falhou: a resposta fica escrita e o aviso aparece; transcrição vazia ou
+                             áudio inválido: pede para falar de novo sem gastar chamada da IA; sem os pacotes de voz,
+                             o botão Ligar some e o telefone segue como transcrição digitada
+[x] 2.3 E2E                  navegador real no link: telefone → Ligar → saudação tocou sozinha (2 s) e o microfone
+                             apareceu. Bateria por voz com a DeepSeek real (rodadas 67 a 70, 88 conversas): a fala do
+                             cliente é sintetizada com outra voz (cadu) e passa pela mesma transcrição e pelo mesmo
+                             ditado da página. A fala do microfone de uma pessoa fica para a homologação
+[x] 2.4 Erro/borda           CPF ditado com zeros seguidos perde um zero ("1000000108"): o validador recusa, pede de
+                             novo e cai no CEP, como no texto; recusa falada ("prefiro não informar") não é convertida
+[x] 2.5 Carga                transcrição de 7 s de fala: 3,6 a 4 s; mediana na bateria 70 de 3,64 s, pior 10,36 s
+                             (120 falas). Uma transcrição por vez, para não disputar a CPU com o link
+[x] 2.6 Estresse             4 falas ao mesmo tempo: a última sai em 16,4 s, nenhuma perdida. Memória do processo com
+                             os dois modelos carregados: 884 MB; teto do serviço subiu de 768 MB para 1,5 GB
+[x] 2.7 Segurança            áudio só na memória do processo, nunca em disco nem na IA externa; o que vai à DeepSeek é
+                             o texto mascarado. Voz e modelo baixados de rhasspy/piper-voices e do Hugging Face
+                             (Systran), fora do git
+[x] 2.8 Regressão            191 testes (154 na quarta passada); chat, e-mail e rede social sem mudança de regra
+[x] 2.9 Recuperação          kill -9 no serviço: voltou sozinho em 7 s (os modelos de voz carregam só na 1ª ligação)
+[ ] 2.10 Homologação (Jó)    pendente: uma ligação falando no microfone
+[x] 2.11 Testes de IA        rodada 70 por voz: 20 de 22; CPF, telefone e e-mail aceitos em 24 de 24 falas (18 de 36
+                             na rodada 68, antes da conversão do ditado). As 2 falhas vêm da transcrição, não das
+                             regras: "reembolso" saiu "rainbows" e o pedido virou suporte; "em quantos dias vocês
+                             trocam" saiu "enquanto os dias" e a pergunta de prazo virou defeito (assistência)
+[x] 4 Folga do host          RAM disponível 59%, swap 10%; teto de 1,5 GB valendo no cgroup
+```
+
+### O que a quinta passada encontrou e foi corrigido
+
+| Achado | Como apareceu | Correção |
+|---|---|---|
+| CPF, telefone e e-mail ditados chegavam como "123,456,789 menos 09" e "ano a ponto teste a roba exemplo.com"; a coleta pela voz não funcionava e a assistência não era indicada | Rodada 67 | Nas etapas de dado, o ditado volta ao formato do validador (dígitos, arroba, ponto). Rodada 70: 24 de 24 aceitos |
+| E-mail grudado ("anatestearrobaexemplo") e nome com o vocabulário do suporte ("Carlos" virava "Calos") | Rodada 68 e testes isolados | Contexto da transcrição por etapa: nome, número, e-mail ou suporte |
+| A atendente respondia "Prazer, Aí" quando a transcrição devolvia "E aí, né?" | Rodada 69 | Muleta de fala não vira nome; a atendente pergunta de novo |
+| Biblioteca de áudio nova (av 19) quebrava a transcrição | Primeira medição | Versão fixada em av < 16 |
+
+### Limites que ficam (com número)
+
+- **Nome curto na voz sintética:** "Ana" falada sozinha pelo Piper saiu certa em 2 de 16 conversas da rodada 70
+  ("Veja", "Eana", "Ainda"). Com outras vozes e com "Meu nome é Ana" a transcrição acerta; a voz sintética de uma
+  palavra só é o pior caso. Precisa da homologação com voz humana.
+- **E-mail ditado:** o formato passa, mas o domínio pode sair trocado ("exempo.com" em 1 de 24 falas da rodada 70).
+  Numa operação real, o e-mail falado deve ser confirmado por mensagem no telefone coletado.
+- **Palavra-chave trocada:** em 1 de 22 conversas da rodada 70, "reembolso" virou "rainbows". A regra não promete
+  nada nesse caso: a IA segue perguntando e o cliente repete o pedido.

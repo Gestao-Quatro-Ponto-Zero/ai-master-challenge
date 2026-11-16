@@ -312,6 +312,7 @@ class Conversa:
     origem: str = "atendimento"   # atendimento (página), bateria ou teste
     canal: str = "chat"           # chat, e-mail, rede social ou telefone (2026-11-16)
     rede: str | None = None       # rede social de entrada (Instagram, Facebook, ...)
+    voz: bool = False             # telefone com ligação por voz (fala transcrita na máquina, 2026-11-16)
     refaz: str | None = None      # ID da chamada antiga que esta conversa refaz (bateria)
     id: str | None = None
     _top3: list = field(default_factory=list)
@@ -758,6 +759,7 @@ class Conversa:
         categoria = ROTULOS.get(d.categoria, d.categoria)
         registro = {"id": self.id, "origem": self.origem, "refaz": self.refaz, "versao": VERSAO_ROBO,
                     "canal": self.canal, "rede": self.rede if self.canal == "rede social" else None,
+                    "voz": self.voz and self.canal == "telefone",
                     "inicio": self.inicio,
                     "fim": datetime.now(timezone.utc).isoformat(timespec="seconds"),
                     "modo": "Atendimento por IA" if self.com_ia else "Atendimento sem IA",

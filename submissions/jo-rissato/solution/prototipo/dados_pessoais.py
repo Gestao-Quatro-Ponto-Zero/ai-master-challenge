@@ -9,7 +9,10 @@ import re
 
 RECUSA = r"\b(prefiro n[ãa]o|n[ãa]o (quero|vou|posso) (informar|passar|dar|falar)|n[ãa]o tenho|sem (cpf|e-?mail|telefone))\b"
 _NAO_NOME = set("""oi olá ola bom boa dia tarde noite tudo bem obrigado obrigada sim não nao ok preciso ajuda
-quero meu minha o a é e de do da hello hi""".split())
+quero meu minha o a é e de do da hello hi""".split()) | set(
+    # Ligação por voz (bateria 69, 2026-11-16): a transcrição devolve muleta de fala no lugar do nome ("E aí, né?") e
+    # a atendente respondia "Prazer, Aí". Muleta não é nome: a atendente pergunta de novo.
+    """aí ai né ne ahn hum hmm uhum ah eh alô alo pois então entao venha vem lá la certo valeu ok tá ta""".split())
 
 
 def so_digitos(texto: str) -> str:
