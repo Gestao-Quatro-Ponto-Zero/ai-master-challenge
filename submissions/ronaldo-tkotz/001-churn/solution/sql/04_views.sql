@@ -60,7 +60,13 @@ SELECT s.*,
        coalesce(uso.uso_soma_erros, 0)         AS uso_soma_erros,
        coalesce(uso.uso_registros_beta, 0)     AS uso_registros_beta,
        coalesce(uso.uso_recursos_distintos, 0) AS uso_recursos_distintos,
-       uso.uso_primeira_data, uso.uso_ultima_data
+       uso.uso_primeira_data, uso.uso_ultima_data,
+       -- Features da assinatura (D23/D24): só números da própria assinatura.
+       round(1.0 * s.mrr_amount / nullif(s.seats, 0), 4)                    AS assin_mrr_por_seat,
+       round(1.0 * s.arr_amount / nullif(s.seats, 0), 4)                    AS assin_arr_por_seat,
+       round(1.0 * uso.uso_soma_erros / nullif(uso.uso_soma_usage_count, 0), 6) AS uso_taxa_erro,
+       -- Atributo da conta, só para filtro (rótulo de churn da conta = tem evento em churn_events, D20).
+       EXISTS (SELECT 1 FROM churn_events c WHERE c.account_id = s.account_id) AS conta_churn_rotulo
 FROM subscriptions s
 JOIN accounts a  ON a.account_id = s.account_id
 LEFT JOIN uso    ON uso.subscription_id = s.subscription_id;
@@ -75,6 +81,9 @@ WITH assin AS (
          sum(mrr_amount)          AS assin_soma_mrr,
          sum(arr_amount)          AS assin_soma_arr,
          sum(CASE WHEN end_date IS NULL THEN mrr_amount ELSE 0 END) AS assin_soma_mrr_sem_end_date,
+         sum(CASE WHEN end_date IS NULL THEN arr_amount ELSE 0 END) AS assin_soma_arr_sem_end_date,
+         sum(seats)               AS assin_soma_seats,
+         sum(CASE WHEN end_date IS NULL THEN seats ELSE 0 END) AS assin_soma_seats_sem_end_date,
          sum(is_trial)            AS assin_trial,
          sum(upgrade_flag)        AS assin_upgrade_flag,
          sum(downgrade_flag)      AS assin_downgrade_flag,
@@ -88,7 +97,9 @@ uso AS (
          count(*)                   AS uso_registros,
          sum(u.usage_count)         AS uso_soma_usage_count,
          sum(u.usage_duration_secs) AS uso_soma_duracao_secs,
-         sum(u.error_count)         AS uso_soma_erros
+         sum(u.error_count)         AS uso_soma_erros,
+         sum(u.is_beta_feature)     AS uso_registros_beta,
+         count(DISTINCT u.feature_name) AS uso_recursos_distintos
   FROM feature_usage u JOIN subscriptions s ON s.subscription_id = u.subscription_id
   GROUP BY s.account_id),
 tk AS (
@@ -96,7 +107,9 @@ tk AS (
          count(*)                   AS tickets_total,
          sum(escalation_flag)       AS tickets_escalados,
          count(satisfaction_score)  AS tickets_com_satisfacao,
-         sum(satisfaction_score)    AS tickets_soma_satisfacao
+         sum(satisfaction_score)    AS tickets_soma_satisfacao,
+         avg(resolution_time_hours) AS tickets_media_resolucao_h,
+         avg(first_response_time_minutes) AS tickets_media_1a_resposta_min
   FROM support_tickets GROUP BY account_id),
 ch AS (
   SELECT account_id,
@@ -119,7 +132,26 @@ SELECT a.*,
        coalesce(tk.tickets_total, 0) AS tickets_total, coalesce(tk.tickets_escalados, 0) AS tickets_escalados,
        coalesce(tk.tickets_com_satisfacao, 0) AS tickets_com_satisfacao, tk.tickets_soma_satisfacao,
        coalesce(ch.churn_eventos, 0) AS churn_eventos, coalesce(ch.churn_reativacoes, 0) AS churn_reativacoes,
-       coalesce(ch.churn_soma_refund_usd, 0) AS churn_soma_refund_usd, ch.churn_primeira_data, ch.churn_ultima_data
+       coalesce(ch.churn_soma_refund_usd, 0) AS churn_soma_refund_usd, ch.churn_primeira_data, ch.churn_ultima_data,
+       -- Rótulo de churn da conta (D20) com os outros dois sinais ao lado, só para reconciliar (D22).
+       (ch.account_id IS NOT NULL)                   AS churn_rotulo,
+       a.churn_flag                                  AS churn_sinal_flag_conta,
+       (coalesce(assin.assin_com_end_date, 0) > 0)   AS churn_sinal_fim_assinatura,
+       -- Features da conta (D23/D24): totais das assinaturas, uso, tickets e eventos da própria conta.
+       coalesce(assin.assin_soma_arr_sem_end_date, 0) AS assin_soma_arr_sem_end_date,
+       coalesce(assin.assin_soma_seats, 0)            AS assin_soma_seats,
+       coalesce(assin.assin_soma_seats_sem_end_date, 0) AS assin_soma_seats_sem_end_date,
+       round(1.0 * assin.assin_soma_mrr / nullif(assin.assin_soma_seats, 0), 4) AS assin_mrr_por_seat,
+       round(1.0 * assin.assin_soma_arr / nullif(assin.assin_soma_seats, 0), 4) AS assin_arr_por_seat,
+       round(1.0 * assin.assin_soma_mrr_sem_end_date / nullif(assin.assin_soma_seats_sem_end_date, 0), 4) AS assin_mrr_por_seat_sem_end_date,
+       coalesce(uso.uso_registros_beta, 0)     AS uso_registros_beta,
+       coalesce(uso.uso_recursos_distintos, 0) AS uso_recursos_distintos,
+       round(1.0 * uso.uso_soma_erros / nullif(uso.uso_soma_usage_count, 0), 6) AS uso_taxa_erro,
+       round(1.0 * tk.tickets_escalados / nullif(tk.tickets_total, 0), 4)        AS tickets_taxa_escalacao,
+       round(1.0 * tk.tickets_soma_satisfacao / nullif(tk.tickets_com_satisfacao, 0), 4) AS tickets_media_satisfacao,
+       coalesce(tk.tickets_total, 0) - coalesce(tk.tickets_com_satisfacao, 0)   AS tickets_sem_satisfacao,
+       round(tk.tickets_media_resolucao_h, 2)      AS tickets_media_resolucao_h,
+       round(tk.tickets_media_1a_resposta_min, 2)  AS tickets_media_1a_resposta_min
 FROM accounts a
 LEFT JOIN assin ON assin.account_id = a.account_id
 LEFT JOIN uso   ON uso.account_id   = a.account_id
@@ -240,4 +272,16 @@ UNION ALL SELECT 'V07','view','vw_mes','24 meses, eventos, pares conta-mês com 
   + ((SELECT sum(churn_contas) FROM vw_mes) <> (SELECT count(*) FROM (SELECT DISTINCT account_id, substr(churn_date, 1, 7) FROM churn_events)))
   + ((SELECT contas_ativas FROM vw_mes ORDER BY mes DESC LIMIT 1) <> (SELECT count(DISTINCT account_id) FROM subscriptions
        WHERE start_date <= '2024-12-31 23:59:59' AND (end_date IS NULL OR end_date >= '2024-12-01 00:00:00'))),
-  4, NULL;
+  4, NULL
+UNION ALL SELECT 'V08','view','vw_conta + vw_assinatura','features novas (D24): rótulo e sinais de churn, seats, MRR/ARR ativos, beta, recursos, tickets','bloqueante',
+  ((SELECT sum(churn_rotulo) FROM vw_conta) <> (SELECT count(DISTINCT account_id) FROM churn_events))
+  + ((SELECT sum(churn_sinal_flag_conta) FROM vw_conta) <> (SELECT sum(churn_flag) FROM accounts))
+  + ((SELECT sum(churn_sinal_fim_assinatura) FROM vw_conta) <> (SELECT count(DISTINCT account_id) FROM subscriptions WHERE end_date IS NOT NULL))
+  + ((SELECT sum(assin_soma_seats) FROM vw_conta) <> (SELECT sum(seats) FROM subscriptions))
+  + ((SELECT sum(assin_soma_arr_sem_end_date) FROM vw_conta) <> (SELECT sum(arr_amount) FROM subscriptions WHERE end_date IS NULL))
+  + ((SELECT sum(uso_registros_beta) FROM vw_conta) <> (SELECT sum(is_beta_feature) FROM feature_usage))
+  + ((SELECT count(*) FROM vw_conta WHERE uso_recursos_distintos > (SELECT count(DISTINCT feature_name) FROM feature_usage)) <> 0)
+  + ((SELECT sum(tickets_sem_satisfacao) FROM vw_conta) <> (SELECT count(*) - count(satisfaction_score) FROM support_tickets))
+  + ((SELECT sum(conta_churn_rotulo) FROM vw_assinatura) <> (SELECT count(*) FROM subscriptions s WHERE EXISTS (SELECT 1 FROM churn_events c WHERE c.account_id = s.account_id)))
+  + ((SELECT count(*) FROM vw_assinatura WHERE abs(assin_mrr_por_seat * seats - mrr_amount) > 0.01 * seats) <> 0),
+  10, NULL;

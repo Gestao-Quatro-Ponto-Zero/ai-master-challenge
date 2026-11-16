@@ -204,3 +204,42 @@
   - Colunas: contas ativas, eventos, contas com evento, contas com evento fora da base e as duas taxas.
   - Reconciliação bloqueante V07: 4 medidas, todas iguais à origem.
 - **Fato que a decisão 4 já cobre:** 30 dos 547 pares conta-mês com evento são de contas sem assinatura vigente naquele mês, todos até jun/2024. Por isso a view traz `taxa_churn_contas` (todas) e `taxa_churn_contas_na_base` (só as que estão na base). Elas diferem em 14 dos 24 meses e são iguais de jul a dez/2024.
+
+## D22 — Desenho do dashboard (humano, no whiteboard do Claude)
+- **Humano desenhou:** cinco telas, uma por pergunta, com os blocos B1.0 a B5.4. Cada bloco traz a pergunta, o nível do dado, o visual, o limite e a origem da ideia. A imagem está em `process-log/dashboard/desenho-dashboard-v1.png`.
+  - Tela 1: as três afirmações.
+  - Tela 2: as causas.
+  - Tela 3: segmentos e contas em risco.
+  - Tela 4: ações.
+  - Tela 5: a base e a confiança nos números.
+- **Decisões novas no desenho:**
+  - D1b: MRR e ARR vêm de `mrr_amount` e `arr_amount`.
+  - D1c: as 61 reativações entram.
+- **IA conferiu no banco os números citados no desenho, e todos batem:**
+  - 352 contas com evento, 110 com `churn_flag` e 312 com assinatura encerrada (486 assinaturas).
+  - As três fontes coincidem em 50 contas, e 50 contas não têm nenhum sinal.
+  - O `churn_flag` da assinatura é igual a ter `end_date` nas 5.000 assinaturas.
+- **Lacuna apontada pela IA na D1b:** o evento de churn liga só à conta. Na data do evento, 478 dos 600 eventos têm 2 ou mais assinaturas vigentes na conta, e 55 não têm nenhuma. Falta a regra de qual `mrr_amount` atribuir a cada evento.
+
+## D23 — Cada número fica no identificador ao qual pertence (decisão humana)
+- **Humano decidiu, em resposta à lacuna da D22:** as análises ficam sempre separadas no dashboard. Toda demonstração filtra primeiro pelos dois identificadores principais, `account_id` e `subscription_id`. Cada número aparece no identificador ao qual está atrelado.
+- **Consequência:** nenhum `mrr_amount` é atribuído a evento de churn, e a regra da lacuna da D22 deixa de ser necessária.
+  - Evento de churn, ticket e seus campos ficam no nível de **conta**.
+  - MRR, ARR, plano, cobrança, trial e uso ficam no nível de **assinatura**.
+- **Leitura da IA, confirmada pelo humano:** na tela de conta, entram os totais das assinaturas da conta, como a soma de MRR da `vw_conta`, porque o vínculo assinatura → conta é direto (N:1). Nas palavras do humano, o MRR e o ARR se identificam pela conexão entre o ID da conta e o ID da assinatura. Os blocos B1.1, B2.2 e B3.1 ("MRR perdido" e "pesado por MRR") passam a usar esse total por conta, sem data de evento.
+
+## D24 — Features por identificador (lista do humano no desenho, implementação da IA)
+- **IA implementou em `04_views.sql`:** as features da tabela "De trás para frente" do desenho, cada uma na view do seu identificador.
+- **`vw_assinatura`, uma linha por `subscription_id`:**
+  - MRR e ARR por seat.
+  - Taxa de erro (erros / `usage_count`). Fica nula nas 33 assinaturas sem uso.
+  - `conta_churn_rotulo`: atributo da conta, só para filtro.
+- **`vw_conta`, uma linha por `account_id`:**
+  - Rótulo de churn (`churn_rotulo`, que é ter evento, D20), com `churn_sinal_flag_conta` e `churn_sinal_fim_assinatura` ao lado, só para reconciliar.
+  - Seats, MRR e ARR das assinaturas sem `end_date`, e MRR e ARR por seat.
+  - Registros beta, recursos distintos e taxa de erro.
+  - Taxa de escalação, média de satisfação, tickets sem nota e médias de resolução e de primeira resposta.
+- **Como foi verificado:**
+  - Nova reconciliação bloqueante V08, com 10 medidas, todas iguais à origem.
+  - V01 a V07 continuam em 0.
+  - Fora das duas views alteradas, o relatório de carga ficou idêntico ao anterior.

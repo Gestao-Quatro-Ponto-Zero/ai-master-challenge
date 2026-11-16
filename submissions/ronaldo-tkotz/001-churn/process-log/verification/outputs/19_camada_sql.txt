@@ -17,9 +17,9 @@ PADRÃO DE DATAS (amostra por coluna: CSV -> banco)
   churn_events.churn_date    '2024-10-27' -> '2024-10-27 00:00:00'   faixa 2023-01-25 00:00:00 .. 2024-12-31 00:00:00   nulos=0
 
 VIEWS
-  vw_assinatura        linhas=  5000  colunas=28
+  vw_assinatura        linhas=  5000  colunas=32
   vw_churn_detalhe     linhas=   600  colunas=15
-  vw_conta             linhas=   500  colunas=36
+  vw_conta             linhas=   500  colunas=53
   vw_dq_ocorrencias    linhas= 29495  colunas=3
   vw_mes               linhas=    24  colunas=9
   vw_ticket_detalhe    linhas=  2000  colunas=15
@@ -54,6 +54,7 @@ CHECAGENS
     V05                         0/10      vw_conta: linhas e 9 totais (assinaturas, MRR, ARR, uso, erros, tickets, escalados, eventos, refund) iguais à origem
     V06                         0/24      vw_dq_ocorrencias: checagens cuja contagem de ocorrências difere de dq_checks.violacoes  -> cobre as 24 checagens com ocorrência por linha; E10-E12, E14 e E0* são contagens agregadas
     V07                         0/4       vw_mes: 24 meses, eventos, pares conta-mês com evento e contas ativas no último mês iguais à origem
+    V08                         0/10      vw_conta + vw_assinatura: features novas (D24): rótulo e sinais de churn, seats, MRR/ARR ativos, beta, recursos, tickets
   [alerta]
     E11                         0         todas: datas fora da janela 2023-01-01 a 2024-12-31 23:59:59
     E13                        21/24979   feature_usage: usage_id repetido (conteúdo diferente nas duas linhas)  -> mantidas as 2 linhas de cada id; chave substituta usage_pk + chave natural (usage_id, subscription_id)
