@@ -92,7 +92,7 @@ D20–D24, and an evaluator can reach it with a username and password.
 - [ ] ISC-24: The RavenStack database ships with the deploy (`data/ravenstack.db`).
 - [ ] ISC-25: Deployed on Vercel or Railway with HTTPS.
 - [ ] ISC-26: The evaluator logs in with the default credentials given in the README.
-- [ ] ISC-27: No secret or `node_modules` enters git (files added one by one under the ignored `submissions/` folder).
+- [ ] ISC-27: No secret or `node_modules` enters git (files added one by one under the ignored `submissions/` folder). Progress: commit 993fe1b staged 116 files one by one, no `.env`/`node_modules`/sqlite; privacy scan 0. Stays open until the deploy commit.
 
 ## Test Strategy
 
@@ -105,10 +105,12 @@ D20–D24, and an evaluator can reach it with a username and password.
 - 2026-11-16: Veta copied into `solution/app` without git history; original dataset seed and demo video left out (D25).
 - 2026-11-16: `.env` and `.env.example` rewritten from scratch (human correction, D26).
 - 2026-11-16: The discovery rail is off until the human-led analysis produces conclusions (D26).
+- 2026-11-16: Phase 1 committed (993fe1b). Kept out: the 7 test scripts tied to the previous dataset (ISC-22), Veta's `docs/`, and 3 deck textures over 2 MB that the G4 pre-commit blocks; the deck code still references them (ISC-23).
 
 ## Changelog
 
 - 2026-11-16: ISA rewritten for RavenStack; phase 1 criteria ISC-1–8 and ISC-10–14 verified.
+- 2026-11-16: Previous-dataset comments removed from Dockerfile, `.dockerignore`, `.gitignore` (now also ignores `/data/*.db`) and `data/.gitkeep`; README rewritten for RavenStack. Toward ISC-24 and ISC-27; neither closes before deploy.
 
 ## Verification
 
