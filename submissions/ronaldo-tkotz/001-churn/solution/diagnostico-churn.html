@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diagnóstico de Churn RavenStack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: memo editorial de coluna única para o CEO; resposta primeiro, depois as três afirmações checadas, a causa raiz, o plano e o método. */
+:root {
+  color-scheme: light;
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --ink: #0f1720;
+  --ink-2: #4a5462;
+  --ink-3: #737d8a;
+  --rule: #dfe3e8;
+  --accent: #1c5cab;
+  --s1: #2a78d6;
+  --s2: #eb6834;
+  --muted-bar: #b9c2cc;
+  --good: #0ca30c;
+  --warn: #b97800;
+  --crit: #d03b3b;
+  --crit-bg: #fbeaea;
+  --warn-bg: #fdf3df;
+  --good-bg: #e6f5e6;
+  --band: #eef1f5;
+  --font-display: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #12161b; --surface: #1a1f26; --ink: #eef1f4; --ink-2: #b8c0ca; --ink-3: #8a94a1; --rule: #2c333c;
+    --accent: #6da7ec; --s1: #3987e5; --s2: #d95926; --muted-bar: #4a5563;
+    --good: #0ca30c; --warn: #fab219; --crit: #e66767; --crit-bg: #3a2222; --warn-bg: #3a3020; --good-bg: #1e3320; --band: #222932;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #12161b; --surface: #1a1f26; --ink: #eef1f4; --ink-2: #b8c0ca; --ink-3: #8a94a1; --rule: #2c333c;
+  --accent: #6da7ec; --s1: #3987e5; --s2: #d95926; --muted-bar: #4a5563;
+  --good: #0ca30c; --warn: #fab219; --crit: #e66767; --crit-bg: #3a2222; --warn-bg: #3a3020; --good-bg: #1e3320; --band: #222932;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 17px; line-height: 1.6; }
+main { max-width: 860px; margin: 0 auto; padding: 48px 20px 80px; display: grid; gap: 56px; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.15; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(32px, 5vw, 46px); letter-spacing: -0.01em; }
+h2 { font-size: 30px; }
+h3 { font-size: 21px; }
+p { margin: 0; max-width: 66ch; }
+.stack { display: grid; gap: 16px; }
+.kicker { font-family: var(--font-mono); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); }
+.lede { font-size: 20px; color: var(--ink-2); }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.answer { background: var(--surface); border: 1px solid var(--rule); border-left: 4px solid var(--accent); border-radius: 6px; padding: 24px 28px; display: grid; gap: 14px; }
+.answer p { font-size: 19px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.tile { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 16px 18px; display: grid; gap: 4px; align-content: start; }
+.tile .big { font-family: var(--font-mono); font-size: 30px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.tile .lbl { font-size: 14px; color: var(--ink-2); line-height: 1.4; }
+.claim { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 24px; display: grid; gap: 14px; }
+.claim-head { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: baseline; justify-content: space-between; }
+.who { font-size: 14px; color: var(--ink-3); }
+.pill { font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+.pill.crit { color: var(--crit); background: var(--crit-bg); }
+.pill.warn { color: var(--warn); background: var(--warn-bg); }
+.pill.good { color: var(--good); background: var(--good-bg); }
+figure { margin: 0; display: grid; gap: 8px; }
+figcaption { font-size: 14px; color: var(--ink-3); max-width: 70ch; }
+.chart-title { font-size: 15px; font-weight: 600; color: var(--ink); }
+.chart { width: 100%; overflow-x: auto; }
+.chart svg { display: block; width: 100%; height: auto; min-width: 420px; }
+.chart text { fill: var(--ink-2); font-family: var(--font-body); font-size: 12px; }
+.chart .axis { stroke: var(--rule); }
+.chart .grid { stroke: var(--rule); stroke-dasharray: 2 3; }
+.chart .hit { fill: transparent; cursor: default; }
+.pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--ink-2); }
+.legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; background: var(--c); vertical-align: -1px; }
+details { font-size: 14px; color: var(--ink-2); }
+summary { cursor: pointer; color: var(--accent); }
+summary:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-weight: 600; color: var(--ink-2); font-size: 13px; }
+td.r, th.r { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--font-mono); font-size: 13px; }
+.tablewrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; }
+.evidence { display: grid; gap: 0; background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; }
+.ev { display: grid; grid-template-columns: 112px 1fr; gap: 16px; padding: 16px 20px; border-bottom: 1px solid var(--rule); }
+.ev:last-child { border-bottom: 0; }
+.ev .big { font-family: var(--font-mono); font-size: 24px; font-weight: 500; color: var(--crit); font-variant-numeric: tabular-nums; }
+.ev p { font-size: 16px; }
+.ev small { display: block; color: var(--ink-3); font-size: 13px; margin-top: 4px; }
+ol.plan { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; counter-reset: p; }
+ol.plan li { counter-increment: p; background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 18px 20px 18px 64px; position: relative; display: grid; gap: 6px; }
+ol.plan li::before { content: counter(p); position: absolute; left: 20px; top: 16px; font-family: var(--font-display); font-size: 28px; font-weight: 600; color: var(--accent); }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: var(--ink-3); }
+.meta b { color: var(--ink-2); font-weight: 600; }
+.note { font-size: 14px; color: var(--ink-3); }
+code { font-family: var(--font-mono); font-size: 13px; background: var(--band); padding: 1px 5px; border-radius: 3px; }
+#tip { position: fixed; pointer-events: none; background: var(--ink); color: var(--bg); font-size: 13px; padding: 6px 9px; border-radius: 4px; opacity: 0; transition: opacity .1s; z-index: 10; max-width: 260px; line-height: 1.4; }
+@media (prefers-reduced-motion: reduce) { #tip { transition: none; } }
+@media (max-width: 520px) { .ev { grid-template-columns: 1fr; gap: 4px; } ol.plan li { padding-left: 20px; padding-top: 52px; } }
+</style>
+</head>
+<body>
+<main>
+
+<header class="stack">
+  <div class="kicker">RavenStack · diagnóstico de churn · dados de jan/2023 a dez/2024</div>
+  <h1>O churn subiu no indicador. Nenhum cliente foi embora.</h1>
+  <p class="lede">Cruzei as cinco bases (contas, assinaturas, uso, tickets e eventos de churn) para checar as três versões que chegaram até você. As três equipes leem números verdadeiros. O problema é que esses números não medem a mesma coisa e não se conectam entre si.</p>
+</header>
+
+<section class="answer" aria-labelledby="resp">
+  <div class="kicker" id="resp">A resposta curta</div>
+  <p>O "churn" que subiu é uma contagem de <b>eventos</b> registrados num sistema que não conversa com o faturamento. Todas as 500 contas continuam com assinatura ativa. A maioria das contas que "deram churn" comprou de novo depois.</p>
+  <p>A satisfação parece estável porque a pesquisa não consegue enxergar insatisfação. O uso não cresceu: ficou parado enquanto a base de clientes cresceu nove vezes.</p>
+  <p>A causa raiz é de medição: <b>os sistemas de faturamento, produto e suporte não compartilham uma visão confiável de quem é o cliente e quando</b>. Antes de qualquer ação de retenção, a empresa precisa de um número de churn em que possa confiar.</p>
+</section>
+
+<section class="tiles" aria-label="Números principais">
+  <div class="tile"><span class="big num">500 / 500</span><span class="lbl">contas com assinatura ativa em 31/12/2024</span></div>
+  <div class="tile"><span class="big num">284 / 352</span><span class="lbl">contas com evento de churn que abriram assinatura nova depois do último evento</span></div>
+  <div class="tile"><span class="big num">21% × 22%</span><span class="lbl">eventos de churn perto do fim de uma assinatura, contra o que daria com datas sorteadas</span></div>
+  <div class="tile"><span class="big num">0,44–0,53</span><span class="lbl">poder de previsão dos modelos (AUC). 0,50 é cara ou coroa.</span></div>
+</section>
+
+<section class="stack" aria-labelledby="tres">
+  <div class="kicker">As três afirmações, checadas nos dados</div>
+  <h2 id="tres">Quem tem razão?</h2>
+
+  <article class="claim">
+    <div class="claim-head"><h3>"Os números mostram que o churn subiu"</h3><span class="pill warn">Verdade no indicador, falso em clientes</span></div>
+    <div class="who">Fonte: tabela de eventos de churn</div>
+    <p>Os eventos de churn passaram de 6 no primeiro trimestre de 2023 para 251 no último de 2024. Mesmo descontando o crescimento da base, a taxa mensal por conta subiu de 5,1% (2023) para 12,0% (2024). Mas nenhum desses eventos tirou um cliente da base: as 600 ocorrências aconteceram em contas que seguem pagando.</p>
+    <div class="pair">
+      <figure>
+        <div class="chart-title">Eventos de churn por trimestre</div>
+        <div class="chart" id="c-eventos"></div>
+      </figure>
+      <figure>
+        <div class="chart-title">Ex-clientes sem nenhuma assinatura ativa, no fim de cada trimestre</div>
+        <div class="chart" id="c-perdidas"></div>
+      </figure>
+    </div>
+    <figcaption>Eventos: <code>churn_events.churn_date</code>. Ex-clientes sem assinatura: contas que já tiveram uma assinatura e, no fim do trimestre, não tinham nenhuma ativa. Contando só assinaturas pagas, chegaram a 12 contas num trimestre, e todas voltaram a pagar. Scripts <code>04_profundo.py</code> e <code>07_contas_sem_assinatura.py</code>.</figcaption>
+  </article>
+
+  <article class="claim">
+    <div class="claim-head"><h3>"O time de CS diz que a satisfação está ok"</h3><span class="pill warn">Verdade, mas a métrica é cega</span></div>
+    <div class="who">Fonte: tabela de tickets de suporte</div>
+    <p>A nota média fica perto de 4,0 em todos os trimestres. Só que a pesquisa nunca registrou uma nota 1 ou 2: a escala na prática vai de 3 a 5. E 41% dos tickets não têm resposta. Quem saiu e quem ficou dá a mesma nota (mediana 4,0 nos dois grupos), inclusive nos 90 dias antes de um churn (4,09 contra 3,98 no resto).</p>
+    <div class="pair">
+      <figure>
+        <div class="chart-title">Respostas da pesquisa de satisfação (2.000 tickets)</div>
+        <div class="chart" id="c-csat"></div>
+      </figure>
+      <figure>
+        <div class="chart-title">Nota média por trimestre</div>
+        <div class="chart" id="c-csat-t"></div>
+      </figure>
+    </div>
+    <figcaption>Uma pesquisa que não registra nota baixa e não sabe quem deixou de responder não pode avisar sobre churn. Scripts <code>02_tempo.py</code> e <code>03_contas.py</code>.</figcaption>
+  </article>
+
+  <article class="claim">
+    <div class="claim-head"><h3>"O time de produto diz que o uso cresceu"</h3><span class="pill crit">Falso</span></div>
+    <div class="who">Fonte: tabela de uso por feature</div>
+    <p>O uso total ficou parado em cerca de 31 mil ações por trimestre durante dois anos, enquanto as contas cadastradas foram de 55 para 500. Por conta, o uso caiu cerca de nove vezes. Nenhum plano e nenhuma indústria cresceu. O que cresceu foi a base de clientes.</p>
+    <div class="pair">
+      <figure>
+        <div class="chart-title">Uso total por trimestre (ações)</div>
+        <div class="chart" id="c-uso"></div>
+      </figure>
+      <figure>
+        <div class="chart-title">Uso por conta cadastrada, por trimestre</div>
+        <div class="chart" id="c-uso-conta"></div>
+      </figure>
+    </div>
+    <figcaption>Uso: soma de <code>feature_usage.usage_count</code>. Contas cadastradas: contas com <code>signup_date</code> até o fim do trimestre. Script <code>02_tempo.py</code>; recortes por plano e indústria em <code>04_profundo.py</code>.</figcaption>
+  </article>
+</section>
+
+<section class="stack" aria-labelledby="raiz">
+  <div class="kicker">A causa raiz</div>
+  <h2 id="raiz">Os sistemas não concordam sobre quem é o cliente</h2>
+  <p>Cada equipe olha um sistema diferente, e esses sistemas não se ligam. Por isso cada uma chega a uma conclusão diferente com dados verdadeiros. Estas são as quebras que encontrei ao cruzar as tabelas:</p>
+  <figure>
+    <div class="chart-title">Quatro respostas para "quantos clientes perdemos?"</div>
+    <div class="chart" id="c-defs"></div>
+    <figcaption>As três primeiras medidas existem na base e dão números diferentes. A quarta, que é a que importa para o caixa, dá zero. Script <code>01_estrutura.py</code>.</figcaption>
+  </figure>
+  <div class="evidence">
+    <div class="ev"><span class="big">78%</span><p>dos registros de uso caem fora do período da assinatura a que estão ligados, e 53% são de antes do cadastro da conta. <small>O produto não sabe com segurança qual cliente usou o quê, nem quando.</small></p></div>
+    <div class="ev"><span class="big">54%</span><p>dos tickets de suporte foram abertos antes do cadastro da conta. <small>O suporte também não está ligado ao cliente certo.</small></p></div>
+    <div class="ev"><span class="big">34%</span><p>das contas têm, no cadastro, o mesmo plano da assinatura mais recente. Nos assentos, a concordância é de 49%. <small>CRM e faturamento discordam sobre o que cada cliente comprou.</small></p></div>
+    <div class="ev"><span class="big">0,06</span><p>é a associação entre o motivo de churn codificado e o texto que o cliente escreveu (Cramér V; 0 é nenhuma). <small>Um churn com motivo "preço" tem a mesma chance de trazer "faltam funcionalidades" no texto. O motivo registrado não informa nada.</small></p></div>
+    <div class="ev"><span class="big">21%</span><p>dos eventos de churn ficam a até 30 dias do fim de alguma assinatura da conta. Com datas sorteadas, o resultado seria 22%. <small>O evento de churn não tem relação com o faturamento.</small></p></div>
+  </div>
+</section>
+
+<section class="stack" aria-labelledby="sinal">
+  <div class="kicker">Correlação, causalidade e o que não existe</div>
+  <h2 id="sinal">Nenhum segmento e nenhum comportamento antecipa o churn</h2>
+  <p>Testei 23 características de cada conta, vindas das cinco tabelas: plano, assentos, receita, uso, erros, features beta, tickets, nota, escalonamentos, tempo de resposta, upgrades e downgrades. Nenhuma separa quem teve churn de quem não teve. Um modelo com todas elas juntas acerta como uma moeda, abaixo até de um placebo com o resultado embaralhado.</p>
+  <figure>
+    <div class="chart-title">Poder de separação de cada característica (AUC)</div>
+    <div class="chart" id="c-auc"></div>
+    <figcaption>AUC de 0,50 significa nenhuma separação. Todas as 23 caem entre 0,45 e 0,54, e nenhuma tem p &lt; 0,05 no teste de Mann-Whitney. Modelos com validação cruzada em 5 partes: logística 0,44, gradient boosting 0,45, placebo 0,56. Scripts <code>03_contas.py</code> e <code>04_profundo.py</code>.</figcaption>
+  </figure>
+  <figure>
+    <div class="chart-title">Contas com evento de churn, por segmento (%)</div>
+    <div class="chart" id="c-seg"></div>
+    <figcaption>Nenhuma diferença é estatisticamente significativa (qui-quadrado: indústria p = 0,79, plano p = 0,71, canal de aquisição p = 0,14). Também não há padrão de ciclo de vida: os eventos se espalham de forma uniforme entre o cadastro e hoje (KS p = 0,92). O uso e os erros nos 90 dias antes de um churn são iguais aos dos 90 dias anteriores (p = 0,43 e 0,66).</figcaption>
+  </figure>
+  <p class="note">Se alguém apresentar "a causa do churn" com esta base, desconfie. Qualquer padrão encontrado nela cabe dentro do que o acaso produz. A afirmação que se sustenta é sobre a qualidade dos dados.</p>
+</section>
+
+<section class="stack" aria-labelledby="contas">
+  <div class="kicker">Onde olhar primeiro</div>
+  <h2 id="contas">177 contas tiveram evento de churn nos últimos 90 dias</h2>
+  <p>Como nenhum segmento se destaca, não há base para chamar essas contas de "em risco" pelo perfil. O critério é o tamanho da exposição: elas somam <b class="num">$3,4 mi</b> de MRR ativo, 33% do total. Uma ligação do CS para cada uma, começando pelas maiores, responde em duas semanas o que o evento de churn de fato registra.</p>
+  <div class="tablewrap">
+    <table id="t-contas">
+      <thead><tr><th>Conta</th><th>Indústria</th><th>Plano</th><th class="r">MRR ativo</th><th class="r">Eventos (90d / total)</th><th>Motivos registrados</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <p class="note">As 10 maiores por MRR ativo. A lista completa, com as 177 contas, está em <code>outputs/05_lista_cs.csv</code>. O MRR ativo soma assinaturas simultâneas: cada conta tem em média 9 assinaturas abertas, o que é mais um ponto a auditar no faturamento.</p>
+</section>
+
+<section class="stack" aria-labelledby="plano">
+  <div class="kicker">O que fazer</div>
+  <h2 id="plano">Primeiro medir direito, depois reter</h2>
+  <ol class="plan">
+    <li><h3>Adotar uma única definição de churn</h3><p>Churn de cliente é a conta que fica sem nenhuma assinatura paga ativa. Churn de receita é o MRR encerrado menos o MRR reativado no mês. Os dois vão para um único painel, e os outros três números saem de circulação.</p><div class="meta"><span><b>Dono:</b> Finanças + Dados</span><span><b>Prazo:</b> 1 semana</span><span><b>Impacto:</b> o indicador que hoje mostra 23% ao mês passa a mostrar a perda real, hoje zero contas</span></div></li>
+    <li><h3>Descobrir o que grava os eventos de churn</h3><p>Rastrear qual sistema cria o evento e em que situação: cancelamento de um produto, troca de plano, falha de cobrança ou outra coisa. Sem isso, a empresa não sabe o que está crescendo 40 vezes.</p><div class="meta"><span><b>Dono:</b> Engenharia</span><span><b>Prazo:</b> 2 semanas</span><span><b>Impacto:</b> transforma 600 eventos sem significado em uma causa nomeada</span></div></li>
+    <li><h3>Ligar para as 177 contas, começando pelas maiores</h3><p>Pergunta única: o que aconteceu na data do evento? As respostas também servem para validar o item 2.</p><div class="meta"><span><b>Dono:</b> CS</span><span><b>Prazo:</b> 2 semanas</span><span><b>Impacto:</b> cobre $3,4 mi de MRR, 33% da receita ativa</span></div></li>
+    <li><h3>Amarrar uso e tickets à conta certa</h3><p>Criar um contrato de dados: todo registro de uso e todo ticket carregam o ID da conta e da assinatura e são validados contra as datas do contrato. A meta é menos de 1% de registros fora da janela, contra 78% hoje.</p><div class="meta"><span><b>Dono:</b> Produto + Dados</span><span><b>Prazo:</b> 30 dias</span><span><b>Impacto:</b> "o uso cresceu" passa a ser uma afirmação que dá para checar</span></div></li>
+    <li><h3>Refazer a pesquisa de satisfação</h3><p>Usar a escala de 1 a 5 completa, medir a taxa de resposta por conta e tratar a conta que parou de responder como sinal de risco.</p><div class="meta"><span><b>Dono:</b> CS</span><span><b>Prazo:</b> 30 dias</span><span><b>Impacto:</b> a satisfação passa a conseguir mostrar um problema</span></div></li>
+    <li><h3>Um motivo de saída, coletado uma vez, com validação</h3><p>No cancelamento, o cliente escolhe um motivo de uma lista curta e escreve o texto. Se motivo e texto discordarem, o caso vai para revisão. Isso substitui o código atual, que não tem relação com o que o cliente escreve.</p><div class="meta"><span><b>Dono:</b> CS + Produto</span><span><b>Prazo:</b> 30 dias</span><span><b>Impacto:</b> em 90 dias, a primeira análise de causa de churn com base confiável</span></div></li>
+  </ol>
+</section>
+
+<section class="stack" aria-labelledby="limites">
+  <div class="kicker">Limitações e método</div>
+  <h2 id="limites">O que esta análise não afirma</h2>
+  <p>A base é sintética: o autor publica que foi gerada por script, com nomes e textos inventados. Por isso, a ausência de qualquer padrão de churn é coerente. Lido como uma empresa real, o diagnóstico continua o mesmo: com dados nesse estado, qualquer causa apontada seria invenção, e o trabalho certo é consertar a medição.</p>
+  <p>Também não afirmo que os clientes estejam satisfeitos nem que o produto esteja bem. A afirmação é mais estreita: os dados atuais não conseguem dizer nem uma coisa nem outra.</p>
+  <details>
+    <summary>Como reproduzir cada número</summary>
+    <div class="tablewrap" style="margin-top:10px">
+      <table>
+        <thead><tr><th>Script</th><th>O que verifica</th></tr></thead>
+        <tbody>
+          <tr><td><code>01_estrutura.py</code></td><td>Chaves, nulos, datas, as definições de churn, CRM × faturamento, distribuições</td></tr>
+          <tr><td><code>02_tempo.py</code></td><td>Séries mensais e trimestrais de churn, uso, tickets e satisfação</td></tr>
+          <tr><td><code>03_contas.py</code></td><td>23 variáveis por conta, testes por segmento, Mann-Whitney e AUC, motivo × texto</td></tr>
+          <tr><td><code>04_profundo.py</code></td><td>Timing do churn, quem continua pagando, uso antes do churn, modelos com placebo</td></tr>
+          <tr><td><code>05_receita_e_lista.py</code></td><td>Evento × fim de assinatura contra o acaso, receita nova × encerrada, lista do CS</td></tr>
+          <tr><td><code>06_checagens.py</code></td><td>Pico de dez/2024, mudança de plano × encerramento</td></tr>
+          <tr><td><code>07_contas_sem_assinatura.py</code></td><td>Ex-clientes sem assinatura ativa em cada fim de trimestre</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:10px">Todos ficam em <code>process-log/verification/</code>, com as saídas em <code>outputs/</code>. Para rodar: <code>uv run --no-project --with pandas --with scipy --with scikit-learn python -I &lt;script&gt; &lt;pasta_dos_csv&gt;</code>.</p>
+  </details>
+</section>
+
+</main>
+<div id="tip" role="tooltip"></div>
+
+<script>
+const Q = ["T1/23","T2/23","T3/23","T4/23","T1/24","T2/24","T3/24","T4/24"];
+const D = {
+  eventos: [6,11,19,37,54,92,130,251],
+  perdidas: [0,0,0,1,0,0,1,0],
+  uso: [31400,31128,31155,30878,31593,30789,31355,32227],
+  contas: [55,109,162,227,283,348,420,500],
+  csat: [4.00,4.00,3.97,3.99,3.88,3.99,4.14,3.89],
+  csatDist: [["Nota 1",0],["Nota 2",0],["Nota 3",396],["Nota 4",405],["Nota 5",374],["Sem resposta",825]],
+  defs: [["Contas marcadas como churn no cadastro",110,"contas"],["Contas com pelo menos um evento de churn",352,"contas"],["Assinaturas encerradas",486,"assinaturas"],["Contas sem nenhuma assinatura ativa",0,"contas"]],
+  auc: [["Indicador de urgência dos tickets",0.45],["Share de features beta",0.47],["Uso por assento",0.48],["Taxa de resposta à pesquisa",0.48],["Tickets",0.49],["Idade da conta",0.50],["Plano anual (share)",0.50],["Taxa de erro",0.50],["Tempo de resolução",0.50],["Auto-renovação",0.51],["Nº de assinaturas",0.51],["Uso total",0.51],["Eventos de uso",0.51],["Nota de satisfação",0.51],["Tempo de 1ª resposta",0.51],["Assentos",0.52],["MRR médio",0.52],["Downgrades",0.52],["Erros",0.52],["Duração média de uso",0.52],["Escalonamentos",0.52],["Upgrades",0.54],["Nº de features usadas",0.54]],
+  seg: [["Indústria",[["Cybersecurity",72],["DevTools",73],["EdTech",72],["FinTech",68],["HealthTech",67]]],["Plano",[["Basic",68],["Pro",72],["Enterprise",70]]],["Canal",[["Ads",60],["Evento",71],["Orgânico",75],["Parceiro",75],["Outro",71]]]],
+  contasCS: [["Company_488","EdTech","Basic",75776,"1 / 1","support"],["Company_337","Cybersecurity","Basic",70644,"1 / 1","pricing"],["Company_341","FinTech","Enterprise",70000,"1 / 1","unknown"],["Company_475","FinTech","Pro",67737,"1 / 2","features"],["Company_198","EdTech","Basic",60092,"2 / 4","budget, unknown"],["Company_40","FinTech","Basic",51109,"1 / 2","features"],["Company_205","DevTools","Enterprise",48804,"2 / 2","budget, features"],["Company_416","FinTech","Enterprise",48647,"2 / 3","competitor, features"],["Company_470","DevTools","Pro",48378,"2 / 3","unknown"],["Company_226","HealthTech","Pro",47955,"2 / 2","pricing, unknown"]]
+};
+const fmt = n => n.toLocaleString("pt-BR");
+const NS = "http://www.w3.org/2000/svg";
+const tip = document.getElementById("tip");
+function el(tag, attrs, parent) { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
+function hover(node, text) {
+  node.addEventListener("mousemove", ev => { tip.textContent = text; tip.style.opacity = 1; const x = Math.min(ev.clientX + 14, window.innerWidth - 270); tip.style.left = x + "px"; tip.style.top = (ev.clientY + 14) + "px"; });
+  node.addEventListener("mouseleave", () => { tip.style.opacity = 0; });
+}
+function niceMax(v) { if (v <= 0) return 1; const p = Math.pow(10, Math.floor(Math.log10(v))); for (const m of [1, 2, 2.5, 5, 10]) if (m * p >= v) return m * p; return 10 * p; }
+
+function bars(id, values, opt) {
+  const W = 420, H = 230, L = 44, R = 10, T = 18, B = 28;
+  const box = document.getElementById(id); const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": opt.label }, box);
+  const max = opt.max || niceMax(Math.max(...values)); const pw = W - L - R, ph = H - T - B;
+  const ticks = opt.ticks || [0, max / 2, max];
+  ticks.forEach(t => { const y = T + ph - (t / max) * ph; el("line", { x1: L, x2: W - R, y1: y, y2: y, class: "grid" }, svg); const tx = el("text", { x: L - 6, y: y + 4, "text-anchor": "end" }, svg); tx.textContent = opt.tickFmt ? opt.tickFmt(t) : fmt(t); });
+  el("line", { x1: L, x2: W - R, y1: T + ph, y2: T + ph, class: "axis" }, svg);
+  const bw = pw / values.length;
+  values.forEach((v, i) => {
+    const h = (v / max) * ph, x = L + i * bw + bw * 0.18, w = bw * 0.64, y = T + ph - h;
+    if (h > 0) { const r = Math.min(4, h); el("path", { d: `M${x},${T + ph} V${y + r} Q${x},${y} ${x + r},${y} H${x + w - r} Q${x + w},${y} ${x + w},${y + r} V${T + ph} Z`, fill: opt.color }, svg); }
+    else { el("line", { x1: x, x2: x + w, y1: T + ph - 1, y2: T + ph - 1, stroke: opt.color, "stroke-width": 3 }, svg); }
+    const lb = el("text", { x: L + i * bw + bw / 2, y: H - 8, "text-anchor": "middle" }, svg); lb.textContent = Q[i];
+    if (opt.direct && (i === values.length - 1 || i === 0)) { const t = el("text", { x: L + i * bw + bw / 2, y: y - 6, "text-anchor": "middle", style: "fill:var(--ink);font-weight:600" }, svg); t.textContent = opt.valFmt ? opt.valFmt(v) : fmt(v); }
+    const hit = el("rect", { x: L + i * bw, y: T, width: bw, height: ph, class: "hit" }, svg); hover(hit, `${Q[i]}: ${opt.valFmt ? opt.valFmt(v) : fmt(v)} ${opt.unit || ""}`);
+  });
+  if (opt.note) { const t = el("text", { x: L + pw / 2, y: T + ph / 2, "text-anchor": "middle", style: "fill:var(--ink);font-size:15px;font-weight:600" }, svg); t.textContent = opt.note; }
+}
+
+function line(id, values, opt) {
+  const W = 420, H = 230, L = 44, R = 14, T = 18, B = 28;
+  const box = document.getElementById(id); const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": opt.label }, box);
+  const min = opt.min, max = opt.max; const pw = W - L - R, ph = H - T - B;
+  const X = i => L + (i + 0.5) * (pw / values.length), Y = v => T + ph - ((v - min) / (max - min)) * ph;
+  opt.ticks.forEach(t => { el("line", { x1: L, x2: W - R, y1: Y(t), y2: Y(t), class: "grid" }, svg); const tx = el("text", { x: L - 6, y: Y(t) + 4, "text-anchor": "end" }, svg); tx.textContent = opt.tickFmt ? opt.tickFmt(t) : fmt(t); });
+  el("line", { x1: L, x2: W - R, y1: T + ph, y2: T + ph, class: "axis" }, svg);
+  const d = values.map((v, i) => `${i ? "L" : "M"}${X(i)},${Y(v)}`).join(" ");
+  el("path", { d: d + ` L${X(values.length - 1)},${T + ph} L${X(0)},${T + ph} Z`, fill: opt.color, opacity: 0.1 }, svg);
+  el("path", { d, fill: "none", stroke: opt.color, "stroke-width": 2, "stroke-linejoin": "round" }, svg);
+  values.forEach((v, i) => {
+    const lb = el("text", { x: X(i), y: H - 8, "text-anchor": "middle" }, svg); lb.textContent = Q[i];
+    const end = i === 0 || i === values.length - 1;
+    el("circle", { cx: X(i), cy: Y(v), r: end ? 5 : 3, fill: opt.color, stroke: "var(--surface)", "stroke-width": 2 }, svg);
+    if (end) { const t = el("text", { x: X(i), y: Y(v) - 10, "text-anchor": "middle", style: "fill:var(--ink);font-weight:600" }, svg); t.textContent = opt.valFmt(v); }
+    const hit = el("rect", { x: X(i) - pw / values.length / 2, y: T, width: pw / values.length, height: ph, class: "hit" }, svg); hover(hit, `${Q[i]}: ${opt.valFmt(v)}${opt.unit || ""}`);
+  });
+}
+
+function hbars(id, rows, opt) {
+  const W = 760, rowH = 34, L = opt.left || 300, R = 150, T = 6; const H = T + rows.length * rowH + 6;
+  const box = document.getElementById(id); const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": opt.label }, box); svg.style.minWidth = "560px";
+  const max = opt.max || niceMax(Math.max(...rows.map(r => r[1]))); const pw = W - L - R;
+  rows.forEach((r, i) => {
+    const y = T + i * rowH, w = (r[1] / max) * pw, c = (opt.colorFn ? opt.colorFn(r, i) : opt.color);
+    const t = el("text", { x: L - 10, y: y + rowH / 2 + 4, "text-anchor": "end", style: "fill:var(--ink)" }, svg); t.textContent = r[0];
+    if (w > 0) { const x = L, h = rowH - 12, yy = y + 6, rr = Math.min(4, w); el("path", { d: `M${x},${yy} H${x + w - rr} Q${x + w},${yy} ${x + w},${yy + rr} V${yy + h - rr} Q${x + w},${yy + h} ${x + w - rr},${yy + h} H${x} Z`, fill: c }, svg); }
+    else { el("line", { x1: L, x2: L, y1: y + 6, y2: y + rowH - 6, stroke: c, "stroke-width": 3 }, svg); }
+    const v = el("text", { x: L + w + 8, y: y + rowH / 2 + 4, style: "fill:var(--ink);font-weight:600" }, svg); v.textContent = opt.valFmt ? opt.valFmt(r) : fmt(r[1]);
+    const hit = el("rect", { x: 0, y, width: W, height: rowH, class: "hit" }, svg); hover(hit, `${r[0]}: ${opt.valFmt ? opt.valFmt(r) : fmt(r[1])}`);
+  });
+}
+
+function aucPlot(id, rows) {
+  const W = 760, rowH = 22, L = 250, R = 30, T = 30; const H = T + rows.length * rowH + 30;
+  const box = document.getElementById(id); const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "AUC por característica" }, box); svg.style.minWidth = "560px";
+  const lo = 0.30, hi = 0.70, pw = W - L - R, X = v => L + ((v - lo) / (hi - lo)) * pw, ph = rows.length * rowH;
+  el("rect", { x: X(0.45), y: T - 6, width: X(0.55) - X(0.45), height: ph + 6, fill: "var(--band)" }, svg);
+  const bt = el("text", { x: X(0.5), y: T - 12, "text-anchor": "middle", style: "font-size:11px" }, svg); bt.textContent = "faixa do acaso (0,45–0,55)";
+  [0.3, 0.4, 0.5, 0.6, 0.7].forEach(t => { el("line", { x1: X(t), x2: X(t), y1: T - 6, y2: T + ph, class: t === 0.5 ? "axis" : "grid" }, svg); const tx = el("text", { x: X(t), y: T + ph + 18, "text-anchor": "middle" }, svg); tx.textContent = t.toFixed(1).replace(".", ","); });
+  const t1 = el("text", { x: X(0.3), y: T + ph + 18 + 0, "text-anchor": "start", style: "font-size:0" }, svg); t1.textContent = "";
+  rows.forEach((r, i) => {
+    const y = T + i * rowH + rowH / 2;
+    const t = el("text", { x: L - 10, y: y + 4, "text-anchor": "end", style: "fill:var(--ink)" }, svg); t.textContent = r[0];
+    el("line", { x1: X(0.5), x2: X(r[1]), y1: y, y2: y, stroke: "var(--muted-bar)", "stroke-width": 2 }, svg);
+    el("circle", { cx: X(r[1]), cy: y, r: 5, fill: "var(--s1)", stroke: "var(--surface)", "stroke-width": 2 }, svg);
+    const hit = el("rect", { x: 0, y: y - rowH / 2, width: W, height: rowH, class: "hit" }, svg); hover(hit, `${r[0]}: AUC ${r[1].toFixed(2).replace(".", ",")}`);
+  });
+  const m = el("text", { x: X(0.69), y: T + ph + 18, "text-anchor": "end", style: "font-size:11px" }, svg); m.textContent = "";
+}
+
+function segPlot(id, groups) {
+  const W = 760, rowH = 26, gapG = 18, L = 160, R = 60, T = 6;
+  const n = groups.reduce((a, g) => a + g[1].length, 0); const H = T + n * rowH + groups.length * gapG + 22;
+  const box = document.getElementById(id); const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Taxa de churn por segmento" }, box); svg.style.minWidth = "560px";
+  const pw = W - L - R, X = v => L + (v / 100) * pw; let y = T;
+  [0, 25, 50, 75, 100].forEach(t => { el("line", { x1: X(t), x2: X(t), y1: T, y2: H - 22, class: "grid" }, svg); const tx = el("text", { x: X(t), y: H - 6, "text-anchor": "middle" }, svg); tx.textContent = t + "%"; });
+  el("line", { x1: X(70.4), x2: X(70.4), y1: T, y2: H - 22, stroke: "var(--ink-3)", "stroke-width": 1.5, "stroke-dasharray": "4 3" }, svg);
+  groups.forEach(g => {
+    const gt = el("text", { x: 0, y: y + 14, style: "fill:var(--ink-3);font-size:11px;letter-spacing:.05em;text-transform:uppercase" }, svg); gt.textContent = g[0];
+    g[1].forEach(r => {
+      const yy = y + 5, h = rowH - 10, w = X(r[1]) - L;
+      const t = el("text", { x: L - 10, y: y + rowH / 2 + 4, "text-anchor": "end", style: "fill:var(--ink)" }, svg); t.textContent = r[0];
+      el("path", { d: `M${L},${yy} H${L + w - 4} Q${L + w},${yy} ${L + w},${yy + 4} V${yy + h - 4} Q${L + w},${yy + h} ${L + w - 4},${yy + h} H${L} Z`, fill: "var(--s1)" }, svg);
+      const v = el("text", { x: L + w + 8, y: y + rowH / 2 + 4, style: "fill:var(--ink);font-weight:600" }, svg); v.textContent = r[1] + "%";
+      const hit = el("rect", { x: 0, y, width: W, height: rowH, class: "hit" }, svg); hover(hit, `${g[0]} · ${r[0]}: ${r[1]}% das contas com evento de churn`);
+      y += rowH;
+    });
+    y += gapG;
+  });
+  const avg = el("text", { x: X(70.4) + 4, y: T + 10, style: "font-size:11px" }, svg); avg.textContent = "média 70%";
+}
+
+bars("c-eventos", D.eventos, { color: "var(--s2)", label: "Eventos de churn por trimestre", direct: true, unit: "eventos" });
+bars("c-perdidas", D.perdidas, { color: "var(--s1)", label: "Ex-clientes sem assinatura ativa por trimestre", max: 250, ticks: [0, 125, 250], note: "no máximo 1 conta; hoje, 0", unit: "contas" });
+hbars("c-csat", D.csatDist, { label: "Distribuição das respostas de satisfação", left: 130, max: 1000, colorFn: r => r[0] === "Sem resposta" ? "var(--muted-bar)" : "var(--s1)", valFmt: r => `${fmt(r[1])} (${Math.round(r[1] / 20)}%)` });
+document.querySelector("#c-csat svg").style.minWidth = "340px";
+line("c-csat-t", D.csat, { color: "var(--s1)", min: 1, max: 5, ticks: [1, 2, 3, 4, 5], tickFmt: t => t, valFmt: v => v.toFixed(2).replace(".", ","), label: "Nota média por trimestre" });
+line("c-uso", D.uso, { color: "var(--s1)", min: 0, max: 40000, ticks: [0, 20000, 40000], tickFmt: t => (t / 1000) + " mil", valFmt: v => fmt(v), unit: " ações", label: "Uso total por trimestre" });
+line("c-uso-conta", D.uso.map((u, i) => Math.round(u / D.contas[i])), { color: "var(--s2)", min: 0, max: 600, ticks: [0, 300, 600], valFmt: v => fmt(v), unit: " ações por conta", label: "Uso por conta cadastrada" });
+hbars("c-defs", D.defs, { label: "Quatro respostas para quantos clientes perdemos", left: 320, max: 500, colorFn: (r, i) => i === 3 ? "var(--good)" : "var(--s2)", valFmt: r => `${fmt(r[1])} ${r[2]}` });
+aucPlot("c-auc", D.auc);
+segPlot("c-seg", D.seg);
+const tb = document.querySelector("#t-contas tbody");
+D.contasCS.forEach(r => { const tr = document.createElement("tr"); tr.innerHTML = `<td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td class="r">$${fmt(r[3])}</td><td class="r">${r[4]}</td><td>${r[5]}</td>`; tb.appendChild(tr); });
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+=== 1. duração das assinaturas pagas encerradas (dias)
+                   count   25%   50%    75%    max
+billing_frequency                                 
+annual             216.0   8.0  34.0   99.0  459.0
+monthly            192.0  17.0  48.0  149.0  624.0
+  anuais encerradas entre 330 e 400 dias (≈ vencimento): 1%
+
+=== 2. depois que uma assinatura paga termina, a conta abre outra paga em até 60 dias? (só fins até 31/10/2024)
+                                    n  renov     mrr
+billing_frequency auto_renew_flag                   
+annual            False            22  0.773   46950
+                  True             64  0.844  129523
+monthly           False            17  0.882   28037
+                  True             75  0.800  213217
+  anual x mensal: Fisher p=1.000
+  auto_renew sim x não: Fisher p=1.000
+
+=== 3. churn_flag da conta pelo auto_renew e frequência da última assinatura paga
+               size   mean
+freq    auto              
+annual  False    44  0.227
+        True    222  0.257
+monthly False    51  0.157
+        True    183  0.191
+  auto_renew: Fisher p=0.492
+
+=== 4. carteira anual ativa: próximos aniversários de contrato (90 dias após 31/12/2024)
+  anuais ativas: 1871 assinaturas, 489 contas, MRR $5,048,025
+  aniversário em 90 dias: 180 assinaturas, 131 contas, ARR $5,725,476
+  ... dessas, SEM auto-renew: 36 assinaturas, 33 contas, ARR $1,082,076
+  por país (ARR em 90 dias): {'US': 3973824, 'IN': 674352, 'UK': 353256, 'FR': 319308, 'CA': 170244, 'AU': 168024, 'DE': 66468}

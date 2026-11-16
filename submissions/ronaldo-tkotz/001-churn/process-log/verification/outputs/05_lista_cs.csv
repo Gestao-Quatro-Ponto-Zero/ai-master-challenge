@@ -1,0 +1,178 @@
+account_id,eventos_90d,ultimo,motivos,eventos_total,mrr_ativo,subs_ativas,account_name,industry,plan_tier,seats
+A-18793f,1,2024-12-30,support,1,75776,10,Company_488,EdTech,Basic,148
+A-4814a3,1,2024-11-25,pricing,1,70644,10,Company_337,Cybersecurity,Basic,87
+A-09316c,1,2024-12-05,unknown,1,70000,11,Company_341,FinTech,Enterprise,70
+A-e08cd3,1,2024-12-17,features,2,67737,10,Company_475,FinTech,Pro,67
+A-0cc442,2,2024-10-23,"budget, unknown",4,60092,11,Company_198,EdTech,Basic,45
+A-05f0e5,1,2024-11-25,features,2,51109,12,Company_40,FinTech,Basic,32
+A-bd4513,2,2024-12-09,"budget, features",2,48804,10,Company_205,DevTools,Enterprise,50
+A-1e1b80,2,2024-11-13,"competitor, features",3,48647,12,Company_416,FinTech,Enterprise,50
+A-d77f4c,2,2024-12-03,unknown,3,48378,12,Company_470,DevTools,Pro,4
+A-76fa4d,2,2024-12-03,"pricing, unknown",2,47955,5,Company_226,HealthTech,Pro,69
+A-2d1036,2,2024-10-28,"budget, pricing",2,46230,10,Company_399,FinTech,Pro,69
+A-0651a4,2,2024-12-25,"features, support",2,44564,14,Company_255,HealthTech,Pro,16
+A-cd458b,1,2024-11-07,budget,1,42740,14,Company_430,DevTools,Basic,10
+A-158f4e,1,2024-12-04,features,2,42700,11,Company_180,FinTech,Enterprise,61
+A-712f1c,1,2024-10-24,budget,1,39616,11,Company_331,DevTools,Basic,17
+A-c70870,1,2024-12-13,competitor,1,39614,7,Company_253,Cybersecurity,Basic,31
+A-ac85cd,2,2024-12-13,"features, pricing",2,37663,9,Company_485,EdTech,Enterprise,53
+A-86902e,1,2024-12-07,features,1,36041,9,Company_169,HealthTech,Enterprise,34
+A-9f9299,1,2024-10-08,competitor,2,34087,12,Company_133,FinTech,Enterprise,28
+A-39ddf4,1,2024-12-13,support,1,33876,8,Company_435,EdTech,Enterprise,40
+A-a09355,1,2024-10-18,support,2,33454,15,Company_459,FinTech,Basic,14
+A-3a7284,1,2024-12-26,unknown,1,32515,9,Company_93,FinTech,Enterprise,31
+A-8bde0c,2,2024-12-30,"features, pricing",2,32385,16,Company_287,DevTools,Basic,12
+A-bbc346,2,2024-11-03,competitor,2,32142,11,Company_138,FinTech,Enterprise,19
+A-68f37c,1,2024-12-18,features,4,31474,10,Company_202,HealthTech,Basic,4
+A-039727,1,2024-12-22,pricing,1,31445,14,Company_107,EdTech,Pro,25
+A-b07346,1,2024-11-12,budget,1,31416,5,Company_269,HealthTech,Pro,51
+A-0b0d6d,1,2024-12-31,competitor,1,30429,11,Company_267,DevTools,Pro,3
+A-96bbc6,2,2024-12-21,"budget, competitor",3,30426,8,Company_342,Cybersecurity,Enterprise,39
+A-e693b6,1,2024-10-10,budget,1,30415,10,Company_240,FinTech,Enterprise,55
+A-956988,2,2024-12-30,"budget, unknown",2,29407,12,Company_14,EdTech,Enterprise,1
+A-4f18f0,1,2024-12-01,features,2,29333,9,Company_145,DevTools,Pro,24
+A-2ebb4b,1,2024-12-29,features,3,28679,9,Company_334,HealthTech,Basic,41
+A-9f0b68,1,2024-11-01,pricing,2,28518,12,Company_489,EdTech,Basic,10
+A-6965e1,3,2024-12-09,"budget, features, unknown",3,27765,12,Company_379,DevTools,Basic,13
+A-82d8a6,1,2024-12-29,features,1,27626,13,Company_444,Cybersecurity,Basic,5
+A-309e54,1,2024-12-14,support,1,26932,10,Company_371,DevTools,Pro,15
+A-592832,1,2024-10-04,support,1,26833,16,Company_10,Cybersecurity,Basic,18
+A-716841,1,2024-11-13,unknown,1,26234,8,Company_437,FinTech,Pro,45
+A-d3c88e,1,2024-11-18,support,1,26183,13,Company_490,DevTools,Pro,16
+A-118f1c,1,2024-12-17,budget,1,26080,6,Company_492,Cybersecurity,Pro,32
+A-ce550d,1,2024-12-28,budget,1,25355,7,Company_4,HealthTech,Enterprise,35
+A-dfbd31,1,2024-12-19,unknown,2,25079,14,Company_190,DevTools,Enterprise,14
+A-692f18,1,2024-12-23,support,1,24978,16,Company_195,EdTech,Basic,5
+A-0f6450,2,2024-12-30,competitor,2,23800,11,Company_400,FinTech,Pro,28
+A-8b0451,1,2024-12-29,budget,1,23550,9,Company_245,FinTech,Enterprise,41
+A-8e47ca,1,2024-12-31,support,3,23145,8,Company_191,HealthTech,Pro,19
+A-a33200,1,2024-10-07,features,1,23142,11,Company_352,HealthTech,Basic,29
+A-7dacce,2,2024-12-27,"budget, features",3,23057,10,Company_8,Cybersecurity,Enterprise,12
+A-37f969,2,2024-12-12,"competitor, pricing",4,22959,8,Company_150,HealthTech,Enterprise,30
+A-87aa7b,1,2024-12-26,budget,3,22881,16,Company_433,HealthTech,Pro,24
+A-65c341,1,2024-12-16,unknown,2,22466,6,Company_308,FinTech,Pro,11
+A-b78bf8,1,2024-12-06,unknown,1,22423,8,Company_148,DevTools,Pro,33
+A-157070,1,2024-12-27,features,2,22395,12,Company_85,FinTech,Pro,16
+A-5fe118,1,2024-12-16,features,1,22290,5,Company_374,Cybersecurity,Enterprise,39
+A-ccabf0,1,2024-10-31,features,2,22281,8,Company_471,HealthTech,Pro,1
+A-58b9ff,1,2024-10-10,pricing,1,22244,12,Company_425,DevTools,Enterprise,2
+A-bcbe98,1,2024-11-25,competitor,1,21666,11,Company_452,Cybersecurity,Enterprise,46
+A-659280,1,2024-11-22,pricing,2,21450,12,Company_417,FinTech,Enterprise,13
+A-ccb686,2,2024-11-24,"competitor, unknown",3,21351,11,Company_491,DevTools,Basic,10
+A-f03140,1,2024-10-03,competitor,1,21075,10,Company_209,DevTools,Pro,27
+A-d42431,1,2024-10-12,budget,2,20742,8,Company_378,FinTech,Enterprise,22
+A-4e44e8,1,2024-10-11,budget,2,20531,12,Company_22,DevTools,Enterprise,3
+A-533452,4,2024-12-16,"features, pricing, support",4,20223,10,Company_279,DevTools,Pro,9
+A-34d880,1,2024-12-20,unknown,1,20185,8,Company_207,Cybersecurity,Enterprise,4
+A-dec005,1,2024-11-23,support,1,19998,9,Company_445,HealthTech,Pro,21
+A-a45270,1,2024-11-12,pricing,1,19984,11,Company_37,HealthTech,Enterprise,3
+A-3f9cc0,1,2024-12-21,budget,3,19940,7,Company_359,HealthTech,Basic,22
+A-65aeb5,1,2024-12-02,budget,2,19893,9,Company_120,DevTools,Pro,9
+A-751c58,2,2024-12-16,budget,3,19597,11,Company_393,FinTech,Basic,15
+A-f3ff05,1,2024-10-20,unknown,1,19427,12,Company_44,FinTech,Enterprise,2
+A-e7a1e2,1,2024-12-11,features,3,19047,11,Company_295,Cybersecurity,Enterprise,3
+A-f92792,1,2024-11-03,features,1,18807,14,Company_67,FinTech,Pro,1
+A-c1e51e,2,2024-12-20,"pricing, support",2,18772,7,Company_173,FinTech,Basic,3
+A-5c9849,1,2024-11-13,unknown,1,18646,8,Company_362,EdTech,Basic,19
+A-118d55,2,2024-12-27,"pricing, unknown",2,18148,11,Company_65,Cybersecurity,Basic,8
+A-c222ab,1,2024-10-05,support,3,18048,6,Company_206,Cybersecurity,Pro,32
+A-b179bf,3,2024-12-05,"features, support",3,17931,5,Company_348,Cybersecurity,Basic,43
+A-417d2f,1,2024-12-30,budget,1,17759,15,Company_285,Cybersecurity,Pro,4
+A-eb1312,1,2024-10-03,unknown,2,17672,11,Company_322,FinTech,Pro,25
+A-81edc3,1,2024-12-16,support,3,17524,12,Company_236,Cybersecurity,Basic,5
+A-c37601,1,2024-12-17,support,1,17490,10,Company_48,EdTech,Basic,6
+A-5790f4,3,2024-12-31,"competitor, features, support",3,17334,5,Company_446,FinTech,Pro,1
+A-b07b56,1,2024-12-24,budget,1,16984,14,Company_292,DevTools,Pro,25
+A-1b9609,1,2024-11-16,unknown,3,16614,10,Company_5,EdTech,Enterprise,4
+A-6da850,1,2024-10-25,competitor,3,16534,13,Company_293,FinTech,Pro,5
+A-eafc6e,1,2024-12-12,unknown,2,16229,7,Company_149,DevTools,Pro,27
+A-54ecc2,1,2024-11-23,support,3,16168,11,Company_289,Cybersecurity,Enterprise,4
+A-f25509,1,2024-11-10,features,3,16122,5,Company_92,EdTech,Enterprise,32
+A-d26ab4,1,2024-12-26,pricing,1,15731,8,Company_497,DevTools,Basic,9
+A-249769,1,2024-12-16,budget,2,15717,13,Company_214,Cybersecurity,Enterprise,4
+A-bb1486,2,2024-11-23,"budget, competitor",2,15528,7,Company_265,HealthTech,Basic,41
+A-0532a9,1,2024-10-09,pricing,1,15161,10,Company_170,FinTech,Pro,19
+A-78f02b,2,2024-12-09,"budget, unknown",2,15081,4,Company_329,HealthTech,Enterprise,11
+A-f45426,1,2024-11-13,pricing,2,14959,9,Company_172,HealthTech,Basic,9
+A-3b37d9,1,2024-10-13,support,2,14858,6,Company_384,FinTech,Enterprise,23
+A-0354fe,2,2024-11-26,"support, unknown",2,14824,6,Company_380,Cybersecurity,Basic,34
+A-9123ac,1,2024-10-23,competitor,2,14751,7,Company_219,Cybersecurity,Pro,9
+A-781cc0,2,2024-12-09,"budget, support",2,14555,14,Company_499,EdTech,Pro,12
+A-854864,1,2024-12-24,support,1,14379,5,Company_38,FinTech,Enterprise,20
+A-22d9d2,1,2024-10-17,pricing,1,14336,11,Company_188,DevTools,Pro,8
+A-d922bf,1,2024-12-06,support,1,14129,6,Company_221,HealthTech,Basic,5
+A-922109,1,2024-12-17,support,2,13677,12,Company_243,Cybersecurity,Pro,3
+A-c9bb3e,1,2024-10-03,unknown,2,13502,9,Company_336,EdTech,Pro,5
+A-e61e98,1,2024-10-19,features,1,13484,9,Company_115,FinTech,Enterprise,19
+A-029f69,2,2024-12-14,competitor,3,13324,13,Company_129,Cybersecurity,Basic,3
+A-0a282f,2,2024-12-31,"features, support",2,13311,12,Company_2,DevTools,Basic,1
+A-463db0,1,2024-12-30,features,1,13266,7,Company_16,HealthTech,Basic,15
+A-f51f16,1,2024-12-07,competitor,2,13261,7,Company_282,HealthTech,Enterprise,1
+A-7cfe77,1,2024-12-19,features,2,12765,5,Company_367,DevTools,Pro,69
+A-dcc3f1,1,2024-10-10,features,2,12747,8,Company_314,HealthTech,Pro,21
+A-2e4581,2,2024-12-05,"budget, competitor",2,12603,10,Company_0,EdTech,Basic,9
+A-c16101,2,2024-12-19,features,2,12422,10,Company_139,EdTech,Basic,7
+A-6a7c9d,2,2024-11-21,"features, support",2,12135,4,Company_324,Cybersecurity,Enterprise,26
+A-e1462e,1,2024-12-05,competitor,2,12030,7,Company_217,FinTech,Basic,15
+A-8ed5dd,2,2024-11-02,"support, unknown",2,11861,11,Company_222,EdTech,Enterprise,5
+A-5247b3,2,2024-10-16,"pricing, support",2,11791,10,Company_375,FinTech,Pro,16
+A-5a92e7,1,2024-11-11,budget,2,11666,17,Company_413,HealthTech,Pro,4
+A-ee42db,1,2024-11-12,unknown,4,11567,12,Company_77,EdTech,Enterprise,13
+A-e40f45,1,2024-11-09,budget,1,11426,6,Company_317,HealthTech,Pro,21
+A-bcf664,1,2024-10-04,features,3,11340,12,Company_248,DevTools,Pro,5
+A-ab438f,1,2024-12-02,budget,1,11144,5,Company_233,Cybersecurity,Enterprise,13
+A-53f4e3,1,2024-12-06,competitor,1,11092,9,Company_194,Cybersecurity,Enterprise,13
+A-310452,2,2024-12-27,budget,2,11003,5,Company_321,DevTools,Enterprise,9
+A-c43359,2,2024-12-19,"support, unknown",2,10868,6,Company_83,FinTech,Pro,38
+A-425e76,1,2024-10-22,competitor,4,10743,10,Company_110,DevTools,Enterprise,8
+A-df1e44,2,2024-11-20,budget,2,10719,10,Company_323,Cybersecurity,Enterprise,12
+A-378b99,1,2024-10-12,pricing,1,10524,11,Company_60,EdTech,Pro,8
+A-e888d1,1,2024-11-29,features,3,10462,9,Company_102,Cybersecurity,Pro,14
+A-34ea2f,2,2024-10-19,unknown,2,10404,10,Company_436,HealthTech,Enterprise,8
+A-7a0d69,2,2024-12-29,"budget, competitor",3,10362,11,Company_187,DevTools,Enterprise,4
+A-5f2961,1,2024-11-28,pricing,1,10299,7,Company_284,HealthTech,Basic,4
+A-5f7781,1,2024-12-25,pricing,1,10252,5,Company_483,DevTools,Pro,22
+A-396e5f,1,2024-11-30,features,1,10236,10,Company_30,Cybersecurity,Enterprise,2
+A-7988d1,1,2024-12-24,unknown,3,10065,8,Company_90,Cybersecurity,Basic,33
+A-0baac2,2,2024-12-24,"features, unknown",4,9943,4,Company_264,FinTech,Enterprise,14
+A-2922b6,1,2024-12-25,competitor,1,9934,5,Company_70,HealthTech,Basic,15
+A-c37cab,2,2024-11-16,"competitor, pricing",2,9931,10,Company_278,Cybersecurity,Pro,13
+A-117171,3,2024-11-14,"budget, features, pricing",3,9810,4,Company_135,HealthTech,Basic,45
+A-cdf020,1,2024-11-07,support,2,9771,5,Company_345,DevTools,Pro,23
+A-1f0ac7,1,2024-11-08,support,1,9275,7,Company_3,HealthTech,Basic,24
+A-9ee962,1,2024-10-03,support,1,9249,7,Company_59,HealthTech,Basic,9
+A-7f29a7,1,2024-10-09,unknown,1,9143,8,Company_386,Cybersecurity,Basic,41
+A-cc1d8d,2,2024-12-19,"features, unknown",2,8947,13,Company_440,FinTech,Pro,5
+A-712426,3,2024-12-23,"features, pricing",3,8671,13,Company_155,HealthTech,Enterprise,9
+A-3cc791,1,2024-10-09,features,1,8522,8,Company_423,EdTech,Enterprise,6
+A-149a69,1,2024-12-04,pricing,1,8058,3,Company_302,DevTools,Basic,34
+A-cc102e,2,2024-11-19,pricing,3,8005,9,Company_443,HealthTech,Enterprise,13
+A-4c6f11,1,2024-10-18,competitor,2,7586,5,Company_146,FinTech,Pro,24
+A-e83938,1,2024-12-29,budget,3,7503,8,Company_111,DevTools,Pro,2
+A-c16cf7,2,2024-12-07,"budget, support",2,7498,9,Company_377,EdTech,Pro,13
+A-d535f6,2,2024-11-26,"features, unknown",2,7415,9,Company_421,DevTools,Basic,12
+A-ef84cf,1,2024-11-20,support,3,7355,4,Company_274,EdTech,Enterprise,8
+A-fce879,2,2024-12-03,"features, support",2,6797,5,Company_291,EdTech,Pro,10
+A-558c72,1,2024-11-28,support,1,6783,6,Company_438,FinTech,Basic,12
+A-104f1a,1,2024-12-11,unknown,3,6590,7,Company_89,Cybersecurity,Pro,24
+A-db5e9e,1,2024-12-29,pricing,1,5868,7,Company_442,DevTools,Basic,4
+A-4bfa33,3,2024-12-28,"budget, unknown",3,5165,6,Company_251,Cybersecurity,Basic,8
+A-a7bd4b,1,2024-10-15,features,1,5102,8,Company_363,Cybersecurity,Enterprise,5
+A-42e5e1,1,2024-10-04,pricing,1,4936,6,Company_118,DevTools,Pro,1
+A-0a62f5,4,2024-12-27,"budget, features, support",5,4861,4,Company_381,FinTech,Pro,16
+A-ae052e,3,2024-12-14,"budget, competitor, unknown",4,3822,3,Company_132,FinTech,Basic,39
+A-9f2731,2,2024-12-09,"features, unknown",2,3613,7,Company_24,FinTech,Enterprise,1
+A-241e75,2,2024-12-19,"features, unknown",2,3594,5,Company_242,EdTech,Enterprise,3
+A-9208f0,1,2024-11-09,features,4,3413,7,Company_79,EdTech,Pro,1
+A-b54c01,1,2024-10-23,budget,1,3393,4,Company_354,DevTools,Enterprise,29
+A-7c6b6b,1,2024-12-09,budget,1,3250,5,Company_223,FinTech,Basic,6
+A-b2af2e,1,2024-11-14,pricing,1,3112,4,Company_227,Cybersecurity,Enterprise,5
+A-e351e1,3,2024-12-04,"budget, support, unknown",3,2871,4,Company_62,EdTech,Enterprise,33
+A-0f7d77,1,2024-11-09,competitor,1,2326,5,Company_457,FinTech,Pro,3
+A-038089,2,2024-12-25,"competitor, features",2,2104,3,Company_156,DevTools,Pro,5
+A-296d7c,1,2024-11-04,budget,1,1989,7,Company_182,DevTools,Enterprise,2
+A-439b2f,1,2024-11-18,features,2,1796,5,Company_152,DevTools,Enterprise,1
+A-fd7ad3,4,2024-12-31,"pricing, support, unknown",4,904,8,Company_100,Cybersecurity,Enterprise,1
+A-bf7919,2,2024-12-17,"features, support",2,825,5,Company_426,HealthTech,Pro,3
+A-0be015,1,2024-12-13,unknown,1,817,4,Company_454,FinTech,Pro,19
+A-44dc83,1,2024-11-29,unknown,1,456,4,Company_35,EdTech,Basic,5

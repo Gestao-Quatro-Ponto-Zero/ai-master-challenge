@@ -1,0 +1,73 @@
+uso fora da janela da assinatura: 77.7%  | uso antes do signup da conta: 52.8%
+tickets antes do signup: 53.8%
+reason_code x feedback_text (Cramér V): 0.056
+feedback_text  (vazio)  missing features  switched to competitor  too expensive
+reason_code                                                                    
+budget              28                24                      24             28
+competitor          20                27                      21             24
+features            32                27                      23             32
+pricing             22                20                      24             25
+support             24                31                      20             29
+unknown             22                26                      24             23
+
+=========== alvo = churn_evento  (positivos: 352 de 500)
+industry         p=0.785 | taxa%: Cybersecurity=72, DevTools=73, EdTech=72, FinTech=68, HealthTech=67
+country          p=0.640 | taxa%: AU=69, CA=70, DE=56, FR=73, IN=67, UK=78, US=71
+referral_source  p=0.143 | taxa%: ads=60, event=71, organic=75, other=71, partner=75
+plan_tier        p=0.713 | taxa%: Basic=68, Enterprise=70, Pro=72
+is_trial         p=0.845 | taxa%: False=71, True=69
+variável           quem ficou        churn  p(MW)   AUC
+seats                  14.500       15.000  0.444  0.52
+idade_dias            304.500      321.500  0.934  0.50
+n_subs                 10.000       10.000  0.703  0.51
+mrr_medio_sub        1863.819     1939.208  0.494  0.52
+share_anual             0.500        0.500  0.977  0.50
+share_autorenew         0.806        0.806  0.850  0.51
+n_upgrades              1.000        1.000  0.187  0.54
+n_downgrades            0.000        0.000  0.311  0.52
+uso_eventos            49.000       50.000  0.657  0.51
+uso_total             495.500      499.500  0.687  0.51
+uso_por_seat           34.881       33.911  0.496  0.48
+erros                  27.000       28.000  0.470  0.52
+taxa_erro               0.054        0.055  0.873  0.50
+dur_media_s          3012.175     3044.880  0.432  0.52
+share_beta              0.102        0.100  0.270  0.47
+n_features             28.000       29.000  0.196  0.54
+tickets                 4.000        4.000  0.625  0.49
+csat                    4.000        4.000  0.828  0.51
+csat_resp               0.600        0.600  0.535  0.48
+escal                   0.000        0.000  0.241  0.52
+resol_h                36.000       35.667  0.876  0.50
+frt_min                84.500       88.600  0.783  0.51
+urgentes                0.333        0.200  0.084  0.45
+
+=========== alvo = churn_flag  (positivos: 110 de 500)
+industry         p=0.066 | taxa%: Cybersecurity=16, DevTools=31, EdTech=16, FinTech=22, HealthTech=22
+country          p=0.659 | taxa%: AU=12, CA=17, DE=32, FR=23, IN=20, UK=19, US=23
+referral_source  p=0.079 | taxa%: ads=23, event=30, organic=18, other=24, partner=15
+plan_tier        p=0.999 | taxa%: Basic=22, Enterprise=22, Pro=22
+is_trial         p=0.388 | taxa%: False=21, True=26
+variável           quem ficou        churn  p(MW)   AUC
+seats                  15.000       13.500  0.692  0.49
+idade_dias            301.000      379.500  0.059  0.56
+n_subs                 10.000       10.000  0.292  0.53
+mrr_medio_sub        1972.485     1814.388  0.154  0.46
+share_anual             0.500        0.500  0.883  0.50
+share_autorenew         0.815        0.800  0.855  0.51
+n_upgrades              1.000        1.000  0.907  0.50
+n_downgrades            0.000        0.000  0.733  0.49
+uso_eventos            49.000       53.500  0.221  0.54
+uso_total             491.000      527.500  0.206  0.54
+uso_por_seat           33.899       40.008  0.423  0.52
+erros                  27.000       28.500  0.795  0.51
+taxa_erro               0.055        0.054  0.115  0.45
+dur_media_s          3039.749     3022.687  0.787  0.49
+share_beta              0.100        0.100  0.867  0.49
+n_features             28.000       29.000  0.217  0.54
+tickets                 4.000        3.500  0.342  0.47
+csat                    4.000        4.000  0.540  0.52
+csat_resp               0.600        0.600  0.837  0.51
+escal                   0.000        0.000  0.391  0.52
+resol_h                36.000       35.450  0.717  0.49
+frt_min                89.708       83.625  0.103  0.45
+urgentes                0.250        0.167  0.165  0.46

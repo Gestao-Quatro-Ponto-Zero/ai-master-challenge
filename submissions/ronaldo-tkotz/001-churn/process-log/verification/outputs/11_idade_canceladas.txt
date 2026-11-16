@@ -1,0 +1,13 @@
+         canc  idade_hoje_canc  idade_hoje_ativas  idade_no_churn  churn%
+country                                                                  
+AU        4.0             14.0               11.7             8.3    12.5
+CA        4.0             10.5               12.4             5.6    17.4
+DE        8.0             15.1               14.4            11.6    32.0
+FR        5.0             11.1                9.1             7.3    22.7
+IN       10.0             12.2               11.6             7.6    20.4
+UK       11.0             11.7               10.5             9.6    19.0
+US       68.0             12.0               10.4             7.8    23.4
+
+GERAL canceladas: idade hoje 12.2 m | idade no último evento 8.2 m (mediana 6.8) | ativas: idade hoje 10.8 m
+Mann-Whitney idade hoje canceladas x ativas: p=0.059
+países com churn > 30%: ['DE']

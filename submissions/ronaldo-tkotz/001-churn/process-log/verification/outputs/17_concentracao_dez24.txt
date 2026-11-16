@@ -1,0 +1,30 @@
+encerradas em dez/24: 193 assinaturas, ARR $6,895,716 | das ativas em 30/11: 90, ARR $3,373,140
+
+=== country  (taxa de assinaturas perdidas difere entre grupos? qui-quadrado p=0.557)
+         ARR_perdido  ARR_exposto_30nov  assin_perdidas  assin_expostas  %_do_perdido  %_da_exposicao  taxa_ARR  taxa_assin
+country                                                                                                                    
+US           3780720           58199124              57            2161         0.548           0.573     0.029       0.026
+UK           1153176           10203996              10             444         0.167           0.101     0.041       0.023
+IN            781488           12109128               6             412         0.113           0.119     0.037       0.015
+FR            628896            5149368               6             156         0.091           0.051     0.113       0.038
+AU            226776            7661148               6             242         0.033           0.075     0.016       0.025
+DE            196404            3483660               2             169         0.028           0.034     0.004       0.012
+CA            128256            4723464               3             170         0.019           0.047     0.022       0.018
+
+=== industry  (taxa de assinaturas perdidas difere entre grupos? qui-quadrado p=0.233)
+               ARR_perdido  ARR_exposto_30nov  assin_perdidas  assin_expostas  %_do_perdido  %_da_exposicao  taxa_ARR  taxa_assin
+industry                                                                                                                         
+Cybersecurity      2164428           19767924              26             749         0.314           0.195     0.045       0.035
+HealthTech         1364364           18066744              16             719         0.198           0.178     0.025       0.022
+FinTech            1348512           24618396              21             844         0.196           0.242     0.042       0.025
+EdTech             1291536           17575680              12             601         0.187           0.173     0.040       0.020
+DevTools            726876           21501144              15             841         0.105           0.212     0.014       0.018
+
+=== plan_tier  (taxa de assinaturas perdidas difere entre grupos? qui-quadrado p=0.021)
+            ARR_perdido  ARR_exposto_30nov  assin_perdidas  assin_expostas  %_do_perdido  %_da_exposicao  taxa_ARR  taxa_assin
+plan_tier                                                                                                                     
+Enterprise      5681052           76411224              39            1306         0.824           0.753     0.037       0.030
+Pro              930804           18311496              34            1237         0.135           0.180     0.025       0.027
+Basic            283860            6807168              17            1211         0.041           0.067     0.015       0.014
+
+ARR médio por assinatura ativa (30/11): {'Basic': 5621.0, 'Enterprise': 58508.0, 'Pro': 14803.0}

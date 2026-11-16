@@ -1,0 +1,10 @@
+encerramentos em dez/2024: 193 | no dia 31/12: 24 | últimos 7 dias: 88
+dias até o fim, por assinatura encerrada (mediana): 42.0
+assinaturas que começaram em dez/2024: 953 | em nov: 612
+encerramento por upgrade_flag: False=9.8%, True=8.7% | p=0.445
+encerramento por downgrade_flag: False=9.6%, True=11.5% | p=0.439
+encerramento por is_trial: False=9.7%, True=10.0% | p=0.805
+encerramento por auto_renew_flag: False=9.6%, True=9.7% | p=0.980
+encerramento por billing_frequency: annual=10.0%, monthly=9.4% | p=0.486
+encerramento por plan_tier: Basic=9.5%, Enterprise=10.0%, Pro=9.7% | p=0.888
+taxa de encerramento por trimestre de início: {Period('2023Q1', 'Q-DEC'): 0.194, Period('2023Q2', 'Q-DEC'): 0.104, Period('2023Q3', 'Q-DEC'): 0.158, Period('2023Q4', 'Q-DEC'): 0.11, Period('2024Q1', 'Q-DEC'): 0.093, Period('2024Q2', 'Q-DEC'): 0.086, Period('2024Q3', 'Q-DEC'): 0.081, Period('2024Q4', 'Q-DEC'): 0.101}
