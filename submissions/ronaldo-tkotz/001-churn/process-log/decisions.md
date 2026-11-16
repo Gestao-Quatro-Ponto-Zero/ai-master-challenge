@@ -152,3 +152,25 @@
 - **Humano decidiu:** a data de corte é 31/12/2024. A definição de churn fica para quando o dado aparecer na exploração, porque o humano já tinha notado nos CSVs que as três fontes de churn não coincidem.
 - **IA implementou:** a tabela `parametros` no schema, com `data_corte = 2024-12-31 00:00:00`. O dia 31/12 entra inteiro na janela. Consultas leem o valor da tabela e não o repetem no SQL.
 - **Correção de entendimento:** o humano associou o T06 a tickets anteriores à assinatura. O T06 é **uso** (`feature_usage`) com data fora do período da própria assinatura: 19.142 registros antes do `start_date`, 290 depois do `end_date` e 5.568 dentro. Os tickets anteriores ao cadastro da conta são o T08 (1.077).
+
+## D18 — Qual data de referência o T06 e o T08 usam (pergunta humana)
+- **Humano perguntou:** se os alertas de uso e de ticket "antes do início" comparam com o `signup_date` da conta ou com o `start_date` da assinatura.
+- **Resposta:** as duas checagens usavam referências diferentes.
+  - O T06 compara o uso com o período da **própria assinatura** (`start_date`/`end_date`).
+  - O T08 compara o ticket com o **`signup_date` da conta**, porque ticket não tem vínculo com assinatura.
+- **Matriz com as três referências (consulta ad hoc, saída abaixo):**
+
+  | Tabela | Antes do start da própria assinatura | Antes do 1º start da conta | Antes do signup da conta |
+  |---|---|---|---|
+  | Uso (25.000) | 19.142 | 14.216 | 13.198 |
+  | Tickets (2.000) | não se aplica | 1.170 | 1.077 |
+
+- **Fato complementar:** a primeira assinatura de cada conta começa de 0 a 432 dias depois do `signup_date`. Em 25 contas é no mesmo dia, e em nenhuma é antes (T07 = 0).
+
+## D19 — As datas de uso e ticket ficam destacadas, e o trabalho passa a partir do dashboard (decisão humana)
+- **Humano perguntou:** se há algo errado no banco, dada a quantidade de ocorrências fora da data lógica.
+- **Fatos verificados:**
+  - A carga não altera datas: o E03 compara o texto do CSV com o banco e dá 0 diferenças.
+  - O README do dataset (Kaggle) declara que os dados são **sintéticos** e que a lógica temporal validada é "signup ≤ subscription ≤ churn". As duas regras declaradas se confirmam no banco: T07 = 0 e T09 = 0.
+  - O README não declara regra temporal para uso nem para tickets, e é exatamente aí que estão as ocorrências (T06, T08 e D18).
+- **Decisão humana:** manter as ocorrências só destacadas e não tratá-las agora. Antes da análise exploratória, o humano vai desenhar o dashboard (o que é importante apresentar) e trabalhar de trás para frente: dashboard → análises → engenharia de dados.
