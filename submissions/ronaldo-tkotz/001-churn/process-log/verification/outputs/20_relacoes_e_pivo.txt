@@ -1,0 +1,48 @@
+etapa                                        
+---------------------------------------------
+1) FK checadas de novo, independente da carga
+fk_orfas
+--------
+0       
+tabela           referencia     coluna           chave_pai      
+---------------  -------------  ---------------  ---------------
+churn_events     accounts       account_id       account_id     
+feature_usage    subscriptions  subscription_id  subscription_id
+subscriptions    accounts       account_id       account_id     
+support_tickets  accounts       account_id       account_id     
+etapa                                                       
+------------------------------------------------------------
+2) Cardinalidade de cada relação (filhos por pai, incluindo 
+pais com 0 filhos)                                          
+relacao                         pais  filhos  min  max  media  pais_sem_filho
+------------------------------  ----  ------  ---  ---  -----  --------------
+accounts -> churn_events        500   600     0    5    1.2    148           
+accounts -> subscriptions       500   5000    2    19   10.0   0             
+accounts -> support_tickets     500   2000    0    11   4.0    8             
+subscriptions -> feature_usage  5000  25000   0    16   5.0    33            
+etapa                                                       
+------------------------------------------------------------
+3) Armadilha do JOIN direto: dois filhos 1:N do mesmo pai mu
+ltiplicam linhas                                            
+mrr_real  mrr_join_direto_com_tickets  linhas_join_direto
+--------  ---------------------------  ------------------
+11338747  44911388                     19898             
+etapa                                                       
+------------------------------------------------------------
+4) Tabela dinâmica correta: agrega cada filho no grão da con
+ta antes de juntar                                          
+industry       contas  basic  pro  enterprise  assinaturas  mrr       registros_uso  tickets  eventos_churn
+-------------  ------  -----  ---  ----------  -----------  --------  -------------  -------  -------------
+Cybersecurity  100     31     38   31          1008         2253318   5025           394      120          
+DevTools       113     36     42   35          1158         2403654   5746           425      142          
+EdTech         79      28     27   24          785          2043167   3996           316      99           
+FinTech        112     34     41   37          1100         2669496   5544           457      128          
+HealthTech     96      39     30   27          949          1969112   4689           408      111          
+TOTAL          500     168    178  154         5000         11338747  25000          2000     600          
+etapa                                                       
+------------------------------------------------------------
+5) Reconciliação: totais da tabela dinâmica = totais das tab
+elas de origem (1 = bate)                                   
+contas  assinaturas  mrr  uso  erros  tickets  eventos_churn
+------  -----------  ---  ---  -----  -------  -------------
+1       1            1    1    1      1        1            

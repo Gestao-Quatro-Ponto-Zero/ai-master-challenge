@@ -108,3 +108,47 @@
 - **Consequência:** numa base real, uma safra de junho teria muito mais assinaturas encerradas do que uma de dezembro. Aqui são iguais. Como as assinaturas novas cresceram de 134/mês para 953/mês, os fins das safras recentes se espremem nas últimas semanas. Isso produz o pico de dezembro e boa parte da subida da taxa mensal do D11.
 - **IA revisa o D11:** a aceleração da taxa mensal é compatível com um artefato de como a `end_date` foi gerada ou extraída. Não dá para tratá-la como comportamento de cliente comprovado.
 - **Recomendação ao CEO:** antes de agir sobre o pico de dezembro, confirmar com o time de dados como a `end_date` é preenchida. A métrica que resiste é a probabilidade de uma assinatura terminar (cerca de 10%), e ela é estável entre as safras.
+
+## D14 — Recomeço: camada SQL de confiança antes de qualquer análise (decisão humana)
+- **Humano decidiu:** recomeçar a partir de uma base relacional validada em SQL. Ele definiu as relações (conta → assinatura → uso; conta → tickets; conta → eventos de churn) e a regra de datas: data sem hora recebe 00:00, data com hora mantém a hora.
+- **IA construiu:** SQLite em duas camadas, em `solution/sql/`.
+  - `raw_*`: o texto exato do CSV, com o número do registro e o SHA-256 de cada arquivo.
+  - Tabelas tipadas (STRICT) com chave primária, chave estrangeira, domínios e datas no formato `YYYY-MM-DD HH:MM:SS`. Toda a transformação está em SQL legível (`02_tipagem.sql`).
+  - Falha **estrutural bloqueia** a carga. Inconsistência entre campos é só **contada** em `dq_checks`, e nenhum dado é alterado.
+- **Como foi verificado:** `build_db.py`, com a saída em `verification/outputs/19_camada_sql.txt`. Rodado duas vezes, com saída idêntica, e `PRAGMA integrity_check` = ok.
+- **Resultado estrutural:** 0 bloqueantes.
+  - 33.100 registros carregados sem perda.
+  - Nenhum valor não vazio virou nulo.
+  - Nenhuma data mudou de dia ou de hora (35.586 datas).
+  - 0 chaves estrangeiras órfãs.
+- **usage_id:** 21 ids aparecem 2 vezes, com conteúdo diferente nas duas linhas. Nenhuma linha é idêntica. Como a PK não aceita repetição, as 42 linhas ficam com a chave substituta `usage_pk` e a chave natural `(usage_id, subscription_id)`. O humano avaliou o impacto como pequeno (21 em 25 mil).
+- **Inconsistências contadas, sem interpretação nesta etapa:** 20 checagens bloqueantes (todas em 0), 15 de alerta e 8 de info, todas em `19_camada_sql.txt`.
+- **Correção humana:** a primeira versão desta entrada e do relatório trazia inferências sobre o que as inconsistências significam (o que é medível, o que o CRM indica, a origem das colisões de id). O humano pediu apenas checagens determinísticas nesta etapa. Os textos interpretativos saíram do SQL, do relatório e deste diário, e as contagens ficaram.
+- **O banco fica fora do repositório** (6 MB, em `data/db/`) e é recriado por `build_db.py`.
+
+## D15 — O que "FK sem órfãs" valida, e o teste de consulta multi-tabela (pergunta humana)
+- **Humano perguntou:** se 0 FKs órfãs significa que toda a relação está validada, e se já dá para cruzar tabelas como numa tabela dinâmica.
+- **Como foi verificado:** `20_relacoes_e_pivo.sql`, com a saída em `outputs/20_relacoes_e_pivo.txt`.
+- **O que a FK valida:** a integridade referencial das 4 relações declaradas. Todo filho aponta para um pai que existe (0 órfãs, checado de novo fora da carga).
+- **O que ela não valida:** a coerência de datas e de flags entre as tabelas. Essas checagens são as 15 de alerta do D14.
+- **Cardinalidade medida (filhos por pai):**
+  - Conta → assinaturas: de 2 a 19.
+  - Assinatura → uso: de 0 a 16 (33 assinaturas sem uso).
+  - Conta → tickets: de 0 a 11 (8 contas sem ticket).
+  - Conta → eventos de churn: de 0 a 5 (148 contas sem evento).
+- **Fato estrutural:** tickets e eventos de churn ligam só à conta, não à assinatura.
+- **Armadilha documentada:** o JOIN direto de assinaturas com tickets pela conta gera 19.898 linhas e soma um MRR de 44,9 mi, contra 11,3 mi reais. Agregando cada tabela filha no grão da conta antes de juntar, todos os 7 totais batem com as tabelas de origem.
+
+## D16 — Views da camada analítica (escopo escolhido pelo humano)
+- **Humano decidiu:** criar quatro grupos de view: detalhe enriquecido, assinatura, conta e qualidade. A view mensal fica para depois, até ele definir o que é "ativa no mês".
+- **IA construiu:** `solution/sql/04_views.sql`, executado pelo `build_db.py`.
+  - Detalhe: `vw_uso_detalhe`, `vw_ticket_detalhe` e `vw_churn_detalhe`.
+  - Agregadas: `vw_assinatura` e `vw_conta`.
+  - Qualidade: `vw_dq_ocorrencias`, uma linha por ocorrência de cada uma das 24 checagens de linha.
+  - Regra de construção: só junta de filho para pai, ou agrega a tabela filha no grão do pai antes de juntar.
+- **Como foi verificado:** 6 checagens bloqueantes novas (V01–V06) comparam 47 medidas das views com as tabelas de origem, e todas batem. A V06 confirma que a contagem de ocorrências por checagem é igual à de `dq_checks`. Duas execuções deram saída idêntica.
+
+## D17 — Data de corte fixada (decisão humana)
+- **Humano decidiu:** a data de corte é 31/12/2024. A definição de churn fica para quando o dado aparecer na exploração, porque o humano já tinha notado nos CSVs que as três fontes de churn não coincidem.
+- **IA implementou:** a tabela `parametros` no schema, com `data_corte = 2024-12-31 00:00:00`. O dia 31/12 entra inteiro na janela. Consultas leem o valor da tabela e não o repetem no SQL.
+- **Correção de entendimento:** o humano associou o T06 a tickets anteriores à assinatura. O T06 é **uso** (`feature_usage`) com data fora do período da própria assinatura: 19.142 registros antes do `start_date`, 290 depois do `end_date` e 5.568 dentro. Os tickets anteriores ao cadastro da conta são o T08 (1.077).

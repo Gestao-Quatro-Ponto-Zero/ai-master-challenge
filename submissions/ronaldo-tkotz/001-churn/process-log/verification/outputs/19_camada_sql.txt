@@ -1,0 +1,81 @@
+Banco: ravenstack.db  (SQLite 3.50.4)
+
+CARGA
+  accounts         csv=   500  raw=   500  tipada=   500  sha256=348d8ba906b7…
+  subscriptions    csv=  5000  raw=  5000  tipada=  5000  sha256=dcf1d93ca9a3…
+  feature_usage    csv= 25000  raw= 25000  tipada= 25000  sha256=c081da2be8ca…
+  support_tickets  csv=  2000  raw=  2000  tipada=  2000  sha256=ba0006951479…
+  churn_events     csv=   600  raw=   600  tipada=   600  sha256=6391c41d8291…
+
+PADRÃO DE DATAS (amostra por coluna: CSV -> banco)
+  accounts.signup_date   '2024-10-16' -> '2024-10-16 00:00:00'   faixa 2023-01-02 00:00:00 .. 2024-12-31 00:00:00   nulos=0
+  subscriptions.start_date    '2023-12-23' -> '2023-12-23 00:00:00'   faixa 2023-01-09 00:00:00 .. 2024-12-31 00:00:00   nulos=0
+  subscriptions.end_date      '2024-04-12' -> '2024-04-12 00:00:00'   faixa 2023-04-05 00:00:00 .. 2024-12-31 00:00:00   nulos=4514
+  feature_usage.usage_date    '2023-07-27' -> '2023-07-27 00:00:00'   faixa 2023-01-01 00:00:00 .. 2024-12-31 00:00:00   nulos=0
+  support_tickets.submitted_at  '2023-07-27' -> '2023-07-27 00:00:00'   faixa 2023-01-02 00:00:00 .. 2024-12-31 00:00:00   nulos=0
+  support_tickets.closed_at     '2023-07-28 03:00:00' -> '2023-07-28 03:00:00'   faixa 2023-01-03 03:00:00 .. 2024-12-31 19:00:00   nulos=0
+  churn_events.churn_date    '2024-10-27' -> '2024-10-27 00:00:00'   faixa 2023-01-25 00:00:00 .. 2024-12-31 00:00:00   nulos=0
+
+VIEWS
+  vw_assinatura        linhas=  5000  colunas=28
+  vw_churn_detalhe     linhas=   600  colunas=15
+  vw_conta             linhas=   500  colunas=36
+  vw_dq_ocorrencias    linhas= 29495  colunas=3
+  vw_ticket_detalhe    linhas=  2000  colunas=15
+  vw_uso_detalhe       linhas= 25000  colunas=22
+
+CHECAGENS
+  [bloqueante]
+    E01_accounts                0/500     accounts: registros do CSV que não chegaram à tabela tipada
+    E01_churn_events            0/600     churn_events: registros do CSV que não chegaram à tabela tipada
+    E01_feature_usage           0/25000   feature_usage: registros do CSV que não chegaram à tabela tipada
+    E01_subscriptions           0/5000    subscriptions: registros do CSV que não chegaram à tabela tipada
+    E01_support_tickets         0/2000    support_tickets: registros do CSV que não chegaram à tabela tipada
+    E02_accounts                0/5500    accounts: valores não vazios do CSV que viraram NULL na tipagem
+    E02_churn_events            0/6000    churn_events: valores não vazios do CSV que viraram NULL na tipagem
+    E02_feature_usage           0/225000  feature_usage: valores não vazios do CSV que viraram NULL na tipagem
+    E02_subscriptions           0/75000   subscriptions: valores não vazios do CSV que viraram NULL na tipagem
+    E02_support_tickets         0/20000   support_tickets: valores não vazios do CSV que viraram NULL na tipagem
+    E03_accounts                0         accounts: datas cuja data ou hora mudou na padronização (sem hora -> 00:00:00; com hora -> mantida)
+    E03_churn_events            0         churn_events: datas cuja data ou hora mudou na padronização (sem hora -> 00:00:00; com hora -> mantida)
+    E03_feature_usage           0         feature_usage: datas cuja data ou hora mudou na padronização (sem hora -> 00:00:00; com hora -> mantida)
+    E03_subscriptions           0         subscriptions: datas cuja data ou hora mudou na padronização (sem hora -> 00:00:00; com hora -> mantida)
+    E03_support_tickets         0         support_tickets: datas cuja data ou hora mudou na padronização (sem hora -> 00:00:00; com hora -> mantida)
+    E10                         0/35586   todas: datas fora do padrão YYYY-MM-DD HH:MM:SS  -> padronizadas na carga
+    E12                         0         todas: chaves estrangeiras órfãs (PRAGMA foreign_key_check)  -> FK imposta pelo banco
+    E14                         0/25000   feature_usage: linhas idênticas em todos os campos exceto usage_id
+    T01                         0/486     subscriptions: end_date anterior a start_date
+    T02                         0/2000    support_tickets: closed_at anterior a submitted_at
+    V01                         0/4       vw_uso_detalhe: linhas, usage_count, duração e erros iguais a feature_usage
+    V02                         0/2       vw_ticket_detalhe: linhas e tickets distintos iguais a support_tickets
+    V03                         0/2       vw_churn_detalhe: linhas e soma de refund iguais a churn_events
+    V04                         0/5       vw_assinatura: linhas, MRR, ARR, registros de uso e erros iguais à origem
+    V05                         0/10      vw_conta: linhas e 9 totais (assinaturas, MRR, ARR, uso, erros, tickets, escalados, eventos, refund) iguais à origem
+    V06                         0/24      vw_dq_ocorrencias: checagens cuja contagem de ocorrências difere de dq_checks.violacoes  -> cobre as 24 checagens com ocorrência por linha; E10-E12, E14 e E0* são contagens agregadas
+  [alerta]
+    E11                         0         todas: datas fora da janela 2023-01-01 a 2024-12-31 23:59:59
+    E13                        21/24979   feature_usage: usage_id repetido (conteúdo diferente nas duas linhas)  -> mantidas as 2 linhas de cada id; chave substituta usage_pk + chave natural (usage_id, subscription_id)
+    N01                         0/5000    subscriptions: arr_amount diferente de 12 x mrr_amount
+    N02                         0/486     subscriptions: churn_flag = 1 sem end_date
+    N03                         0/486     subscriptions: end_date preenchida com churn_flag = 0
+    N04                        35/110     accounts: churn_flag = 1 sem evento em churn_events
+    N05                       277/352     accounts: evento de churn com churn_flag = 0 na conta
+    N06                       110/110     accounts: churn_flag = 1 com assinatura ainda ativa (end_date nula)
+    T03                      2000/2000    support_tickets: submitted_at sem hora no CSV (vira 00:00:00)
+    T04                      2000/2000    support_tickets: closed_at = submitted_at + resolution_time_hours exatamente
+    T05                        36/2000    support_tickets: primeira resposta depois da resolução
+    T06                     19432/25000   feature_usage: uso fora do período da assinatura
+    T07                         0/5000    subscriptions: assinatura iniciada antes do cadastro da conta
+    T08                      1077/2000    support_tickets: ticket aberto antes do cadastro da conta
+    T09                         0/600     churn_events: churn antes do cadastro da conta
+  [info]
+    N07                      3365/5000    subscriptions: plan_tier da assinatura diferente do plan_tier da conta
+    N08                         0/778     subscriptions: assinatura trial com mrr_amount > 0
+    N09                       778/5000    subscriptions: assinaturas com mrr_amount = 0
+    R01                         0/500     accounts: contas sem nenhuma assinatura
+    R02                         8/500     accounts: contas sem nenhum ticket
+    R03                       148/500     accounts: contas sem evento de churn
+    R04                        33/5000    subscriptions: assinaturas sem nenhum registro de uso
+    R05                       175/352     churn_events: contas com mais de um evento de churn
+
+VEREDITO: ESTRUTURA VÁLIDA (0 checagens bloqueantes)
