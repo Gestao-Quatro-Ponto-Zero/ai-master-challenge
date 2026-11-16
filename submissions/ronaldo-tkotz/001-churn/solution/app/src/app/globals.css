@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+/*
+ * Veta — "ore vein". A dark, editorial analyst console: near-black surfaces,
+ * a single gold accent (the seam you mine), mono for every number and query.
+ */
+:root {
+  --background: #08080a;
+  --surface: #0d0d11;
+  --panel: #121218;
+  --edge: #23232b;
+  --edge-strong: #34343f;
+  --foreground: #ececf1;
+  --muted: #9a9aa6;
+  --faint: #65656f;
+  --accent: #e3b341; /* ore-vein gold */
+  --accent-soft: #3a2f12;
+  --font-geist-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-geist-mono: "SFMono-Regular", ui-monospace, Menlo, Monaco, Consolas, monospace;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-panel: var(--panel);
+  --color-edge: var(--edge);
+  --color-edge-strong: var(--edge-strong);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Quiet, native-feeling scrollbars for the panels. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--edge-strong) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--edge-strong);
+  border-radius: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@keyframes veta-pulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+.veta-pulse {
+  animation: veta-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes veta-rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.veta-rise {
+  animation: veta-rise 0.28s ease-out both;
+}
+
+@keyframes veta-spin {
+  to { transform: rotate(360deg); }
+}
+.veta-spin {
+  animation: veta-spin 0.9s linear infinite;
+}

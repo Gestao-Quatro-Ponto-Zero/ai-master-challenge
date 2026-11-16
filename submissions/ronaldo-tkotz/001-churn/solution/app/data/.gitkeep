@@ -1,0 +1,2 @@
+# Local data folder (gitignored contents). The app database (`app.sqlite`) is created here at runtime.
+# The RavenStack database is read from WAREHOUSE_PATH (default: data/ravenstack.db).

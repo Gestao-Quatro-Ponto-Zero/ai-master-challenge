@@ -243,3 +243,44 @@
   - Nova reconciliação bloqueante V08, com 10 medidas, todas iguais à origem.
   - V01 a V07 continuam em 0.
   - Fora das duas views alteradas, o relatório de carga ficou idêntico ao anterior.
+
+## D25 — A exploração e a interface nascem dentro do Veta (decisão humana)
+- **Humano propôs:** fazer a análise exploratória já dentro da estrutura do Veta, um projeto anterior dele: um analista em chat em que todo número vem de uma consulta SQL que se pode inspecionar. Assim a interface visual vai sendo adaptada ao desafio enquanto os dados são explorados.
+- **IA avaliou:** o princípio do Veta é o mesmo da camada SQL. O modelo só narra, os números vêm de SQL e o banco abre somente para leitura. Três pontos estão acoplados ao dataset original:
+  - O esquema enviado ao agente lista só tabelas, sem as views.
+  - O relógio de dados ancora numa tabela de uso diário.
+  - As métricas, o feed e o resumo executivo são do dataset original.
+- **Humano decidiu:**
+  - **Origem do código:** o Veta é trazido para dentro do diretório do desafio como exemplo, sem ser branch do programa original. O código fica em `solution/app`, sem o histórico git.
+  - **Modelo:** fica o DeepSeek. O agent loop do Veta segue o padrão da OpenAI e não o da Anthropic, então trocar de modelo exigiria refatorar. O DeepSeek também tem custo menor. (Correção humana: a IA tinha dito que bastava trocar o endpoint.)
+  - **Ambiente:** todo o desenvolvimento roda localmente.
+  - **Deploy:** depois, na Vercel ou na Railway, com autenticação e um usuário e senha padrão informados ao avaliador.
+- **IA copiou:** todo o código e a documentação para `solution/app`, menos quatro itens:
+  - O `.git`.
+  - Os arquivos `.env`.
+  - A base comprimida do dataset do desafio anterior (`data/seed/aurelia.sqlite.gz`, 17 MB), que é dado de outro concurso e será substituída pela RavenStack.
+  - O vídeo de demonstração daquele desafio (`docs/demo/`).
+  - Resultado: 13 MB.
+
+## D26 — Refatoração do Veta para a RavenStack, fase 1 (humano decidiu refatorar, IA implementou)
+- **Humano decidiu:**
+  - Refatorar o Veta para absorver a estrutura da RavenStack, sem reescrever o sistema.
+  - Os arquivos `.env` foram escritos do zero, sem nada do dataset anterior. (Correção humana: a IA tinha só remendado os comentários antigos.)
+- **IA implementou:**
+  - **Banco:** o app abre o `ravenstack.db` só para leitura.
+  - **Esquema:** o agente recebe tabelas e views, sem as cópias `raw_*`.
+  - **Relógio:** lido da tabela `parametros`, de 2023-01-01 a 2024-12-31.
+  - **Métricas:** 8 métricas, cada uma ligada a um bloco do desenho.
+  - **Analista:** o prompt traz as definições D20 a D24 e responde em português.
+  - **Tela inicial:** 4 indicadores descritivos e o churn por mês.
+  - **Painel desligado:** o feed de "histórias descobertas" pelo modelo, para que nenhuma conclusão apareça antes da análise.
+- **Como foi verificado:**
+  - A checagem de tipos passou.
+  - As 18 checagens do painel batem com o banco: 500 contas, 352 com evento, 600 eventos e taxa de 19,2% em dez/2024.
+  - A tela inicial abre com o usuário do avaliador.
+  - Nenhuma menção à Aurelia ficou no código do app.
+- **Onde a IA (o modelo do app) errou, e a correção:** ao perguntar quantas contas tiveram evento em 2024, o DeepSeek respondeu 326 contas e 522 eventos. O certo é 327 e 527.
+  - **Causa 1:** filtrou com `churn_date <= '2024-12-31'`. Como as datas têm hora, a comparação de texto exclui os 5 eventos de `2024-12-31 00:00:00`.
+  - **Causa 2:** somou os meses de cabeça e afirmou 522.
+  - **Correção:** duas regras no prompt. Datas se filtram por `substr` ou por `<` no dia seguinte. Nenhuma conta é feita no texto, toda soma ou percentual vem do SQL.
+  - **Reteste:** 527 eventos e 327 contas, com as contagens feitas no SQL.
