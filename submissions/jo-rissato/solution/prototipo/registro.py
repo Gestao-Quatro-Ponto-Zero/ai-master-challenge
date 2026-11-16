@@ -15,7 +15,12 @@ BRT = timezone(timedelta(hours=-3))
 SITUACAO = {"IA atendendo": "Em atendimento pela IA", "resolvida pela IA": "Resolvida pela IA",
             "pessoa executa": "Reembolso ou cancelamento (time decide)", "cliente desistiu": "Cliente desistiu",
             "triagem humana": "Com o time (IA fora do ar)", "fila": "Encaminhada ao time",
-            "assistência técnica": "Encaminhada à assistência técnica"}
+            "assistência técnica": "Encaminhada à assistência técnica",
+            "assunto incerto": "Com o time (assunto incerto)",
+            "departamento especializado": "Departamento especializado (atenção)"}
+# Destinos em que uma pessoa precisa fechar a chamada com um posicionamento (Jó, 2026-11-16).
+COM_PESSOA = ("pessoa executa", "triagem humana", "assunto incerto", "departamento especializado")
+CANAL_ROTULO = {"chat": "Chat", "e-mail": "E-mail", "rede social": "Rede social", "telefone": "Telefone"}
 ROBO_ANTERIOR = "Robô anterior"
 ORIGEM = {"atendimento": "Atendimento", "bateria": "Teste automático", "teste": "Teste interno"}
 
@@ -59,6 +64,14 @@ def motivo_atendimento(destino: str, motivo_tecnico: str, categoria: str, resumo
         onde = f" Assistência indicada: {indicada}." if indicada else ""
         return (f"Defeito de aparelho: depois dos passos de verificação, o cliente foi orientado a levar à assistência "
                 f"técnica autorizada da empresa.{onde}{relato}")
+    if destino == "departamento especializado":
+        det = detalhes or {}
+        return (f"ATENÇÃO: pedido que mexe em política, site ou infraestrutura. Nada foi executado nem alterado; "
+                f"encaminhado ao departamento de {det.get('departamento') or 'especialidade a definir'}, que precisa dar "
+                f"o posicionamento ao cliente.{relato}")
+    if destino == "assunto incerto":
+        return (f"Assunto incerto (mais provável: {categoria}): a IA não tinha confiança para resolver sozinha. Uma "
+                f"pessoa do time assume e precisa fechar com o posicionamento do caso.{relato}")
     if destino == "fila":
         return f"Assunto identificado como {categoria}; encaminhada ao time de {categoria}.{relato}"
     if destino == "pessoa executa":
@@ -83,6 +96,17 @@ def motivo_atendimento(destino: str, motivo_tecnico: str, categoria: str, resumo
                   else " durante a coleta dos dados de contato" if "coleta" in tecnico else "")
         return f"O cliente desistiu do atendimento{quando}; nada foi encaminhado.{relato}"
     return motivo_tecnico
+
+
+def canal_de(x: dict) -> str:
+    """Canal da chamada para o painel; com a rede social de entrada como etiqueta."""
+    canal = CANAL_ROTULO.get(x.get("canal") or "chat", "Chat")
+    return f"{canal} · {x['rede']}" if x.get("rede") else canal
+
+
+def pendente_posicionamento(x: dict) -> bool:
+    """Chamada que passou para uma pessoa e ainda não recebeu o posicionamento do caso."""
+    return x.get("destino") in COM_PESSOA and not x.get("em_andamento") and not x.get("posicionamento")
 
 
 def literal(texto: str | None) -> str:

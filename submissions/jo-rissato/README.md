@@ -95,16 +95,23 @@ dinheiro e contrato. Esses dois tipos somam 3.447 tickets (40,7%) do Dataset 1.
 
 **6. Protótipo** ([como rodar](solution/prototipo/LEIAME.md))
 
-- **Conversa:** a IA (DeepSeek) atende em português até o cliente confirmar que resolveu. Nome, CPF, telefone,
+- **Conversa:** a IA (DeepSeek) atende em português até o cliente confirmar que resolveu, em chat, e-mail, rede
+  social (com a etiqueta da rede de entrada) ou telefone (transcrição e resultado da ligação). Nome, CPF, telefone,
   e-mail e CEP nunca vão para a IA externa: o código troca por marcadores e coleta com mensagens fixas.
-- **Painel do atendente:** toda conversa vira chamada com ID desde a primeira mensagem, com motivo da decisão,
-  situação e dados mascarados.
-- **Dashboard:** a operação de hoje (Dataset 1, com filtros), o classificador rodando sobre os 9.568 tickets reais
-  do teste e as chamadas do próprio protótipo.
-- **Validação:** 124 testes automatizados; bateria de 17 conversas com cliente simulado pela IA, refeita a cada
-  mudança. Na última rodada (`docs/bateria-ia-rodada64.md`), 15 de 17 passaram: uma falha foi falso alarme da própria
-  checagem e a outra, um diagnóstico de Excel que não fechou dentro do limite de 14 trocas. 6 h no ar sob medição contínua (73 de 73 checagens com sucesso,
-  memória plana); teto de gasto de 40 mil tokens por conversa e 600 mil por dia.
+- **Assunto incerto:** abaixo de 0,8 de confiança do classificador, a IA só pergunta; se esgotar 3 perguntas ou for
+  dar a solução, uma pessoa assume e a chamada fica cobrada no painel até alguém registrar o posicionamento do caso.
+- **Comando restrito:** pedido para mudar política, excluir site ou mexer na infraestrutura não executa nem repassa
+  dado; vai ao departamento especializado com etiqueta de atenção, pela regra fixa antes da IA externa.
+- **Painel do atendente:** toda conversa vira chamada com ID desde a primeira mensagem, com canal, motivo da decisão,
+  situação, posicionamento e dados mascarados.
+- **Dashboard:** a operação de hoje (Dataset 1, com filtros e notas de satisfação por canal, prioridade, tipo ou
+  assunto), o classificador rodando sobre os 9.568 tickets reais do teste e as chamadas da versão em apresentação.
+  As 152 chamadas das versões anteriores ficam no registro e no process log, fora dos números.
+- **Validação:** 154 testes automatizados; bateria de 22 casos com cliente simulado pela IA, rodada nos 4 canais (88
+  conversas). Na última rodada (`docs/bateria-ia-rodada66-*.md`), 86 de 88 passaram, e as 2 falhas foram da própria
+  checagem (corrigida e repassada em todas as respostas guardadas, sem nenhuma violação). Média de 3.537 tokens por
+  conversa (era 5.761 na rodada 64). 6 h no ar sob medição contínua (73 de 73 checagens com sucesso, memória plana);
+  teto de gasto de 40 mil tokens por conversa e 600 mil por dia.
 
 ### Recomendações
 

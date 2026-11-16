@@ -18,6 +18,9 @@ TRADUCOES = RAIZ / "saida" / "traducoes-fila.json"
 
 # Decisão do Jó (process log, rodada 45): a IA roteia sozinha a partir de 0,8 de confiança.
 LIMITE_CONFIANCA = 0.8
+# Versão das regras do robô em apresentação. Chamadas de versões anteriores ficam no registro e no process log, mas
+# saem do painel e do dashboard (Jó, 2026-11-16: o teste do robô anterior não é resultado do produto atual).
+VERSAO_ROBO = "2026-11-16"
 # Parâmetro "a definir" do fluxo (rodada 48). 3 é só o valor da demonstração.
 MAX_PERGUNTAS = 3
 # Mesma separação do relatório do classificador (20% de teste, semente 42).

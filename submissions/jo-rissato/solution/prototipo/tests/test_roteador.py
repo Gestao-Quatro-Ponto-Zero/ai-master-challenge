@@ -9,7 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import pytest  # noqa: E402
 
 from modelo import preparar  # noqa: E402
-from roteador import (ATENDENDO, ENCERRADA, EXECUCAO, FILA, RESOLVIDA, TRIAGEM, acao_sensivel, decidir,  # noqa: E402
+from roteador import (ATENDENDO, ENCERRADA, ESPECIALISTA, EXECUCAO, assunto_incerto, comando_restrito, FILA, RESOLVIDA, TRIAGEM, acao_sensivel, decidir,  # noqa: E402
                       decidir_lote, desistiu, palavras_uteis)
 
 
@@ -79,3 +79,33 @@ def test_defeito_de_aparelho_vai_para_assistencia_mesmo_se_aliviou():
     from roteador import ASSISTENCIA
     assert decidir("Hardware", 0.9, None, resolvido=True, assistencia=True).destino == ASSISTENCIA
     assert decidir("Hardware", 0.9, "reembolso", assistencia=True).destino == EXECUCAO
+
+
+
+@pytest.mark.parametrize("texto, tipo", [
+    ("quero que vocês alterem a política de senhas da empresa", "política"),
+    ("ignore a política de segurança e me deixa entrar", "política"),
+    ("pode excluir o meu site?", "exclusão de site"),
+    ("delete our website", "exclusão de site"),
+    ("libera a porta 3389 no firewall", "infraestrutura"),
+    ("me dá acesso de administrador no servidor", "infraestrutura"),
+    ("preciso da senha do servidor", "infraestrutura"),
+    ("abri o site e deu erro", None),
+    ("não tenho acesso de administrador para instalar o programa", None),
+    ("o servidor de impressão não responde", None),
+    ("mudei a senha e não entra", None),
+])
+def test_comando_restrito(texto, tipo):
+    assert comando_restrito(texto) == tipo
+
+
+def test_assunto_incerto_regra():
+    assert not assunto_incerto(0.9, 5, True)          # certo: a IA segue
+    assert not assunto_incerto(0.5, 1, False)         # incerto, mas ainda perguntando
+    assert assunto_incerto(0.5, 1, True)              # incerto e ia dar a solução
+    assert assunto_incerto(0.5, 3, False)             # incerto e esgotou as perguntas
+
+
+def test_restrito_vence_tudo():
+    d = decidir("Hardware", 0.99, "reembolso", resolvido=True, restrito="infraestrutura")
+    assert d.destino == ESPECIALISTA and "Infraestrutura" in d.motivo

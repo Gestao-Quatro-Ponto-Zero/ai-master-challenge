@@ -10,7 +10,7 @@ pip install pandas scikit-learn joblib streamlit requests pytest
 python modelo.py        # treina com os 80% de treino do Dataset 2 (mesma separação do relatório)
 python lote.py          # roteia os 9.568 tickets reais do teste e imprime o resumo
 pytest -q tests         # regras, dados pessoais e conversa com a IA simulada
-python bateria_ia.py ../../docs/bateria-ia-resultado.md   # bateria de IA real (precisa de chave)
+python bateria_ia.py ../../docs/bateria.md --canal e-mail   # bateria de IA real num canal (precisa de chave)
 streamlit run app.py    # página com Conversa, Painel do atendente e Dashboard
 ```
 
@@ -47,10 +47,34 @@ Regra do Jó (process log, rodada 59): a IA atende até resolver; só reembolso 
    mais perto desse CEP (`assistencias.py`), com o endereço e o número do atendimento. CPF, CEP e endereço não passam
    pela IA externa; no log o CEP fica com os 3 últimos dígitos mascarados.
 
+7. Assunto incerto (Jó, 2026-11-16): abaixo de 0,8 de confiança, a IA só faz perguntas de esclarecimento. Se esgotar 3
+   perguntas, ou se já fosse dar a solução, a resposta é descartada, o contato é coletado e uma pessoa assume.
+8. Comando restrito (Jó, 2026-11-16): pedido para mudar ou contornar política, excluir site ou domínio, ou mexer na
+   infraestrutura (porta, firewall, servidor, DNS, VPN, acesso de administrador a servidor) é travado por regra antes
+   de ir à IA externa, com o sinal da IA como segunda camada. Nada é executado, alterado ou repassado; a chamada vai
+   ao departamento especializado com etiqueta ATENÇÃO.
+9. Posicionamento: toda chamada que passa para uma pessoa fica "Aguardando posicionamento" no painel, com o tempo de
+   espera, e só fecha quando alguém registra o posicionamento do caso (mínimo de 20 caracteres).
+
+## Canais
+
+A conversa roda em chat, e-mail, rede social (com a rede de entrada: Instagram, Facebook, X, LinkedIn, TikTok) ou
+telefone. As regras são as mesmas; muda a forma: e-mail com saudação, assinatura e até 5 passos; telefone com fala
+curta, passos falados ("Passo 1: ...") e transcrição no painel com o resultado da ligação; rede social curta, com a
+etiqueta da rede. Na aba Conversa, o canal é escolhido antes da primeira mensagem.
+
+## Versão em apresentação
+
+`VERSAO_ROBO` (config.py) marca as regras atuais. Chamadas de versões anteriores ficam em `saida/conversas.jsonl` e no
+process log, mas não aparecem no painel nem no dashboard. A bateria conta tokens em `saida/uso-ia-bateria.json`,
+separado do teto diário da página pública.
+
 ## Regras do roteador (`roteador.py`)
 
 | Situação | Destino |
 |---|---|
+| Comando restrito (política, exclusão de site, infraestrutura) | Departamento especializado, etiqueta ATENÇÃO, sem executar nem alterar |
+| Confiança abaixo de 0,8 depois de 3 perguntas, ou quando a IA já daria a solução | Uma pessoa assume e dá o posicionamento |
 | Reembolso, cancelamento, cobrança em dobro ou indevida | Detalhe do pedido, contato e pessoa decide e executa |
 | Defeito de aparelho (bateria, aquecimento, carregamento, não liga, peça, tela) ou garantia, depois de ao menos um passo de verificação | Assistência técnica autorizada da empresa (rodada 60), mesmo que o sintoma tenha aliviado |
 | Cliente confirma que resolveu | Resolvida pela IA |
@@ -82,6 +106,9 @@ para a simulação em lote do Dataset 2, que mede o classificador.
 
 ## Placeholders pendentes
 
+- Departamentos especializados (`roteador.py`, 2026-11-16): Segurança da informação, Web e sistemas e Infraestrutura
+  são nomes de exemplo; a setorização real do atendimento não está nos dados (lacuna 2).
+- Prazo para o posicionamento: a definir com o diretor; o painel mostra há quanto tempo cada chamada espera.
 - Rede de assistência técnica e cadastro de clientes (`assistencias.py`, 2026-11-12): os datasets não trazem
   endereço de cliente nem de assistência. As 9 assistências e os 10 cadastros são DE EXEMPLO, fictícios, e os nomes
   das assistências levam "(exemplo)". Na operação real, entram o cadastro de clientes e a rede autorizada da empresa.

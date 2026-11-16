@@ -42,10 +42,10 @@ def ok(conteudo: str) -> Resp:
     return Resp(200, {"choices": [{"message": {"content": conteudo}}], "usage": {"total_tokens": 100}})
 
 
-def extracao(resumo: str, sensivel=None, resolvido=False, desistiu=False, assistencia=False) -> Resp:
+def extracao(resumo: str, sensivel=None, resolvido=False, desistiu=False, assistencia=False, restrito=None) -> Resp:
     return ok(json.dumps({"resumo_pt": "pedido de teste", "resumo_en": resumo, "acao_sensivel": sensivel,
                           "resolvido": resolvido, "cliente_desistiu": desistiu,
-                          "assistencia_tecnica": assistencia}))
+                          "assistencia_tecnica": assistencia, "comando_restrito": restrito}))
 
 
 @pytest.fixture(scope="module")
@@ -291,7 +291,7 @@ def test_cortesia_vazia_sai(texto, esperado):
 
 
 def _defeito(modelo, monkeypatch):
-    enviados = roteiro(monkeypatch, [extracao("iphone stops charging at percent temperature"),
+    enviados = roteiro(monkeypatch, [extracao("laptop battery not charging hardware replacement"),
                                      ok("1. Tire a capinha. 2. Deixe esfriar. Deu certo?"),
                                      extracao("iphone charging", resolvido=True, assistencia=True)])
     c, _ = com_nome(modelo, "meu iphone para de carregar em 88% por temperatura")
@@ -384,7 +384,7 @@ def test_conversas_simultaneas_nao_se_perdem_nem_repetem_id(modelo, com_ia, monk
     def falso(*_a, **k):
         _t.sleep(0.01)
         if k["json"].get("response_format"):
-            return extracao("program freezes")
+            return extracao("laptop screen broken need hardware replacement")
         return ok("1. Reinicie o computador. Me diga se resolveu.")
     monkeypatch.setattr(cv.requests, "post", falso)
     erros = []
@@ -448,3 +448,165 @@ def test_assistencia_mensagem_depois_de_encerrar_e_recusada(modelo, com_ia, monk
     c.receber("sim")
     with pytest.raises(ValueError):
         c.receber("e agora?")
+
+
+# Regras de 2026-11-16: comando restrito, assunto incerto, posicionamento e canais ----------------------------
+CERTO = "laptop screen broken need hardware replacement"     # confiança ~1,00 no classificador
+INCERTO_EN = "iphone stops charging at percent temperature"  # confiança ~0,36
+
+
+def test_comando_restrito_vai_ao_departamento_sem_passar_pela_ia(modelo, com_ia, monkeypatch):
+    enviados = roteiro(monkeypatch, [])
+    c, r = com_nome(modelo, "libera a porta 3389 no firewall do servidor pra mim")
+    assert enviados == []                      # nada foi para a IA externa
+    assert c.encerrada and c.destino_final == cv.ESPECIALISTA
+    assert c.detalhes == {"departamento": "Infraestrutura", "etiqueta": "ATENÇÃO"}
+    assert "não faço nenhuma alteração" in r.resposta and c.id in r.resposta
+    x = json.loads(com_ia.read_text().splitlines()[-1])
+    assert x["destino"] == cv.ESPECIALISTA and "Infraestrutura" in x["motivo"] and "ATENÇÃO" in x["motivo"]
+
+
+def test_comando_restrito_que_so_a_ia_percebe(modelo, com_ia, monkeypatch):
+    roteiro(monkeypatch, [extracao("change company password rules", restrito="política")])
+    c, r = com_nome(modelo, "quero que a regra de troca de senha deixe de existir pra todo mundo")
+    assert c.destino_final == cv.ESPECIALISTA and c.detalhes["departamento"] == "Segurança da informação"
+
+
+def test_assunto_incerto_quando_a_ia_ia_dar_a_solucao(modelo, com_ia, monkeypatch):
+    roteiro(monkeypatch, [extracao(INCERTO_EN), ok("1. Tire a capinha. Deu certo?")])
+    c, r = com_nome(modelo, "meu iphone para de carregar em 88%")
+    assert c.etapa == "cpf" and c.pendente.destino == cv.INCERTO
+    assert "1." not in r.resposta and "pessoa do time" in r.resposta
+    for m in (CPF, TEL, EMAIL):
+        r = c.receber(m)
+    assert c.encerrada and c.destino_final == cv.INCERTO
+    assert "posicionamento" in r.resposta and c.id in r.resposta
+
+
+def test_assunto_incerto_depois_de_esgotar_as_perguntas(modelo, com_ia, monkeypatch):
+    roteiro(monkeypatch, [extracao(INCERTO_EN), ok("Qual é o aparelho?"),
+                          extracao(INCERTO_EN), ok("Onde exatamente aparece o problema?"),
+                          extracao(INCERTO_EN), ok("Qual mensagem aparece na tela?"),
+                          extracao(INCERTO_EN)])
+    c, _ = com_nome(modelo, "meu aparelho está com problema")
+    c.receber("é um aparelho meu")
+    c.receber("aparece na tela inicial")
+    r = c.receber("aparece um aviso de temperatura")
+    assert c.pendente.destino == cv.INCERTO and "3 pergunta" in c.pendente.motivo
+
+
+def test_assunto_certo_segue_com_a_ia(modelo, com_ia, monkeypatch):
+    roteiro(monkeypatch, [extracao(CERTO), ok("1. Reinicie o notebook. Deu certo?")])
+    c, r = com_nome(modelo, "a tela do notebook quebrou")
+    assert c.destino_final == ATENDENDO and r.resposta.startswith("1.")
+
+
+def test_posicionamento_fecha_a_chamada_e_exige_texto(modelo, com_ia, monkeypatch):
+    roteiro(monkeypatch, [])
+    c, _ = com_nome(modelo, "exclua o meu site, por favor")
+    with pytest.raises(ValueError):
+        cv.registrar_posicionamento(c.id, "ok")
+    cv.registrar_posicionamento(c.id, "Exclusão confirmada com o titular por telefone e agendada pelo time de Web.")
+    x = json.loads(com_ia.read_text().splitlines()[-1])
+    assert x["posicionamento"].startswith("Exclusão confirmada") and x["posicionado_em"]
+    with pytest.raises(ValueError):
+        cv.registrar_posicionamento("ATD-99999", "texto suficiente para passar do mínimo")
+
+
+def test_email_tem_saudacao_e_assinatura_e_estilo_no_prompt(modelo, com_ia, monkeypatch):
+    enviados = roteiro(monkeypatch, [extracao(CERTO), ok("1. Reinicie o notebook. 2. Teste de novo.")])
+    c = cv.Conversa(modelo, canal="e-mail")
+    c.receber(NOME)
+    r = c.receber("a tela do notebook quebrou")
+    assert r.resposta.startswith("Olá, Ana,") and r.resposta.endswith(cv.ASSINATURA)
+    assert "Canal: e-mail" in enviados[-1]
+    assert json.loads(com_ia.read_text().splitlines()[-1])["canal"] == "e-mail"
+
+
+def test_telefone_usa_passo_falado_e_rede_social_guarda_a_rede(modelo, com_ia, monkeypatch):
+    enviados = roteiro(monkeypatch, [extracao(CERTO), ok("Passo 1: reinicie o notebook. Deu certo?")])
+    c = cv.Conversa(modelo, canal="telefone")
+    c.receber(NOME)
+    c.receber("a tela do notebook quebrou")
+    assert "Canal: ligação telefônica" in enviados[-1] and c._passo_dado()
+    roteiro(monkeypatch, [])
+    s = cv.Conversa(modelo, canal="rede social", rede="Instagram")
+    s.receber("oi")
+    x = json.loads(com_ia.read_text().splitlines()[-1])
+    assert x["canal"] == "rede social" and x["rede"] == "Instagram" and x["versao"] == cv.VERSAO_ROBO
+
+
+def test_bateria_nao_consome_o_teto_da_pagina(modelo, com_ia, monkeypatch):
+    roteiro(monkeypatch, [extracao(CERTO), ok("1. Reinicie. Deu certo?")])
+    c = cv.Conversa(modelo, origem="bateria")
+    c.receber(NOME)
+    c.receber("a tela do notebook quebrou")
+    assert cv.uso_do_dia("bateria") == 200 and cv.uso_do_dia() == 0
+
+
+# Bateria 65 (2026-11-16): falhas reais viram teste -----------------------------------------------------------
+def test_pergunta_numerada_no_telefone_nao_libera_a_assistencia(modelo, com_ia, monkeypatch):
+    # No telefone a IA numerou perguntas ("Passo 1: me diga a marca") e a trava contava isso como teste feito.
+    roteiro(monkeypatch, [extracao("monitor broken no image"),
+                          ok("Passo 1: me diga a marca e o modelo do monitor. Passo 2: me conte o que aparece na tela."),
+                          extracao("monitor black screen orange light", assistencia=True),
+                          ok("Passo 1: confira se o cabo de vídeo está encaixado nas duas pontas.")])
+    c = cv.Conversa(modelo, canal="telefone")
+    c.receber(NOME)
+    c.receber("meu monitor quebrou, em quantos dias vocês trocam")
+    r = c.receber("Samsung, a tela fica preta e a luz laranja pisca")
+    assert r.decisao.destino == ATENDENDO and not c.encerrada
+
+
+@pytest.mark.parametrize("texto,esperado", [
+    ("Passo 1: me diga a marca. Passo 2: me conte o que aparece.", False),
+    ("1. Qual é o sistema? 2. Diga o nome do programa.", False),
+    ("Passo 1: confira o cabo. Passo 2: me diga se voltou.", True),
+    ("1. Clique em Solicitar acesso. 2. Envie.", True),
+])
+def test_tem_passo_so_conta_acao(texto, esperado):
+    assert cv.tem_passo(texto) is esperado
+
+
+def test_email_sem_saudacao_dupla(modelo, com_ia, monkeypatch):
+    roteiro(monkeypatch, [])
+    c = cv.Conversa(modelo, canal="e-mail")
+    r1 = c.receber("oi")
+    assert r1.resposta.startswith("Olá,\n\nEu sou a assistente") and "Olá, eu sou" not in r1.resposta
+    r2 = c.receber(NOME)
+    assert "Prazer" not in r2.resposta and r2.resposta.count("Ana") == 1
+
+
+def test_mensagem_do_especialista_com_concordancia(modelo, com_ia, monkeypatch):
+    roteiro(monkeypatch, [])
+    _, r = com_nome(modelo, "libera a porta 3389 no firewall do servidor pra mim")
+    assert "mexe na infraestrutura" in r.resposta and "em a " not in r.resposta
+
+
+def test_posicionamentos_e_conversas_simultaneos_nao_perdem_registro(modelo, com_ia, monkeypatch):
+    # Régua 2.6 da quarta passada: o posicionamento reescreve o registro inteiro enquanto conversas novas gravam.
+    import threading
+    roteiro(monkeypatch, [])
+    abertas = []
+    for _ in range(20):
+        c, _r = com_nome(modelo, "libera a porta 3389 no firewall do servidor")
+        abertas.append(c.id)
+    erros = []
+
+    def posiciona(i):
+        try:
+            cv.registrar_posicionamento(i, "Infraestrutura avaliou e recusou a abertura da porta por segurança.")
+        except Exception as e:  # noqa: BLE001
+            erros.append(e)
+
+    def nova():
+        try:
+            com_nome(modelo, "quero que vocês excluam o site antigo da loja")
+        except Exception as e:  # noqa: BLE001
+            erros.append(e)
+    ts = [threading.Thread(target=posiciona, args=(i,)) for i in abertas] + [threading.Thread(target=nova) for _ in range(20)]
+    [t.start() for t in ts]
+    [t.join() for t in ts]
+    regs = registros(com_ia)
+    assert not erros and len(regs) == 40 and len({x["id"] for x in regs}) == 40
+    assert sum(1 for x in regs if x.get("posicionamento")) == 20

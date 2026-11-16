@@ -6,15 +6,21 @@ reembolso. Defeito de aparelho (bateria, aquecimento, não liga, peça, tela) va
 autorizada da empresa depois dos passos de verificação (rodada 60). A única outra passagem é quando a IA está fora do ar: aí uma pessoa assume, porque não há
 quem converse com o cliente.
 
-O limite de confiança e a fila por assunto continuam valendo só para a simulação em lote sobre o
-Dataset 2 (`decidir_lote`), que mede o classificador.
+Regra do Jó (2026-11-16), que retoma o fluxo aprovado nas rodadas 47 e 48:
+- Assunto incerto: se a confiança do classificador não passar do limite (0,8) depois de até MAX_PERGUNTAS
+  perguntas de esclarecimento, ou quando a IA já iria dar a solução, uma pessoa assume a conversa e tem de
+  fechar a chamada com um posicionamento.
+- Comando restrito (mudar ou contornar política, excluir site ou domínio, mexer na infraestrutura: porta,
+  firewall, servidor, DNS, VPN, acesso de administrador): a IA não executa, não altera e não repassa nenhum
+  dado. A conversa vai direto ao departamento especializado, com etiqueta de atenção. A trava é por regra, antes
+  de o texto ir para a IA externa.
 """
 from __future__ import annotations
 
 import re
 from dataclasses import dataclass
 
-from config import LIMITE_CONFIANCA
+from config import LIMITE_CONFIANCA, MAX_PERGUNTAS
 
 ROTULOS = {"Hardware": "Hardware", "HR Support": "Suporte de RH", "Access": "Acesso",
            "Miscellaneous": "Diversos", "Storage": "Armazenamento", "Purchase": "Compra",
@@ -34,6 +40,32 @@ PADROES_SENSIVEIS = {
 }
 TIPOS_SENSIVEIS = tuple(PADROES_SENSIVEIS)
 
+# Comandos restritos (Jó, 2026-11-16), em português e inglês. O verbo de ação precisa vir junto do objeto, porque
+# "abri o site e deu erro" é suporte comum, e "excluir o site" não é.
+_VERBO_MUDA = r"(alter\w*|mud\w*|substitu\w*|troc\w*|desativ\w*|desabilit\w*|ignor\w*|burl\w*|contorn\w*|suspend\w*|remov\w*|tir\w*)"
+_VERBO_ABRE = (r"(abr\w*|liber\w*|alter\w*|mud\w*|desativ\w*|desabilit\w*|desbloque\w*|reconfigur\w*|configur\w*|"
+               r"apont\w*|reinici\w* o servidor|deslig\w*)")
+_ART = r"(a |as |o |os |um |uma |essa |esta |esse |este |nossa |nosso |minha |meu |sua |seu |da |do |de )*"
+PADROES_RESTRITOS = {
+    "política": (rf"\b{_VERBO_MUDA} {_ART}(pol[ií]tica|regra) (de |da |do )?(seguran\w*|senha\w*|acesso|backup|"
+                 rf"privacidade|uso|reten\w*|bloqueio)|\b(override|bypass|disable|change|ignore) (the |this |our )?"
+                 rf"(security |password |access |backup )?polic\w*|\bpol[ií]tica\w* (de \w+ )?(substitu\w*|nova no lugar)"),
+    "exclusão de site": (rf"\b(exclu\w*|delet\w*|apag\w*|remov\w*|derrub\w*|tir\w* do ar|desativ\w*|desligar) "
+                         rf"{_ART}(site|sites|dom[ií]nio\w*|p[áa]gina\w* do site|hospedagem|portal)\b|"
+                         r"\b(delete|remove|take down|shut down) (the |our |my |this )?(web ?site|site|domain|portal)\b"),
+    "infraestrutura": (rf"\b{_VERBO_ABRE} {_ART}(porta\w*|firewall|vpn|dns|servidor\w*|banco de dados|"
+                       rf"acesso (de |como )?(admin\w*|root)|permiss\w* de (admin\w*|root)|regra\w* de rede|proxy|"
+                       rf"infraestrutura|backup\w*)\b|\b(senha|credencia\w*|acesso) (do|ao|de) (servidor|root|banco de dados|"
+                       rf"firewall|roteador)\b|\b(acesso|permiss\w*|senha) (de |como )?(admin\w*|root) (no|ao|do|na|da) "
+                       rf"(servidor|rede|dom[ií]nio|firewall|banco de dados)\b|\b(open|change|disable|reconfigure) (the |a )?(port|firewall|dns|vpn|"
+                       rf"server|proxy)\b|\b(admin|root) (access|rights|password) (to|for|on) (the )?(server|network)\b"),
+}
+TIPOS_RESTRITOS = tuple(PADROES_RESTRITOS)
+# Departamento especializado por tipo de comando. A setorização real do atendimento não está nos dados (lacuna 2):
+# os nomes são de exemplo e ficam nos placeholders do LEIAME.
+DEPARTAMENTO = {"política": "Segurança da informação", "exclusão de site": "Web e sistemas",
+                "infraestrutura": "Infraestrutura"}
+
 # Palavras de cortesia e de pedido genérico, usadas no modo sem IA para saber se o cliente já contou algo.
 VAZIAS = set("""hi hello hey dear good morning afternoon evening please thanks thank you regards kind best
 help need i a an the have has is am are my me we us it this that to for with and or problem issue
@@ -50,6 +82,9 @@ EXECUCAO = "pessoa executa"
 ENCERRADA = "cliente desistiu"
 ASSISTENCIA = "assistência técnica"   # defeito de aparelho (rodada 60): vai para a assistência autorizada
 TRIAGEM = "triagem humana"      # só quando a IA está fora do ar
+INCERTO = "assunto incerto"     # confiança abaixo do limite: uma pessoa assume e dá o posicionamento (2026-11-16)
+ESPECIALISTA = "departamento especializado"   # comando restrito: atenção, sem executar nem alterar (2026-11-16)
+COM_PESSOA = (EXECUCAO, TRIAGEM, INCERTO, ESPECIALISTA)   # destinos que exigem posicionamento de uma pessoa
 FILA = "fila"                   # só na simulação em lote
 
 
@@ -70,6 +105,22 @@ def acao_sensivel(texto: str) -> str | None:
     return None
 
 
+def comando_restrito(texto: str) -> str | None:
+    """Devolve o tipo de comando restrito (política, exclusão de site, infraestrutura), ou None."""
+    t = texto.lower()
+    for nome, padrao in PADROES_RESTRITOS.items():
+        if re.search(padrao, t):
+            return nome
+    return None
+
+
+def assunto_incerto(confianca: float, perguntas: int, ia_vai_resolver: bool, limite: float = LIMITE_CONFIANCA,
+                    max_perguntas: int = MAX_PERGUNTAS) -> bool:
+    """Regra das rodadas 47 e 48, retomada em 2026-11-16: abaixo do limite, a IA só segue enquanto pergunta.
+    Passa para uma pessoa quando a IA já iria dar a solução ou quando esgotou as perguntas de esclarecimento."""
+    return confianca < limite and (ia_vai_resolver or perguntas >= max_perguntas)
+
+
 def palavras_uteis(texto: str) -> int:
     """Quantas palavras do texto não são cortesia nem pedido genérico."""
     return sum(1 for w in re.findall(r"[a-zà-ú]+", texto.lower()) if w not in VAZIAS)
@@ -80,9 +131,12 @@ def desistiu(texto: str) -> bool:
 
 
 def decidir(categoria: str, confianca: float, sensivel: str | None, resolvido: bool = False,
-            desistencia: bool = False, assistencia: bool = False) -> Decisao:
+            desistencia: bool = False, assistencia: bool = False, restrito: str | None = None) -> Decisao:
     """Decide o que acontece com a conversa nesta rodada."""
     rotulo = ROTULOS.get(categoria, categoria)
+    if restrito:
+        return Decisao(ESPECIALISTA, f"{restrito}: comando restrito, sem executar nem alterar dado; vai ao departamento de "
+                                     f"{DEPARTAMENTO[restrito]} com etiqueta de atenção", categoria, confianca)
     if desistencia:
         return Decisao(ENCERRADA, "o cliente desistiu: conversa encerrada sem encaminhar", categoria, confianca)
     if sensivel:

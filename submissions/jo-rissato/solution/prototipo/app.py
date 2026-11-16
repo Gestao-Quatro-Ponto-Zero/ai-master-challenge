@@ -11,28 +11,43 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-from config import CONVERSAS, DATASET1, LIMITE_CONFIANCA, LOTE, TRADUCOES
-from conversa import ASSISTENCIA, ATENDENDO, COLETA, DETALHE, ENCERRADA, EXECUCAO, IDENTIFICACAO, RESOLVIDA, TRIAGEM, Conversa
+from datetime import datetime, timezone
+
+from config import CONVERSAS, DATASET1, LIMITE_CONFIANCA, LOTE, TRADUCOES, VERSAO_ROBO
+from conversa import (ASSISTENCIA, ATENDENDO, CANAIS, COLETA, DETALHE, ENCERRADA, ESPECIALISTA, EXECUCAO,
+                      IDENTIFICACAO, INCERTO, REDES, RESOLVIDA, TRIAGEM, Conversa, registrar_posicionamento)
 from lote import rodar
 from modelo import carregar
-from registro import ORIGEM, ROBO_ANTERIOR, SITUACAO, hora_brt, literal, normalizar_busca, sem_link
-from roteador import ROTULOS
+from registro import (CANAL_ROTULO, ORIGEM, ROBO_ANTERIOR, SITUACAO, canal_de, hora_brt, literal, normalizar_busca,
+                      pendente_posicionamento, sem_link)
+from roteador import ROTULOS, comando_restrito
 
 st.set_page_config(page_title="Suporte com IA", page_icon=":material/support_agent:", layout="wide")
 
 AZUL, AZUL_CLARO, AMBAR, CINZA = "#1E40AF", "#93C5FD", "#B45309", "#64748B"
 COR_SITUACAO = {"Em atendimento pela IA": "blue", "Resolvida pela IA": "green", "Encaminhada à assistência técnica": "violet",
                 "Reembolso ou cancelamento (time decide)": "orange",
+                "Com o time (assunto incerto)": "red", "Departamento especializado (atenção)": "red",
                 "Com o time (IA fora do ar)": "red", "Cliente desistiu": "gray", ROBO_ANTERIOR: "gray"}
 ETAPA = {ASSISTENCIA: "Assistência técnica", ATENDENDO: "IA atendendo", RESOLVIDA: "Resolvida pela IA", EXECUCAO: "Reembolso ou cancelamento (time decide)",
          TRIAGEM: "Com o time (IA fora do ar)", ENCERRADA: "Cliente desistiu", DETALHE: "Detalhes do pedido",
-         COLETA: "Coleta de contato", IDENTIFICACAO: "Identificação"}
+         COLETA: "Coleta de contato", IDENTIFICACAO: "Identificação", INCERTO: "Com o time (assunto incerto)",
+         ESPECIALISTA: "Departamento especializado (atenção)"}
 STATUS = {"Open": "Sem resposta", "Pending Customer Response": "Aguardando o cliente", "Closed": "Fechado"}
 ORDEM_STATUS = ["Sem resposta", "Aguardando o cliente", "Fechado"]
 CANAL = {"Phone": "Telefone", "Chat": "Chat", "Email": "E-mail", "Social media": "Redes sociais"}
 PRIORIDADE = {"Low": "Baixa", "Medium": "Média", "High": "Alta", "Critical": "Crítica"}
 TIPO = {"Refund request": "Reembolso", "Cancellation request": "Cancelamento", "Billing inquiry": "Cobrança",
         "Technical issue": "Problema técnico", "Product inquiry": "Dúvida de produto"}
+ASSUNTO_D1 = {"Refund request": "Pedido de reembolso", "Software bug": "Erro de software",
+              "Product compatibility": "Compatibilidade do produto", "Delivery problem": "Problema na entrega",
+              "Hardware issue": "Problema de hardware", "Battery life": "Duração da bateria",
+              "Network problem": "Problema de rede", "Installation support": "Ajuda na instalação",
+              "Product setup": "Configuração do produto", "Payment issue": "Problema de pagamento",
+              "Product recommendation": "Recomendação de produto", "Account access": "Acesso à conta",
+              "Peripheral compatibility": "Compatibilidade de periférico", "Data loss": "Perda de dados",
+              "Cancellation request": "Pedido de cancelamento", "Display issue": "Problema na tela"}
+CORES_NOTA = ["#B91C1C", "#F59E0B", "#CBD5E1", "#60A5FA", "#1E40AF"]
 ORIGENS = ["Todas", "Atendimentos", "Testes"]
 AJUDA_ORIGEM = ("Atendimentos: conversas feitas na página. Testes: conversas que o Claude rodou por script "
                 "para validar o robô.")
@@ -54,12 +69,24 @@ def selo(situacao: str) -> str:
     return f":{COR_SITUACAO.get(situacao, 'gray')}-background[{situacao}]"
 
 
-def situacao(x: dict, refeitas: set) -> str:
-    """Chamada gravada antes das correções de 11/11 (sem o campo em_andamento) ou já refeita por uma chamada
-    nova é do robô anterior."""
-    if "em_andamento" not in x or x.get("id") in refeitas:
+def situacao(x: dict, refeitas: set | None = None) -> str:
+    """Chamada de uma versão anterior das regras é do robô anterior: fica no registro e no process log, mas não
+    aparece no painel nem no dashboard (Jó, 2026-11-16)."""
+    if x.get("versao") != VERSAO_ROBO:
         return ROBO_ANTERIOR
     return SITUACAO.get(x["destino"], x["destino"])
+
+
+def horas_desde(iso: str) -> float:
+    return (datetime.now(timezone.utc) - datetime.fromisoformat(iso)).total_seconds() / 3600
+
+
+def posicionamento_txt(x: dict) -> str:
+    if x.get("posicionamento"):
+        return "Dado"
+    if pendente_posicionamento(x):
+        return f"Pendente há {horas_desde(x['fim']):.0f} h"
+    return ""
 
 
 def linha_escolhida(sel) -> int | None:
@@ -107,13 +134,22 @@ def dataset1() -> pd.DataFrame:
     d = pd.read_csv(DATASET1)
     return pd.DataFrame({"status": d["Ticket Status"].map(STATUS), "canal": d["Ticket Channel"].map(CANAL),
                          "prioridade": d["Ticket Priority"].map(PRIORIDADE), "tipo": d["Ticket Type"].map(TIPO),
-                         "nota": d["Customer Satisfaction Rating"]})
+                         "assunto": d["Ticket Subject"].map(ASSUNTO_D1), "nota": d["Customer Satisfaction Rating"]})
 
 
-def chamadas() -> list[dict]:
+def todas_chamadas() -> list[dict]:
     if not CONVERSAS.exists():
         return []
     return [json.loads(x) for x in CONVERSAS.read_text().splitlines() if x.strip()]
+
+
+def chamadas() -> list[dict]:
+    """Só as chamadas do robô em apresentação (versão atual das regras)."""
+    return [x for x in todas_chamadas() if x.get("versao") == VERSAO_ROBO]
+
+
+def anteriores() -> int:
+    return sum(1 for x in todas_chamadas() if x.get("versao") != VERSAO_ROBO)
 
 
 def barras(df: pd.DataFrame, cat: str, val: str, rotulo: str, fmt=pc):
@@ -137,10 +173,17 @@ with aba_conversa:
     if "conversa" not in st.session_state:
         st.session_state.conversa = Conversa(modelo())
     c: Conversa = st.session_state.conversa
+    if not c.rodadas:
+        e1, e2, _ = st.columns([2, 2, 3])
+        canal = e1.selectbox("Canal da simulação", CANAIS, format_func=CANAL_ROTULO.get,
+                             help="As regras são as mesmas em todo canal; muda só a forma da resposta.")
+        c.canal = canal
+        c.rede = e2.selectbox("Rede social de entrada", REDES) if canal == "rede social" else None
     col_chat, col_bastidor = st.columns([3, 2], gap="large")
     with col_chat:
-        st.caption(("Atendimento por IA" if c.com_ia else "Atendimento sem IA") + " · a IA atende até resolver; "
-                   "só reembolso e cancelamento passam para o time")
+        st.caption(("Atendimento por IA" if c.com_ia else "Atendimento sem IA") + f" · {canal_de({'canal': c.canal, 'rede': c.rede})}"
+                   " · a IA atende até resolver; reembolso, cancelamento, assunto incerto e comando restrito passam "
+                   "para uma pessoa")
         for r in c.rodadas:
             st.chat_message("user").write(sem_link(r.cliente))
             st.chat_message("assistant").write(sem_link(r.resposta))
@@ -150,7 +193,7 @@ with aba_conversa:
             if st.button("Nova conversa", icon=":material/add_comment:", type="primary"):
                 st.session_state.conversa = Conversa(modelo())
                 st.rerun()
-        elif msg := st.chat_input("Escreva como cliente"):
+        elif msg := st.chat_input("Fale como cliente (transcrição)" if c.canal == "telefone" else "Escreva como cliente"):
             try:
                 with st.spinner("Digitando..."):
                     c.receber(msg)
@@ -176,45 +219,81 @@ with aba_conversa:
                 st.caption(r.decisao.motivo)
 
 # Painel ----------------------------------------------------------------------------------------
+def mostrar_conversa(x: dict) -> None:
+    """A conversa na forma do canal: chat, troca de e-mails, mensagem direta ou transcrição da ligação."""
+    canal = x.get("canal") or "chat"
+    if canal == "e-mail":
+        assunto = f"Re: {x.get('resumo_pt') or 'Atendimento ' + x.get('id', '')}"
+        for m in x["conversa"]:
+            with st.container(border=True):
+                st.caption(f"De: cliente · Para: suporte · Assunto: {sem_link(assunto)}")
+                st.write(sem_link(m["cliente"]))
+            with st.container(border=True):
+                st.caption(f"De: suporte · Para: cliente · Assunto: {sem_link(assunto)}")
+                st.text(m["ia"])
+    elif canal == "telefone":
+        st.caption("Transcrição da ligação")
+        linhas = []
+        for m in x["conversa"]:
+            linhas += [f"**Cliente:** {sem_link(m['cliente'])}", f"**Atendente (IA):** {sem_link(m['ia'])}"]
+        st.markdown("  \n".join(linhas))
+    else:
+        if canal == "rede social" and x.get("rede"):
+            st.markdown(f":violet-badge[{x['rede']}] mensagem direta")
+        for m in x["conversa"]:
+            st.chat_message("user").write(sem_link(m["cliente"]))
+            st.chat_message("assistant").write(sem_link(m["ia"]))
+
+
 with aba_painel:
     conv = chamadas()
     st.subheader("Chamadas")
-    st.caption("Toda conversa vira uma chamada com ID desde a primeira mensagem. Clique numa linha da lista para ver a "
-               "conversa inteira. Chamadas do robô anterior (antes das correções de 11/11, ou já refeitas) ficam com a situação "
-               f"\"{ROBO_ANTERIOR}\".")
+    st.caption("Toda conversa vira uma chamada com ID desde a primeira mensagem, em qualquer canal. Clique numa linha "
+               "para ver a conversa. Chamada que passa para uma pessoa só fecha com o posicionamento do caso. "
+               f"As {num(anteriores())} chamadas das versões anteriores do robô ficam registradas no processo e fora "
+               "desta apresentação.")
     if not conv:
         st.info("Nenhuma chamada ainda. Faça um atendimento na aba Conversa.", icon=":material/info:")
     else:
         df = pd.DataFrame([{
-            "ID": x.get("id"), "Data": hora_brt(x["fim"]), "Cliente": x.get("nome") or "não informado",
-            "Situação": situacao(x, {y['refaz'] for y in conv if y.get('refaz')}), "Assunto": x.get("categoria") or "",
+            "ID": x.get("id"), "Data": hora_brt(x["fim"]), "Canal": canal_de(x),
+            "Cliente": x.get("nome") or "não informado", "Situação": situacao(x),
+            "Posicionamento": posicionamento_txt(x), "Assunto": x.get("categoria") or "",
             "Pedido": x.get("resumo_pt") or "", "Origem": ORIGEM.get(x.get("origem"), "Atendimento"),
-            "_i": i} for i, x in enumerate(conv)]).iloc[::-1]
-        f1, f2, f3, f4 = st.columns([1.2, 2, 2, 1.8])
-        busca = f1.text_input("ID da chamada", placeholder="ex.: 44", help="Aceita ATD-00044, atd44 ou só 44")
-        sit = f2.multiselect("Situação", [s for s in COR_SITUACAO if s in set(df["Situação"])], placeholder="Todas")
-        ass = f3.multiselect("Assunto", sorted(x for x in df["Assunto"].unique() if x), placeholder="Todos")
-        orig = f4.segmented_control("Quem gerou a chamada", ORIGENS, default="Todas", help=AJUDA_ORIGEM)
+            "_canal": CANAL_ROTULO.get(x.get("canal") or "chat"), "_i": i} for i, x in enumerate(conv)]).iloc[::-1]
+        f1, f2, f3, f4, f5 = st.columns([1.1, 1.6, 2, 1.8, 1.8])
+        busca = f1.text_input("ID da chamada", placeholder="ex.: 160", help="Aceita ATD-00160, atd160 ou só 160")
+        can = f2.multiselect("Canal", list(CANAL_ROTULO.values()), placeholder="Todos")
+        sit = f3.multiselect("Situação", [s for s in COR_SITUACAO if s in set(df["Situação"])], placeholder="Todas")
+        ass = f4.multiselect("Assunto", sorted(x for x in df["Assunto"].unique() if x), placeholder="Todos")
+        orig = f5.segmented_control("Quem gerou a chamada", ORIGENS, default="Todas", help=AJUDA_ORIGEM)
         v = por_origem(df, orig)
         if busca.strip():
             alvo = normalizar_busca(busca)
             v = df[df["ID"] == alvo]
             if v.empty:
                 st.warning(f"Nenhuma chamada com o ID {alvo or busca}.", icon=":material/search_off:")
+        if can:
+            v = v[v["_canal"].isin(can)]
         if sit:
             v = v[v["Situação"].isin(sit)]
         if ass:
             v = v[v["Assunto"].isin(ass)]
+        if st.toggle("Só as que aguardam posicionamento", key="so_pendentes"):
+            v = v[v["Posicionamento"].str.startswith("Pendente")]
 
-        presentes = [s for s in COR_SITUACAO if (v["Situação"] == s).any()]
-        k = st.columns(1 + max(len(presentes), 1))
+        pend = v[v["Posicionamento"].str.startswith("Pendente")]
+        k = st.columns(4)
         k[0].metric("Chamadas", num(len(v)))
-        for col, nome in zip(k[1:], presentes):
-            col.metric(nome, num((v["Situação"] == nome).sum()))
+        k[1].metric("Resolvidas pela IA", num((v["Situação"] == "Resolvida pela IA").sum()))
+        k[2].metric("Aguardando posicionamento", num(len(pend)),
+                    help="Passaram para uma pessoa e ainda não têm o posicionamento do caso. O prazo é a definir com o "
+                         "diretor; a coluna mostra há quanto tempo cada uma espera.")
+        k[3].metric("Com etiqueta de atenção", num((v["Situação"] == "Departamento especializado (atenção)").sum()))
 
         lista, detalhe = st.columns([3, 2], gap="large")
         with lista:
-            sel = st.dataframe(v.drop(columns=["_i"]), hide_index=True, width="stretch", height=560,
+            sel = st.dataframe(v.drop(columns=["_i", "_canal"]), hide_index=True, width="stretch", height=560,
                                on_select="rerun", selection_mode=["single-row", "single-cell"], key="lista_chamadas",
                                column_config={"ID": st.column_config.TextColumn(width="small"),
                                               "Data": st.column_config.TextColumn(width="small"),
@@ -228,32 +307,42 @@ with aba_painel:
                 st.info("Nenhuma chamada com esses filtros.", icon=":material/filter_alt_off:")
             else:
                 x = conv[int(escolhida["_i"])]
-                st.markdown(f"**Conversa da chamada {x.get('id')}**")
+                st.markdown(f"**Conversa da chamada {x.get('id')}** · {canal_de(x)}")
                 # Uma caixa nova por chamada: ao trocar de chamada, a conversa abre do começo.
                 with st.container(height=420, key=f"conversa_{x.get('id')}", autoscroll=False):
-                    for m in x["conversa"]:
-                        st.chat_message("user").write(sem_link(m["cliente"]))
-                        st.chat_message("assistant").write(sem_link(m["ia"]))
+                    mostrar_conversa(x)
                 with st.container(border=True):
-                    st.markdown(f"#### {x.get('id')}  {selo(escolhida['Situação'])}")
-                    st.caption(f"{hora_brt(x['fim'])} · {escolhida['Origem']} · "
+                    etiqueta = " :red-badge[ATENÇÃO]" if (x.get("detalhes") or {}).get("etiqueta") else ""
+                    st.markdown(f"#### {x.get('id')}  {selo(escolhida['Situação'])}{etiqueta}")
+                    st.caption(f"{hora_brt(x['fim'])} · {escolhida['Origem']} · {canal_de(x)} · "
                                f"{x.get('modo', 'Atendimento por IA')} · {x.get('mensagens', '')} mensagens")
-                    refeita = next((y["id"] for y in conv if y.get("refaz") == x.get("id")), None)
-                    if refeita:
-                        st.caption(f"Conversa refeita com o robô corrigido na chamada {refeita}.")
-                    if x.get("refaz"):
-                        st.caption(f"Refaz a chamada {x['refaz']} com o robô corrigido.")
-                    st.markdown(f"**Motivo**  \n{sem_link(x.get('motivo'))}")
+                    titulo = "Resultado da ligação" if x.get("canal") == "telefone" else "Motivo"
+                    st.markdown(f"**{titulo}**  \n{sem_link(x.get('motivo'))}")
                     a, b = st.columns(2)
                     a.markdown(f"**Cliente**  \n{x.get('nome') or 'não informado'}")
-                    b.markdown(f"**Assunto**  \n{x.get('categoria')}")
+                    b.markdown(f"**Assunto**  \n{x.get('categoria')} (confiança {dec(x.get('confianca') or 0)})")
                     a.markdown(f"**CPF**  \n{literal(x.get('cpf')) or 'não coletado'}")
                     b.markdown(f"**Telefone**  \n{literal(x.get('telefone')) or 'não coletado'}")
                     st.markdown(f"**E-mail**  \n{literal(x.get('email')) or 'não coletado'}")
                     for campo, rot in (("pedido", "Pedido"), ("valor", "Valor"), ("cep", "CEP usado"),
-                                       ("assistencia", "Assistência indicada")):
+                                       ("assistencia", "Assistência indicada"), ("departamento", "Departamento")):
                         if campo in (x.get("detalhes") or {}):
                             st.markdown(f"**{rot}**  \n{literal(x['detalhes'][campo]) or 'não informado'}")
+                    if x.get("posicionamento"):
+                        st.success(f"**Posicionamento** ({hora_brt(x['posicionado_em'])})  \n"
+                                   f"{literal(x['posicionamento'])}", icon=":material/task_alt:")
+                    elif pendente_posicionamento(x):
+                        st.warning(f"Aguarda o posicionamento de uma pessoa há {horas_desde(x['fim']):.0f} h. A chamada "
+                                   "só fecha com ele.", icon=":material/pending_actions:")
+                        with st.form(f"pos_{x['id']}", clear_on_submit=True):
+                            texto = st.text_area("Posicionamento do caso", max_chars=2000,
+                                                 placeholder="O que foi decidido, o que foi feito e o que foi dito ao cliente.")
+                            if st.form_submit_button("Fechar com posicionamento", type="primary"):
+                                try:
+                                    registrar_posicionamento(x["id"], texto)
+                                    st.rerun()
+                                except ValueError as erro:
+                                    st.error(str(erro).capitalize() + ".")
 
 # Dashboard -------------------------------------------------------------------------------------
 with aba_dash:
@@ -268,7 +357,7 @@ with aba_dash:
         canais = f1.multiselect("Canal", list(CANAL.values()), placeholder="Todos")
         prios = f2.multiselect("Prioridade", list(PRIORIDADE.values()), placeholder="Todas")
         tipos = f3.multiselect("Tipo de pedido", list(TIPO.values()), placeholder="Todos")
-        grupo = f4.segmented_control("Comparar por", ["Canal", "Prioridade", "Tipo"], default="Canal") or "Canal"
+        grupo = f4.segmented_control("Comparar por", ["Canal", "Prioridade", "Tipo", "Assunto"], default="Canal") or "Canal"
         d = d1
         if canais:
             d = d[d["canal"].isin(canais)]
@@ -286,8 +375,8 @@ with aba_dash:
             k[2].metric("Aguardando o cliente", pc((d["status"] == "Aguardando o cliente").mean()))
             k[3].metric("Fechados", pc((d["status"] == "Fechado").mean()))
             k[4].metric("Nota média (fechados)", dec(notas.mean()) if len(notas) else "sem nota")
-            col = {"Canal": "canal", "Prioridade": "prioridade", "Tipo": "tipo"}[grupo]
-            g1, g2 = st.columns([3, 2], gap="large")
+            col = {"Canal": "canal", "Prioridade": "prioridade", "Tipo": "tipo", "Assunto": "assunto"}[grupo]
+            g1 = st.container()
             with g1:
                 st.markdown(f"**Situação dos tickets por {grupo.lower()}**")
                 t = d.groupby([col, "status"]).size().rename("n").reset_index()
@@ -310,29 +399,48 @@ with aba_dash:
                 if len(sem) > 1:
                     st.caption(f"Sem resposta vai de {pc(sem.min())} ({sem.idxmin()}) a {pc(sem.max())} "
                                f"({sem.idxmax()}): diferença de {dec((sem.max() - sem.min()) * 100)[:-1]} pontos.")
-            with g2:
-                st.markdown("**Notas de satisfação (só tickets fechados)**")
-                if len(notas):
-                    n = notas.astype(int).value_counts(normalize=True).reindex(range(1, 6), fill_value=0)
-                    tn = pd.DataFrame({"Nota": [str(i) for i in n.index], "pct": n.values})
-                    tn["_t"] = tn["pct"].map(pc)
-                    base = alt.Chart(tn).encode(x=alt.X("Nota:N", title="Nota", axis=alt.Axis(labelAngle=0)),
-                                                y=alt.Y("pct:Q", title="% dos fechados", axis=alt.Axis(format="%")),
-                                                tooltip=["Nota", alt.Tooltip("_t:N", title="%")])
-                    st.altair_chart((base.mark_bar(color=AZUL, cornerRadiusEnd=3)
-                                     + base.mark_text(dy=-8, color="#0F172A").encode(text="_t:N")).properties(height=260),
-                                    width="stretch")
-                    st.caption(f"{num(len(notas))} notas. {pc(1 - len(notas) / len(d))} dos tickets deste recorte "
-                               "nunca foram avaliados.")
-                else:
-                    st.info("Nenhum ticket fechado neste recorte.", icon=":material/info:")
+            st.markdown(f"**Notas de satisfação por {grupo.lower()} (só tickets fechados)**")
+            fech = d.dropna(subset=["nota"])
+            if len(fech):
+                tn = fech.groupby([col, "nota"]).size().rename("n").reset_index()
+                tn["pct"] = tn["n"] / tn.groupby(col)["n"].transform("sum")
+                tn["Nota"] = tn["nota"].astype(int).astype(str)
+                tn["_t"] = tn["pct"].map(pc)
+                medias = fech.groupby(col)["nota"].agg(["mean", "size"]).reset_index()
+                medias["rot"] = medias.apply(lambda r: f"média {dec(r['mean'])} · {num(r['size'])} notas", axis=1)
+                ordem = medias.sort_values("mean")[col].tolist()
+                barra = alt.Chart(tn).mark_bar().encode(
+                    y=alt.Y(f"{col}:N", sort=ordem, title=None),
+                    x=alt.X("pct:Q", stack="normalize", title="% das notas", axis=alt.Axis(format="%")),
+                    color=alt.Color("Nota:N", sort=["1", "2", "3", "4", "5"], title="Nota",
+                                    scale=alt.Scale(domain=["1", "2", "3", "4", "5"], range=CORES_NOTA),
+                                    legend=alt.Legend(orient="bottom")),
+                    order=alt.Order("nota:Q"),
+                    tooltip=[alt.Tooltip(f"{col}:N", title=grupo), "Nota", alt.Tooltip("_t:N", title="%"),
+                             alt.Tooltip("n:Q", title="Tickets")])
+                rotulo = alt.Chart(medias).mark_text(align="left", dx=6, color="#0F172A").encode(
+                    y=alt.Y(f"{col}:N", sort=ordem), x=alt.value(0), text="rot:N")
+                c1, c2 = st.columns([3, 2], gap="large")
+                c1.altair_chart(barra.properties(height=alt.Step(30)), width="stretch")
+                with c2:
+                    st.dataframe(medias.sort_values("mean").rename(columns={col: grupo, "mean": "Nota média",
+                                                                           "size": "Notas"})[[grupo, "Nota média", "Notas"]]
+                                 .assign(**{"Nota média": lambda t: t["Nota média"].map(dec)}),
+                                 hide_index=True, width="stretch")
+                st.caption(f"Cada barra é um {grupo.lower()}, dividido pelas notas de 1 (vermelho) a 5 (azul escuro). "
+                           f"{num(len(fech))} notas; {pc(1 - len(fech) / len(d))} dos tickets deste recorte nunca foram "
+                           f"avaliados, porque a nota só existe no fechamento. A nota média vai de "
+                           f"{dec(medias['mean'].min())} a {dec(medias['mean'].max())} entre os grupos.")
+            else:
+                st.info("Nenhum ticket fechado neste recorte.", icon=":material/info:")
 
     with sim:
         lt = lote()
         st.caption(f"O classificador de assunto rodando sobre {num(len(lt))} tickets reais (Dataset 2) que ele nunca viu no "
-                   "treino. Na conversa, a IA atende tudo até resolver e o assunto só marca a chamada para o painel e o "
-                   "dashboard (rodada 59); aqui se mede o quanto essa marcação acerta. Mova o limite para ver a troca "
-                   "entre o que sai marcado com segurança e o que fica com assunto incerto.")
+                   "treino, cada um com o assunto verdadeiro conhecido. Para cada ticket, a IA dá um assunto e uma "
+                   "confiança de 0 a 1. Se a confiança passa do limite, a IA define o assunto sozinha e segue o "
+                   "atendimento; se não passa, o assunto fica incerto e uma pessoa assume (regra de 2026-11-16). Mova "
+                   "o limite para ver a troca: limite alto acerta mais, mas manda mais tickets para uma pessoa.")
         f1, f2 = st.columns([2, 3])
         lim = f1.slider("Limite de confiança", 0.50, 0.95, LIMITE_CONFIANCA, 0.05,
                         help=f"Abaixo do limite, o ticket vai para uma pessoa. Decisão atual do Jó: {dec(LIMITE_CONFIANCA)}.")
@@ -340,19 +448,20 @@ with aba_dash:
         s = lt[lt["assunto_real"].isin(assuntos)] if assuntos else lt
         auto = s[s["confianca"] >= lim]
         k = st.columns(4)
-        k[0].metric("IA marca com segurança", pc(len(auto) / len(s)))
-        k[1].metric("Acerto quando marca", pc(auto["acertou"].mean()) if len(auto) else "sem dado")
-        k[2].metric("Assunto incerto", pc(1 - len(auto) / len(s)))
-        k[3].metric("Marcados errado a cada 1.000", num(round((~auto["acertou"]).sum() / len(s) * 1000)))
+        k[0].metric("IA define o assunto sozinha", pc(len(auto) / len(s)),
+                    help="% dos tickets em que a confiança passou do limite.")
+        k[1].metric("Desses, assunto certo", pc(auto["acertou"].mean()) if len(auto) else "sem dado")
+        k[2].metric("Assunto incerto: vai para uma pessoa", pc(1 - len(auto) / len(s)))
+        k[3].metric("Assunto errado a cada 1.000 tickets", num(round((~auto["acertou"]).sum() / len(s) * 1000)))
         g1, g2 = st.columns(2, gap="large")
         with g1:
-            st.markdown("**Quanto a IA marca com segurança e quanto acerta, por limite**")
+            st.markdown("**Quanto a IA define sozinha e quanto acerta, por limite**")
             grade = []
             for L in np.round(np.arange(0.5, 0.96, 0.05), 2):
                 a = s[s["confianca"] >= L]
-                grade.append({"Limite": L, "Medida": "IA marca com segurança", "v": len(a) / len(s)})
+                grade.append({"Limite": L, "Medida": "IA define o assunto sozinha", "v": len(a) / len(s)})
                 if len(a):
-                    grade.append({"Limite": L, "Medida": "Acerto quando marca", "v": a["acertou"].mean()})
+                    grade.append({"Limite": L, "Medida": "Desses, assunto certo", "v": a["acertou"].mean()})
             gr = pd.DataFrame(grade)
             gr["_t"] = gr["v"].map(pc)
             linhas_g = alt.Chart(gr).mark_line(point=True).encode(
@@ -364,21 +473,28 @@ with aba_dash:
             st.altair_chart((linhas_g + regra).properties(height=300), width="stretch")
             st.caption("A linha tracejada é o limite escolhido no controle acima.")
         with g2:
-            st.markdown(f"**% marcado com segurança por assunto, no limite {dec(lim)}**")
+            st.markdown(f"**% definido pela IA sozinha, por assunto, no limite {dec(lim)}**")
             pa = (s["confianca"] >= lim).groupby(s["assunto_real"]).mean().rename("pct").reset_index()
-            st.altair_chart(barras(pa, "assunto_real", "pct", "% marcado com segurança"), width="stretch")
+            st.altair_chart(barras(pa, "assunto_real", "pct", "% definido pela IA"), width="stretch")
 
     with fila_t:
         lt = lote()
-        st.caption(f"Simulação: tickets reais do Dataset 2 em que o classificador fica abaixo do limite {dec(LIMITE_CONFIANCA)}. "
-                   "No fluxo atual a IA segue atendendo esses clientes normalmente; só o assunto marcado na chamada é "
-                   "menos confiável. A lista mostra os 200 de menor confiança, "
-                   "traduzidos do inglês.")
+        st.caption(f"Simulação: tickets reais do Dataset 2 em que a confiança fica abaixo do limite {dec(LIMITE_CONFIANCA)}. "
+                   "Regra de 2026-11-16: todo assunto incerto vai para uma pessoa, que só fecha a chamada com o "
+                   "posicionamento do caso. Comando para mudar política, excluir site ou mexer na infraestrutura não "
+                   "é executado nem altera dado: vai ao departamento especializado com etiqueta de atenção. A lista "
+                   "mostra os 200 de menor confiança, traduzidos do inglês.")
         tri = lt[lt["confianca"] < LIMITE_CONFIANCA]
-        k = st.columns(3)
-        k[0].metric("Tickets com assunto incerto", num(len(tri)))
+        restritos = lt["texto"].map(comando_restrito)
+        k = st.columns(4)
+        k[0].metric("Tickets com assunto incerto", num(len(tri)), help="Vão para uma pessoa.")
         k[1].metric("% do total", pc(len(tri) / len(lt)))
-        k[2].metric("Confiança média da IA nesses tickets", dec(tri["confianca"].mean()))
+        k[2].metric("Acerto da IA nesses tickets", pc(tri["acertou"].mean()),
+                    help="Prova de que o limite separa: abaixo dele a IA erra o assunto em 1 de cada 3.")
+        k[3].metric("Comando restrito (trava por regra)", num(restritos.notna().sum()),
+                    help="Tickets do teste que a trava por regra manda ao departamento especializado. O texto do "
+                         "Dataset 2 vem sem pontuação nem palavras curtas, então a regra acha pouco aqui; na conversa, "
+                         "a IA também sinaliza o comando restrito.")
         g1, g2 = st.columns([2, 3], gap="large")
         with g1:
             st.markdown("**Assunto mais provável desses tickets**")
@@ -397,28 +513,43 @@ with aba_dash:
 
     with prot:
         conv = chamadas()
+        st.caption(f"As chamadas do robô em apresentação (regras de {VERSAO_ROBO}), em todos os canais. As "
+                   f"{num(anteriores())} chamadas das versões anteriores ficam registradas no processo e fora destes "
+                   "números.")
         if not conv:
             st.info("Nenhuma chamada ainda.", icon=":material/info:")
         else:
-            cp = pd.DataFrame([{"Situação": situacao(x, {y['refaz'] for y in conv if y.get('refaz')}), "Assunto": x.get("categoria") or "",
-                                "Origem": ORIGEM.get(x.get("origem"), "Atendimento"), "tokens": x.get("tokens") or 0}
-                               for x in conv])
-            st.caption("As chamadas feitas no protótipo, para acompanhar como o atendimento por IA está se saindo.")
+            cp = pd.DataFrame([{"Situação": situacao(x), "Assunto": x.get("categoria") or "", "Canal": canal_de(x),
+                                "_canal": CANAL_ROTULO.get(x.get("canal") or "chat"),
+                                "Origem": ORIGEM.get(x.get("origem"), "Atendimento"), "tokens": x.get("tokens") or 0,
+                                "pendente": pendente_posicionamento(x)} for x in conv])
             cp = por_origem(cp, st.segmented_control("Quem gerou a chamada", ORIGENS, default="Todas", key="origem_dash",
                                                      help=AJUDA_ORIGEM))
             if cp.empty:
                 st.info("Nenhuma chamada com esse filtro.", icon=":material/filter_alt_off:")
             else:
-                k = st.columns(3)
+                k = st.columns(4)
                 k[0].metric("Chamadas", num(len(cp)))
                 k[1].metric("Resolvidas pela IA", pc((cp["Situação"] == "Resolvida pela IA").mean()))
-                k[2].metric("Tokens de IA por chamada (média)", num(cp["tokens"].mean()))
+                k[2].metric("Aguardando posicionamento", num(cp["pendente"].sum()))
+                k[3].metric("Tokens de IA por chamada (média)", num(cp["tokens"].mean()))
                 g1, g2 = st.columns(2, gap="large")
                 with g1:
                     st.markdown("**Situação das chamadas**")
                     st.altair_chart(barras(cp["Situação"].value_counts().rename("n").reset_index(), "Situação", "n",
                                            "Chamadas", fmt=num), width="stretch")
                 with g2:
-                    st.markdown("**Assunto das chamadas**")
-                    st.altair_chart(barras(cp["Assunto"].value_counts().rename("n").reset_index(), "Assunto", "n",
-                                           "Chamadas", fmt=num), width="stretch")
+                    st.markdown("**Situação por canal**")
+                    tc = cp.groupby(["_canal", "Situação"]).size().rename("n").reset_index()
+                    tc["pct"] = tc["n"] / tc.groupby("_canal")["n"].transform("sum")
+                    tc["_t"] = tc["pct"].map(pc)
+                    st.altair_chart(alt.Chart(tc).mark_bar().encode(
+                        y=alt.Y("_canal:N", title=None),
+                        x=alt.X("pct:Q", stack="normalize", title="% das chamadas do canal", axis=alt.Axis(format="%")),
+                        color=alt.Color("Situação:N", legend=alt.Legend(orient="bottom", columns=2, title=None)),
+                        tooltip=[alt.Tooltip("_canal:N", title="Canal"), "Situação", alt.Tooltip("_t:N", title="%"),
+                                 alt.Tooltip("n:Q", title="Chamadas")]).properties(height=alt.Step(40)),
+                        width="stretch")
+                st.markdown("**Assunto das chamadas**")
+                st.altair_chart(barras(cp["Assunto"].value_counts().rename("n").reset_index(), "Assunto", "n",
+                                       "Chamadas", fmt=num), width="stretch")

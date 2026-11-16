@@ -899,3 +899,69 @@ Duas rodadas focadas: 8 de 8 no destino certo. Falso alarme "pede print" (Print 
 não decide para onde a conversa vai. Bateria completa rodada de novo depois do último ajuste da extração
 (`docs/bateria-ia-rodada64.md`). README da submissão escrito no modelo do G4, com o link do protótipo. Commit local
 só dos arquivos da entrega. Push e PR ficam com o Jó, por serem envio público.
+
+## Explicação das abas do dashboard antes da homologação (2026-11-16 09:50 BRT)
+
+**Pergunta do Jó (literal):** "antes de homologar, me traz o que você  quis trazer em detalhes com as abas no painel do dashboard"
+
+**Resposta (resumo):** as quatro abas com o número que cada uma mostra hoje. Operação hoje: 8.469 tickets do
+Dataset 1, sem resposta de 32,7% a 34,5% entre canais. Classificador de assunto: 9.568 tickets do teste, no limite 0,8
+marca 68,4% com 96,4% de acerto (24 errados a cada 1.000), de 59,8% (Hardware) a 86,4% (Compra). Assunto incerto:
+3.026 tickets (31,6%), confiança média 0,59 e acerto de 66,5%. Chamadas do protótipo: 152 chamadas, das quais 130
+"Robô anterior" (refeitas ou anteriores à regra da rodada 59); só 22 refletem o robô atual, então "Resolvidas pela IA"
+aparece diluído (11 de 152, 7,2%). Proposta enviada ao Jó: abrir a aba só com o robô atual por padrão. Nada alterado.
+
+## Canais, assunto incerto, comando restrito e métricas limpas (2026-11-16 10:25 BRT)
+
+**Pedido do Jó (literal):** "1 na aba  de painel do atendente, conseguimos adicionar simulações de relacionamento por email e rede social e telefone? se sim add tratando o cliente ja com os últimos ajustes feitos. na rede social gera o tag de qual rede o cliente entrou, por email a trratativa como se da por emal, e por telefone a transcricao da conversa e o resultado gerado. 
+
+na nota de satisfacao, as colunas por numeros não deixa claro o que é de fato, precisa trazer o canal o a assunnto que está se referindo a nota. 
+
+2. me explica melhor o que você  quer dizer como (acerto qndo marca e ia marca com seguranca) pra miim ainnda esta confuso isso. 
+3. essa aba de assuntos incertos, tudo que for comandos parra substuir politica, pedir exclusao de sites, ou que interfira em mudancas ou abertura de como funciona a infra estrutura, não passar nem alterar nenhum dado e encaminhar para o departamento especializado no assunto em questao com etiqueta de atencao, todas essas conversas de assuntos incertos devem ser encaminhados para um humano e cobraddo dele um fechamento com posicionamento do caso. 
+4. as conversas do robo anterior estao deixando as nossas metricas sujas e parecendo ser ineficaz, sendo que.a realidade é outra.. eu deixaria o teste do robo anterior registrado no processo como feito, mas não apresentaria ele no dash como resultado do produto que estamos de fato apresentando e com esses ajjustes feitos, aumentar o volume de teste para ter um comparativo mais realista da versao atual.. faz os ajustes antes de executar os novos testes"
+
+**Dado antes de mexer:** na bateria 64, 8 das 17 conversas terminaram abaixo de 0,8 de confiança; 2 delas a IA tinha
+resolvido. O classificador foi treinado com TI interna (Dataset 2), então assunto de cliente (iPhone, Chrome) tende a
+ficar incerto. A regra foi aplicada como pedida e o efeito medido na bateria ampliada.
+
+**O que foi feito:**
+- Canal na conversa (chat, e-mail, rede social com a rede de entrada, telefone). E-mail com saudação, assinatura e
+  até 5 passos; telefone com fala curta e passos falados, mostrado como transcrição com "Resultado da ligação";
+  rede social com a etiqueta da rede. Mesmas regras em todo canal.
+- Assunto incerto: abaixo de 0,8, a IA só pergunta; se esgotar 3 perguntas ou já for dar a solução, a resposta é
+  descartada e uma pessoa assume (retoma o fluxo das rodadas 47 e 48).
+- Comando restrito (mudar política, excluir site ou domínio, mexer em porta, firewall, servidor, DNS, VPN, acesso de
+  administrador a servidor): trava por regra antes da IA externa, mais o sinal da IA como segunda camada; nada é
+  executado nem repassado; vai ao departamento especializado (Segurança da informação, Web e sistemas ou
+  Infraestrutura, nomes de exemplo) com etiqueta ATENÇÃO.
+- Toda chamada que passa para pessoa (reembolso, cancelamento, assunto incerto, departamento, IA fora do ar) fica
+  "Aguardando posicionamento" no painel, com o tempo de espera, e só fecha com texto de posicionamento.
+- Chamadas de versões anteriores do robô saem do painel e do dashboard pela versão das regras (`VERSAO_ROBO`);
+  continuam no registro e neste log.
+- Notas de satisfação: agora por canal, prioridade, tipo ou assunto, com a média e o número de notas de cada grupo.
+- Rótulos do classificador reescritos ("IA define o assunto sozinha", "Desses, assunto certo").
+- Bateria ampliada: 22 casos em 4 canais (88 conversas), gasto contado à parte do teto da página.
+- 146 testes (eram 124).
+
+## Bateria ampliada e régua da versão atual (2026-11-16 11:25 BRT)
+
+**Pedido do Jó (literal):** "me avisa quando terminar a bateria roda tbm a regua de validacao"
+
+**Rodada 65 (88 conversas, 4 canais, 2026-11-16):** 80 de 88. Falhas lidas uma a uma: 4 do pedido de instruções
+mandado ao departamento de Segurança (extração da IA, não a regra fixa), 1 monitor encaminhado à assistência no
+telefone sem conferir o cabo (pergunta numerada contada como passo), e 3 expectativas ou checagens do próprio teste.
+Achados fora das checagens: saudação dupla no e-mail e "mexe em a infraestrutura".
+
+**Correções:** passo só conta quando manda o cliente fazer algo; pedido sobre a própria assistente não é comando
+restrito; corpo do e-mail sem a saudação do chat; concordância da mensagem do departamento; checagem de promessa
+só em afirmação. 154 testes.
+
+**Rodada 66 (88 conversas, mesmas regras):** 86 de 88, com as 2 falhas na própria checagem (corrigida e repassada em
+todas as respostas guardadas das rodadas 65 e 66, zero violação). Destinos: resolvida pela IA 22, assistência 3,
+assunto incerto 19, departamento especializado 16, pessoa executa 16, cliente desistiu 8, IA atendendo 4. Média de
+3.537 tokens por conversa (5.761 na rodada 64).
+
+**Régua, quarta passada:** todos os itens verdes menos a homologação do Jó (docs/regua-validacao-prototipo.md).
+Custo medido da regra do assunto incerto: nos casos de suporte a IA resolve 55% das conversas (7 de 10 casos na
+rodada 64); Outlook, impressora, iPhone e Excel passam a ir para uma pessoa por causa do classificador de TI interna.

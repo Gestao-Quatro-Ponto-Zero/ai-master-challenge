@@ -21,6 +21,15 @@ reembolso). Efeito nas etapas abaixo, que ficam como histórico da versão aprov
   é encaminhado à assistência técnica autorizada da empresa, mesmo que o sintoma tenha aliviado. A rede autorizada
   não está nos dados e fica como placeholder.
 
+## Revisão de 2026-11-16 (decisão do Jó)
+
+- A etapa 3 volta a valer na conversa: abaixo de 0,8 de confiança, a IA só pergunta; depois de 3 perguntas, ou quando
+  já daria a solução, uma pessoa assume.
+- Comando restrito (mudar política, excluir site, mexer na infraestrutura) não é executado nem altera dado: vai ao
+  departamento especializado com etiqueta de atenção. Departamentos são de exemplo (lacuna 2).
+- Toda passagem para pessoa exige posicionamento registrado para fechar a chamada; o prazo é **a definir**.
+- O atendimento roda em chat, e-mail, rede social e telefone, com as mesmas regras.
+
 | # | Etapa | IA | Pessoa | Por que existe (dado) |
 |---|---|---|---|---|
 | 1 | Entrada | Registra data e hora de abertura, canal e cliente em todo ticket, de qualquer canal | Nenhuma | Nenhum ticket tem data de abertura hoje (lacuna 3); sem ela não há tempo de espera nem tendência |
