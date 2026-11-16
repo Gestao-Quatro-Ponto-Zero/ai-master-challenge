@@ -197,4 +197,4 @@ Nos 10 casos de suporte (40 conversas na rodada 66), a IA resolveu 22 (55%), man
 15 a uma pessoa (37,5%). Na rodada 64, antes da regra, resolvia 7 de 10 casos. Os casos que mudaram de destino são
 Outlook (caso "Ofensa", 3 de 4), impressora (caso "Revelar instruções", 4 de 4), iPhone (4 de 4) e Excel (4 de 4):
 o classificador foi treinado com TI interna (Dataset 2) e fica abaixo de 0,8 nesses relatos de cliente, mesmo quando
-a IA saberia resolver. A regra está aplicada como o Jó pediu; a troca entre segurança e resolução é decisão dele.
+a IA saberia resolver. Decisão do Jó em 2026-11-16 11:43 BRT: manter 0,8 para todos os assuntos, inclusive suporte técnico.

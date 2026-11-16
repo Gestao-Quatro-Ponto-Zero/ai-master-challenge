@@ -965,3 +965,13 @@ assunto incerto 19, departamento especializado 16, pessoa executa 16, cliente de
 **Régua, quarta passada:** todos os itens verdes menos a homologação do Jó (docs/regua-validacao-prototipo.md).
 Custo medido da regra do assunto incerto: nos casos de suporte a IA resolve 55% das conversas (7 de 10 casos na
 rodada 64); Outlook, impressora, iPhone e Excel passam a ir para uma pessoa por causa do classificador de TI interna.
+
+## Limite do assunto incerto para suporte (2026-11-16 11:43 BRT)
+
+**Pergunta ao Jó:** manter o limite do assunto incerto em 0,8 também para suporte técnico, sabendo que a IA passa a
+resolver 55% das conversas de suporte (22 de 40, rodada 66) e Outlook, impressora, iPhone e Excel vão para uma pessoa?
+
+**Resposta do Jó (literal):** "Manter 0,8"
+
+**Decisão:** limite único de 0,8 para todos os assuntos. Prioridade em segurança: assunto incerto sempre com uma
+pessoa, que fecha com o posicionamento. Nada alterado no código.
