@@ -56,7 +56,9 @@ def chave_deepseek() -> str | None:
 # Tudo roda nesta máquina: a voz do cliente é dado pessoal e não vai para IA externa; só o texto transcrito segue o
 # caminho de sempre, com nome, CPF, telefone e e-mail mascarados.
 # Transcrição: faster-whisper "small" em int8 na CPU. Medido em 2026-11-16 com 5 frases do suporte: "small" acertou
-# Outlook, reembolso e impressora; "base" trocou palavras ("e-meios", "imprimi").
+# Outlook, reembolso e impressora; "base" trocou palavras ("e-meios", "imprimi"). Em 12 falas humanas do FLEURS pt-BR:
+# small 5,4% de erro por palavra e cerca de 4 s por turno; medium 3,1% mas 10 s por turno; large-v3-turbo 11 a 15 s
+# por turno. Nesta CPU, só o small mantém a ligação fluida (o Whisper sempre processa uma janela de 30 s).
 WHISPER_MODELO = os.getenv("WHISPER_MODELO", "small")
 # Voz da atendente: Piper, voz pt_BR "faber" (rhasspy/piper-voices), fora do git por ser binário de 60 MB.
 VOZ_PIPER = Path(os.getenv("VOZ_PIPER", REPO.parent / "dados/voz/pt_BR-faber-medium.onnx"))

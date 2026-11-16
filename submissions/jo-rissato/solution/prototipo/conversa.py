@@ -129,6 +129,12 @@ ESTILO = {
                  "no máximo 2 passos por vez, falados como 'Passo 1: ...' e 'Passo 2: ...'. Use 'Passo' só para uma ação que o "
                  "cliente faz; pergunta vai sem número."),
 }
+# Ligação por voz (Jó, 2026-11-16: "aumento o nivel de interpretacao"): o texto do cliente vem da transcrição e pode
+# trazer palavra trocada por som parecido. A IA interpreta pelo sentido e, sem sentido, pede para repetir.
+VOZ = ("O texto do cliente é a transcrição automática da fala dele e pode ter palavras trocadas por outras de som "
+       "parecido (ex.: 'rainbows' ou 'reembolsar' para reembolso, 'Altuco' para Outlook, 'senha inspirou' para senha "
+       "expirou). Entenda pelo sentido da conversa. Se mesmo assim não der para entender, peça com naturalidade para "
+       "o cliente repetir, sem citar a transcrição.")
 ASSINATURA = "Atenciosamente,\nEquipe de Suporte"
 PASSO = r"((^|\s)1\.\s|\bpasso 1\b)"
 # Item numerado que só pede informação ("Passo 1: me diga a marca") não é passo de solução: no telefone a IA
@@ -652,6 +658,17 @@ class Conversa:
         self._encerrar()
         return r
 
+    def desligar(self) -> None:
+        """Cliente desligou no meio da ligação (2026-11-16). Pedido que já tinha destino com uma pessoa continua com
+        ela (e cobra o posicionamento); o resto fecha como desistência, sem ficar "IA atendendo" para sempre."""
+        if self.encerrada or not self.rodadas:
+            return
+        if self.pendente is None:
+            self._registrar("[o cliente desligou a ligação]", "Ligação encerrada pelo cliente.",
+                            Decisao(ENCERRADA, "o cliente desligou a ligação antes de concluir", "", 0.0), "relato")
+        self._encerrar()
+        self._salvar()
+
     def _garantir_id(self) -> str:
         if self.id is None:
             self.id = proximo_id(CONVERSAS)
@@ -698,7 +715,8 @@ class Conversa:
     def _extrair(self, atual: str) -> dict:
         nomes = {"user": "cliente", "assistant": "atendente"}
         texto = "\n".join(f"{nomes[m['role']]}: {m['content']}" for m in self._historico_ia(atual))
-        dados = json.loads(self._chamar([{"role": "system", "content": EXTRAIR},
+        extrair = EXTRAIR + (f"\n\n{VOZ}" if self.voz and self.canal == "telefone" else "")
+        dados = json.loads(self._chamar([{"role": "system", "content": extrair},
                                          {"role": "user", "content": texto}], json_saida=True))
         if not isinstance(dados, dict):
             raise ValueError("JSON da IA fora do formato")
@@ -726,7 +744,7 @@ class Conversa:
         prazer = tipo == "identificação" and bool(self.nome)
         nome = ("Você pode chamar o cliente pelo nome uma única vez, escrevendo exatamente [NOME]."
                 if self._nome_ok() and not prazer else "Não use o nome do cliente nesta resposta.")
-        estilo = ESTILO.get(self.canal, "")
+        estilo = ESTILO.get(self.canal, "") + (f" {VOZ}" if self.voz and self.canal == "telefone" else "")
         texto = self._chamar([{"role": "system", "content": SISTEMA}] + self._historico_ia(mensagem)
                              + [{"role": "system", "content": f"Instrução para esta resposta: {instrucao} {nome} {estilo}"}])
         if self._nome_ok() and not prazer:

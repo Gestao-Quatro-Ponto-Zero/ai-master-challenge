@@ -22,6 +22,7 @@ from registro import (CANAL_ROTULO, ORIGEM, ROBO_ANTERIOR, SITUACAO, canal_de, h
                       pendente_posicionamento, sem_link)
 from roteador import ROTULOS, comando_restrito
 import voz
+from ligacao import FRASES_ESPERA, audio_da_fala, ligacao
 
 st.set_page_config(page_title="Suporte com IA", page_icon=":material/support_agent:", layout="wide")
 
@@ -170,10 +171,20 @@ aba_conversa, aba_painel, aba_dash = st.tabs([":material/chat: Conversa", ":mate
                                               ":material/monitoring: Dashboard"])
 
 # Conversa --------------------------------------------------------------------------------------
+@st.cache_resource(show_spinner=False)
+def frases_de_espera() -> list[bytes]:
+    """Frases curtas de espera da atendente, sintetizadas uma vez por processo."""
+    try:
+        return [voz.sintetizar(f) for f in FRASES_ESPERA]
+    except Exception:  # noqa: BLE001
+        return []
+
+
 def falar(texto: str) -> None:
     """Põe a fala da atendente para tocar. Se a voz falhar, a resposta continua escrita na tela."""
     try:
-        st.session_state.fala_nova = voz.sintetizar(texto)
+        st.session_state.fala_atual = voz.sintetizar(texto)
+        st.session_state.fala_id = st.session_state.get("fala_id", 0) + 1
     except Exception as erro:  # noqa: BLE001
         st.session_state.aviso_voz = f"A voz da atendente falhou ({type(erro).__name__}); a resposta está escrita acima."
 
@@ -198,12 +209,33 @@ with aba_conversa:
             st.chat_message("user").write(sem_link(r.cliente))
             st.chat_message("assistant").write(sem_link(r.resposta))
         if c.voz:
-            # Ligação simulada (Jó, 2026-11-16): a fala do atendente toca sozinha uma vez; o player fica para ouvir de novo.
-            if fala := st.session_state.pop("fala_nova", None):
-                st.session_state.fala_ultima = fala
-                st.audio(fala, format="audio/wav", autoplay=True)
-            elif fala := st.session_state.get("fala_ultima"):
-                st.audio(fala, format="audio/wav")
+            # Ligação contínua (Jó, 2026-11-16): microfone aberto do Ligar ao Desligar; o navegador detecta o fim de
+            # cada fala e manda só aquele trecho. Aqui ele é transcrito, a IA responde e a voz volta para o navegador.
+            res = ligacao(st.session_state.get("fala_atual"), st.session_state.get("fala_id", 0),
+                          st.session_state.get("processado", 0), c.encerrada,
+                          key=f"ligacao_{st.session_state.get('n_conversa', 0)}", espera=frases_de_espera())
+            if res.desligar and not c.encerrada:
+                c.desligar()
+                st.rerun()
+            recebido = audio_da_fala(res.fala)
+            if recebido and recebido[0] > st.session_state.get("processado", 0) and not c.encerrada:
+                seq, wav = recebido
+                st.session_state.processado = seq
+                try:
+                    with st.spinner("Transcrevendo..."):
+                        texto = voz.transcrever(wav, etapa=c.etapa)
+                    if not texto:
+                        raise voz.AudioInvalido("não deu para entender a fala")
+                    with st.spinner("Atendente respondendo..."):
+                        c.receber(voz.ditado(texto, c.etapa))
+                    falar(c.rodadas[-1].resposta)
+                except voz.AudioInvalido as erro:
+                    st.session_state.aviso_voz = f"Fala não aproveitada ({erro}). Pode repetir."
+                except ValueError:
+                    pass
+                except Exception as erro:  # noqa: BLE001
+                    st.session_state.aviso_voz = f"Falha no atendimento ({type(erro).__name__}). Pode repetir."
+                st.rerun()
             if aviso := st.session_state.pop("aviso_voz", None):
                 st.warning(aviso, icon=":material/mic_off:")
         if c.encerrada:
@@ -211,39 +243,20 @@ with aba_conversa:
                        icon=":material/task_alt:")
             if st.button("Nova conversa", icon=":material/add_comment:", type="primary"):
                 st.session_state.conversa = Conversa(modelo())
-                for k in ("fala_nova", "fala_ultima", "aviso_voz"):
+                for k in ("fala_atual", "aviso_voz", "processado"):
                     st.session_state.pop(k, None)
+                st.session_state.n_conversa = st.session_state.get("n_conversa", 0) + 1
                 st.rerun()
         elif c.canal == "telefone" and voz_ok and not c.voz:
-            st.info("Ligação simulada: a atendente fala e você responde pelo microfone do navegador. A voz é transcrita "
-                    "nesta máquina, não é gravada e não vai para a IA externa.", icon=":material/call:")
+            st.info("Ligação simulada: o microfone fica aberto como num telefone. Fale normalmente; quando você faz uma "
+                    "pausa, a atendente responde em voz. A voz é transcrita nesta máquina, não é gravada e não vai para a "
+                    "IA externa. Use fone de ouvido se puder.", icon=":material/call:")
             if st.button("Ligar", icon=":material/call:", type="primary"):
                 c.voz = True
                 voz.aquecer()
                 falar(voz.SAUDACAO)
                 st.rerun()
             st.caption("Sem microfone? Digite abaixo a fala do cliente e a conversa segue como transcrição.")
-        if c.voz and not c.encerrada:
-            n = st.session_state.get("tentativa_voz", 0)
-            if gravado := st.audio_input("Fale com a atendente: clique no microfone, fale e clique de novo para enviar",
-                                         key=f"fala_{len(c.rodadas)}_{n}"):
-                try:
-                    with st.spinner("Transcrevendo..."):
-                        texto = voz.transcrever(gravado.getvalue(), etapa=c.etapa)
-                    if not texto:
-                        raise voz.AudioInvalido("não deu para entender a fala")
-                    with st.spinner("Atendente respondendo..."):
-                        c.receber(voz.ditado(texto, c.etapa))
-                    falar(c.rodadas[-1].resposta)
-                except voz.AudioInvalido as erro:
-                    st.session_state.aviso_voz = f"Áudio não aproveitado ({erro}). Fale de novo."
-                    st.session_state.tentativa_voz = n + 1
-                except ValueError:
-                    pass
-                except Exception as erro:  # noqa: BLE001
-                    st.session_state.aviso_voz = f"Falha no atendimento ({type(erro).__name__}). Fale de novo."
-                    st.session_state.tentativa_voz = n + 1
-                st.rerun()
         if not c.encerrada and (msg := st.chat_input("Ou digite a fala do cliente" if c.voz else
                                   "Fale como cliente (transcrição)" if c.canal == "telefone" else "Escreva como cliente")):
             try:

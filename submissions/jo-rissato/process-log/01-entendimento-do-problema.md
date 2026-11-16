@@ -1005,3 +1005,26 @@ As falhas das rodadas 69 e 70 vêm da transcrição ("reembolso" saiu "rainbows"
 dias"), não das regras: os 4 comandos restritos foram ao departamento em todas as rodadas e nenhuma resposta
 prometeu resultado. Limites e números na quinta passada da régua (docs/regua-validacao-prototipo.md). 191 testes.
 
+## Ligação contínua e escuta melhor (2026-11-16 18:55 a 19:35 BRT)
+
+**Pedido do Jó (literal, 18:55 BRT):** "tem como ddeixar mais dinamico a ligacao no sentido de manter o tempo todo
+ligado a escuta e resposta sem eu ter que ficar mandando audio como whats? outro ponto precisa melhorar a escuta, não
+esta entendendo o que eu estou falando, aumento o nivel de interpretacao"
+
+**Mensagem do Jó (literal, 19:12 BRT):** "pode seguir, me avisa quando terminar"
+
+**Diagnóstico:** a ligação de teste dele (ATD-00419) mostrou "Jó" transcrito como "Jorio" e a frase "Com problema no
+___ que eu comprei" sem o aparelho. Medição em 12 falas humanas do FLEURS pt-BR: o small como estava errava 6,9% das
+palavras; o medium erra 3,1%, mas leva 10 s por turno nesta CPU, e o large-v3-turbo, 11 a 15 s, porque o Whisper
+sempre processa 30 s de áudio. Compilar o whisper.cpp (janela do tamanho da fala) foi bloqueado pelo ambiente.
+
+**Feito:**
+1. Ligação contínua: microfone aberto até o Desligar, detector de fala no navegador, resposta em voz e escuta de volta
+   sozinha, frase de espera depois de 1,5 s, Desligar fecha a chamada.
+2. Escuta: small sem filtro de silêncio e com 5 caminhos de busca (5,4% de erro, cerca de 4 s por turno), 6 threads.
+3. Interpretação: na ligação por voz, a IA sabe que o texto é transcrição, entende pelo sentido ("rainbows" como
+   reembolso) e pede para repetir quando não entende.
+
+**Medido:** Chromium com microfone falso fez 3 turnos sem clique, 6,7 a 7,3 s do fim da fala à resposta. Rodada 71 por
+voz: 20 de 22, dados ditados 21 de 21. 203 testes. Régua, sexta passada, verde menos a homologação.
+

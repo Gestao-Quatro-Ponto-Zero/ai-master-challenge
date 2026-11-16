@@ -104,7 +104,8 @@ def ditado(texto: str, etapa: str) -> str:
 def _whisper():
     if "whisper" not in _modelos:
         from faster_whisper import WhisperModel
-        _modelos["whisper"] = WhisperModel(WHISPER_MODELO, device="cpu", compute_type="int8", cpu_threads=4)
+        # 6 threads: 3,0 s contra 3,7 s com 4 numa fala de 4 s; 8 ganharia só mais 0,2 s e disputaria a CPU (2026-11-16).
+        _modelos["whisper"] = WhisperModel(WHISPER_MODELO, device="cpu", compute_type="int8", cpu_threads=6)
     return _modelos["whisper"]
 
 
@@ -146,8 +147,10 @@ def transcrever(dados: bytes, modelo=None, etapa: str | None = None) -> str:
     validar_audio(dados)
     with _trava:
         m = modelo or _whisper()
-        segmentos, _ = m.transcribe(io.BytesIO(dados), language="pt", beam_size=1, vad_filter=True,
-                                    initial_prompt=contexto(etapa))
+        # Medido em 12 falas humanas do FLEURS pt-BR (2026-11-16): sem o filtro de silêncio o erro por palavra caiu de
+        # 6,9% para 6,2% (a ligação já manda só o trecho falado) e a busca com 5 caminhos levou a 5,4% (+0,6 s).
+        segmentos, _ = m.transcribe(io.BytesIO(dados), language="pt", beam_size=5, vad_filter=False,
+                                    without_timestamps=True, initial_prompt=contexto(etapa))
         return " ".join(s.text.strip() for s in segmentos).strip()
 
 

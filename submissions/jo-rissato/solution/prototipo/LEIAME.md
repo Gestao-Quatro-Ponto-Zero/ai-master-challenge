@@ -66,24 +66,44 @@ etiqueta da rede. Na aba Conversa, o canal é escolhido antes da primeira mensag
 
 ### Ligação por voz (telefone)
 
-No canal telefone, o botão **Ligar** abre uma ligação simulada (Jó, 2026-11-16): a atendente fala, o cliente responde
-pelo microfone do navegador e a conversa segue as mesmas regras. Tudo roda na máquina do protótipo (`voz.py`):
+No canal telefone, o botão **Ligar** abre uma ligação simulada (Jó, 2026-11-16) que funciona como um telefone: o
+microfone fica aberto do Ligar ao Desligar, sem botão de gravar a cada fala (`ligacao.py`, componente
+`st.components.v2`).
 
-- Transcrição com faster-whisper `small` em int8 na CPU, em português e com o vocabulário do suporte (Outlook,
-  reembolso, CPF...). O áudio não é gravado e não vai para nenhuma IA externa; o texto transcrito passa pelas mesmas
-  máscaras de nome, CPF, telefone e e-mail do texto digitado.
-- Voz da atendente com o Piper (voz `pt_BR-faber-medium`, de rhasspy/piper-voices), baixada para fora do git:
+1. No navegador, um detector de fala por energia percebe quando o cliente começa a falar e fecha a fala depois de
+   0,8 s de pausa. Só esse trecho vai para a página, em WAV de 16 kHz.
+2. A página transcreve na própria máquina (`voz.py`), a IA responde e a voz da atendente toca. Depois de 1,5 s sem
+   resposta, a atendente diz "Um instante." ou "Só um momento.".
+3. Enquanto a atendente fala, a escuta fica pausada (meia via), para a voz dela não voltar como fala do cliente. Ao
+   terminar, a escuta volta sozinha.
+4. **Desligar** no meio da conversa fecha a chamada como desistência; se o pedido já tinha destino com uma pessoa
+   (reembolso, por exemplo), continua com ela e cobra o posicionamento.
+
+Escuta e interpretação:
+
+- Transcrição com faster-whisper `small` em int8 na CPU (6 threads, busca com 5 caminhos, sem filtro de silêncio), em
+  português, com o contexto da etapa (nome, número ditado, e-mail ou o vocabulário do suporte). Em 12 falas humanas
+  do FLEURS pt-BR: 5,4% de erro por palavra e cerca de 4 s por turno. `medium` erra 3,1%, mas leva 10 s por turno;
+  `large-v3-turbo`, 11 a 15 s. Troque por `WHISPER_MODELO` numa máquina com GPU.
+- CPF, telefone, CEP e e-mail ditados voltam ao formato escrito antes da validação ("um, dois, três" e "arroba").
+- Na ligação por voz, a IA recebe o aviso de que o texto é transcrição e pode ter palavra trocada por som parecido,
+  e interpreta pelo sentido; sem sentido, pede para o cliente repetir.
+- O áudio não é gravado e não vai para nenhuma IA externa; o texto transcrito passa pelas mesmas máscaras de nome,
+  CPF, telefone e e-mail do texto digitado.
+- Voz da atendente com o Piper (voz `pt_BR-faber-medium`, de rhasspy/piper-voices), baixada para fora do git. A
+  bateria usa também a voz `pt_BR-cadu-medium` para o cliente:
 
 ```bash
 mkdir -p ../../../../../dados/voz && cd ../../../../../dados/voz
-for f in pt_BR-faber-medium.onnx pt_BR-faber-medium.onnx.json; do
-  curl -sSLO "https://huggingface.co/rhasspy/piper-voices/resolve/main/pt/pt_BR/faber/medium/$f"; done
+for v in faber cadu; do for f in pt_BR-$v-medium.onnx pt_BR-$v-medium.onnx.json; do
+  curl -sSLO "https://huggingface.co/rhasspy/piper-voices/resolve/main/pt/pt_BR/$v/medium/$f"; done; done
 ```
 
 - Caminhos e modelo por variável: `VOZ_PIPER` e `WHISPER_MODELO`. Sem os pacotes ou sem a voz, o botão não aparece e
   o telefone segue como transcrição digitada.
-- Limites: fala de até 60 s por vez; uma transcrição por vez (cerca de 4 s para 7 s de fala; 4 falas simultâneas
-  levam até 16 s). O serviço precisa de cerca de 1 GB de RAM com os dois modelos carregados.
+- Limites: fala de até 25 s por turno no navegador e 60 s no servidor; uma transcrição por vez (com 4 pessoas
+  falando juntas, a última espera cerca de 20 s). O serviço chega a 1,3 GB de RAM com os modelos (teto de 2 GB).
+- Use fone de ouvido se puder: o cancelamento de eco do navegador ajuda, mas a escuta pausada é a garantia.
 - Bateria por voz: `python bateria_ia.py ../../docs/bateria-ia-rodadaNN-telefone-voz.md --canal telefone --voz`
   (a fala do cliente é sintetizada e passa pela mesma transcrição da página).
 

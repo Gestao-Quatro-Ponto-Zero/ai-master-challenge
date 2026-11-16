@@ -131,3 +131,90 @@ def test_muleta_de_fala_nao_vira_nome(transcrito):
 def test_nome_transcrito_continua_valendo():
     from dados_pessoais import extrair_nome
     assert extrair_nome("Meu nome é Ana.") == "Ana" and extrair_nome("Carlos.") == "Carlos"
+
+
+# Ligação contínua e interpretação da fala (Jó, 2026-11-16, segundo pedido) ------------------------------------------
+import base64  # noqa: E402
+
+from ligacao import audio_da_fala  # noqa: E402
+from roteador import ENCERRADA, EXECUCAO  # noqa: E402
+
+
+def test_fala_do_navegador_vira_audio():
+    w = wav(1)
+    assert audio_da_fala({"seq": 3, "wav": base64.b64encode(w).decode()}) == (3, w)
+
+
+@pytest.mark.parametrize("valor", [None, "texto", {"seq": 1}, {"seq": 1, "wav": "isto não é base64!"},
+                                   {"seq": "x", "wav": "AAAA"}])
+def test_fala_fora_do_formato_e_ignorada(valor):
+    assert audio_da_fala(valor) is None
+
+
+class _Resp:
+    def __init__(self, corpo):
+        self._corpo, self.status_code = corpo, 200
+
+    def raise_for_status(self):
+        pass
+
+    def json(self):
+        return self._corpo
+
+
+def _ia_falsa(monkeypatch, enviados):
+    def post(*_a, **k):
+        msgs = k["json"]["messages"]
+        enviados.append(json.dumps(msgs, ensure_ascii=False))
+        if k["json"].get("response_format"):
+            corpo = json.dumps({"resumo_pt": "outlook", "resumo_en": "outlook not syncing email", "acao_sensivel": None,
+                                "resolvido": False, "cliente_desistiu": False, "assistencia_tecnica": False,
+                                "comando_restrito": None})
+        else:
+            corpo = "Qual é a versão do Outlook?"
+        return _Resp({"choices": [{"message": {"content": corpo}}], "usage": {"total_tokens": 10}})
+    monkeypatch.setattr(cv, "chave_deepseek", lambda: "chave-de-teste")
+    monkeypatch.setattr(cv.requests, "post", post)
+
+
+@pytest.mark.parametrize("canal, voz_ligada, espera", [("telefone", True, True), ("telefone", False, False),
+                                                       ("chat", True, False)])
+def test_ia_interpreta_a_transcricao_so_na_ligacao_por_voz(monkeypatch, tmp_path, canal, voz_ligada, espera):
+    monkeypatch.setattr(cv, "CONVERSAS", tmp_path / "conversas.jsonl")
+    enviados = []
+    _ia_falsa(monkeypatch, enviados)
+    c = cv.Conversa(carregar(), canal=canal, voz=voz_ligada)
+    c.receber("Meu nome é Carlos")
+    c.receber("meu altuco parou de sincronizar os e-mails")
+    assert enviados and all(("transcrição automática" in e) is espera for e in enviados)
+
+
+def test_desligar_no_meio_fecha_como_desistencia(monkeypatch, tmp_path):
+    monkeypatch.setattr(cv, "chave_deepseek", lambda: None)
+    monkeypatch.setattr(cv, "CONVERSAS", tmp_path / "conversas.jsonl")
+    c = cv.Conversa(carregar(), canal="telefone", voz=True)
+    c.receber("Carlos")
+    c.desligar()
+    reg = json.loads((tmp_path / "conversas.jsonl").read_text().splitlines()[-1])
+    assert c.encerrada and reg["destino"] == ENCERRADA and not reg["em_andamento"]
+    c.desligar()                                    # segundo clique não muda nada
+    assert len(c.rodadas) == 2
+
+
+def test_desligar_com_pedido_de_reembolso_continua_com_pessoa(monkeypatch, tmp_path):
+    monkeypatch.setattr(cv, "chave_deepseek", lambda: None)
+    monkeypatch.setattr(cv, "CONVERSAS", tmp_path / "conversas.jsonl")
+    c = cv.Conversa(carregar(), canal="telefone", voz=True)
+    c.receber("Carlos")
+    c.receber("quero o reembolso do pedido 4521, o fone veio quebrado")
+    c.receber("pedido 4521 do fone")
+    assert c.pendente is not None and c.pendente.destino == EXECUCAO
+    c.desligar()
+    reg = json.loads((tmp_path / "conversas.jsonl").read_text().splitlines()[-1])
+    assert reg["destino"] == EXECUCAO and not reg["em_andamento"]
+
+
+def test_desligar_antes_de_falar_nao_cria_chamada(monkeypatch, tmp_path):
+    monkeypatch.setattr(cv, "CONVERSAS", tmp_path / "conversas.jsonl")
+    cv.Conversa(carregar(), canal="telefone", voz=True).desligar()
+    assert not (tmp_path / "conversas.jsonl").exists()

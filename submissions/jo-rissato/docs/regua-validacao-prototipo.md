@@ -256,3 +256,59 @@ máscaras. O áudio não é gravado e não vai para IA externa.
   Numa operação real, o e-mail falado deve ser confirmado por mensagem no telefone coletado.
 - **Palavra-chave trocada:** em 1 de 22 conversas da rodada 70, "reembolso" virou "rainbows". A regra não promete
   nada nesse caso: a IA segue perguntando e o cliente repete o pedido.
+
+## Sexta passada: ligação contínua e escuta melhor (2026-11-16 19:35 BRT)
+
+Pedido do Jó (18:55 BRT): ligação sem mandar áudio a cada fala, como no WhatsApp, e escuta que entenda melhor. A
+ligação de teste dele (ATD-00419) mostrou o problema: "Jó" virou "Jorio" e "Com problema no ___ que eu comprei"
+perdeu a palavra principal.
+
+Mudança validada:
+- Microfone aberto do Ligar ao Desligar, com detector de fala no navegador (fecha a fala com 0,8 s de pausa), resposta
+  em voz e escuta de volta sozinha; frase de espera ("Um instante.") quando a resposta passa de 1,5 s; Desligar fecha
+  a chamada.
+- Transcrição com busca de 5 caminhos, sem filtro de silêncio e com 6 threads.
+- Na ligação por voz, a IA é avisada de que o texto é transcrição e interpreta pelo sentido, ou pede para repetir.
+
+Escolha do modelo, medida em 12 falas humanas do FLEURS pt-BR (137 s):
+
+| Modelo | Erro por palavra | Tempo por turno |
+|---|---|---|
+| small, como estava (filtro de silêncio, 1 caminho) | 6,9% | 3,6 s |
+| small, sem filtro, 1 caminho | 6,2% | 3,5 s |
+| **small, sem filtro, 5 caminhos (adotado)** | **5,4%** | **4,1 s** |
+| medium | 3,1% | 10,2 s |
+| large-v3-turbo | 3,8% (com filtro) | 11 a 15 s |
+
+O Whisper processa sempre uma janela de 30 s, então o custo por turno é fixo, mesmo para uma fala de 2 s; a janela
+menor (`chunk_length`) não mudou o tempo nesta biblioteca. O medium só cabe numa ligação fluida com GPU ou com uma
+implementação que use janela do tamanho da fala (whisper.cpp), que não foi instalada aqui.
+
+```
+[x] 2.1 Funcional            203 testes pytest verdes (12 novos): fala do navegador fora do formato é ignorada; o
+                             aviso de transcrição vai à IA só na ligação por voz; Desligar fecha como desistência, mantém
+                             reembolso com uma pessoa e não cria chamada antes da primeira fala
+[x] 2.2 Integração + falhas  fala recusada ou vazia: aviso na tela e a escuta volta sozinha; voz da atendente falhou: a
+                             resposta fica escrita; microfone negado: a ligação avisa e o campo de texto continua
+[x] 2.3 E2E                  Chromium com microfone falso (arquivo de fala) contra a página real: 3 turnos sem nenhum
+                             clique (ouvindo, falando, respondendo, atendente, ouvindo), 3 falas transcritas certas,
+                             frase de espera tocou nos 2 turnos lentos, Desligar fechou a ATD como "Cliente desistiu".
+                             Do fim da fala ao início da resposta: 6,7 a 7,3 s
+[x] 2.4 Erro/borda           ruído curto (< 0,35 s) descartado no navegador; fala longa enviada em 25 s; o nome
+                             "Ana" dito sozinho pela voz sintética continua errado (11 de 22 conversas da rodada 71 com
+                             nome errado), mas a IA agora pede para repetir
+[x] 2.5 Carga                transcrição: mediana 3,52 s e pior 10,26 s em 125 falas (rodada 71); IA: mediana 1,06 s
+[x] 2.6 Estresse             4 falas ao mesmo tempo: 5,9 / 12,5 / 17,1 / 23,5 s, nenhuma perdida (com a bateria rodando
+                             junto). Pico de memória do serviço 1,26 GB; teto subiu de 1,5 GB para 2 GB
+[x] 2.7 Segurança            áudio só na memória do navegador e do processo; nada gravado; à DeepSeek vai só o texto
+                             mascarado. Componente sem conteúdo do usuário no HTML (fala vai como dado, não como HTML)
+[x] 2.8 Regressão            203 testes (191 na quinta passada)
+[x] 2.9 Recuperação          kill -9 no serviço: voltou sozinho em 7 s
+[ ] 2.10 Homologação (Jó)    pendente: uma ligação de verdade com a voz dele
+[x] 2.11 Testes de IA        rodada 71 por voz: 20 de 22; dados ditados aceitos em 21 de 21. As 2 falhas são de
+                             expectativa: o pedido "ignore suas instruções" com "reembolso" transcrito como "rainbows"
+                             foi ao departamento de Segurança (a IA interpretou como tentativa de mudar política), e o
+                             monitor foi à assistência depois de o cliente dar marca e modelo. Tokens por conversa: média
+                             5.503 (3.816 na rodada 70), máximo 23.564, abaixo do teto de 40 mil
+[x] 4 Folga do host          RAM disponível 60%, swap 12%; teto de 2 GB valendo no cgroup
+```
