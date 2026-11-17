@@ -50,8 +50,8 @@ with st.sidebar:
     st.header("Resultado do teste")
     st.caption("Teste com 9.568 chamados de TI de um dataset público (Kaggle), que o modelo nunca viu.")
     st.metric("Acerto geral", "86,6%")
-    st.metric("Tickets que a IA resolve sozinha", "72%")
-    st.metric("Acerto nesses tickets", "95,6%")
+    st.metric("Tickets que a IA resolve sozinha", "63%")
+    st.metric("Acerto nesses tickets", "95,8%")
     st.divider()
     st.subheader("Sempre vai para um atendente")
     st.markdown(
@@ -84,7 +84,7 @@ with p3:
         st.caption("Direto para a fila certa, ou para triagem humana com uma sugestão.")
 
 st.write("")
-aba1, aba2 = st.tabs(["Testar um ticket", "Testar com 200 chamados"])
+aba1, aba2, aba3 = st.tabs(["Testar um ticket", "Testar com 200 chamados", "Enviar uma planilha"])
 
 # ---------- Aba 1 ----------
 with aba1:
@@ -170,3 +170,41 @@ with aba2:
         st.caption("Esta amostra pode incluir tickets usados no treino. O número honesto de acerto está em "
                    "resultados_avaliacao.md (teste com 20% dos dados separados).")
         st.dataframe(out.assign(Certeza=out["Certeza"].map("{:.0%}".format)), hide_index=True, width="stretch")
+
+# ---------- Aba 3 ----------
+def triar_planilha(df: pd.DataFrame) -> pd.DataFrame:
+    """Tria todos os chamados de uma planilha. Usa a coluna 'texto' (ou a primeira coluna de texto)
+    e, se existir, a coluna 'prioridade'."""
+    col_texto = "texto" if "texto" in df.columns else df.select_dtypes(include="object").columns[0]
+    col_prio = "prioridade" if "prioridade" in df.columns else None
+    linhas = []
+    for _, row in df.iterrows():
+        prio = str(row[col_prio]) if col_prio else None
+        prio = {"baixa": "Low", "média": "Medium", "media": "Medium", "alta": "High",
+                "crítica": "Critical", "critica": "Critical"}.get(str(prio).lower(), prio)
+        r = triagem.triar(str(row[col_texto]), prioridade=prio, pacote=pacote, k_similares=1)
+        linhas.append({
+            "Fila sugerida": pt(r["categoria"]),
+            "Certeza": round(r["confianca"], 2),
+            "Quem decide": "IA" if r["decisao"] == "AUTOMÁTICO" else "Atendente",
+            "Motivo": "; ".join(motivo_pt(m) for m in r["motivos_humano"]),
+        })
+    return pd.concat([df.reset_index(drop=True), pd.DataFrame(linhas)], axis=1)
+
+
+with aba3:
+    st.write("Envie um CSV com os chamados (uma coluna **texto** e, se quiser, uma coluna **prioridade**). "
+             "A IA tria todos e você baixa a planilha com a fila sugerida e quem decide cada um.")
+    arquivo = st.file_uploader("Planilha de chamados (CSV)", type=["csv"])
+    if arquivo is not None:
+        entrada = pd.read_csv(arquivo)
+        if len(entrada) > 2000:
+            st.warning("Para o protótipo, só os primeiros 2.000 chamados serão triados.")
+            entrada = entrada.head(2000)
+        saida = triar_planilha(entrada)
+        m1, m2 = st.columns(2)
+        m1.metric("Chamados triados", len(saida))
+        m2.metric("Resolvidos pela IA", f"{(saida['Quem decide'] == 'IA').mean():.0%}")
+        st.dataframe(saida, hide_index=True, width="stretch")
+        st.download_button("Baixar planilha triada", saida.to_csv(index=False).encode("utf-8-sig"),
+                           file_name="chamados_triados.csv", mime="text/csv")

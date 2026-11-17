@@ -87,6 +87,33 @@
   mandam dinheiro para humano, e isso é 60% do volume de suporte. Reescrevi como faixa (36 a 90 h/mês) e
   separei "IA encaminhar" de "IA decidir".
 
+## 17/11 – 11h20 a 13h00 | Revisão depois do PR
+- Depois de abrir o PR, pedi uma avaliação honesta do que ficou fraco. Os pontos: o desperdício não estava
+  em reais, as regras de passagem para humano nunca tinham sido testadas com números e o protótipo não usava
+  IA generativa.
+- **Custo em reais:** usei como premissa o custo empresa de um operador de suporte técnico (R$ 3.440/mês,
+  Portal Salário 2026), ou seja, R$ 15,64/hora. A economia direta de triagem fica entre R$ 5.900 e
+  R$ 14.700 por ano. É modesta, e escrevi isso: o valor principal é velocidade de encaminhamento.
+- **Teste das regras:** no dataset de TI, as regras tiram 9 pontos de automação (de 71,7% para 62,8%) e
+  mantêm o acerto em 95,8%. O "72%" que eu vinha usando era só o limiar, sem as regras. Corrigi README,
+  protótipo, resumo e ROI.
+- No dataset de suporte, a regra de dinheiro por palavra-chave pega só 7,4% dos chamados de dinheiro (a
+  mesma taxa dos outros), porque o texto ali não tem relação com o tipo. Conclusão: em produção, a regra
+  deve usar o campo estruturado do chamado.
+- **Resumo executivo de 1 página** para o diretor ler em 5 minutos.
+- **Comparação com LLM:** montei um script que classifica uma amostra com o Gemini (zero-shot) e compara
+  acerto, tempo e custo com o modelo simples.
+
+## 17/11 – 13h00 a 15h30 | Usar a ferramenta e pensar como o executivo
+- Para entender a ferramenta por dentro, pedi ao Claude um roteiro de testes práticos no protótipo (casos
+  fáceis, ambíguos, sensíveis e em português) e fui repetindo na minha máquina. Dois achados: a IA confunde compra de
+  monitor com Hardware (43% de certeza, então foi para atendente) e não serve para português (um pedido
+  de acesso em português virou "Permissões administrativas" com 24%). Os dois reforçam o piloto com
+  dados reais da empresa.
+- Me coloquei no lugar do diretor: "qual era o problema, quanto melhora, e aí?". A economia direta é
+  modesta, então acrescentei ao resumo as metas do piloto: como vou provar o valor em 30 dias.
+- Acrescentei ao protótipo o envio de planilha, para um gestor testar com os próprios chamados.
+
 ## Onde a IA errou e como corrigi
 - **ROI aplicado ao lugar errado:** a primeira análise apresentou o ROI do dataset de TI como se valesse
   para o suporte da empresa. A segunda varredura mostrou que o modelo não transfere.
@@ -95,6 +122,8 @@
 - **Números da conversa x números dos scripts:** com o pré-processamento do protótipo, alguns números
   mudaram (confiança média de 60% para 55%). Passei a usar só os números gerados pelos scripts.
 - **"Tickets reais":** afirmação imprecisa, corrigida para "dataset público do Kaggle".
+- **Cobertura sem as regras:** o "72% automatizado" ignorava as regras de passagem para humano. Com elas
+  ligadas, são 62,8%.
 
 ## Decisões minhas
 - Não tirar conclusão de ruído (ex.: "chat tem a melhor nota, 3,08").
