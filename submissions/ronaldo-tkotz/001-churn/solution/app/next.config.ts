@@ -12,8 +12,9 @@ const nextConfig: NextConfig = {
   // let server code `require` it directly. (better-sqlite3 is auto-externalised
   // by Next, but we declare it so the contract is explicit and self-documenting.)
   serverExternalPackages: ["better-sqlite3"],
-  turbopack: { root: projectRoot },
-  outputFileTracingRoot: projectRoot,
+  // On a Vercel build from GitHub (D48) the repo is cloned whole and Vercel sets the tracing root to
+  // the repo root itself; pinning it to this folder there makes it look for .next at the repo root.
+  ...(process.env.VERCEL ? {} : { turbopack: { root: projectRoot }, outputFileTracingRoot: projectRoot }),
   // The read-only RavenStack database ships inside every server function (ISC-24, D46.4).
   outputFileTracingIncludes: { "/**": ["./data/ravenstack.db"] },
 };
