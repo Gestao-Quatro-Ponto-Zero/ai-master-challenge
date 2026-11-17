@@ -1089,3 +1089,16 @@ erro em 12 falas humanas).
 **Medido:** E2E no Chromium com microfone falso, 4 turnos: 7,3 a 9,5 s do fim da fala à voz (eram 8,9 a 10,4 s); a
 frase de espera tocou só na 3ª fala. 229 testes; régua, nona passada, verde menos a homologação. O sotaque não se mede
 pela transcrição (1,5% nos dois jeitos): amostras antes e depois para o Jó ouvir.
+
+**Mensagem do Jó (literal, 10:52 BRT), depois de ouvir as amostras:** "Ainda soa Portugal"
+
+**Feito (2026-11-17 11:05 BRT):** testadas, sem baixar nada, as ferramentas de voz já na máquina. Chatterbox: 71 a 91
+s por frase na CPU, descartado para ligação. Piper (sotaque brasileiro) com timbre feminino pelo OpenVoice: tom 174 Hz
+(feminino, igual ao da voz de referência), 2,2 a 2,6 s por frase, cerca de 0,9 GB a mais, transcrição com 11,8% de
+erro em 34 palavras. Amostras das 3 vozes para o Jó escolher no ouvido.
+
+**Mensagem do Jó (literal, 11:20 BRT):** "não mudou muita coisa se a anterior tem uma performance melhor, volta pra ela"
+
+**Decisão do Jó (11:20 BRT, confirmada na pergunta):** manter a voz Kokoro que já está no ar. A opção Piper com timbre
+feminino foi descartada: o ganho no sotaque é pequeno e ela é mais lenta (2,2 a 2,6 s contra 1,7 a 1,8 s por frase) e
+gasta cerca de 0,9 GB a mais. Nada mudou no serviço.
