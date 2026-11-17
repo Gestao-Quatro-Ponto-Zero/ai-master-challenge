@@ -1,86 +1,172 @@
 """
 Protótipo: triagem inteligente de tickets.
-Roda: streamlit run submissions/adson-valeriano/solution/app.py
+Roda: python -m streamlit run app.py   (de dentro da pasta solution)
 """
 import pandas as pd
 import streamlit as st
 
 import triagem
 
-st.set_page_config(page_title="Triagem de Tickets com IA", page_icon="🎫", layout="wide")
+st.set_page_config(page_title="Triagem de Tickets com IA", layout="wide")
+
+CATEGORIAS_PT = {
+    "Access": "Acesso",
+    "Administrative rights": "Permissões administrativas",
+    "HR Support": "Suporte de RH",
+    "Hardware": "Hardware",
+    "Internal Project": "Projeto interno",
+    "Miscellaneous": "Diversos",
+    "Purchase": "Compras",
+    "Storage": "Armazenamento",
+}
 
 
-@st.cache_resource(show_spinner="Carregando o modelo (na primeira vez ele é treinado, leva ~1 min)...")
+def pt(categoria: str) -> str:
+    br = CATEGORIAS_PT.get(categoria, categoria)
+    return br if br == categoria else f"{br} ({categoria})"
+
+
+def motivo_pt(motivo: str) -> str:
+    for en in CATEGORIAS_PT:
+        if f"({en})" in motivo:
+            return motivo.replace(f"({en})", f"({pt(en)})")
+    return motivo
+
+
+@st.cache_resource(show_spinner="Preparando o modelo (na primeira vez leva cerca de 30 segundos)...")
 def modelo():
     return triagem.carregar_modelo()
 
 
 @st.cache_data
-def amostra_teste(n=200, seed=7):
-    df = triagem.carregar_dados()
-    return df.sample(n, random_state=seed)
+def amostra(n=200, seed=7):
+    return triagem.carregar_dados().sample(n, random_state=seed)
 
 
 pacote = modelo()
 
+# ---------- Lateral: como o modelo foi testado ----------
+with st.sidebar:
+    st.header("Resultado do teste")
+    st.caption("Teste com 9.568 chamados de TI de um dataset público (Kaggle), que o modelo nunca viu.")
+    st.metric("Acerto geral", "86,6%")
+    st.metric("Tickets que a IA resolve sozinha", "72%")
+    st.metric("Acerto nesses tickets", "95,6%")
+    st.divider()
+    st.subheader("Sempre vai para um atendente")
+    st.markdown(
+        "- Prioridade **crítica**\n"
+        "- **Dinheiro**: cobrança, reembolso, cancelamento\n"
+        "- **Segurança**: fraude, vazamento, invasão\n"
+        "- **Permissões administrativas** (Administrative rights)\n"
+        f"- Confiança da IA **abaixo de {triagem.LIMIAR_CONFIANCA:.0%}**"
+    )
+    st.divider()
+    st.markdown("**Próximo passo:** treinar com os tickets da própria empresa e rodar 2 semanas "
+                "em paralelo com a equipe antes de ligar.")
+
+# ---------- Topo ----------
 st.title("Triagem de tickets com IA")
-st.caption(
-    f"A IA classifica e encaminha sozinha só quando tem confiança ≥ {triagem.LIMIAR_CONFIANCA:.0%} "
-    "e o ticket não envolve dinheiro, urgência, segurança ou acesso privilegiado. O resto vai para um humano."
-)
+st.write("A IA lê o ticket, decide para qual fila ele vai e **sabe quando não deve decidir sozinha**.")
 
-aba1, aba2 = st.tabs(["Testar um ticket", "Rodar em lote (dados reais)"])
+p1, p2, p3 = st.columns(3)
+with p1:
+    with st.container(border=True):
+        st.markdown("**1. A IA lê e classifica**")
+        st.caption("Identifica o assunto do ticket e o quanto tem certeza disso.")
+with p2:
+    with st.container(border=True):
+        st.markdown("**2. As regras conferem**")
+        st.caption("Dinheiro, urgência, segurança ou dúvida da IA? Vai para um atendente.")
+with p3:
+    with st.container(border=True):
+        st.markdown("**3. O ticket é encaminhado**")
+        st.caption("Direto para a fila certa, ou para triagem humana com uma sugestão.")
 
+st.write("")
+aba1, aba2 = st.tabs(["Testar um ticket", "Testar com 200 chamados"])
+
+# ---------- Aba 1 ----------
 with aba1:
     exemplos = {
+        "Hardware":
+            "hello my laptop screen is broken and the keyboard stopped working please send a replacement thanks",
+        "Acesso":
+            "hi i cannot access the shared drive folder please grant access to my user thanks",
+        "Cobrança (vai para humano)":
+            "i was charged twice on my invoice this month and i want a refund",
+        "Ambíguo (confiança baixa)":
+            "hi please help with the issue from yesterday thanks",
         "Escrever o meu": "",
-        "Hardware": "hello my laptop screen is broken and the keyboard stopped working please send a replacement thanks",
-        "Acesso": "hi i cannot access the shared drive folder please grant access to my user thanks",
-        "Cobrança (vai para humano)": "i was charged twice on my invoice this month and i want a refund",
-        "Ambíguo (confiança baixa)": "hi please help with the issue from yesterday thanks",
     }
-    escolha = st.selectbox("Exemplo", list(exemplos))
-    texto = st.text_area("Texto do ticket", value=exemplos[escolha], height=120)
-    prioridade = st.selectbox("Prioridade informada", ["Low", "Medium", "High", "Critical"], index=1)
+    col_a, col_b = st.columns([3, 1])
+    with col_a:
+        escolha = st.selectbox("Escolha um exemplo ou escreva o seu", list(exemplos))
+    with col_b:
+        prioridade_pt = st.selectbox("Prioridade", ["Baixa", "Média", "Alta", "Crítica"], index=1)
+    prioridade = {"Baixa": "Low", "Média": "Medium", "Alta": "High", "Crítica": "Critical"}[prioridade_pt]
+    texto = st.text_area("Texto do ticket (em inglês, como no dataset de treino)",
+                         value=exemplos[escolha], height=100)
 
-    if st.button("Triar ticket", type="primary") and texto.strip():
+    if st.button("Analisar ticket", type="primary") and texto.strip():
         r = triagem.triar(texto, prioridade=prioridade, pacote=pacote)
-        c1, c2, c3 = st.columns(3)
-        c1.metric("Categoria prevista", r["categoria"])
-        c2.metric("Confiança", f"{r['confianca']:.0%}")
-        c3.metric("Decisão", r["decisao"])
+        automatico = r["decisao"] == "AUTOMÁTICO"
 
-        if r["decisao"] == "HUMANO":
-            st.warning("Vai para um humano porque: " + "; ".join(r["motivos_humano"]))
-        else:
-            st.success(f"Encaminhado automaticamente para a fila **{r['fila_destino']}**.")
+        with st.container(border=True):
+            if automatico:
+                st.success(f"### Resolvido pela IA\nEncaminhado direto para a fila **{pt(r['categoria'])}**.")
+            else:
+                st.warning(f"### Enviado para um atendente\nSugestão da IA: fila **{pt(r['categoria'])}**.")
 
-        st.write("**Outras possibilidades:** " +
-                 ", ".join(f"{c} ({p:.0%})" for c, p in r["alternativas"]))
+            c1, c2 = st.columns(2)
+            with c1:
+                st.markdown(f"**Assunto identificado:** {pt(r['categoria'])}")
+                st.markdown(f"**Certeza da IA:** {r['confianca']:.0%}")
+                st.progress(min(r["confianca"], 1.0))
+                st.caption(f"A IA só decide sozinha a partir de {triagem.LIMIAR_CONFIANCA:.0%}.")
+            with c2:
+                st.markdown("**Por que essa decisão?**")
+                if automatico:
+                    st.markdown("- A IA tem certeza suficiente\n- Não envolve dinheiro, urgência, "
+                                "segurança nem permissões")
+                else:
+                    st.markdown("\n".join(f"- {motivo_pt(m).capitalize()}" for m in r["motivos_humano"]))
+                outras = ", ".join(f"{pt(c)} ({p:.0%})" for c, p in r["alternativas"])
+                st.caption(f"Outras possibilidades: {outras}")
 
-        st.subheader("Tickets parecidos já classificados")
-        st.caption("Dão contexto ao atendente e ajudam a conferir a sugestão da IA.")
-        st.dataframe(pd.DataFrame(r["similares"]).assign(
-            similaridade=lambda x: x["similaridade"].map("{:.0%}".format)), width="stretch")
+        with st.expander("Ver tickets parecidos já resolvidos (contexto para o atendente)"):
+            st.dataframe(
+                pd.DataFrame({
+                    "Ticket parecido": [s["texto"] for s in r["similares"]],
+                    "Fila": [pt(s["categoria"]) for s in r["similares"]],
+                    "Semelhança": [f"{s['similaridade']:.0%}" for s in r["similares"]],
+                }),
+                hide_index=True, width="stretch",
+            )
 
+# ---------- Aba 2 ----------
 with aba2:
-    st.write("Roda a triagem em tickets reais do dataset de TI e compara com a categoria verdadeira.")
-    n = st.slider("Quantidade de tickets", 50, 500, 200, step=50)
-    if st.button("Rodar lote"):
-        amostra = amostra_teste(n)
-        res = [triagem.triar(t, pacote=pacote, k_similares=1) for t in amostra["Document"]]
+    st.write("Roda a triagem em **200 chamados do dataset de TI** e compara com a fila correta de cada um.")
+    if st.button("Rodar teste", type="primary"):
+        base = amostra()
+        res = [triagem.triar(t, pacote=pacote, k_similares=1) for t in base["Document"]]
         out = pd.DataFrame({
-            "categoria_real": amostra["Topic_group"].values,
-            "categoria_prevista": [r["categoria"] for r in res],
-            "confianca": [r["confianca"] for r in res],
-            "decisao": [r["decisao"] for r in res],
+            "Fila correta": [pt(c) for c in base["Topic_group"]],
+            "Fila da IA": [pt(r["categoria"]) for r in res],
+            "Certeza": [r["confianca"] for r in res],
+            "Quem decidiu": ["IA" if r["decisao"] == "AUTOMÁTICO" else "Atendente" for r in res],
         })
-        out["acertou"] = out["categoria_real"] == out["categoria_prevista"]
-        auto = out[out["decisao"] == "AUTOMÁTICO"]
-        c1, c2, c3 = st.columns(3)
-        c1.metric("Decididos pela IA", f"{len(auto) / len(out):.0%}")
-        c2.metric("Acerto nos automáticos", f"{auto['acertou'].mean():.0%}" if len(auto) else "-")
-        c3.metric("Foram para humano", f"{(out['decisao'] == 'HUMANO').mean():.0%}")
-        st.caption("Observação: estes tickets podem ter sido usados no treino; o número honesto de acerto está "
-                   "em resultados_avaliacao.md (teste com 20% separados).")
-        st.dataframe(out.assign(confianca=out["confianca"].map("{:.0%}".format)), width="stretch")
+        out["IA acertou?"] = (out["Fila correta"] == out["Fila da IA"]).map({True: "Sim", False: "Não"})
+        auto = out[out["Quem decidiu"] == "IA"]
+        erros_barrados = ((out["Quem decidiu"] == "Atendente") & (out["IA acertou?"] == "Não")).sum()
+
+        m1, m2, m3 = st.columns(3)
+        m1.metric("Resolvidos pela IA", f"{len(auto) / len(out):.0%}")
+        m2.metric("Acerto da IA nesses", f"{(auto['IA acertou?'] == 'Sim').mean():.0%}")
+        m3.metric("Erros barrados antes do cliente", int(erros_barrados),
+                  help="Tickets em que a IA erraria, mas a regra de confiança mandou para um atendente.")
+        st.info("Quando a IA não tem certeza, o ticket vai para um atendente. É isso que segura os erros "
+                "antes de chegarem ao cliente.")
+        st.caption("Esta amostra pode incluir tickets usados no treino. O número honesto de acerto está em "
+                   "resultados_avaliacao.md (teste com 20% dos dados separados).")
+        st.dataframe(out.assign(Certeza=out["Certeza"].map("{:.0%}".format)), hide_index=True, width="stretch")
