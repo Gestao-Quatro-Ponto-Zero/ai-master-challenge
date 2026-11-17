@@ -4,6 +4,7 @@ import {
   indicadores3,
   usoPorPlano,
   escalacaoPorPrioridade,
+  churnPorSuporte,
   ticketsPorPrioridade,
   notasSatisfacao,
   faixasResolucao,
@@ -27,7 +28,7 @@ const share = (a: number, b: number) => (b ? `${dec((100 * a) / b)}%` : "—");
 
 /**
  * Screen 3 — support and product usage (D34, D43, D49). One screen, no scroll: the headline numbers,
- * usage and error rate by plan beside escalation by priority, how the tickets split, and the features.
+ * usage and error rate by plan, escalation by priority and churn by contact with support (D50), how the tickets split, and the features.
  */
 export default async function Tela3({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const user = await requireUser();
@@ -35,6 +36,7 @@ export default async function Tela3({ searchParams }: { searchParams: Promise<Re
   const k = indicadores3(f);
   const plano = usoPorPlano(f);
   const escalacao = escalacaoPorPrioridade(f);
+  const suporte = churnPorSuporte(f);
   const prioridade = ticketsPorPrioridade(f);
   const notas = notasSatisfacao(f);
   const resolucao = faixasResolucao(f);
@@ -56,7 +58,7 @@ export default async function Tela3({ searchParams }: { searchParams: Promise<Re
           <Indicador rotulo="Taxa de erro" valor={`${dec(k.taxaErroPct, 2)}%`} nota="erros por uso" />
         </Cabecalho>
 
-        <div className="grid min-h-0 gap-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+        <div className="grid min-h-0 gap-2 lg:grid-cols-3">
           <Painel titulo="Uso e taxa de erro por plano" nota="usos e erros por uso, pelo plano da assinatura" sql={[plano.sql]}>
             <ColunasComTaxa
               dados={plano.planos.map((p) => ({ label: p.label, value: p.usos, taxa: p.taxaErro }))}
@@ -73,6 +75,13 @@ export default async function Tela3({ searchParams }: { searchParams: Promise<Re
               formato="pct"
               tema="churn"
               recorte={{ universo: "ticket", dim: "prioridade" }}
+            />
+          </Painel>
+          <Painel titulo="Churn por contato com o suporte" nota="% das contas de cada grupo que tiveram churn" sql={[suporte.sql]}>
+            <Barras
+              dados={suporte.grupos.map((g) => ({ label: `${g.label} · ${int(g.comChurn)} de ${int(g.contas)}`, value: g.taxa }))}
+              formato="pct"
+              tema="churn"
             />
           </Painel>
         </div>

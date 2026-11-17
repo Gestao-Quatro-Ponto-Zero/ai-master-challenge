@@ -6,6 +6,7 @@ import {
   indicadores3,
   usoPorPlano,
   escalacaoPorPrioridade,
+  churnPorSuporte,
   ticketsPorPrioridade,
   notasSatisfacao,
   faixasResolucao,
@@ -55,6 +56,19 @@ check("escalação: Baixa, Média, Alta, Urgente", es.prioridades.map((x) => x.l
 check("escalados somam 95 e tickets 2.000", soma(es.prioridades.map((x) => x.escalados)) === 95 && soma(es.prioridades.map((x) => x.tickets)) === 2000);
 const urg = es.prioridades.find((x) => x.chave === "urgent")!;
 check("urgente: 23 de 514 = 4,5%", urg.escalados === one("SELECT sum(escalation_flag) FROM support_tickets WHERE priority = 'urgent'") && urg.tickets === 514 && urg.taxa === 4.5, `${urg.escalados}/${urg.tickets} = ${urg.taxa}%`);
+
+// Churn by contact with support (D50): three groups partition the accounts.
+const cs = churnPorSuporte(f);
+check("suporte: três grupos, na ordem", cs.grupos.map((g) => g.label).join("|") === "Com escalação|Sem escalação|Sem ticket");
+check("grupos somam as 500 contas", soma(cs.grupos.map((g) => g.contas)) === 500);
+check("contas com churn somam 352", soma(cs.grupos.map((g) => g.comChurn)) === 352, String(soma(cs.grupos.map((g) => g.comChurn))));
+const escInd = one("SELECT count(*) FROM accounts a WHERE EXISTS (SELECT 1 FROM support_tickets t WHERE t.account_id = a.account_id AND t.escalation_flag = 1)");
+const escChurn = one("SELECT count(*) FROM accounts a WHERE EXISTS (SELECT 1 FROM support_tickets t WHERE t.account_id = a.account_id AND t.escalation_flag = 1) AND EXISTS (SELECT 1 FROM churn_events e WHERE e.account_id = a.account_id)");
+check("escalado: 69 de 91 = 75,8% (consulta independente)", cs.grupos[0].contas === escInd && cs.grupos[0].comChurn === escChurn && cs.grupos[0].taxa === 75.8, `${cs.grupos[0].comChurn}/${cs.grupos[0].contas} = ${cs.grupos[0].taxa}%`);
+const csFin = churnPorSuporte(lerFiltros({ setor: "FinTech" }));
+check("FinTech: grupos somam as contas do setor", soma(csFin.grupos.map((g) => g.contas)) === one("SELECT count(*) FROM accounts WHERE industry = 'FinTech'"));
+const csSem = churnPorSuporte(lerFiltros({ alerta: "sem" }));
+check("sem alertas: tickets T08 saem, mais contas sem ticket", csSem.grupos[2].contas > cs.grupos[2].contas, `${csSem.grupos[2].contas} vs ${cs.grupos[2].contas}`);
 
 // How the tickets split.
 check("prioridades somam 2.000, urgente primeiro", somaS(ticketsPorPrioridade(f)) === 2000 && ticketsPorPrioridade(f).dados[0].label === "Urgente");

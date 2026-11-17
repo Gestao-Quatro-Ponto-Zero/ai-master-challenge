@@ -140,6 +140,34 @@ ORDER BY CASE priority WHEN 'low' THEN 1 WHEN 'medium' THEN 2 WHEN 'high' THEN 3
   };
 }
 
+export interface ChurnSuporte {
+  grupos: { label: string; contas: number; comChurn: number; taxa: number }[];
+  sql: string;
+}
+
+/**
+ * Churn by contact with support (D50): the accounts split into "had an escalated ticket", "only
+ * non-escalated tickets" and "never opened a ticket"; for each, the % with a churn event (D20).
+ */
+export function churnPorSuporte(f: Filtros): ChurnSuporte {
+  const r = runQuery(`WITH ${ticketsCte(f)},
+ct AS (
+  SELECT a.account_id,
+    EXISTS (SELECT 1 FROM churn_events e WHERE e.account_id = a.account_id) AS churn,
+    CASE WHEN EXISTS (SELECT 1 FROM tk WHERE tk.account_id = a.account_id AND tk.escalation_flag = 1) THEN 1
+      WHEN EXISTS (SELECT 1 FROM tk WHERE tk.account_id = a.account_id) THEN 2 ELSE 3 END AS grupo
+  FROM accounts a WHERE ${whereConta(f)}
+)
+SELECT grupo,
+  CASE grupo WHEN 1 THEN 'Com escalação' WHEN 2 THEN 'Sem escalação' ELSE 'Sem ticket' END AS label,
+  count(*) AS contas, sum(churn) AS com_churn, round(100.0 * sum(churn) / count(*), 1) AS taxa_pct
+FROM ct GROUP BY grupo ORDER BY grupo`);
+  return {
+    grupos: r.rows.map((row) => ({ label: String(row.label), contas: num(row.contas), comChurn: num(row.com_churn), taxa: num(row.taxa_pct) })),
+    sql: r.sql,
+  };
+}
+
 // ── How the tickets split ────────────────────────────────────────────────────
 
 /** Tickets by priority, in priority order. */

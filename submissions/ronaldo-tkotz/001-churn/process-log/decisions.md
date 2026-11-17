@@ -732,3 +732,15 @@
 - **O que os dados mostram:** tudo é plano. Taxa de erro de 5,55% (Basic), 5,70% (Pro) e 5,64% (Enterprise); escalação de 4,5% (urgente) a 5,1% (média), com urgente escalando menos que média. Nos 10 recursos mais usados, a taxa vai de 4,71% a 6,45%. Os eixos começam em zero, então a diferença aparece do tamanho que tem.
 - **Como foi verificado:** `tela3-test` (29 checagens, cada número contra consulta independente: usos e taxa por plano, filtro de plano, escalados 95 de 2.000, urgente 23 de 514 = 4,5%, taxa do Recurso 32); `churn-mensal-test`, `visao-test`, `tela2-test`, `recorte-test`, `marcados-test`, `deck-marcados-test` e `axis-test` passam; typecheck e lint limpos; no navegador, `/tela/1` leva a `/`, a Tela 3 cabe numa tela só e a caixa do mouse mostra usos e taxa nos dois gráficos novos, sem erro no console.
 - **Pergunta do humano (17/11), com print:** "o gráfico de dispersão mostra o recurso 38 com 731 usos no período, enquanto o gráfico de barra está mostrando praticamente 6.500 para o mesmo recurso." **Leitura da IA:** os dois estão certos e medem coisas diferentes. A dispersão tem dois pontos por recurso (uso beta: 731 usos, 7,66% de erro; uso estável: 5.747 usos, 5,22%), e a coluna soma os dois (6.478, 5,50%). O defeito era de rótulo: a caixa do mouse dizia só "Recurso 38". Agora ela diz "Recurso 38 · uso beta", e as notas dos dois painéis explicam a relação.
+
+## D50 — Churn por contato com o suporte, na Tela 3 (escolha humana entre opções testadas pela IA)
+- **Pergunta do humano (17/11), com print marcado:** "A gente tem um espaço ali que está praticamente inutilizado. Que tipo de dado a gente poderia colocar ali para completar esse painel?"
+- **IA testou três opções no banco antes de sugerir:**
+  - churn por contato com o suporte: contas com ticket escalado 75,8% (91 contas), só tickets não escalados 69,3% (401), sem ticket 62,5% (8);
+  - churn pela nota média de satisfação: sem padrão (nota 3: 77,6%, nota 4: 67,8%, nota 5: 74,7%);
+  - escalados × não escalados em nota e tempo: quase iguais (nota 4,08 × 3,98; resolução 37,2 h × 35,8 h).
+  - A IA recomendou a primeira, por ser a única que liga o suporte ao churn, e avisou que os grupos são pequenos.
+- **Humano:** "Perfeito, gostei da sua ideia. Pode seguir com a implantação."
+- **IA fez:** `churnPorSuporte` em `tela3.ts` (segue os filtros de conta e o filtro de alerta); a linha 2 da Tela 3 virou três terços (uso por plano, escalação por prioridade, churn por contato com o suporte); o rótulo de cada barra traz "N de M" contas, para o tamanho do grupo ficar visível.
+- **Achado para o relatório:** com o filtro "sem registros em alerta", os tickets abertos antes do cadastro (T08) saem, e o grupo "sem ticket" sobe de 8 para 126 contas. O peso dos dados problemáticos aparece aqui.
+- **Como foi verificado:** `tela3-test` com 6 checagens novas (os grupos somam 500 contas e 352 com churn; o grupo escalado, 69 de 91, confere com uma consulta independente; o filtro de setor e o de alerta funcionam); typecheck e lint limpos; print no navegador sem erro no console.
