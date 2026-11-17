@@ -13,6 +13,7 @@ export const dynamic = "force-dynamic"; // every answer is computed at request t
 
 interface ChatRequest {
   question?: unknown;
+  history?: unknown;
 }
 
 function sse(obj: unknown): Uint8Array {
@@ -30,6 +31,11 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   const question = typeof body.question === "string" ? body.question.trim() : "";
+  const history = Array.isArray(body.history)
+    ? body.history
+        .filter((t): t is { question: string; answer: string } => !!t && typeof t.question === "string" && typeof t.answer === "string")
+        .slice(-6)
+    : [];
   if (!question) {
     return Response.json({ error: "Ask a question." }, { status: 400 });
   }
@@ -52,6 +58,7 @@ export async function POST(req: Request): Promise<Response> {
         send({ type: "start", question });
         const result = await ask(question, {
           userId: user.id,
+          history,
           onStep: (step: AgentStep) => send({ type: "step", step }),
         });
         send({

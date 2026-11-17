@@ -1,5 +1,6 @@
 import { requireUser, authErrorResponse } from "@/app/lib/auth";
-import { listarMarcados, marcar, desmarcar, validarMarcado, type NovoMarcado } from "@/engine/marcados";
+import { listarMarcados, marcar, desmarcar, validarMarcado, ROTA_TELA_USUARIO, type NovoMarcado } from "@/engine/marcados";
+import { obterTela } from "@/engine/telasUsuario";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -21,6 +22,8 @@ export async function POST(req: Request): Promise<Response> {
     const erro = validarMarcado(body);
     if (erro) return Response.json({ error: erro }, { status: 400 });
     const m = body as NovoMarcado;
+    const propria = ROTA_TELA_USUARIO.exec(m.rota);
+    if (propria && !obterTela(user.id, propria[1])) return Response.json({ error: "tela não encontrada" }, { status: 404 });
     const marcado = marcar(user.id, { ...m, titulo: m.titulo.trim(), nota: typeof m.nota === "string" ? m.nota : null });
     return Response.json({ marcado }, { status: 201 });
   } catch (e) { return authErrorResponse(e) ?? Response.json({ error: msg(e) }, { status: 500 }); }

@@ -338,8 +338,10 @@ export const arranjadorLLM: Arranjador = async (graficos, briefing) => {
 /** The always-works arrangement: one section per screen, the panels' own titles. */
 export function arranjoPorRegra(graficos: GraficoAterrado[]): Arranjo {
   const ordem = Object.keys(TELAS);
+  // The fixed screens first, in menu order; the user's own screens after them (D46.2).
+  const pos = (rota: string) => (ordem.includes(rota) ? ordem.indexOf(rota) : ordem.length);
   const porTela = new Map<string, GraficoAterrado[]>();
-  for (const g of [...graficos].sort((a, b) => ordem.indexOf(a.marcado.rota) - ordem.indexOf(b.marcado.rota))) {
+  for (const g of [...graficos].sort((a, b) => pos(a.marcado.rota) - pos(b.marcado.rota))) {
     porTela.set(g.tela, [...(porTela.get(g.tela) ?? []), g]);
   }
   return {

@@ -594,6 +594,11 @@ function AssistantBlock({
 
 export function Chat({ idleBrief }: { idleBrief?: ReactNode }) {
   const [messages, setMessages] = useState<Turn[]>([]);
+  // The transcript as the model should see it on a follow-up (D46): question and written answer pairs.
+  const messagesRef = useRef<Turn[]>([]);
+  useEffect(() => {
+    messagesRef.current = messages;
+  }, [messages]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const busyRef = useRef(false);
@@ -824,7 +829,7 @@ export function Chat({ idleBrief }: { idleBrief?: ReactNode }) {
         const res = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ question }),
+          body: JSON.stringify({ question, history: historico(messagesRef.current) }),
         });
         if (!res.ok || !res.body) {
           const detail = await res.text().catch(() => "");
@@ -1079,4 +1084,15 @@ export function Chat({ idleBrief }: { idleBrief?: ReactNode }) {
       </form>
     </div>
   );
+}
+
+/** Earlier question/answer pairs of this conversation, for the analyst's context on a follow-up. */
+function historico(turns: Turn[]): { question: string; answer: string }[] {
+  const pares: { question: string; answer: string }[] = [];
+  for (let i = 0; i < turns.length - 1; i++) {
+    const u = turns[i];
+    const a = turns[i + 1];
+    if (u.role === "user" && a.role === "assistant" && a.answer) pares.push({ question: u.text, answer: a.answer });
+  }
+  return pares.slice(-6);
 }

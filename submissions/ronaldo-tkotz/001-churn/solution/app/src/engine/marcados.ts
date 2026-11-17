@@ -6,6 +6,7 @@
  */
 import { appdb } from "./appdb";
 import { lerFiltros, descreverFiltros } from "./filtros";
+import { nomeTela } from "./telasUsuario";
 
 const DDL = `
   CREATE TABLE IF NOT EXISTS graficos_marcados (
@@ -47,6 +48,10 @@ export const TELAS: Record<string, string> = {
   "/tela/3": "Tela 3 · Suporte e uso do produto",
 };
 
+/** A screen the user built (D46.2): /telas/<id>. */
+export const ROTA_TELA_USUARIO = /^\/telas\/(tl_[a-z0-9]{12})$/;
+export const rotaValida = (rota: string) => rota in TELAS || ROTA_TELA_USUARIO.test(rota);
+
 export interface Marcado {
   id: number;
   chave: string;
@@ -79,7 +84,7 @@ const PNG_PREFIXO = "data:image/png;base64,";
 /** Checks an untrusted payload; returns the reason it is refused, or null. */
 export function validarMarcado(m: Partial<NovoMarcado>): string | null {
   if (typeof m.chave !== "string" || !m.chave || m.chave.length > 500) return "chave inválida";
-  if (typeof m.rota !== "string" || !(m.rota in TELAS)) return "tela desconhecida";
+  if (typeof m.rota !== "string" || !rotaValida(m.rota)) return "tela desconhecida";
   if (typeof m.filtros !== "string" || m.filtros.length > 500) return "filtros inválidos";
   if (typeof m.titulo !== "string" || !m.titulo.trim() || m.titulo.length > 200) return "título inválido";
   if (typeof m.svg !== "string" || !m.svg.startsWith("<svg") || m.svg.length > LIMITE_BYTES) return "SVG inválido";
@@ -124,7 +129,9 @@ export function arquivoMarcado(userId: string, id: number): { titulo: string; sv
 /** "Tela 2 · O que causa o churn · FinTech · plano Pro" — where the chart came from. */
 export function origemMarcado(m: Pick<Marcado, "rota" | "filtros">): { tela: string; filtros: string } {
   const params = Object.fromEntries(new URLSearchParams(m.filtros));
-  return { tela: TELAS[m.rota] ?? m.rota, filtros: descreverFiltros(lerFiltros(params)) };
+  const propria = ROTA_TELA_USUARIO.exec(m.rota);
+  const tela = TELAS[m.rota] ?? (propria ? `Minha tela · ${nomeTela(propria[1]) ?? "apagada"}` : m.rota);
+  return { tela, filtros: descreverFiltros(lerFiltros(params)) };
 }
 
 /** "churn-por-setor" — a file name from a title. */

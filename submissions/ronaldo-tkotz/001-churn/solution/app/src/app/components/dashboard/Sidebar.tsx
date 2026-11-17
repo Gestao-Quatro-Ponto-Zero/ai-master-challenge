@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { openConnect } from "./ConnectDialog";
 import { useTotalMarcados } from "../telas/Marcados";
+import { MinhasTelasNav } from "../telas/MinhasTelasNav";
 import { logout } from "@/app/actions/auth";
 
 /**
@@ -326,6 +327,7 @@ export function Sidebar({ email }: { email: string }) {
             );
           })}
         </div>
+        <MinhasTelasNav />
         <div className="flex flex-col gap-0.5">
           {WORKSPACE.map((item) => (
             <NavButton key={item.id} item={item} />

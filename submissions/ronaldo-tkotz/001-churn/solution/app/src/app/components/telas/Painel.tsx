@@ -14,11 +14,14 @@ export function Painel({
   nota,
   sql,
   children,
+  acoes,
 }: {
   titulo: string;
   nota?: string;
   sql: string[];
   children: ReactNode;
+  /** Extra header buttons (e.g. remove a panel from a custom screen). */
+  acoes?: ReactNode;
 }) {
   const [aberto, setAberto] = useState(false);
   const area = useRef<HTMLDivElement>(null);
@@ -30,6 +33,7 @@ export function Painel({
           {nota && <p className="truncate text-[11px] text-faint" title={nota}>{nota}</p>}
         </div>
         <div className="flex shrink-0 items-center gap-1">
+          {acoes}
           <MarcarToggle titulo={titulo} nota={nota} sql={sql} alvo={area} />
           {sql.length > 0 && <SqlToggle aberto={aberto} onClick={() => setAberto(!aberto)} />}
         </div>

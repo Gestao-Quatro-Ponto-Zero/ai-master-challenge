@@ -659,3 +659,15 @@
   - **Segurança:** as dimensões são fixas no código; um valor do caminho só entra no SQL depois de conferido contra o banco (a regra dos filtros globais). Valor inventado ou injetado é recusado.
 - **Achado que apareceu no próprio drill:** nos 114 eventos com motivo "Recursos", os comentários dos clientes são "too expensive" (32), "missing features" (27) e "switched to competitor" (23), além de 32 sem comentário. O motivo declarado e o comentário não batem; vale para o relatório.
 - **Como foi verificado:** `recorte-test` (28 checagens: total = SQL independente, cada quebra soma o recorte, segundo nível = barra clicada, valor injetado recusado, cruzamento soma o recorte, filtro global aplicado, tickets e uso). No navegador: Tela 2 (motivo → Recursos → mês), Tela 3 (prioridade, recursos mais usados) e visão geral com filtro de país, sem erro no console.
+
+### D46.2 — Telas próprias com o analista (ISC-41)
+- **IA desenhou (`engine/telasUsuario.ts`, `api/telas/*`, `/telas`, `/telas/[id]`, `TelaPropria.tsx`, "Minhas telas" no menu):**
+  - O usuário cria uma tela com um nome e escreve um pedido em português. O analista (o mesmo agente DeepSeek do chat, com as mesmas regras de D20–D24) consulta o banco e faz os gráficos; cada gráfico vira um painel da tela.
+  - **Cada painel guarda o SQL de onde vieram as linhas dele:** a última consulta que o analista rodou antes de desenhar o gráfico. Assim o painel mostra o SQL, pode ser marcado, e a apresentação consegue rodar de novo e conferir os números (D45).
+  - **Pedidos em sequência:** o analista vê os pedidos anteriores da tela e as respostas, e sabe quais painéis já existem ("agora só as contas Enterprise" funciona).
+  - As respostas escritas do analista ficam em "Notas do analista", na própria tela.
+  - Painéis podem ser tirados da tela; a tela pode ser renomeada e apagada (botão em vermelho, com confirmação).
+  - **Marcar:** a marcação aceita as telas próprias (`/telas/<id>`), conferindo que a tela é do usuário. A origem no slide fica "Minha tela · <nome>".
+- **Junto:** o chat lateral passou a mandar as perguntas e respostas anteriores da conversa para o analista. Antes, cada pergunta chegava sozinha, sem contexto.
+- **Como foi verificado:** `telas-test` (15 checagens com um analista roteirizado, sem LLM). Ao vivo com o DeepSeek no navegador: tela "Recursos e churn", dois pedidos em sequência (13 s e 6 s), três painéis, um marcado e listado em "Gráficos marcados", tudo mantido depois de recarregar, sem erro no console.
+- **Escolhas da IA (a revisar):** de 1 a 3 gráficos por pedido; o analista escolhe o tipo de gráfico; a definição de taxa que ele usa vem do prompt (churn = churn_events), por isso pode diferir das telas fixas que usam churn_flag (D36). O SQL de cada painel deixa isso visível.

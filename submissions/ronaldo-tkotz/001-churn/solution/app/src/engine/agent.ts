@@ -177,14 +177,27 @@ function buildSystem(ctx: WarehouseContext = {}): string {
 /** Ask the analyst a question. Requires LLM_API_KEY (DeepSeek by default). */
 export async function ask(
   question: string,
-  opts: { model?: string; maxSteps?: number; userId?: string; onStep?: (step: AgentStep) => void } = {},
+  opts: {
+    model?: string;
+    maxSteps?: number;
+    userId?: string;
+    onStep?: (step: AgentStep) => void;
+    /** Earlier turns (question and written answer) the model should see, oldest first. */
+    history?: { question: string; answer: string }[];
+    /** Extra instructions appended to the system prompt (e.g. a custom screen, D46.2). */
+    extraSystem?: string;
+  } = {},
 ): Promise<AgentResult> {
   const client = new OpenAI({ apiKey: process.env.LLM_API_KEY, baseURL: BASE_URL });
   const model = opts.model ?? DEFAULT_MODEL;
   const maxSteps = opts.maxSteps ?? 10;
 
   const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
-    { role: "system", content: buildSystem(opts.userId ? { userId: opts.userId } : {}) },
+    { role: "system", content: buildSystem(opts.userId ? { userId: opts.userId } : {}) + (opts.extraSystem ? `\n\n${opts.extraSystem}` : "") },
+    ...(opts.history ?? []).slice(-8).flatMap((t) => [
+      { role: "user" as const, content: t.question.slice(0, 2000) },
+      { role: "assistant" as const, content: (t.answer || "").slice(0, 4000) },
+    ]),
     { role: "user", content: question },
   ];
   const tools = openaiToolDefs() as OpenAI.Chat.Completions.ChatCompletionTool[];
