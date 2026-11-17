@@ -4,10 +4,10 @@ task: Refactor Veta to serve the RavenStack churn diagnosis (G4 AI Master challe
 slug: ravenstack-churn-app
 effort: E3
 phase: build
-progress: 34/44
+progress: 36/46
 mode: build
 started: 2026-11-16
-updated: 2026-11-17T00:30:00-03:00
+updated: 2026-11-17T10:25:00-03:00
 ---
 
 # RavenStack churn app — ISA
@@ -109,6 +109,8 @@ D20–D24, and an evaluator can reach it with a username and password.
 - [x] ISC-41: Custom screens. The user creates a screen, asks the analyst (DeepSeek) for an analysis in plain language, and the charts the analyst makes land on that screen as panels with their SQL; follow-up requests see the screen's earlier analyses; panels can be removed and marked for the deck. Check: create a screen, ask two questions, two or more panels persist after reload, one marked and listed in "Gráficos marcados". Evidence: `bun run telas-test` → TELAS OK (15 checks, scripted analyst); live with DeepSeek in the browser: screen "Recursos e churn", two chained requests (13 s, 6 s), three panels with their SQL, one marked and listed, all kept after reload, no console errors. The chat side panel now also sends earlier turns to the analyst.
 - [x] ISC-42: The presentation follows the context, not a fixed template: it is built from the marked charts, the conversations with the analyst the user picks, and the user's briefing (goal, audience); numbers in the narrative are checked against the charts' SQL and the conversations' SQL. Two builds with different briefings or conversations give different governing thoughts. Each build is kept, so earlier decks can still be downloaded. Evidence: `bun run deck-marcados-test` → DECK MARCADOS OK (35 checks: the arranger receives the picked screen, a number from that screen's SQL is kept and the same number without that context is dropped, another user's screen is refused, history per user); two live DeepSeek builds over the same 10 charts gave different governing thoughts, sections and actions (Diretoria vs Produto + the screen "Recursos e churn").
 - [x] ISC-43: Charts made by the analyst in the chat can be marked for the deck or sent to a custom screen. Evidence: browser run: a column chart from the chat marked (POST 201, route `/chat`, with its SQL) and sent to a new screen; Veta's old deck-draft pins hidden in the chat.
+- [x] ISC-44: The overview shows "Assinaturas e receita por conta, por mês" beside the average-age chart (each on half the row): average subscriptions in force per active account on the left axis and average MRR per active account on the right axis, each line on its own scale (D47, the human asked for two axes). Evidence: dez/2024 recomputed straight on the database (500 accounts, 9.41 subscriptions, US$ 21,469); plan filter Basic → 3.15 and US$ 1,501; typecheck, lint, axis, overview and screen 1–3 tests pass; browser shot with the hover tooltip on both sides, no console errors; live on production after approval (commit ea7275f).
+- [x] ISC-45: The database built from the CSVs is in the repository and a push to `submission/ronaldo-tkotz` publishes production by itself (D48). Evidence: the push of d8bc3ba started a Vercel build on its own ("Cloning github.com/ronaldomt/ai-master-challenge (Branch: submission/ronaldo-tkotz, Commit: d8bc3ba)"), Ready in 43 s; `/api/health` → `{"warehouse":"ok"}`; evaluator login and the D47 panel render on production. History: `data/ravenstack.db` committed (3508c53; the fork's pre-commit size limit got a one-file exception, privacy scan and gitleaks still run); Vercel project linked to `ronaldomt/ai-master-challenge`, Root Directory `submissions/ronaldo-tkotz/001-churn/solution/app`, production branch `submission/ronaldo-tkotz`; the first Git build (fd7e2e0) compiled but failed uploading outputs (`ENOENT .../path0/.next/package.json`) because `next.config.ts` pinned the tracing root to the app folder; d8bc3ba pins it only outside Vercel. Open until a Git-triggered build is Ready and production answers.
 
 ### Cleanup
 - [ ] ISC-22: Test scripts tied to the previous dataset are removed or rewritten for RavenStack.
@@ -134,6 +136,8 @@ D20–D24, and an evaluator can reach it with a username and password.
 - 2026-11-16: Phase 1 committed (993fe1b). Kept out: the 7 test scripts tied to the previous dataset (ISC-22), Veta's `docs/`, and 3 deck textures over 2 MB that the G4 pre-commit blocks; the deck code still references them (ISC-23).
 
 ## Changelog
+- 2026-11-17: GitHub → Vercel pipeline (D48): warehouse DB committed, project linked to the repo (root dir = this folder, production branch `submission/ronaldo-tkotz`); `next.config.ts` pins `turbopack.root`/`outputFileTracingRoot` only when `VERCEL` is unset, after the first Git build failed on the output upload; the build of d8bc3ba, started by the push itself, is Ready and production answers. ISC-45 met.
+- 2026-11-17: Subscriptions and revenue per account (D47): `porConta()` in `engine/visaoGeral.ts`, `PorConta` chart, optional right axis per series in `LineChart` (same interval count on both sides), line tooltips open toward the side with room and below a point near the top. ISC-44 met.
 
 - 2026-11-17: Contextual deck and chat charts (D46.3, D46.5): `montarDeck` takes the audience and the conversations and custom screens the user picks (`carregarContexto`, `valoresDeSql` re-runs their SQL for the number check), keeps every build (`decks_historico`, `pptx?id=`); chat charts get "Marcar para a apresentação" (route `/chat`) and "Enviar para uma tela"; Veta's deck-draft pins hidden. ISC-42 and ISC-43 met.
 - 2026-11-17: Deployed on Vercel (D46.4): https://ravenstack-churn.vercel.app. `engine/estado.ts` keeps the app DB as an encrypted snapshot in a private Blob (conditional-GET freshness check, upload before a writing route responds via `gravando()`), `vercel.json` (gru1), `.vercelignore`, warehouse traced into every function. `estado-test` passes locally and against a test Blob. ISC-24 and ISC-25 met; ISC-26 waits on the human (publish the evaluator password in the README or not).
