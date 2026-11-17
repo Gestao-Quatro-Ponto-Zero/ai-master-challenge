@@ -312,3 +312,39 @@ implementação que use janela do tamanho da fala (whisper.cpp), que não foi in
                              5.503 (3.816 na rodada 70), máximo 23.564, abaixo do teto de 40 mil
 [x] 4 Folga do host          RAM disponível 60%, swap 12%; teto de 2 GB valendo no cgroup
 ```
+
+## Sétima passada: saudação, nome, voz e frase de espera (2026-11-16 21:50 BRT)
+
+Pedido do Jó (21:16 BRT): o "oi, tudo bem" recebeu "Já anotei o que você contou" sem ele ter contado nada; a
+atendente precisa de um nome; a voz soa robótica e "Um instante" toca o tempo todo.
+
+Causa raiz: "tudo" e "bem" não estavam na lista de cortesias, então o cumprimento somava 2 palavras úteis, o mínimo
+para virar relato. A frase de espera disparava em 1,5 s, e a resposta leva de 6 a 8 s.
+
+Mudança validada:
+- Cumprimento não vira relato; a primeira resposta responde ao cumprimento ("Tudo bem, sim, obrigada.", "Boa
+  noite!") e só diz "Vou te ajudar com isso" quando há um problema contado.
+- Atendente Clara (`NOME_ATENDENTE` em `config.py`) no prompt, nas saudações, na assinatura do e-mail e ao atender a
+  ligação, sem se apresentar duas vezes.
+- Frase de espera depois de 4 s, no máximo uma vez a cada 3 falas, com 3 frases variadas.
+- Voz: sem mudança. Os parâmetros de entonação do Piper mudaram a variação de tom de 3,0 para no máximo 3,1 semitons
+  em 5 frases, sem ganho que justifique. O Piper só tem vozes masculinas em pt-BR; a troca por uma voz local
+  feminina e mais natural (Kokoro) depende de baixar pacote e modelo, bloqueado aqui e pendente de autorização.
+
+```
+[x] 2.1 Funcional            215 testes pytest verdes (12 novos em tests/test_saudacao.py): 5 cumprimentos sem
+                             palavra útil; ATD-00442 reproduzido sem "anotei" e sem chamar a IA externa; relato na
+                             primeira fala reconhecido; ligação não se apresenta duas vezes; nome no prompt e na
+                             assinatura; espera rara e variada; "bom dia" devolvido
+[x] 2.2 Integração + falhas  cumprimento não chama a DeepSeek (teste com a rede proibida)
+[x] 2.3 E2E                  Chromium com microfone falso: "Oi, tudo bem?" → "Tudo bem, sim, obrigada. Como posso
+                             te chamar?"; 3 turnos sem clique; frase de espera tocou 1 vez em 3 respostas (eram 2 em 3)
+[x] 2.4 Erro/borda           "Ana" dito sozinho pela voz sintética ainda erra ("Veja lá" virou nome na rodada 72)
+[x] 2.8 Regressão            215 testes (203 na sexta passada)
+[x] 2.9 Recuperação          serviço reiniciado, 200 local e no domínio
+[ ] 2.10 Homologação (Jó)    pendente
+[x] 2.11 Testes de IA        rodada 72 por voz: 21 de 22 (20 na rodada 71), nenhuma resposta com "anotei"; dados
+                             ditados 21 de 21; tokens por conversa: média 4.672, máximo 17.021. A falha é a mesma
+                             expectativa da rodada 71 (injeção com "reembolso" foi ao departamento de Segurança)
+[x] 4 Folga do host          RAM disponível 59%, teto de 2 GB valendo no cgroup
+```

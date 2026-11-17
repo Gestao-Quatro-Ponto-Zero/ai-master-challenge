@@ -1028,3 +1028,34 @@ sempre processa 30 s de áudio. Compilar o whisper.cpp (janela do tamanho da fal
 **Medido:** Chromium com microfone falso fez 3 turnos sem clique, 6,7 a 7,3 s do fim da fala à resposta. Rodada 71 por
 voz: 20 de 22, dados ditados 21 de 21. 203 testes. Régua, sexta passada, verde menos a homologação.
 
+
+## Saudação natural, nome da atendente, voz e frase de espera (2026-11-16 21:16 a 21:50 BRT)
+
+**Pedido do Jó (literal, 21:16 BRT):** "eu mandei um oi tudo bem, e ele falou que ja tinha anaotado o que eu contei,
+mas eu não tinha contado nada, isso quebra a experiencia e mostra que é um atendimento artificial.. o assisitente tbm
+precisa de um nome, e a voz dele esta meio robotica e toda hora ele fala um instante, tem como deixar esses pontos
+mais fluidos?"
+
+**Diagnóstico:**
+1. Na ligação dele (ATD-00442) "Oi, tudo bem?" virou relato: "tudo" e "bem" não estavam na lista de cortesias, então
+   a frase tinha 2 palavras úteis, o mínimo de relato, e a saudação fixa dizia "Já anotei o que você contou".
+2. A frase de espera tocava depois de 1,5 s, e a resposta leva de 6 a 8 s: tocava em quase toda fala.
+3. Voz: o Piper só tem vozes masculinas em pt-BR (faber, cadu, edresson, jeff), e a atendente fala no feminino
+   ("Obrigada"). Mexer na entonação do Piper quase não muda nada (variação de tom de 3,0 para 3,1 semitons em 5
+   frases). Uma voz mais natural e feminina (Kokoro, local) exige baixar pacote e modelo, e o ambiente bloqueou:
+   fica para a autorização do Jó.
+
+**Feito:**
+1. Cumprimentos ("tudo bem", "como vai", "beleza", "alô") não contam como relato. A primeira resposta responde ao
+   cumprimento ("Tudo bem, sim, obrigada.") e só diz "Vou te ajudar com isso" quando há um problema contado.
+2. A atendente se chama Clara (`NOME_ATENDENTE`, troca por variável de ambiente): no prompt, na saudação dos 4 canais,
+   na assinatura do e-mail e ao atender a ligação ("Suporte, aqui é a Clara. Como posso te ajudar?"), sem se
+   apresentar duas vezes.
+3. Frase de espera só depois de 4 s, no máximo uma vez a cada 3 falas, com 3 frases mais naturais ("Hum, deixa eu
+   ver aqui.", "Só um segundinho.", "Tá, já te falo.").
+4. A primeira resposta devolve o "bom dia", "boa tarde" ou "boa noite" do cliente.
+
+**Medido:** Chromium com microfone falso: "Oi, tudo bem?" recebeu "Tudo bem, sim, obrigada. Como posso te chamar?", e
+a frase de espera tocou 1 vez em 3 respostas (eram 2 em 3). Rodada 72 por voz: 21 de 22 (20 na rodada 71), nenhuma
+resposta com "anotei", dados ditados 21 de 21. 215 testes. Régua, sétima passada, verde menos a homologação.
+Pendente do Jó: autorizar a voz Kokoro (baixar pacote e modelo) e homologar.

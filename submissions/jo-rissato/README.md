@@ -111,8 +111,8 @@ dinheiro e contrato. Esses dois tipos somam 3.447 tickets (40,7%) do Dataset 1.
 - **Dashboard:** a operação de hoje (Dataset 1, com filtros e notas de satisfação por canal, prioridade, tipo ou
   assunto), o classificador rodando sobre os 9.568 tickets reais do teste e as chamadas da versão em apresentação.
   As 152 chamadas das versões anteriores ficam no registro e no process log, fora dos números.
-- **Validação:** 203 testes automatizados; bateria de 22 casos com cliente simulado pela IA, rodada nos 4 canais (88
-  conversas) e de novo no telefone por voz (rodada 71: 20 de 22, com CPF, telefone e e-mail ditados aceitos em 21
+- **Validação:** 215 testes automatizados; bateria de 22 casos com cliente simulado pela IA, rodada nos 4 canais (88
+  conversas) e de novo no telefone por voz (rodada 72: 21 de 22, com CPF, telefone e e-mail ditados aceitos em 21
   de 21 falas); ligação contínua testada no navegador com microfone simulado. Na última rodada (`docs/bateria-ia-rodada66-*.md`), 86 de 88 passaram, e as 2 falhas foram da própria
   checagem (corrigida e repassada em todas as respostas guardadas, sem nenhuma violação). Média de 3.537 tokens por
   conversa (era 5.761 na rodada 64). 6 h no ar sob medição contínua (73 de 73 checagens com sucesso, memória plana);

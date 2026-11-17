@@ -18,6 +18,9 @@ TRADUCOES = RAIZ / "saida" / "traducoes-fila.json"
 
 # Decisão do Jó (process log, rodada 45): a IA roteia sozinha a partir de 0,8 de confiança.
 LIMITE_CONFIANCA = 0.8
+
+# Nome da atendente nos 4 canais (pedido do Jó em 2026-11-16 21:16 BRT: "o assistente também precisa de um nome").
+NOME_ATENDENTE = os.environ.get("NOME_ATENDENTE", "Clara")
 # Versão das regras do robô em apresentação. Chamadas de versões anteriores ficam no registro e no process log, mas
 # saem do painel e do dashboard (Jó, 2026-11-16: o teste do robô anterior não é resultado do produto atual).
 VERSAO_ROBO = "2026-11-16"

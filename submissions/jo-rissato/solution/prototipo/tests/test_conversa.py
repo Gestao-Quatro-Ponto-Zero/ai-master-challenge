@@ -572,7 +572,7 @@ def test_email_sem_saudacao_dupla(modelo, com_ia, monkeypatch):
     roteiro(monkeypatch, [])
     c = cv.Conversa(modelo, canal="e-mail")
     r1 = c.receber("oi")
-    assert r1.resposta.startswith("Olá,\n\nEu sou a assistente") and "Olá, eu sou" not in r1.resposta
+    assert r1.resposta.startswith("Olá,\n\nAqui é a Clara") and "Olá, eu sou" not in r1.resposta
     r2 = c.receber(NOME)
     assert "Prazer" not in r2.resposta and r2.resposta.count("Ana") == 1
 

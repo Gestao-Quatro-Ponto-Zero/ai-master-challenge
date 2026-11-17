@@ -70,7 +70,8 @@ DEPARTAMENTO = {"política": "Segurança da informação", "exclusão de site": 
 VAZIAS = set("""hi hello hey dear good morning afternoon evening please thanks thank you regards kind best
 help need i a an the have has is am are my me we us it this that to for with and or problem issue
 question something urgent asap support team hope well olá ola oi bom dia boa tarde noite obrigado obrigada
-por favor ajuda preciso de um uma o a e meu minha problema quero tenho estou""".split())
+por favor ajuda preciso de um uma o a e meu minha problema quero tenho estou
+tudo bem bom como vai você voce vc td beleza blz alô alo opa salve tranquilo joia jóia aí ai e com""".split())
 MIN_PALAVRAS_UTEIS = 2
 
 # Cliente desiste por texto (régua 2.4): a conversa fecha sem encaminhar.

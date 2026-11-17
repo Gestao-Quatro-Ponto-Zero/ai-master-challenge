@@ -18,10 +18,12 @@ import streamlit as st
 PAUSA_FIM_MS = 800        # silêncio que fecha a fala do cliente
 FALA_MINIMA_MS = 350      # abaixo disso é ruído (tosse, clique)
 FALA_MAXIMA_S = 25        # fala longa é enviada assim mesmo (o servidor aceita até 60 s)
-# A resposta leva de 6 a 8 s nesta CPU (transcrição 3,5 s, IA 2,1 s, voz 1 s; medido em 2026-11-16). Depois de 1,5 s
-# sem resposta, a atendente diz uma frase curta de espera, como numa ligação de verdade.
-ESPERA_MS = 1500
-FRASES_ESPERA = ("Um instante.", "Só um momento.")
+# A resposta leva de 6 a 8 s nesta CPU (transcrição 3,5 s, IA 2,1 s, voz 1 s; medido em 2026-11-16). Com o gatilho em
+# 1,5 s a frase de espera tocava em quase toda resposta e soava robótica (Jó, 2026-11-16 21:16 BRT). Agora ela só toca
+# depois de 4 s de silêncio e no máximo uma vez a cada 3 falas do cliente, variando a frase.
+ESPERA_MS = 4000
+ESPERA_A_CADA = 3
+FRASES_ESPERA = ("Hum, deixa eu ver aqui.", "Só um segundinho.", "Tá, já te falo.")
 
 HTML = """
 <div class="lig">
@@ -125,6 +127,8 @@ async function abrirMicrofone(S) {
       clearTimeout(S.timerEspera);
       S.timerEspera = setTimeout(() => {
         if (S.estado !== 'pensando' || !S.espera.length) return;
+        if (S.ultimaEspera && S.enviado - S.ultimaEspera < S.cfg.esperaACada) return;
+        S.ultimaEspera = S.enviado;
         S.audioEspera.src = 'data:audio/wav;base64,' + S.espera[S.nEspera++ % S.espera.length];
         S.audioEspera.play().catch(() => {});
       }, S.cfg.espera);
@@ -176,7 +180,7 @@ export default function (component) {
       botao: parentElement.querySelector('.desligar'), barra: parentElement.querySelector('.barra'),
       audio: new Audio(), estado: 'conectando', ruido: 0.004, acima: 0, antes: [], fala: [], silencio: 0,
       durFala: 0, surdoAte: 0, enviado: 0, aguardando: 0, falaTocada: 0, cfg: data.cfg,
-      audioEspera: new Audio(), espera: data.espera || [], nEspera: 0, timerEspera: null,
+      audioEspera: new Audio(), espera: data.espera || [], nEspera: 0, ultimaEspera: 0, timerEspera: null,
     };
     S.audio.onended = () => voltar(S);
     S.botao.onclick = () => { S.encerrar = true; S.audio.pause(); fechar(S); S.enviar('desligar', true); };
@@ -205,7 +209,8 @@ def ligacao(fala_wav: bytes | None, fala_id: int, processado: int, encerrada: bo
     dados = {"fala": base64.b64encode(fala_wav).decode() if fala_wav else None, "fala_id": fala_id,
              "processado": processado, "encerrada": encerrada,
              "espera": [base64.b64encode(w).decode() for w in espera or [] if w],
-             "cfg": {"pausa": PAUSA_FIM_MS, "minima": FALA_MINIMA_MS, "maxima": FALA_MAXIMA_S, "espera": ESPERA_MS}}
+             "cfg": {"pausa": PAUSA_FIM_MS, "minima": FALA_MINIMA_MS, "maxima": FALA_MAXIMA_S, "espera": ESPERA_MS,
+                     "esperaACada": ESPERA_A_CADA}}
     return _componente(data=dados, key=key, on_fala_change=lambda: None, on_desligar_change=lambda: None)
 
 
@@ -219,4 +224,4 @@ def audio_da_fala(valor) -> tuple[int, bytes] | None:
         return None
 
 
-__all__ = ["ligacao", "audio_da_fala", "ESPERA_MS", "FRASES_ESPERA", "PAUSA_FIM_MS", "FALA_MINIMA_MS", "FALA_MAXIMA_S"]
+__all__ = ["ligacao", "audio_da_fala", "ESPERA_A_CADA", "ESPERA_MS", "FRASES_ESPERA", "PAUSA_FIM_MS", "FALA_MINIMA_MS", "FALA_MAXIMA_S"]

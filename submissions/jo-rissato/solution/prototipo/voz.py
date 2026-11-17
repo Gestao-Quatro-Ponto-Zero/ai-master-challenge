@@ -13,9 +13,9 @@ import re
 import threading
 import wave
 
-from config import MAX_SEGUNDOS_FALA, VOZ_PIPER, WHISPER_MODELO
+from config import MAX_SEGUNDOS_FALA, NOME_ATENDENTE, VOZ_PIPER, WHISPER_MODELO
 
-SAUDACAO = "Você ligou para o suporte. Pode falar."
+SAUDACAO = f"Suporte, aqui é a {NOME_ATENDENTE}. Como posso te ajudar?"
 # Vocabulário do suporte para a transcrição: sem ele o modelo escrevia "Altuco" no lugar de Outlook.
 VOCABULARIO = ("Atendimento de suporte ao cliente. Outlook, Excel, iPhone, Android, Wi-Fi, impressora, notebook, "
                "reembolso, cancelamento, cobrança, CPF, pedido, e-mail.")

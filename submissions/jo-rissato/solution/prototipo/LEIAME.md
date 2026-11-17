@@ -72,11 +72,14 @@ microfone fica aberto do Ligar ao Desligar, sem botão de gravar a cada fala (`l
 
 1. No navegador, um detector de fala por energia percebe quando o cliente começa a falar e fecha a fala depois de
    0,8 s de pausa. Só esse trecho vai para a página, em WAV de 16 kHz.
-2. A página transcreve na própria máquina (`voz.py`), a IA responde e a voz da atendente toca. Depois de 1,5 s sem
-   resposta, a atendente diz "Um instante." ou "Só um momento.".
+2. A página transcreve na própria máquina (`voz.py`), a IA responde e a voz da atendente toca. Se a resposta passa de 4 s,
+   a atendente diz uma frase curta de espera ("Hum, deixa eu ver aqui."), no máximo uma vez a cada 3 falas.
 3. Enquanto a atendente fala, a escuta fica pausada (meia via), para a voz dela não voltar como fala do cliente. Ao
    terminar, a escuta volta sozinha.
-4. **Desligar** no meio da conversa fecha a chamada como desistência; se o pedido já tinha destino com uma pessoa
+4. A atendente se chama Clara (`NOME_ATENDENTE` em `config.py`, troca por variável de ambiente) e atende com
+   "Suporte, aqui é a Clara. Como posso te ajudar?". Um cumprimento ("oi, tudo bem?") recebe resposta ao
+   cumprimento, não conta como relato.
+5. **Desligar** no meio da conversa fecha a chamada como desistência; se o pedido já tinha destino com uma pessoa
    (reembolso, por exemplo), continua com ela e cobra o posicionamento.
 
 Escuta e interpretação:
