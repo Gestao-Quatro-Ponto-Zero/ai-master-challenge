@@ -1121,3 +1121,7 @@ mesma falha conhecida e segura das rodadas 71 e 72). Pendente: homologação do 
 
 **Feito (12:49 BRT):** push da branch `submission/jo-rissato` para o fork. Conferido antes: o diff contra o main do
 repositório da G4 só altera arquivos em `submissions/jo-rissato/` e não tem conflito. O PR é aberto pelo Jó.
+
+**Abertura do PR (12:55 a 13:05 BRT):** o GitHub recusou o PR com "Validation failed: must be a collaborator", pelo Jó
+e de novo pelo navegador com o formulário limpo. A sessão do navegador estava numa conta diferente da dona do fork.
+**Mensagem do Jó (literal):** "Pode abrir a issue". Issue #251 aberta no repositório da G4 pedindo orientação.
