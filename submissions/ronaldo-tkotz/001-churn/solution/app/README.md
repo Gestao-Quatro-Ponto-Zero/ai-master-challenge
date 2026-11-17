@@ -42,7 +42,10 @@ Then open http://127.0.0.1:3100 and log in as `<AUTH_USERNAME>@ravenstack.app`.
 `data/ravenstack.db` is the RavenStack database that `../sql/build_db.py` builds from the challenge
 CSVs (raw tables, typed tables, data-quality checks and the analysis views). It is committed (D48),
 so anyone can open the material the analysis was built on, and it ships inside every function.
-`vercel deploy --prod` from this folder publishes a version.
+
+The Vercel project is linked to this GitHub repository (D48): every push to `submission/ronaldo-tkotz`
+builds and publishes production from this folder (Root Directory
+`submissions/ronaldo-tkotz/001-churn/solution/app`); other branches get preview deploys.
 
 On Vercel the app DB (logins, conversations, marks, screens, decks) is an AES-GCM-encrypted
 SQLite snapshot in a private Vercel Blob (`src/engine/estado.ts`, D46.4).
