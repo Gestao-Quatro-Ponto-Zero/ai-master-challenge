@@ -93,10 +93,10 @@ export default async function Tela3({ searchParams }: { searchParams: Promise<Re
         </div>
 
         <div className="grid min-h-0 gap-2 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
-          <Painel titulo="Recursos: uso × taxa de erro" nota="um ponto por recurso; o uso beta de cada recurso aparece separado" sql={[recursos.sql]}>
+          <Painel titulo="Recursos: uso × taxa de erro" nota="dois pontos por recurso: o uso beta e o uso estável, cada um com seus usos e sua taxa" sql={[recursos.sql]}>
             <RecursosErros recursos={recursos.recursos} />
           </Painel>
-          <Painel titulo="Os 10 recursos mais usados" nota="usos no período e a taxa de erro de cada um" sql={[maisUsados.sql]}>
+          <Painel titulo="Os 10 recursos mais usados" nota="usos no período (beta + estável) e a taxa de erro de cada um" sql={[maisUsados.sql]}>
             <ColunasComTaxa
               dados={maisUsados.dados.map((d, i) => ({ ...d, taxa: maisUsados.taxaErro[i], chave: d.label.replace(/^Recurso /, "feature_") }))}
               nomeColunas="Usos"

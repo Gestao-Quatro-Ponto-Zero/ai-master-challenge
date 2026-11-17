@@ -15,7 +15,7 @@ const mil = (n: number) => (n >= 1000 ? `${(n / 1000).toLocaleString("pt-BR", { 
 const pct = (n: number) => `${n.toLocaleString("pt-BR", { maximumFractionDigits: 1 })}%`;
 
 export function RecursosErros({ recursos }: { recursos: { recurso: string; usos: number; taxaErro: number; beta: boolean }[] }) {
-  const pontos = (beta: boolean) => recursos.filter((r) => r.beta === beta).map((r) => ({ x: r.usos, y: r.taxaErro, label: nomeRecurso(r.recurso) }));
+  const pontos = (beta: boolean) => recursos.filter((r) => r.beta === beta).map((r) => ({ x: r.usos, y: r.taxaErro, label: `${nomeRecurso(r.recurso)} · ${beta ? "uso beta" : "uso estável"}` }));
   return (
     <Ajustado>
       {(w, h) => (
