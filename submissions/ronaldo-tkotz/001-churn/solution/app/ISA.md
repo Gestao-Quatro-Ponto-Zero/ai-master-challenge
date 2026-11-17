@@ -4,7 +4,7 @@ task: Refactor Veta to serve the RavenStack churn diagnosis (G4 AI Master challe
 slug: ravenstack-churn-app
 effort: E3
 phase: build
-progress: 24/38
+progress: 28/40
 mode: build
 started: 2026-11-16
 updated: 2026-11-16T18:55:00-03:00
@@ -91,26 +91,28 @@ D20–D24, and an evaluator can reach it with a username and password.
   - [x] ISC-15c: B1.2 — tickets by quarter, stacked by score 3, 4, 5 and "no score"; totals with and without the T08 records. Evidence: 2,000 / 825 no score; without T08 923 / 372.
   - [x] ISC-15d: B1.3 — monthly usage records, with and without the alert records (T06, E13), plus small multiples by sector. Evidence: 25,000 with, 5,554 without; T06 = 19,432 = vw_dq_ocorrencias; sectors add to the total.
   - [x] ISC-15e: Unfiltered B1.1 equals `vw_mes` month by month (test; the view's 4-decimal rates allow half a 0.1 step).
-- [x] ISC-15f: Navigation — the overview and the five screens in the side menu (`/` = overview, `/tela/1..5`; changed by D28), chat in a side panel that opens on any screen (D27). Evidence: probe → `/`, `/tela/2`, `/tela/5` 200, `/tela/9` 404; screenshot with the panel open. Screens 2–5 list their blocks as "not built yet".
+- [x] ISC-15f: Navigation — the overview and the five screens in the side menu (`/` = overview, `/tela/1..5`; changed by D28), chat in a side panel that opens on any screen (D27). Evidence: probe → `/`, `/tela/2`, `/tela/5` 200, `/tela/9` 404; screenshot with the panel open. Screens 2–5 list their blocks as "not built yet". Changed by D44: three screens; `/tela/4` and `/tela/5` answer 404.
 - [x] ISC-16: Screen 2 shows churn broken down by every attribute (D34): industry, source and country as % of accounts with `churn_flag = 1` (D36; DevTools 31%, FinTech 22.3%), shaded one orange from dim (lowest) to bright (highest) (D35); events by reason; and three donuts showing how the churn splits (D37): plan and trial vs paid over the 110 accounts with `churn_flag = 1`, billing frequency over the 486 subscriptions with `churn_flag = 1`. Seven charts, one screen, no scroll. Global filters reach every chart. Evidence: `bun run tela2-test` → TELA 2 OK (16 checks, each against an independent query); screenshots at 1440×900 and 1280×800 with no scroll. Human review pending.
 - [x] ISC-17: Screen 3 shows support and product usage (D34, D43), one screen, no scroll: a header of ticket and usage numbers; tickets, satisfaction and uses month by month; tickets by priority and score (donuts) and by resolution and first-response bands; uses × error rate per feature (stable and beta apart) and the ten most used features. Tickets follow the account filters, usage the subscription filters (D27); the alert filter drops T08 tickets and T06/E13 usage. Evidence: `bun run tela3-test` → TELA 3 OK (23 checks against independent queries; 923 tickets without alerts); screenshots at 1440×900 and 1280×800 with no scroll and no console errors. Human review pending. The earlier Tela 3 content (accounts ranked by exposure) still needs a screen; the average-age line went to the overview (ISC-36).
 - [x] ISC-35: The overview no longer breaks churn down by attribute (D34). Its four churn charts moved to screen 2, leaving three bands: header, the time lines and the revenue row.
 - [ ] ISC-37: The chat panel scrolls, so a long answer can be read to the end. Reported by the human on 2026-11-17: an answer with items 1, 2 and 3 could not be scrolled, so it was unclear whether more followed. To fix before the project closes (human: "não é para resolver isso agora"). Check: a long answer in the side panel, at 1440×900 and 1280×800, scrolls to its last line, with wheel and trackpad.
 - [x] ISC-36: The overview shows the average age of the base month by month, jan/2023–dez/2024 (D40): active accounts from signup and subscriptions in force from start, in months at each month end. Evidence: `bun run visao-test` → VISÃO GERAL OK (24 months; Dec 2024 accounts 11.16 and subscriptions 5.44 against independent queries; the sector filter reaches both lines); screenshots at 1440×900 and 1280×800 with no scroll. Evidence: `src/app/page.tsx` has no churn-by-attribute panel; screenshots at 1440×900 and 1280×800 with no scroll; `bun run visao-test` → VISÃO GERAL OK.
-- [ ] ISC-18: Screen 4 — what to do (B4.1–B4.2).
-- [ ] ISC-19: Screen 5 — base and trust in the numbers (B5.1–B5.4).
-- [ ] ISC-20: Global filters (sector, country, source, plan, with/without alert records) apply on every screen. Plan follows the identifier (D27): account numbers use the account's plan, subscription numbers the subscription's plan. Filter values are checked against the database before entering SQL. Progress: done on screen 1 (`src/engine/filtros.ts`; test: sectors add to 600 events, plan per identifier, injected value dropped); stays open until screens 2–5 use it.
+- [x] ISC-18: Only the overview and three screens remain (D44, human decision): screens 4 (what to do) and 5 (base and trust) leave the app, and their content goes into the written diagnosis report. Evidence: the side menu lists Visão geral and screens 1–3; probe → `/`, `/tela/1..3` 200, `/tela/4` and `/tela/5` 404.
+- [x] ISC-19: Dropped by D44. Screen 5 (base and trust in the numbers) is not built; its blocks B5.1–B5.4 become sections of the written report.
+- [ ] ISC-20: Global filters (sector, country, source, plan, with/without alert records) apply on every screen. Plan follows the identifier (D27): account numbers use the account's plan, subscription numbers the subscription's plan. Filter values are checked against the database before entering SQL. Progress: done on screen 1 (`src/engine/filtros.ts`; test: sectors add to 600 events, plan per identifier, injected value dropped); stays open until screens 2–3 use it (screens 4–5 dropped, D44).
 - [ ] ISC-21: Where an alert changes a result, both numbers are shown (D21).
+- [x] ISC-39: The marked charts become a presentation built as a Minto pyramid (D45, human request: "não é só colocar o gráfico num slide"), the structure of Veta’s deck arranger: cover with the governing thought, executive summary (the pyramid on one page), SCQA context, one divider per key-line section (2–4, MECE, titled as assertions), one slide per chart with its action title, supporting lines and the faithful image, and the recommended actions. The app’s LLM writes the narrative; the code re-runs each chart’s SQL and checks every written number against those rows (a percentage only against percentages or composition shares, so a count of 85 cannot become 85%); what fails is dropped or replaced and listed. Every marked chart lands on a slide; without an LLM a plain arrangement (one section per screen) still builds. The pyramid is shown for review before the .pptx downloads; a change in the marks requires rebuilding. Evidence: `bun run deck-marcados-test` → DECK MARCADOS OK (28 checks); three live builds with 10 charts (7–8 s each), the last with zero number adjustments. Variable-length slide text boxes shrink to fit (`fit: "shrink"`, 11 boxes) as a guard against overflow. Not yet seen rendered: no LibreOffice here, and Keynote’s scripted export failed.
+- [x] ISC-38: Any chart on the overview and screens 1–3 can be marked for the deck (D44). The mark keeps a faithful copy (SVG, and a 3× PNG drawn from it) of the chart as it is on screen, with the screen, the filters in force, the title and the note; the same chart under another filter is another mark. "Gráficos marcados" lists them with PNG and SVG downloads (unmark in red, human request); the .pptx is the Minto deck of ISC-39 (D45). Evidence: `bun run marcados-test` → MARCADOS OK (17 checks: active SVG refused, re-marking refreshes, order, origin, per-user, one slide per mark, 4:1 image stays 4:1); browser run marking 6 charts across the 4 pages, all pressed, list and .pptx (6 slides, image centred, aspect kept) checked; screens still fit at 1440×900 and 1280×800.
 
 ### Cleanup
 - [ ] ISC-22: Test scripts tied to the previous dataset are removed or rewritten for RavenStack.
-- [ ] ISC-23: Deck generation produces a RavenStack deck with no leftover framing.
+- [ ] ISC-23: Deck generation produces a RavenStack deck with no leftover framing. Progress: the marked-charts .pptx (ISC-38) is the RavenStack deck path; Veta’s pin-and-AI deck code (`deck.ts`, `/decks`) is off the menu but still in the code. The Minto arranger now lives in `deckMarcados.ts` for the marked charts (ISC-39).
 
 ### Deploy (phase 3)
 - [ ] ISC-24: The RavenStack database ships with the deploy (`data/ravenstack.db`).
 - [ ] ISC-25: Deployed on Vercel or Railway with HTTPS.
 - [ ] ISC-26: The evaluator logs in with the default credentials given in the README.
-- [ ] ISC-27: No secret or `node_modules` enters git (files added one by one under the ignored `submissions/` folder). Progress: commit 993fe1b staged 116 files one by one, no `.env`/`node_modules`/sqlite; privacy scan 0. Stays open until the deploy commit.
+- [ ] ISC-27: No secret or `node_modules` enters git (files added one by one under the ignored `submissions/` folder). Progress: commit 993fe1b staged 116 files one by one, no `.env`/`node_modules`/sqlite; privacy scan 0. Commit 7213f7e (screens, D30–D43) staged 40 files one by one with the same checks; privacy scan 0; pushed to `submission/ronaldo-tkotz`. Stays open until the deploy commit.
 
 ## Test Strategy
 
@@ -126,6 +128,10 @@ D20–D24, and an evaluator can reach it with a username and password.
 - 2026-11-16: Phase 1 committed (993fe1b). Kept out: the 7 test scripts tied to the previous dataset (ISC-22), Veta's `docs/`, and 3 deck textures over 2 MB that the G4 pre-commit blocks; the deck code still references them (ISC-23).
 
 ## Changelog
+
+- 2026-11-17: Minto deck from the marked charts (D45): `engine/deckMarcados.ts` (grounding, number check, LLM and plain arrangers, .pptx), `api/marcados/deck`, `Apresentacao.tsx`; marks store their SQL; unmark button in red. `deck-marcados-test` 28 checks. ISC-39 met.
+
+- 2026-11-17: Screens 4 and 5 removed (D44, human: the diagnosis goes in a written report); chart marking for the deck built (`engine/marcados.ts`, `api/marcados/*`, `components/telas/captura.ts`, `Marcados.tsx`, `ListaMarcados.tsx`, `/marcados`; toggle in `Painel` and `Bloco`; menu "Gráficos marcados" replaces "Decks"). `marcados-test` 17 checks. ISC-18, ISC-19 (dropped), ISC-38 met.
 
 - 2026-11-17: ISC-37 opened: the chat panel does not scroll (human report). Deferred by the human to before the project closes; nothing changed in code.
 

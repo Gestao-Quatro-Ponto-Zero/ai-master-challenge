@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { Sql } from "../Sql";
+import { MarcarToggle } from "./Marcados";
 
 /**
  * A chart panel: title and note on the left, the SQL toggle in the top-right corner (the
- * header already has that room), then the chart. The SQL opens between header and chart.
+ * header already has that room) beside the deck mark (D44), then the chart. The SQL opens between
+ * header and chart; the mark copies only the chart area.
  */
 export function Painel({
   titulo,
@@ -19,6 +21,7 @@ export function Painel({
   children: ReactNode;
 }) {
   const [aberto, setAberto] = useState(false);
+  const area = useRef<HTMLDivElement>(null);
   return (
     <section className="flex min-h-0 min-w-0 flex-col gap-1 rounded-lg border border-edge bg-panel px-3 py-2">
       <div className="flex items-start gap-3">
@@ -26,10 +29,15 @@ export function Painel({
           <h2 className="truncate text-[13px] font-semibold text-foreground" title={titulo}>{titulo}</h2>
           {nota && <p className="truncate text-[11px] text-faint" title={nota}>{nota}</p>}
         </div>
-        {sql.length > 0 && <SqlToggle aberto={aberto} onClick={() => setAberto(!aberto)} />}
+        <div className="flex shrink-0 items-center gap-1">
+          <MarcarToggle titulo={titulo} nota={nota} sql={sql} alvo={area} />
+          {sql.length > 0 && <SqlToggle aberto={aberto} onClick={() => setAberto(!aberto)} />}
+        </div>
       </div>
       {aberto && <SqlList sql={sql} />}
-      {children}
+      <div ref={area} className="flex min-h-0 flex-1 flex-col gap-1">
+        {children}
+      </div>
     </section>
   );
 }

@@ -564,3 +564,73 @@
   - `tela3-test` com 23 checagens contra consultas independentes: totais, meses, composições, filtros de setor e de plano, e o filtro sem alertas (923 tickets).
   - Capturas em 1440×900 e 1280×800 sem rolagem e sem erro no console.
   - Typecheck, lint e `visao-test` passam.
+
+## D44 — Três telas; diagnóstico no relatório; gráficos marcados para o deck (decisão humana; desenho da IA)
+- **Humano decidiu:**
+  - Bastam as três telas e a visão geral.
+  - O diagnóstico vai num documento escrito, uma das formas de entrega aceitas pelo desafio.
+  - "O que fazer" (Tela 4) e "Base e confiança" (Tela 5) saem do app e entram no relatório.
+  - Faltava nas telas um jeito de marcar gráficos para levá-los aos slides do deck.
+  - Entre as opções que a IA apresentou, o humano escolheu a **cópia fiel**: o gráfico marcado é guardado como aparece na tela, e a narrativa dos slides fica com a gente. Ficaram de fora o deck automático herdado do Veta, que redesenha os gráficos num estilo genérico e escreve os títulos com IA, e a exportação avulsa sem lista.
+- **IA desenhou:**
+  - **Marcar:** cada painel (e cada bloco da Tela 1) ganhou um marcador ao lado do botão SQL. Ao marcar, o navegador monta um SVG único da área do gráfico, no tamanho em que ele está na tela: o SVG do gráfico com os estilos escritos por extenso, a legenda em HTML convertida em texto e caixas SVG, e 12 px de margem. Depois desenha um PNG em 3× a partir dele.
+  - **O que se guarda:** a tela, os filtros do momento, o título e a nota do painel, o SVG e o PNG. Ficam numa tabela nova do banco do app (`graficos_marcados`), nunca na base RavenStack, que é só de leitura. O mesmo gráfico com outro filtro é outra marca. Marcar de novo atualiza a cópia.
+  - **Gráficos marcados:** item novo no menu, com a contagem, no lugar de "Decks". Mostra as cópias numa moldura 16:9, com tela e filtros, PNG e SVG para baixar e um botão para desmarcar.
+  - **.pptx:** um slide 16:9 por gráfico, na ordem em que foram marcados. Cada slide tem o título e a nota do painel, a imagem centrada num painel escuro sem distorcer a proporção, e um rodapé com a tela, o filtro e a fonte.
+  - **Segurança:** a API recusa SVG com script, `foreignObject`, eventos ou `javascript:`, e PNG que não seja PNG. Cada usuário só vê e apaga as próprias marcas.
+- **Escolhas da IA (a revisar pelo humano):**
+  - O fundo escuro das telas foi mantido nos slides, para a cópia ser fiel.
+  - Os títulos dos slides são os títulos dos painéis. A mensagem de cada slide fica para o humano escrever.
+  - O código do deck do Veta (`deck.ts`, `/decks`) saiu do menu, mas continua no código (ISC-23).
+- **Como foi verificado:**
+  - `marcados-test` com 17 checagens num banco descartável.
+  - No navegador: 6 gráficos marcados na visão geral e nas Telas 1, 2 (filtro FinTech) e 3. As cópias foram conferidas uma a uma, e o .pptx tem 6 slides com a imagem centrada e a proporção mantida.
+  - As telas seguem sem rolagem em 1440×900 e 1280×800. `/tela/4` e `/tela/5` respondem 404.
+  - Typecheck, lint e os testes visao, tela1, tela2, tela3, dashboard e axis passam.
+  - As marcas de teste foram apagadas depois.
+
+## D45 — Apresentação em pirâmide de Minto a partir dos gráficos marcados (pedido humano; desenho da IA)
+- **Humano pediu:**
+  - Um gráfico por slide não é uma apresentação pronta.
+  - O Veta preparava os slides com uma estrutura de pirâmide de Minto (a da McKinsey), e a mesma estrutura deve vir para cá.
+  - O botão "Desmarcar" da lista deve ficar vermelho, para chamar a atenção.
+- **IA encontrou no Veta:**
+  - `deck.ts` tinha um "arranjador": um LLM instruído como analista treinado na McKinsey, que transformava os achados marcados numa pirâmide (ideia central, SCQA, ordem MECE, títulos de ação, recomendações).
+  - O código preenchia os números a partir do SQL.
+  - Esse fluxo estava preso aos pins do chat e a texturas de fundo de 2 MB que não entraram no git.
+- **IA desenhou (`engine/deckMarcados.ts`):**
+  - **Estrutura dos slides:**
+    - Capa com a ideia central.
+    - Resumo executivo: a pirâmide numa página, com a ideia central e, abaixo, as seções com os títulos de ação.
+    - Contexto em SCQA, com a ideia central como resposta.
+    - Uma divisória por seção da linha-chave (2 a 4 seções MECE, com títulos que são afirmações).
+    - Um slide por gráfico: título de ação, 1 ou 2 linhas de apoio, a imagem fiel e o rodapé com tela, filtro e fonte.
+    - Ações recomendadas no fim.
+  - **Visual:** o do Veta, com obsidiana e dourado nas capas e papel nos slides de argumento, mas sem as texturas.
+  - **Divisão de trabalho, como no Veta:** o LLM do app escreve a narrativa e o código confere os números.
+    - A marca agora guarda o SQL do painel.
+    - Ao montar, o SQL de cada gráfico roda de novo, e cada número escrito é conferido contra essas linhas, na precisão em que foi escrito.
+    - Porcentagem só confere com coluna de porcentagem ou com a fatia de uma composição, que o código calcula e entrega ao LLM. Assim, uma contagem de 85 não vira 85%.
+    - O que não confere sai, ou é trocado pelo título do painel, e aparece listado em "Conferência dos números".
+  - **Regras do arranjador:**
+    - Não afirmar causa ("associação, não causa"; motivos são o que o cliente declarou).
+    - Distinguir a taxa de um grupo da fatia do churn total.
+    - Usar os rótulos em português das telas.
+    - O briefing opcional orienta a ideia central.
+  - **Garantias:**
+    - Todo gráfico marcado vai para algum slide.
+    - Sem LLM, um arranjo por regra (uma seção por tela) ainda monta uma apresentação correta.
+    - Se as marcas mudarem, é preciso montar de novo antes de baixar.
+  - **Na página "Gráficos marcados":** painel "Apresentação" com o briefing, os botões montar e baixar, e a pirâmide para revisar antes do .pptx.
+- **Escolhas da IA (a revisar pelo humano):**
+  - **Quem escreve:** o texto é da IA e varia de uma montagem para outra (temperatura 0,3). O humano revisa a pirâmide na tela antes de baixar.
+  - **Edição:** ainda não dá para editar os textos dentro do app.
+  - **Pontos fracos vistos nas montagens:**
+    - "Dois terços dos tickets" não é conferido, porque é número escrito por extenso.
+    - Uma seção chegou a afirmar causa antes da regra ser reforçada.
+    - "DevTools concentra 31% das contas com churn" confundiu taxa com fatia. Foi corrigido com uma regra no prompt, e o caso 85% com a separação entre porcentagem e contagem.
+- **Como foi verificado:**
+  - `deck-marcados-test` com 28 checagens, usando SQL real e um arranjador roteirizado, num banco descartável.
+  - Três montagens reais com 10 gráficos (7 a 8 s cada); a última sem nenhum ajuste de número.
+  - Typecheck, lint e todos os testes passam.
+  - **Não verificado:** os slides renderizados. Não há LibreOffice nesta máquina, e a exportação do Keynote por script falhou. A estrutura foi conferida pelo XML do .pptx.

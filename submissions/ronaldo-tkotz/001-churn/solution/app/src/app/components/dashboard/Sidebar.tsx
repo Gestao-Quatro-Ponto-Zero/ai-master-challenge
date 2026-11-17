@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { openConnect } from "./ConnectDialog";
+import { useTotalMarcados } from "../telas/Marcados";
 import { logout } from "@/app/actions/auth";
 
 /**
@@ -27,18 +28,16 @@ interface NavItem {
   action: NavAction;
 }
 
-/** The executive overview (D28) and the five screens of the design (D22, D27). Links keep the global filters. */
+/** The executive overview (D28) and the three screens of the design (D22, D27, D44). Links keep the global filters. */
 const TELAS: { id: string; icon: string; label: string; href: string }[] = [
   { id: "visao", icon: "overview", label: "Visão geral", href: "/" },
   { id: "tela1", icon: "insights", label: "1 · As três afirmações", href: "/tela/1" },
   { id: "tela2", icon: "library", label: "2 · O que causa o churn", href: "/tela/2" },
   { id: "tela3", icon: "accounts", label: "3 · Suporte e uso do produto", href: "/tela/3" },
-  { id: "tela4", icon: "execdeck", label: "4 · O que fazer", href: "/tela/4" },
-  { id: "tela5", icon: "usage", label: "5 · Base e confiança", href: "/tela/5" },
 ];
 
 const WORKSPACE: NavItem[] = [
-  { id: "library", label: "Decks", action: { kind: "route", href: "/decks" } },
+  { id: "marcados", label: "Gráficos marcados", action: { kind: "route", href: "/marcados" } },
   { id: "engine", label: "Conectar dados", action: { kind: "connect" } },
 ];
 
@@ -50,6 +49,7 @@ function Icon({ id }: { id: string }) {
     usage: <><path d="M3 3v18h18" /><rect x="7" y="11" width="3" height="6" /><rect x="12" y="7" width="3" height="10" /><rect x="17" y="13" width="3" height="4" /></>,
     execdeck: <path d="M5 3v4M3 5h4M6 17v4M4 19h4M13 3l2.5 6.5L22 12l-6.5 2.5L13 21l-2.5-6.5L4 12l6.5-2.5z" />,
     library: <><path d="M3 7l9-4 9 4-9 4-9-4Z" /><path d="M3 12l9 4 9-4" /><path d="M3 17l9 4 9-4" /></>,
+    marcados: <path d="M6 3h12v18l-6-4.5L6 21z" />,
     engine: <path d="m8 9-3 3 3 3M16 9l3 3-3 3M13 7l-2 10" />,
   };
   return (
@@ -272,6 +272,8 @@ export function Sidebar({ email }: { email: string }) {
     }
   };
 
+  const totalMarcados = useTotalMarcados();
+
   const NavButton = ({ item }: { item: NavItem }) => (
     <button
       onClick={() => run(item)}
@@ -281,6 +283,9 @@ export function Sidebar({ email }: { email: string }) {
         <Icon id={item.id} />
       </span>
       <span>{item.label}</span>
+      {item.id === "marcados" && totalMarcados !== null && totalMarcados > 0 && (
+        <span className="ml-auto rounded-full bg-accent-soft px-1.5 font-mono text-[10.5px] text-accent">{totalMarcados}</span>
+      )}
       {item.action.kind === "ask" && (
         <span className="ml-auto text-[13px] leading-none text-faint opacity-0 transition-opacity group-hover:opacity-100">→</span>
       )}

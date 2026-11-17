@@ -13,6 +13,8 @@
     "dashboard-test": "node --import tsx scripts/dashboard-test.ts",
     "tela2-test": "node --import tsx scripts/tela2-test.ts",
     "tela3-test": "node --import tsx scripts/tela3-test.ts",
+    "marcados-test": "node --import tsx scripts/marcados-test.ts",
+    "deck-marcados-test": "node --import tsx scripts/deck-marcados-test.ts",
     "clock-check": "node --import tsx scripts/clock-check.ts",
     "deck-test": "node --import tsx scripts/deck-test.ts",
     "discovery-test": "node --import tsx scripts/discovery-test.ts",

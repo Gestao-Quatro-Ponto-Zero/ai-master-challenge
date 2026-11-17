@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { SqlList, SqlToggle } from "./Painel";
+import { MarcarToggle } from "./Marcados";
 
 /**
  * One block of the dashboard design: the code (B1.1…), the question and the data level, with
@@ -25,6 +26,7 @@ export function Bloco({
   className?: string;
 }) {
   const [aberto, setAberto] = useState(false);
+  const area = useRef<HTMLDivElement>(null);
   return (
     <section className={`flex min-w-0 flex-col gap-2 rounded-lg border border-edge bg-panel px-3 py-2.5 ${className}`}>
       <header className="flex items-start gap-3">
@@ -33,10 +35,15 @@ export function Bloco({
           <h2 className="text-[14px] font-semibold text-foreground">{pergunta}</h2>
           <span className="rounded-full border border-edge px-2 py-0.5 text-[10.5px] text-muted">nível: {nivel}</span>
         </div>
-        {sql && sql.length > 0 && <SqlToggle aberto={aberto} onClick={() => setAberto(!aberto)} />}
+        <div className="flex shrink-0 items-center gap-1">
+          <MarcarToggle titulo={pergunta} nota={typeof limite === "string" ? `Limite: ${limite}` : undefined} sql={sql ?? []} alvo={area} />
+          {sql && sql.length > 0 && <SqlToggle aberto={aberto} onClick={() => setAberto(!aberto)} />}
+        </div>
       </header>
       {aberto && sql && <SqlList sql={sql} />}
-      {children}
+      <div ref={area} className="flex min-h-0 min-w-0 flex-1 flex-col gap-2">
+        {children}
+      </div>
       {limite && <p className="text-[11.5px] leading-relaxed text-faint">Limite: {limite}</p>}
     </section>
   );

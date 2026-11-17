@@ -8,9 +8,10 @@ import { ConnectDialog } from "../dashboard/ConnectDialog";
 import { DataSourceDialog } from "../dashboard/DataSourceDialog";
 import { FiltrosBar } from "./FiltrosBar";
 import { ChatPanel } from "./ChatPanel";
+import { MarcadosProvider } from "./Marcados";
 
 /**
- * The frame every screen shares (D27): side menu with the five screens, the global
+ * The frame every screen shares (D27): side menu with the three screens (D44), the global
  * filters above, the screen in the middle and the analyst chat as a side panel.
  */
 export function TelaShell({
@@ -32,6 +33,7 @@ export function TelaShell({
   const ctx = { source: "RavenStack", tableCount: tables.length, asOf: clock.today, firstDate: clock.firstDate, lastDate: clock.lastDate };
 
   return (
+    <MarcadosProvider>
     <div className="flex h-screen overflow-hidden bg-background">
       <div className="hidden lg:block">
         <Sidebar email={email} />
@@ -61,5 +63,6 @@ export function TelaShell({
       <ConnectDialog />
       <DataSourceDialog />
     </div>
+    </MarcadosProvider>
   );
 }
