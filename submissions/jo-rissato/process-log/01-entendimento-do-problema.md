@@ -1116,3 +1116,8 @@ continua sendo a Kokoro `pf_dora`, agora sem o ajuste de fonemas, como era quand
 **Régua, décima passada, no projeto inteiro:** 227 testes; E2E por texto e por ligação no link; carga, estresse,
 segurança, recuperação e folga do host verdes; bateria repassada no chat (22 de 22) e no telefone por voz (21 de 22, a
 mesma falha conhecida e segura das rodadas 71 e 72). Pendente: homologação do Jó e OK do push e do PR.
+
+**Mensagem do Jó (literal, 12:48 BRT), depois da régua final:** "Pode fazer o push"
+
+**Feito (12:49 BRT):** push da branch `submission/jo-rissato` para o fork. Conferido antes: o diff contra o main do
+repositório da G4 só altera arquivos em `submissions/jo-rissato/` e não tem conflito. O PR é aberto pelo Jó.
