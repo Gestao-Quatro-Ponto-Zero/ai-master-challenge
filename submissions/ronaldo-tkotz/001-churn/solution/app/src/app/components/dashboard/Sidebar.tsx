@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { openConnect } from "./ConnectDialog";
 import { logout } from "@/app/actions/auth";
 
@@ -27,17 +27,20 @@ interface NavItem {
   action: NavAction;
 }
 
-const WORKSPACE: NavItem[] = [
-  { id: "overview", label: "Overview", action: { kind: "reset" } },
-  { id: "execdeck", label: "Veta Executive Deck", action: { kind: "route", href: "/deck/exec-review" } },
-  { id: "library", label: "Deck Library", action: { kind: "route", href: "/decks" } },
-  { id: "engine", label: "Connect data", action: { kind: "connect" } },
+/** The executive overview (D28) and the five screens of the design (D22, D27). Links keep the global filters. */
+const TELAS: { id: string; icon: string; label: string; href: string }[] = [
+  { id: "visao", icon: "overview", label: "Visão geral", href: "/" },
+  { id: "tela1", icon: "insights", label: "1 · As três afirmações", href: "/tela/1" },
+  { id: "tela2", icon: "library", label: "2 · O que causa o churn", href: "/tela/2" },
+  { id: "tela3", icon: "accounts", label: "3 · Suporte e uso do produto", href: "/tela/3" },
+  { id: "tela4", icon: "execdeck", label: "4 · O que fazer", href: "/tela/4" },
+  { id: "tela5", icon: "usage", label: "5 · Base e confiança", href: "/tela/5" },
 ];
 
-// The Analyses catalog lives in analyses-catalog.ts (pure data — shared with
-// scripts/catalog-probe.ts, which asserts every question grounds). The accordion
-// below (one role open) keeps the 1440×900 no-scroll discipline.
-import { ANALYSES } from "./analyses-catalog";
+const WORKSPACE: NavItem[] = [
+  { id: "library", label: "Decks", action: { kind: "route", href: "/decks" } },
+  { id: "engine", label: "Conectar dados", action: { kind: "connect" } },
+];
 
 function Icon({ id }: { id: string }) {
   const p: Record<string, React.ReactNode> = {
@@ -245,12 +248,11 @@ function History() {
 
 export function Sidebar({ email }: { email: string }) {
   const router = useRouter();
+  const pathname = usePathname();
+  const query = useSearchParams().toString();
   // Show the signed-in user, never a hardcoded name — SP05: "every user sees only their own work".
   const displayName = email.split("@")[0] || email;
   const initial = (displayName[0] ?? "?").toUpperCase();
-  // Analyses accordion — exactly one role open, so 12 curated questions fit the
-  // no-scroll sidebar. Opening a role closes the previous one.
-  const [openRole, setOpenRole] = useState<string>(ANALYSES[0].role);
 
   const run = (item: NavItem): void => {
     const a = item.action;
@@ -292,48 +294,37 @@ export function Sidebar({ email }: { email: string }) {
           <span className="h-2.5 w-2.5 rotate-45 bg-accent" />
         </span>
         <div className="leading-tight">
-          <div className="text-[14px] font-semibold tracking-tight text-foreground">Veta</div>
-          <div className="text-[10px] text-faint">insight engine</div>
+          <div className="text-[14px] font-semibold tracking-tight text-foreground">RavenStack</div>
+          <div className="text-[10px] text-faint">diagnóstico de churn</div>
         </div>
       </div>
 
       <nav className="flex flex-col gap-3 px-2.5 py-2">
         <div className="flex flex-col gap-0.5">
+          <div className="px-2.5 pb-1 text-[10px] font-medium uppercase tracking-wider text-faint">Telas</div>
+          {TELAS.map((t) => {
+            const active = t.href === "/" ? pathname === "/" : pathname.startsWith(t.href);
+            return (
+              <button
+                key={t.id}
+                onClick={() => router.push(query ? `${t.href}?${query}` : t.href)}
+                aria-current={active ? "page" : undefined}
+                className={`group flex cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-[12.5px] transition-colors hover:bg-panel/60 hover:text-foreground ${
+                  active ? "bg-panel text-foreground" : "text-muted"
+                }`}
+              >
+                <span className={active ? "text-accent" : "text-muted group-hover:text-accent"}>
+                  <Icon id={t.icon} />
+                </span>
+                <span>{t.label}</span>
+              </button>
+            );
+          })}
+        </div>
+        <div className="flex flex-col gap-0.5">
           {WORKSPACE.map((item) => (
             <NavButton key={item.id} item={item} />
           ))}
-        </div>
-        <div className="flex flex-col gap-0.5">
-          <div className="px-2.5 pb-1 text-[10px] font-medium uppercase tracking-wider text-faint">Analyses</div>
-          {ANALYSES.map((group) => {
-            const open = group.role === openRole;
-            return (
-              <div key={group.role}>
-                <button
-                  onClick={() => setOpenRole(open ? "" : group.role)}
-                  aria-expanded={open}
-                  className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1.5 text-[11.5px] font-medium text-muted transition-colors hover:bg-panel/60 hover:text-foreground"
-                >
-                  <span className={`text-[9px] text-faint transition-transform ${open ? "rotate-90" : ""}`}>▶</span>
-                  <span>{group.role}</span>
-                </button>
-                {open && (
-                  <div className="ml-3 flex flex-col gap-0.5 border-l border-edge/60 pl-2">
-                    {group.items.map((item) => (
-                      <button
-                        key={item.id}
-                        onClick={() => window.dispatchEvent(new CustomEvent("veta:ask", { detail: { question: item.question } }))}
-                        className="group flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-left text-[12px] text-muted transition-colors hover:bg-panel/60 hover:text-foreground"
-                      >
-                        <span className="truncate">{item.label}</span>
-                        <span className="ml-auto text-[12px] leading-none text-faint opacity-0 transition-opacity group-hover:opacity-100">→</span>
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            );
-          })}
         </div>
       </nav>
 

@@ -87,18 +87,18 @@ type ChatEvent =
   | { type: "error"; message: string };
 
 const STARTERS: { chip: string; question: string }[] = [
-  { chip: "Total ARR by segment", question: "What's our total ARR and how does it split by customer segment?" },
-  { chip: "Who's at risk of churning?", question: "Which accounts are at the highest risk of churning, and how much ARR is exposed?" },
-  { chip: "Enterprise NPS trend", question: "Show me the Enterprise NPS trend by quarter — is sentiment improving or deteriorating?" },
-  { chip: "Where's the upside?", question: "Where is our expansion upside — which accounts are maxing out their seats?" },
+  { chip: "Churn por mês em 2024", question: "Quantas contas tiveram evento de churn e quantos eventos houve em cada mês de 2024?" },
+  { chip: "Motivos declarados", question: "Quais os motivos de churn declarados nos eventos, com o número de eventos e de contas de cada um?" },
+  { chip: "Satisfação por trimestre", question: "Como se distribuem as notas de satisfação dos tickets por trimestre, contando os tickets sem nota?" },
+  { chip: "Uso fora da assinatura", question: "Quantos registros de uso caem fora do período da assinatura, mês a mês?" },
 ];
 
 const TOOL_LABEL: Record<string, string> = {
-  query_warehouse: "Queried the warehouse",
-  run_metric: "Ran a vetted metric",
-  list_metrics: "Listed metrics",
-  make_chart: "Built a chart",
-  describe_schema: "Read the schema",
+  query_warehouse: "Consultou o banco",
+  run_metric: "Rodou uma métrica conferida",
+  list_metrics: "Listou as métricas",
+  make_chart: "Montou um gráfico",
+  describe_schema: "Leu o esquema",
 };
 
 function renderInline(text: string, keyBase: string): ReactNode[] {
@@ -522,7 +522,7 @@ function AssistantBlock({
       {turn.status === "streaming" && !turn.answer && (
         <div className="flex items-center gap-2 text-[13px] text-faint">
           <span className="veta-pulse">●</span>
-          <span>{turn.steps.length > 0 ? "Reading the rows…" : "Veta is analysing…"}</span>
+          <span>{turn.steps.length > 0 ? "Lendo as linhas…" : "Analisando…"}</span>
         </div>
       )}
 
@@ -1001,7 +1001,7 @@ export function Chat({ idleBrief }: { idleBrief?: ReactNode }) {
               </div>
             )}
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-[11px] font-medium uppercase tracking-wider text-faint">Or jump in</span>
+              <span className="text-[11px] font-medium uppercase tracking-wider text-faint">Ou comece por</span>
               {STARTERS.map((s) => (
                 <button
                   key={s.chip}
@@ -1063,7 +1063,7 @@ export function Chat({ idleBrief }: { idleBrief?: ReactNode }) {
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask Veta about renewals, NPS, seats, ARR…"
+            placeholder="Pergunte sobre churn, contas, assinaturas, tickets, uso…"
             disabled={busy}
             className="flex-1 bg-transparent text-[14px] text-foreground placeholder:text-faint focus:outline-none disabled:opacity-60"
           />
@@ -1072,10 +1072,10 @@ export function Chat({ idleBrief }: { idleBrief?: ReactNode }) {
             disabled={busy || input.trim().length === 0}
             className="rounded-lg bg-accent px-3.5 py-1.5 text-[13px] font-medium text-black transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
           >
-            {busy ? "…" : "Ask"}
+            {busy ? "…" : "Perguntar"}
           </button>
         </div>
-        <p className="mt-1.5 px-1 text-[11px] text-faint">Every answer cites the SQL it ran. Veta never states a number it didn&apos;t query.</p>
+        <p className="mt-1.5 px-1 text-[11px] text-faint">Toda resposta cita o SQL que rodou. Nenhum número aparece sem consulta.</p>
       </form>
     </div>
   );

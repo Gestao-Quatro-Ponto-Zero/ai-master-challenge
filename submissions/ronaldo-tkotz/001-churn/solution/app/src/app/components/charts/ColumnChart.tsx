@@ -18,11 +18,13 @@ export interface ColumnChartProps {
   stacked?: boolean;
   /** Drop the bordered frame + header chrome (e.g. inside a deck panel). */
   bare?: boolean;
+  /** viewBox width: pass the container's pixel width so text draws at 1:1. */
+  viewWidth?: number;
   /** When set, a category is clickable — fires with the category label to drill in. */
   onSelect?: (label: string) => void;
 }
 
-const VIEW_WIDTH = 640;
+const DEFAULT_VIEW_WIDTH = 640;
 const SERIES_COLORS = ["#e3b341", "#8a90ad", "#5fb3a1", "#c98bdb"];
 const NEG_COLOR = "#d9737a"; // negative values render as a muted rose so decline reads at a glance
 const GRID = "#23232b";
@@ -46,7 +48,9 @@ export function ColumnChart({
   stacked = false,
   bare = false,
   onSelect,
+  viewWidth,
 }: ColumnChartProps) {
+  const VIEW_WIDTH = viewWidth ?? DEFAULT_VIEW_WIDTH;
   const titleId = useId();
   const [hovered, setHovered] = useState<number | null>(null);
   const clickable = typeof onSelect === "function";
@@ -61,7 +65,7 @@ export function ColumnChart({
     [series, categories],
   );
 
-  const ticks = useMemo(() => axisTicks(categories, Math.max(1, (VIEW_WIDTH - 66) / Math.max(1, categories.length))), [categories]);
+  const ticks = useMemo(() => axisTicks(categories, Math.max(1, (VIEW_WIDTH - 66) / Math.max(1, categories.length))), [categories, VIEW_WIDTH]);
 
   if (categories.length === 0 || cleanSeries.length === 0) {
     return (
@@ -126,7 +130,7 @@ export function ColumnChart({
       )}
 
       <div className="relative veta-rise" onMouseLeave={() => setHovered(null)}>
-        <svg viewBox={`${-leftPad} 0 ${VIEW_WIDTH + leftPad} ${svgHeight}`} preserveAspectRatio="xMidYMid meet" width="100%" height="auto" role="img" aria-labelledby={titleId} className="block w-full">
+        <svg viewBox={`${-leftPad} 0 ${VIEW_WIDTH + leftPad} ${svgHeight}`} preserveAspectRatio="xMidYMid meet" width="100%" role="img" aria-labelledby={titleId} className="block w-full">
           <title id={titleId}>{`${stacked ? "Stacked" : "Grouped"} column chart, ${categories.length} categories`}</title>
 
           {gridTicks.map((tick, ti) => {

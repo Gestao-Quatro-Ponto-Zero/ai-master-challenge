@@ -16,11 +16,17 @@ export interface BarChartProps {
   horizontal?: boolean;
   /** Drop the bordered frame + "Bar chart / N bars" header chrome (e.g. inside a deck panel). */
   bare?: boolean;
+  /** viewBox width: pass the container's pixel width so text draws at 1:1. */
+  viewWidth?: number;
+  /** Vertical bars: the whole chart, rotated labels included, fits in `height`. */
+  fit?: boolean;
+  /** Vertical bars: the value above each column instead of a y-axis. */
+  showValues?: boolean;
   /** When set, a bar is clickable — fires with the bar's full (untruncated) label to drill in. */
   onSelect?: (label: string) => void;
 }
 
-const VIEW_WIDTH = 640;
+const DEFAULT_VIEW_WIDTH = 640;
 const CHAR_W = 0.58;
 const DEFAULT_ACCENT = "#e3b341";
 const NEG_COLOR = "#d9737a"; // negative bars render as a muted rose so decline reads at a glance
@@ -65,7 +71,8 @@ function EmptyState({ height, title }: { height: number; title: string }) {
   );
 }
 
-export function BarChart({ data, height = 220, valueFormat = DEFAULT_FORMAT, horizontal = true, bare = false, onSelect }: BarChartProps) {
+export function BarChart({ data, height = 220, valueFormat = DEFAULT_FORMAT, horizontal = true, bare = false, onSelect, viewWidth, fit = false, showValues = false }: BarChartProps) {
+  const VIEW_WIDTH = viewWidth ?? DEFAULT_VIEW_WIDTH;
   const titleId = useId();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const clickable = typeof onSelect === "function";
@@ -89,9 +96,11 @@ export function BarChart({ data, height = 220, valueFormat = DEFAULT_FORMAT, hor
   const hoverIndex = hoveredIndex !== null && hoveredIndex >= 0 && hoveredIndex < items.length ? hoveredIndex : null;
 
   if (horizontal) {
-    const top = 18;
-    const right = 66;
-    const bottom = 22;
+    // Tight frame: the gutters are sized to the labels instead of fixed reserves.
+    const top = 4;
+    const bottom = 4;
+    const longestValue = items.reduce((m, it) => Math.max(m, valueFormat(it.value).length), 0);
+    const right = Math.max(32, Math.ceil(longestValue * 10 * CHAR_W) + 12);
 
     // Fit the category labels into the left gutter WITHOUT truncating: size the font to
     // the longest name, widen the gutter to fit, and only wrap to two lines when even the
@@ -99,13 +108,13 @@ export function BarChart({ data, height = 220, valueFormat = DEFAULT_FORMAT, hor
     const longest = items.reduce((m, it) => Math.max(m, it.label.length), 0);
     const labelFont = Math.max(7, Math.min(10, LABEL_BUDGET / (Math.max(8, longest) * CHAR_W)));
     const fitsOneLine = longest * labelFont * CHAR_W <= LABEL_BUDGET;
-    const left = fitsOneLine ? Math.min(212, Math.max(120, longest * labelFont * CHAR_W + 16)) : 214;
+    const left = fitsOneLine ? Math.min(212, Math.max(36, longest * labelFont * CHAR_W + 14)) : 214;
     const maxCharsPerLine = Math.max(6, Math.floor(LABEL_BUDGET / (labelFont * CHAR_W)));
 
     const plotWidth = Math.max(1, VIEW_WIDTH - left - right);
     const plotHeight = Math.max(1, height - top - bottom);
     const bandHeight = plotHeight / Math.max(1, items.length);
-    const barHeight = Math.min(24, Math.max(8, bandHeight * 0.6));
+    const barHeight = Math.min(26, Math.max(8, bandHeight * 0.72));
     const xOf = (v: number) => left + ((v - lo) / span) * plotWidth;
     const xZero = xOf(0);
 
@@ -129,7 +138,6 @@ export function BarChart({ data, height = 220, valueFormat = DEFAULT_FORMAT, hor
             viewBox={`0 0 ${VIEW_WIDTH} ${height}`}
             preserveAspectRatio="xMidYMid meet"
             width="100%"
-            height="auto"
             role="img"
             aria-labelledby={titleId}
             className="block w-full"
@@ -164,13 +172,14 @@ export function BarChart({ data, height = 220, valueFormat = DEFAULT_FORMAT, hor
                       </>
                     )}
                   </text>
-                  <rect x={left} y={y} width={plotWidth} height={barHeight} rx={barHeight / 2} fill={DEFAULT_TRACK} />
+                  {/* Square ends with a small corner radius — the same shape as the column chart. */}
+                  <rect x={left} y={y} width={plotWidth} height={barHeight} rx={3} fill={DEFAULT_TRACK} />
                   <rect
                     x={barX}
                     y={y}
                     width={Math.max(0, barW)}
                     height={barHeight}
-                    rx={Math.min(barHeight / 2, barW / 2)}
+                    rx={Math.min(3, barW / 2)}
                     fill={fill}
                     fillOpacity={highlighted ? 1 : 0.9}
                     stroke={highlighted ? "#f4d06a" : "none"}
@@ -209,7 +218,7 @@ export function BarChart({ data, height = 220, valueFormat = DEFAULT_FORMAT, hor
             >
               <div className="mb-1 text-[10px] font-medium uppercase tracking-wider text-faint">{items[hoverIndex].label}</div>
               <div className="flex items-center justify-between gap-3">
-                <span className="text-muted">Value</span>
+                <span className="text-muted">Valor</span>
                 <span className="font-mono tabular-nums text-foreground">{valueFormat(items[hoverIndex].value)}</span>
               </div>
             </div>
@@ -221,18 +230,38 @@ export function BarChart({ data, height = 220, valueFormat = DEFAULT_FORMAT, hor
 
   // ── Vertical bars (single series) — diverging domain + diagonal labels ──
   const top = 18;
-  const right = 18;
-  const bottom = 42;
-  const left = 40;
-  const ticks = axisTicks(items.map((i) => i.label), Math.max(1, (VIEW_WIDTH - left - right) / Math.max(1, items.length)));
-  const labelPad = ticks.rotate ? ticks.bottomPad : 0;
-  const svgHeight = height + labelPad;
+  const right = showValues ? 4 : 18;
+  const baseLeft = showValues ? 4 : 40;
+  const ticks = axisTicks(items.map((i) => i.label), Math.max(1, (VIEW_WIDTH - baseLeft - right) / Math.max(1, items.length)));
+  // fit (D38): category labels are either all on one line at a readable size, or all rotated to
+  // the same angle when any of them does not fit its column. Rotated labels get their own room
+  // below the plot and a left gutter, so the chart is never scaled down to make space.
+  const longestLabel = items.reduce((m, i) => Math.max(m, i.label.length), 0);
+  const FIT_FONT = 10;
+  const FIT_ANGLE = -45;
+  const fitSlot = (VIEW_WIDTH - baseLeft - right) / Math.max(1, items.length);
+  const fitRotate = longestLabel * FIT_FONT * 0.6 > fitSlot - 6;
+  const rotate = fit ? fitRotate : ticks.rotate;
+  const labelFont = fit ? FIT_FONT : ticks.fontSize;
+  const labelAngle = fit ? FIT_ANGLE : ticks.angle;
+  const fitRad = (-FIT_ANGLE * Math.PI) / 180;
+  const fitLabelW = longestLabel * FIT_FONT * 0.6;
+  const labelPad = rotate ? (fit ? Math.round(Math.sin(fitRad) * fitLabelW + FIT_FONT + 8) : ticks.bottomPad) : 0;
+  // A rotated first label runs left of its column: widen the left gutter for it (fit only).
+  const left = fit && rotate ? Math.max(baseLeft, Math.ceil(Math.cos(fitRad) * fitLabelW - fitSlot / 2 + 4)) : baseLeft;
+  const bottom = fit ? (rotate ? 4 : 18) : 42;
+  const svgHeight = fit ? height : height + labelPad;
   const plotWidth = Math.max(1, VIEW_WIDTH - left - right);
-  const plotHeight = Math.max(1, height - top - bottom);
+  const plotHeight = Math.max(1, height - top - bottom - (fit ? labelPad : 0));
   const bandSpace = plotWidth / items.length;
-  const leftPad = ticks.rotate ? Math.max(0, Math.ceil(ticks.labelSpanX - (left + bandSpace / 2) + 4)) : 0;
+  const leftPad = rotate && !fit ? Math.max(0, Math.ceil(ticks.labelSpanX - (left + bandSpace / 2) + 4)) : 0;
   const barWidth = Math.min(42, Math.max(10, bandSpace * 0.62));
-  const yOf = (v: number) => top + plotHeight - ((v - lo) / span) * plotHeight;
+  // One size for every value label in the chart: the longest one must fit its column with a gap.
+  const longestValue = items.reduce((m, i) => Math.max(m, valueFormat(i.value).length), 1);
+  const valueFont = Math.max(7, Math.min(10, (bandSpace - 8) / (longestValue * 0.64)));
+  // With values printed on top there is no axis to keep round: the tallest column fills the plot.
+  const vSpan = showValues && lo === 0 ? Math.max(...values) || 1 : span;
+  const yOf = (v: number) => top + plotHeight - ((v - lo) / vSpan) * plotHeight;
   const yZero = yOf(0);
   const gridTicks = lo < 0 ? [hi, 0, lo] : [hi, (hi + lo) / 2, lo];
 
@@ -256,7 +285,6 @@ export function BarChart({ data, height = 220, valueFormat = DEFAULT_FORMAT, hor
           viewBox={`${-leftPad} 0 ${VIEW_WIDTH + leftPad} ${svgHeight}`}
           preserveAspectRatio="xMidYMid meet"
           width="100%"
-          height="auto"
           role="img"
           aria-labelledby={titleId}
           className="block w-full"
@@ -264,7 +292,7 @@ export function BarChart({ data, height = 220, valueFormat = DEFAULT_FORMAT, hor
         >
           <title id={titleId}>{`Vertical bar chart showing ${items.length} categories`}</title>
 
-          {gridTicks.map((tick, ti) => {
+          {!showValues && gridTicks.map((tick, ti) => {
             const y = yOf(tick);
             const isZero = tick === 0;
             return (
@@ -298,6 +326,11 @@ export function BarChart({ data, height = 220, valueFormat = DEFAULT_FORMAT, hor
                   strokeWidth={highlighted ? 1 : 0}
                   onMouseEnter={() => setHoveredIndex(index)}
                 />
+                {showValues && (
+                  <text x={x} y={y - 4} textAnchor="middle" fontSize={valueFont} fill={DEFAULT_LABEL} className="font-mono tabular-nums">
+                    {valueFormat(entry.value)}
+                  </text>
+                )}
                 <rect
                   x={x - Math.max(18, bandSpace / 2)}
                   y={top}
@@ -309,15 +342,18 @@ export function BarChart({ data, height = 220, valueFormat = DEFAULT_FORMAT, hor
                   onClick={clickable ? () => onSelect!(entry.label) : undefined}
                 />
                 {showLabelAt(index, items.length, ticks.step) && (() => {
-                  const ly = top + plotHeight + (ticks.rotate ? 12 : 14);
+                  const ly = top + plotHeight + (rotate ? 12 : 14);
+                  // A centred label near either edge is nudged inward so it is never clipped.
+                  const meia = (entry.label.length * labelFont * 0.6) / 2;
+                  const lx = rotate ? x : Math.min(Math.max(x, meia + 2), VIEW_WIDTH - meia - 2);
                   return (
                     <text
-                      x={x}
+                      x={lx}
                       y={ly}
-                      textAnchor={ticks.rotate ? "end" : "middle"}
-                      fontSize={ticks.fontSize}
+                      textAnchor={rotate ? "end" : "middle"}
+                      fontSize={labelFont}
                       fill={DEFAULT_LABEL}
-                      transform={ticks.rotate ? `rotate(${ticks.angle} ${x} ${ly})` : undefined}
+                      transform={rotate ? `rotate(${labelAngle} ${x} ${ly})` : undefined}
                     >
                       {entry.label}
                     </text>
@@ -337,7 +373,7 @@ export function BarChart({ data, height = 220, valueFormat = DEFAULT_FORMAT, hor
           >
             <div className="mb-1 text-[10px] font-medium uppercase tracking-wider text-faint">{items[hoverIndex].label}</div>
             <div className="flex items-center justify-between gap-3">
-              <span className="text-muted">Value</span>
+              <span className="text-muted">Valor</span>
               <span className="font-mono tabular-nums text-foreground">{valueFormat(items[hoverIndex].value)}</span>
             </div>
           </div>

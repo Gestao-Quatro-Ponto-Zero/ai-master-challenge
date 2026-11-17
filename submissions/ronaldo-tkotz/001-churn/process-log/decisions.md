@@ -284,3 +284,283 @@
   - **Causa 2:** somou os meses de cabeça e afirmou 522.
   - **Correção:** duas regras no prompt. Datas se filtram por `substr` ou por `<` no dia seguinte. Nenhuma conta é feita no texto, toda soma ou percentual vem do SQL.
   - **Reteste:** 527 eventos e 327 contas, com as contagens feitas no SQL.
+
+## D27 — Navegação, filtro de plano e MRR perdido na Tela 1 (humano escolheu entre propostas da IA)
+- **Navegação:** as cinco telas do desenho ficam no menu lateral, uma página cada. O chat do analista abre num painel ao lado, em qualquer tela. Assim o avaliador pergunta sem sair da tela que está vendo.
+- **Filtro de plano:** segue a D23. Números de conta (churn, tickets) usam o plano da conta. Números de assinatura (MRR, uso) usam o plano da assinatura. A IA tinha apontado que os dois planos diferem em 3.365 das 5.000 assinaturas (alerta N07).
+- **MRR perdido no B1.1:** aparece como número ao lado da linha mensal, sem série no tempo. É a soma do MRR das assinaturas das contas com evento, como total da conta e sem data de evento (D23). Sem filtro, são 352 contas e US$ 7.990.982 (consulta na `vw_conta`).
+- **Leitura da IA sobre os alertas da Tela 1:** nenhum alerta de linha muda o churn por evento. Os alertas da reconciliação de `churn_flag` (N04 a N06) não entram na D20. Mudam o resultado o T08 no B1.2 (1.077 tickets antes do cadastro) e o T06 e o E13 no B1.3 (19.432 e 21 registros de uso). Por isso, esses dois blocos mostram os dois números (D21).
+
+## D28 — Visão geral executiva como primeira tela (humano decidiu, IA propôs duas definições)
+- **Humano decidiu:**
+  - Os cartões do B1.0 (as três afirmações com veredito pendente) saem. Só ocupavam espaço e não traziam valor ao usuário.
+  - A primeira tela vira uma visão geral executiva mais simples. No topo ficam os números gerais: contas, assinaturas, contas com churn, churn rate, receita e receita em risco.
+  - Abaixo vêm os gráficos de alto nível: receita por indústria, por plano e por país, os principais motivos de churn e o churn por indústria.
+  - Nessa tela, gráficos de barra, coluna ou donut, porque as linhas estavam pequenas demais.
+- **IA implementou:**
+  - **Visão geral em `/`:** 6 números e 8 gráficos, todos com os filtros globais e com o SQL de cada um à mão.
+  - **Gráficos sugeridos pela IA:** contas com churn por mês (colunas), churn por plano e churn por origem.
+  - **Tela das afirmações:** os blocos B1.1 a B1.3 passaram para `/tela/1`, sem o B1.0.
+- **Definições propostas pela IA, à espera da confirmação do humano:**
+  - **Churn rate:** é a taxa do último mês do período (dez/2024: 19,2%), contando as contas com evento sobre as contas ativas no mês, pela regra da `vw_mes`. A nota do número traz a média mensal de 2024, de 10,5%. A alternativa seria a fatia das contas com evento em 24 meses (352 de 500, ou 70,4%), mas ela já aparece no número de contas com churn.
+  - **Receita em risco:** é o MRR ativo das contas que já tiveram evento de churn, US$ 7.139.868, ou 70,3% do MRR ativo, em 352 contas. É um fato descritivo, não um modelo de risco. Todas as 352 contas com evento ainda têm assinatura ativa. O risco por modelo (B3.4) pode substituir esse número depois.
+- **Como foi verificado (D28):** 15 checagens contra consultas independentes (`visao-test`), todas iguais: 500 contas, 5.000 assinaturas, 352 contas com churn, 600 eventos, 19,2% em dez/2024 e o MRR ativo. As quebras por motivo, indústria, plano e país somam o total, e o filtro FinTech dá 112 contas e 76 com churn.
+
+## D29 — Todo número diz de qual tabela vem (decisão humana)
+- **Humano observou:** "352 contas com churn" confunde. Na tabela `accounts`, o `churn_flag` marca 110 contas, e os 352 vêm de `churn_events`.
+- **Humano decidiu:** todo o material apresentado separa os dados por origem. Cada número diz se representa contas (`accounts`), eventos de churn (`churn_events`) ou assinaturas (`subscriptions`).
+- **IA implementou:**
+  - **Visão geral:** os números do topo foram agrupados por tabela, em três cartões.
+    - `accounts`, com 500 linhas: 500 contas e 110 com `churn_flag = 1`.
+    - `churn_events`, com 600 linhas: 600 eventos, 352 contas distintas com evento e o churn rate.
+    - `subscriptions`, com 5.000 linhas: 5.000 assinaturas, 486 com `end_date` em 312 contas, o MRR ativo e a receita em risco.
+  - **Números que cruzam tabelas:** levam a etiqueta das duas. O churn rate é `churn_events` sobre `subscriptions` vigentes, e a receita em risco é `subscriptions` de contas com `churn_events`.
+  - **Gráficos e blocos:** cada um tem no cabeçalho uma etiqueta colorida com a tabela de origem. Os títulos agora dizem a unidade, como "Contas com evento, por indústria" e "MRR ativo por país".
+  - **Analista (chat):** ganhou no prompt a regra de sempre nomear a tabela de origem, com os três números de referência.
+- **Como foi verificado:** o `visao-test` ganhou duas checagens, 110 com `accounts.churn_flag` e 486 assinaturas com `end_date` em 312 contas. Todas passam, e a captura da tela foi conferida.
+
+## D30 — Cara de ferramenta executiva, e crescimento mês a mês no lugar do churn por mês (decisão humana)
+- **Humano observou:** o dashboard vai para a mão de um executivo e estava com cara de ferramenta de desenvolvedor: nomes de tabela, `churn_flag = 1`, `end_date`, códigos de decisão (D20) na tela. E o gráfico de churn por mês não diz muito sozinho: se a base cresce, o churn também cresce.
+- **Humano decidiu:**
+  - Menos é mais. Rótulos simples ("Total de contas", "Contas com churn" para os 110 do `churn_flag`, "Total de assinaturas" sem nota), sem taxonomia de tabelas e views na tela.
+  - Trocar o gráfico de churn por mês por um gráfico de linhas que compara, mês a mês, quanto a base de contas cresceu e quanto o churn cresceu, sempre em % sobre o mês anterior.
+- **IA implementou:**
+  - **Números do topo:** três grupos com títulos simples (Contas, Eventos de churn, Assinaturas e receita), sem etiquetas de tabela e com no máximo uma nota curta por número. A separação de D29 continua, agora dita em palavras: "Contas com churn" (110) fica em Contas; "Contas com evento de churn" (352) fica em Eventos de churn.
+  - **Etiquetas de tabela:** saíram de todos os gráficos e blocos. A origem continua no SQL de cada gráfico, atrás do botão SQL.
+  - **Códigos na tela:** saíram os (D20), (D27), T06, T08 e E13 dos textos visíveis da visão geral, da tela 1, do filtro e do chat.
+  - **Gráfico novo:** "Crescimento mês a mês: contas × churn". Contas = contas ativas no mês (assinatura vigente, D21). Churn = contas com evento de churn no mês. A variação % vem do SQL (`lag`). O gráfico começa em abr/2023, o primeiro mês cujo mês anterior teve pelo menos 5 contas com evento: antes disso a base era tão pequena que 1 para 5 contas virava +400%.
+- **Nota da IA:** no exemplo do humano, 5 para 10 churns é +100%, não +50%. O gráfico usa a conta correta.
+- **Como foi verificado:** o `visao-test` ganhou três checagens (começa em 2023-04; dez/2024 com contas +5,3% e churn +60%; fev/2024 com churn −44,4%). Todos os testes passam, e a captura da tela foi conferida.
+- **Complemento (humano):** incluir uma linha de tendência linear em cada série, da mesma cor e pontilhada. **IA implementou** a regressão por mínimos quadrados no próprio SQL do gráfico; o `visao-test` confere contra uma regressão independente em TypeScript. **Nota da IA:** como o crescimento da base desacelera (de +71% para +5%), a reta das contas termina em −3,1% em dez/2024, embora o crescimento real nunca tenha ficado negativo. A reta do churn sobe de +12,3% para +30,3%.
+
+## D31 — Receita nova × receita perdida, com previsão do cruzamento (decisão humana; definições propostas pela IA)
+- **Humano decidiu:** mover "Eventos de churn por motivo" para baixo e pôr no lugar um gráfico de linhas, mês a mês, com o incremento de receita das contas novas e a perda de receita pelo churn. O CEO precisa ver a distância entre as linhas e prever em quanto tempo a aquisição é neutralizada pela perda, se o cenário continuar igual.
+- **IA propôs as definições (a confirmar pelo humano):**
+  - **Receita nova:** MRR das assinaturas que a conta começa no mês da sua primeira assinatura (cliente novo). Não conta upgrades nem novas assinaturas de quem já era cliente.
+  - **Receita perdida:** MRR das assinaturas com `end_date` no mês, a receita que de fato parou (nível de assinatura, D23). A alternativa pelo evento, o MRR das assinaturas vigentes da conta na data do evento em `churn_events`, foi descartada: as contas seguem com assinaturas ativas depois do evento (é o que infla a receita em risco), e ela daria US$ 1,88 mi só em dez/2024.
+  - **Previsão:** reta de mínimos quadrados sobre os 12 meses de 2024, projetada até as retas se encontrarem (no máximo 36 meses), toda calculada no SQL do gráfico.
+- **Resultado:** no ritmo de 2024, a receita perdida alcança a de contas novas em **mar/2026, 15 meses depois de dez/2024**. Em 2024 entraram US$ 1.867.254 de contas novas e saíram US$ 1.127.644 em cancelamentos.
+- **Nota da IA, sensibilidade:** a resposta depende do modelo de tendência.
+  - O mês real de dez/2024 já teve mais perda (US$ 574.643) do que receita nova (US$ 516.066).
+  - Uma tendência exponencial sobre 2024 (receita nova +15%/mês, perdida +34%/mês) cruzaria em fev/2025.
+  - Uma reta sobre os 24 meses não cruza nunca, porque 2023 quase não teve perda.
+  - A reta de 2024 é a leitura mais conservadora das que cruzam.
+- **Como foi verificado:** o `visao-test` confere os totais de 2024 contra consultas independentes, as retas contra uma regressão em TypeScript e o cruzamento (2026-03, 15 meses). A captura da tela foi conferida.
+
+## D32 — Visão geral numa tela só, sem receita em risco (decisão humana)
+- **Humano decidiu:**
+  - Os números do topo vão para um único cabeçalho, sem os dois níveis de grupos, sem espaço lateral sobrando, e o conjunto sobe na tela.
+  - Sai a **receita em risco**: o cálculo não estava correto, e uma receita em risco de verdade envolve muito mais do que o MRR das contas que tiveram algum churn.
+  - "Receita por indústria" desce, e no lugar entra um donut de **contas pagas × trial**.
+  - Gráficos com cinco ou mais barras viram gráficos de coluna. Os demais seguem como barras, encolhidos. Mais gráficos por linha, e o usuário não precisa rolar a tela.
+- **IA implementou:**
+  - **Cabeçalho único:** oito números numa linha (contas, contas com churn, eventos, contas com evento, churn rate, assinaturas, assinaturas encerradas, MRR). O MRR aparece compacto (US$ 10,2 mi).
+  - **Receita em risco:** saiu da tela, do cálculo (`indicadores`) e do teste.
+  - **Contas pagas × trial:** vem de `accounts.is_trial`, 403 pagas e 97 trial.
+  - **Layout em três faixas:** os dois gráficos de linha; os dois donuts e as colunas de receita por indústria e por país; as colunas de churn por indústria, por origem e por motivo, mais as barras de churn por plano (três barras).
+  - **Gráficos na medida do painel:** cada gráfico mede o próprio painel e desenha no tamanho real em pixels. O texto não encolhe em painéis estreitos, e a tela preenche a altura da janela sem rolar.
+  - **Colunas:** o valor fica em cima de cada coluna, os nomes longos alternam em duas linhas em vez de girar, e a coluna mais alta ocupa a altura toda.
+  - **Botão do analista:** saiu do canto inferior, onde cobria um gráfico, e foi para a linha do título.
+- **Como foi verificado:**
+  - Capturas em 1440×900 e 1280×800 sem rolagem (altura de rolagem igual à altura visível) e sem painel transbordando.
+  - O `visao-test` confere pagas + trial = 500.
+  - Typecheck, lint e os quatro testes passam.
+- **Limite:** com o chat aberto (440px a menos), a tela ainda cabe sem rolar, mas os donuts e os rótulos do cabeçalho ficam pequenos.
+
+## D33 — Telas 2 a 5 no padrão executivo; risco por exposição; Tela 4 depois da análise (decisão humana)
+- **Humano decidiu, entre opções da IA com recomendação:**
+  - **Estilo:** as telas 2 a 5 seguem o padrão da visão geral, ou seja, uma tela sem rolagem, rótulos simples e sem os códigos B2.1 e "nível:" na tela. A Tela 1 é ajustada junto.
+  - **Tela 3:** as contas são ordenadas por exposição (MRR em jogo), não por score de risco. O humano acrescentou um gráfico de linha com a idade média das assinaturas, mês a mês.
+  - **Tela 4 (ações):** fica para depois, quando o humano tiver as outras telas e fizer a própria análise.
+  - **Ordem:** 2 → 3 → 5 → 4, com revisão humana ao fim de cada tela.
+- **IA construiu a Tela 2, "O que está causando o churn?":**
+  - **Quem saiu × quem ficou (B2.1):** halteres com 16 indicadores, média por conta. Saiu = conta com evento de churn (352); ficou = sem evento (148).
+  - **Motivos pesados pela receita (B2.2):** eventos por motivo e o MRR atual das contas que deram cada motivo, com refund e reativações ao lado. Uma conta com dois motivos entra nos dois.
+  - **Suporte (B2.3):** % dos tickets de cada grupo por prioridade, resolução e 1ª resposta, e um resumo de tickets, escalados, satisfação e sem nota.
+  - **Recursos (B2.4):** uso × taxa de erro por recurso.
+- **Escolhas da IA (a revisar pelo humano):**
+  - **"Pesado por MRR":** usa o MRR das assinaturas ativas das contas (D23), não o total histórico usado no B1.1.
+  - **Beta:** `is_beta_feature` marca o registro de uso, não o recurso. Os 40 recursos têm registros beta, então cada recurso vira dois pontos, uso estável e uso beta.
+  - **Alertas:** com "sem registros em alerta", os tickets T08 e os usos T06/E13 saem de todos os blocos.
+- **O que a tela mostra (nenhuma conclusão escrita na tela):** os dois grupos são quase idênticos nos 16 indicadores.
+  - As maiores diferenças são downgrade (+5,2 p.p. para quem saiu) e upgrade (+2,8 p.p.).
+  - Os motivos têm pesos parecidos em eventos e em MRR (de 15% a 20% cada).
+  - O suporte tem distribuições iguais. A satisfação é 3,98 nos dois grupos.
+  - O uso beta erra de 3,1% a 9,5%, contra 4,7% a 6,9% no uso estável.
+  - Isso é coerente com a D3: nenhuma variável separa quem sai de quem fica.
+- **Como foi verificado:**
+  - O `tela2-test` faz 16 checagens: 352 + 148 = 500, motivos = 600 eventos, refund total, 61 reativações, MRR de um motivo por consulta independente, 2.000 tickets (923 sem T08), 80 pontos com o total de usos e o filtro FinTech.
+  - Capturas em 1440×900 e 1280×800 sem rolagem.
+
+## D34 — Tela 2 refeita: churn quebrado por atributo; suporte e uso vão para a Tela 3 (decisão humana)
+- **Humano revisou a Tela 2 da D33 e rejeitou quase tudo:** "tá mais fácil olhar o banco de dados do que entender esses gráficos". Só o gráfico de recursos (uso × taxa de erro) ficou, "mais ou menos".
+- **Humano decidiu:**
+  - Os quatro gráficos de churn da visão geral (indústria, origem, motivo, plano) saem de lá e vêm para a Tela 2. A visão geral não fala mais de churn por atributo.
+  - A Tela 2 ganha churn por país, por tipo de cobrança (mensal ou anual) e no período de teste × no período pago.
+  - Suporte sai da Tela 2. A Tela 3 passa a ser sobre tickets e uso do produto.
+- **IA construiu:** Tela 2 com sete gráficos numa tela sem rolagem. Os quatro de cinco ou mais barras ficam em colunas na linha de cima; plano, cobrança e teste × pago ficam em barras na linha de baixo (D32). A visão geral ficou com três faixas (cabeçalho, as duas linhas do tempo e a linha de receita).
+- **Escolha da IA (a revisar pelo humano):** cobrança e teste existem só na assinatura (`billing_frequency`, `is_trial`). Na conta, 497 das 500 têm cobrança mista. Por isso esses dois gráficos medem "% das assinaturas encerradas", e os outros cinco medem "% das contas com evento de churn" (D23). Cada nota de painel diz qual é a unidade.
+- **O que a tela mostra:** cobrança mensal 9,4% × anual 10%; teste 10% × pago 9,7%; país de 56% (DE) a 77,6% (UK, 58 contas).
+- **Removido:** os halteres de 16 indicadores e a tabela de motivos pesados por MRR. O código de suporte e de recursos foi para `src/engine/tela3.ts`, à espera do desenho da Tela 3.
+- **Como foi verificado:**
+  - `tela2-test` com 15 checagens: cada quebra confere com uma consulta independente, os motivos somam 600 eventos e os filtros de setor e de plano chegam aos dois tipos de gráfico.
+  - `tela3-test` com 7 checagens para suporte e recursos.
+  - Capturas da Tela 2 e da visão geral em 1440×900 e 1280×800, sem rolagem e sem painel transbordando.
+
+## D35 — Tela 2 com gradiente nas colunas e anéis de donut nos gráficos de 2 ou 3 grupos (decisão humana)
+- **Humano decidiu:** "essa tela 2 tá muito sem graça".
+  - Os gráficos com dois ou três rótulos viram pizza ou donut.
+  - As colunas ganham um gradiente de cor que separa os grupos de maior incidência dos de menor.
+  - Os gráficos são redistribuídos para acabar com os espaços vazios.
+- **IA construiu:**
+  - **Anéis:** plano, cobrança e teste × pago viraram um anel de donut por grupo. O arco laranja é a taxa de churn do grupo; a trilha escura é o resto. Embaixo vêm o nome e a base ("de 178 contas", "de 2.461 assinaturas").
+  - **Gradiente:** nas quatro colunas, laranja de uma só cor. O menor valor do gráfico fica no tom escuro e o maior no tom claro. As pontas escuras passam 2:1 de contraste contra o painel.
+  - **Redistribuição:** a linha de baixo divide a largura em 3:2:2, então todo anel tem o mesmo tamanho. A linha de cima fica com 60% da altura.
+- **Escolhas da IA (a revisar pelo humano):**
+  - **Taxa, não fatias:** um donut de fatias (por exemplo, Mensal × Anual como partes de um todo) mostraria a composição da base, não a taxa de churn. Por isso cada grupo ganhou o próprio anel.
+  - **Escala do gradiente:** vai do mínimo ao máximo de cada gráfico, então destaca diferenças pequenas: na indústria vai de 66,7% a 73,5%. Os números em cima das colunas dão a escala real.
+- **Como foi verificado:**
+  - `tela2-test` e `visao-test` passam, typecheck e lint limpos.
+  - Capturas em 1440×900 e 1280×800 sem rolagem e sem painel transbordando.
+
+## D36 — A taxa de churn por conta é o `churn_flag` da conta (decisão humana, revê a D20 para taxas)
+- **O que aconteceu:** o humano estranhou os números da Tela 2 (DevTools 73,5%, EdTech 72,2%) e perguntou de onde vinham. Ele tinha DevTools perto de 30% e FinTech perto de 22%.
+- **De onde vinham (IA verificou):** da view `vw_conta`, coluna `churn_rotulo`, que vale "a conta tem pelo menos um evento em `churn_events`" (D20): 352 de 500 contas, 70,4%. Não havia divisão de assinatura por conta. Os números do humano são o `churn_flag` da conta: 110 de 500, 22%; DevTools 31%, FinTech 22,3%. 277 das 352 contas com evento têm `churn_flag = 0`.
+- **Humano decidiu, entre opções da IA com recomendação:** as taxas por conta usam `churn_flag`. Os eventos de churn seguem como volume e motivo.
+- **IA mudou:**
+  - `churnPor` (indústria, origem, plano, país) passou a usar `sum(churn_flag) / count(*)`. A nota dos painéis diz "% das contas com churn".
+  - O rótulo de categoria das colunas não corta mais na borda.
+- **Fica como estava (a revisar pelo humano):**
+  - As séries mês a mês (crescimento, churn rate dez/2024) seguem nos eventos, porque `churn_flag` não tem data.
+  - O card "Contas com evento de churn" e as contagens da Tela 1 também seguem nos eventos.
+  - Cobrança e teste × pago seguem em "% das assinaturas encerradas".
+- **O que a tela mostra agora:**
+  - Indústria: DevTools 31%, FinTech 22,3%, HealthTech 21,9%, EdTech 16,5%, Cybersecurity 16%.
+  - País: DE 32% (25 contas), AU 12,5%.
+  - Origem: event 30,2%, partner 14,6%.
+  - Plano: 21,9% a 22,1%, praticamente igual.
+- **Como foi verificado:**
+  - `tela2-test` com 17 checagens, incluindo DevTools 31%, FinTech 22,3% e contas com churn por plano somando 110.
+  - `visao-test`, `tela1-test`, `dashboard-test` e `axis-test` passam.
+  - Capturas em 1440×900 e 1280×800 sem rolagem.
+
+## D37 — Os donuts da Tela 2 mostram a composição do churn, não a taxa de cada grupo (decisão humana)
+- **Humano decidiu:**
+  - Os três anéis da D35 não servem: cada um mostrava a taxa isolada do grupo, e plano (por conta) ficava ao lado de cobrança (por assinatura).
+  - O que importa é quanto cada grupo representa do total do churn ("se eu tive 600 churns e cada um teve 200, cada um teve 33%").
+  - A unidade de cada donut:
+    - **Plano:** contas com `churn_flag = 1`, pelo plano da conta.
+    - **Teste × pago:** contas com `churn_flag = 1`, pelo `is_trial` da conta.
+    - **Tipo de cobrança:** assinaturas com `churn_flag = 1`, pelo `billing_frequency`, porque a cobrança só existe na assinatura.
+- **IA construiu:**
+  - `composicaoPlano`, `composicaoTrial` e `composicaoCobranca` em `tela2.ts`, desenhados com o mesmo donut da visão geral (total no centro, % na legenda). A nota de cada painel diz qual é o total.
+  - O componente de anéis foi removido.
+- **O que a tela mostra:**
+  - **Plano (110 contas):** Pro 39 (35%), Basic 37 (34%), Enterprise 34 (31%).
+  - **Teste × pago (110 contas):** pagas 85 (77%), trial 25 (23%).
+  - **Cobrança (486 assinaturas):** anual 247 (51%), mensal 239 (49%).
+- **Como foi verificado:**
+  - `tela2-test` com 16 checagens: somas de 110 e de 486, contagem de cada grupo, filtro FinTech nos três tipos de gráfico e filtro de plano usando o plano da assinatura na cobrança.
+  - Typecheck, lint e `visao-test` passam.
+  - Capturas em 1440×900 e 1280×800 sem rolagem.
+
+## D38 — Rótulos das colunas: todos numa linha ou todos inclinados, sem sobreposição (decisão humana)
+- **Humano decidiu:**
+  - Os caracteres dos rótulos não podem se sobrepor.
+  - Quando os rótulos não cabem lado a lado, todos ficam inclinados e com o mesmo alinhamento. Isso substitui os rótulos alternados em duas alturas, que ficavam desalinhados (o gráfico de motivos).
+- **IA mudou (`BarChart`, modo `fit`):**
+  - **Rótulos de categoria:** em 10px, todos na horizontal se o maior couber na coluna; senão, todos a −45°. O espaço dos inclinados sai de baixo do gráfico, e a margem esquerda cresce para o primeiro rótulo, sem encolher o gráfico.
+  - **Valores em cima das colunas:** um único tamanho por gráfico, calculado para o valor mais longo caber na coluna com folga (de 7 a 10px). Antes, cada valor tinha o seu tamanho e vizinhos quase se tocavam.
+  - **Atributo inválido:** saiu o `height="auto"` do SVG, que gerava erro no console.
+- **Como foi verificado:**
+  - Capturas da Tela 2 e da visão geral em 1440×900 e 1280×800, sem rolagem e sem rótulos sobrepostos.
+  - `axis-test`, typecheck e lint passam.
+
+## D39 — Legenda do donut medida pelo texto, sem sobreposição (pedido humano)
+- **Humano apontou:** na legenda do donut de plano, o nome e o número se sobrepunham ("Basic" com "37", "Enterprise" com "31%").
+- **Causa (IA):** o `PieChart` punha a legenda numa posição fixa (x = 330) e alinhava o número à borda direita. Em painéis entre 420 e uns 520 de largura, as duas colunas se cruzavam. As capturas de 1440 e 1280 não pegavam esse caso: lá o painel caía no modo estreito, que mostra só o %.
+- **IA mudou:**
+  - **Largura medida:** a largura da legenda sai do nome mais longo e do número mais longo.
+  - **Encaixe:** o donut ocupa o que sobra, e o conjunto donut + legenda fica centralizado.
+  - **Contagem:** sai antes que o donut fique pequeno demais, e aí a legenda mostra só o %.
+  - **Fonte:** encolhe só em último caso.
+  - **Atributo inválido:** saiu o `height="auto"` do SVG.
+- **Como foi verificado:**
+  - Capturas da Tela 2 em 1280×800, 1440×900, 1512×945 e 1728×1080, e da visão geral em 1280×800, todas sem sobreposição e sem rolagem.
+  - Typecheck e lint passam.
+
+## D40 — Idade média da base, mês a mês, na visão geral (decisão humana)
+- **Humano decidiu:** um gráfico de linha na visão geral com a idade média das contas ativas, mês a mês, de jan/2023 a dez/2024. Para cada mês, pega todas as contas ativas, calcula a idade média e plota. O objetivo é ver se a base está envelhecendo (mantendo contas) ou rejuvenescendo (perdendo mais contas do que mantém ou ganha).
+- **IA definiu (a revisar pelo humano):**
+  - **Conta ativa no mês:** tem uma assinatura em vigor no mês (D21, a mesma regra do B1.1).
+  - **Idade da conta:** do `signup_date` até o fim do mês, em meses de 30,4375 dias.
+  - **Segunda linha:** o pedido fala em "idade média das assinaturas" e em "contas ativas", então a IA desenhou as duas: contas ativas, desde o cadastro, e assinaturas em vigor, desde o `start_date`. Mesma unidade, um eixo só.
+  - **Filtros:** os de conta chegam às duas linhas; o de plano usa o plano de cada identificador (D27).
+- **O que o gráfico mostra (sem conclusão na tela):**
+  - **Contas:** a idade média sobe todo mês, de 1 mês em jan/2023 para 11,2 meses em dez/2024. As 500 contas ainda estão ativas em dez/2024, então nenhuma saiu de vez.
+  - **Assinaturas:** a idade média sobe até 5,6 meses em nov/2024 e cai para 5,4 em dez/2024, quando as assinaturas em vigor passam de 3.827 para 4.707.
+  - **Limite:** a base começa vazia em jan/2023, então parte da subida das contas é a própria idade dos dados.
+- **Layout:** a segunda faixa da visão geral passou de duas para três colunas: crescimento, receita nova × perdida e idade média. A nota da previsão de receita agora começa pelo mês do cruzamento, para não ser cortada.
+- **Como foi verificado:**
+  - `visao-test` ganhou 4 checagens: 24 meses, idade das contas em dez/2024 = 11,16 e das assinaturas = 5,44 (por consultas independentes), e o filtro de setor chegando às duas linhas.
+  - Capturas em 1440×900 e 1280×800 sem rolagem.
+
+## D41 — Layout da visão geral em quatro faixas, com a idade média de ponta a ponta (decisão humana)
+- **Humano decidiu (com um desenho sobre a captura):**
+  - No topo, crescimento mês a mês e receita nova × perdida, lado a lado.
+  - No centro, o gráfico de idade média, atravessando a tela de um lado ao outro.
+  - Embaixo, os quatro gráficos de receita e de contas.
+- **IA mudou:**
+  - A grade da visão geral passou a ter quatro faixas: cabeçalho, as duas linhas do tempo, a idade média em largura total e os quatro gráficos. As alturas ficam em 1,1 : 1 : 0,95.
+  - Os gráficos de linha dentro de painel (`bare`) perderam margem de sobra: 12px em cima e 24px embaixo, antes 20 e 40. Sem isso, a faixa do meio deixava só uns 45px de gráfico.
+  - A nota da idade média ficou curta ("em meses, no fim de cada mês, de jan/2023 a dez/2024"), porque a legenda já nomeia as duas linhas.
+- **Como foi verificado:**
+  - Capturas em 1440×900 e 1280×800 sem rolagem e sem painel transbordando.
+  - `visao-test`, `axis-test`, typecheck e lint passam.
+- **Observação:** a Tela 1 ainda rola em 1440×900, como já rolava, porque ainda não foi passada para o padrão de uma tela só.
+
+## D42 — Eixo vertical dos gráficos de linha ajustado à escala do dado (pedido humano)
+- **Humano perguntou:** por que o eixo da idade média ia até 20 meses se o dado chega a 11. Pediu um eixo adequado à escala do dado.
+- **Causa (IA):** o `LineChart` arredondava o máximo para 1, 2 ou 5 × 10ⁿ, então 11,2 virava 20 e metade da altura ficava vazia.
+- **IA mudou:** para séries positivas, o eixo escolhe o menor passo redondo (1, 2, 2,5, 3 ou 5 × 10ⁿ) que cubra o máximo em até quatro intervalos. As linhas de tendência e as projeções entram no cálculo, então nada é cortado. Eixos com valores negativos (o crescimento mês a mês) não mudaram.
+- **Efeito:**
+  - **Idade média:** 0 a 12 meses, de 3 em 3.
+  - **Receita nova × perdida:** 0 a US$ 800 mil, de 200 em 200. O máximo é US$ 779 mil, na projeção.
+- **Como foi verificado:**
+  - Capturas em 1440×900 e 1280×800 sem rolagem.
+  - O máximo da receita foi conferido, com as projeções incluídas.
+  - Typecheck e lint passam.
+
+## D43 — Tela 3: suporte e uso do produto (decisão humana; desenho da IA)
+- **Humano decidiu:** a Tela 3 deixa de tratar de segmentos e risco e passa a mostrar o suporte (tickets) e como os clientes usam o produto (recursos).
+- **IA desenhou, no padrão da visão geral (uma tela, sem rolagem):**
+  - **Cabeçalho:**
+    - Tickets (2.000, em 492 contas) e escalados (95, 4,8%).
+    - Satisfação média (3,98, com 41,3% sem nota), resolução média (35,9 h) e 1ª resposta média (88 min).
+    - Usos do produto (250,5 mil, 21.126 horas), erros (14.107) e taxa de erro (5,63%).
+  - **Linhas mês a mês:** tickets com os escalados, satisfação média (eixo fixo de 0 a 5) e usos.
+  - **Composição dos tickets:** donuts de prioridade e de notas (com "sem nota" como fatia), e barras de faixas de tempo de resolução e de 1ª resposta.
+  - **Recursos:** o gráfico de uso × taxa de erro que o humano aprovou na D33 (estável e beta separados) e os 10 recursos mais usados, em colunas com gradiente.
+- **Escolhas da IA (a revisar pelo humano):**
+  - **Unidades:** tickets seguem os filtros de conta. Usos seguem os de assinatura, com o plano da assinatura (D27).
+  - **Alertas:** com "sem registros em alerta", saem os 1.077 tickets abertos antes do cadastro (T08) e os usos fora da assinatura ou repetidos (T06/E13). Sobram 923 tickets.
+  - **Cores:** os donuts ganharam a 4ª cor da paleta (amarelo `#c98500`), porque prioridade e notas têm 4 fatias. O validador de paleta passa as 4 cores em modo escuro.
+  - **O que saiu:** a comparação saiu × ficou do suporte da D33, que o humano rejeitou na D34.
+- **O que a tela mostra (sem conclusão na tela):**
+  - Os tickets ficam em 60 a 98 por mês.
+  - A satisfação oscila entre 3,7 e 4,4.
+  - O uso fica em torno de 10 mil por mês nos 24 meses, enquanto a base passa de 2 para 500 contas ativas.
+  - As prioridades se dividem quase por igual (24% a 26%).
+  - Mais da metade dos tickets leva mais de 24 h para fechar.
+  - O uso beta tem taxa de erro mais espalhada (3% a 10%) que o estável.
+- **Junto:**
+  - `Indicador` e `Cabecalho` foram extraídos para `components/telas/Indicador.tsx`, compartilhados pela visão geral e pela Tela 3.
+  - `LinhasMensais` é o componente genérico de linhas.
+  - O `LineChart` ganhou `yMax`.
+  - Saíram os `height="auto"` que restavam nos SVGs.
+  - O menu lateral agora diz "3 · Suporte e uso do produto".
+  - A palavra REPLACE é recusada pela trava de somente leitura, então o nome "Recurso N" é montado no TypeScript.
+- **Como foi verificado:**
+  - `tela3-test` com 23 checagens contra consultas independentes: totais, meses, composições, filtros de setor e de plano, e o filtro sem alertas (923 tickets).
+  - Capturas em 1440×900 e 1280×800 sem rolagem e sem erro no console.
+  - Typecheck, lint e `visao-test` passam.

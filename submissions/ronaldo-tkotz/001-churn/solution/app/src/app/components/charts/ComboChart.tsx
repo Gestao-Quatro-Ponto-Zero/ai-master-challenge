@@ -115,7 +115,7 @@ export function ComboChart({ categories, bar, line, height = 250, barFormat = DE
       </div>
 
       <div className="relative veta-rise" onMouseLeave={() => setHovered(null)}>
-        <svg viewBox={`${-leftPad} 0 ${VIEW_WIDTH + leftPad} ${svgHeight}`} preserveAspectRatio="xMidYMid meet" width="100%" height="auto" role="img" aria-labelledby={titleId} className="block w-full">
+        <svg viewBox={`${-leftPad} 0 ${VIEW_WIDTH + leftPad} ${svgHeight}`} preserveAspectRatio="xMidYMid meet" width="100%" role="img" aria-labelledby={titleId} className="block w-full">
           <title id={titleId}>{`Combo chart: ${bar.name} as bars${hasLine && line ? ` with ${line.name} as a line` : ""}`}</title>
 
           {[0, 0.5, 1].map((t) => {

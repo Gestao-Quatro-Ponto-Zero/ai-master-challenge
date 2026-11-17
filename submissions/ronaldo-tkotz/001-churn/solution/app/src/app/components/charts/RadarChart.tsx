@@ -97,7 +97,7 @@ export function RadarChart({ axes, series, height = 260, valueFormat = DEFAULT_F
       )}
 
       <div className="relative veta-rise">
-        <svg viewBox={`0 0 ${VIEW_WIDTH} ${height}`} preserveAspectRatio="xMidYMid meet" width="100%" height="auto" role="img" aria-labelledby={titleId} className="block w-full">
+        <svg viewBox={`0 0 ${VIEW_WIDTH} ${height}`} preserveAspectRatio="xMidYMid meet" width="100%" role="img" aria-labelledby={titleId} className="block w-full">
           <title id={titleId}>{`Radar chart comparing ${cleanSeries.length} series across ${n} axes`}</title>
 
           {/* Concentric rings + the max-ring value label. */}

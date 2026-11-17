@@ -22,11 +22,13 @@ export interface ScatterChartProps {
   xFormat?: (n: number) => string;
   yFormat?: (n: number) => string;
   bare?: boolean;
+  /** viewBox width: pass the container's pixel width so text draws at 1:1. */
+  viewWidth?: number;
   /** When set, a point is clickable — fires with the point's label (entity) to drill in. */
   onSelect?: (label: string) => void;
 }
 
-const VIEW_WIDTH = 640;
+const DEFAULT_VIEW_WIDTH = 640;
 const SERIES_COLORS = ["#e3b341", "#8a90ad", "#5fb3a1", "#c98bdb"];
 const GRID = "#23232b";
 const LABEL = "#9a9aa6";
@@ -61,7 +63,8 @@ function clampPercent(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value));
 }
 
-export function ScatterChart({ series, xLabel, yLabel, height = 240, xFormat = DEFAULT_FORMAT, yFormat = DEFAULT_FORMAT, bare = false, onSelect }: ScatterChartProps) {
+export function ScatterChart({ series, xLabel, yLabel, height = 240, xFormat = DEFAULT_FORMAT, yFormat = DEFAULT_FORMAT, bare = false, onSelect, viewWidth }: ScatterChartProps) {
+  const VIEW_WIDTH = viewWidth ?? DEFAULT_VIEW_WIDTH;
   const titleId = useId();
   const [hovered, setHovered] = useState<{ s: number; p: number } | null>(null);
   const clickable = typeof onSelect === "function";
@@ -89,7 +92,7 @@ export function ScatterChart({ series, xLabel, yLabel, height = 240, xFormat = D
   }
 
   const top = 16;
-  const right = 18;
+  const right = 30;
   const bottom = 38;
   const left = 54;
   const plotWidth = Math.max(1, VIEW_WIDTH - left - right);
@@ -126,7 +129,7 @@ export function ScatterChart({ series, xLabel, yLabel, height = 240, xFormat = D
       )}
 
       <div className="relative veta-rise" onMouseLeave={() => setHovered(null)}>
-        <svg viewBox={`0 0 ${VIEW_WIDTH} ${height}`} preserveAspectRatio="xMidYMid meet" width="100%" height="auto" role="img" aria-labelledby={titleId} className="block w-full">
+        <svg viewBox={`0 0 ${VIEW_WIDTH} ${height}`} preserveAspectRatio="xMidYMid meet" width="100%" role="img" aria-labelledby={titleId} className="block w-full">
           <title id={titleId}>{`Scatter plot of ${allPoints.length} points`}</title>
 
           {ticks(yMin, yMax, 4).map((t) => {

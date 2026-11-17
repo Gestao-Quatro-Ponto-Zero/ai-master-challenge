@@ -146,11 +146,16 @@ export function xAxisLabels(count: number, slotPerCategory: number, opts?: { max
   };
 }
 
-/** Whether to render the label for `index` given the computed `step` (edges always shown). */
+/**
+ * Whether to render the label for `index` given the computed `step` (edges always shown).
+ * A stepped label too close to the last one is dropped so the two never collide
+ * (24 months at step 3 used to print "2024-10" on top of "2024-12").
+ */
 export function showLabelAt(index: number, count: number, step: number): boolean {
   if (count <= 0) return false;
   if (index === 0 || index === count - 1) return true;
-  return index % step === 0;
+  if (index % step !== 0) return false;
+  return count - 1 - index >= step * 0.75;
 }
 
 /** Render one diagonal (or horizontal) tick label as an SVG <text>. Shared by the categorical charts. */
