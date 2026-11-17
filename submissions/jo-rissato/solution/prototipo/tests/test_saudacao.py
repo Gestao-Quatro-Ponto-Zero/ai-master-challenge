@@ -72,13 +72,11 @@ def test_nome_no_prompt_e_na_assinatura():
     assert NOME_ATENDENTE in cv.ASSINATURA
 
 
-def test_espera_intercalada_e_variada():
-    # Jó, 2026-11-16 23:08 BRT: duas respostas sem a frase de espera, a terceira com.
-    assert ligacao.ESPERA_A_CADA == 3 and ligacao.ESPERA_MS <= 1500
+def test_espera_rara_e_variada():
+    assert ligacao.ESPERA_MS >= 4000 and ligacao.ESPERA_A_CADA >= 3
     assert len(set(ligacao.FRASES_ESPERA)) >= 3 and "Um instante." not in ligacao.FRASES_ESPERA
     fonte = Path(ligacao.__file__).read_text(encoding="utf-8")
-    assert "S.enviado % S.cfg.esperaACada !== 0" in fonte   # o navegador toca só na 3ª, 6ª, 9ª fala
-    assert "ultimaEspera" not in fonte
+    assert "S.enviado - S.ultimaEspera < S.cfg.esperaACada" in fonte   # o navegador respeita o intervalo
 
 
 def test_devolve_bom_dia(modelo, sem_rede):

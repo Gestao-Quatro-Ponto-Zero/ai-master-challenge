@@ -1102,3 +1102,17 @@ erro em 34 palavras. Amostras das 3 vozes para o Jó escolher no ouvido.
 **Decisão do Jó (11:20 BRT, confirmada na pergunta):** manter a voz Kokoro que já está no ar. A opção Piper com timbre
 feminino foi descartada: o ganho no sotaque é pequeno e ela é mais lenta (2,2 a 2,6 s contra 1,7 a 1,8 s por frase) e
 gasta cerca de 0,9 GB a mais. Nada mudou no serviço.
+
+## Volta da ligação à versão anterior e régua final (2026-11-17 12:27 a 12:46 BRT)
+
+**Mensagem do Jó (literal, 12:27 BRT):** "volta a estruta anterior da ligacao, a mulher 2 que eu tinha pedido para
+regredir, essa eu testei agora e não esta boa.. depois que você  voltar para a ultima versao passa a regua de
+validacao em todo o proeto e ai fechamos e liberamos a pr"
+
+**Feito:** a ligação voltou ao código da primeira voz feminina (commit `040879e`). Saem o ajuste de fonemas, a frase
+de espera fixa na 3ª fala e a transcrição com 1 caminho; volta a frase de espera depois de 4 s sem resposta. A voz
+continua sendo a Kokoro `pf_dora`, agora sem o ajuste de fonemas, como era quando o Jó disse que melhorou.
+
+**Régua, décima passada, no projeto inteiro:** 227 testes; E2E por texto e por ligação no link; carga, estresse,
+segurança, recuperação e folga do host verdes; bateria repassada no chat (22 de 22) e no telefone por voz (21 de 22, a
+mesma falha conhecida e segura das rodadas 71 e 72). Pendente: homologação do Jó e OK do push e do PR.

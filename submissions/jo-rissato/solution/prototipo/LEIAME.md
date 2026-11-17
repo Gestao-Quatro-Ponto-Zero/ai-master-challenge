@@ -72,9 +72,8 @@ microfone fica aberto do Ligar ao Desligar, sem botão de gravar a cada fala (`l
 
 1. No navegador, um detector de fala por energia percebe quando o cliente começa a falar e fecha a fala depois de
    0,8 s de pausa. Só esse trecho vai para a página, em WAV de 16 kHz.
-2. A página transcreve na própria máquina (`voz.py`), a IA responde e a voz da atendente toca. Intercalado, duas
-   respostas sem e a terceira com, a atendente diz uma frase curta de espera ("Hum, deixa eu ver aqui.") 1 s depois de
-   o cliente parar de falar, se a resposta ainda não chegou.
+2. A página transcreve na própria máquina (`voz.py`), a IA responde e a voz da atendente toca. Se a resposta passa de 4 s,
+   a atendente diz uma frase curta de espera ("Hum, deixa eu ver aqui."), no máximo uma vez a cada 3 falas.
 3. Enquanto a atendente fala, a escuta fica pausada (meia via), para a voz dela não voltar como fala do cliente. Ao
    terminar, a escuta volta sozinha.
 4. A atendente se chama Clara (`NOME_ATENDENTE` em `config.py`, troca por variável de ambiente) e atende com
@@ -85,8 +84,7 @@ microfone fica aberto do Ligar ao Desligar, sem botão de gravar a cada fala (`l
 
 Escuta e interpretação:
 
-- Transcrição com faster-whisper `small` em int8 na CPU (6 threads, sem filtro de silêncio; busca com 5 caminhos só no
-  ditado de nome, e-mail, CPF, telefone e CEP, e 1 caminho no resto: 5,4% contra 5,0% de erro e 0,8 s mais rápido), em
+- Transcrição com faster-whisper `small` em int8 na CPU (6 threads, busca com 5 caminhos, sem filtro de silêncio), em
   português, com o contexto da etapa (nome, número ditado, e-mail ou o vocabulário do suporte). Em 12 falas humanas
   do FLEURS pt-BR: 5,4% de erro por palavra e cerca de 4 s por turno. `medium` erra 3,1%, mas leva 10 s por turno;
   `large-v3-turbo`, 11 a 15 s. Troque por `WHISPER_MODELO` numa máquina com GPU.
@@ -111,9 +109,6 @@ for f in kokoro-v1.0.int8.onnx voices-v1.0.bin; do
   transcrição errou 1,4% das palavras ditas pelo Kokoro contra 7,6% pelo Piper. O custo é tempo: em 60 respostas
   reais, o primeiro trecho leva 2,0 s (mediana; p95 3,8 s) contra 0,6 s (p95 1,6 s) da resposta inteira no Piper.
   `VOZ_MOTOR=piper` volta à voz anterior.
-- Sotaque (2026-11-16): o texto vira fonemas pt-BR no mesmo formato com que a voz do Kokoro foi treinada (o "dj" de
-  "de", o "tch" de "te" e os ditongos num símbolo só, tabela do misaki). Sozinho, o kokoro-onnx separava esses sons e a
-  voz soava com sotaque de Portugal.
 - Caminhos e modelo por variável: `VOZ_PIPER`, `VOZ_KOKORO`, `VOZ_KOKORO_NOME`, `VOZ_MOTOR` e `WHISPER_MODELO`. Sem os pacotes ou sem a voz, o botão não aparece e
   o telefone segue como transcrição digitada.
 - Limites: fala de até 25 s por turno no navegador e 60 s no servidor; uma transcrição por vez (com 4 pessoas

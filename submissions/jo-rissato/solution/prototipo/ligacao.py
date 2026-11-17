@@ -19,11 +19,9 @@ PAUSA_FIM_MS = 800        # silêncio que fecha a fala do cliente
 FALA_MINIMA_MS = 350      # abaixo disso é ruído (tosse, clique)
 FALA_MAXIMA_S = 25        # fala longa é enviada assim mesmo (o servidor aceita até 60 s)
 # A resposta leva de 6 a 8 s nesta CPU (transcrição 3,5 s, IA 2,1 s, voz 1 s; medido em 2026-11-16). Com o gatilho em
-# 1,5 s a frase de espera tocava em quase toda resposta e soava robótica (Jó, 2026-11-16 21:16 BRT). Depois, com 4 s e
-# no máximo uma a cada 3 falas, ela ficou rara e sem ritmo. Pedido do Jó (2026-11-16 23:08 BRT): intercalar, duas
-# respostas sem e a terceira com. Ela toca na 3ª, 6ª, 9ª fala do cliente, 1 s depois de ele parar de falar, e só se a
-# resposta ainda não chegou.
-ESPERA_MS = 1000
+# 1,5 s a frase de espera tocava em quase toda resposta e soava robótica (Jó, 2026-11-16 21:16 BRT). Agora ela só toca
+# depois de 4 s de silêncio e no máximo uma vez a cada 3 falas do cliente, variando a frase.
+ESPERA_MS = 4000
 ESPERA_A_CADA = 3
 FRASES_ESPERA = ("Hum, deixa eu ver aqui.", "Só um segundinho.", "Tá, já te falo.")
 
@@ -129,7 +127,8 @@ async function abrirMicrofone(S) {
       clearTimeout(S.timerEspera);
       S.timerEspera = setTimeout(() => {
         if (S.estado !== 'pensando' || !S.espera.length) return;
-        if (S.enviado % S.cfg.esperaACada !== 0) return;            // duas respostas sem, a terceira com
+        if (S.ultimaEspera && S.enviado - S.ultimaEspera < S.cfg.esperaACada) return;
+        S.ultimaEspera = S.enviado;
         S.audioEspera.src = 'data:audio/wav;base64,' + S.espera[S.nEspera++ % S.espera.length];
         S.audioEspera.play().catch(() => {});
       }, S.cfg.espera);
@@ -195,7 +194,7 @@ export default function (component) {
       botao: parentElement.querySelector('.desligar'), barra: parentElement.querySelector('.barra'),
       audio: new Audio(), estado: 'conectando', ruido: 0.004, acima: 0, antes: [], fala: [], silencio: 0,
       durFala: 0, surdoAte: 0, enviado: 0, aguardando: 0, falaTocada: 0, cfg: data.cfg,
-      audioEspera: new Audio(), espera: data.espera || [], nEspera: 0, timerEspera: null,
+      audioEspera: new Audio(), espera: data.espera || [], nEspera: 0, ultimaEspera: 0, timerEspera: null,
       filaFala: [], tocando: false, mais: false, timerMais: null,
     };
     S.audio.onended = () => fimDoTrecho(S);

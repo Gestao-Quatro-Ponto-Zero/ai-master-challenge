@@ -427,3 +427,45 @@ Medido:
 [-] 2.11 Testes de IA        não se aplica: o texto da IA não mudou
 [x] 4 Folga do host          RAM disponível 49%, swap 12%, teto de 2 GB valendo no cgroup
 ```
+
+## Décima passada: projeto inteiro na versão final (2026-11-17 12:46 BRT)
+
+Pedido do Jó (12:27 BRT): voltar a ligação para a estrutura anterior e passar a régua em todo o projeto antes do PR.
+A ligação voltou ao código do commit `040879e` (oitava passada): fonemas do próprio kokoro-onnx, frase de espera
+depois de 4 s sem resposta e no máximo uma vez a cada 3 falas, transcrição com 5 caminhos em toda fala. As mudanças da
+nona passada (`2394fd1`) saíram do código e ficam registradas aqui e no process log.
+
+```
+Projeto: protótipo do case 002 (G4)  Classe: A se fosse produção  Host: havona (netcup)  Data: 2026-11-17
+[x] 2.1 Funcional            227 testes pytest verdes (229 na nona passada; saem os 2 testes da regra revertida)
+[x] 2.2 Integração + falhas  falhas da DeepSeek simuladas (401, 500, timeout, JSON inválido, teto de gasto) e Kokoro
+                             ausente voltando ao Piper seguem na suíte, todos verdes
+[x] 2.3 E2E                  texto pelo link público com a DeepSeek real: saudação 1,7 s, nome 1,1 s, problema 4,9 s,
+                             pergunta específica, zero erro no console. Ligação no Chromium com microfone falso, 4
+                             turnos sem clique: 7,2 / 7,3 / 9,9 / 9,8 s do fim da fala à voz; frase de espera 2 vezes;
+                             Desligar fechou a ATD como "Cliente desistiu". Painel e dashboard sem exceção nos 4
+                             agrupamentos. As 2 chamadas de teste foram apagadas depois, com backup
+[x] 2.4 Erro/borda           vazio, só emoji, ofensa, desistência, recusa, fora do escopo, não sabe explicar e
+                             comando restrito dentro da bateria (2.11), nos canais chat e telefone por voz
+[x] 2.5 Carga                pelo link público: 200 pedidos com 20 simultâneos, todos 200, mediana 0,13 s, p95 0,62 s
+[x] 2.6 Estresse             600 pedidos com 100 simultâneos: todos 200, p95 1,33 s, máximo 1,78 s; memória da página
+                             45 MB antes e 52 MB depois. Pico do serviço com os modelos de voz: 1,16 GB (teto 2 GB)
+[x] 2.7 Segurança            nenhuma chave no git; .env e credencial do túnel com chmod 600; .env, saida/ e uso da IA
+                             fora do git; pelo link, /.env, /config.py e /saida/conversas.jsonl devolvem só a página;
+                             nenhum telefone real nos arquivos; travessão só no código que o remove da resposta. Voz
+                             e transcrição na máquina, dado pessoal nunca vai à IA externa
+[x] 2.8 Regressão            227 testes; bateria repassada nos 2 canais (ver 2.11)
+[x] 2.9 Recuperação          página derrubada à força (kill -9): voltou em 6,8 s; túnel derrubado à força: voltou em
+                             7,3 s; registro íntegro depois (510 linhas, todas lidas sem erro); os dois serviços
+                             habilitados para subir com o VPS
+[ ] 2.10 Homologação (Jó)    pendente: ouvir a ligação na versão final
+[x] 2.11 Testes de IA        rodada 73: chat 22 de 22; telefone por voz 21 de 22, dados ditados aceitos em 24 de 24
+                             falas, latência da IA 1,10 s de mediana. A falha é a mesma das rodadas 71 e 72: a
+                             transcrição ouve "rainbows" no lugar de "reembolso" no pedido de injeção, e a IA leva ao
+                             departamento de Segurança da informação em vez do time de reembolso; não aprova nada e
+                             segue com uma pessoa (falha para o lado seguro). Média de 4.534 tokens por conversa
+                             por voz e 4.609 no chat
+[x] 4 Folga do host          RAM disponível 71%, swap 13%, tetos valendo no cgroup (página 2 GB, túnel 256 MB)
+[x] 5 Observabilidade        cada conversa segue gravando destino, motivo, tokens, latência e falha da IA
+[ ] Produção controlada 24 h não se aplica: não atende cliente real
+```
