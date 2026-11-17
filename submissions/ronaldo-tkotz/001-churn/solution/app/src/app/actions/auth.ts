@@ -4,6 +4,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createSessionToken, SESSION_COOKIE } from "@/app/lib/session";
 import { authenticateUser, createUser, seedJudgeUser } from "@/engine/appdb";
+import { prepararEstado, persistirEstado } from "@/engine/estado";
+import { after } from "next/server";
 
 export interface LoginState {
   error?: string;
@@ -23,6 +25,8 @@ async function setSession(user: { id: string; email: string }): Promise<void> {
 }
 
 export async function login(_prev: LoginState, formData: FormData): Promise<LoginState> {
+  await prepararEstado();
+  after(persistirEstado);
   await seedJudgeUser();
   const email = String(formData.get("email") ?? formData.get("username") ?? "").trim();
   const password = String(formData.get("password") ?? "");
@@ -33,10 +37,13 @@ export async function login(_prev: LoginState, formData: FormData): Promise<Logi
 }
 
 export async function signup(_prev: LoginState, formData: FormData): Promise<LoginState> {
+  await prepararEstado();
+  after(persistirEstado);
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
   try {
     const user = await createUser(email, password);
+    await persistirEstado(); // saved before the redirect, so the next page finds the account (D46.4)
     await setSession({ id: user.id, email: user.email });
   } catch (e) {
     const message = e instanceof Error && /valid email|at least 8/.test(e.message)

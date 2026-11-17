@@ -1,6 +1,7 @@
 /** The user's own screens (D46.2): GET the list, POST {nome} creates one. */
 import { requireUser, authErrorResponse } from "@/app/lib/auth";
 import { criarTela, listarTelas } from "@/engine/telasUsuario";
+import { gravando } from "@/engine/estado";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -13,7 +14,7 @@ export async function GET(): Promise<Response> {
   } catch (e) { return authErrorResponse(e) ?? Response.json({ error: msg(e) }, { status: 500 }); }
 }
 
-export async function POST(req: Request): Promise<Response> {
+async function POST_(req: Request): Promise<Response> {
   try {
     const user = await requireUser();
     const body = (await req.json().catch(() => ({}))) as { nome?: unknown };
@@ -21,3 +22,6 @@ export async function POST(req: Request): Promise<Response> {
     return Response.json({ tela: criarTela(user.id, typeof body.nome === "string" ? body.nome : "") }, { status: 201 });
   } catch (e) { return authErrorResponse(e) ?? Response.json({ error: msg(e) }, { status: 500 }); }
 }
+
+// Deploy (D46.4): the remote state is saved before the response.
+export const POST = gravando(POST_);

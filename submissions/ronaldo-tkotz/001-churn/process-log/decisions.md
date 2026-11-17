@@ -671,3 +671,18 @@
 - **Junto:** o chat lateral passou a mandar as perguntas e respostas anteriores da conversa para o analista. Antes, cada pergunta chegava sozinha, sem contexto.
 - **Como foi verificado:** `telas-test` (15 checagens com um analista roteirizado, sem LLM). Ao vivo com o DeepSeek no navegador: tela "Recursos e churn", dois pedidos em sequência (13 s e 6 s), três painéis, um marcado e listado em "Gráficos marcados", tudo mantido depois de recarregar, sem erro no console.
 - **Escolhas da IA (a revisar):** de 1 a 3 gráficos por pedido; o analista escolhe o tipo de gráfico; a definição de taxa que ele usa vem do prompt (churn = churn_events), por isso pode diferir das telas fixas que usam churn_flag (D36). O SQL de cada painel deixa isso visível.
+
+### D46.4 — Hospedagem no Vercel com o estado salvo no Blob (pedido humano; desenho da IA)
+- **Pedido do humano:** "Tem que estar hospedado em algum lugar." e "Se você já está autenticado no Vercel, então esquece o Railway."
+- **Endereço:** https://ravenstack-churn.vercel.app (região gru1, São Paulo).
+- **Problema que a IA resolveu:** no Vercel o disco das funções não dura e há várias instâncias. O banco do app (logins, conversas, marcas, telas próprias, apresentações) não pode ficar num arquivo local.
+- **IA desenhou (`engine/estado.ts`):**
+  - O banco do app vira uma cópia SQLite única, cifrada (AES-256-GCM com `STATE_KEY`), guardada num Blob **privado** do Vercel. O caminho do arquivo também é derivado da chave.
+  - Antes de cada requisição, a instância pergunta ao Blob se há versão nova (GET condicional, cerca de 80 ms, 304 quando nada mudou) e carrega se outra instância gravou.
+  - Toda rota que grava sobe a cópia **antes** de responder, para a próxima tela (talvez em outra instância) já ver a mudança. Isso foi achado num teste: criar uma tela e abri-la logo em seguida dava "não encontrada".
+  - Localmente nada disso roda; o banco continua sendo o arquivo `data/app.sqlite`.
+  - O banco da RavenStack (só leitura) vai dentro de cada função (`outputFileTracingIncludes`), como pedia o ISC-24.
+- **Primeira versão e correção de desempenho:** a checagem com `head()` levava cerca de 550 ms por chamada e cada página demorava 1 a 3 s; com o GET condicional as chamadas caíram para cerca de 150 ms.
+- **Limite conhecido:** duas instâncias gravando no mesmo instante — a última gravação vence. Para um avaliador por vez isso não aparece; para uso com muita gente ao mesmo tempo o certo é um banco de verdade (Postgres/Turso).
+- **Segredos:** chave do DeepSeek, segredo da sessão, `STATE_KEY` e senha do avaliador estão só nas variáveis do Vercel; nenhum valor foi impresso nem entrou no git. A senha do avaliador do deploy é nova (não é a local) e está em `solution/app/.env.deploy`, fora do git. **Falta o humano decidir** se a senha vai no README público (ISC-26): quem tiver a senha usa a chave do DeepSeek.
+- **Como foi verificado:** `estado-test` (cifra e adulteração; e, com um Blob de teste, um processo grava e outro lê). Em produção, no navegador: login do avaliador, as seis páginas com 200, drill de Recursos = 114, marcação, tela própria com o DeepSeek (16 s, dois painéis) que continua lá ao abrir de novo, sem erro no console.

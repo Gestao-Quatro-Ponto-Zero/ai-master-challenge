@@ -1,5 +1,6 @@
 import { requireUser, authErrorResponse } from "@/app/lib/auth";
 import { getConversation, getMessages, renameConversation, deleteConversation } from "@/engine/appdb";
+import { gravando } from "@/engine/estado";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -21,7 +22,7 @@ export async function GET(_req: Request, { params }: Ctx): Promise<Response> {
 }
 
 interface PatchBody { title?: unknown }
-export async function PATCH(req: Request, { params }: Ctx): Promise<Response> {
+async function PATCH_(req: Request, { params }: Ctx): Promise<Response> {
   try {
     const user = await requireUser();
     const { id } = await params;
@@ -35,7 +36,7 @@ export async function PATCH(req: Request, { params }: Ctx): Promise<Response> {
   }
 }
 
-export async function DELETE(_req: Request, { params }: Ctx): Promise<Response> {
+async function DELETE_(_req: Request, { params }: Ctx): Promise<Response> {
   try {
     const user = await requireUser();
     const { id } = await params;
@@ -45,3 +46,7 @@ export async function DELETE(_req: Request, { params }: Ctx): Promise<Response> 
     return authErrorResponse(e) ?? Response.json({ error: msg(e) }, { status: 500 });
   }
 }
+
+// Deploy (D46.4): the remote state is saved before the response.
+export const PATCH = gravando(PATCH_);
+export const DELETE = gravando(DELETE_);

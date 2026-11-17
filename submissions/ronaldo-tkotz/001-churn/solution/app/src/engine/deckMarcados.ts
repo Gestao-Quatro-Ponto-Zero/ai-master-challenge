@@ -12,7 +12,7 @@
  */
 import OpenAI from "openai";
 import PptxGenJS from "pptxgenjs";
-import { appdb } from "./appdb";
+import { appdb, appdbGeracao } from "./appdb";
 import { runQuery } from "./warehouse";
 import { listarMarcados, arquivoMarcado, origemMarcado, TELAS, type Marcado } from "./marcados";
 import { MOTIVOS } from "./tela2";
@@ -363,12 +363,13 @@ export function arranjoPorRegra(graficos: GraficoAterrado[]): Arranjo {
 // ── Assembly: arrangement + number check ─────────────────────────────────────
 
 const DDL = `CREATE TABLE IF NOT EXISTS deck_marcados (user_id TEXT PRIMARY KEY, json TEXT NOT NULL, criado_em TEXT NOT NULL);`;
-let pronto = false;
+// The generation of the app DB the DDL ran on: a DB swapped in from the remote state (D46.4) runs it again.
+let pronto = -1;
 function db() {
   const d = appdb();
-  if (!pronto) {
+  if (pronto !== appdbGeracao()) {
     d.exec(DDL);
-    pronto = true;
+    pronto = appdbGeracao();
   }
   return d;
 }

@@ -115,8 +115,8 @@ D20–D24, and an evaluator can reach it with a username and password.
 - [ ] ISC-23: Deck generation produces a RavenStack deck with no leftover framing. Progress: the marked-charts .pptx (ISC-38) is the RavenStack deck path; Veta’s pin-and-AI deck code (`deck.ts`, `/decks`) is off the menu but still in the code. The Minto arranger now lives in `deckMarcados.ts` for the marked charts (ISC-39).
 
 ### Deploy (phase 3)
-- [ ] ISC-24: The RavenStack database ships with the deploy (`data/ravenstack.db`).
-- [ ] ISC-25: Deployed on Vercel or Railway with HTTPS.
+- [x] ISC-24: The RavenStack database ships with the deploy (`data/ravenstack.db`). Evidence: `outputFileTracingIncludes` puts it in every function; `/api/health` on the deploy → `{"warehouse":"ok"}`; every screen renders from it.
+- [x] ISC-25: Deployed on Vercel or Railway with HTTPS. Evidence: https://ravenstack-churn.vercel.app (Vercel, region gru1; D46.4). The app DB is an encrypted SQLite snapshot in a private Vercel Blob, loaded when another instance wrote a newer one (conditional GET) and uploaded before a writing route responds. Browser run on production: evaluator login, six pages 200, drill, mark, custom screen with DeepSeek kept after reopening, no console errors.
 - [ ] ISC-26: The evaluator logs in with the default credentials given in the README.
 - [ ] ISC-27: No secret or `node_modules` enters git (files added one by one under the ignored `submissions/` folder). Progress: commit 993fe1b staged 116 files one by one, no `.env`/`node_modules`/sqlite; privacy scan 0. Commit 7213f7e (screens, D30–D43) staged 40 files one by one with the same checks; privacy scan 0; pushed to `submission/ronaldo-tkotz`. Stays open until the deploy commit.
 
@@ -135,6 +135,7 @@ D20–D24, and an evaluator can reach it with a username and password.
 
 ## Changelog
 
+- 2026-11-17: Deployed on Vercel (D46.4): https://ravenstack-churn.vercel.app. `engine/estado.ts` keeps the app DB as an encrypted snapshot in a private Blob (conditional-GET freshness check, upload before a writing route responds via `gravando()`), `vercel.json` (gru1), `.vercelignore`, warehouse traced into every function. `estado-test` passes locally and against a test Blob. ISC-24 and ISC-25 met; ISC-26 waits on the human (publish the evaluator password in the README or not).
 - 2026-11-17: Custom screens built (D46.2): `engine/telasUsuario.ts`, `api/telas/*`, `/telas`, `/telas/[id]`, `TelaPropria.tsx`, "Minhas telas" in the menu; marking accepts `/telas/<id>`; `ask()` takes earlier turns and extra instructions, and the chat sends its history. `telas-test` 15 checks. ISC-41 met.
 - 2026-11-17: Drill-down built (D46.1): `engine/recorte.ts` (five universes, fixed dimension catalogue, path values checked against the database), `api/recorte`, `components/telas/Recorte.tsx` (slice size, profile against the rest of the base, breakdowns that go one level deeper on click, cross of two attributes, records, ask the analyst); click targets on screen 2, screen 3 and the overview. `recorte-test` 28 checks. ISC-40 met. ISC-41 to ISC-43 opened (D46).
 - 2026-11-17: Minto deck from the marked charts (D45): `engine/deckMarcados.ts` (grounding, number check, LLM and plain arrangers, .pptx), `api/marcados/deck`, `Apresentacao.tsx`; marks store their SQL; unmark button in red. `deck-marcados-test` 28 checks. ISC-39 met.

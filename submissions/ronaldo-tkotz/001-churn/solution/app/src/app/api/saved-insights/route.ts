@@ -3,6 +3,7 @@ import { listSavedInsights, createSavedInsight, deleteSavedInsightBySource } fro
 import { isChartType, type ChartSpec } from "@/engine/tools";
 import { coerceTablePayload, coerceTransform, isPinKind, type StoredChart } from "@/engine/parts";
 import { activeDatasetId } from "@/engine/datasets";
+import { gravando } from "@/engine/estado";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -36,7 +37,7 @@ interface CreateBody {
 }
 const str = (v: unknown): string | null => (typeof v === "string" ? v : null);
 
-export async function POST(req: Request): Promise<Response> {
+async function POST_(req: Request): Promise<Response> {
   try {
     const user = await requireUser();
     const body = (await req.json().catch(() => ({}))) as CreateBody;
@@ -64,7 +65,7 @@ export async function POST(req: Request): Promise<Response> {
 }
 
 interface DeleteBody { sourceKind?: unknown; sourceId?: unknown }
-export async function DELETE(req: Request): Promise<Response> {
+async function DELETE_(req: Request): Promise<Response> {
   try {
     const user = await requireUser();
     const body = (await req.json().catch(() => ({}))) as DeleteBody;
@@ -77,3 +78,7 @@ export async function DELETE(req: Request): Promise<Response> {
     return Response.json({ ok: true, removed });
   } catch (e) { return authErrorResponse(e) ?? Response.json({ error: msg(e) }, { status: 500 }); }
 }
+
+// Deploy (D46.4): the remote state is saved before the response.
+export const POST = gravando(POST_);
+export const DELETE = gravando(DELETE_);

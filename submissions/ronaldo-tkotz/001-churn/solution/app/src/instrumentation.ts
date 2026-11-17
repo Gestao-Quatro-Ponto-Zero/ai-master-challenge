@@ -6,7 +6,9 @@
 export async function register() {
   if (process.env.NEXT_RUNTIME === "nodejs") {
     const { ensureDataDirs } = await import("./engine/seed");
-    const { seedJudgeUser } = await import("./engine/appdb");
+    const { seedJudgeUser, estadoRemoto } = await import("./engine/appdb");
+    // On the deploy the app DB comes from the remote state (D46.4), which seeds the login itself.
+    if (estadoRemoto()) return;
     ensureDataDirs();
     await seedJudgeUser();
   }

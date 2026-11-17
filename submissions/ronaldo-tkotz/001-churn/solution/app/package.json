@@ -33,6 +33,7 @@
     "drill-test": "node --import tsx scripts/drill-test.ts",
     "recorte-test": "node --import tsx scripts/recorte-test.ts",
     "telas-test": "node --import tsx scripts/telas-test.ts",
+    "estado-test": "node --import tsx scripts/estado-test.ts",
     "axis-test": "node --import tsx scripts/axis-test.ts",
     "sanitize-test": "node --import tsx scripts/sanitize-check.ts",
     "ds-test": "node --import tsx scripts/ds-test.ts",
@@ -44,6 +45,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.104.1",
     "@modelcontextprotocol/sdk": "^1.29.0",
+    "@vercel/blob": "^2.9.0",
     "better-sqlite3": "^12.10.0",
     "next": "16.2.9",
     "openai": "^6.45.0",

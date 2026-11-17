@@ -14,6 +14,8 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["better-sqlite3"],
   turbopack: { root: projectRoot },
   outputFileTracingRoot: projectRoot,
+  // The read-only RavenStack database ships inside every server function (ISC-24, D46.4).
+  outputFileTracingIncludes: { "/**": ["./data/ravenstack.db"] },
 };
 
 export default nextConfig;

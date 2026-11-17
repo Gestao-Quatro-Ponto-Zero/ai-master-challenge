@@ -5,7 +5,7 @@
  * answer are kept too: a follow-up sees the screen's earlier analyses, and the presentation can use
  * them as context (D46.3). Lives in the app DB, never in the read-only RavenStack database.
  */
-import { appdb } from "./appdb";
+import { appdb, appdbGeracao } from "./appdb";
 import { ask, type AgentResult } from "./agent";
 import type { ChartSpec } from "./parts";
 
@@ -42,12 +42,13 @@ const DDL = `
   CREATE INDEX IF NOT EXISTS idx_paineis_tela ON paineis_tela(tela_id, id);
 `;
 
-let pronto = false;
+// The generation of the app DB the DDL ran on: a DB swapped in from the remote state (D46.4) runs it again.
+let pronto = -1;
 function db() {
   const d = appdb();
-  if (!pronto) {
+  if (pronto !== appdbGeracao()) {
     d.exec(DDL);
-    pronto = true;
+    pronto = appdbGeracao();
   }
   return d;
 }

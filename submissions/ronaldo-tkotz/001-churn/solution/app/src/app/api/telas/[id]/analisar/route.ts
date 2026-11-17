@@ -4,6 +4,7 @@
  */
 import { requireUser, authErrorResponse } from "@/app/lib/auth";
 import { analisarNaTela } from "@/engine/telasUsuario";
+import { gravando } from "@/engine/estado";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -11,7 +12,7 @@ export const maxDuration = 120;
 const msg = (e: unknown): string => (e instanceof Error ? e.message : String(e));
 type Ctx = { params: Promise<{ id: string }> };
 
-export async function POST(req: Request, { params }: Ctx): Promise<Response> {
+async function POST_(req: Request, { params }: Ctx): Promise<Response> {
   try {
     const user = await requireUser();
     const { id } = await params;
@@ -21,3 +22,6 @@ export async function POST(req: Request, { params }: Ctx): Promise<Response> {
     return Response.json(await analisarNaTela(user.id, id, body.pedido));
   } catch (e) { return authErrorResponse(e) ?? Response.json({ error: msg(e) }, { status: 500 }); }
 }
+
+// Deploy (D46.4): the remote state is saved before the response.
+export const POST = gravando(POST_);

@@ -1,5 +1,6 @@
 import { requireUser, authErrorResponse } from "@/app/lib/auth";
 import { listConversations, createConversation } from "@/engine/appdb";
+import { gravando } from "@/engine/estado";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -15,7 +16,7 @@ export async function GET(): Promise<Response> {
 }
 
 interface CreateBody { title?: unknown }
-export async function POST(req: Request): Promise<Response> {
+async function POST_(req: Request): Promise<Response> {
   try {
     const user = await requireUser();
     const body = (await req.json().catch(() => ({}))) as CreateBody;
@@ -26,3 +27,6 @@ export async function POST(req: Request): Promise<Response> {
     return authErrorResponse(e) ?? Response.json({ error: msg(e) }, { status: 500 });
   }
 }
+
+// Deploy (D46.4): the remote state is saved before the response.
+export const POST = gravando(POST_);

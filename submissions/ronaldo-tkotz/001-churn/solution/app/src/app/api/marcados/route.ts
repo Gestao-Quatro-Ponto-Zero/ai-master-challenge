@@ -1,6 +1,7 @@
 import { requireUser, authErrorResponse } from "@/app/lib/auth";
 import { listarMarcados, marcar, desmarcar, validarMarcado, ROTA_TELA_USUARIO, type NovoMarcado } from "@/engine/marcados";
 import { obterTela } from "@/engine/telasUsuario";
+import { gravando } from "@/engine/estado";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -15,7 +16,7 @@ export async function GET(): Promise<Response> {
 }
 
 /** Marks a chart with its faithful copy (SVG + PNG made in the browser). */
-export async function POST(req: Request): Promise<Response> {
+async function POST_(req: Request): Promise<Response> {
   try {
     const user = await requireUser();
     const body = (await req.json().catch(() => ({}))) as Partial<NovoMarcado>;
@@ -29,7 +30,7 @@ export async function POST(req: Request): Promise<Response> {
   } catch (e) { return authErrorResponse(e) ?? Response.json({ error: msg(e) }, { status: 500 }); }
 }
 
-export async function DELETE(req: Request): Promise<Response> {
+async function DELETE_(req: Request): Promise<Response> {
   try {
     const user = await requireUser();
     const body = (await req.json().catch(() => ({}))) as { chave?: unknown };
@@ -37,3 +38,7 @@ export async function DELETE(req: Request): Promise<Response> {
     return Response.json({ ok: true, removido: desmarcar(user.id, body.chave) });
   } catch (e) { return authErrorResponse(e) ?? Response.json({ error: msg(e) }, { status: 500 }); }
 }
+
+// Deploy (D46.4): the remote state is saved before the response.
+export const POST = gravando(POST_);
+export const DELETE = gravando(DELETE_);

@@ -118,8 +118,36 @@ function maybeMoveLegacyDb(dbPath: string): void {
   console.log(`[appdb] legacy pre-auth app DB contained user work; moved aside to ${legacy}`);
 }
 
+/**
+ * Remote state (D46.4): on a host without a lasting disk (Vercel) the app DB lives in memory and
+ * is swapped for the snapshot kept in Blob storage (engine/estado.ts). The generation changes on
+ * every swap, so modules that cache "my tables exist" run their DDL again.
+ */
+let _geracao = 0;
+export const appdbGeracao = (): number => _geracao;
+export const estadoRemoto = (): boolean => Boolean(process.env.BLOB_READ_WRITE_TOKEN && process.env.STATE_KEY);
+
+/** Replaces the app DB with a serialized snapshot (or an empty in-memory DB). */
+export function substituirAppDb(snapshot: Buffer | null): void {
+  _db?.close();
+  _db = snapshot ? new Database(snapshot) : new Database(":memory:");
+  _db.pragma("foreign_keys = ON");
+  ensureSchema(_db);
+  _geracao += 1;
+}
+
+/** Changes made on the current connection since it opened (the remote state's dirty check). */
+export function appdbMudancas(): number {
+  return (appdb().prepare("SELECT total_changes() AS n").get() as { n: number }).n;
+}
+
 /** Lazily open the app DB (read-write) and ensure the schema exists. */
 export function appdb(): Database.Database {
+  if (!_db && estadoRemoto()) {
+    // Before the first snapshot arrives: an empty in-memory DB, never the read-only disk.
+    substituirAppDb(null);
+    return _db!;
+  }
   if (!_db) {
     const dbPath = appDbPath();
     fs.mkdirSync(path.dirname(dbPath), { recursive: true });

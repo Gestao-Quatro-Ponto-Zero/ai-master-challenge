@@ -1,5 +1,6 @@
 import { requireUser, authErrorResponse } from "@/app/lib/auth";
 import { renameSavedInsight, deleteSavedInsight } from "@/engine/appdb";
+import { gravando } from "@/engine/estado";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -7,7 +8,7 @@ const msg = (e: unknown): string => (e instanceof Error ? e.message : String(e))
 type Ctx = { params: Promise<{ id: string }> };
 interface PatchBody { title?: unknown }
 
-export async function PATCH(req: Request, { params }: Ctx): Promise<Response> {
+async function PATCH_(req: Request, { params }: Ctx): Promise<Response> {
   try {
     const user = await requireUser();
     const { id } = await params;
@@ -21,7 +22,7 @@ export async function PATCH(req: Request, { params }: Ctx): Promise<Response> {
   } catch (e) { return authErrorResponse(e) ?? Response.json({ error: msg(e) }, { status: 500 }); }
 }
 
-export async function DELETE(_req: Request, { params }: Ctx): Promise<Response> {
+async function DELETE_(_req: Request, { params }: Ctx): Promise<Response> {
   try {
     const user = await requireUser();
     const { id } = await params;
@@ -31,3 +32,7 @@ export async function DELETE(_req: Request, { params }: Ctx): Promise<Response> 
     return Response.json({ ok: true });
   } catch (e) { return authErrorResponse(e) ?? Response.json({ error: msg(e) }, { status: 500 }); }
 }
+
+// Deploy (D46.4): the remote state is saved before the response.
+export const PATCH = gravando(PATCH_);
+export const DELETE = gravando(DELETE_);

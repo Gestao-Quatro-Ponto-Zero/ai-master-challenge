@@ -4,7 +4,7 @@
  * the filters in force and the panel's title and note. Marks live in the app DB, never in the
  * read-only RavenStack database. The presentation is built from them in deckMarcados.ts (D45).
  */
-import { appdb } from "./appdb";
+import { appdb, appdbGeracao } from "./appdb";
 import { lerFiltros, descreverFiltros } from "./filtros";
 import { nomeTela } from "./telasUsuario";
 
@@ -28,14 +28,15 @@ const DDL = `
   CREATE INDEX IF NOT EXISTS idx_marcados_user ON graficos_marcados(user_id, criado_em);
 `;
 
-let pronto = false;
+// The generation of the app DB the DDL ran on: a DB swapped in from the remote state (D46.4) runs it again.
+let pronto = -1;
 function db() {
   const d = appdb();
-  if (!pronto) {
+  if (pronto !== appdbGeracao()) {
     d.exec(DDL);
     const cols = (d.prepare("PRAGMA table_info(graficos_marcados)").all() as { name: string }[]).map((c) => c.name);
     if (!cols.includes("sql_json")) d.exec("ALTER TABLE graficos_marcados ADD COLUMN sql_json TEXT NOT NULL DEFAULT '[]'");
-    pronto = true;
+    pronto = appdbGeracao();
   }
   return d;
 }

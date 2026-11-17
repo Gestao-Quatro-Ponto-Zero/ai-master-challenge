@@ -5,6 +5,7 @@
 import { requireUser, authErrorResponse } from "@/app/lib/auth";
 import { adicionarPainel, obterTela, removerPainel } from "@/engine/telasUsuario";
 import { isChartType, type ChartSpec } from "@/engine/parts";
+import { gravando } from "@/engine/estado";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -16,7 +17,7 @@ function chartValido(c: unknown): c is ChartSpec {
   return !!s && isChartType(s.type) && typeof s.x === "string" && Array.isArray(s.y) && s.y.every((y) => typeof y === "string") && Array.isArray(s.data) && s.data.length > 0 && s.data.length <= 500;
 }
 
-export async function POST(req: Request, { params }: Ctx): Promise<Response> {
+async function POST_(req: Request, { params }: Ctx): Promise<Response> {
   try {
     const user = await requireUser();
     const { id } = await params;
@@ -29,7 +30,7 @@ export async function POST(req: Request, { params }: Ctx): Promise<Response> {
   } catch (e) { return authErrorResponse(e) ?? Response.json({ error: msg(e) }, { status: 500 }); }
 }
 
-export async function DELETE(req: Request, { params }: Ctx): Promise<Response> {
+async function DELETE_(req: Request, { params }: Ctx): Promise<Response> {
   try {
     const user = await requireUser();
     const { id } = await params;
@@ -39,3 +40,7 @@ export async function DELETE(req: Request, { params }: Ctx): Promise<Response> {
     return Response.json({ ok: removerPainel(user.id, id, painel) });
   } catch (e) { return authErrorResponse(e) ?? Response.json({ error: msg(e) }, { status: 500 }); }
 }
+
+// Deploy (D46.4): the remote state is saved before the response.
+export const POST = gravando(POST_);
+export const DELETE = gravando(DELETE_);

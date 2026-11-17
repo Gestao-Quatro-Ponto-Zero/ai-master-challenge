@@ -1,6 +1,7 @@
 /** One screen (D46.2): GET with its requests and panels, PATCH {nome}, DELETE. */
 import { requireUser, authErrorResponse } from "@/app/lib/auth";
 import { apagarTela, listarPaineis, listarPedidos, obterTela, renomearTela } from "@/engine/telasUsuario";
+import { gravando } from "@/engine/estado";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -17,7 +18,7 @@ export async function GET(_req: Request, { params }: Ctx): Promise<Response> {
   } catch (e) { return authErrorResponse(e) ?? Response.json({ error: msg(e) }, { status: 500 }); }
 }
 
-export async function PATCH(req: Request, { params }: Ctx): Promise<Response> {
+async function PATCH_(req: Request, { params }: Ctx): Promise<Response> {
   try {
     const user = await requireUser();
     const { id } = await params;
@@ -27,10 +28,14 @@ export async function PATCH(req: Request, { params }: Ctx): Promise<Response> {
   } catch (e) { return authErrorResponse(e) ?? Response.json({ error: msg(e) }, { status: 500 }); }
 }
 
-export async function DELETE(_req: Request, { params }: Ctx): Promise<Response> {
+async function DELETE_(_req: Request, { params }: Ctx): Promise<Response> {
   try {
     const user = await requireUser();
     const { id } = await params;
     return Response.json({ ok: apagarTela(user.id, id) });
   } catch (e) { return authErrorResponse(e) ?? Response.json({ error: msg(e) }, { status: 500 }); }
 }
+
+// Deploy (D46.4): the remote state is saved before the response.
+export const PATCH = gravando(PATCH_);
+export const DELETE = gravando(DELETE_);

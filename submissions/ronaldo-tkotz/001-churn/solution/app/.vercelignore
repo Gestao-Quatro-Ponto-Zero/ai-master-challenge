@@ -1,0 +1,17 @@
+# Vercel deploy (D46.4): upload the source and the read-only RavenStack database, nothing local.
+node_modules
+.next
+.env
+.env.*
+!.env.example
+data/*.sqlite
+data/*.sqlite-*
+data/*.zip
+data/datasets/
+docs/
+public/deck-textures/
+scripts/
+*.tsbuildinfo
+.DS_Store
+Dockerfile
+railway.json

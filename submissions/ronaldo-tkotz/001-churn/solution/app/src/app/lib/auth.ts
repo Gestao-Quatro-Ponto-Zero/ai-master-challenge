@@ -1,4 +1,6 @@
 import { cookies } from "next/headers";
+import { after } from "next/server";
+import { prepararEstado, persistirEstado } from "@/engine/estado";
 import { SESSION_COOKIE, verifySessionToken } from "@/app/lib/session";
 
 export interface CurrentUser {
@@ -22,6 +24,9 @@ export async function currentUser(): Promise<CurrentUser | null> {
 export async function requireUser(): Promise<CurrentUser> {
   const user = await currentUser();
   if (!user) throw new UnauthorizedError();
+  // Deploy (D46.4): load the newest app state first, upload it after the response if it changed.
+  await prepararEstado();
+  after(persistirEstado);
   return user;
 }
 

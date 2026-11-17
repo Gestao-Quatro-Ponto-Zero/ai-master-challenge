@@ -1,5 +1,6 @@
 import { requireUser, authErrorResponse } from "@/app/lib/auth";
 import { arquivoMarcado, removerMarcado, nomeArquivo } from "@/engine/marcados";
+import { gravando } from "@/engine/estado";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -28,7 +29,7 @@ export async function GET(req: Request, { params }: Ctx): Promise<Response> {
   } catch (e) { return authErrorResponse(e) ?? Response.json({ error: msg(e) }, { status: 500 }); }
 }
 
-export async function DELETE(_req: Request, { params }: Ctx): Promise<Response> {
+async function DELETE_(_req: Request, { params }: Ctx): Promise<Response> {
   try {
     const user = await requireUser();
     const id = Number((await params).id);
@@ -36,3 +37,6 @@ export async function DELETE(_req: Request, { params }: Ctx): Promise<Response> 
     return Response.json({ ok: removerMarcado(user.id, id) });
   } catch (e) { return authErrorResponse(e) ?? Response.json({ error: msg(e) }, { status: 500 }); }
 }
+
+// Deploy (D46.4): the remote state is saved before the response.
+export const DELETE = gravando(DELETE_);
