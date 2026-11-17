@@ -10,7 +10,7 @@
 
 ## Executive Summary
 
-Antes de buscar gargalos, conferi se os dados de suporte eram confiáveis, e eles não são: os tempos são inconsistentes (em 49% dos tickets fechados, a resolução aparece antes da primeira resposta), a satisfação é distribuída por igual de 1 a 5 e os textos vêm de 16 frases-modelo. Com esse dado, ninguém consegue afirmar onde se perde tempo ou o que move a satisfação. O achado principal é que **a operação não mede o que importa**. Usei o dataset de TI, que é real, para provar a automação: um classificador que acerta 86,6% dos tickets e, decidindo sozinho só quando tem confiança ≥ 70%, cobre 72% do volume com 95,6% de acerto. O resto, e tudo que envolve dinheiro, urgência, segurança ou acesso privilegiado, vai para um humano. **Recomendação:** começar a medir os tempos de verdade e rodar um piloto de triagem automática treinado com os tickets da própria empresa, com potencial estimado de ~90 horas/mês de triagem economizadas.
+Antes de buscar gargalos, conferi se os dados de suporte eram confiáveis, e eles não são: os tempos são inconsistentes (em 49% dos tickets fechados, a resolução aparece antes da primeira resposta), a satisfação é distribuída por igual de 1 a 5 e os textos vêm de 16 frases-modelo. Com esse dado, ninguém consegue afirmar onde se perde tempo ou o que move a satisfação. O achado principal é que **a operação não mede o que importa**. Usei o dataset de TI, que é real, para provar a automação: um classificador que acerta 86,6% dos tickets e, decidindo sozinho só quando tem confiança ≥ 70%, cobre 72% do volume com 95,6% de acerto. O resto, e tudo que envolve dinheiro, urgência, segurança ou acesso privilegiado, vai para um humano. **Recomendação:** começar a medir os tempos de verdade e rodar um piloto de triagem automática treinado com os tickets da própria empresa, com potencial estimado entre ~36 e ~90 horas/mês de triagem economizadas, dependendo de a IA também encaminhar (sem decidir) os chamados que envolvem dinheiro.
 
 ---
 
@@ -62,6 +62,10 @@ O ponto principal é usar a confiança do modelo para decidir quando a IA age so
 
 Escolhi **70%** porque equilibra volume automatizado e erro (4,4%). É uma decisão de negócio: se errar custar caro, sobe o limiar.
 
+**Checagens de robustez** ([`solution/resultados_checagens.md`](solution/resultados_checagens.md)):
+- *O acerto está inflado por chamados repetidos?* Só 6% dos chamados de teste têm um "gêmeo" no treino; sem eles, o acerto continua 86,0%.
+- *O modelo cola pela assinatura/cargo no fim do texto?* Usando só as 3 últimas palavras, acerta 39,9%; sem elas, 86,1%. Ele aprende pelo problema descrito.
+
 **Por categoria:** a pior é **Administrative rights** (precisão 77%), justamente a mais sensível, porque mexe com acesso e permissão. As maiores confusões são Hardware ↔ HR Support e Hardware ↔ Miscellaneous ("Miscellaneous" funciona como categoria-lixeira).
 
 #### 3. A pegadinha do cruzamento
@@ -95,7 +99,9 @@ Prints em [`process-log/screenshots/`](process-log/screenshots/).
 1. **Medir antes de otimizar (semana 1).** Registrar abertura, primeira resposta e resolução como duração, por canal e tipo, e pedir nota de satisfação em todo ticket fechado. Sem isso, qualquer decisão de contratar ou automatizar é no escuro.
 2. **Follow-up automático para tickets aguardando o cliente (semana 1–2).** É um terço do volume. Lembrete automático em 24 h e 72 h, e fechamento com aviso depois de 7 dias sem resposta. É simples, de baixo risco e libera a fila.
 3. **Piloto de triagem automática (semanas 2–6).** Rotular ~2.000 tickets da própria operação nas categorias de negócio, treinar o mesmo modelo e rodar em paralelo com a triagem humana por 2 semanas, comparando o acerto. Só ligar o encaminhamento automático se o acerto ficar ≥ 95% acima do limiar.
-4. **ROI estimado para o piloto confirmar:** 30 mil tickets/ano × 72% triados pela IA × 3 min de triagem manual por ticket (premissa a validar com o time) ≈ **1.075 horas/ano (~90 h/mês)**.
+4. **ROI estimado para o piloto confirmar** (premissas: 30 mil tickets/ano, 3 min de triagem manual por ticket, a validar com o time):
+   - **Conservador, ~430 h/ano (~36 h/mês):** a IA só tria o que não envolve dinheiro. Pelas minhas próprias regras, reembolso, cancelamento e cobrança vão para humano, e no dataset de suporte esses tipos são 60% do volume.
+   - **Ampliado, ~1.075 h/ano (~90 h/mês):** a IA também *encaminha* os chamados de dinheiro para a fila do financeiro, mas quem *decide* reembolso e cancelamento continua sendo uma pessoa. Encaminhar não é decidir: o risco fica com o humano e o tempo de triagem sai da fila.
 5. **Revisar a categoria "Miscellaneous"**, que concentra confusão e esconde demanda que poderia ter dono.
 
 ### Limitações
@@ -103,7 +109,7 @@ Prints em [`process-log/screenshots/`](process-log/screenshots/).
 - O dataset de suporte tem sinais fortes de ser sintético, então não serve para medir gargalos nem satisfação reais.
 - O ROI depende de duas premissas não verificadas: 3 min de triagem manual e desempenho parecido quando treinado com os tickets da empresa.
 - O dataset de TI está em inglês e pré-processado (sem números, pontuação nem acento). Num suporte brasileiro real, o modelo precisa ser treinado em português.
-- Os textos de TI terminam com o cargo de quem escreveu, e o modelo pode estar usando isso como atalho. Vale testar removendo assinaturas e cargos antes de ir para produção.
+- A proporção de chamados que envolvem dinheiro (60%), usada no ROI, vem do dataset de suporte, que parece sintético. O mix real da operação muda a estimativa.
 - Não implementei a geração de resposta sugerida (o "G" do RAG) porque o dataset não tem resoluções reais para usar como base.
 
 ---
@@ -135,11 +141,13 @@ Prints em [`process-log/screenshots/`](process-log/screenshots/).
 
 - **ROI que não se sustentava.** Na primeira análise, o Claude apresentou "72% automatizados com 95,6% de acerto, ~90 h/mês economizadas" como se valesse para o suporte da empresa. Quando pedi a segunda varredura, testamos aplicar o modelo nos tickets de suporte e ele não funcionou (74% viram "Hardware"). Corrigi a forma de apresentar: a técnica está provada; o ROI é estimativa a confirmar em piloto.
 - **Números que mudaram com o pré-processamento.** No protótipo final, o texto é limpo antes de classificar. Os números do teste de transferência mudaram (confiança média de 60% para 55%), então passei a usar só os números gerados pelos scripts, não os da conversa.
+- **ROI que contradizia as minhas próprias regras.** Numa terceira revisão, perguntei se o desafio não teria uma "subpegadinha" para quem achasse a primeira. Encontramos uma na nossa própria conta: o ROI assumia 72% de automação, mas as regras mandam dinheiro sempre para humano, e isso é 60% do volume de suporte. Reescrevi o ROI como faixa (36 a 90 h/mês) e separei "IA encaminhar" de "IA decidir".
+- **Suspeita de atalho pela assinatura.** Levantamos a hipótese de que o modelo acertava pelo cargo no fim do texto. Testei em vez de só citar como risco: a hipótese caiu (86,1% sem as últimas palavras).
 - **Formato do tempo.** A leitura literal do README tratava "First Response Time" como duração. Conferindo o dado, vi que é data/hora, o que mudou toda a análise de tempo.
 
 ### O que eu adicionei que a IA sozinha não faria
 
-- **Desconfiar do desafio.** A IA respondeu as perguntas do diretor; fui eu que suspeitei de pegadinha e pedi para procurar de propósito. Foi isso que achou o erro do cruzamento.
+- **Desconfiar do desafio, e de mim mesmo.** A IA respondeu as perguntas do diretor; fui eu que suspeitei de pegadinha e pedi para procurar de propósito, o que achou o erro do cruzamento. Depois, suspeitei de uma subpegadinha para quem se achasse esperto demais, e ela estava na minha própria conta de ROI.
 - **Não vender ruído como insight.** Escolhi dizer "o dado não sustenta essa conclusão" em vez de entregar um ranking de canais bonito e falso.
 - **As regras de passagem para humano.** Vêm da minha experiência implantando agentes de IA de vendas e suporte: dinheiro, retenção, segurança e acesso nunca ficam só com a máquina, e confiança baixa vai para humano. Também tirei do dado que Administrative rights é a pior categoria do modelo, e por isso ela fica sempre com humano.
 - **Follow-up como prioridade.** Ver um terço dos tickets parados esperando o cliente e ligar isso a uma solução simples vem de quem já implementou follow-up automático no WhatsApp.
@@ -153,7 +161,7 @@ Prints em [`process-log/screenshots/`](process-log/screenshots/).
 - [x] Diário do processo com horários (`process-log/diario.md`)
 - [x] Raciocínio e hipóteses (`docs/00-raciocinio.md`)
 - [x] Git history (commits mostrando a evolução)
-- [x] Scripts reprodutíveis: qualquer pessoa roda `diagnostico.py` e `avaliar.py` e chega nos mesmos números
+- [x] Scripts reprodutíveis: qualquer pessoa roda `diagnostico.py`, `avaliar.py` e `checagens_extras.py` e chega nos mesmos números
 
 ---
 

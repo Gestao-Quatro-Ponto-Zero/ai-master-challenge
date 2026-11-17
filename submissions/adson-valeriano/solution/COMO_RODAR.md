@@ -11,6 +11,7 @@ python -m pip install -r submissions/adson-valeriano/solution/requirements.txt
 cd submissions/adson-valeriano/solution
 python diagnostico.py      # diagnóstico do dataset de suporte -> resultados_diagnostico.md
 python avaliar.py          # treina e avalia o classificador   -> resultados_avaliacao.md
+python checagens_extras.py # vazamento, atalho e ROI por cenário -> resultados_checagens.md
 streamlit run app.py       # abre o protótipo no navegador
 ```
 
