@@ -141,15 +141,29 @@ async function abrirMicrofone(S) {
 }
 
 function tocar(S, fala) {
-  if (!S.stream) { S.pendenteFala = fala; return; }
+  if (S.fechada) return;                                           // desligou: trecho atrasado não toca
+  if (!S.stream) { if (S.pendenteFala) S.filaFala.push(fala); else S.pendenteFala = fala; return; }
   clearTimeout(S.timerEspera);
   if (!S.audioEspera.paused && !S.audioEspera.ended) {           // termina a frase de espera antes da resposta
     S.audioEspera.onended = () => { S.audioEspera.onended = null; tocar(S, fala); };
     return;
   }
+  if (S.estado === 'atendente' && S.tocando) { S.filaFala.push(fala); return; }   // trecho seguinte da resposta
   estado(S, 'atendente');
+  S.tocando = true;
   S.audio.src = 'data:audio/wav;base64,' + fala;
-  S.audio.play().catch(() => voltar(S));
+  S.audio.play().catch(() => fimDoTrecho(S));
+}
+
+function fimDoTrecho(S) {
+  S.tocando = false;
+  clearTimeout(S.timerMais);
+  if (S.filaFala.length) { tocar(S, S.filaFala.shift()); return; }
+  if (S.mais) {                     // o próximo trecho ainda está sendo gerado: segue com a vez da atendente
+    S.timerMais = setTimeout(() => { if (!S.tocando && S.estado === 'atendente') voltar(S); }, 10000);
+    return;
+  }
+  voltar(S);
 }
 
 function voltar(S) {
@@ -181,16 +195,20 @@ export default function (component) {
       audio: new Audio(), estado: 'conectando', ruido: 0.004, acima: 0, antes: [], fala: [], silencio: 0,
       durFala: 0, surdoAte: 0, enviado: 0, aguardando: 0, falaTocada: 0, cfg: data.cfg,
       audioEspera: new Audio(), espera: data.espera || [], nEspera: 0, ultimaEspera: 0, timerEspera: null,
+      filaFala: [], tocando: false, mais: false, timerMais: null,
     };
-    S.audio.onended = () => voltar(S);
+    S.audio.onended = () => fimDoTrecho(S);
     S.botao.onclick = () => { S.encerrar = true; S.audio.pause(); fechar(S); S.enviar('desligar', true); };
     abrirMicrofone(S);
   }
   S.enviar = setTriggerValue;
   if (data.encerrada) S.encerrar = true;
+  S.mais = !!data.mais;
   if (data.fala && data.fala_id > S.falaTocada) {
     S.falaTocada = data.fala_id;
     tocar(S, data.fala);
+  } else if (!S.mais && !S.tocando && S.estado === 'atendente' && S.falaTocada) {
+    voltar(S);                                                       // último trecho já tocou
   } else if (data.processado >= S.aguardando && S.estado === 'pensando') {
     voltar(S);                                                       // fala sem resposta (áudio recusado)
   } else if (S.encerrar && S.estado !== 'atendente') {
@@ -204,10 +222,10 @@ _componente = st.components.v2.component("ligacao_g4", html=HTML, css=CSS, js=JS
 
 
 def ligacao(fala_wav: bytes | None, fala_id: int, processado: int, encerrada: bool, key: str,
-            espera: list[bytes] | None = None):
+            espera: list[bytes] | None = None, mais: bool = False):
     """Monta a ligação e devolve o resultado com as trilhas `fala` ({seq, wav}) e `desligar`."""
     dados = {"fala": base64.b64encode(fala_wav).decode() if fala_wav else None, "fala_id": fala_id,
-             "processado": processado, "encerrada": encerrada,
+             "processado": processado, "encerrada": encerrada, "mais": mais,
              "espera": [base64.b64encode(w).decode() for w in espera or [] if w],
              "cfg": {"pausa": PAUSA_FIM_MS, "minima": FALA_MINIMA_MS, "maxima": FALA_MAXIMA_S, "espera": ESPERA_MS,
                      "esperaACada": ESPERA_A_CADA}}

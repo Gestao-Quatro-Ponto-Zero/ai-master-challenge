@@ -63,7 +63,16 @@ def chave_deepseek() -> str | None:
 # small 5,4% de erro por palavra e cerca de 4 s por turno; medium 3,1% mas 10 s por turno; large-v3-turbo 11 a 15 s
 # por turno. Nesta CPU, só o small mantém a ligação fluida (o Whisper sempre processa uma janela de 30 s).
 WHISPER_MODELO = os.getenv("WHISPER_MODELO", "small")
-# Voz da atendente: Piper, voz pt_BR "faber" (rhasspy/piper-voices), fora do git por ser binário de 60 MB.
+# Voz da atendente: Kokoro (kokoro-onnx 0.6.1, int8), voz feminina pt-BR "pf_dora", local como a transcrição.
+# Troca autorizada pelo Jó em 2026-11-16 21:45 BRT, depois de ele achar a voz do Piper robótica. Medido em 5 frases do
+# suporte: a transcrição errou 1,4% das palavras ditas pelo Kokoro contra 7,6% pelo Piper (pronúncia mais clara), mas
+# o Kokoro gera em cerca de 0,55 s por segundo de fala contra 0,08 s do Piper; por isso a resposta toca frase a frase.
+# O Piper (voz "faber") fica como reserva se o modelo do Kokoro faltar, e a voz "cadu" segue como cliente na bateria.
+# Modelos fora do git (binários de 60 a 120 MB).
 VOZ_PIPER = Path(os.getenv("VOZ_PIPER", REPO.parent / "dados/voz/pt_BR-faber-medium.onnx"))
+VOZ_KOKORO = Path(os.getenv("VOZ_KOKORO", REPO.parent / "dados/voz/kokoro-v1.0.int8.onnx"))
+VOZ_KOKORO_VOZES = VOZ_KOKORO.with_name("voices-v1.0.bin")
+VOZ_KOKORO_NOME = os.getenv("VOZ_KOKORO_NOME", "pf_dora")
+VOZ_MOTOR = os.getenv("VOZ_MOTOR", "kokoro")   # "kokoro" ou "piper"
 # Fala longa demais não é turno de ligação; o limite também protege a CPU do link público.
 MAX_SEGUNDOS_FALA = 60

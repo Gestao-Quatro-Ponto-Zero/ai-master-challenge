@@ -7,7 +7,7 @@ Implementa as etapas 2, 5 e 6 do fluxo aprovado, com a revisão da rodada 59, (`
 
 ```bash
 pip install pandas scikit-learn joblib streamlit requests pytest
-pip install faster-whisper "av<16" piper-tts   # ligação por voz no telefone (opcional)
+pip install faster-whisper "av<16" piper-tts kokoro-onnx==0.6.1   # ligação por voz no telefone (opcional)
 python modelo.py        # treina com os 80% de treino do Dataset 2 (mesma separação do relatório)
 python lote.py          # roteia os 9.568 tickets reais do teste e imprime o resumo
 pytest -q tests         # regras, dados pessoais e conversa com a IA simulada
@@ -93,19 +93,26 @@ Escuta e interpretação:
   e interpreta pelo sentido; sem sentido, pede para o cliente repetir.
 - O áudio não é gravado e não vai para nenhuma IA externa; o texto transcrito passa pelas mesmas máscaras de nome,
   CPF, telefone e e-mail do texto digitado.
-- Voz da atendente com o Piper (voz `pt_BR-faber-medium`, de rhasspy/piper-voices), baixada para fora do git. A
-  bateria usa também a voz `pt_BR-cadu-medium` para o cliente:
+- Voz da atendente com o Kokoro (voz feminina `pf_dora`, modelo int8 de thewh1teagle/kokoro-onnx), tocada frase a
+  frase: a primeira começa enquanto as outras são geradas. O Piper (voz `pt_BR-faber-medium`) fica de reserva se o
+  Kokoro faltar, e a bateria usa a voz `pt_BR-cadu-medium` do Piper para o cliente. Modelos fora do git:
 
 ```bash
 mkdir -p ../../../../../dados/voz && cd ../../../../../dados/voz
 for v in faber cadu; do for f in pt_BR-$v-medium.onnx pt_BR-$v-medium.onnx.json; do
   curl -sSLO "https://huggingface.co/rhasspy/piper-voices/resolve/main/pt/pt_BR/$v/medium/$f"; done; done
+for f in kokoro-v1.0.int8.onnx voices-v1.0.bin; do
+  curl -sSLO "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/$f"; done
 ```
 
-- Caminhos e modelo por variável: `VOZ_PIPER` e `WHISPER_MODELO`. Sem os pacotes ou sem a voz, o botão não aparece e
+- Por que o Kokoro (2026-11-16): o Piper só tem vozes masculinas em pt-BR e soava robótico. Em 5 frases do suporte, a
+  transcrição errou 1,4% das palavras ditas pelo Kokoro contra 7,6% pelo Piper. O custo é tempo: em 60 respostas
+  reais, o primeiro trecho leva 2,0 s (mediana; p95 3,8 s) contra 0,6 s (p95 1,6 s) da resposta inteira no Piper.
+  `VOZ_MOTOR=piper` volta à voz anterior.
+- Caminhos e modelo por variável: `VOZ_PIPER`, `VOZ_KOKORO`, `VOZ_KOKORO_NOME`, `VOZ_MOTOR` e `WHISPER_MODELO`. Sem os pacotes ou sem a voz, o botão não aparece e
   o telefone segue como transcrição digitada.
 - Limites: fala de até 25 s por turno no navegador e 60 s no servidor; uma transcrição por vez (com 4 pessoas
-  falando juntas, a última espera cerca de 20 s). O serviço chega a 1,3 GB de RAM com os modelos (teto de 2 GB).
+  falando juntas, a última espera cerca de 20 s). O serviço chega a 1,3 GB de RAM com os modelos, Kokoro incluído (teto de 2 GB).
 - Use fone de ouvido se puder: o cancelamento de eco do navegador ajuda, mas a escuta pausada é a garantia.
 - Bateria por voz: `python bateria_ia.py ../../docs/bateria-ia-rodadaNN-telefone-voz.md --canal telefone --voz`
   (a fala do cliente é sintetizada e passa pela mesma transcrição da página).

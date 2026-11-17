@@ -348,3 +348,42 @@ Mudança validada:
                              expectativa da rodada 71 (injeção com "reembolso" foi ao departamento de Segurança)
 [x] 4 Folga do host          RAM disponível 59%, teto de 2 GB valendo no cgroup
 ```
+
+## Oitava passada: voz da atendente com o Kokoro (2026-11-16 22:25 BRT)
+
+Autorização do Jó (21:47 BRT): "Sim, pode baixar". Pacote `kokoro-onnx` 0.6.1 (PyPI, sem trocar versão de nenhum
+pacote já instalado) e modelo int8 de 92 MB mais as vozes (28 MB), fora do git em `dados/voz/`.
+
+Mudança validada:
+- Voz da atendente: Kokoro, voz feminina `pf_dora`; Piper `faber` de reserva (`VOZ_MOTOR=piper` ou modelo ausente).
+- A resposta toca frase a frase: a primeira frase sai sozinha (a partir de 12 caracteres), as seguintes são geradas
+  enquanto ela toca, e a escuta só volta depois do último trecho.
+- Abreviações por extenso antes da fala ("Av." virava "A V").
+- Desligar no meio da fala corta os trechos que ainda chegam.
+
+Medido:
+
+| Medida | Piper faber | Kokoro pf_dora |
+|---|---|---|
+| Erro da transcrição sobre a própria voz (5 frases) | 7,6% | 1,4% |
+| Tempo até ter o que tocar (60 respostas reais, mediana / p95) | 0,6 s / 1,6 s (resposta toda) | 2,0 s / 3,8 s (1º trecho) |
+
+```
+[x] 2.1 Funcional            227 testes pytest verdes (12 novos em tests/test_voz_kokoro.py): divisão em trechos,
+                             primeira frase sozinha, abreviação, WAV de 16 bits, reserva do Piper, voz do cliente da
+                             bateria nunca usa o Kokoro, fila no navegador, ida e volta real Kokoro → Whisper
+[x] 2.2 Integração + falhas  modelo do Kokoro ausente ou pacote faltando: volta ao Piper sozinho (teste)
+[x] 2.3 E2E                  Chromium com microfone falso, 4 turnos sem clique e sem a escuta reabrir entre trechos;
+                             do fim da fala à resposta 8,9 a 10,4 s (6,7 a 7,3 s com o Piper, em outra rodada da IA);
+                             Desligar durante a fala fechou a ATD como "Cliente desistiu"
+[x] 2.4 Erro/borda           primeira frase longa: o corte na vírgula foi testado e descartado (silêncio de cerca de
+                             2,5 s no meio da frase); frase curta não vira trecho isolado depois da primeira
+[x] 2.5 Carga                ver tabela: +1,4 s na mediana por resposta
+[x] 2.6 Estresse             pico de memória do serviço 1,15 GB com os dois modelos (teto 2 GB)
+[x] 2.7 Segurança            voz gerada na máquina; nada sai dela além do texto mascarado de sempre
+[x] 2.8 Regressão            227 testes (215 na sétima passada)
+[x] 2.9 Recuperação          serviço reiniciado, 200 local e no domínio
+[ ] 2.10 Homologação (Jó)    pendente: decidir no ouvido se a voz compensa o 1,4 s a mais
+[-] 2.11 Testes de IA        não se aplica: a troca é só da voz que toca; o texto da IA não mudou (rodada 72 vale)
+[x] 4 Folga do host          RAM disponível 55%, swap 12%, teto de 2 GB valendo no cgroup
+```

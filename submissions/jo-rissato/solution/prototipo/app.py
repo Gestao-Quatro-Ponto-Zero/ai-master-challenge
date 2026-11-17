@@ -181,11 +181,21 @@ def frases_de_espera() -> list[bytes]:
 
 
 def falar(texto: str) -> None:
-    """Põe a fala da atendente para tocar. Se a voz falhar, a resposta continua escrita na tela."""
+    """Põe a fala da atendente para tocar, frase a frase: a primeira sai já, as outras são geradas enquanto ela toca
+    (o Kokoro leva cerca de 0,55 s por segundo de fala). Se a voz falhar, a resposta continua escrita na tela."""
+    st.session_state.fila_fala = voz.frases(texto)
+    proxima_fala()
+
+
+def proxima_fala() -> None:
+    fila = st.session_state.get("fila_fala") or []
+    if not fila:
+        return
     try:
-        st.session_state.fala_atual = voz.sintetizar(texto)
+        st.session_state.fala_atual = voz.sintetizar(fila.pop(0))
         st.session_state.fala_id = st.session_state.get("fala_id", 0) + 1
     except Exception as erro:  # noqa: BLE001
+        fila.clear()
         st.session_state.aviso_voz = f"A voz da atendente falhou ({type(erro).__name__}); a resposta está escrita acima."
 
 
@@ -213,8 +223,10 @@ with aba_conversa:
             # cada fala e manda só aquele trecho. Aqui ele é transcrito, a IA responde e a voz volta para o navegador.
             res = ligacao(st.session_state.get("fala_atual"), st.session_state.get("fala_id", 0),
                           st.session_state.get("processado", 0), c.encerrada,
-                          key=f"ligacao_{st.session_state.get('n_conversa', 0)}", espera=frases_de_espera())
+                          key=f"ligacao_{st.session_state.get('n_conversa', 0)}", espera=frases_de_espera(),
+                          mais=bool(st.session_state.get("fila_fala")))
             if res.desligar and not c.encerrada:
+                st.session_state.fila_fala = []
                 c.desligar()
                 st.rerun()
             recebido = audio_da_fala(res.fala)
@@ -238,12 +250,16 @@ with aba_conversa:
                 st.rerun()
             if aviso := st.session_state.pop("aviso_voz", None):
                 st.warning(aviso, icon=":material/mic_off:")
+            if st.session_state.get("fila_fala") and not c.encerrada:
+                # O trecho anterior já foi para o navegador e está tocando; o próximo é gerado agora e entra na fila.
+                proxima_fala()
+                st.rerun()
         if c.encerrada:
             st.success(f"{'Ligação encerrada · ' if c.voz else ''}Chamada **{c.id}** · {SITUACAO.get(c.destino_final, '')}",
                        icon=":material/task_alt:")
             if st.button("Nova conversa", icon=":material/add_comment:", type="primary"):
                 st.session_state.conversa = Conversa(modelo())
-                for k in ("fala_atual", "aviso_voz", "processado"):
+                for k in ("fala_atual", "aviso_voz", "processado", "fila_fala"):
                     st.session_state.pop(k, None)
                 st.session_state.n_conversa = st.session_state.get("n_conversa", 0) + 1
                 st.rerun()

@@ -99,7 +99,8 @@ dinheiro e contrato. Esses dois tipos somam 3.447 tickets (40,7%) do Dataset 1.
   social (com a etiqueta da rede de entrada) ou telefone (transcrição e resultado da ligação). Nome, CPF, telefone,
   e-mail e CEP nunca vão para a IA externa: o código troca por marcadores e coleta com mensagens fixas.
 - **Ligação por voz:** no telefone, o botão Ligar abre uma ligação simulada, com o microfone aberto até o Desligar. O
-  navegador percebe a pausa do cliente, a atendente responde em voz e a escuta volta sozinha. A voz é transcrita na
+  navegador percebe a pausa do cliente, a atendente (Clara) responde em voz feminina local (Kokoro), frase a frase, e
+  a escuta volta sozinha. A voz é transcrita na
   própria máquina (faster-whisper) e não é gravada nem enviada à IA externa; a IA sabe que o texto veio da
   transcrição e interpreta pelo sentido. CPF, telefone e e-mail ditados voltam ao formato escrito antes da validação.
 - **Assunto incerto:** abaixo de 0,8 de confiança do classificador, a IA só pergunta; se esgotar 3 perguntas ou for
@@ -111,7 +112,7 @@ dinheiro e contrato. Esses dois tipos somam 3.447 tickets (40,7%) do Dataset 1.
 - **Dashboard:** a operação de hoje (Dataset 1, com filtros e notas de satisfação por canal, prioridade, tipo ou
   assunto), o classificador rodando sobre os 9.568 tickets reais do teste e as chamadas da versão em apresentação.
   As 152 chamadas das versões anteriores ficam no registro e no process log, fora dos números.
-- **Validação:** 215 testes automatizados; bateria de 22 casos com cliente simulado pela IA, rodada nos 4 canais (88
+- **Validação:** 227 testes automatizados; bateria de 22 casos com cliente simulado pela IA, rodada nos 4 canais (88
   conversas) e de novo no telefone por voz (rodada 72: 21 de 22, com CPF, telefone e e-mail ditados aceitos em 21
   de 21 falas); ligação contínua testada no navegador com microfone simulado. Na última rodada (`docs/bateria-ia-rodada66-*.md`), 86 de 88 passaram, e as 2 falhas foram da própria
   checagem (corrigida e repassada em todas as respostas guardadas, sem nenhuma violação). Média de 3.537 tokens por

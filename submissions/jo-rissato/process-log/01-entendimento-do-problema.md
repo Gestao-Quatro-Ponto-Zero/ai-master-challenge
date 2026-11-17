@@ -1059,3 +1059,16 @@ mais fluidos?"
 a frase de espera tocou 1 vez em 3 respostas (eram 2 em 3). Rodada 72 por voz: 21 de 22 (20 na rodada 71), nenhuma
 resposta com "anotei", dados ditados 21 de 21. 215 testes. Régua, sétima passada, verde menos a homologação.
 Pendente do Jó: autorizar a voz Kokoro (baixar pacote e modelo) e homologar.
+
+## Voz da atendente com o Kokoro (2026-11-16 21:47 a 22:25 BRT)
+
+**Mensagem do Jó (literal, 21:47 BRT):** "Sim, pode baixar"
+
+**Feito:** Kokoro instalado (pacote e modelo, fora do git), voz feminina `pf_dora` como voz da atendente e Piper de
+reserva. Como o Kokoro é mais lento para gerar, a resposta toca frase a frase. Testado e descartado: cortar a
+primeira frase longa na vírgula deixava um silêncio de cerca de 2,5 s no meio da frase. Corrigido no caminho:
+Desligar no meio da fala deixava os trechos atrasados tocarem.
+
+**Medido:** a transcrição erra 1,4% das palavras ditas pelo Kokoro contra 7,6% pelo Piper (pronúncia mais clara). O
+custo é cerca de 1,4 s a mais por resposta (primeiro trecho em 2,0 s de mediana contra 0,6 s da resposta toda no
+Piper, em 60 respostas reais). 227 testes; régua, oitava passada, verde menos a homologação.

@@ -2,7 +2,8 @@
 
 A voz do cliente é dado pessoal: o áudio é transcrito nesta máquina (faster-whisper), não é gravado em disco e
 não vai para nenhuma IA externa. O texto transcrito entra na conversa como se tivesse sido digitado, então passa
-pelas mesmas máscaras de nome, CPF, telefone e e-mail. A resposta da atendente vira fala com o Piper, também local.
+pelas mesmas máscaras de nome, CPF, telefone e e-mail. A resposta da atendente vira fala com o Kokoro (ou o Piper,
+de reserva), também local.
 
 Os modelos carregam só na primeira ligação (preguiçoso) e ficam um por processo.
 """
@@ -13,7 +14,8 @@ import re
 import threading
 import wave
 
-from config import MAX_SEGUNDOS_FALA, NOME_ATENDENTE, VOZ_PIPER, WHISPER_MODELO
+from config import (MAX_SEGUNDOS_FALA, NOME_ATENDENTE, VOZ_KOKORO, VOZ_KOKORO_NOME, VOZ_KOKORO_VOZES, VOZ_MOTOR,
+                    VOZ_PIPER, WHISPER_MODELO)
 
 SAUDACAO = f"Suporte, aqui é a {NOME_ATENDENTE}. Como posso te ajudar?"
 # Vocabulário do suporte para a transcrição: sem ele o modelo escrevia "Altuco" no lugar de Outlook.
@@ -58,6 +60,10 @@ def validar_audio(dados: bytes | None) -> float:
     return segundos
 
 
+_ABREVIACOES = {"Av": "Avenida", "Dr": "Doutor", "Dra": "Doutora", "Sr": "Senhor", "Sra": "Senhora", "Prof": "Professor"}
+_SEM_CORTE = re.compile(r"\b(?:[A-Z][a-z]{0,3}|n|nº)\.$")   # abreviação que sobrou: não termina frase
+
+
 def texto_para_fala(texto: str) -> str:
     """O que a atendente fala: sem marcação, sem link e sem assinatura de e-mail."""
     t = re.sub(r"https?://\S+", "", texto or "")
@@ -65,6 +71,8 @@ def texto_para_fala(texto: str) -> str:
     t = re.sub(r"([,;:!?.])\s*\n+\s*", r"\1 ", t)
     t = re.sub(r"\s*\n+\s*", ". ", t)
     t = re.sub(r"([.!?:])\s*\.", r"\1", t)
+    for abrev, extenso in _ABREVIACOES.items():   # a voz soletrava "Av." como "A V"
+        t = re.sub(rf"\b{abrev}\.(?=\s)", extenso, t)
     t = re.sub(r"\s{2,}", " ", t).strip(" .")
     if not t:
         return ""
@@ -116,12 +124,32 @@ def _piper():
     return _modelos["piper"]
 
 
+def _kokoro():
+    if "kokoro" not in _modelos:
+        from kokoro_onnx import Kokoro
+        _modelos["kokoro"] = Kokoro(str(VOZ_KOKORO), str(VOZ_KOKORO_VOZES))
+    return _modelos["kokoro"]
+
+
+def motor() -> str:
+    """Motor da voz da atendente: o Kokoro se estiver instalado e escolhido, senão o Piper."""
+    if VOZ_MOTOR == "kokoro" and VOZ_KOKORO.exists() and VOZ_KOKORO_VOZES.exists():
+        try:
+            import kokoro_onnx  # noqa: F401
+            return "kokoro"
+        except ImportError:
+            pass
+    return "piper"
+
+
 def aquecer() -> None:
     """Carrega a transcrição em segundo plano quando o cliente clica em Ligar: a primeira fala não espera os 6 s
     de carga do modelo (medido em 2026-11-16)."""
     def carregar():
         with _trava:
             _whisper()
+            if motor() == "kokoro":
+                _kokoro()
     threading.Thread(target=carregar, daemon=True).start()
 
 
@@ -129,6 +157,11 @@ def disponivel() -> bool:
     """Ligação por voz só aparece se a voz da atendente e a transcrição estiverem instaladas."""
     try:
         import faster_whisper  # noqa: F401
+    except ImportError:
+        return False
+    if motor() == "kokoro":
+        return True
+    try:
         import piper  # noqa: F401
     except ImportError:
         return False
@@ -154,18 +187,55 @@ def transcrever(dados: bytes, modelo=None, etapa: str | None = None) -> str:
         return " ".join(s.text.strip() for s in segmentos).strip()
 
 
+def frases(texto: str) -> list[str]:
+    """Resposta da atendente em trechos para tocar um a um: a primeira frase começa a tocar enquanto o resto é gerado.
+    A primeira sai sozinha a partir de 12 caracteres ("Prazer, João."), porque é a que o cliente espera; juntar com a
+    seguinte levou uma resposta a 11,5 s no teste do navegador. Depois dela, frase muito curta ("Certo.") vai junto
+    com a seguinte, para não picotar a fala."""
+    fala = texto_para_fala(texto)
+    if not fala:
+        return []
+    partes, atual = [], ""
+    for f in re.split(r"(?<=[.!?])\s+", fala):
+        atual = f"{atual} {f}".strip()
+        if len(atual) >= (12 if not partes else 25) and not _SEM_CORTE.search(atual):
+            partes.append(atual)
+            atual = ""
+    if atual:
+        if partes and len(atual) < 25:
+            partes[-1] = f"{partes[-1]} {atual}"
+        else:
+            partes.append(atual)
+    return partes
+
+
+def _wav(amostras, taxa: int) -> bytes:
+    import numpy as np
+    buf = io.BytesIO()
+    with wave.open(buf, "wb") as w:
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(taxa)
+        w.writeframes((np.clip(amostras, -1, 1) * 32767).astype("<i2").tobytes())
+    return buf.getvalue()
+
+
 def sintetizar(texto: str, voz=None) -> bytes | None:
-    """Fala da atendente em WAV, ou None se não houver o que falar."""
+    """Fala da atendente em WAV, ou None se não houver o que falar. `voz` força uma voz do Piper (cliente da bateria)."""
     fala = texto_para_fala(texto)
     if not fala:
         return None
-    buf = io.BytesIO()
     with _trava:
+        if voz is None and motor() == "kokoro":
+            amostras, taxa = _kokoro().create(fala, voice=VOZ_KOKORO_NOME, speed=1.0, lang="pt-br")
+            return _wav(amostras, taxa)
+        buf = io.BytesIO()
         v = voz or _piper()
         with wave.open(buf, "wb") as w:
             v.synthesize_wav(fala, w)
     return buf.getvalue()
 
 
-__all__ = ["SAUDACAO", "AudioInvalido", "aquecer", "contexto", "disponivel", "ditado", "duracao_wav", "sintetizar", "texto_para_fala",
+__all__ = ["SAUDACAO", "AudioInvalido", "aquecer", "contexto", "disponivel", "ditado", "duracao_wav", "frases", "motor",
+           "sintetizar", "texto_para_fala",
            "transcrever", "validar_audio"]
