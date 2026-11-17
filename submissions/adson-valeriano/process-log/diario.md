@@ -1,107 +1,103 @@
 # Diário do processo
 
 ## 16/11 – 23h00 | Escolha do desafio e setup
-- Li os 4 desafios e escolhi o 002 (Redesign de Suporte). Trabalho com suporte e
-  automação no dia a dia (Skill-Hub: agentes de IA, WhatsApp, CRMs), então é onde
-  meu contexto real pode fazer diferença em relação a uma resposta genérica de IA.
-- Fiz fork, clone e criei a branch submission/adson-valeriano. Montei a estrutura
-  de pastas que o CONTRIBUTING pede.
-- Baixei os dois datasets do Kaggle para datasets/ (fica fora do repositório pelo .gitignore).
-- Percebi que o .gitignore também ignora submissions/. Se eu desse git add normal, o PR
-  ia vazio. Resolvi com git add -f na minha pasta.
+- Li os 4 desafios e escolhi o 002 (Redesign de Suporte). Trabalho com suporte e automação no dia a dia
+  (Skill-Hub: agentes de IA, WhatsApp, CRMs), então é onde o meu contexto real pode fazer diferença em
+  relação a uma resposta genérica de IA.
+- Fiz fork, clone e criei a branch `submission/adson-valeriano`, com a estrutura de pastas do CONTRIBUTING.
+- Baixei os dois datasets do Kaggle para `datasets/` (fica fora do repositório pelo .gitignore).
+- Percebi que o .gitignore também ignora `submissions/`. Com `git add` normal, o PR iria vazio.
+  Resolvi com `git add -f` na minha pasta.
+- Tive problema com um arquivo salvo fora do repositório e outro que subiu vazio. Aprendi a conferir com
+  `git status`, `git ls-files` e `git show --stat` antes de considerar algo entregue.
+
+## 17/11 – 00h11 | Entender o problema antes de analisar
+- Antes de qualquer análise, pedi clareza sobre o que o diretor pediu e onde estava a especificação.
+- Resumo: onde se perde tempo, o que automatizar (e o que não), e algo rodando.
 
 ## 17/11 – 00h20 | Primeira leitura dos dados
-- Antes de pedir qualquer análise, abri alguns tickets para ver o dado com meus olhos.
-- Pedi ao Claude uma checagem de qualidade antes de qualquer conclusão.
-- No dataset 1 (suporte), apareceram vários sinais de problema:
+- Abri alguns tickets para ver o dado com meus próprios olhos.
+- Pedi ao Claude uma checagem de qualidade antes de qualquer conclusão. No dataset 1 (suporte):
   - São 8.469 tickets, não ~30 mil como o README sugere.
   - "First Response Time" e "Time to Resolution" são data/hora, não duração.
-  - Todas as primeiras respostas aconteceram em ~27 horas (31/05 a 02/06/2023).
-  - Em 49% dos tickets fechados, a resolução acontece ANTES da primeira resposta. Impossível.
-  - A satisfação tem quantidades quase iguais de 1 a 5 (~550 cada). Na vida real a nota
-    não se distribui assim.
-  - 100% das descrições têm o texto modelo "{product_purchased}" sem preencher, e as
-    resoluções são frases sem sentido.
+  - Todas as primeiras respostas cabem em ~27 horas (31/05 a 02/06/2023).
+  - Em 49% dos tickets fechados, a resolução acontece antes da primeira resposta. Impossível.
+  - A satisfação tem quantidades quase iguais de 1 a 5 (~550 cada).
+  - 100% das descrições têm o texto-modelo "{product_purchased}" sem preencher; resoluções sem sentido.
   - Só 33% dos tickets (os fechados) têm tempo e nota.
 
-## 17/11 – 00h30 | Análise das 3 perguntas do diretor
-- Pedi ao Claude para responder as 3 perguntas com base nos dois CSVs.
-- Dataset 1: testei canal, tipo e prioridade contra status e satisfação. Tudo igual
-  (~25% por canal, ~20% por tipo, satisfação ~3 em tudo). ANOVA sem diferença
-  significativa (p entre 0,28 e 0,70). Correlação tempo x satisfação = 0,02.
-  → Conclusão: o dado não permite dizer onde se perde tempo. Isso vira achado: a empresa
-  não mede direito o que importa.
-- Único sinal operacional aproveitável: 1/3 dos tickets está parado em "Pending Customer
-  Response". É exatamente o tipo de situação que eu resolvo no trabalho com follow-up
-  automático.
-- Dataset 2 (TI, 47.837 tickets reais em 8 categorias): treinamos um classificador
-  (TF-IDF + regressão logística), separando 20% para teste (9.568 tickets que o modelo
-  nunca viu).
-  - Acurácia de 86,6% (chutar sempre "Hardware" acertaria 28,5%).
-  - Usando a confiança do modelo como regra: com confiança mínima de 70%, a IA cuida
-    sozinha de 72% dos tickets com 95,6% de acerto. O resto vai para triagem humana.
-  - Pior categoria: Direitos administrativos (precisão 77%). Por ser tema de segurança,
-    decidi que fica sempre com humano.
+## 17/11 – 00h24 | Análise das 3 perguntas do diretor
+- Dataset 1: canal, tipo e prioridade contra status e satisfação deram tudo igual. ANOVA sem diferença
+  significativa (p entre 0,28 e 0,70); correlação tempo x satisfação = 0,02.
+  → O dado não permite dizer onde se perde tempo. Isso vira achado: a empresa não mede o que importa.
+- Único sinal aproveitável: 1/3 dos tickets parado em "Pending Customer Response".
+- Dataset 2 (TI, 47.837 tickets em 8 categorias): classificador TF-IDF + regressão logística, testado em
+  9.568 tickets nunca vistos. Acurácia de 86,6%. Com confiança mínima de 70%, a IA cuida sozinha de 72%
+  dos tickets com 95,6% de acerto.
+- Pior categoria: Administrative rights (precisão 77%). Por ser tema de segurança, decidi que fica sempre
+  com humano.
 
-## 17/11 – 00h35 | Desconfiei e pedi uma segunda varredura atrás de pegadinhas
-- Minha suspeita: o desafio foi montado para quem cola o brief na IA, recebe uma análise
-  superficial e acredita. Pedi ao Claude para procurar armadilhas de propósito.
-- Confirmou mais sinais de dado sintético no dataset 1: 69% dos textos começam com a
-  mesma frase (só 16 aberturas diferentes), e-mails de domínios de teste (example.com),
-  gênero dividido exatamente em 1/3, compras de 2020–21 e tickets todos de 2023.
-- A pegadinha mais importante foi no cruzamento. O README diz que "o poder está no
-  cruzamento", mas os dois datasets são de mundos diferentes: o 1 é suporte ao cliente
-  (cobrança, reembolso, produto) e o 2 é service desk interno de TI (hardware, RH, acesso).
-  Testamos aplicar o classificador do dataset 2 nos tickets do dataset 1:
-  - 73% viraram "Hardware", inclusive reembolso e cobrança;
-  - confiança média caiu para 60%, só 28,5% acima do limite de 70%;
-  - a distribuição foi igual para qualquer tipo de ticket → o modelo não entende aquele suporte.
-- Outros pontos que achamos no dataset 2: o texto já vem pré-processado (sem números
-  nem pontuação); as palavras mais comuns são de assinatura de e-mail ("please",
-  "regards", "pm", "tuesday"); os textos terminam com o cargo de quem escreveu, então o
-  modelo pode estar aprendendo pelo cargo e não pelo problema; está tudo em inglês;
-  as categorias são desiguais (Hardware 13.617 x Direitos administrativos 1.760) e
-  existe uma categoria "lixeira" (Miscellaneous).
+## 17/11 – 00h30 | Segunda varredura: procurar pegadinhas de propósito
+- Minha suspeita: o desafio foi montado para quem cola o brief na IA e acredita na primeira resposta.
+  Pedi ao Claude para procurar armadilhas de propósito.
+- Mais sinais de dado sintético no dataset 1: 69% dos textos começam com a mesma frase (16 aberturas no
+  total), e-mails de domínios de teste, gênero dividido exatamente em 1/3.
+- Pegadinha principal, no cruzamento: os datasets são de mundos diferentes (suporte ao cliente x service
+  desk de TI). Aplicando o modelo do dataset 2 no dataset 1, 74% viram "Hardware", inclusive reembolso e
+  cobrança, e a confiança média cai para 55%. O modelo não transfere.
+- No dataset 2: texto pré-processado, palavras de assinatura dominando, cargo no fim do texto, tudo em
+  inglês, categorias desiguais e uma categoria "lixeira" (Miscellaneous).
 
-  ## 17/11 – 00h45 | Formalizei o entendimento
-- Escrevi o 00-raciocínio.md com as 3 hipóteses que vêm da minha experiência na Skill-Hub.
-  Elas já guiavam o que eu pedi para testar, mas só formalizei agora, depois da primeira
-  leitura dos dados. Registro isso para ficar transparente.
+## 17/11 – 00h45 | Raciocínio e checagem de coerência
+- Escrevi o `docs/00-raciocinio.md` com as 3 hipóteses que vêm da minha experiência na Skill-Hub. Elas já
+  guiavam o que eu pedi para testar, mas só formalizei depois da primeira leitura dos dados.
+- Pedi uma revisão cruzada entre raciocínio e diário para garantir que a linha lógica fechasse. Duas
+  incoerências foram corrigidas: a ordem no tempo das hipóteses e a parte "cair com a pessoa errada" da
+  hipótese 3, que liguei ao roteamento do protótipo.
+
+## Por que essas escolhas técnicas
+- **Checagem de qualidade antes de tudo:** se o dado está errado, qualquer conclusão está errada.
+- **ANOVA na satisfação:** é o teste para saber se a diferença entre vários grupos é real ou acaso.
+- **Classificador simples (TF-IDF + regressão logística):** rápido, barato e explicável. Se já resolve bem,
+  não preciso começar com algo mais caro.
+- **20% dos dados separados para teste:** medir em chamados que o modelo nunca viu.
+- **Limiar de confiança de 70%:** decisão de negócio. Equilibra o quanto a IA assume (72%) com o quanto
+  ela erra (4,4%).
+
+## 17/11 – 08h50 | Protótipo
+- Pedi ao Claude o código do protótipo com as regras que eu defini: classificação com confiança, passagem
+  para humano (crítico, dinheiro, segurança, permissões, confiança baixa) e busca de tickets parecidos.
+- Rodei e testei na minha máquina. No teste em lote, vi a IA errar em tickets de confiança baixa e esses
+  tickets irem para humano: o limiar segurando o erro antes do cliente.
+- Vi também um caso de confiança alta discutível: "acesso à pasta do drive compartilhado" classificado
+  como Storage com 100%. Confiança alta não é garantia de acerto, então o piloto em paralelo é necessário.
+
+## 17/11 – 09h25 | Interface para o executivo
+- Defini que a tela precisava ser clara para um executivo decidir em segundos: português com o termo
+  original entre parênteses, sem emojis, decisão e motivo em destaque, fluxo em 3 passos no topo.
+- Questionei o valor da lateral. Mantive o que responde "funciona?" e "é seguro?" e troquei o aviso técnico
+  por "próximo passo".
+- Cobrei de onde vinham os "tickets reais". Corrigimos para "chamados de TI de um dataset público (Kaggle)".
+
+## 17/11 – 09h53 | Terceira revisão: subpegadinha
+- Perguntei se o desafio não teria uma "subpegadinha" para quem achasse a primeira.
+- Testamos vazamento entre treino e teste (não há: sem os 6% de "gêmeos", o acerto segue 86,0%) e atalho
+  pela assinatura (não há: sem as últimas palavras, 86,1%).
+- Achamos uma contradição na minha própria conta: o ROI assumia 72% de automação, mas as minhas regras
+  mandam dinheiro para humano, e isso é 60% do volume de suporte. Reescrevi como faixa (36 a 90 h/mês) e
+  separei "IA encaminhar" de "IA decidir".
 
 ## Onde a IA errou e como corrigi
-- Na primeira análise, o Claude apresentou "72% automatizados com 95,6% de acerto, ~90 h/mês
-  economizadas" como se valesse para o suporte da empresa. Quando pedi a segunda
-  varredura, ficou claro que esse número vale para o tipo de ticket do dataset 2. Aplicado
-  ao dataset 1, o modelo não funciona.
-- Corrigi a forma de apresentar: a técnica está provada no dataset 2; para o suporte da
-  empresa, é preciso treinar com os tickets dela, rotulados com as categorias dela. O
-  ROI vira estimativa a confirmar em piloto, não promessa.
+- **ROI aplicado ao lugar errado:** a primeira análise apresentou o ROI do dataset de TI como se valesse
+  para o suporte da empresa. A segunda varredura mostrou que o modelo não transfere.
+- **ROI contra as próprias regras:** a terceira revisão mostrou que a conta ignorava os 60% de chamados de
+  dinheiro que as regras mandam para humano.
+- **Números da conversa x números dos scripts:** com o pré-processamento do protótipo, alguns números
+  mudaram (confiança média de 60% para 55%). Passei a usar só os números gerados pelos scripts.
+- **"Tickets reais":** afirmação imprecisa, corrigida para "dataset público do Kaggle".
 
-  ## Por que essas escolhas técnicas
-- Checagem de qualidade antes de tudo: se o dado está errado, qualquer conclusão está errada.
-- ANOVA na satisfação: é o teste para saber se a diferença entre vários grupos (ex.: 4 canais)
-  é real ou se é acaso. Deu que é acaso.
-- Classificador simples (TF-IDF + regressão logística) em vez de algo mais sofisticado:**
-  é rápido, barato e explicável, e serve de base. Se já resolve bem (86,6%), não preciso
-  começar com algo mais caro.
-- 20% dos dados separados para teste: testar o modelo em chamados que ele nunca viu,
-  para o número de acerto ser honesto.
-- Limite de confiança de 70%: é decisão de negócio. Equilibra o quanto a IA assume
-  sozinha (72%) com o quanto ela erra (4,4%).
-
-## Decisões minhas até aqui
-- Não vou tirar conclusões de ruído (ex.: "chat tem a melhor nota, 3,08"). Vou mostrar
-  por que o dado não sustenta isso.
-- O diagnóstico vai ser honesto: o que dá para afirmar, o que não dá, e o que a empresa
-  precisa começar a medir.
-- O peso técnico da entrega vai para o dataset 2: classificador com limite de confiança
-  e regras do que sempre vai para humano (crítico, dinheiro, acesso/permissões,
-  confiança baixa).
-- O cruzamento certo: dataset 1 mostra o que está quebrado na operação e as categorias
-  de negócio; dataset 2 prova a técnica e os limites dela.
-- [Escreva aqui com as suas palavras por que você concorda ou discorda de alguma decisão]
-
-## Próximos passos
-- Montar o protótipo: ticket entra → classificação com confiança → regras de passagem
-  para humano → tickets parecidos (RAG) → sugestão de encaminhamento.
-- Escrever a entrega no template e preparar a defesa.
+## Decisões minhas
+- Não tirar conclusão de ruído (ex.: "chat tem a melhor nota, 3,08").
+- Diagnóstico honesto: o que dá para afirmar, o que não dá e o que a empresa precisa começar a medir.
+- Peso técnico no dataset 2, com regras claras do que sempre vai para humano.
+- Piloto com os dados da própria empresa antes de ligar a automação. ROI como estimativa, não promessa.
