@@ -131,6 +131,27 @@ def _kokoro():
     return _modelos["kokoro"]
 
 
+# A voz pt-BR do Kokoro foi treinada com os fonemas do espeak "pt-br" em que o "dj" de "de", o "tch" de "te" e os
+# ditongos ("bem", "mal") são um símbolo só (ʤ, ʧ, A, W). O kokoro-onnx, sozinho, entrega esses sons em dois símbolos
+# soltos, que a voz conhece de outras línguas, e o Jó ouviu sotaque de Portugal (2026-11-16 23:08 BRT). Aqui o texto
+# vira fonemas no mesmo formato do treino (tabela do misaki, o conversor oficial do Kokoro).
+_JUNTA = sorted({"a^ɪ": "I", "a^ʊ": "W", "d^z": "ʣ", "d^ʒ": "ʤ", "e^ɪ": "A", "o^ʊ": "O", "ə^ʊ": "Q", "s^s": "S",
+                 "t^s": "ʦ", "t^ʃ": "ʧ", "ɔ^ɪ": "Y"}.items())
+
+
+def fonemas(fala: str) -> str:
+    """Fonemas pt-BR da fala no formato com que a voz do Kokoro foi treinada."""
+    if "espeak" not in _modelos:
+        _kokoro()  # aponta o phonemizer para o espeak que vem com o kokoro-onnx
+        from phonemizer.backend import EspeakBackend
+        _modelos["espeak"] = EspeakBackend("pt-br", preserve_punctuation=True, with_stress=True, tie="^",
+                                           language_switch="remove-flags")
+    ps = _modelos["espeak"].phonemize([fala])[0].strip()
+    for velho, novo in _JUNTA:
+        ps = ps.replace(velho, novo)
+    return ps.replace("^", "")
+
+
 def motor() -> str:
     """Motor da voz da atendente: o Kokoro se estiver instalado e escolhido, senão o Piper."""
     if VOZ_MOTOR == "kokoro" and VOZ_KOKORO.exists() and VOZ_KOKORO_VOZES.exists():
@@ -149,7 +170,7 @@ def aquecer() -> None:
         with _trava:
             _whisper()
             if motor() == "kokoro":
-                _kokoro()
+                fonemas("Oi.")
     threading.Thread(target=carregar, daemon=True).start()
 
 
@@ -174,6 +195,14 @@ def contexto(etapa: str | None) -> str:
     return CONTEXTO.get(etapa or "", VOCABULARIO)
 
 
+ETAPAS_DITADO = ETAPAS_NUMERO | {"nome", "email"}
+
+
+def busca(etapa: str | None) -> int:
+    """Caminhos da busca da transcrição: 5 no ditado de dados, 1 no resto (0,8 s mais rápido em fala longa)."""
+    return 5 if etapa in ETAPAS_DITADO else 1
+
+
 def transcrever(dados: bytes, modelo=None, etapa: str | None = None) -> str:
     """Fala do cliente em texto, com o contexto da etapa da conversa. Um áudio por vez (a CPU é a mesma do link
     público)."""
@@ -181,8 +210,10 @@ def transcrever(dados: bytes, modelo=None, etapa: str | None = None) -> str:
     with _trava:
         m = modelo or _whisper()
         # Medido em 12 falas humanas do FLEURS pt-BR (2026-11-16): sem o filtro de silêncio o erro por palavra caiu de
-        # 6,9% para 6,2% (a ligação já manda só o trecho falado) e a busca com 5 caminhos levou a 5,4% (+0,6 s).
-        segmentos, _ = m.transcribe(io.BytesIO(dados), language="pt", beam_size=5, vad_filter=False,
+        # 6,9% para 6,2% (a ligação já manda só o trecho falado). Na mesma base, com o contexto atual, a busca com 5
+        # caminhos erra 5,0% contra 5,4% com 1 caminho, mas leva 4,38 s contra 3,59 s de mediana. Os 5 caminhos ficam
+        # só onde um erro custa caro (nome, e-mail, CPF, telefone, CEP); no relato a IA entende a frase mesmo assim.
+        segmentos, _ = m.transcribe(io.BytesIO(dados), language="pt", beam_size=busca(etapa), vad_filter=False,
                                     without_timestamps=True, initial_prompt=contexto(etapa))
         return " ".join(s.text.strip() for s in segmentos).strip()
 
@@ -227,7 +258,7 @@ def sintetizar(texto: str, voz=None) -> bytes | None:
         return None
     with _trava:
         if voz is None and motor() == "kokoro":
-            amostras, taxa = _kokoro().create(fala, voice=VOZ_KOKORO_NOME, speed=1.0, lang="pt-br")
+            amostras, taxa = _kokoro().create(fonemas(fala), voice=VOZ_KOKORO_NOME, speed=1.0, is_phonemes=True)
             return _wav(amostras, taxa)
         buf = io.BytesIO()
         v = voz or _piper()
@@ -236,6 +267,5 @@ def sintetizar(texto: str, voz=None) -> bytes | None:
     return buf.getvalue()
 
 
-__all__ = ["SAUDACAO", "AudioInvalido", "aquecer", "contexto", "disponivel", "ditado", "duracao_wav", "frases", "motor",
-           "sintetizar", "texto_para_fala",
-           "transcrever", "validar_audio"]
+__all__ = ["SAUDACAO", "AudioInvalido", "aquecer", "busca", "contexto", "disponivel", "ditado", "duracao_wav", "fonemas",
+           "frases", "motor", "sintetizar", "texto_para_fala", "transcrever", "validar_audio"]

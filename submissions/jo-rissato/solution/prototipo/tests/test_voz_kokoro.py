@@ -84,3 +84,18 @@ def test_kokoro_ida_e_volta():
 
 def test_desligar_corta_trecho_atrasado():
     assert "if (S.fechada) return;" in ligacao.JS
+
+
+def test_busca_larga_so_no_ditado():
+    for etapa in ("nome", "email", "cpf", "telefone", "assist_cpf", "assist_cep"):
+        assert voz.busca(etapa) == 5
+    for etapa in (None, "relato", "detalhe", "assist_confirma"):
+        assert voz.busca(etapa) == 1
+
+
+@pytest.mark.skipif(voz.motor() != "kokoro", reason="Kokoro não instalado")
+def test_fonemas_no_formato_do_treino():
+    # "de", "te", "bem" e "mal" com um símbolo só, como no treino da voz pt-BR (sotaque de Portugal, Jó 2026-11-16).
+    ps = voz.fonemas("Tudo bem? Vou te mandar o código de acesso, mal chegue.")
+    assert "ʤ" in ps and "ʧ" in ps and "A" in ps and "W" in ps
+    assert "^" not in ps and "dʒ" not in ps and "tʃ" not in ps and "eɪ" not in ps

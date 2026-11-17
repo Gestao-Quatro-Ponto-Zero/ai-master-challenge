@@ -1072,3 +1072,20 @@ Desligar no meio da fala deixava os trechos atrasados tocarem.
 **Medido:** a transcrição erra 1,4% das palavras ditas pelo Kokoro contra 7,6% pelo Piper (pronúncia mais clara). O
 custo é cerca de 1,4 s a mais por resposta (primeiro trecho em 2,0 s de mediana contra 0,6 s da resposta toda no
 Piper, em 60 respostas reais). 227 testes; régua, oitava passada, verde menos a homologação.
+
+## Sotaque, frase de espera e tempo de resposta (2026-11-16 23:08 BRT)
+
+**Mensagem do Jó (literal, 23:08 BRT):** "melhorou, mas ela esta em portugues de portugal, tem como deixar portugues do
+brasil? o só um momento ppode entrar de forma intercalada, tippo, repondeu duas sem falr na terceira fala.. ou procura
+diminuir ainda mais o tempo para ela resonder"
+
+**Causa do sotaque:** o pacote do Kokoro montava os fonemas sem juntar os sons compostos ("dj", "tch", ditongos), e a
+voz pt-BR foi treinada com eles juntos. Corrigido no formato do treino, sem trocar de voz nem de modelo.
+
+**Feito:** fonemas no formato do treino; frase de espera intercalada, duas respostas sem e a terceira com, 1 s depois
+da pausa; transcrição com 1 caminho fora do ditado de dados (0,8 s mais rápida em fala longa, 5,4% contra 5,0% de
+erro em 12 falas humanas).
+
+**Medido:** E2E no Chromium com microfone falso, 4 turnos: 7,3 a 9,5 s do fim da fala à voz (eram 8,9 a 10,4 s); a
+frase de espera tocou só na 3ª fala. 229 testes; régua, nona passada, verde menos a homologação. O sotaque não se mede
+pela transcrição (1,5% nos dois jeitos): amostras antes e depois para o Jó ouvir.

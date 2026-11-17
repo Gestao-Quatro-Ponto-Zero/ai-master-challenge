@@ -387,3 +387,43 @@ Medido:
 [-] 2.11 Testes de IA        não se aplica: a troca é só da voz que toca; o texto da IA não mudou (rodada 72 vale)
 [x] 4 Folga do host          RAM disponível 55%, swap 12%, teto de 2 GB valendo no cgroup
 ```
+
+## Nona passada: sotaque pt-BR, espera intercalada e transcrição mais rápida (2026-11-16 23:40 BRT)
+
+Pedido do Jó (23:08 BRT): a voz soa portuguesa de Portugal; a frase de espera deve entrar intercalada (duas respostas
+sem, a terceira com); ou cortar mais o tempo de resposta.
+
+Causa raiz do sotaque: o kokoro-onnx monta os fonemas pt-BR sem juntar os sons compostos ("d" + "ʒ" em vez de "ʤ",
+"e" + "ɪ" em vez de "A"), formato diferente do usado no treino da voz (conversor misaki). A voz lia esses pares com o
+que aprendeu em outras línguas.
+
+Mudança validada:
+- Fonemas no formato do treino (`voz.fonemas`), enviados prontos ao Kokoro.
+- Frase de espera fixa na 3ª, 6ª, 9ª fala do cliente, 1 s depois da pausa, só se a resposta ainda não chegou.
+- Transcrição com 1 caminho fora do ditado de dados; 5 caminhos em nome, e-mail, CPF, telefone e CEP.
+
+Medido:
+
+| Medida | Antes | Agora |
+|---|---|---|
+| Transcrição, 12 falas humanas FLEURS pt-BR, erro / mediana | 5,0% / 4,38 s (5 caminhos) | 5,4% / 3,59 s (1 caminho, fora do ditado) |
+| E2E do fim da fala à voz, 4 turnos | 8,9 a 10,4 s | 7,3 a 9,5 s |
+| Frase de espera no E2E | 1 em 3 (regra de 4 s) | 1 em 4, na 3ª fala |
+| Transcrição da própria voz, 5 frases | 1,5% | 1,5% (o sotaque se avalia no ouvido) |
+
+```
+[x] 2.1 Funcional            229 testes pytest verdes (busca por etapa; fonemas com ʤ, ʧ, A, W e sem pares soltos;
+                             espera pelo resto da divisão por 3 no navegador)
+[x] 2.2 Integração + falhas  sem Kokoro a voz volta ao Piper (teste da oitava passada segue verde)
+[x] 2.3 E2E                  Chromium com microfone falso, 4 turnos sem clique: 7,3 / 7,8 / 8,8 / 9,5 s; espera só na 3ª;
+                             Desligar fechou a ATD
+[x] 2.4 Erro/borda           ditado de dados mantém 5 caminhos
+[x] 2.5 Carga                síntese com fonemas no formato do treino: mesmo tempo (1,7 s contra 1,8 s na 1ª frase)
+[x] 2.6 Estresse             pico de memória 1,15 GB (teto 2 GB)
+[x] 2.7 Segurança            nada novo sai da máquina
+[x] 2.8 Regressão            229 testes (227 na oitava passada)
+[x] 2.9 Recuperação          serviço reiniciado, 200 no domínio
+[ ] 2.10 Homologação (Jó)    pendente: ouvir o sotaque e a ligação
+[-] 2.11 Testes de IA        não se aplica: o texto da IA não mudou
+[x] 4 Folga do host          RAM disponível 49%, swap 12%, teto de 2 GB valendo no cgroup
+```
