@@ -47,6 +47,7 @@ export const TELAS: Record<string, string> = {
   "/tela/1": "Tela 1 · As três afirmações",
   "/tela/2": "Tela 2 · O que causa o churn",
   "/tela/3": "Tela 3 · Suporte e uso do produto",
+  "/chat": "Chat do analista",
 };
 
 /** A screen the user built (D46.2): /telas/<id>. */

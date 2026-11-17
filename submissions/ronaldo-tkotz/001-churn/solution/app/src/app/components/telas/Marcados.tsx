@@ -56,14 +56,30 @@ function filtrosAtuais(sp: URLSearchParams): string {
   return new URLSearchParams(pares).toString();
 }
 
-export function MarcarToggle({ titulo, nota, sql, alvo }: { titulo: string; nota?: string; sql: string[]; alvo: RefObject<HTMLElement | null> }) {
+export function MarcarToggle({
+  titulo,
+  nota,
+  sql,
+  alvo,
+  rota: rotaFixa,
+  filtros: filtrosFixos,
+}: {
+  titulo: string;
+  nota?: string;
+  sql: string[];
+  alvo: RefObject<HTMLElement | null>;
+  /** Overrides for charts that do not belong to the page (the chat's, D46.5: rota "/chat", no filters). */
+  rota?: string;
+  filtros?: string;
+}) {
   const ctx = useContext(Contexto);
-  const rota = usePathname();
+  const caminho = usePathname();
+  const rota = rotaFixa ?? caminho;
   const sp = useSearchParams();
   const [ocupado, setOcupado] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
   if (!ctx) return null;
-  const filtros = filtrosAtuais(new URLSearchParams(sp.toString()));
+  const filtros = filtrosFixos ?? filtrosAtuais(new URLSearchParams(sp.toString()));
   const chave = `${rota}|${titulo}|${filtros}`;
   const marcado = ctx.chaves.has(chave);
 

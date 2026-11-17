@@ -86,6 +86,33 @@ function check(name: string, cond: boolean, detail = ""): void {
   check("pptx: slide do gráfico com título de ação e fonte", (await txt(5)).includes("DevTools tem o maior churn") && (await txt(5)).includes("Fonte: base RavenStack"));
   check("pptx: ações recomendadas no fim", (await txt(8)).includes("Ações recomendadas"));
 
+  // D46.3 — context: a custom screen's request (with its SQL) steers the deck and grounds its numbers.
+  const t = await import("../src/engine/telasUsuario");
+  const { runQuery } = await import("../src/engine/warehouse");
+  const tela = t.criarTela(u, "Tickets urgentes");
+  const sqlUrg = "SELECT count(*) AS tickets_urgentes FROM support_tickets WHERE priority = 'urgent'";
+  const qUrg = runQuery(sqlUrg);
+  await t.analisarNaTela(u, tela.id, "quantos tickets urgentes?", {
+    perguntar: (async () => ({ answer: "São 514 tickets urgentes.", model: "x", steps: 1, stopReason: "stop", citedSql: [qUrg.sql], toolCalls: [{ name: "query_warehouse", input: {}, result: qUrg, isError: false }] })) as never,
+  });
+  let visto: import("../src/engine/deckMarcados").ContextoDeck | null | undefined;
+  const comContexto: import("../src/engine/deckMarcados").Arranjador = async (g, b, ctx) => {
+    visto = ctx;
+    const base = (await arranjador(g, b))!;
+    return { ...base, ideiaCentral: "Os 514 tickets urgentes pedem um plano de suporte" };
+  };
+  const antes = d.historicoDecks(u).length;
+  const dc = await d.montarDeck(u, { briefing: "foco em suporte", publico: "Customer Success", telaIds: [tela.id, "tl_naoexiste00"], arranjador: comContexto });
+  check("contexto: o arranjador recebe a tela, o pedido e a resposta", !!visto && visto.telas[0]?.nome === "Tickets urgentes" && visto.telas[0].pedidos[0].resposta.includes("514") && visto.publico === "Customer Success");
+  check("contexto: número que vem do SQL da tela fica (514)", dc.ideiaCentral.includes("514"), dc.ideiaCentral);
+  check("contexto: fontes e público guardados no deck", dc.fontes?.[0] === "Tela: Tickets urgentes" && dc.publico === "Customer Success");
+  const sem = await d.montarDeck(u, { arranjador: async (g, b) => ({ ...(await arranjador(g, b))!, ideiaCentral: "Os 514 tickets urgentes pedem um plano de suporte" }) });
+  check("sem o contexto, o mesmo 514 não confere e sai", !sem.ideiaCentral.includes("514"), sem.ideiaCentral);
+  check("tela de outro usuário não entra no contexto", d.carregarContexto("outro", { telaIds: [tela.id] }).telas.length === 0);
+  const hist = d.historicoDecks(u);
+  check("histórico guarda cada montagem", hist.length === antes + 2 && hist[1].id === dc.id && d.deckDoHistorico(u, dc.id!)?.ideiaCentral === dc.ideiaCentral, String(hist.length));
+  check("histórico é por usuário", d.deckDoHistorico("outro", dc.id!) === null);
+
   m.desmarcar(u, "b");
   check("marcas mudaram: deck desatualizado", d.deckDesatualizado(u, deck));
 

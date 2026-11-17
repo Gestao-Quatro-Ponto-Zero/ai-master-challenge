@@ -4,6 +4,8 @@ import { useCallback, useEffect, useMemo, useReducer, useRef, useState, type Rea
 import { Sql } from "./Sql";
 import { composeDrillQuestion } from "./charts/drill";
 import { ArtifactFrame } from "./artifacts/ArtifactFrame";
+import { MarcarToggle } from "./telas/Marcados";
+import { EnviarParaTela } from "./telas/EnviarParaTela";
 import { chartSpecFromRows, markdownRowsToTablePayload, sortMarkdownBody } from "./artifacts/helpers";
 import type { ChartSpec } from "@/engine/tools";
 import type { ArtifactTransform, PartKind, StoredChart } from "@/engine/parts";
@@ -251,6 +253,8 @@ function MarkdownTableArtifact({
           <button
             type="button"
             onClick={() => onTogglePin(displayed)}
+            // Veta's deck-draft pins are hidden (D46.5): the presentation comes from marked charts.
+            hidden
             title={pinned ? "Pinned to your deck draft — click to remove" : "Pin this table to the deck draft"}
             aria-pressed={pinned}
             className={`group ml-auto inline-flex items-center gap-1 rounded border px-1.5 py-0.5 text-[10.5px] font-medium transition-colors ${
@@ -369,6 +373,7 @@ function StepRow({
   citedSql,
   partPin,
   onDrill,
+  sqlOrigem,
 }: {
   step: Step;
   tid: string;
@@ -376,8 +381,11 @@ function StepRow({
   citedSql: string[];
   partPin: PartPin;
   onDrill?: (spec: ChartSpec, label: string) => void;
+  /** The query whose rows the chart plots (the last one before it in the turn), D46.5. */
+  sqlOrigem?: string;
 }) {
   const [open, setOpen] = useState(false);
+  const area = useRef<HTMLDivElement>(null);
 
   // A make_chart step is the payload itself, not a detail to expand — render the
   // grounded chart inline in an ArtifactFrame (type/sort/chart⇄table + its own pin).
@@ -387,6 +395,7 @@ function StepRow({
     const sourceId = `${tid}:step${stepIndex}:chart`;
     return (
       <div className="veta-rise rounded-md border border-edge bg-surface p-3">
+        <div ref={area}>
         <ArtifactFrame
           spec={chart}
           initialView="chart"
@@ -406,6 +415,20 @@ function StepRow({
           }
           onAskDeeper={onDrill}
         />
+        </div>
+        {/* D46.5: a chat chart can go to the presentation or to one of the user's screens. */}
+        <div className="mt-2 flex flex-wrap items-center gap-2 border-t border-edge pt-2" data-sem-captura>
+          <MarcarToggle
+            titulo={(chart.title || trimTitle(partPin.question)).slice(0, 200)}
+            nota={`pergunta: ${trimTitle(partPin.question)}`.slice(0, 300)}
+            sql={sqlOrigem ? [sqlOrigem] : []}
+            alvo={area}
+            rota="/chat"
+            filtros=""
+          />
+          <span className="text-[11px] text-faint">Marcar para a apresentação</span>
+          <EnviarParaTela chart={chart} sql={sqlOrigem ? [sqlOrigem] : []} />
+        </div>
       </div>
     );
   }
@@ -514,6 +537,7 @@ function AssistantBlock({
               citedSql={turn.citedSql ?? []}
               partPin={partPin}
               onDrill={onDrill}
+              sqlOrigem={s.chart ? turn.steps.slice(0, i).reverse().find((x) => x.sql && !x.isError)?.sql : undefined}
             />
           ))}
         </div>
@@ -538,6 +562,8 @@ function AssistantBlock({
             {/* Narrative-only pin — secondary to the whole-turn pin, pins JUST the prose. */}
             <button
               onClick={toggleNarrative}
+              // Veta's deck-draft pins are hidden (D46.5): the presentation comes from marked charts.
+              hidden
               title={narrativePinned ? "Prose pinned — click to remove" : "Pin just this write-up to the deck draft"}
               aria-pressed={narrativePinned}
               className={`ml-auto inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-[10.5px] font-medium transition-colors ${
@@ -550,6 +576,8 @@ function AssistantBlock({
             </button>
             <button
               onClick={onPin}
+              // Veta's deck-draft pins are hidden (D46.5): the presentation comes from marked charts.
+              hidden
               title={pinned ? "Pinned to your deck draft — click to remove" : "Pin this answer to the deck draft"}
               aria-pressed={pinned}
               className={`group ml-auto inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-[10.5px] font-medium transition-colors ${

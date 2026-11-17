@@ -686,3 +686,21 @@
 - **Limite conhecido:** duas instâncias gravando no mesmo instante — a última gravação vence. Para um avaliador por vez isso não aparece; para uso com muita gente ao mesmo tempo o certo é um banco de verdade (Postgres/Turso).
 - **Segredos:** chave do DeepSeek, segredo da sessão, `STATE_KEY` e senha do avaliador estão só nas variáveis do Vercel; nenhum valor foi impresso nem entrou no git. A senha do avaliador do deploy é nova (não é a local) e está em `solution/app/.env.deploy`, fora do git. **Falta o humano decidir** se a senha vai no README público (ISC-26): quem tiver a senha usa a chave do DeepSeek.
 - **Como foi verificado:** `estado-test` (cifra e adulteração; e, com um Blob de teste, um processo grava e outro lê). Em produção, no navegador: login do avaliador, as seis páginas com 200, drill de Recursos = 114, marcação, tela própria com o DeepSeek (16 s, dois painéis) que continua lá ao abrir de novo, sem erro no console.
+
+### D46.3 — Apresentação pelo contexto, não por roteiro fixo (ISC-42)
+- **Pedido do humano:** "A apresentação deve ser executada com base no contexto do que está marcado nela, no contexto que o usuário pediu, não uma apresentação genérica que você faz uma vez e é sempre a mesma coisa."
+- **IA desenhou (`engine/deckMarcados.ts`, `Apresentacao.tsx`, `api/marcados/deck`, `api/marcados/pptx?id=`):**
+  - Além dos gráficos marcados e do briefing, o usuário escolhe:
+    - o **público** (Diretoria, Customer Success, Produto, Investidores), que muda a ênfase pedida ao arranjador;
+    - as **conversas com o analista** e as **telas próprias** que a apresentação deve levar em conta.
+  - O arranjador (o LLM do app) lê o que o usuário perguntou e o que o analista respondeu, e a ideia central, a ordem das seções, os títulos de ação e as recomendações seguem essa investigação.
+  - **Números:** o SQL por trás das respostas escolhidas roda de novo e os números dessas linhas passam a valer na conferência (D45). Um número que só aparece no texto de uma conversa, sem estar no SQL, continua sendo apagado.
+  - Cada montagem fica guardada ("Montagens anteriores"), com público e fontes, e o .pptx de uma montagem antiga ainda pode ser baixado. Slides de gráficos desmarcados depois ficam de fora.
+- **Como foi verificado:**
+  - `deck-marcados-test` subiu para 35 checagens: o arranjador recebe a tela, o pedido e a resposta; o número 514 que vem do SQL da tela fica e, sem esse contexto, o mesmo 514 sai; tela de outro usuário não entra; o histórico é por usuário.
+  - Duas montagens reais com o DeepSeek, mesmos 10 gráficos: "Diretoria, decidir onde agir" deu a ideia central "O churn já supera a receita nova [...] a prioridade é reter a base atual antes de crescer"; "Produto + tela Recursos e churn" deu "O churn é difuso na base [...] o uso do produto é o que o time pode mudar", com seções e ações diferentes.
+
+### D46.5 — Gráficos do chat vão para a apresentação ou para uma tela (ISC-43)
+- **IA fez:** embaixo de cada gráfico que o analista desenha no chat há "Marcar para a apresentação" (a origem no slide é "Chat do analista", com o SQL que gerou as linhas) e "Enviar para uma tela" (uma tela existente ou uma nova).
+- **Limpeza junto:** os botões de "pin" do Veta (que levavam ao deck antigo, fora do menu) foram escondidos no chat. Eles confundiam com a marcação nova; um teste automático chegou a clicar no pin errado por isso.
+- **Como foi verificado:** no navegador, pergunta no chat → gráfico de colunas → marcado (POST 201, rota `/chat`, com SQL) e enviado para uma tela nova, sem erro no console.

@@ -16,6 +16,8 @@ import { appdb, appdbGeracao } from "./appdb";
 import { runQuery } from "./warehouse";
 import { listarMarcados, arquivoMarcado, origemMarcado, TELAS, type Marcado } from "./marcados";
 import { MOTIVOS } from "./tela2";
+import { getConversation, getMessages } from "./appdb";
+import { listarPedidos, obterTela } from "./telasUsuario";
 
 // ── The deck ─────────────────────────────────────────────────────────────────
 
@@ -50,6 +52,23 @@ export interface DeckMarcados {
   avisos: string[];
   marcadoIds: number[];
   criadoEm: string;
+  /** D46.3: the audience picked, and the conversations and screens used as context (names). */
+  publico?: string | null;
+  fontes?: string[];
+  /** Id in the deck history (D46.3). */
+  id?: number;
+}
+
+/**
+ * What the user already investigated with the analyst (D46.3): the conversations and custom screens
+ * they picked, so the deck follows their question instead of a fixed template. The SQL behind those
+ * answers is re-run, and its numbers join what the narrative may cite.
+ */
+export interface ContextoDeck {
+  publico: string | null;
+  conversas: { titulo: string; turnos: { pergunta: string; resposta: string }[] }[];
+  telas: { nome: string; pedidos: { pedido: string; resposta: string }[] }[];
+  sql: string[];
 }
 
 /** What the arranger returns — narrative only, indices point at the marked charts. */
@@ -72,7 +91,7 @@ export interface GraficoAterrado {
   valores: Valores;
 }
 
-export type Arranjador = (graficos: GraficoAterrado[], briefing: string | null) => Promise<Arranjo | null>;
+export type Arranjador = (graficos: GraficoAterrado[], briefing: string | null, contexto?: ContextoDeck | null) => Promise<Arranjo | null>;
 
 // ── Grounding ────────────────────────────────────────────────────────────────
 
@@ -140,6 +159,80 @@ export function aterrar(userId: string, marcados: Marcado[]): GraficoAterrado[] 
     return { indice, marcado: m, ...origemMarcado(m), consultas, valores };
   });
 }
+
+/** The numbers in the rows of any SQL (the context's queries, D46.3), classified like a chart's. */
+export function valoresDeSql(sqls: string[]): Valores {
+  const valores: Valores = { n: [], pct: [] };
+  for (const sql of sqls.slice(0, 25)) {
+    let r;
+    try {
+      r = runQuery(sql, 500);
+    } catch {
+      continue;
+    }
+    for (const col of r.columns) {
+      const brutos = r.rows.map((l) => l[col]);
+      const nums = brutos.filter((v) => v !== null && v !== "" && typeof v !== "boolean").map(Number).filter((n) => Number.isFinite(n));
+      for (const t of brutos.filter((v): v is string => typeof v === "string" && !Number.isFinite(Number(v))))
+        for (const n of numerosDoTexto(t.replace(/_/g, " "))) (n.pct ? valores.pct : valores.n).push(n.valor);
+      valores.n.push(...nums);
+      if (PCT_COLUNA.test(col) || nums.some((n) => !Number.isInteger(n))) valores.pct.push(...nums);
+    }
+  }
+  return valores;
+}
+
+/** Loads the conversations and screens the user picked (only theirs) as deck context. */
+export function carregarContexto(userId: string, opts: { publico?: string | null; conversaIds?: string[]; telaIds?: string[] }): ContextoDeck {
+  const sql: string[] = [];
+  const conversas: ContextoDeck["conversas"] = [];
+  for (const id of (opts.conversaIds ?? []).slice(0, 8)) {
+    const c = getConversation(id, userId);
+    if (!c) continue;
+    const turnos: { pergunta: string; resposta: string }[] = [];
+    let pergunta = "";
+    for (const m of getMessages(id, userId)) {
+      const p = JSON.parse(m.payload_json) as { role?: string; text?: string; answer?: string; citedSql?: string[] };
+      if (p.role === "user") pergunta = p.text ?? "";
+      else if (p.role === "assistant" && p.answer) {
+        turnos.push({ pergunta, resposta: p.answer });
+        sql.push(...(p.citedSql ?? []));
+      }
+    }
+    if (turnos.length) conversas.push({ titulo: c.title, turnos });
+  }
+  const telas: ContextoDeck["telas"] = [];
+  for (const id of (opts.telaIds ?? []).slice(0, 8)) {
+    const t = obterTela(userId, id);
+    if (!t) continue;
+    const pedidos = listarPedidos(userId, id);
+    for (const p of pedidos) sql.push(...p.sql);
+    if (pedidos.length) telas.push({ nome: t.nome, pedidos: pedidos.map((p) => ({ pedido: p.pedido, resposta: p.resposta })) });
+  }
+  return { publico: opts.publico?.trim() ? opts.publico.trim().slice(0, 80) : null, conversas, telas, sql: [...new Set(sql)].slice(0, 25) };
+}
+
+/** The context as prompt text, capped so a long history cannot crowd out the charts. */
+function contextoParaPrompt(c: ContextoDeck): string {
+  const corta = (t: string, n: number) => (t.length > n ? `${t.slice(0, n)}…` : t);
+  const partes: string[] = [];
+  for (const conv of c.conversas) {
+    partes.push(`Conversa "${conv.titulo}":`);
+    for (const t of conv.turnos.slice(-6)) partes.push(`  P: ${corta(t.pergunta, 300)}\n  R: ${corta(t.resposta, 900)}`);
+  }
+  for (const tela of c.telas) {
+    partes.push(`Tela própria "${tela.nome}":`);
+    for (const p of tela.pedidos.slice(-6)) partes.push(`  Pedido: ${corta(p.pedido, 300)}\n  Analista: ${corta(p.resposta, 900)}`);
+  }
+  return corta(partes.join("\n"), 9000);
+}
+
+const ENFASE: Record<string, string> = {
+  Diretoria: "decisão e impacto no negócio (receita, onde agir primeiro); linguagem de diretoria, pouco detalhe técnico",
+  "Customer Success": "segmentos e contas a acompanhar, sinais de risco, ações de relacionamento",
+  Produto: "uso de recursos, erros, o que o produto pode mudar",
+  Investidores: "tendência, tamanho do problema e plano, em poucas mensagens",
+};
 
 // ── The number check ─────────────────────────────────────────────────────────
 
@@ -255,7 +348,7 @@ const strs = (v: unknown): string[] => (Array.isArray(v) ? v.filter((x): x is st
 const str = (v: unknown): string => (typeof v === "string" ? v.trim() : "");
 
 /** The app's LLM, briefed as Veta's arranger was: a McKinsey-trained analyst using Minto's pyramid. */
-export const arranjadorLLM: Arranjador = async (graficos, briefing) => {
+export const arranjadorLLM: Arranjador = async (graficos, briefing, contexto) => {
   if (!process.env.LLM_API_KEY) return null;
   const blocos = graficos
     .map((g) =>
@@ -294,7 +387,15 @@ export const arranjadorLLM: Arranjador = async (graficos, briefing) => {
     "- linhas: 1 ou 2 frases curtas que sustentam o título com o que o gráfico mostra.",
     "- recomendacoes: 2 a 4 ações concretas que decorrem dos achados, com verbo no imperativo. Sem números novos.",
     "",
-    briefing ? `PÚBLICO E OBJETIVO (o briefing do usuário; deixe que ele oriente a ideia central e a ênfase): "${briefing}"` : "Sem briefing: o público é a liderança da RavenStack, que quer entender por que o churn sobe.",
+    contexto?.publico ? `PÚBLICO: ${contexto.publico}${ENFASE[contexto.publico] ? ` — dê ênfase a ${ENFASE[contexto.publico]}` : ""}.` : "",
+    briefing ? `OBJETIVO DO USUÁRIO (o briefing; deixe que ele oriente a ideia central e a ênfase): "${briefing}"` : contexto?.publico ? "" : "Sem briefing: o público é a liderança da RavenStack, que quer entender por que o churn sobe.",
+    ...(contexto && (contexto.conversas.length || contexto.telas.length)
+      ? [
+          "",
+          "O QUE O USUÁRIO JÁ INVESTIGOU COM O ANALISTA (conversas e telas que ele escolheu como contexto). Leia para entender a pergunta que ele quer responder e o que ele já descobriu: a ideia central, a ordem das seções, os títulos de ação e as recomendações devem refletir essa investigação, não um roteiro genérico. Um número citado aqui só pode ser usado se estiver nas consultas dessas conversas (o código confere e apaga o que não estiver).",
+          contextoParaPrompt(contexto),
+        ]
+      : []),
     "",
     "OS GRÁFICOS MARCADOS:",
     blocos,
@@ -362,7 +463,8 @@ export function arranjoPorRegra(graficos: GraficoAterrado[]): Arranjo {
 
 // ── Assembly: arrangement + number check ─────────────────────────────────────
 
-const DDL = `CREATE TABLE IF NOT EXISTS deck_marcados (user_id TEXT PRIMARY KEY, json TEXT NOT NULL, criado_em TEXT NOT NULL);`;
+const DDL = `CREATE TABLE IF NOT EXISTS deck_marcados (user_id TEXT PRIMARY KEY, json TEXT NOT NULL, criado_em TEXT NOT NULL);
+  CREATE TABLE IF NOT EXISTS decks_historico (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT NOT NULL, json TEXT NOT NULL, criado_em TEXT NOT NULL);`;
 // The generation of the app DB the DDL ran on: a DB swapped in from the remote state (D46.4) runs it again.
 let pronto = -1;
 function db() {
@@ -379,15 +481,20 @@ function db() {
  * wrote is checked against the rows of the chart it talks about (or of all charts, for the apex,
  * SCQA and recommendations); what fails is dropped or replaced, and listed in `avisos`.
  */
-export async function montarDeck(userId: string, opts: { briefing?: string | null; arranjador?: Arranjador } = {}): Promise<DeckMarcados> {
+export async function montarDeck(
+  userId: string,
+  opts: { briefing?: string | null; publico?: string | null; conversaIds?: string[]; telaIds?: string[]; arranjador?: Arranjador } = {},
+): Promise<DeckMarcados> {
   const marcados = listarMarcados(userId);
   if (marcados.length === 0) throw new Error("Nenhum gráfico marcado.");
   const briefing = opts.briefing?.trim() ? opts.briefing.trim().slice(0, 600) : null;
   const graficos = aterrar(userId, marcados);
   const livres = numerosLivres(marcados.flatMap((m) => [m.titulo, m.nota ?? ""]));
-  const todos = juntar(livres, ...graficos.map((g) => g.valores));
+  const contexto = carregarContexto(userId, opts);
+  // Numbers the user wrote in the brief, and the rows behind the analyst's answers they picked (D46.3).
+  const todos = juntar(livres, numerosLivres([briefing ?? ""]), valoresDeSql(contexto.sql), ...graficos.map((g) => g.valores));
 
-  const doLLM = await (opts.arranjador ?? arranjadorLLM)(graficos, briefing);
+  const doLLM = await (opts.arranjador ?? arranjadorLLM)(graficos, briefing, contexto);
   const regra = arranjoPorRegra(graficos);
   const a = doLLM && doLLM.secoes.length > 0 ? doLLM : regra;
   const avisos: string[] = [];
@@ -445,11 +552,17 @@ export async function montarDeck(userId: string, opts: { briefing?: string | nul
 
   const deck: DeckMarcados = {
     titulo, ideiaCentral, scqa, secoes, recomendacoes, briefing,
+    publico: contexto.publico,
+    fontes: [...contexto.conversas.map((c) => `Conversa: ${c.titulo}`), ...contexto.telas.map((t) => `Tela: ${t.nome}`)],
     autor: doLLM ? "ia" : "regra",
     avisos,
     marcadoIds: marcados.map((m) => m.id),
     criadoEm: new Date().toISOString(),
   };
+  // Every build is kept (D46.3): an earlier deck can still be downloaded.
+  const ins = db().prepare("INSERT INTO decks_historico (user_id, json, criado_em) VALUES (?, ?, ?)").run(userId, JSON.stringify(deck), deck.criadoEm);
+  deck.id = Number(ins.lastInsertRowid);
+  db().prepare("UPDATE decks_historico SET json = ? WHERE id = ?").run(JSON.stringify(deck), deck.id);
   db().prepare("INSERT INTO deck_marcados (user_id, json, criado_em) VALUES (?, ?, ?) ON CONFLICT(user_id) DO UPDATE SET json = excluded.json, criado_em = excluded.criado_em")
     .run(userId, JSON.stringify(deck), deck.criadoEm);
   return deck;
@@ -458,6 +571,19 @@ export async function montarDeck(userId: string, opts: { briefing?: string | nul
 export function deckAtual(userId: string): DeckMarcados | null {
   const row = db().prepare("SELECT json FROM deck_marcados WHERE user_id = ?").get(userId) as { json: string } | undefined;
   return row ? (JSON.parse(row.json) as DeckMarcados) : null;
+}
+
+/** The earlier builds, newest first (D46.3). */
+export function historicoDecks(userId: string): { id: number; titulo: string; ideiaCentral: string; publico: string | null; fontes: string[]; criadoEm: string }[] {
+  return (db().prepare("SELECT id, json FROM decks_historico WHERE user_id = ? ORDER BY id DESC LIMIT 20").all(userId) as { id: number; json: string }[]).map((r) => {
+    const d = JSON.parse(r.json) as DeckMarcados;
+    return { id: r.id, titulo: d.titulo, ideiaCentral: d.ideiaCentral, publico: d.publico ?? null, fontes: d.fontes ?? [], criadoEm: d.criadoEm };
+  });
+}
+
+export function deckDoHistorico(userId: string, id: number): DeckMarcados | null {
+  const r = db().prepare("SELECT json FROM decks_historico WHERE user_id = ? AND id = ?").get(userId, id) as { json: string } | undefined;
+  return r ? (JSON.parse(r.json) as DeckMarcados) : null;
 }
 
 /** True when the marks changed after the deck was built (it must be built again). */

@@ -158,6 +158,8 @@ export function ArtifactFrame({
         <button
           type="button"
           onClick={() => onTogglePin(transform)}
+          // Veta's deck-draft pins are hidden (D46.5): the presentation comes from marked charts.
+          hidden
           title={pinned ? "Pinned to your deck draft — click to remove" : "Pin this artifact to the deck draft"}
           aria-pressed={pinned}
           className={`group ml-auto inline-flex items-center gap-1 rounded border px-1.5 py-0.5 text-[10.5px] font-medium transition-colors ${
