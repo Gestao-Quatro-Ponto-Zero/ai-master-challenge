@@ -29,12 +29,11 @@ interface NavItem {
   action: NavAction;
 }
 
-/** The executive overview (D28) and the three screens of the design (D22, D27, D44). Links keep the global filters. */
+/** The executive overview (D28) and the two screens left after D44 and D49. Links keep the global filters. */
 const TELAS: { id: string; icon: string; label: string; href: string }[] = [
   { id: "visao", icon: "overview", label: "Visão geral", href: "/" },
-  { id: "tela1", icon: "insights", label: "1 · As três afirmações", href: "/tela/1" },
-  { id: "tela2", icon: "library", label: "2 · O que causa o churn", href: "/tela/2" },
-  { id: "tela3", icon: "accounts", label: "3 · Suporte e uso do produto", href: "/tela/3" },
+  { id: "tela2", icon: "library", label: "O que causa o churn", href: "/tela/2" },
+  { id: "tela3", icon: "accounts", label: "Suporte e uso do produto", href: "/tela/3" },
 ];
 
 const WORKSPACE: NavItem[] = [

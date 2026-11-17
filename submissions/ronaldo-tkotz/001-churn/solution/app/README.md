@@ -6,15 +6,17 @@ and in the analyst's answers traces to SQL you can inspect.
 
 It started as a copy of a previous project of mine (Veta), used as reference code only;
 nothing from that project's dataset stays. The contract is `ISA.md`; human decisions are in
-`../../process-log/decisions.md` (D20–D46).
+`../../process-log/decisions.md` (D20–D49).
 
 **Online:** https://ravenstack-churn.vercel.app. Log in as `avaliador@ravenstack.app`; the evaluator password is shared with the submission.
 
 ## What it does
 
-- **Overview and three screens** (D27–D44): churn over time, what it is associated with (industry,
-  source, country, reason, plan, billing, trial) and support and product usage. Global filters apply
-  to every screen; each chart shows its SQL.
+- **Overview and two screens** (D27–D49): churn over time, what it is associated with (industry,
+  source, country, reason, plan, billing, trial) and support and product usage (usage and error rate
+  by plan, escalation by priority, the most used features with their error rate). Global filters apply
+  to every screen; each chart shows its SQL. The three claims the CEO asked about are answered by a
+  deck built from marked charts, not by a fixed screen (D49).
 - **Drill-down** (D46.1): click a bar or slice to open that slice: its size, the accounts in it against
   the rest of the base (revenue, support, usage), its breakdown by every other attribute (click again to
   go one level deeper), a cross of two attributes and the records.
@@ -59,7 +61,7 @@ the Blob store adds the last one.
 ```bash
 bun run typecheck && bun run lint
 # need WAREHOUSE_PATH:
-bun run visao-test && bun run tela1-test && bun run tela2-test && bun run tela3-test
+bun run visao-test && bun run churn-mensal-test && bun run tela2-test && bun run tela3-test
 bun run marcados-test && bun run deck-marcados-test && bun run recorte-test && bun run telas-test
 bun run estado-test
 bun run ask "..."          # one question to the analyst, from the terminal

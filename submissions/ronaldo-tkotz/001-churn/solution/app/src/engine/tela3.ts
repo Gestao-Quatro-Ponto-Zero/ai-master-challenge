@@ -9,7 +9,6 @@
  */
 import { runQuery } from "./warehouse";
 import { type Filtros, whereConta, whereAssinatura } from "./filtros";
-import { MESES_CTE } from "./tela1";
 
 const num = (v: unknown): number => Number(v ?? 0);
 const opt = (v: unknown): number | null => (v === null || v === undefined ? null : Number(v));
@@ -91,45 +90,53 @@ FROM us`;
   };
 }
 
-// ── Month by month ───────────────────────────────────────────────────────────
+// ── Usage by plan and escalation by priority (D49) ───────────────────────
 
-export interface Mensal3 {
-  meses: string[];
-  tickets: number[];
-  escalados: number[];
-  satisfacao: (number | null)[];
-  usos: number[];
-  taxaErro: (number | null)[];
-  sqlTickets: string;
-  sqlUso: string;
+export interface PorPlano {
+  planos: { label: string; usos: number; erros: number; taxaErro: number }[];
+  sql: string;
 }
 
-/** Tickets, escalations, average satisfaction, uses and error rate per month, jan/2023–dez/2024. */
-export function mensal3(f: Filtros): Mensal3 {
-  const tSql = `WITH RECURSIVE ${MESES_CTE},
-${ticketsCte(f)}
-SELECT substr(mm.ini, 1, 7) AS mes,
-  (SELECT count(*) FROM tk WHERE tk.submitted_at BETWEEN mm.ini AND mm.fim) AS tickets,
-  (SELECT coalesce(sum(escalation_flag), 0) FROM tk WHERE tk.submitted_at BETWEEN mm.ini AND mm.fim) AS escalados,
-  (SELECT round(avg(satisfaction_score), 2) FROM tk WHERE tk.submitted_at BETWEEN mm.ini AND mm.fim) AS satisfacao
-FROM mm ORDER BY mes`;
-  const uSql = `WITH RECURSIVE ${MESES_CTE},
-${usoCte(f)}
-SELECT substr(mm.ini, 1, 7) AS mes,
-  (SELECT coalesce(sum(usage_count), 0) FROM us WHERE us.usage_date BETWEEN mm.ini AND mm.fim) AS usos,
-  (SELECT round(100.0 * sum(error_count) / nullif(sum(usage_count), 0), 2) FROM us WHERE us.usage_date BETWEEN mm.ini AND mm.fim) AS taxa_erro_pct
-FROM mm ORDER BY mes`;
-  const t = runQuery(tSql);
-  const u = runQuery(uSql);
+/**
+ * Usage volume and error rate (errors ÷ uses) per plan. A usage record belongs to a subscription, so
+ * the plan is the subscription's plan (D27), Basic → Pro → Enterprise.
+ */
+export function usoPorPlano(f: Filtros): PorPlano {
+  const r = runQuery(`WITH ${usoCte(f)}
+SELECT s.plan_tier AS plano, coalesce(sum(us.usage_count), 0) AS usos, coalesce(sum(us.error_count), 0) AS erros,
+  round(100.0 * sum(us.error_count) / nullif(sum(us.usage_count), 0), 2) AS taxa_erro_pct
+FROM us JOIN subscriptions s ON s.subscription_id = us.subscription_id
+GROUP BY s.plan_tier
+ORDER BY CASE s.plan_tier WHEN 'Basic' THEN 1 WHEN 'Pro' THEN 2 ELSE 3 END`);
   return {
-    meses: t.rows.map((row) => String(row.mes)),
-    tickets: t.rows.map((row) => num(row.tickets)),
-    escalados: t.rows.map((row) => num(row.escalados)),
-    satisfacao: t.rows.map((row) => opt(row.satisfacao)),
-    usos: u.rows.map((row) => num(row.usos)),
-    taxaErro: u.rows.map((row) => opt(row.taxa_erro_pct)),
-    sqlTickets: t.sql,
-    sqlUso: u.sql,
+    planos: r.rows.map((row) => ({ label: String(row.plano), usos: num(row.usos), erros: num(row.erros), taxaErro: num(row.taxa_erro_pct) })),
+    sql: r.sql,
+  };
+}
+
+export interface Escalacao {
+  prioridades: { label: string; chave: string; tickets: number; escalados: number; taxa: number }[];
+  sql: string;
+}
+
+/** Share of the tickets escalated, per priority (low → urgent), with the escalated count. */
+export function escalacaoPorPrioridade(f: Filtros): Escalacao {
+  const r = runQuery(`WITH ${ticketsCte(f)}
+SELECT priority AS chave,
+  CASE priority WHEN 'low' THEN 'Baixa' WHEN 'medium' THEN 'Média' WHEN 'high' THEN 'Alta' ELSE 'Urgente' END AS label,
+  count(*) AS tickets, coalesce(sum(escalation_flag), 0) AS escalados,
+  round(100.0 * sum(escalation_flag) / nullif(count(*), 0), 1) AS taxa_pct
+FROM tk GROUP BY priority
+ORDER BY CASE priority WHEN 'low' THEN 1 WHEN 'medium' THEN 2 WHEN 'high' THEN 3 ELSE 4 END`);
+  return {
+    prioridades: r.rows.map((row) => ({
+      label: String(row.label),
+      chave: String(row.chave),
+      tickets: num(row.tickets),
+      escalados: num(row.escalados),
+      taxa: num(row.taxa_pct),
+    })),
+    sql: r.sql,
   };
 }
 
@@ -171,13 +178,18 @@ ORDER BY min(CASE WHEN first_response_time_minutes IS NULL THEN 9 WHEN first_res
 
 // ── Features ─────────────────────────────────────────────────────────────────
 
-/** The ten most used features, by uses in the period. */
-export function recursosMaisUsados(f: Filtros): Serie {
-  const s = serie(`WITH ${usoCte(f)}
-SELECT feature_name AS label, sum(usage_count) AS valor
+/** The ten most used features, by uses in the period, each with its error rate (errors ÷ uses, D49). */
+export function recursosMaisUsados(f: Filtros): Serie & { taxaErro: number[] } {
+  const r = runQuery(`WITH ${usoCte(f)}
+SELECT feature_name AS label, sum(usage_count) AS valor,
+  round(100.0 * sum(error_count) / nullif(sum(usage_count), 0), 2) AS taxa_erro_pct
 FROM us GROUP BY feature_name ORDER BY valor DESC LIMIT 10`);
-  // "feature_12" reads "Recurso 12" (renamed here: the read-only guard refuses the word REPLACE in SQL).
-  return { ...s, dados: s.dados.map((d) => ({ ...d, label: d.label.replace(/^feature_/, "Recurso ") })) };
+  return {
+    // "feature_12" reads "Recurso 12" (renamed here: the read-only guard refuses the word REPLACE in SQL).
+    dados: r.rows.map((row) => ({ label: String(row.label).replace(/^feature_/, "Recurso "), value: num(row.valor) })),
+    taxaErro: r.rows.map((row) => num(row.taxa_erro_pct)),
+    sql: r.sql,
+  };
 }
 
 export interface Recurso {

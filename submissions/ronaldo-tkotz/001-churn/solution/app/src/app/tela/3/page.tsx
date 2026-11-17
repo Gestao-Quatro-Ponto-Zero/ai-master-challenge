@@ -2,7 +2,8 @@ import { requireUser } from "@/app/lib/auth";
 import { lerFiltros, descreverFiltros } from "@/engine/filtros";
 import {
   indicadores3,
-  mensal3,
+  usoPorPlano,
+  escalacaoPorPrioridade,
   ticketsPorPrioridade,
   notasSatisfacao,
   faixasResolucao,
@@ -13,7 +14,7 @@ import {
 import { TelaShell } from "@/app/components/telas/TelaShell";
 import { Painel } from "@/app/components/telas/Painel";
 import { Indicador, Cabecalho } from "@/app/components/telas/Indicador";
-import { Barras, Colunas, Donut, LinhasMensais } from "@/app/components/telas/VisaoGraficos";
+import { Barras, ColunasComTaxa, Donut } from "@/app/components/telas/VisaoGraficos";
 import { RecursosErros } from "@/app/components/telas/Tela2Graficos";
 
 // Computed at request time from the read-only database — never prerendered.
@@ -25,14 +26,15 @@ const mil = (n: number) => (n >= 1000 ? `${(n / 1000).toLocaleString("pt-BR", { 
 const share = (a: number, b: number) => (b ? `${dec((100 * a) / b)}%` : "—");
 
 /**
- * Screen 3 — support and product usage (D34, D43). One screen, no scroll: the headline numbers,
- * three month-by-month lines, how the tickets split, and the features.
+ * Screen 3 — support and product usage (D34, D43, D49). One screen, no scroll: the headline numbers,
+ * usage and error rate by plan beside escalation by priority, how the tickets split, and the features.
  */
 export default async function Tela3({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const user = await requireUser();
   const f = lerFiltros(await searchParams);
   const k = indicadores3(f);
-  const m = mensal3(f);
+  const plano = usoPorPlano(f);
+  const escalacao = escalacaoPorPrioridade(f);
   const prioridade = ticketsPorPrioridade(f);
   const notas = notasSatisfacao(f);
   const resolucao = faixasResolucao(f);
@@ -54,22 +56,24 @@ export default async function Tela3({ searchParams }: { searchParams: Promise<Re
           <Indicador rotulo="Taxa de erro" valor={`${dec(k.taxaErroPct, 2)}%`} nota="erros por uso" />
         </Cabecalho>
 
-        <div className="grid min-h-0 gap-2 lg:grid-cols-3">
-          <Painel titulo="Tickets por mês" nota="tickets abertos no mês e quantos foram escalados" sql={[m.sqlTickets]}>
-            <LinhasMensais
-              meses={m.meses}
-              series={[
-                { nome: "Tickets", valores: m.tickets, tema: "volume" },
-                { nome: "Escalados", valores: m.escalados, tema: "problema" },
-              ]}
-              formato="int"
+        <div className="grid min-h-0 gap-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+          <Painel titulo="Uso e taxa de erro por plano" nota="usos e erros por uso, pelo plano da assinatura" sql={[plano.sql]}>
+            <ColunasComTaxa
+              dados={plano.planos.map((p) => ({ label: p.label, value: p.usos, taxa: p.taxaErro }))}
+              nomeColunas="Usos"
+              nomeLinha="Taxa de erro"
+              larguraMax={84}
+              rotularLinha
+              recorte={{ universo: "uso", dim: "plano_assin" }}
             />
           </Painel>
-          <Painel titulo="Satisfação média por mês" nota="nota de 1 a 5 dos tickets avaliados no mês" sql={[m.sqlTickets]}>
-            <LinhasMensais meses={m.meses} series={[{ nome: "Satisfação média", valores: m.satisfacao, tema: "volume" }]} formato="dec" yMax={5} />
-          </Painel>
-          <Painel titulo="Uso do produto por mês" nota="usos de recursos registrados no mês" sql={[m.sqlUso]}>
-            <LinhasMensais meses={m.meses} series={[{ nome: "Usos", valores: m.usos, tema: "volume" }]} formato="int" />
+          <Painel titulo="Taxa de escalação por prioridade" nota="% dos tickets de cada prioridade que foram escalados" sql={[escalacao.sql]}>
+            <Barras
+              dados={escalacao.prioridades.map((p) => ({ label: `${p.label} · ${int(p.escalados)} de ${int(p.tickets)}`, value: p.taxa, chave: p.label }))}
+              formato="pct"
+              tema="churn"
+              recorte={{ universo: "ticket", dim: "prioridade" }}
+            />
           </Painel>
         </div>
 
@@ -92,8 +96,13 @@ export default async function Tela3({ searchParams }: { searchParams: Promise<Re
           <Painel titulo="Recursos: uso × taxa de erro" nota="um ponto por recurso; o uso beta de cada recurso aparece separado" sql={[recursos.sql]}>
             <RecursosErros recursos={recursos.recursos} />
           </Painel>
-          <Painel titulo="Os 10 recursos mais usados" nota="usos no período" sql={[maisUsados.sql]}>
-            <Colunas dados={maisUsados.dados.map((d) => ({ ...d, chave: d.label.replace(/^Recurso /, "feature_") }))} formato="int" tema="receita" gradiente recorte={{ universo: "uso", dim: "recurso" }} />
+          <Painel titulo="Os 10 recursos mais usados" nota="usos no período e a taxa de erro de cada um" sql={[maisUsados.sql]}>
+            <ColunasComTaxa
+              dados={maisUsados.dados.map((d, i) => ({ ...d, taxa: maisUsados.taxaErro[i], chave: d.label.replace(/^Recurso /, "feature_") }))}
+              nomeColunas="Usos"
+              nomeLinha="Taxa de erro"
+              recorte={{ universo: "uso", dim: "recurso" }}
+            />
           </Painel>
         </div>
       </div>

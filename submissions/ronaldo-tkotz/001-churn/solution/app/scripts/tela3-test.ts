@@ -1,10 +1,11 @@
 /**
- * Screen 3 — support and product usage (D43) — against the RavenStack database. Run: bun run tela3-test.
+ * Screen 3 — support and product usage (D43, D49) — against the RavenStack database. Run: bun run tela3-test.
  * Each number must match an independent query; filters and the alert filter must reach every block.
  */
 import {
   indicadores3,
-  mensal3,
+  usoPorPlano,
+  escalacaoPorPrioridade,
   ticketsPorPrioridade,
   notasSatisfacao,
   faixasResolucao,
@@ -35,13 +36,25 @@ check("usos = soma de usage_count", k.usos === one("SELECT sum(usage_count) FROM
 check("erros = soma de error_count", k.erros === one("SELECT sum(error_count) FROM feature_usage"));
 check("taxa de erro = erros / usos", k.taxaErroPct === Math.round((10000 * k.erros) / k.usos) / 100, String(k.taxaErroPct));
 
-// Month by month.
-const m = mensal3(f);
-check("24 meses, de 2023-01 a 2024-12", m.meses.length === 24 && m.meses[0] === "2023-01" && m.meses[23] === "2024-12");
-check("tickets por mês somam 2.000", soma(m.tickets) === 2000, String(soma(m.tickets)));
-check("escalados por mês somam 95", soma(m.escalados) === 95);
-check("usos por mês somam o total", soma(m.usos) === k.usos);
-check("dez/2024: 98 tickets", m.tickets[23] === 98 && m.tickets[23] === one("SELECT count(*) FROM support_tickets WHERE substr(submitted_at, 1, 7) = '2024-12'"));
+// Usage and error rate by plan (D49): the subscription's plan, Basic → Pro → Enterprise.
+const pl = usoPorPlano(f);
+check("uso por plano: Basic, Pro, Enterprise", pl.planos.map((x) => x.label).join(",") === "Basic,Pro,Enterprise");
+check("usos dos planos somam o total", soma(pl.planos.map((x) => x.usos)) === k.usos, String(soma(pl.planos.map((x) => x.usos))));
+check("erros dos planos somam o total", soma(pl.planos.map((x) => x.erros)) === k.erros);
+for (const x of pl.planos) {
+  const usos = one(`SELECT sum(u.usage_count) FROM feature_usage u JOIN subscriptions s ON s.subscription_id = u.subscription_id WHERE s.plan_tier = '${x.label}'`);
+  const taxa = one(`SELECT round(100.0 * sum(u.error_count) / sum(u.usage_count), 2) FROM feature_usage u JOIN subscriptions s ON s.subscription_id = u.subscription_id WHERE s.plan_tier = '${x.label}'`);
+  check(`${x.label}: usos e taxa de erro = consulta independente`, x.usos === usos && x.taxaErro === taxa, `${x.usos} usos, ${x.taxaErro}%`);
+}
+const proSo = usoPorPlano(lerFiltros({ plano: "Pro" }));
+check("filtro de plano Pro: só a coluna Pro", proSo.planos.length === 1 && proSo.planos[0].label === "Pro");
+
+// Escalation by priority (D49): low → urgent, escalated ÷ tickets.
+const es = escalacaoPorPrioridade(f);
+check("escalação: Baixa, Média, Alta, Urgente", es.prioridades.map((x) => x.label).join(",") === "Baixa,Média,Alta,Urgente");
+check("escalados somam 95 e tickets 2.000", soma(es.prioridades.map((x) => x.escalados)) === 95 && soma(es.prioridades.map((x) => x.tickets)) === 2000);
+const urg = es.prioridades.find((x) => x.chave === "urgent")!;
+check("urgente: 23 de 514 = 4,5%", urg.escalados === one("SELECT sum(escalation_flag) FROM support_tickets WHERE priority = 'urgent'") && urg.tickets === 514 && urg.taxa === 4.5, `${urg.escalados}/${urg.tickets} = ${urg.taxa}%`);
 
 // How the tickets split.
 check("prioridades somam 2.000, urgente primeiro", somaS(ticketsPorPrioridade(f)) === 2000 && ticketsPorPrioridade(f).dados[0].label === "Urgente");
@@ -53,6 +66,8 @@ check("faixas de 1ª resposta somam 2.000", somaS(faixasResposta(f)) === 2000);
 // Features.
 const top = recursosMaisUsados(f);
 check("10 recursos mais usados, em ordem", top.dados.length === 10 && top.dados.every((d, i) => i === 0 || d.value <= top.dados[i - 1].value));
+const r32 = one("SELECT round(100.0 * sum(error_count) / sum(usage_count), 2) FROM feature_usage WHERE feature_name = 'feature_32'");
+check("taxa de erro do 1º recurso = consulta independente", top.taxaErro.length === 10 && top.dados[0].label === "Recurso 32" && top.taxaErro[0] === r32, `${top.taxaErro[0]}% vs ${r32}%`);
 const r = recursosErros(f);
 check("recursos: 40 × (estável, beta) = 80 pontos", r.recursos.length === 80);
 check("usos dos pontos somam o total", soma(r.recursos.map((x) => x.usos)) === k.usos);

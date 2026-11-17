@@ -88,7 +88,7 @@ function fixedScale(max: number): { max: number; ticks: number[] } {
   return { max, ticks: Array.from({ length: n + 1 }, (_, i) => Math.round(((n - i) * max * 1e6) / n) / 1e6) };
 }
 
-function tightScale(values: number[]): { max: number; ticks: number[] } {
+export function tightScale(values: number[]): { max: number; ticks: number[] } {
   const hi = Math.max(0, ...values);
   if (!(hi > 0)) return { max: 1, ticks: [1, 0.75, 0.5, 0.25, 0] };
   const mag = 10 ** Math.floor(Math.log10(hi / 4));
@@ -104,7 +104,7 @@ function tightScale(values: number[]): { max: number; ticks: number[] } {
 }
 
 /** A 0-based scale with exactly n intervals, so a right axis shares the left axis's grid lines. */
-function scaleWithIntervals(values: number[], n: number): { max: number; ticks: number[] } {
+export function scaleWithIntervals(values: number[], n: number): { max: number; ticks: number[] } {
   const hi = Math.max(0, ...values);
   const count = Math.max(1, n);
   if (!(hi > 0)) return { max: 1, ticks: Array.from({ length: count + 1 }, (_, i) => (count - i) / count) };

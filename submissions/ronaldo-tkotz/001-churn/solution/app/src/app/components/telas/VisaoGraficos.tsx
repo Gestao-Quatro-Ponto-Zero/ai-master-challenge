@@ -3,6 +3,7 @@
 import { BarChart } from "../charts/BarChart";
 import { PieChart } from "../charts/PieChart";
 import { LineChart } from "../charts/LineChart";
+import { ColunasLinha } from "../charts/ColunasLinha";
 import { Ajustado } from "./Ajustado";
 import { useAbrirRecorte, type AlvoRecorte } from "./Recorte";
 
@@ -178,39 +179,46 @@ export function PorConta({ meses, assinaturas, receita }: { meses: string[]; ass
 }
 
 /**
- * Plain month-by-month lines on one axis (D43): every series in the same unit. `tema` picks the
- * colour by meaning (volume = blue, problem = orange, third = green).
+ * A volume in columns (blue, left axis) with a rate as a line over them (orange: the problem, right
+ * axis), D49. Clicking a column opens that slice when `recorte` is set.
  */
-export function LinhasMensais({
-  meses,
-  series,
-  formato,
-  yMax,
+export function ColunasComTaxa({
+  dados,
+  nomeColunas,
+  nomeLinha,
+  larguraMax,
+  rotularLinha = false,
+  recorte,
 }: {
-  meses: string[];
-  series: { nome: string; valores: (number | null)[]; tema: "volume" | "problema" | "terceiro" }[];
-  formato: "int" | "dec" | "pct";
-  yMax?: number;
+  dados: { label: string; value: number; taxa: number; chave?: string }[];
+  nomeColunas: string;
+  nomeLinha: string;
+  larguraMax?: number;
+  rotularLinha?: boolean;
+  recorte?: AlvoRecorte;
 }) {
-  const cor = { volume: AZUL, problema: LARANJA, terceiro: DONUT[2] };
-  const fmt = {
-    int: (n: number) => (n >= 1000 ? `${(n / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 })} mil` : Math.round(n).toLocaleString("pt-BR")),
-    dec: (n: number) => n.toLocaleString("pt-BR", { maximumFractionDigits: 2 }),
-    pct: (n: number) => `${n.toLocaleString("pt-BR", { maximumFractionDigits: 1 })}%`,
-  }[formato];
-  const nomes = series.map((s) => s.nome);
+  const abrir = useAbrirRecorte(recorte, dados);
+  const nomes = [`${nomeColunas} (eixo esq.)`, `${nomeLinha} (eixo dir.)`];
+  const mil = (n: number) => (n >= 1000 ? `${(n / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 })} mil` : Math.round(n).toLocaleString("pt-BR"));
+  const pct = (n: number) => `${n.toLocaleString("pt-BR", { maximumFractionDigits: 2 })}%`;
   return (
     <Ajustado>
       {(w, h) => (
-        <LineChart
-          categories={meses}
-          series={series.map((s) => ({ name: s.nome, values: s.valores, color: cor[s.tema] }))}
-          yFormat={fmt}
-          yMax={yMax}
-          height={h - (nomes.length > 1 ? alturaLegenda(nomes, w) : 0)}
+        <ColunasLinha
+          rotulos={dados.map((d) => d.label)}
+          colunas={dados.map((d) => d.value)}
+          linha={dados.map((d) => d.taxa)}
+          nomeColunas={nomeColunas}
+          nomeLinha={nomeLinha}
+          fmtColunas={mil}
+          fmtLinha={pct}
+          corColunas={AZUL}
+          corLinha={LARANJA}
+          height={h - alturaLegenda(nomes, w)}
           viewWidth={w}
-          area={false}
-          bare
+          larguraMax={larguraMax}
+          rotularLinha={rotularLinha}
+          onSelect={abrir}
         />
       )}
     </Ajustado>

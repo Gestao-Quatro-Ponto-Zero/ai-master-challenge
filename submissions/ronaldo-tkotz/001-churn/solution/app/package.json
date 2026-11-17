@@ -39,7 +39,7 @@
     "ds-test": "node --import tsx scripts/ds-test.ts",
     "isolation-test": "node --import tsx scripts/isolation-test.ts",
     "artifact-frame-test": "node --import tsx scripts/artifact-frame-test.ts",
-    "tela1-test": "node --import tsx scripts/tela1-test.ts",
+    "churn-mensal-test": "node --import tsx scripts/churn-mensal-test.ts",
     "visao-test": "node --import tsx scripts/visao-test.ts"
   },
   "dependencies": {
