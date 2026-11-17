@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diagnóstico de churn da RavenStack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Relatório de diagnóstico: papel claro, tinta azul-ardósia; laranja = churn (o problema), azul = base/receita. Coluna de leitura única, gráficos e números antes do texto. */
+  --papel: #f5f6f8; --folha: #ffffff; --tinta: #1b2331; --suave: #566173; --linha: #dde2ea;
+  --churn: #c24d1c; --churn-fundo: #fbeee7; --base: #9aa6b8; --azul: #2c64c4;
+  --f-titulo: "IBM Plex Serif", Georgia, serif; --f-texto: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif; --f-mono: "IBM Plex Mono", ui-monospace, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --papel: #11151c; --folha: #181d26; --tinta: #e6e9ef; --suave: #9ba5b5; --linha: #2a313d;
+    --churn: #ee7a45; --churn-fundo: #2c1d16; --base: #5b6678; --azul: #6d9ef0; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --papel: #11151c; --folha: #181d26; --tinta: #e6e9ef; --suave: #9ba5b5; --linha: #2a313d;
+  --churn: #ee7a45; --churn-fundo: #2c1d16; --base: #5b6678; --azul: #6d9ef0; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--papel); color: var(--tinta); font: 16px/1.6 var(--f-texto); }
+.topo { background: var(--folha); border-bottom: 1px solid var(--linha); }
+.faixa { max-width: 1080px; margin: 0 auto; padding: 28px 24px 22px; display: grid; gap: 14px; }
+.linha-topo { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; justify-content: space-between; }
+h1 { font: 600 2.1rem/1.15 var(--f-titulo); margin: 0; text-wrap: balance; }
+.meta { color: var(--suave); font-size: .9rem; display: grid; gap: 4px; max-width: 78ch; }
+.meta p { margin: 0; }
+.acoes { display: grid; gap: 6px; justify-items: end; }
+button { font: 600 .95rem var(--f-texto); color: #fff; background: var(--churn); border: 0; border-radius: 6px; padding: 10px 16px; cursor: pointer; }
+button:hover { filter: brightness(1.08); }
+button:focus-visible, a:focus-visible { outline: 3px solid var(--azul); outline-offset: 2px; }
+#aviso { font-size: .8rem; color: var(--suave); min-height: 1.2em; }
+nav { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: .88rem; }
+nav a { color: var(--suave); text-decoration: none; border-bottom: 1px solid var(--linha); }
+nav a:hover { color: var(--tinta); border-color: var(--churn); }
+main { max-width: 1080px; margin: 0 auto; padding: 24px; display: grid; gap: 24px; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.kpi { background: var(--folha); border: 1px solid var(--linha); border-top: 3px solid var(--churn); border-radius: 6px; padding: 14px 16px; display: grid; gap: 4px; }
+.kpi strong { font: 600 1.6rem/1.1 var(--f-titulo); font-variant-numeric: tabular-nums; }
+.kpi span { color: var(--suave); font-size: .86rem; line-height: 1.4; }
+.graficos { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; }
+figure { margin: 0; background: var(--folha); border: 1px solid var(--linha); border-radius: 6px; padding: 16px; display: grid; gap: 8px; }
+figcaption { display: grid; gap: 2px; }
+figcaption b { font-weight: 600; }
+figcaption span { color: var(--suave); font-size: .85rem; }
+svg { width: 100%; height: auto; display: block; }
+svg text { font-family: var(--f-texto); font-size: 13px; fill: var(--tinta); font-variant-numeric: tabular-nums; }
+svg .eixo { fill: var(--suave); font-size: 11.5px; }
+svg .forte { fill: var(--tinta); font-weight: 600; }
+svg .val { font-weight: 600; paint-order: stroke; stroke: var(--folha); stroke-width: 4px; stroke-linejoin: round; }
+svg .grade { stroke: var(--linha); }
+svg .media { stroke: var(--tinta); stroke-dasharray: 4 4; opacity: .6; }
+svg .barra { fill: var(--base); }
+svg .destaque { fill: var(--churn); }
+article { background: var(--folha); border: 1px solid var(--linha); border-radius: 6px; padding: 8px clamp(18px, 4vw, 48px) 32px; }
+article > * { max-width: 74ch; }
+article > .tabela { max-width: none; }
+article h2 { font: 600 1.55rem/1.25 var(--f-titulo); margin: 2.2rem 0 .6rem; padding-top: 1.2rem; border-top: 1px solid var(--linha); text-wrap: balance; }
+article h2:first-child { border-top: 0; margin-top: 1rem; }
+article h3 { font: 600 1.15rem/1.3 var(--f-texto); margin: 1.8rem 0 .4rem; }
+article p, article li { margin: .45rem 0; }
+article ul, article ol { padding-left: 1.4rem; }
+article strong { font-weight: 600; }
+article code { font: .86em var(--f-mono); background: var(--papel); border: 1px solid var(--linha); border-radius: 4px; padding: 0 4px; }
+article a { color: var(--azul); }
+article hr { display: none; }
+.tabela { overflow-x: auto; margin: 1rem 0; border: 1px solid var(--linha); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; font-size: .9rem; font-variant-numeric: tabular-nums; }
+th { text-align: left; font-weight: 600; background: var(--papel); }
+th, td { padding: 8px 12px; border-bottom: 1px solid var(--linha); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+td strong { color: var(--churn); }
+footer { max-width: 1080px; margin: 0 auto; padding: 0 24px 40px; color: var(--suave); font-size: .82rem; }
+@media (max-width: 520px) { h1 { font-size: 1.6rem; } .acoes { justify-items: start; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<header class="topo">
+  <div class="faixa">
+    <div class="linha-topo">
+      <div>
+        <h1>RavenStack: diagnóstico de churn</h1>
+      </div>
+      <div class="acoes">
+        <button type="button" id="baixar">Baixar o relatório (.md)</button>
+        <span id="aviso" role="status" aria-live="polite"></span>
+      </div>
+    </div>
+    <div class="meta"><p><strong>Para:</strong> CEO · <strong>Base:</strong> 5 tabelas (500 contas, 5.000 assinaturas, 25.000 registros de uso, 2.000 tickets, 600 eventos de churn), jan/2023 a dez/2024 · <strong>Data de corte:</strong> 31/12/2024</p><p>Cada número deste relatório sai de uma consulta que pode ser refeita: os scripts estão em <code>process-log/verification/</code> (o <code>21_sinais_e_contas.py</code> reúne os números desta versão) e o banco está em <code>solution/app/data/ravenstack.db</code>.</p></div>
+    <nav aria-label="Seções do relatório"><a href="#sec-em-uma-pagina">Em uma página</a><a href="#sec-1-o-que-esta-causando-o-churn">1. O que está causando o churn</a><a href="#sec-2-quais-segmentos-estao-mais-em-risco">2. Quais segmentos estão mais em risco</a><a href="#sec-3-o-que-a-empresa-deveria-fazer">3. O que a empresa deveria fazer</a><a href="#sec-4-a-ferramenta-opcional-ja-no-ar">4. A ferramenta (opcional, já no ar)</a><a href="#sec-5-limitacoes">5. Limitações</a></nav>
+  </div>
+</header>
+<main>
+  <section class="kpis" aria-label="Números principais"><div class="kpi"><strong>22%</strong><span>das contas com churn (110 de 500)</span></div><div class="kpi"><strong>US$ 2,07 mi</strong><span>de MRR em contas que o CRM diz canceladas e o faturamento ainda cobra</span></div><div class="kpi"><strong>31% × 19%</strong><span>churn em DevTools contra o resto da base, o único corte significativo</span></div><div class="kpi"><strong>72 contas</strong><span>com 3 sinais ou mais, somando US$ 1,46 mi de MRR: a fila do CS</span></div></section>
+  <section class="graficos" aria-label="Gráficos">
+    <figure>
+      <figcaption><b>Churn por setor</b><span>% das contas de cada setor com <code>churn_flag</code>; a linha tracejada é a média da base</span></figcaption>
+      <svg viewBox="0 0 560 232" role="img" aria-labelledby="g1t"><title id="g1t">Taxa de churn por setor: DevTools 31,0%; FinTech 22,3%; HealthTech 21,9%; EdTech 16,5%; Cybersecurity 16,0%</title><line class="grade" x1="112.0" x2="112.0" y1="8" y2="188"/><text class="eixo" x="112.0" y="204" text-anchor="middle">0%</text><line class="grade" x1="205.7" x2="205.7" y1="8" y2="188"/><text class="eixo" x="205.7" y="204" text-anchor="middle">10%</text><line class="grade" x1="299.4" x2="299.4" y1="8" y2="188"/><text class="eixo" x="299.4" y="204" text-anchor="middle">20%</text><line class="grade" x1="393.1" x2="393.1" y1="8" y2="188"/><text class="eixo" x="393.1" y="204" text-anchor="middle">30%</text><line class="media" x1="318.2" x2="318.2" y1="6" y2="188"/><text class="eixo forte" x="318.2" y="224" text-anchor="middle">média da base: 22%</text><text class="rot" x="102" y="29" text-anchor="end">DevTools</text><rect class="barra destaque" x="112" y="14" width="290.3" height="22" rx="3"/><text class="val" x="410.3" y="29">31,0% · 35 de 113</text><text class="rot" x="102" y="63" text-anchor="end">FinTech</text><rect class="barra" x="112" y="48" width="209.2" height="22" rx="3"/><text class="val" x="329.2" y="63">22,3% · 25 de 112</text><text class="rot" x="102" y="97" text-anchor="end">HealthTech</text><rect class="barra" x="112" y="82" width="205.0" height="22" rx="3"/><text class="val" x="325.0" y="97">21,9% · 21 de 96</text><text class="rot" x="102" y="131" text-anchor="end">EdTech</text><rect class="barra" x="112" y="116" width="154.2" height="22" rx="3"/><text class="val" x="274.2" y="131">16,5% · 13 de 79</text><text class="rot" x="102" y="165" text-anchor="end">Cybersecurity</text><rect class="barra" x="112" y="150" width="149.9" height="22" rx="3"/><text class="val" x="269.9" y="165">16,0% · 16 de 100</text></svg>
+    </figure>
+    <figure>
+      <figcaption><b>Churn pela quantidade de sinais da conta</b><span>sinais observáveis somados (sem o churn recente); a última coluna tem só 6 contas</span></figcaption>
+      <svg viewBox="0 0 560 214" role="img" aria-labelledby="g2t"><title id="g2t">Taxa de churn pela quantidade de sinais da conta: 0 sinais 18,9% (143 contas); 1 sinais 22,7% (198 contas); 2 sinais 23,6% (106 contas); 3 sinais 23,4% (47 contas); 4 sinais 33,3% (6 contas)</title><line class="grade" x1="40" x2="550" y1="172.0" y2="172.0"/><text class="eixo" x="34" y="176.0" text-anchor="end">0%</text><line class="grade" x1="40" x2="550" y1="137.8" y2="137.8"/><text class="eixo" x="34" y="141.8" text-anchor="end">10%</text><line class="grade" x1="40" x2="550" y1="103.6" y2="103.6"/><text class="eixo" x="34" y="107.6" text-anchor="end">20%</text><line class="grade" x1="40" x2="550" y1="69.3" y2="69.3"/><text class="eixo" x="34" y="73.3" text-anchor="end">30%</text><line class="grade" x1="40" x2="550" y1="35.1" y2="35.1"/><text class="eixo" x="34" y="39.1" text-anchor="end">40%</text><rect class="barra" x="61.0" y="107.4" width="60" height="64.6" rx="3"/><text class="val" x="91.0" y="100.4" text-anchor="middle">18,9%</text><text class="rot" x="91.0" y="189" text-anchor="middle">0 sinais</text><text class="eixo" x="91.0" y="205" text-anchor="middle">143 contas</text><rect class="barra" x="163.0" y="94.2" width="60" height="77.8" rx="3"/><text class="val" x="193.0" y="87.2" text-anchor="middle">22,7%</text><text class="rot" x="193.0" y="189" text-anchor="middle">1 sinal</text><text class="eixo" x="193.0" y="205" text-anchor="middle">198 contas</text><rect class="barra" x="265.0" y="91.3" width="60" height="80.7" rx="3"/><text class="val" x="295.0" y="84.3" text-anchor="middle">23,6%</text><text class="rot" x="295.0" y="189" text-anchor="middle">2 sinais</text><text class="eixo" x="295.0" y="205" text-anchor="middle">106 contas</text><rect class="barra" x="367.0" y="91.9" width="60" height="80.1" rx="3"/><text class="val" x="397.0" y="84.9" text-anchor="middle">23,4%</text><text class="rot" x="397.0" y="189" text-anchor="middle">3 sinais</text><text class="eixo" x="397.0" y="205" text-anchor="middle">47 contas</text><rect class="barra destaque" x="469.0" y="57.9" width="60" height="114.1" rx="3"/><text class="val" x="499.0" y="50.9" text-anchor="middle">33,3%</text><text class="rot" x="499.0" y="189" text-anchor="middle">4+ sinais</text><text class="eixo" x="499.0" y="205" text-anchor="middle">6 contas</text></svg>
+    </figure>
+  </section>
+  <article>
+<h2 id="sec-em-uma-pagina">Em uma página</h2>
+<ol>
+<li><strong>O churn não tem uma causa única.</strong> Plano, uso, erros, suporte, satisfação, país e trial, olhados um de cada vez, mudam pouco a chance de uma conta cancelar. O que aparece é uma colcha de retalhos: várias diferenças pequenas que, somadas, contam a história.</li>
+<li><strong>A causa raiz é que a empresa não registra o churn de um jeito que permita explicá-lo.</strong> O motivo do cancelamento não tem relação com o que o cliente escreveu (p = 0,955), um quarto dos cancelamentos não deixa comentário, nenhum ticket tem hora de abertura, milhares de registros de uso e ticket têm data anterior ao cadastro da conta, e o CRM e o faturamento discordam sobre quem saiu (110 contas "canceladas" ainda pagam US$ 2,07 mi de MRR, 20% do MRR ativo).</li>
+<li><strong>O segmento mais exposto é DevTools:</strong> 31% das contas canceladas, contra 19% no resto da base. É a única diferença que passa no teste estatístico. Também pedem atenção as contas em trial (19% da base, 23% do churn) e cinco recursos beta com taxa de erro bem acima da versão estável.</li>
+<li>
+<p><strong>Ações, em ordem:</strong></p>
+<ol>
+<li>conciliar o CRM com o faturamento (US$ 2,07 mi de MRR em dúvida);</li>
+<li>corrigir a captura de dados, com um agente que classifica o motivo pelo texto do cliente;</li>
+<li>pôr o CS nas 72 contas com 3 sinais ou mais (US$ 1,46 mi de MRR) e nas 33 renovações anuais sem auto-renew (US$ 1,08 mi de ARR);</li>
+<li>revisar o onboarding de DevTools;</li>
+<li>montar um monitor de engajamento com um programa de retenção.</li>
+</ol>
+<p>O modelo preditivo vem por último, quando o dado deixar.</p>
+</li>
+</ol>
+<hr />
+<h2 id="sec-1-o-que-esta-causando-o-churn">1. O que está causando o churn</h2>
+<h3 id="sec-nenhum-fator-isolado-explica">Nenhum fator isolado explica</h3>
+<p>Comparamos quem cancelou com quem ficou em cada tabela. A medida de churn por conta é o <code>churn_flag</code>: 110 de 500 contas, ou 22%.</p>
+<div class="tabela"><table>
+<thead>
+<tr>
+<th>Fator</th>
+<th>O que os dados mostram</th>
+<th>Peso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plano</td>
+<td>Basic 22,0%, Pro 21,9%, Enterprise 22,1%</td>
+<td>nenhum</td>
+</tr>
+<tr>
+<td>Trial × pago</td>
+<td>25,8% × 21,1%. O trial é 19,4% da base e 22,7% do churn (p = 0,32)</td>
+<td>pequeno</td>
+</tr>
+<tr>
+<td>Setor</td>
+<td>DevTools 31,0% × resto 19,4% (p = 0,009; 0,044 corrigido para 5 testes)</td>
+<td><strong>o único significativo</strong></td>
+</tr>
+<tr>
+<td>Taxa de erro da conta</td>
+<td>Por quartil: 20,8% / 27,2% / 25,6% / 14,4%. O quartil com mais erro cancela <em>menos</em></td>
+<td>não vai na direção esperada</td>
+</tr>
+<tr>
+<td>Adoção (recursos distintos usados)</td>
+<td>Por quartil: 16,8% / 22,4% / 26,4% / 22,4%</td>
+<td>não protege</td>
+</tr>
+<tr>
+<td>Volume de tickets</td>
+<td>0–2: 25,0% · 3–4: 22,6% · 5–6: 16,9% · 7+: 27,5%</td>
+<td>sem padrão</td>
+</tr>
+<tr>
+<td>Escalação e erro alto juntos</td>
+<td>25,0% × 21,7% no resto (p = 0,60)</td>
+<td>pequeno</td>
+</tr>
+<tr>
+<td>País e tempo de casa</td>
+<td>Normalizado pela exposição, a Alemanha fica igual aos EUA (D7)</td>
+<td>nenhum</td>
+</tr>
+</tbody>
+</table></div>
+<p>Em análises anteriores (D3), 23 variáveis por conta separaram canceladas e ativas com AUC entre 0,45 e 0,54, e um placebo com rótulos embaralhados chegou a 0,56. Nenhum modelo treinado nesta base faz melhor que o acaso. <strong>Isso não quer dizer que o churn é aleatório.</strong> Quer dizer que o que o causa não está bem medido nas tabelas.</p>
+<p>Mesmo assim, os pequenos sinais se somam. Contando quantos de sete sinais observáveis cada conta tem, a taxa de churn sobe devagar: 18,9% sem nenhum, 22,7% com 1, 23,6% com 2, 23,4% com 3 e 33,3% com 4 ou mais. Esse último grupo tem só 6 contas. O gradiente é fraco, e é coerente com a leitura de colcha de retalhos: cada retalho pesa pouco, juntos começam a desenhar um padrão.</p>
+<h3 id="sec-a-causa-raiz-o-churn-nao-e-registrado-de-forma-que-de-para-explica-lo">A causa raiz: o churn não é registrado de forma que dê para explicá-lo</h3>
+<p>A pergunta "por que o cliente sai" não tem resposta confiável na base. As evidências:</p>
+<ul>
+<li><strong>O motivo registrado não conversa com o que o cliente escreveu.</strong> O cruzamento entre o <code>reason_code</code> e o comentário dá p = 0,955: as duas colunas variam de forma independente. Só 101 dos 452 comentários (22%) batem com o motivo registrado; por exemplo, "too expensive" aparece com o motivo <code>features</code> 32 vezes. Os comentários têm só três textos possíveis ("too expensive", "missing features", "switched to competitor"), então funcionam como um segundo menu, não como a voz do cliente.</li>
+<li><strong>Um quarto do churn é silencioso.</strong> 148 dos 600 eventos (131 contas) não têm comentário nenhum. O volume é parecido com o de cada um dos três comentários (136 a 161), e nada é aprendido com ele.</li>
+<li><strong>O suporte não tem relógio.</strong> Os 2.000 tickets foram abertos exatamente à 00:00:00. O SLA medido em horas fica sem base.</li>
+<li><strong>As datas não fecham.</strong> 1.077 tickets e 13.198 registros de uso têm data anterior ao cadastro da própria conta, e 19.142 registros de uso são anteriores ao início da assinatura a que pertencem.</li>
+<li><strong>As tabelas discordam sobre quem saiu.</strong> O CRM marca 110 contas como canceladas, e todas elas têm assinatura paga em aberto, somando US$ 2,07 mi de MRR. Ao mesmo tempo, 277 contas têm evento de churn e continuam marcadas como ativas. As 97 contas marcadas como trial também têm assinatura paga ativa (US$ 2,06 mi de MRR).</li>
+<li><strong>O pico de dezembro/2024 é, provavelmente, um artefato.</strong> 103 das 193 assinaturas encerradas em dezembro nasceram e morreram dentro do próprio mês. Em toda safra, cerca de 10% das assinaturas aparecem encerradas, com a data de fim espalhada uniformemente até 31/12/2024 (D13). Antes de agir sobre esse pico, é preciso confirmar como a <code>end_date</code> é preenchida.</li>
+<li><strong>A satisfação mede o atendimento, não o produto.</strong> A nota média da conta é a mesma com pouco ou muito erro no produto (4,00 / 3,93 / 3,96 por tercil de erro). Ela também não acompanha os tempos de resposta e resolução, só usa as notas 3, 4 e 5, e falta em 41% dos tickets. Hoje não há nenhuma medida da experiência do cliente com o produto, e esse é o ponto cego mais provável para prever quem vai sair.</li>
+</ul>
+<p>O dado existe, mas está pulverizado. Cada tabela conta uma parte, e as partes não se encaixam. Essa é a causa raiz, e é por isso que a ferramenta entregue (seção 4) junta as cinco tabelas num lugar só.</p>
+<hr />
+<h2 id="sec-2-quais-segmentos-estao-mais-em-risco">2. Quais segmentos estão mais em risco</h2>
+<h3 id="sec-devtools">DevTools</h3>
+<p>Com 113 contas e 35 canceladas (31,0%, contra 19,4% no resto), DevTools é o único segmento cuja diferença resiste ao teste estatístico, mesmo depois da correção para comparações múltiplas.</p>
+<p>O curioso é que <strong>nada nas tabelas explica a diferença</strong>:</p>
+<ul>
+<li>a taxa de erro é igual (5,53% × 5,5 a 5,9% nos outros setores);</li>
+<li>a escalação é igual (4,7% dos tickets);</li>
+<li>a satisfação é igual (3,96);</li>
+<li>os tickets por conta são até menos (3,83);</li>
+<li>os motivos de cancelamento se dividem por igual.</li>
+</ul>
+<p>O que separa DevTools está fora da base. As hipóteses mais prováveis são o encaixe do produto com um público técnico e a jornada de ativação. Daí a recomendação de revisar o onboarding desse setor.</p>
+<h3 id="sec-contas-em-trial">Contas em trial</h3>
+<p>São 19,4% da base e 22,7% do churn. Sozinha, a diferença não é significativa (p = 0,32), mas, numa causa feita de várias diferenças pequenas, ela entra na soma.</p>
+<p>O impacto financeiro também se mede de outro jeito. Uma conta em trial vale pelo potencial, e esse potencial se estima pelo MRR médio das contas pagas com o mesmo perfil (plano, setor e assentos).</p>
+<p>Nesta base há um obstáculo antes disso: as 97 contas marcadas como trial já têm assinatura paga ativa. O flag de trial da conta precisa ser corrigido antes de servir para essa conta.</p>
+<h3 id="sec-friccao-concentrada-em-alguns-recursos-beta">Fricção concentrada em alguns recursos beta</h3>
+<p>No total, o beta erra tanto quanto o estável (5,53% × 5,64%). A fricção aparece quando se olha recurso por recurso: em 18 dos 40, o beta erra mais. Em cinco deles, a diferença é grande:</p>
+<div class="tabela"><table>
+<thead>
+<tr>
+<th>Recurso</th>
+<th>Erro no beta</th>
+<th>Erro no estável</th>
+<th>Usos beta</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Recurso 28</td>
+<td>9,52%</td>
+<td>5,48%</td>
+<td>504</td>
+</tr>
+<tr>
+<td>Recurso 25</td>
+<td>8,58%</td>
+<td>5,40%</td>
+<td>478</td>
+</tr>
+<tr>
+<td>Recurso 38</td>
+<td>7,66%</td>
+<td>5,22%</td>
+<td>731</td>
+</tr>
+<tr>
+<td>Recurso 18</td>
+<td>8,39%</td>
+<td>6,07%</td>
+<td>608</td>
+</tr>
+<tr>
+<td>Recurso 21</td>
+<td>7,46%</td>
+<td>5,69%</td>
+<td>590</td>
+</tr>
+</tbody>
+</table></div>
+<p>É um sinal de qualidade que existe e merece dono. Ainda não é um motor do churn: no nível da conta, mais erro não leva a mais cancelamento.</p>
+<h3 id="sec-suporte">Suporte</h3>
+<p>Contas com algum ticket escalado cancelam um pouco mais (25,3% × 21,3%). O suporte traz bom contexto do negócio, mas não é um motor do churn. Cruzado com a fricção de produto, nesta base, o sinal não fica mais forte: escalou e erra muito dá 25,0%, contra 21,7% no resto (p = 0,60).</p>
+<p>A prioridade do ticket também não muda o atendimento: a resolução fica entre 34,6 h e 37,0 h em todas as prioridades (D6). Esse é um problema operacional por si só.</p>
+<h3 id="sec-contas-especificas-solution-contas-em-risco-csv">Contas específicas: <code>solution/contas-em-risco.csv</code></h3>
+<p>A lista <strong>não é uma probabilidade de churn</strong>: nenhum modelo nesta base faz melhor que o acaso. Ela diz onde o CS deve olhar primeiro, cruzando sinais observáveis com receita exposta. Cada linha diz quais sinais a conta tem. Os sete sinais são:</p>
+<ul>
+<li>setor DevTools;</li>
+<li>conta em trial;</li>
+<li>evento de churn nos últimos 90 dias;</li>
+<li>ticket escalado;</li>
+<li>taxa de erro no quartil mais alto;</li>
+<li>uso do 4º tri/2024 abaixo da metade do 3º;</li>
+<li>7 tickets ou mais.</li>
+</ul>
+<p>Um oitavo sinal é o aniversário de contrato anual em 90 dias sem auto-renew.</p>
+<p><strong>Lista A, agir:</strong> 72 contas ainda ativas no CRM, com 3 sinais ou mais, somando US$ 1,46 mi de MRR. As dez primeiras:</p>
+<div class="tabela"><table>
+<thead>
+<tr>
+<th>Conta</th>
+<th>Setor</th>
+<th>Plano</th>
+<th>MRR ativo</th>
+<th>Sinais</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Company_36</td>
+<td>DevTools</td>
+<td>Pro</td>
+<td>US$ 8.805</td>
+<td>6: DevTools, trial, escalação, erro alto, renovação sem auto-renew, 7+ tickets</td>
+</tr>
+<tr>
+<td>Company_191</td>
+<td>HealthTech</td>
+<td>Pro</td>
+<td>US$ 23.145</td>
+<td>5: churn recente, escalação, erro alto, queda de uso, renovação sem auto-renew</td>
+</tr>
+<tr>
+<td>Company_205</td>
+<td>DevTools</td>
+<td>Enterprise</td>
+<td>US$ 48.804</td>
+<td>4: DevTools, trial, churn recente, erro alto</td>
+</tr>
+<tr>
+<td>Company_281</td>
+<td>FinTech</td>
+<td>Basic</td>
+<td>US$ 46.912</td>
+<td>4: trial, erro alto, queda de uso, 7+ tickets</td>
+</tr>
+<tr>
+<td>Company_267</td>
+<td>DevTools</td>
+<td>Pro</td>
+<td>US$ 30.429</td>
+<td>4: DevTools, churn recente, escalação, erro alto</td>
+</tr>
+<tr>
+<td>Company_452</td>
+<td>Cybersecurity</td>
+<td>Enterprise</td>
+<td>US$ 21.666</td>
+<td>4: churn recente, escalação, erro alto, 7+ tickets</td>
+</tr>
+<tr>
+<td>Company_209</td>
+<td>DevTools</td>
+<td>Pro</td>
+<td>US$ 21.075</td>
+<td>4: DevTools, trial, churn recente, 7+ tickets</td>
+</tr>
+<tr>
+<td>Company_279</td>
+<td>DevTools</td>
+<td>Pro</td>
+<td>US$ 20.223</td>
+<td>4: DevTools, churn recente, erro alto, queda de uso</td>
+</tr>
+<tr>
+<td>Company_136</td>
+<td>EdTech</td>
+<td>Enterprise</td>
+<td>US$ 19.006</td>
+<td>4: trial, escalação, erro alto, renovação sem auto-renew</td>
+</tr>
+<tr>
+<td>Company_446</td>
+<td>FinTech</td>
+<td>Pro</td>
+<td>US$ 17.334</td>
+<td>4: trial, churn recente, escalação, erro alto</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Lista B, conciliar:</strong> 110 contas que o CRM marca como canceladas e que o faturamento ainda cobra (US$ 2,07 mi de MRR). Antes de qualquer ação de retenção, é preciso saber qual das duas tabelas está certa.</p>
+<p><strong>Renovações:</strong> 33 contas com contrato anual que faz aniversário até 31/03/2025 sem auto-renew, somando US$ 1,08 mi de ARR. A lista está em <code>process-log/verification/outputs/12_renovacoes_90d_sem_autorenew.csv</code> (D8), e as mesmas contas estão marcadas na coluna <code>renova_sem_auto</code> do CSV.</p>
+<hr />
+<h2 id="sec-3-o-que-a-empresa-deveria-fazer">3. O que a empresa deveria fazer</h2>
+<p>As ações estão em ordem de prioridade. As estimativas de impacto são ordens de grandeza com a conta à vista, não promessas.</p>
+<div class="tabela"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Ação</th>
+<th>Dono</th>
+<th>Prazo</th>
+<th>Impacto estimado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Conciliar o CRM com o faturamento</strong> nas 110 contas da lista B e corrigir o flag de trial</td>
+<td>Financeiro + RevOps</td>
+<td>2 semanas</td>
+<td>Dá certeza sobre US$ 2,07 mi de MRR (20% do ativo). Se o faturamento estiver errado, a receita está superestimada nesse valor; se o CRM estiver errado, 110 contas saem da conta do churn.</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Corrigir a captura de dados:</strong> hora de abertura do ticket; validação de datas (nada antes do cadastro); comentário obrigatório no cancelamento; um <strong>agente classificador</strong> que lê o texto do cliente e propõe o motivo</td>
+<td>Dados + Produto</td>
+<td>30 dias</td>
+<td>Não gera receita direta. É o que torna o churn explicável: hoje 78% dos motivos não batem com o comentário e 25% dos cancelamentos são silenciosos.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>CS nas contas da lista A e nas renovações sem auto-renew</strong>, uma ligação por conta, começando pelas de mais sinais e mais MRR</td>
+<td>CS</td>
+<td>começa já, 60 dias</td>
+<td>US$ 1,46 mi de MRR na lista A e US$ 1,08 mi de ARR nas renovações. Com o churn histórico de ~23% dessas contas, salvar um quarto delas preserva cerca de US$ 85 mil de MRR (~US$ 1 mi de ARR).</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Revisar o onboarding de DevTools</strong>, começando pelas reclamações de suporte desse público e pela jornada de ativação</td>
+<td>Produto + CS</td>
+<td>60–90 dias</td>
+<td>Se o churn do setor cair ao nível do resto da base (de 31% para 19%), são ~13 contas a menos por ciclo, ~US$ 196 mil de MRR (~US$ 2,3 mi de ARR), pelo MRR médio das DevTools canceladas (US$ 15 mil). É um teto.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Monitor de engajamento com programa de retenção periódico:</strong> alerta automático para queda de uso, conta com muitos tickets, escalação e churn silencioso, com contato do CS ou do suporte antes da renovação</td>
+<td>CS + Dados</td>
+<td>90 dias</td>
+<td>Transforma a lista A em rotina. Em 90 dias, medir se as contas com alerta cancelam mais que as sem alerta e recalibrar os sinais.</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Levar para a ativação os recursos das assinaturas que duram mais.</strong> Os recursos 9, 35 e 30 são 19% a 37% mais usados nas assinaturas longas que nas curtas.</td>
+<td>Produto</td>
+<td>90 dias</td>
+<td>Hipótese a testar em grupo de controle: o uso pode ser efeito da duração, não causa.</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Baixar o erro dos cinco recursos beta</strong> (28, 25, 38, 18 e 21) ao nível da versão estável</td>
+<td>Engenharia</td>
+<td>próximo ciclo</td>
+<td>Qualidade, não receita comprovada: o erro não prevê churn nesta base.</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Medir a experiência com o produto</strong> (uma pesquisa curta dentro do produto, separada da nota do ticket)</td>
+<td>Produto</td>
+<td>60 dias</td>
+<td>Cobre o ponto cego: hoje a única nota mede o atendimento.</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>Só então, o modelo preditivo</strong>, treinado com o dado corrigido nos itens 1, 2 e 8</td>
+<td>Dados</td>
+<td>depois de 2 trimestres de dado limpo</td>
+<td>A ferramenta já junta as cinco tabelas e está pronta para receber o modelo.</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="sec-4-a-ferramenta-opcional-ja-no-ar">4. A ferramenta (opcional, já no ar)</h2>
+<p><a href="https://ravenstack-churn.vercel.app.">https://ravenstack-churn.vercel.app.</a> O login de avaliador e a senha estão na descrição do pull request.</p>
+<p>O que a ferramenta tem:</p>
+<ul>
+<li>Uma visão geral e duas telas: o que se associa ao churn, e suporte e uso do produto. Todo gráfico mostra o SQL que o gerou.</li>
+<li>Drill-down em qualquer fatia, com filtros que valem para todas as telas.</li>
+<li>Um analista conversacional que cita o SQL de cada resposta.</li>
+<li>Telas próprias criadas por pergunta.</li>
+<li>Uma apresentação montada a partir dos gráficos marcados.</li>
+</ul>
+<p>Um vídeo de 2 minutos mostra a ferramenta em uso: <a href="https://drive.google.com/file/d/14ctMS_deoJNzGt1KyqubhB7UHZZSIxQn/view?usp=sharing">assistir no Google Drive</a> (cópia no repositório em <code>solution/demo/ravenstack-demo.mp4</code>).</p>
+<p>A ideia é que o churn possa ser visto antes de acontecer. Ela só funciona com toda a capacidade quando os itens 1 e 2 forem resolvidos.</p>
+<h2 id="sec-5-limitacoes">5. Limitações</h2>
+<ul>
+<li><strong>Os dados são sintéticos</strong> (o README do dataset no Kaggle declara isso). Alguns padrões parecem do gerador, e não de clientes: o pico de dezembro, um NRR de 140% a 158% e textos de comentário fixos.</li>
+<li><strong>Correlação não é causa.</strong> O único segmento significativo (DevTools) não tem explicação dentro da base. As ações 4 e 6 são hipóteses a testar com grupo de controle.</li>
+<li><strong>Os grupos são pequenos e foram feitos muitos testes.</strong> Com 110 contas canceladas, diferenças de 3 a 5 pontos não se distinguem do acaso. Só DevTools sobrevive à correção.</li>
+<li><strong>Os sinais da lista dependem de datas</strong> com as inconsistências da seção 1: queda de uso e churn recente. Por isso, a lista é uma fila de atenção, não uma previsão.</li>
+<li><strong>As estimativas de impacto</strong> usam taxas históricas desta base e premissas declaradas na tabela. Elas servem para ordenar as ações, não para orçamento.</li>
+</ul>
+  </article>
+</main>
+<footer>Gerado por <code>process-log/verification/22_relatorio_html.py</code> a partir de <code>solution/relatorio-churn.md</code> e do banco <code>solution/app/data/ravenstack.db</code>.</footer>
+<script>
+const MD = "# RavenStack: diagnóstico de churn\n\n**Para:** CEO · **Base:** 5 tabelas (500 contas, 5.000 assinaturas, 25.000 registros de uso, 2.000 tickets, 600 eventos de churn), jan/2023 a dez/2024 · **Data de corte:** 31/12/2024\n\nCada número deste relatório sai de uma consulta que pode ser refeita: os scripts estão em `process-log/verification/` (o `21_sinais_e_contas.py` reúne os números desta versão) e o banco está em `solution/app/data/ravenstack.db`.\n\n---\n\n## Em uma página\n\n1. **O churn não tem uma causa única.** Plano, uso, erros, suporte, satisfação, país e trial, olhados um de cada vez, mudam pouco a chance de uma conta cancelar. O que aparece é uma colcha de retalhos: várias diferenças pequenas que, somadas, contam a história.\n2. **A causa raiz é que a empresa não registra o churn de um jeito que permita explicá-lo.** O motivo do cancelamento não tem relação com o que o cliente escreveu (p = 0,955), um quarto dos cancelamentos não deixa comentário, nenhum ticket tem hora de abertura, milhares de registros de uso e ticket têm data anterior ao cadastro da conta, e o CRM e o faturamento discordam sobre quem saiu (110 contas \"canceladas\" ainda pagam US$ 2,07 mi de MRR, 20% do MRR ativo).\n3. **O segmento mais exposto é DevTools:** 31% das contas canceladas, contra 19% no resto da base. É a única diferença que passa no teste estatístico. Também pedem atenção as contas em trial (19% da base, 23% do churn) e cinco recursos beta com taxa de erro bem acima da versão estável.\n4. **Ações, em ordem:**\n   1. conciliar o CRM com o faturamento (US$ 2,07 mi de MRR em dúvida);\n   2. corrigir a captura de dados, com um agente que classifica o motivo pelo texto do cliente;\n   3. pôr o CS nas 72 contas com 3 sinais ou mais (US$ 1,46 mi de MRR) e nas 33 renovações anuais sem auto-renew (US$ 1,08 mi de ARR);\n   4. revisar o onboarding de DevTools;\n   5. montar um monitor de engajamento com um programa de retenção.\n\n   O modelo preditivo vem por último, quando o dado deixar.\n\n---\n\n## 1. O que está causando o churn\n\n### Nenhum fator isolado explica\n\nComparamos quem cancelou com quem ficou em cada tabela. A medida de churn por conta é o `churn_flag`: 110 de 500 contas, ou 22%.\n\n| Fator | O que os dados mostram | Peso |\n|---|---|---|\n| Plano | Basic 22,0%, Pro 21,9%, Enterprise 22,1% | nenhum |\n| Trial × pago | 25,8% × 21,1%. O trial é 19,4% da base e 22,7% do churn (p = 0,32) | pequeno |\n| Setor | DevTools 31,0% × resto 19,4% (p = 0,009; 0,044 corrigido para 5 testes) | **o único significativo** |\n| Taxa de erro da conta | Por quartil: 20,8% / 27,2% / 25,6% / 14,4%. O quartil com mais erro cancela *menos* | não vai na direção esperada |\n| Adoção (recursos distintos usados) | Por quartil: 16,8% / 22,4% / 26,4% / 22,4% | não protege |\n| Volume de tickets | 0–2: 25,0% · 3–4: 22,6% · 5–6: 16,9% · 7+: 27,5% | sem padrão |\n| Escalação e erro alto juntos | 25,0% × 21,7% no resto (p = 0,60) | pequeno |\n| País e tempo de casa | Normalizado pela exposição, a Alemanha fica igual aos EUA (D7) | nenhum |\n\nEm análises anteriores (D3), 23 variáveis por conta separaram canceladas e ativas com AUC entre 0,45 e 0,54, e um placebo com rótulos embaralhados chegou a 0,56. Nenhum modelo treinado nesta base faz melhor que o acaso. **Isso não quer dizer que o churn é aleatório.** Quer dizer que o que o causa não está bem medido nas tabelas.\n\nMesmo assim, os pequenos sinais se somam. Contando quantos de sete sinais observáveis cada conta tem, a taxa de churn sobe devagar: 18,9% sem nenhum, 22,7% com 1, 23,6% com 2, 23,4% com 3 e 33,3% com 4 ou mais. Esse último grupo tem só 6 contas. O gradiente é fraco, e é coerente com a leitura de colcha de retalhos: cada retalho pesa pouco, juntos começam a desenhar um padrão.\n\n### A causa raiz: o churn não é registrado de forma que dê para explicá-lo\n\nA pergunta \"por que o cliente sai\" não tem resposta confiável na base. As evidências:\n\n- **O motivo registrado não conversa com o que o cliente escreveu.** O cruzamento entre o `reason_code` e o comentário dá p = 0,955: as duas colunas variam de forma independente. Só 101 dos 452 comentários (22%) batem com o motivo registrado; por exemplo, \"too expensive\" aparece com o motivo `features` 32 vezes. Os comentários têm só três textos possíveis (\"too expensive\", \"missing features\", \"switched to competitor\"), então funcionam como um segundo menu, não como a voz do cliente.\n- **Um quarto do churn é silencioso.** 148 dos 600 eventos (131 contas) não têm comentário nenhum. O volume é parecido com o de cada um dos três comentários (136 a 161), e nada é aprendido com ele.\n- **O suporte não tem relógio.** Os 2.000 tickets foram abertos exatamente à 00:00:00. O SLA medido em horas fica sem base.\n- **As datas não fecham.** 1.077 tickets e 13.198 registros de uso têm data anterior ao cadastro da própria conta, e 19.142 registros de uso são anteriores ao início da assinatura a que pertencem.\n- **As tabelas discordam sobre quem saiu.** O CRM marca 110 contas como canceladas, e todas elas têm assinatura paga em aberto, somando US$ 2,07 mi de MRR. Ao mesmo tempo, 277 contas têm evento de churn e continuam marcadas como ativas. As 97 contas marcadas como trial também têm assinatura paga ativa (US$ 2,06 mi de MRR).\n- **O pico de dezembro/2024 é, provavelmente, um artefato.** 103 das 193 assinaturas encerradas em dezembro nasceram e morreram dentro do próprio mês. Em toda safra, cerca de 10% das assinaturas aparecem encerradas, com a data de fim espalhada uniformemente até 31/12/2024 (D13). Antes de agir sobre esse pico, é preciso confirmar como a `end_date` é preenchida.\n- **A satisfação mede o atendimento, não o produto.** A nota média da conta é a mesma com pouco ou muito erro no produto (4,00 / 3,93 / 3,96 por tercil de erro). Ela também não acompanha os tempos de resposta e resolução, só usa as notas 3, 4 e 5, e falta em 41% dos tickets. Hoje não há nenhuma medida da experiência do cliente com o produto, e esse é o ponto cego mais provável para prever quem vai sair.\n\nO dado existe, mas está pulverizado. Cada tabela conta uma parte, e as partes não se encaixam. Essa é a causa raiz, e é por isso que a ferramenta entregue (seção 4) junta as cinco tabelas num lugar só.\n\n---\n\n## 2. Quais segmentos estão mais em risco\n\n### DevTools\n\nCom 113 contas e 35 canceladas (31,0%, contra 19,4% no resto), DevTools é o único segmento cuja diferença resiste ao teste estatístico, mesmo depois da correção para comparações múltiplas.\n\nO curioso é que **nada nas tabelas explica a diferença**:\n\n- a taxa de erro é igual (5,53% × 5,5 a 5,9% nos outros setores);\n- a escalação é igual (4,7% dos tickets);\n- a satisfação é igual (3,96);\n- os tickets por conta são até menos (3,83);\n- os motivos de cancelamento se dividem por igual.\n\nO que separa DevTools está fora da base. As hipóteses mais prováveis são o encaixe do produto com um público técnico e a jornada de ativação. Daí a recomendação de revisar o onboarding desse setor.\n\n### Contas em trial\n\nSão 19,4% da base e 22,7% do churn. Sozinha, a diferença não é significativa (p = 0,32), mas, numa causa feita de várias diferenças pequenas, ela entra na soma.\n\nO impacto financeiro também se mede de outro jeito. Uma conta em trial vale pelo potencial, e esse potencial se estima pelo MRR médio das contas pagas com o mesmo perfil (plano, setor e assentos).\n\nNesta base há um obstáculo antes disso: as 97 contas marcadas como trial já têm assinatura paga ativa. O flag de trial da conta precisa ser corrigido antes de servir para essa conta.\n\n### Fricção concentrada em alguns recursos beta\n\nNo total, o beta erra tanto quanto o estável (5,53% × 5,64%). A fricção aparece quando se olha recurso por recurso: em 18 dos 40, o beta erra mais. Em cinco deles, a diferença é grande:\n\n| Recurso | Erro no beta | Erro no estável | Usos beta |\n|---|---|---|---|\n| Recurso 28 | 9,52% | 5,48% | 504 |\n| Recurso 25 | 8,58% | 5,40% | 478 |\n| Recurso 38 | 7,66% | 5,22% | 731 |\n| Recurso 18 | 8,39% | 6,07% | 608 |\n| Recurso 21 | 7,46% | 5,69% | 590 |\n\nÉ um sinal de qualidade que existe e merece dono. Ainda não é um motor do churn: no nível da conta, mais erro não leva a mais cancelamento.\n\n### Suporte\n\nContas com algum ticket escalado cancelam um pouco mais (25,3% × 21,3%). O suporte traz bom contexto do negócio, mas não é um motor do churn. Cruzado com a fricção de produto, nesta base, o sinal não fica mais forte: escalou e erra muito dá 25,0%, contra 21,7% no resto (p = 0,60).\n\nA prioridade do ticket também não muda o atendimento: a resolução fica entre 34,6 h e 37,0 h em todas as prioridades (D6). Esse é um problema operacional por si só.\n\n### Contas específicas: `solution/contas-em-risco.csv`\n\nA lista **não é uma probabilidade de churn**: nenhum modelo nesta base faz melhor que o acaso. Ela diz onde o CS deve olhar primeiro, cruzando sinais observáveis com receita exposta. Cada linha diz quais sinais a conta tem. Os sete sinais são:\n\n- setor DevTools;\n- conta em trial;\n- evento de churn nos últimos 90 dias;\n- ticket escalado;\n- taxa de erro no quartil mais alto;\n- uso do 4º tri/2024 abaixo da metade do 3º;\n- 7 tickets ou mais.\n\nUm oitavo sinal é o aniversário de contrato anual em 90 dias sem auto-renew.\n\n**Lista A, agir:** 72 contas ainda ativas no CRM, com 3 sinais ou mais, somando US$ 1,46 mi de MRR. As dez primeiras:\n\n| Conta | Setor | Plano | MRR ativo | Sinais |\n|---|---|---|---|---|\n| Company_36 | DevTools | Pro | US$ 8.805 | 6: DevTools, trial, escalação, erro alto, renovação sem auto-renew, 7+ tickets |\n| Company_191 | HealthTech | Pro | US$ 23.145 | 5: churn recente, escalação, erro alto, queda de uso, renovação sem auto-renew |\n| Company_205 | DevTools | Enterprise | US$ 48.804 | 4: DevTools, trial, churn recente, erro alto |\n| Company_281 | FinTech | Basic | US$ 46.912 | 4: trial, erro alto, queda de uso, 7+ tickets |\n| Company_267 | DevTools | Pro | US$ 30.429 | 4: DevTools, churn recente, escalação, erro alto |\n| Company_452 | Cybersecurity | Enterprise | US$ 21.666 | 4: churn recente, escalação, erro alto, 7+ tickets |\n| Company_209 | DevTools | Pro | US$ 21.075 | 4: DevTools, trial, churn recente, 7+ tickets |\n| Company_279 | DevTools | Pro | US$ 20.223 | 4: DevTools, churn recente, erro alto, queda de uso |\n| Company_136 | EdTech | Enterprise | US$ 19.006 | 4: trial, escalação, erro alto, renovação sem auto-renew |\n| Company_446 | FinTech | Pro | US$ 17.334 | 4: trial, churn recente, escalação, erro alto |\n\n**Lista B, conciliar:** 110 contas que o CRM marca como canceladas e que o faturamento ainda cobra (US$ 2,07 mi de MRR). Antes de qualquer ação de retenção, é preciso saber qual das duas tabelas está certa.\n\n**Renovações:** 33 contas com contrato anual que faz aniversário até 31/03/2025 sem auto-renew, somando US$ 1,08 mi de ARR. A lista está em `process-log/verification/outputs/12_renovacoes_90d_sem_autorenew.csv` (D8), e as mesmas contas estão marcadas na coluna `renova_sem_auto` do CSV.\n\n---\n\n## 3. O que a empresa deveria fazer\n\nAs ações estão em ordem de prioridade. As estimativas de impacto são ordens de grandeza com a conta à vista, não promessas.\n\n| # | Ação | Dono | Prazo | Impacto estimado |\n|---|---|---|---|---|\n| 1 | **Conciliar o CRM com o faturamento** nas 110 contas da lista B e corrigir o flag de trial | Financeiro + RevOps | 2 semanas | Dá certeza sobre US$ 2,07 mi de MRR (20% do ativo). Se o faturamento estiver errado, a receita está superestimada nesse valor; se o CRM estiver errado, 110 contas saem da conta do churn. |\n| 2 | **Corrigir a captura de dados:** hora de abertura do ticket; validação de datas (nada antes do cadastro); comentário obrigatório no cancelamento; um **agente classificador** que lê o texto do cliente e propõe o motivo | Dados + Produto | 30 dias | Não gera receita direta. É o que torna o churn explicável: hoje 78% dos motivos não batem com o comentário e 25% dos cancelamentos são silenciosos. |\n| 3 | **CS nas contas da lista A e nas renovações sem auto-renew**, uma ligação por conta, começando pelas de mais sinais e mais MRR | CS | começa já, 60 dias | US$ 1,46 mi de MRR na lista A e US$ 1,08 mi de ARR nas renovações. Com o churn histórico de ~23% dessas contas, salvar um quarto delas preserva cerca de US$ 85 mil de MRR (~US$ 1 mi de ARR). |\n| 4 | **Revisar o onboarding de DevTools**, começando pelas reclamações de suporte desse público e pela jornada de ativação | Produto + CS | 60–90 dias | Se o churn do setor cair ao nível do resto da base (de 31% para 19%), são ~13 contas a menos por ciclo, ~US$ 196 mil de MRR (~US$ 2,3 mi de ARR), pelo MRR médio das DevTools canceladas (US$ 15 mil). É um teto. |\n| 5 | **Monitor de engajamento com programa de retenção periódico:** alerta automático para queda de uso, conta com muitos tickets, escalação e churn silencioso, com contato do CS ou do suporte antes da renovação | CS + Dados | 90 dias | Transforma a lista A em rotina. Em 90 dias, medir se as contas com alerta cancelam mais que as sem alerta e recalibrar os sinais. |\n| 6 | **Levar para a ativação os recursos das assinaturas que duram mais.** Os recursos 9, 35 e 30 são 19% a 37% mais usados nas assinaturas longas que nas curtas. | Produto | 90 dias | Hipótese a testar em grupo de controle: o uso pode ser efeito da duração, não causa. |\n| 7 | **Baixar o erro dos cinco recursos beta** (28, 25, 38, 18 e 21) ao nível da versão estável | Engenharia | próximo ciclo | Qualidade, não receita comprovada: o erro não prevê churn nesta base. |\n| 8 | **Medir a experiência com o produto** (uma pesquisa curta dentro do produto, separada da nota do ticket) | Produto | 60 dias | Cobre o ponto cego: hoje a única nota mede o atendimento. |\n| 9 | **Só então, o modelo preditivo**, treinado com o dado corrigido nos itens 1, 2 e 8 | Dados | depois de 2 trimestres de dado limpo | A ferramenta já junta as cinco tabelas e está pronta para receber o modelo. |\n\n---\n\n## 4. A ferramenta (opcional, já no ar)\n\nhttps://ravenstack-churn.vercel.app. O login de avaliador e a senha estão na descrição do pull request.\n\nO que a ferramenta tem:\n\n- Uma visão geral e duas telas: o que se associa ao churn, e suporte e uso do produto. Todo gráfico mostra o SQL que o gerou.\n- Drill-down em qualquer fatia, com filtros que valem para todas as telas.\n- Um analista conversacional que cita o SQL de cada resposta.\n- Telas próprias criadas por pergunta.\n- Uma apresentação montada a partir dos gráficos marcados.\n\nUm vídeo de 2 minutos mostra a ferramenta em uso: [assistir no Google Drive](https://drive.google.com/file/d/14ctMS_deoJNzGt1KyqubhB7UHZZSIxQn/view?usp=sharing) (cópia no repositório em `solution/demo/ravenstack-demo.mp4`).\n\nA ideia é que o churn possa ser visto antes de acontecer. Ela só funciona com toda a capacidade quando os itens 1 e 2 forem resolvidos.\n\n## 5. Limitações\n\n- **Os dados são sintéticos** (o README do dataset no Kaggle declara isso). Alguns padrões parecem do gerador, e não de clientes: o pico de dezembro, um NRR de 140% a 158% e textos de comentário fixos.\n- **Correlação não é causa.** O único segmento significativo (DevTools) não tem explicação dentro da base. As ações 4 e 6 são hipóteses a testar com grupo de controle.\n- **Os grupos são pequenos e foram feitos muitos testes.** Com 110 contas canceladas, diferenças de 3 a 5 pontos não se distinguem do acaso. Só DevTools sobrevive à correção.\n- **Os sinais da lista dependem de datas** com as inconsistências da seção 1: queda de uso e churn recente. Por isso, a lista é uma fila de atenção, não uma previsão.\n- **As estimativas de impacto** usam taxas históricas desta base e premissas declaradas na tabela. Elas servem para ordenar as ações, não para orçamento.\n";
+const NOME = "relatorio-churn.md";
+const aviso = document.getElementById("aviso");
+function baixarPeloNavegador() {
+  const url = URL.createObjectURL(new Blob([MD], { type: "text/markdown;charset=utf-8" }));
+  const a = document.createElement("a");
+  a.href = url; a.download = NOME; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+document.getElementById("baixar").addEventListener("click", async () => {
+  aviso.textContent = "";
+  const temClaude = window.claude && typeof window.claude.use === "function";
+  if (!temClaude) { baixarPeloNavegador(); return; }
+  try {
+    const downloads = await window.claude.use("downloads");
+    if (!downloads) { baixarPeloNavegador(); return; }
+    await downloads.save({ filename: NOME, data: MD });
+    aviso.textContent = "Arquivo salvo.";
+  } catch (e) {
+    const code = e && e.code;
+    if (code === "declined") aviso.textContent = "Download cancelado.";
+    else if (code === "rate_limited") aviso.textContent = "Já há um pedido de download aberto. Tente de novo em instantes.";
+    else baixarPeloNavegador();
+  }
+});
+</script>
+</body>
+</html>

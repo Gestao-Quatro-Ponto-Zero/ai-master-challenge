@@ -745,3 +745,113 @@
 - **Achado para o relatório:** com o filtro "sem registros em alerta", os tickets abertos antes do cadastro (T08) saem, e o grupo "sem ticket" sobe de 8 para 126 contas. O peso dos dados problemáticos aparece aqui.
 - **Como foi verificado:** `tela3-test` com 6 checagens novas (os grupos somam 500 contas e 352 com churn; o grupo escalado, 69 de 91, confere com uma consulta independente; o filtro de setor e o de alerta funcionam); typecheck e lint limpos; print no navegador sem erro no console.
 - **Ajuste visual pedido pelo humano (17/11), com mockup:** "Vamos aumentar a largura das barras desses quatro gráficos [...] Usa o retângulo de borda branca como referência". **IA fez:** as barras horizontais da Tela 3 passaram a ocupar 80% de cada linha (antes, até 26 px). A mudança é uma opção do `BarChart` (`thick`), ligada só pelo `Barras`; os gráficos do chat continuam como estavam.
+
+## D51 — O relatório de diagnóstico: leitura humana, checagem e redação da IA (17/11)
+- **Humano definiu o deliverable principal** e trouxe os achados com as próprias palavras:
+  - o churn não tem uma causa única, e sim uma combinação de estrutura, assinatura, suporte, uso e recursos;
+  - a fricção se concentra em alguns recursos beta;
+  - o trial pesa mais no churn do que na base;
+  - o suporte traz contexto e pesa mais junto com a fricção de produto;
+  - não foi possível um modelo preditivo, por causa das inconsistências de data;
+  - o dado existe, mas está pulverizado, e a ferramenta é a integração que permite ver o churn antes de acontecer.
+
+  Trouxe também duas observações: os tickets sem hora de abertura, e o motivo do churn incompatível com o comentário, com a ideia de um agente classificador.
+- **IA conferiu cada ponto no banco** (`21_sinais_e_contas.py`, saída em `outputs/21_sinais_e_contas.txt`):
+  - **Conferem:**
+    - nenhum fator isolado separa canceladas de ativas;
+    - 2.000 de 2.000 tickets abertos à 00:00:00;
+    - motivo × comentário com p = 0,955, e só 101 de 452 comentários coerentes com o motivo;
+    - trial com 19,4% da base e 22,7% do churn;
+    - em 18 de 40 recursos o beta erra mais que o estável, com cinco bem acima (28, 25, 38, 18, 21).
+  - **Não conferem, ou são fracos:**
+    - o trial não é significativo sozinho (p = 0,32);
+    - no total, o beta erra igual ao estável (5,53% × 5,64%);
+    - a conta com mais erro não cancela mais (o quartil de erro mais alto tem 14,4%);
+    - escalação somada a erro alto dá 25,0% × 21,7% (p = 0,60), ou seja, nesta base o cruzamento não aumenta o sinal;
+    - o volume de tickets não segue um padrão.
+- **Réplica humana:** nada é absoluto. Cada diferença pequena conta, porque a causa é uma colcha de retalhos. O trial também se mede pelo potencial financeiro: estimar pelo MRR médio de contas pagas com o mesmo perfil. A nota de satisfação mede o atendimento, não o produto. O churn silencioso tem volume parecido com o de cada comentário. O humano propôs as recomendações:
+  - revisão do onboarding;
+  - recursos das assinaturas que duram mais na jornada de ativação;
+  - monitor de engajamento com programa de retenção periódico;
+  - atenção ao churn silencioso e às contas com muitos tickets.
+- **IA conferiu a réplica:**
+  - A soma de sinais tem gradiente fraco: 18,9% sem nenhum, 22,7% com 1, 23,6% com 2, 23,4% com 3 e 40% com 4 (5 contas).
+  - A satisfação não varia com a taxa de erro da conta (4,00 / 3,93 / 3,96 por tercil). Ela também não acompanha os tempos de atendimento, e só usa as notas 3 a 5.
+  - O churn silencioso tem 148 eventos, contra 136 a 161 de cada comentário.
+  - Os recursos 9, 35 e 30 são 19% a 37% mais usados nas assinaturas longas. Isso é confundido pela duração, então fica como hipótese a testar.
+- **Achados novos da checagem:**
+  - **DevTools** cancela 31,0% contra 19,4% (p = 0,009; 0,044 com Bonferroni). É o único corte significativo, e nada nas tabelas explica a diferença (erro, escalação, satisfação e tickets iguais aos outros setores). Isso sustenta a recomendação humana de revisar o onboarding, começando por esse setor.
+  - **As 97 contas em trial já têm assinatura paga ativa** (US$ 2,06 mi de MRR). O flag de trial da conta contradiz o faturamento, então a estimativa por potencial pede antes a correção do flag.
+- **Lista de contas (proposta da IA, dentro da leitura humana):** a contagem de sete sinais observáveis, mais a renovação anual sem auto-renew, ordenada por receita exposta. Não é uma probabilidade.
+  - Lista A: 72 contas ativas com 3 sinais ou mais, US$ 1,46 mi de MRR.
+  - Lista B: 110 contas que o CRM marca como canceladas e o faturamento ainda cobra, US$ 2,07 mi.
+  - Arquivo: `solution/contas-em-risco.csv`.
+- **IA redigiu:** `solution/relatorio-churn.md` (as três perguntas, nove ações com dono, prazo e impacto estimado, e as limitações) e o `README.md` da submissão no template. O rascunho de 14/11 (`solution/diagnostico-churn.html`) fica fora do repositório; o relatório o substitui.
+- **IA errou no script e corrigiu antes de usar:** a primeira rodada zerou o sinal de trial, porque o valor foi sobrescrito ao iniciar os sinais. A frequência "trial: 0" no print denunciou o erro, e a lista foi refeita.
+
+## D52 — Preparação da submissão: README na raiz, relatório em página, conversas exportadas (17/11)
+- **Humano pediu:**
+  - o LinkedIn e a data no README;
+  - o relatório em artifact, com um botão para baixar o Markdown;
+  - a submissão e o PR preparados conforme o `CONTRIBUTING.md` e o guia de submissão;
+  - as transcrições da sessão como evidência, junto com o diário de decisões;
+  - os links das três planilhas em que fez a análise exploratória com o Gemini.
+- **Fato verificado:** o "submission-trace-guide.md" citado não existe no fork, no upstream (`main` e `compass-github-importer`) nem no disco. A preparação seguiu o `CONTRIBUTING.md`, o `submission-guide.md` e o template.
+- **IA fez:**
+  - **README:** passou para `submissions/ronaldo-tkotz/README.md`, onde o `CONTRIBUTING.md` o espera, com os caminhos para `001-churn/`. Ganhou a árvore da pasta, os comandos para refazer os números, os exports de conversa e os links das planilhas (as três abrem sem login, conferido).
+  - **Página do relatório:** `22_relatorio_html.py` gera `solution/relatorio-churn.html` a partir do `.md`. Os quatro números do topo e os dois gráficos (churn por setor, churn pela soma de sinais) vêm do banco. O Markdown vai embutido no botão de download. A mesma página foi publicada como artifact privado no claude.ai, com a permissão de download declarada.
+  - **Conversas:** `process-log/chat-exports/` tem a sessão principal e a sessão lateral do Gemini, geradas por `exporta_chat.py` a partir do `.jsonl` do Claude Code.
+    - Ficaram as mensagens do humano, as respostas da IA e o nome e a descrição de cada ferramenta.
+    - Saíram as saídas das ferramentas, o raciocínio interno, os resumos de compactação, as instruções do ambiente pessoal, o caminho da pasta pessoal e os e-mails.
+    - O export começa em "Vamos começar pelo desafio 1" (14/11, 18h08 UTC). As duas horas e meia anteriores falam da vaga e do ambiente pessoal, e o recorte é proposta da IA, para o humano confirmar.
+    - Passou pelo `gitleaks` (0 achados) e por busca de dados pessoais.
+- **Onde a IA errou (Gemini), registrado agora:** na sessão lateral de 14/11, a aba de transcrição da planilha trazia números inventados pelo Gemini, que contradiziam as próprias abas de cálculo dele:
+  - 486 tickets escalados, quando o CSV tem 95;
+  - os módulos "Custom Workflows" e "API Integrations", que não existem;
+  - US$ 1,15 mi de reembolsos, quando o total é US$ 8.652.
+
+  Foram pegos na conferência contra os CSVs e nunca entraram na análise.
+- **IA errou no script 21, e o gráfico mostrou:** a checagem da soma de sinais listava os grupos de 0 a 5 e omitia uma conta com 6 sinais. O relatório e o README diziam "40% com 4 sinais (5 contas)". O certo é **"33,3% com 4 ou mais (6 contas)"**. O gráfico da página agrupou "4+" e expôs a diferença. A D51 ficou como estava, com o número da época; o relatório, o README e a saída do 21 foram corrigidos.
+- **Pendências do humano:**
+  - confirmar o recorte do export;
+  - decidir como a senha de avaliador chega ao G4 (ISC-26);
+  - autorizar o push e a abertura do PR.
+
+## D53 — Vídeo de 2 minutos da ferramenta (pedido humano; roteiro, gravação e montagem da IA)
+- **Humano decidiu (17/11):**
+  - confirmou o recorte do export de conversa (começa no desafio 1);
+  - a senha de avaliador vai no corpo do PR (fecha a ISC-26);
+  - o commit espera.
+- **Humano pediu:** um vídeo curto, como o que acompanhou a submissão do Veta, com a ferramenta usada de ponta a ponta, gravado da tela, com áudio e legenda, mostrando:
+  - o que dá para fazer;
+  - como criar o PowerPoint;
+  - como usar o analista de IA para conversar e explorar a base;
+  - o recorte (drill-down).
+- **IA fez:**
+  - um roteiro de nove blocos (~270 palavras) com narração na voz pt-BR do macOS. Não há chave de TTS configurada, e a voz local não manda texto para fora;
+  - a gravação por automação do Chrome (puppeteer), um clipe por bloco, com um cursor visível desenhado na página;
+  - a montagem com ffmpeg;
+  - as legendas renderizadas como imagem e gravadas no vídeo, mais uma faixa SRT desligável.
+
+  O resultado tem 1 min 51 s, 1080p e 7,2 MB, em `solution/demo/`. Os scripts e o roteiro estão em `process-log/video/`.
+- **Exceção de tamanho no pre-commit:** o limite é 2 MB por arquivo. O vídeo ganhou a mesma exceção de 8 MB do banco (D48), só para esse arquivo, registrada em `tools/pre-commit` e no plano de evidências.
+- **Como foi verificado:**
+  - quadros-chave conferidos em grade, um por bloco;
+  - a sincronia entre fala e legenda conferida com Whisper num trecho (fala em 1:00,42 e legenda em 1:00,420);
+  - os nomes em inglês pronunciados pela voz conferidos um a um com Whisper. "churn" virou "tchârni" e "IA" virou "inteligência artificial", só na fala; a legenda mantém a grafia certa.
+- **IA errou e corrigiu durante a gravação:**
+  - o cursor e o estilo não entraram na página, porque o tsx injeta um helper nas funções enviadas ao navegador. Passou a ser um script em texto;
+  - o campo do chat é um `input`, não um `textarea`;
+  - a espera do "Montar" passava antes de o pedido começar;
+  - o texto do público entrava colado ao anterior.
+- **Achado na gravação:** perguntado "qual setor tem a maior taxa de churn por conta?", o analista usa os eventos de churn (D20) e responde DevTools com 73,45%. O relatório usa o `churn_flag` (D36) e dá 31%. O vídeo faz a pergunta explícita ("pelo churn_flag da conta") e mostra 31%. A divergência fica registrada aqui: o analista do app não aplica a D36 sozinho.
+
+## D54 — Rascunho antigo fora do PR, link para abrir o relatório e README de entrada (pedido humano; execução da IA)
+- **Humano apontou (17/11):** o `solution/diagnostico-churn.html`, primeiro diagnóstico de 14/11, estava no GitHub e não deve ser enviado.
+- **IA errou:** a D52 dizia que esse rascunho "fica fora do repositório". Na verdade, ele tinha entrado no commit `581b730` (fase exploratória) e estava publicado no branch. Agora saiu do índice (`git rm --cached`). O arquivo continua só na máquina local e no histórico daquele commit, e não aparece no diff do PR.
+- **Humano pediu:** um jeito de abrir o `relatorio-churn.html` direto no Chrome, porque o GitHub mostra o arquivo como código.
+- **IA fez:** um link pelo raw.githack (`raw.githack.com/ronaldomt/ai-master-challenge/submission/ronaldo-tkotz/...`), que serve o arquivo do branch como página. Foi testado com o arquivo que já estava publicado: resposta 200 e `text/html`. O relatório novo só fica disponível depois do push. Se o link falhar, o README orienta baixar o arquivo.
+- **Humano trouxe:** o link do vídeo no Google Drive. A IA conferiu que ele abre sem login (é o `ravenstack-demo.mp4`) e o colocou no README, no relatório (seção 4) e no corpo do PR. A cópia no repositório continua.
+- **Humano pediu e a IA redigiu:** uma seção "Como avaliar esta submissão" no topo do README, com a ordem sugerida (relatório, vídeo, ferramenta e process log) e uma tabela que liga cada item pedido no desafio ao arquivo onde ele está.
+- **Humano pediu:** o README também na raiz de `001-churn/`. A IA manteve o da raiz da submissão, porque o `CONTRIBUTING.md` o exige em `submissions/ronaldo-tkotz/README.md`, e gerou uma cópia em `001-churn/README.md` com os links ajustados a essa pasta. Os 28 links relativos das duas versões foram conferidos e apontam para arquivos que existem.
+- **Humano autorizou (17/11):** o push para o GitHub.

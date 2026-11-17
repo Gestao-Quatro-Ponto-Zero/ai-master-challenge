@@ -1,0 +1,38 @@
+[
+  {"id": "s0", "frases": [
+    "Esta é a ferramenta que acompanha o diagnóstico de churn da RavenStack.",
+    "Em dois minutos, mostro o que dá para fazer com ela."
+  ]},
+  {"id": "s1", "frases": [
+    "A visão geral junta as cinco tabelas num banco SQL.",
+    "Contas ativas, eventos de churn, receita nova contra receita perdida e a idade da base, mês a mês."
+  ]},
+  {"id": "s2", "frases": [
+    "Os filtros do topo valem para todas as telas. Aqui, só o setor DevTools.",
+    "E cada gráfico mostra o SQL que o gerou, para qualquer número ser conferido."
+  ]},
+  {"id": "s3", "frases": [
+    "Na tela do que causa o churn, cada barra abre um recorte.",
+    "Clicando num grupo, vejo o tamanho dele, a comparação com o resto da base e a quebra por outros atributos.",
+    "Um novo clique desce mais um nível."
+  ]},
+  {"id": "s4", "frases": [
+    "A tela de suporte e uso cruza tickets, escalação, satisfação e a taxa de erro de cada recurso."
+  ]},
+  {"id": "s5", "frases": [
+    "Em qualquer tela, o analista de IA responde em português.",
+    "Ele consulta o banco, mostra o SQL que rodou e desenha o gráfico.",
+    "A conversa guarda o contexto para a próxima pergunta."
+  ]},
+  {"id": "s6", "frases": [
+    "O gráfico da conversa pode ir para uma tela própria, que fica salva com o SQL de cada painel."
+  ]},
+  {"id": "s7", "frases": [
+    "Qualquer gráfico pode ser marcado.",
+    "Em Gráficos marcados, escolho o público e o objetivo, e a ferramenta monta uma apresentação em PowerPoint, na pirâmide de Minto.",
+    "Cada número do texto é conferido contra o SQL, e as versões anteriores ficam disponíveis para baixar."
+  ]},
+  {"id": "s8", "frases": [
+    "O link e o acesso de avaliador estão na submissão. Obrigado."
+  ]}
+]

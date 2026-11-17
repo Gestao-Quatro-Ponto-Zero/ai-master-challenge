@@ -1,0 +1,183 @@
+prioridade,lista,account_id,conta,setor,pais,plano,mrr_ativo,n_sinais,sinais,devtools,trial,evento_90d,escalacao,erro_alto,queda_uso,renova_sem_auto,muitos_tickets
+1,A: agir (3+ sinais),A-f446b6,Company_36,DevTools,DE,Pro,8805,6,setor DevTools; conta em trial; ticket escalado; taxa de erro no quartil mais alto; aniversário de contrato anual em 90 dias sem auto-renew; 7 tickets ou mais,1,1,0,1,1,0,1,1
+2,A: agir (3+ sinais),A-8e47ca,Company_191,HealthTech,US,Pro,23145,5,evento de churn nos últimos 90 dias; ticket escalado; taxa de erro no quartil mais alto; uso do 4º tri/2024 abaixo da metade do 3º tri; aniversário de contrato anual em 90 dias sem auto-renew,0,0,1,1,1,1,1,0
+3,A: agir (3+ sinais),A-bd4513,Company_205,DevTools,AU,Enterprise,48804,4,setor DevTools; conta em trial; evento de churn nos últimos 90 dias; taxa de erro no quartil mais alto,1,1,1,0,1,0,0,0
+4,A: agir (3+ sinais),A-1f7acb,Company_281,FinTech,UK,Basic,46912,4,conta em trial; taxa de erro no quartil mais alto; uso do 4º tri/2024 abaixo da metade do 3º tri; 7 tickets ou mais,0,1,0,0,1,1,0,1
+5,A: agir (3+ sinais),A-0b0d6d,Company_267,DevTools,US,Pro,30429,4,setor DevTools; evento de churn nos últimos 90 dias; ticket escalado; taxa de erro no quartil mais alto,1,0,1,1,1,0,0,0
+6,A: agir (3+ sinais),A-bcbe98,Company_452,Cybersecurity,US,Enterprise,21666,4,evento de churn nos últimos 90 dias; ticket escalado; taxa de erro no quartil mais alto; 7 tickets ou mais,0,0,1,1,1,0,0,1
+7,A: agir (3+ sinais),A-f03140,Company_209,DevTools,IN,Pro,21075,4,setor DevTools; conta em trial; evento de churn nos últimos 90 dias; 7 tickets ou mais,1,1,1,0,0,0,0,1
+8,A: agir (3+ sinais),A-533452,Company_279,DevTools,AU,Pro,20223,4,setor DevTools; evento de churn nos últimos 90 dias; taxa de erro no quartil mais alto; uso do 4º tri/2024 abaixo da metade do 3º tri,1,0,1,0,1,1,0,0
+9,A: agir (3+ sinais),A-313be3,Company_136,EdTech,US,Enterprise,19006,4,conta em trial; ticket escalado; taxa de erro no quartil mais alto; aniversário de contrato anual em 90 dias sem auto-renew,0,1,0,1,1,0,1,0
+10,A: agir (3+ sinais),A-5790f4,Company_446,FinTech,UK,Pro,17334,4,conta em trial; evento de churn nos últimos 90 dias; ticket escalado; taxa de erro no quartil mais alto,0,1,1,1,1,0,0,0
+11,A: agir (3+ sinais),A-c9bb3e,Company_336,EdTech,US,Pro,13502,4,evento de churn nos últimos 90 dias; ticket escalado; uso do 4º tri/2024 abaixo da metade do 3º tri; 7 tickets ou mais,0,0,1,1,0,1,0,1
+12,A: agir (3+ sinais),A-149a69,Company_302,DevTools,US,Basic,8058,4,setor DevTools; evento de churn nos últimos 90 dias; uso do 4º tri/2024 abaixo da metade do 3º tri; 7 tickets ou mais,1,0,1,0,0,1,0,1
+13,A: agir (3+ sinais),A-fd7ad3,Company_100,Cybersecurity,US,Enterprise,904,4,evento de churn nos últimos 90 dias; ticket escalado; taxa de erro no quartil mais alto; 7 tickets ou mais,0,0,1,1,1,0,0,1
+14,A: agir (3+ sinais),A-18793f,Company_488,EdTech,US,Basic,75776,3,conta em trial; evento de churn nos últimos 90 dias; uso do 4º tri/2024 abaixo da metade do 3º tri,0,1,1,0,0,1,0,0
+15,A: agir (3+ sinais),A-e08cd3,Company_475,FinTech,US,Pro,67737,3,conta em trial; evento de churn nos últimos 90 dias; 7 tickets ou mais,0,1,1,0,0,0,0,1
+16,A: agir (3+ sinais),A-afa505,Company_157,DevTools,US,Basic,62580,3,setor DevTools; conta em trial; ticket escalado,1,1,0,1,0,0,0,0
+17,A: agir (3+ sinais),A-d77f4c,Company_470,DevTools,US,Pro,48378,3,setor DevTools; conta em trial; evento de churn nos últimos 90 dias,1,1,1,0,0,0,0,0
+18,A: agir (3+ sinais),A-cd458b,Company_430,DevTools,US,Basic,42740,3,setor DevTools; conta em trial; evento de churn nos últimos 90 dias,1,1,1,0,0,0,0,0
+19,A: agir (3+ sinais),A-993085,Company_258,HealthTech,US,Basic,40098,3,conta em trial; taxa de erro no quartil mais alto; uso do 4º tri/2024 abaixo da metade do 3º tri,0,1,0,0,1,1,0,0
+20,A: agir (3+ sinais),A-39ddf4,Company_435,EdTech,US,Enterprise,33876,3,evento de churn nos últimos 90 dias; taxa de erro no quartil mais alto; uso do 4º tri/2024 abaixo da metade do 3º tri,0,0,1,0,1,1,0,0
+21,A: agir (3+ sinais),A-02cd81,Company_76,HealthTech,IN,Basic,30800,3,ticket escalado; uso do 4º tri/2024 abaixo da metade do 3º tri; aniversário de contrato anual em 90 dias sem auto-renew,0,0,0,1,0,1,1,0
+22,A: agir (3+ sinais),A-671f31,Company_137,DevTools,US,Basic,30385,3,setor DevTools; taxa de erro no quartil mais alto; 7 tickets ou mais,1,0,0,0,1,0,0,1
+23,A: agir (3+ sinais),A-855a48,Company_389,EdTech,US,Pro,30376,3,conta em trial; uso do 4º tri/2024 abaixo da metade do 3º tri; aniversário de contrato anual em 90 dias sem auto-renew,0,1,0,0,0,1,1,0
+24,A: agir (3+ sinais),A-4f18f0,Company_145,DevTools,CA,Pro,29333,3,setor DevTools; conta em trial; evento de churn nos últimos 90 dias,1,1,1,0,0,0,0,0
+25,A: agir (3+ sinais),A-d3c88e,Company_490,DevTools,US,Pro,26183,3,setor DevTools; evento de churn nos últimos 90 dias; taxa de erro no quartil mais alto,1,0,1,0,1,0,0,0
+26,A: agir (3+ sinais),A-dbc825,Company_252,EdTech,FR,Enterprise,25702,3,ticket escalado; taxa de erro no quartil mais alto; aniversário de contrato anual em 90 dias sem auto-renew,0,0,0,1,1,0,1,0
+27,A: agir (3+ sinais),A-dfbd31,Company_190,DevTools,UK,Enterprise,25079,3,setor DevTools; evento de churn nos últimos 90 dias; uso do 4º tri/2024 abaixo da metade do 3º tri,1,0,1,0,0,1,0,0
+28,A: agir (3+ sinais),A-8b0451,Company_245,FinTech,UK,Enterprise,23550,3,evento de churn nos últimos 90 dias; taxa de erro no quartil mais alto; 7 tickets ou mais,0,0,1,0,1,0,0,1
+29,A: agir (3+ sinais),A-87aa7b,Company_433,HealthTech,US,Pro,22881,3,conta em trial; evento de churn nos últimos 90 dias; ticket escalado,0,1,1,1,0,0,0,0
+30,A: agir (3+ sinais),A-65c341,Company_308,FinTech,US,Pro,22466,3,conta em trial; evento de churn nos últimos 90 dias; uso do 4º tri/2024 abaixo da metade do 3º tri,0,1,1,0,0,1,0,0
+31,A: agir (3+ sinais),A-157070,Company_85,FinTech,US,Pro,22395,3,evento de churn nos últimos 90 dias; ticket escalado; uso do 4º tri/2024 abaixo da metade do 3º tri,0,0,1,1,0,1,0,0
+32,A: agir (3+ sinais),A-58b9ff,Company_425,DevTools,IN,Enterprise,22244,3,setor DevTools; evento de churn nos últimos 90 dias; ticket escalado,1,0,1,1,0,0,0,0
+33,A: agir (3+ sinais),A-f6b2fb,Company_418,DevTools,AU,Basic,22232,3,setor DevTools; ticket escalado; taxa de erro no quartil mais alto,1,0,0,1,1,0,0,0
+34,A: agir (3+ sinais),A-ccb686,Company_491,DevTools,US,Basic,21351,3,setor DevTools; evento de churn nos últimos 90 dias; aniversário de contrato anual em 90 dias sem auto-renew,1,0,1,0,0,0,1,0
+35,A: agir (3+ sinais),A-d42431,Company_378,FinTech,FR,Enterprise,20742,3,conta em trial; evento de churn nos últimos 90 dias; taxa de erro no quartil mais alto,0,1,1,0,1,0,0,0
+36,A: agir (3+ sinais),A-40a557,Company_86,Cybersecurity,AU,Pro,20140,3,conta em trial; uso do 4º tri/2024 abaixo da metade do 3º tri; 7 tickets ou mais,0,1,0,0,0,1,0,1
+37,A: agir (3+ sinais),A-3f9cc0,Company_359,HealthTech,US,Basic,19940,3,evento de churn nos últimos 90 dias; ticket escalado; uso do 4º tri/2024 abaixo da metade do 3º tri,0,0,1,1,0,1,0,0
+38,A: agir (3+ sinais),A-65aeb5,Company_120,DevTools,US,Pro,19893,3,setor DevTools; evento de churn nos últimos 90 dias; taxa de erro no quartil mais alto,1,0,1,0,1,0,0,0
+39,A: agir (3+ sinais),A-337bc1,Company_424,Cybersecurity,US,Pro,19379,3,conta em trial; ticket escalado; taxa de erro no quartil mais alto,0,1,0,1,1,0,0,0
+40,A: agir (3+ sinais),A-544d0a,Company_153,DevTools,US,Basic,18492,3,setor DevTools; conta em trial; ticket escalado,1,1,0,1,0,0,0,0
+41,A: agir (3+ sinais),A-de24d5,Company_231,DevTools,US,Enterprise,17554,3,setor DevTools; conta em trial; 7 tickets ou mais,1,1,0,0,0,0,0,1
+42,A: agir (3+ sinais),A-ffc04f,Company_307,EdTech,US,Pro,17393,3,ticket escalado; taxa de erro no quartil mais alto; 7 tickets ou mais,0,0,0,1,1,0,0,1
+43,A: agir (3+ sinais),A-b9eed8,Company_189,Cybersecurity,US,Basic,16577,3,ticket escalado; taxa de erro no quartil mais alto; aniversário de contrato anual em 90 dias sem auto-renew,0,0,0,1,1,0,1,0
+44,A: agir (3+ sinais),A-6da850,Company_293,FinTech,IN,Pro,16534,3,evento de churn nos últimos 90 dias; taxa de erro no quartil mais alto; uso do 4º tri/2024 abaixo da metade do 3º tri,0,0,1,0,1,1,0,0
+45,A: agir (3+ sinais),A-31ab9a,Company_460,FinTech,DE,Pro,15802,3,taxa de erro no quartil mais alto; uso do 4º tri/2024 abaixo da metade do 3º tri; 7 tickets ou mais,0,0,0,0,1,1,0,1
+46,A: agir (3+ sinais),A-6c093d,Company_12,DevTools,US,Basic,15556,3,setor DevTools; conta em trial; ticket escalado,1,1,0,1,0,0,0,0
+47,A: agir (3+ sinais),A-bb1486,Company_265,HealthTech,US,Basic,15528,3,evento de churn nos últimos 90 dias; taxa de erro no quartil mais alto; uso do 4º tri/2024 abaixo da metade do 3º tri,0,0,1,0,1,1,0,0
+48,A: agir (3+ sinais),A-22d9d2,Company_188,DevTools,FR,Pro,14336,3,setor DevTools; evento de churn nos últimos 90 dias; ticket escalado,1,0,1,1,0,0,0,0
+49,A: agir (3+ sinais),A-7cfe77,Company_367,DevTools,US,Pro,12765,3,setor DevTools; evento de churn nos últimos 90 dias; 7 tickets ou mais,1,0,1,0,0,0,0,1
+50,A: agir (3+ sinais),A-9bfc9f,Company_228,DevTools,CA,Pro,12745,3,setor DevTools; ticket escalado; aniversário de contrato anual em 90 dias sem auto-renew,1,0,0,1,0,0,1,0
+51,A: agir (3+ sinais),A-05d3b3,Company_213,DevTools,AU,Basic,12154,3,setor DevTools; conta em trial; uso do 4º tri/2024 abaixo da metade do 3º tri,1,1,0,0,0,1,0,0
+52,A: agir (3+ sinais),A-39b19f,Company_176,FinTech,US,Enterprise,11902,3,ticket escalado; taxa de erro no quartil mais alto; uso do 4º tri/2024 abaixo da metade do 3º tri,0,0,0,1,1,1,0,0
+53,A: agir (3+ sinais),A-5247b3,Company_375,FinTech,UK,Pro,11791,3,conta em trial; evento de churn nos últimos 90 dias; uso do 4º tri/2024 abaixo da metade do 3º tri,0,1,1,0,0,1,0,0
+54,A: agir (3+ sinais),A-5a92e7,Company_413,HealthTech,US,Pro,11666,3,evento de churn nos últimos 90 dias; taxa de erro no quartil mais alto; 7 tickets ou mais,0,0,1,0,1,0,0,1
+55,A: agir (3+ sinais),A-df10db,Company_143,DevTools,US,Enterprise,11464,3,setor DevTools; conta em trial; ticket escalado,1,1,0,1,0,0,0,0
+56,A: agir (3+ sinais),A-bcf664,Company_248,DevTools,US,Pro,11340,3,setor DevTools; evento de churn nos últimos 90 dias; ticket escalado,1,0,1,1,0,0,0,0
+57,A: agir (3+ sinais),A-310452,Company_321,DevTools,FR,Enterprise,11003,3,setor DevTools; evento de churn nos últimos 90 dias; uso do 4º tri/2024 abaixo da metade do 3º tri,1,0,1,0,0,1,0,0
+58,A: agir (3+ sinais),A-474ad4,Company_261,EdTech,US,Basic,10533,3,ticket escalado; taxa de erro no quartil mais alto; aniversário de contrato anual em 90 dias sem auto-renew,0,0,0,1,1,0,1,0
+59,A: agir (3+ sinais),A-378b99,Company_60,EdTech,UK,Pro,10524,3,conta em trial; evento de churn nos últimos 90 dias; taxa de erro no quartil mais alto,0,1,1,0,1,0,0,0
+60,A: agir (3+ sinais),A-5f7781,Company_483,DevTools,US,Pro,10252,3,setor DevTools; evento de churn nos últimos 90 dias; uso do 4º tri/2024 abaixo da metade do 3º tri,1,0,1,0,0,1,0,0
+61,A: agir (3+ sinais),A-cdf020,Company_345,DevTools,AU,Pro,9771,3,setor DevTools; evento de churn nos últimos 90 dias; aniversário de contrato anual em 90 dias sem auto-renew,1,0,1,0,0,0,1,0
+62,A: agir (3+ sinais),A-e98302,Company_286,EdTech,US,Enterprise,9725,3,conta em trial; taxa de erro no quartil mais alto; 7 tickets ou mais,0,1,0,0,1,0,0,1
+63,A: agir (3+ sinais),A-524364,Company_388,DevTools,FR,Enterprise,9552,3,setor DevTools; taxa de erro no quartil mais alto; uso do 4º tri/2024 abaixo da metade do 3º tri,1,0,0,0,1,1,0,0
+64,A: agir (3+ sinais),A-832ec2,Company_19,FinTech,UK,Enterprise,9299,3,conta em trial; ticket escalado; aniversário de contrato anual em 90 dias sem auto-renew,0,1,0,1,0,0,1,0
+65,A: agir (3+ sinais),A-51ec1b,Company_247,DevTools,US,Enterprise,8567,3,setor DevTools; ticket escalado; uso do 4º tri/2024 abaixo da metade do 3º tri,1,0,0,1,0,1,0,0
+66,A: agir (3+ sinais),A-3cc791,Company_423,EdTech,US,Enterprise,8522,3,evento de churn nos últimos 90 dias; ticket escalado; taxa de erro no quartil mais alto,0,0,1,1,1,0,0,0
+67,A: agir (3+ sinais),A-ced9aa,Company_310,DevTools,US,Enterprise,4697,3,setor DevTools; taxa de erro no quartil mais alto; 7 tickets ou mais,1,0,0,0,1,0,0,1
+68,A: agir (3+ sinais),A-b54c01,Company_354,DevTools,US,Enterprise,3393,3,setor DevTools; evento de churn nos últimos 90 dias; taxa de erro no quartil mais alto,1,0,1,0,1,0,0,0
+69,A: agir (3+ sinais),A-cb6cc6,Company_419,DevTools,US,Basic,2622,3,setor DevTools; conta em trial; taxa de erro no quartil mais alto,1,1,0,0,1,0,0,0
+70,A: agir (3+ sinais),A-f19b24,Company_462,Cybersecurity,US,Pro,2523,3,conta em trial; ticket escalado; taxa de erro no quartil mais alto,0,1,0,1,1,0,0,0
+71,A: agir (3+ sinais),A-0be015,Company_454,FinTech,US,Pro,817,3,evento de churn nos últimos 90 dias; ticket escalado; 7 tickets ou mais,0,0,1,1,0,0,0,1
+72,A: agir (3+ sinais),A-44dc83,Company_35,EdTech,FR,Basic,456,3,evento de churn nos últimos 90 dias; uso do 4º tri/2024 abaixo da metade do 3º tri; 7 tickets ou mais,0,0,1,0,0,1,0,1
+73,"B: conciliar (CRM diz churn, faturamento cobra)",A-30b4ca,Company_23,EdTech,IN,Basic,75938,1,uso do 4º tri/2024 abaixo da metade do 3º tri,0,0,0,0,0,1,0,0
+74,"B: conciliar (CRM diz churn, faturamento cobra)",A-4814a3,Company_337,Cybersecurity,IN,Basic,70644,3,evento de churn nos últimos 90 dias; ticket escalado; taxa de erro no quartil mais alto,0,0,1,1,1,0,0,0
+75,"B: conciliar (CRM diz churn, faturamento cobra)",A-9779ad,Company_171,Cybersecurity,AU,Pro,51680,1,conta em trial,0,1,0,0,0,0,0,0
+76,"B: conciliar (CRM diz churn, faturamento cobra)",A-2d1036,Company_399,FinTech,US,Pro,46230,2,evento de churn nos últimos 90 dias; ticket escalado,0,0,1,1,0,0,0,0
+77,"B: conciliar (CRM diz churn, faturamento cobra)",A-4c38bc,Company_55,HealthTech,UK,Basic,45612,0,,0,0,0,0,0,0,0,0
+78,"B: conciliar (CRM diz churn, faturamento cobra)",A-902ef7,Company_270,HealthTech,US,Enterprise,44322,0,,0,0,0,0,0,0,0,0
+79,"B: conciliar (CRM diz churn, faturamento cobra)",A-50f3f7,Company_140,HealthTech,US,Basic,44077,1,ticket escalado,0,0,0,1,0,0,0,0
+80,"B: conciliar (CRM diz churn, faturamento cobra)",A-712f1c,Company_331,DevTools,US,Basic,39616,2,setor DevTools; evento de churn nos últimos 90 dias,1,0,1,0,0,0,0,0
+81,"B: conciliar (CRM diz churn, faturamento cobra)",A-7f8241,Company_42,EdTech,US,Pro,39516,0,,0,0,0,0,0,0,0,0
+82,"B: conciliar (CRM diz churn, faturamento cobra)",A-d5a319,Company_158,FinTech,US,Enterprise,37847,2,ticket escalado; taxa de erro no quartil mais alto,0,0,0,1,1,0,0,0
+83,"B: conciliar (CRM diz churn, faturamento cobra)",A-35083d,Company_27,HealthTech,IN,Basic,31502,0,,0,0,0,0,0,0,0,0
+84,"B: conciliar (CRM diz churn, faturamento cobra)",A-b07346,Company_269,HealthTech,US,Pro,31416,3,evento de churn nos últimos 90 dias; taxa de erro no quartil mais alto; uso do 4º tri/2024 abaixo da metade do 3º tri,0,0,1,0,1,1,0,0
+85,"B: conciliar (CRM diz churn, faturamento cobra)",A-1d5444,Company_427,Cybersecurity,US,Basic,30958,0,,0,0,0,0,0,0,0,0
+86,"B: conciliar (CRM diz churn, faturamento cobra)",A-e693b6,Company_240,FinTech,AU,Enterprise,30415,1,evento de churn nos últimos 90 dias,0,0,1,0,0,0,0,0
+87,"B: conciliar (CRM diz churn, faturamento cobra)",A-eb2fdc,Company_216,DevTools,AU,Enterprise,30351,1,setor DevTools,1,0,0,0,0,0,0,0
+88,"B: conciliar (CRM diz churn, faturamento cobra)",A-812c5b,Company_395,DevTools,CA,Basic,29884,1,setor DevTools,1,0,0,0,0,0,0,0
+89,"B: conciliar (CRM diz churn, faturamento cobra)",A-f19409,Company_105,DevTools,US,Basic,29559,1,setor DevTools,1,0,0,0,0,0,0,0
+90,"B: conciliar (CRM diz churn, faturamento cobra)",A-977ca0,Company_232,HealthTech,IN,Basic,29255,0,,0,0,0,0,0,0,0,0
+91,"B: conciliar (CRM diz churn, faturamento cobra)",A-b7b7b7,Company_338,FinTech,US,Basic,28558,1,uso do 4º tri/2024 abaixo da metade do 3º tri,0,0,0,0,0,1,0,0
+92,"B: conciliar (CRM diz churn, faturamento cobra)",A-0dbdc6,Company_366,Cybersecurity,DE,Pro,28273,0,,0,0,0,0,0,0,0,0
+93,"B: conciliar (CRM diz churn, faturamento cobra)",A-84ebe4,Company_68,FinTech,US,Pro,27652,1,conta em trial,0,1,0,0,0,0,0,0
+94,"B: conciliar (CRM diz churn, faturamento cobra)",A-5b4ebb,Company_69,Cybersecurity,UK,Basic,27404,2,conta em trial; uso do 4º tri/2024 abaixo da metade do 3º tri,0,1,0,0,0,1,0,0
+95,"B: conciliar (CRM diz churn, faturamento cobra)",A-592832,Company_10,Cybersecurity,US,Basic,26833,1,evento de churn nos últimos 90 dias,0,0,1,0,0,0,0,0
+96,"B: conciliar (CRM diz churn, faturamento cobra)",A-6f50ae,Company_466,FinTech,US,Pro,26608,1,aniversário de contrato anual em 90 dias sem auto-renew,0,0,0,0,0,0,1,0
+97,"B: conciliar (CRM diz churn, faturamento cobra)",A-7df7a7,Company_125,DevTools,US,Basic,26568,2,setor DevTools; ticket escalado,1,0,0,1,0,0,0,0
+98,"B: conciliar (CRM diz churn, faturamento cobra)",A-e1b9cd,Company_484,DevTools,US,Pro,26362,3,setor DevTools; uso do 4º tri/2024 abaixo da metade do 3º tri; aniversário de contrato anual em 90 dias sem auto-renew,1,0,0,0,0,1,1,0
+99,"B: conciliar (CRM diz churn, faturamento cobra)",A-ce550d,Company_4,HealthTech,US,Enterprise,25355,3,evento de churn nos últimos 90 dias; ticket escalado; 7 tickets ou mais,0,0,1,1,0,0,0,1
+100,"B: conciliar (CRM diz churn, faturamento cobra)",A-95b24a,Company_117,FinTech,US,Pro,25034,1,aniversário de contrato anual em 90 dias sem auto-renew,0,0,0,0,0,0,1,0
+101,"B: conciliar (CRM diz churn, faturamento cobra)",A-692f18,Company_195,EdTech,US,Basic,24978,2,conta em trial; evento de churn nos últimos 90 dias,0,1,1,0,0,0,0,0
+102,"B: conciliar (CRM diz churn, faturamento cobra)",A-180abf,Company_122,DevTools,US,Pro,24576,1,setor DevTools,1,0,0,0,0,0,0,0
+103,"B: conciliar (CRM diz churn, faturamento cobra)",A-4e960a,Company_277,FinTech,US,Enterprise,23942,1,conta em trial,0,1,0,0,0,0,0,0
+104,"B: conciliar (CRM diz churn, faturamento cobra)",A-0f6450,Company_400,FinTech,US,Pro,23800,5,conta em trial; evento de churn nos últimos 90 dias; ticket escalado; taxa de erro no quartil mais alto; 7 tickets ou mais,0,1,1,1,1,0,0,1
+105,"B: conciliar (CRM diz churn, faturamento cobra)",A-443b7c,Company_280,Cybersecurity,US,Enterprise,23739,1,7 tickets ou mais,0,0,0,0,0,0,0,1
+106,"B: conciliar (CRM diz churn, faturamento cobra)",A-ff79f2,Company_165,DevTools,US,Basic,23408,1,setor DevTools,1,0,0,0,0,0,0,0
+107,"B: conciliar (CRM diz churn, faturamento cobra)",A-7dacce,Company_8,Cybersecurity,CA,Enterprise,23057,1,evento de churn nos últimos 90 dias,0,0,1,0,0,0,0,0
+108,"B: conciliar (CRM diz churn, faturamento cobra)",A-40de06,Company_369,Cybersecurity,US,Enterprise,21918,0,,0,0,0,0,0,0,0,0
+109,"B: conciliar (CRM diz churn, faturamento cobra)",A-08e34e,Company_32,EdTech,US,Basic,21821,0,,0,0,0,0,0,0,0,0
+110,"B: conciliar (CRM diz churn, faturamento cobra)",A-659280,Company_417,FinTech,IN,Enterprise,21450,3,conta em trial; evento de churn nos últimos 90 dias; aniversário de contrato anual em 90 dias sem auto-renew,0,1,1,0,0,0,1,0
+111,"B: conciliar (CRM diz churn, faturamento cobra)",A-4e44e8,Company_22,DevTools,US,Enterprise,20531,3,setor DevTools; evento de churn nos últimos 90 dias; uso do 4º tri/2024 abaixo da metade do 3º tri,1,0,1,0,0,1,0,0
+112,"B: conciliar (CRM diz churn, faturamento cobra)",A-89ee83,Company_312,Cybersecurity,US,Pro,20140,1,ticket escalado,0,0,0,1,0,0,0,0
+113,"B: conciliar (CRM diz churn, faturamento cobra)",A-5a184f,Company_124,DevTools,DE,Enterprise,19999,1,setor DevTools,1,0,0,0,0,0,0,0
+114,"B: conciliar (CRM diz churn, faturamento cobra)",A-e89151,Company_234,FinTech,UK,Pro,19762,1,conta em trial,0,1,0,0,0,0,0,0
+115,"B: conciliar (CRM diz churn, faturamento cobra)",A-271f46,Company_84,DevTools,US,Pro,19604,1,setor DevTools,1,0,0,0,0,0,0,0
+116,"B: conciliar (CRM diz churn, faturamento cobra)",A-b2225d,Company_50,FinTech,US,Basic,19088,1,taxa de erro no quartil mais alto,0,0,0,0,1,0,0,0
+117,"B: conciliar (CRM diz churn, faturamento cobra)",A-1ac5e0,Company_126,DevTools,US,Basic,18249,2,setor DevTools; 7 tickets ou mais,1,0,0,0,0,0,0,1
+118,"B: conciliar (CRM diz churn, faturamento cobra)",A-c222ab,Company_206,Cybersecurity,US,Pro,18048,2,evento de churn nos últimos 90 dias; taxa de erro no quartil mais alto,0,0,1,0,1,0,0,0
+119,"B: conciliar (CRM diz churn, faturamento cobra)",A-503d5a,Company_99,FinTech,US,Enterprise,17884,2,aniversário de contrato anual em 90 dias sem auto-renew; 7 tickets ou mais,0,0,0,0,0,0,1,1
+120,"B: conciliar (CRM diz churn, faturamento cobra)",A-7f6b86,Company_299,HealthTech,US,Basic,17197,3,conta em trial; uso do 4º tri/2024 abaixo da metade do 3º tri; 7 tickets ou mais,0,1,0,0,0,1,0,1
+121,"B: conciliar (CRM diz churn, faturamento cobra)",A-b07b56,Company_292,DevTools,US,Pro,16984,2,setor DevTools; evento de churn nos últimos 90 dias,1,0,1,0,0,0,0,0
+122,"B: conciliar (CRM diz churn, faturamento cobra)",A-72799b,Company_394,DevTools,FR,Enterprise,16935,3,setor DevTools; ticket escalado; aniversário de contrato anual em 90 dias sem auto-renew,1,0,0,1,0,0,1,0
+123,"B: conciliar (CRM diz churn, faturamento cobra)",A-600734,Company_327,DevTools,US,Pro,16711,4,setor DevTools; conta em trial; ticket escalado; 7 tickets ou mais,1,1,0,1,0,0,0,1
+124,"B: conciliar (CRM diz churn, faturamento cobra)",A-3ce5b8,Company_256,FinTech,IN,Basic,16650,1,7 tickets ou mais,0,0,0,0,0,0,0,1
+125,"B: conciliar (CRM diz churn, faturamento cobra)",A-cbd1a3,Company_325,DevTools,US,Basic,16351,2,setor DevTools; taxa de erro no quartil mais alto,1,0,0,0,1,0,0,0
+126,"B: conciliar (CRM diz churn, faturamento cobra)",A-4c56c9,Company_449,FinTech,US,Enterprise,16256,0,,0,0,0,0,0,0,0,0
+127,"B: conciliar (CRM diz churn, faturamento cobra)",A-eafc6e,Company_149,DevTools,US,Pro,16229,2,setor DevTools; evento de churn nos últimos 90 dias,1,0,1,0,0,0,0,0
+128,"B: conciliar (CRM diz churn, faturamento cobra)",A-d26ab4,Company_497,DevTools,UK,Basic,15731,2,setor DevTools; evento de churn nos últimos 90 dias,1,0,1,0,0,0,0,0
+129,"B: conciliar (CRM diz churn, faturamento cobra)",A-249769,Company_214,Cybersecurity,US,Enterprise,15717,1,evento de churn nos últimos 90 dias,0,0,1,0,0,0,0,0
+130,"B: conciliar (CRM diz churn, faturamento cobra)",A-3be56b,Company_200,HealthTech,IN,Pro,15325,0,,0,0,0,0,0,0,0,0
+131,"B: conciliar (CRM diz churn, faturamento cobra)",A-f17767,Company_123,DevTools,US,Enterprise,14914,3,setor DevTools; conta em trial; ticket escalado,1,1,0,1,0,0,0,0
+132,"B: conciliar (CRM diz churn, faturamento cobra)",A-c4ea60,Company_18,FinTech,DE,Enterprise,14646,0,,0,0,0,0,0,0,0,0
+133,"B: conciliar (CRM diz churn, faturamento cobra)",A-ffdfd5,Company_365,EdTech,US,Basic,14175,0,,0,0,0,0,0,0,0,0
+134,"B: conciliar (CRM diz churn, faturamento cobra)",A-d922bf,Company_221,HealthTech,US,Basic,14129,4,conta em trial; evento de churn nos últimos 90 dias; ticket escalado; 7 tickets ou mais,0,1,1,1,0,0,0,1
+135,"B: conciliar (CRM diz churn, faturamento cobra)",A-3932db,Company_144,HealthTech,CA,Pro,14087,1,conta em trial,0,1,0,0,0,0,0,0
+136,"B: conciliar (CRM diz churn, faturamento cobra)",A-9c18c4,Company_481,HealthTech,US,Pro,13814,1,taxa de erro no quartil mais alto,0,0,0,0,1,0,0,0
+137,"B: conciliar (CRM diz churn, faturamento cobra)",A-8adedc,Company_300,EdTech,US,Basic,13801,1,conta em trial,0,1,0,0,0,0,0,0
+138,"B: conciliar (CRM diz churn, faturamento cobra)",A-69b156,Company_396,EdTech,US,Pro,13798,2,uso do 4º tri/2024 abaixo da metade do 3º tri; 7 tickets ou mais,0,0,0,0,0,1,0,1
+139,"B: conciliar (CRM diz churn, faturamento cobra)",A-bcf87c,Company_288,FinTech,US,Pro,13611,0,,0,0,0,0,0,0,0,0
+140,"B: conciliar (CRM diz churn, faturamento cobra)",A-798a3f,Company_463,DevTools,FR,Enterprise,13563,1,setor DevTools,1,0,0,0,0,0,0,0
+141,"B: conciliar (CRM diz churn, faturamento cobra)",A-e61e98,Company_115,FinTech,US,Enterprise,13484,3,evento de churn nos últimos 90 dias; ticket escalado; uso do 4º tri/2024 abaixo da metade do 3º tri,0,0,1,1,0,1,0,0
+142,"B: conciliar (CRM diz churn, faturamento cobra)",A-d82ef9,Company_355,EdTech,UK,Basic,13320,2,ticket escalado; taxa de erro no quartil mais alto,0,0,0,1,1,0,0,0
+143,"B: conciliar (CRM diz churn, faturamento cobra)",A-1e50e0,Company_415,Cybersecurity,DE,Pro,13295,3,conta em trial; ticket escalado; taxa de erro no quartil mais alto,0,1,0,1,1,0,0,0
+144,"B: conciliar (CRM diz churn, faturamento cobra)",A-8b25f2,Company_96,Cybersecurity,US,Pro,12965,0,,0,0,0,0,0,0,0,0
+145,"B: conciliar (CRM diz churn, faturamento cobra)",A-cea1f0,Company_273,FinTech,US,Pro,12244,0,,0,0,0,0,0,0,0,0
+146,"B: conciliar (CRM diz churn, faturamento cobra)",A-0e966d,Company_493,FinTech,IN,Basic,12236,1,ticket escalado,0,0,0,1,0,0,0,0
+147,"B: conciliar (CRM diz churn, faturamento cobra)",A-6a7c9d,Company_324,Cybersecurity,US,Enterprise,12135,1,evento de churn nos últimos 90 dias,0,0,1,0,0,0,0,0
+148,"B: conciliar (CRM diz churn, faturamento cobra)",A-7641d3,Company_429,EdTech,US,Pro,12060,2,conta em trial; ticket escalado,0,1,0,1,0,0,0,0
+149,"B: conciliar (CRM diz churn, faturamento cobra)",A-8ed5dd,Company_222,EdTech,UK,Enterprise,11861,2,evento de churn nos últimos 90 dias; taxa de erro no quartil mais alto,0,0,1,0,1,0,0,0
+150,"B: conciliar (CRM diz churn, faturamento cobra)",A-098560,Company_349,DevTools,UK,Enterprise,11775,2,setor DevTools; ticket escalado,1,0,0,1,0,0,0,0
+151,"B: conciliar (CRM diz churn, faturamento cobra)",A-e4bf56,Company_272,HealthTech,IN,Pro,11563,1,7 tickets ou mais,0,0,0,0,0,0,0,1
+152,"B: conciliar (CRM diz churn, faturamento cobra)",A-ab438f,Company_233,Cybersecurity,US,Enterprise,11144,1,evento de churn nos últimos 90 dias,0,0,1,0,0,0,0,0
+153,"B: conciliar (CRM diz churn, faturamento cobra)",A-425e76,Company_110,DevTools,UK,Enterprise,10743,3,setor DevTools; evento de churn nos últimos 90 dias; ticket escalado,1,0,1,1,0,0,0,0
+154,"B: conciliar (CRM diz churn, faturamento cobra)",A-34ea2f,Company_436,HealthTech,US,Enterprise,10404,2,evento de churn nos últimos 90 dias; 7 tickets ou mais,0,0,1,0,0,0,0,1
+155,"B: conciliar (CRM diz churn, faturamento cobra)",A-7a0d69,Company_187,DevTools,DE,Enterprise,10362,3,setor DevTools; conta em trial; evento de churn nos últimos 90 dias,1,1,1,0,0,0,0,0
+156,"B: conciliar (CRM diz churn, faturamento cobra)",A-1f559b,Company_357,HealthTech,US,Enterprise,10350,3,conta em trial; taxa de erro no quartil mais alto; aniversário de contrato anual em 90 dias sem auto-renew,0,1,0,0,1,0,1,0
+157,"B: conciliar (CRM diz churn, faturamento cobra)",A-43a9e3,Company_1,FinTech,IN,Basic,10004,2,uso do 4º tri/2024 abaixo da metade do 3º tri; aniversário de contrato anual em 90 dias sem auto-renew,0,0,0,0,0,1,1,0
+158,"B: conciliar (CRM diz churn, faturamento cobra)",A-0baac2,Company_264,FinTech,DE,Enterprise,9943,1,evento de churn nos últimos 90 dias,0,0,1,0,0,0,0,0
+159,"B: conciliar (CRM diz churn, faturamento cobra)",A-117171,Company_135,HealthTech,FR,Basic,9810,3,evento de churn nos últimos 90 dias; ticket escalado; uso do 4º tri/2024 abaixo da metade do 3º tri,0,0,1,1,0,1,0,0
+160,"B: conciliar (CRM diz churn, faturamento cobra)",A-9ee962,Company_59,HealthTech,US,Basic,9249,1,evento de churn nos últimos 90 dias,0,0,1,0,0,0,0,0
+161,"B: conciliar (CRM diz churn, faturamento cobra)",A-32fb14,Company_25,DevTools,US,Enterprise,8775,1,setor DevTools,1,0,0,0,0,0,0,0
+162,"B: conciliar (CRM diz churn, faturamento cobra)",A-4c6f11,Company_146,FinTech,CA,Pro,7586,2,conta em trial; evento de churn nos últimos 90 dias,0,1,1,0,0,0,0,0
+163,"B: conciliar (CRM diz churn, faturamento cobra)",A-e83938,Company_111,DevTools,UK,Pro,7503,4,setor DevTools; conta em trial; evento de churn nos últimos 90 dias; taxa de erro no quartil mais alto,1,1,1,0,1,0,0,0
+164,"B: conciliar (CRM diz churn, faturamento cobra)",A-d535f6,Company_421,DevTools,US,Basic,7415,4,setor DevTools; conta em trial; evento de churn nos últimos 90 dias; uso do 4º tri/2024 abaixo da metade do 3º tri,1,1,1,0,0,1,0,0
+165,"B: conciliar (CRM diz churn, faturamento cobra)",A-c608c8,Company_199,DevTools,DE,Pro,7325,1,setor DevTools,1,0,0,0,0,0,0,0
+166,"B: conciliar (CRM diz churn, faturamento cobra)",A-139c3b,Company_185,HealthTech,US,Enterprise,6822,2,conta em trial; 7 tickets ou mais,0,1,0,0,0,0,0,1
+167,"B: conciliar (CRM diz churn, faturamento cobra)",A-fce879,Company_291,EdTech,UK,Pro,6797,2,conta em trial; evento de churn nos últimos 90 dias,0,1,1,0,0,0,0,0
+168,"B: conciliar (CRM diz churn, faturamento cobra)",A-88c6ca,Company_179,FinTech,DE,Basic,6449,0,,0,0,0,0,0,0,0,0
+169,"B: conciliar (CRM diz churn, faturamento cobra)",A-10b8da,Company_9,DevTools,US,Enterprise,5404,1,setor DevTools,1,0,0,0,0,0,0,0
+170,"B: conciliar (CRM diz churn, faturamento cobra)",A-b30291,Company_344,HealthTech,US,Basic,5375,1,conta em trial,0,1,0,0,0,0,0,0
+171,"B: conciliar (CRM diz churn, faturamento cobra)",A-0f3e88,Company_428,HealthTech,US,Basic,5281,0,,0,0,0,0,0,0,0,0
+172,"B: conciliar (CRM diz churn, faturamento cobra)",A-42e5e1,Company_118,DevTools,US,Pro,4936,3,setor DevTools; evento de churn nos últimos 90 dias; taxa de erro no quartil mais alto,1,0,1,0,1,0,0,0
+173,"B: conciliar (CRM diz churn, faturamento cobra)",A-b11cd0,Company_439,DevTools,US,Pro,4312,2,setor DevTools; conta em trial,1,1,0,0,0,0,0,0
+174,"B: conciliar (CRM diz churn, faturamento cobra)",A-32728c,Company_54,DevTools,US,Pro,4118,1,setor DevTools,1,0,0,0,0,0,0,0
+175,"B: conciliar (CRM diz churn, faturamento cobra)",A-4ae22a,Company_229,EdTech,US,Pro,3860,1,taxa de erro no quartil mais alto,0,0,0,0,1,0,0,0
+176,"B: conciliar (CRM diz churn, faturamento cobra)",A-ccc747,Company_339,HealthTech,FR,Pro,3685,1,ticket escalado,0,0,0,1,0,0,0,0
+177,"B: conciliar (CRM diz churn, faturamento cobra)",A-69fad4,Company_103,FinTech,UK,Basic,3678,0,,0,0,0,0,0,0,0,0
+178,"B: conciliar (CRM diz churn, faturamento cobra)",A-9208f0,Company_79,EdTech,US,Pro,3413,3,evento de churn nos últimos 90 dias; ticket escalado; 7 tickets ou mais,0,0,1,1,0,0,0,1
+179,"B: conciliar (CRM diz churn, faturamento cobra)",A-7c4956,Company_254,DevTools,US,Enterprise,3314,2,setor DevTools; taxa de erro no quartil mais alto,1,0,0,0,1,0,0,0
+180,"B: conciliar (CRM diz churn, faturamento cobra)",A-038089,Company_156,DevTools,FR,Pro,2104,4,setor DevTools; evento de churn nos últimos 90 dias; taxa de erro no quartil mais alto; uso do 4º tri/2024 abaixo da metade do 3º tri,1,0,1,0,1,1,0,0
+181,"B: conciliar (CRM diz churn, faturamento cobra)",A-439b2f,Company_152,DevTools,US,Enterprise,1796,2,setor DevTools; evento de churn nos últimos 90 dias,1,0,1,0,0,0,0,0
+182,"B: conciliar (CRM diz churn, faturamento cobra)",A-13466a,Company_196,DevTools,AU,Basic,171,3,setor DevTools; ticket escalado; taxa de erro no quartil mais alto,1,0,0,1,1,0,0,0

@@ -1,0 +1,127 @@
+banco: ../../solution/app/data/ravenstack.db   data de corte: 2024-12-31
+
+=== 1. Trial × pago (churn_flag da conta, D36)
+  pago : 403 contas (80.6% da base), 85 com churn (77.3% do churn), taxa 21.1%
+  trial: 97 contas (19.4% da base), 25 com churn (22.7% do churn), taxa 25.8%
+  trial × pago: 25/97 = 25.8%  ×  resto 85/403 = 21.1%   qui2 = 1.00  p = 0.318
+
+=== 2. Setor (churn_flag)
+  DevTools        35/113 = 31.0%
+  FinTech         25/112 = 22.3%
+  HealthTech      21/ 96 = 21.9%
+  EdTech          13/ 79 = 16.5%
+  Cybersecurity   16/100 = 16.0%
+  5 setores juntos: qui2 = 8.82  p = 0.066
+  DevTools × resto: 35/113 = 31.0%  ×  resto 75/387 = 19.4%   qui2 = 6.85  p = 0.009
+  com Bonferroni (5 setores testados): p = 0.044
+  o que os DevTools têm de diferente (taxa de erro %, escalação % dos tickets, satisfação, tickets por conta):
+    ('Cybersecurity', 5.56, 6.3, 3.97, 3.94)
+    ('DevTools', 5.53, 4.7, 3.96, 3.83)
+    ('EdTech', 5.69, 5.4, 4.01, 4.16)
+    ('FinTech', 5.55, 4.2, 4.02, 4.15)
+    ('HealthTech', 5.88, 3.4, 3.95, 4.29)
+  motivos dos eventos de churn em DevTools: [('support', 27), ('budget', 27), ('features', 26), ('competitor', 25), ('pricing', 22), ('unknown', 15)]
+
+=== 3. Plano (churn_flag)
+   ('Basic', 168, 37, 22.0)
+   ('Enterprise', 154, 34, 22.1)
+   ('Pro', 178, 39, 21.9)
+
+=== 4. Fricção de produto: beta × estável, por recurso
+  estável: 12691/224939 = 5.64% de erro por uso
+  beta   : 1416/25586 = 5.53% de erro por uso
+  40 recursos têm uso beta e estável; o beta erra mais em 18
+  maiores diferenças (recurso, erro beta %, erro estável %, usos beta):
+    feature_28   9.52   5.48  504
+    feature_25   8.58   5.40  478
+    feature_38   7.66   5.22  731
+    feature_18   8.39   6.07  608
+    feature_21   7.46   5.69  590
+  churn_flag por taxa de erro da conta (quartis):
+    (1, 0.0, 4.55, 125, 20.8)
+    (2, 4.56, 5.46, 125, 27.2)
+    (3, 5.46, 6.57, 125, 25.6)
+    (4, 6.59, 10.98, 125, 14.4)
+  churn_flag por adoção (recursos distintos usados, quartis):
+    (1, 9, 24, 125, 16.8)
+    (2, 24, 28, 125, 22.4)
+    (3, 28, 32, 125, 26.4)
+    (4, 32, 40, 125, 22.4)
+  recursos mais usados nas assinaturas longas (4º quartil de duração) que nas curtas (1º), usos por assinatura:
+    feature_9   longa 1.45  curta 1.06  razão 1.37
+    feature_35  longa 1.32  curta 1.09  razão 1.21
+    feature_30  longa 1.43  curta 1.20  razão 1.19
+    feature_36  longa 1.40  curta 1.26  razão 1.11
+    feature_38  longa 1.36  curta 1.23  razão 1.11
+
+=== 5. Suporte: volume, escalação e o cruzamento com a fricção de produto (churn_flag)
+  sem escalação: 87/409 = 21.3%
+  com escalação: 23/91 = 25.3%
+  tickets por conta:
+    ('0-2', 112, 28, 25.0)
+    ('3-4', 195, 44, 22.6)
+    ('5-6', 142, 24, 16.9)
+    ('7+', 51, 14, 27.5)
+  (escalou, erro acima da mediana, contas, com churn):
+    (0, 0, 209, 49)  23.4%
+    (0, 1, 200, 38)  19.0%
+    (1, 0, 43, 11)  25.6%
+    (1, 1, 48, 12)  25.0%
+  escalou E erro alto × resto: 12/48 = 25.0%  ×  resto 98/452 = 21.7%   qui2 = 0.28  p = 0.598
+
+=== 6. Satisfação: o que ela acompanha
+  825/2000 tickets sem nota (41.2%); notas existentes: [3, 4, 5]
+  tickets abertos exatamente à 00:00:00: 2000/2000
+  (nota, tickets, 1ª resposta min, resolução h, % escalados):
+    (None, 825, 88.5, 35.8, 3.9)
+    (3, 396, 86.3, 35.5, 5.3)
+    (4, 405, 89.3, 36.2, 4.0)
+    (5, 374, 90.0, 36.1, 7.0)
+  satisfação média da conta por tercil da taxa de erro da conta:
+    (1, 0.0, 4.89, 156, 4.0)
+    (2, 4.92, 6.24, 155, 3.93)
+    (3, 6.25, 10.98, 155, 3.96)
+
+=== 7. Motivo registrado × comentário do cliente
+  textos distintos de comentário: ['missing features', 'switched to competitor', 'too expensive']
+  motivo × comentário (sem os vazios): qui2 = 3.83  p = 0.955
+  eventos com comentário: 452; comentário coerente com o motivo: 101 (22.3%)
+  churn silencioso (sem comentário): (148, 131) (eventos, contas)
+  eventos por texto de comentário: [('too expensive', 161), ('missing features', 155), ('(vazio)', 148), ('switched to competitor', 136)]
+
+=== 8. Contradição entre tabelas
+  contas com churn_flag = 1: 110
+  dessas, com assinatura paga em aberto: 110 contas, US$ 2,073,153 de MRR
+  contas com evento de churn: 352  | contas com evento e churn_flag = 0: 277
+
+=== 9. Lista de contas para o CS: sinais acumulados × receita exposta
+  frequência de cada sinal nas 500 contas: {'devtools': 113, 'trial': 97, 'evento_90d': 178, 'escalacao': 91, 'erro_alto': 125, 'queda_uso': 67, 'renova_sem_auto': 33, 'muitos_tickets': 51}
+  checagem de honestidade: a contagem de sinais (sem o evento de 90 dias, que já é churn) separa quem tem churn_flag?
+    0  sinais: 143 contas, churn_flag 18.9%
+    1  sinais: 198 contas, churn_flag 22.7%
+    2  sinais: 106 contas, churn_flag 23.6%
+    3  sinais:  47 contas, churn_flag 23.4%
+    4+ sinais:   6 contas, churn_flag 33.3%
+
+  contas com churn_flag = 0: 390; com 3 sinais ou mais: 72, MRR ativo US$ 1,461,974
+  com 2 sinais: 102 contas; com 1: 147; com 0: 69
+  as 15 primeiras da fila:
+    A-f446b6 Company_36   DevTools      Pro        US$   8,805  6  setor DevTools; conta em trial; ticket escalado; taxa de erro no quartil mais alto; aniversário de contrato anual em 90 dias sem auto-renew; 7 tickets ou mais
+    A-8e47ca Company_191  HealthTech    Pro        US$  23,145  5  evento de churn nos últimos 90 dias; ticket escalado; taxa de erro no quartil mais alto; uso do 4º tri/2024 abaixo da metade do 3º tri; aniversário de contrato anual em 90 dias sem auto-renew
+    A-bd4513 Company_205  DevTools      Enterprise US$  48,804  4  setor DevTools; conta em trial; evento de churn nos últimos 90 dias; taxa de erro no quartil mais alto
+    A-1f7acb Company_281  FinTech       Basic      US$  46,912  4  conta em trial; taxa de erro no quartil mais alto; uso do 4º tri/2024 abaixo da metade do 3º tri; 7 tickets ou mais
+    A-0b0d6d Company_267  DevTools      Pro        US$  30,429  4  setor DevTools; evento de churn nos últimos 90 dias; ticket escalado; taxa de erro no quartil mais alto
+    A-bcbe98 Company_452  Cybersecurity Enterprise US$  21,666  4  evento de churn nos últimos 90 dias; ticket escalado; taxa de erro no quartil mais alto; 7 tickets ou mais
+    A-f03140 Company_209  DevTools      Pro        US$  21,075  4  setor DevTools; conta em trial; evento de churn nos últimos 90 dias; 7 tickets ou mais
+    A-533452 Company_279  DevTools      Pro        US$  20,223  4  setor DevTools; evento de churn nos últimos 90 dias; taxa de erro no quartil mais alto; uso do 4º tri/2024 abaixo da metade do 3º tri
+    A-313be3 Company_136  EdTech        Enterprise US$  19,006  4  conta em trial; ticket escalado; taxa de erro no quartil mais alto; aniversário de contrato anual em 90 dias sem auto-renew
+    A-5790f4 Company_446  FinTech       Pro        US$  17,334  4  conta em trial; evento de churn nos últimos 90 dias; ticket escalado; taxa de erro no quartil mais alto
+    A-c9bb3e Company_336  EdTech        Pro        US$  13,502  4  evento de churn nos últimos 90 dias; ticket escalado; uso do 4º tri/2024 abaixo da metade do 3º tri; 7 tickets ou mais
+    A-149a69 Company_302  DevTools      Basic      US$   8,058  4  setor DevTools; evento de churn nos últimos 90 dias; uso do 4º tri/2024 abaixo da metade do 3º tri; 7 tickets ou mais
+    A-fd7ad3 Company_100  Cybersecurity Enterprise US$     904  4  evento de churn nos últimos 90 dias; ticket escalado; taxa de erro no quartil mais alto; 7 tickets ou mais
+    A-18793f Company_488  EdTech        Basic      US$  75,776  3  conta em trial; evento de churn nos últimos 90 dias; uso do 4º tri/2024 abaixo da metade do 3º tri
+    A-e08cd3 Company_475  FinTech       Pro        US$  67,737  3  conta em trial; evento de churn nos últimos 90 dias; 7 tickets ou mais
+
+  lista B, conciliar: 110 contas com churn_flag = 1 e assinatura paga em aberto, US$ 2,073,153 de MRR
+
+  CSV: ../../solution/contas-em-risco.csv (72 + 110 linhas)
