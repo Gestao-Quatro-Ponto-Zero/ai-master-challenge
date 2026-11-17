@@ -114,6 +114,17 @@
   modesta, então acrescentei ao resumo as metas do piloto: como vou provar o valor em 30 dias.
 - Acrescentei ao protótipo o envio de planilha, para um gestor testar com os próprios chamados.
 
+## 17/11 – 15h30 | Comparação com LLM (Gemini)
+- Rodei o `comparar_llm.py` na minha máquina com a minha chave do Gemini.
+- O primeiro modelo do script (`gemini-2.5-flash`) não estava mais disponível (erro 404). Listei os modelos
+  da minha conta e testei outros: `gemini-3.8-flash` e `gemini-3.5-flash` estavam sobrecarregados (erro 503).
+  Funcionou com `gemini-3.5-flash-lite`. Pedi ao Claude para corrigir o script, que escrevia "ok" mesmo
+  quando um lote falhava.
+- Resultado nos mesmos 200 tickets de teste: modelo simples 92,5% x LLM zero-shot 48,0%.
+- Minha leitura: o LLM não conhece a convenção de categorias desta empresa; o modelo treinado aprendeu
+  com 38 mil exemplos. Para classificar com a taxonomia da empresa, o modelo simples ganha em acerto,
+  tempo e custo. O LLM fica para gerar resposta sugerida ou para um teste com exemplos (few-shot).
+
 ## Onde a IA errou e como corrigi
 - **ROI aplicado ao lugar errado:** a primeira análise apresentou o ROI do dataset de TI como se valesse
   para o suporte da empresa. A segunda varredura mostrou que o modelo não transfere.

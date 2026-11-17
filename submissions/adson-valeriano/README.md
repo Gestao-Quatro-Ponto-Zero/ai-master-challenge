@@ -71,6 +71,21 @@ Escolhi **70%** porque equilibra volume automatizado e erro (4,4%). É uma decis
 
 **Por categoria:** a pior é **Administrative rights** (precisão 77%), justamente a mais sensível, porque mexe com acesso e permissão. As maiores confusões são Hardware ↔ HR Support e Hardware ↔ Miscellaneous ("Miscellaneous" funciona como categoria-lixeira).
 
+#### 2b. E se usasse IA generativa? (comparação com LLM)
+Detalhes em [`solution/resultados_llm.md`](solution/resultados_llm.md) (gerado por `comparar_llm.py`).
+
+Testei a pergunta que um executivo faria: *"por que não usar um LLM para classificar?"* Classifiquei os mesmos 200 tickets de teste com o Gemini (`gemini-3.5-flash-lite`, zero-shot, só com a descrição de cada categoria no prompt):
+
+| | Modelo simples | LLM (zero-shot) |
+|---|---|---|
+| Acerto nos mesmos 200 tickets | **92,5%** | **48,0%** |
+| Tempo para a amostra | 0,01 s | ~3 min (com pausas do limite gratuito) |
+| Custo por 1.000 tickets | ~zero (roda local) | ~US$ 0,06 (estimativa com preço de referência) |
+
+**Leitura:** o LLM não é ruim. O problema é que ele não conhece **a forma como esta empresa classifica** os chamados. As categorias são uma convenção interna (o que é "HR Support" ou "Miscellaneous" aqui), e o modelo treinado com 38 mil exemplos aprendeu essa convenção; o LLM, sem exemplos, chuta pelo significado geral das palavras. Os textos também vêm pré-processados (sem pontuação nem estrutura), o que atrapalha mais o LLM. **Conclusão para a decisão:** para classificar com a taxonomia da própria empresa, um modelo treinado com os dados dela ganha em acerto, velocidade e custo. O LLM faz mais sentido em outras partes do fluxo, como gerar a resposta sugerida a partir de resoluções reais, ou como classificador com exemplos (few-shot) num piloto futuro.
+
+Obs.: o acerto do modelo simples nessa amostra (92,5%) é maior que no teste completo (86,6%) por variação da amostra; o número oficial continua sendo o do teste completo.
+
 #### 3. A pegadinha do cruzamento
 Os dois datasets são de mundos diferentes: o 1 é **suporte ao cliente** (cobrança, reembolso, produto) e o 2 é **service desk interno de TI** (hardware, RH, acesso). Testei aplicar o modelo do dataset 2 nos tickets do dataset 1:
 - a confiança média cai de 81% para **55%**;
@@ -132,6 +147,7 @@ Prints em [`process-log/screenshots/`](process-log/screenshots/).
 |------------|--------------|
 | Claude (chat) | Checagem de qualidade, análise estatística, segunda varredura atrás de pegadinhas, escrita do código do protótipo e revisão dos textos |
 | Python (pandas, scikit-learn, scipy, Streamlit) | Análise, classificador e protótipo |
+| Gemini (Google AI Studio) | Comparação do classificador simples com um LLM zero-shot |
 | Git / GitHub | Versionamento e entrega (o histórico de commits mostra a evolução) |
 
 ### Workflow
@@ -172,6 +188,7 @@ Prints em [`process-log/screenshots/`](process-log/screenshots/).
 - [x] Git history (commits mostrando a evolução)
 - [x] Scripts reprodutíveis: qualquer pessoa roda `diagnostico.py`, `avaliar.py` e `checagens_extras.py` e chega nos mesmos números
 - [x] Resumo executivo de 1 página para o diretor (`RESUMO_EXECUTIVO.md`)
+- [x] Comparação com IA generativa (`comparar_llm.py` → `resultados_llm.md`)
 
 ---
 
