@@ -4,10 +4,10 @@ task: Refactor Veta to serve the RavenStack churn diagnosis (G4 AI Master challe
 slug: ravenstack-churn-app
 effort: E3
 phase: build
-progress: 28/40
+progress: 34/44
 mode: build
 started: 2026-11-16
-updated: 2026-11-16T18:55:00-03:00
+updated: 2026-11-17T00:30:00-03:00
 ---
 
 # RavenStack churn app — ISA
@@ -117,7 +117,7 @@ D20–D24, and an evaluator can reach it with a username and password.
 ### Deploy (phase 3)
 - [x] ISC-24: The RavenStack database ships with the deploy (`data/ravenstack.db`). Evidence: `outputFileTracingIncludes` puts it in every function; `/api/health` on the deploy → `{"warehouse":"ok"}`; every screen renders from it.
 - [x] ISC-25: Deployed on Vercel or Railway with HTTPS. Evidence: https://ravenstack-churn.vercel.app (Vercel, region gru1; D46.4). The app DB is an encrypted SQLite snapshot in a private Vercel Blob, loaded when another instance wrote a newer one (conditional GET) and uploaded before a writing route responds. Browser run on production: evaluator login, six pages 200, drill, mark, custom screen with DeepSeek kept after reopening, no console errors.
-- [ ] ISC-26: The evaluator logs in with the default credentials given in the README.
+- [ ] ISC-26: The evaluator logs in with the default credentials given in the README. Progress: the deploy has its own evaluator login (`avaliador@ravenstack.app`, a new password kept in the git-ignored `.env.deploy`), verified on production; the README names the user but not the password, because whoever has it spends the DeepSeek key. Open until the human decides how the password reaches the evaluators.
 - [ ] ISC-27: No secret or `node_modules` enters git (files added one by one under the ignored `submissions/` folder). Progress: commit 993fe1b staged 116 files one by one, no `.env`/`node_modules`/sqlite; privacy scan 0. Commit 7213f7e (screens, D30–D43) staged 40 files one by one with the same checks; privacy scan 0; pushed to `submission/ronaldo-tkotz`. Stays open until the deploy commit.
 
 ## Test Strategy
