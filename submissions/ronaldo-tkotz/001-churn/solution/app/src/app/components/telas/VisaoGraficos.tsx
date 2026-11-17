@@ -52,7 +52,7 @@ export function Barras({ dados, formato, tema, recorte }: { dados: { label: stri
   return (
     <Ajustado>
       {(w, h) => (
-        <BarChart data={dados.map((d) => ({ ...d, color }))} valueFormat={FORMATOS[formato]} horizontal height={h} viewWidth={w} bare onSelect={abrir} />
+        <BarChart data={dados.map((d) => ({ ...d, color }))} valueFormat={FORMATOS[formato]} horizontal thick height={h} viewWidth={w} bare onSelect={abrir} />
       )}
     </Ajustado>
   );

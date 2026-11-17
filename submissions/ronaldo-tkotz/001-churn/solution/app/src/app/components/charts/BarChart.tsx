@@ -24,6 +24,8 @@ export interface BarChartProps {
   showValues?: boolean;
   /** When set, a bar is clickable — fires with the bar's full (untruncated) label to drill in. */
   onSelect?: (label: string) => void;
+  /** Horizontal bars: thick bars, 80% of each row (D50, the human's mockup); default 72% capped at 26. */
+  thick?: boolean;
 }
 
 const DEFAULT_VIEW_WIDTH = 640;
@@ -71,7 +73,7 @@ function EmptyState({ height, title }: { height: number; title: string }) {
   );
 }
 
-export function BarChart({ data, height = 220, valueFormat = DEFAULT_FORMAT, horizontal = true, bare = false, onSelect, viewWidth, fit = false, showValues = false }: BarChartProps) {
+export function BarChart({ data, height = 220, valueFormat = DEFAULT_FORMAT, horizontal = true, bare = false, onSelect, viewWidth, fit = false, showValues = false, thick = false }: BarChartProps) {
   const VIEW_WIDTH = viewWidth ?? DEFAULT_VIEW_WIDTH;
   const titleId = useId();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -114,7 +116,7 @@ export function BarChart({ data, height = 220, valueFormat = DEFAULT_FORMAT, hor
     const plotWidth = Math.max(1, VIEW_WIDTH - left - right);
     const plotHeight = Math.max(1, height - top - bottom);
     const bandHeight = plotHeight / Math.max(1, items.length);
-    const barHeight = Math.min(26, Math.max(8, bandHeight * 0.72));
+    const barHeight = thick ? Math.min(72, Math.max(8, bandHeight * 0.8)) : Math.min(26, Math.max(8, bandHeight * 0.72));
     const xOf = (v: number) => left + ((v - lo) / span) * plotWidth;
     const xZero = xOf(0);
 
