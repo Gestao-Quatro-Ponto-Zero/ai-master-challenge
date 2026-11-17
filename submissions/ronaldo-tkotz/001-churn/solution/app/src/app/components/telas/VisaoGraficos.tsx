@@ -150,6 +150,34 @@ export function IdadeMedia({ meses, contas, assinaturas }: { meses: string[]; co
 }
 
 /**
+ * Subscriptions per account (blue, left axis) and revenue per account (green, right axis), D47.
+ * The two measures have different units, so each line follows its own axis; the legend says which.
+ */
+export function PorConta({ meses, assinaturas, receita }: { meses: string[]; assinaturas: number[]; receita: number[] }) {
+  const nomes = ["Assinaturas por conta (eixo esq.)", "Receita por conta (eixo dir.)"];
+  const dec = (n: number) => n.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
+  return (
+    <Ajustado>
+      {(w, h) => (
+        <LineChart
+          categories={meses}
+          series={[
+            { name: nomes[0], values: assinaturas, color: AZUL },
+            { name: nomes[1], values: receita, color: DONUT[2], axis: "right" },
+          ]}
+          yFormat={dec}
+          y2Format={usdCompacto}
+          height={h - alturaLegenda(nomes, w)}
+          viewWidth={w}
+          area={false}
+          bare
+        />
+      )}
+    </Ajustado>
+  );
+}
+
+/**
  * Plain month-by-month lines on one axis (D43): every series in the same unit. `tema` picks the
  * colour by meaning (volume = blue, problem = orange, third = green).
  */

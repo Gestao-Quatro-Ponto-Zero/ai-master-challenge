@@ -10,6 +10,7 @@ import {
   receitaNovaVsPerdida,
   contasPagasTrial,
   idadeMedia,
+  porConta,
 } from "@/engine/visaoGeral";
 import { requireUser } from "@/app/lib/auth";
 import { Sidebar } from "./components/dashboard/Sidebar";
@@ -21,7 +22,7 @@ import { CustomDatasetBrief } from "./components/dashboard/CustomDatasetBrief";
 import { TelaShell } from "./components/telas/TelaShell";
 import { Indicador } from "./components/telas/Indicador";
 import { Painel } from "./components/telas/Painel";
-import { Colunas, CrescimentoMensal, Donut, IdadeMedia, ReceitaNovaPerdida } from "./components/telas/VisaoGraficos";
+import { Colunas, CrescimentoMensal, Donut, IdadeMedia, PorConta, ReceitaNovaPerdida } from "./components/telas/VisaoGraficos";
 
 // Computed at request time from the read-only database — never prerendered.
 export const dynamic = "force-dynamic";
@@ -72,6 +73,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Rec
   const receita = receitaNovaVsPerdida(f);
   const pagasTrial = contasPagasTrial(f);
   const idade = idadeMedia(f);
+  const pc = porConta(f);
   const ate = receita.mesesAteCruzamento;
   const previsao = !receita.mesCruzamento
     ? "no ritmo de 2024, a perda não alcança a receita nova"
@@ -114,9 +116,14 @@ export default async function Home({ searchParams }: { searchParams: Promise<Rec
           </Painel>
         </div>
 
-        <Painel titulo="Idade média da base, por mês" nota="em meses, no fim de cada mês, de jan/2023 a dez/2024" sql={[idade.sql]}>
-          <IdadeMedia meses={idade.meses} contas={idade.contas} assinaturas={idade.assinaturas} />
-        </Painel>
+        <div className="grid min-h-0 gap-2 lg:grid-cols-2">
+          <Painel titulo="Idade média da base, por mês" nota="em meses, no fim de cada mês, de jan/2023 a dez/2024" sql={[idade.sql]}>
+            <IdadeMedia meses={idade.meses} contas={idade.contas} assinaturas={idade.assinaturas} />
+          </Painel>
+          <Painel titulo="Assinaturas e receita por conta, por mês" nota="média das contas ativas em cada mês; receita = MRR em vigor" sql={[pc.sql]}>
+            <PorConta meses={pc.meses} assinaturas={pc.assinaturas} receita={pc.receita} />
+          </Painel>
+        </div>
 
         <div className="grid min-h-0 grid-cols-2 gap-2 lg:grid-cols-4">
           <Painel titulo="Receita por plano" nota="MRR das assinaturas ativas" sql={[rPlano.sql]}>

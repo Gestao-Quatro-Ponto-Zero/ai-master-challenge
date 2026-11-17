@@ -8,6 +8,8 @@ export interface LineSeries {
   /** null = no value (a gap, e.g. projected months with no actual data). */
   values: (number | null)[];
   color?: string;
+  /** "right" draws the series on a second y axis with its own scale (needs y2Format). */
+  axis?: "left" | "right";
 }
 
 type Point = { x: number; y: number; value: number | null };
@@ -35,6 +37,8 @@ export interface LineChartProps {
   projectFrom?: number;
   /** A vertical marker at one category, with a short label (e.g. where two trends meet). */
   marker?: { index: number; label: string };
+  /** Tick format of the right axis, used by series with axis "right" (D47). */
+  y2Format?: (n: number) => string;
 }
 
 const DEFAULT_VIEW_WIDTH = 640;
@@ -99,6 +103,21 @@ function tightScale(values: number[]): { max: number; ticks: number[] } {
   return { max: safeNiceMax(values), ticks: [safeNiceMax(values), 0] };
 }
 
+/** A 0-based scale with exactly n intervals, so a right axis shares the left axis's grid lines. */
+function scaleWithIntervals(values: number[], n: number): { max: number; ticks: number[] } {
+  const hi = Math.max(0, ...values);
+  const count = Math.max(1, n);
+  if (!(hi > 0)) return { max: 1, ticks: Array.from({ length: count + 1 }, (_, i) => (count - i) / count) };
+  const mag = 10 ** Math.floor(Math.log10(hi / count));
+  for (const m of [1, 2, 2.5, 3, 4, 5, 6, 8, 10, 20, 25, 50]) {
+    const step = m * mag;
+    if (step * count >= hi - 1e-9) {
+      return { max: step * count, ticks: Array.from({ length: count + 1 }, (_, i) => Math.round((count - i) * step * 1e6) / 1e6) };
+    }
+  }
+  return { max: hi, ticks: [hi, 0] };
+}
+
 function xAt(index: number, count: number, left: number, width: number): number {
   if (count <= 1) return left + width / 2;
   return left + (index / (count - 1)) * width;
@@ -139,8 +158,8 @@ function clampPercent(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value));
 }
 
-function formatRowLabel(values: { name: string; value: number | null; color: string }[], yFormat: (n: number) => string): string {
-  return values.map((entry) => `${entry.name}: ${entry.value === null ? "—" : yFormat(entry.value)}`).join(" • ");
+function formatRowLabel(values: { name: string; value: number | null; color: string; format: (n: number) => string }[]): string {
+  return values.map((entry) => `${entry.name}: ${entry.value === null ? "—" : entry.format(entry.value)}`).join(" • ");
 }
 
 function EmptyState({ height, title }: { height: number; title: string }) {
@@ -174,6 +193,7 @@ export function LineChart({
   projectFrom,
   marker,
   viewWidth,
+  y2Format = DEFAULT_FORMAT,
 }: LineChartProps) {
   const VIEW_WIDTH = viewWidth ?? DEFAULT_VIEW_WIDTH;
   const titleId = useId();
@@ -186,6 +206,7 @@ export function LineChart({
         name: entry.name,
         color: entry.color ?? (index === 0 ? DEFAULT_ACCENT : DEFAULT_SECONDARY),
         values: alignValues(entry.values, categories.length),
+        right: entry.axis === "right",
       })),
     [categories.length, series],
   );
@@ -196,21 +217,31 @@ export function LineChart({
 
   // Bare charts sit inside a panel that already has a title: trim the outer margins (D41).
   const top = bare ? 12 : 20;
-  const right = 18;
+  const temDireita = visibleSeries.some((entry) => entry.right);
   const bottom = bare ? 24 : 40;
   const plotHeight = Math.max(1, height - top - bottom);
   const baseY = top + plotHeight;
 
   const trendValues = trends.slice(0, visibleSeries.length).map((t) => alignValues(t, categories.length));
-  const flattenedValues = [...visibleSeries.flatMap((entry) => entry.values), ...trendValues.flat()].filter(
-    (v): v is number => v !== null,
-  );
+  const flattenedValues = [
+    ...visibleSeries.filter((entry) => !entry.right).flatMap((entry) => entry.values),
+    ...trendValues.filter((_, i) => !visibleSeries[i]?.right).flat(),
+  ].filter((v): v is number => v !== null);
   const negativo = flattenedValues.some((v) => v < 0);
   const signed = negativo ? signedScale(flattenedValues) : null;
   const positive = signed ? null : yMax ? fixedScale(yMax) : tightScale(flattenedValues);
   const niceMax = signed ? signed.max : positive!.max;
   const niceMin = signed ? signed.min : 0;
   const ticks = signed ? signed.ticks : positive!.ticks;
+  // The right axis (D47): its own 0-based scale, with the same number of intervals as the left one.
+  const direita = temDireita
+    ? scaleWithIntervals(
+        visibleSeries.filter((entry) => entry.right).flatMap((entry) => entry.values).filter((v): v is number => v !== null),
+        ticks.length - 1,
+      )
+    : null;
+  const right = direita ? Math.max(52, Math.ceil(Math.max(...direita.ticks.map((t) => y2Format(t).length)) * 6.2) + 12) : 18;
+  const fmtSerie = (index: number) => (visibleSeries[index]?.right ? y2Format : yFormat);
   // The y gutter fits the longest tick label (10px mono ≈ 6.2 units a character), never under 52.
   const left = Math.max(52, Math.ceil(Math.max(...ticks.map((t) => yFormat(t).length)) * 6.2) + 12);
   const plotWidth = Math.max(1, VIEW_WIDTH - left - right);
@@ -221,14 +252,14 @@ export function LineChart({
   // At most one label per ~70px of plot, so narrow charts never collide (edge labels are anchored inward).
   const xLabels = xAxisLabels(categories.length, pointSpacing, { maxVisible: Math.max(2, Math.min(9, Math.floor(plotWidth / 70))) });
 
-  const toPoints = (values: (number | null)[]): Point[] =>
+  const toPoints = (values: (number | null)[], naDireita = false): Point[] =>
     values.map((value, index) => ({
       x: xAt(index, categories.length, left, plotWidth),
-      y: yAt(value ?? 0, niceMax, top, plotHeight, niceMin),
+      y: naDireita && direita ? yAt(value ?? 0, direita.max, top, plotHeight) : yAt(value ?? 0, niceMax, top, plotHeight, niceMin),
       value,
     }));
-  const pointsBySeries = visibleSeries.map((entry) => toPoints(entry.values));
-  const trendPoints = trendValues.map((values) => comValor(toPoints(values)));
+  const pointsBySeries = visibleSeries.map((entry) => toPoints(entry.values, entry.right));
+  const trendPoints = trendValues.map((values, i) => comValor(toPoints(values, visibleSeries[i]?.right)));
 
   const hoverIndex = hoveredIndex !== null && hoveredIndex >= 0 && hoveredIndex < categories.length ? hoveredIndex : null;
   const hoverX = hoverIndex === null ? null : xAt(hoverIndex, categories.length, left, plotWidth);
@@ -239,18 +270,24 @@ export function LineChart({
           name: entry.name,
           value: entry.values[hoverIndex] ?? null,
           color: entry.color,
+          format: fmtSerie(index),
           y: pointsBySeries[index]?.[hoverIndex]?.y ?? baseY,
         }));
   // Projected months have no actual value: the tooltip shows the trends there instead.
   const hoveredTrends =
     hoverIndex === null || trendValues.length === 0
       ? []
-      : visibleSeries.map((entry, index) => ({ name: entry.name, value: trendValues[index]?.[hoverIndex] ?? null, color: entry.color }));
+      : visibleSeries.map((entry, index) => ({ name: entry.name, value: trendValues[index]?.[hoverIndex] ?? null, color: entry.color, format: fmtSerie(index) }));
   const showTrendsInTooltip = hoveredValues.every((entry) => entry.value === null) && hoveredTrends.some((t) => t.value !== null);
   const comY = hoveredValues.filter((entry) => entry.value !== null);
   const tooltipY = hoverIndex === null ? null : comY.length ? Math.min(...comY.map((entry) => entry.y)) : top + plotHeight / 2;
-  const tooltipLeft = hoverX === null ? null : clampPercent((hoverX / VIEW_WIDTH) * 100, 10, 90);
-  const tooltipTop = tooltipY === null ? null : clampPercent((tooltipY / height) * 100, 20, 90);
+  const tooltipLeft = hoverX === null ? null : clampPercent((hoverX / VIEW_WIDTH) * 100, 0, 100);
+  // The tooltip opens toward the side with room, so it never runs past the panel edge.
+  const tooltipLado =
+    tooltipLeft === null ? "" : tooltipLeft > 66 ? "-translate-x-[calc(100%+10px)]" : tooltipLeft < 34 ? "translate-x-[10px]" : "-translate-x-1/2";
+  // A point in the upper half gets its tooltip below it, or the panel would clip it at the top.
+  const tooltipAbaixo = tooltipY !== null && tooltipY < height * 0.45;
+  const tooltipTop = tooltipY === null ? null : clampPercent((tooltipY / height) * 100, tooltipAbaixo ? 0 : 20, 90);
 
   const hasDashedTail = markLastPartial && categories.length > 1;
   const firstAreaPath = area && !negativo ? buildAreaPath(comValor(pointsBySeries[0] ?? []), baseY) : "";
@@ -314,6 +351,21 @@ export function LineChart({
               </g>
             );
           })}
+
+          {direita &&
+            direita.ticks.map((tick, i) => (
+              <text
+                key={`y2-${i}`}
+                x={VIEW_WIDTH - right + 8}
+                y={yAt(ticks[i] ?? 0, niceMax, top, plotHeight, niceMin) + 4}
+                textAnchor="start"
+                fontSize="10"
+                fill={DEFAULT_LABEL}
+                className="font-mono"
+              >
+                {y2Format(tick)}
+              </text>
+            ))}
 
           {projX !== null && (
             <g>
@@ -451,18 +503,18 @@ export function LineChart({
 
         {hoverIndex !== null && tooltipLeft !== null && tooltipTop !== null && (
           <div
-            className="pointer-events-none absolute z-10 min-w-36 -translate-x-1/2 -translate-y-[calc(100%+10px)] rounded-md border border-edge-strong bg-panel/95 px-2.5 py-2 text-[11px] shadow-[0_8px_24px_rgba(0,0,0,0.28)] backdrop-blur-sm"
+            className={`pointer-events-none absolute z-10 min-w-36 ${tooltipLado} ${tooltipAbaixo ? "translate-y-[10px]" : "-translate-y-[calc(100%+10px)]"} rounded-md border border-edge-strong bg-panel/95 px-2.5 py-2 text-[11px] shadow-[0_8px_24px_rgba(0,0,0,0.28)] backdrop-blur-sm`}
             style={{ left: `${tooltipLeft}%`, top: `${tooltipTop}%` }}
           >
             <div className="mb-1 text-[10px] font-medium uppercase tracking-wider text-faint">{categories[hoverIndex]}</div>
             <div className="space-y-1">
               {(showTrendsInTooltip ? hoveredTrends : hoveredValues).map((entry) => (
                 <div key={entry.name} className="flex items-center justify-between gap-3">
-                  <span className="flex items-center gap-1.5 text-muted">
+                  <span className="flex items-center gap-1.5 whitespace-nowrap text-muted">
                     <span className="h-2 w-2 rounded-full" style={{ backgroundColor: entry.color }} />
                     <span>{entry.name}</span>
                   </span>
-                  <span className="font-mono tabular-nums text-foreground">{entry.value === null ? "—" : yFormat(entry.value)}</span>
+                  <span className="whitespace-nowrap font-mono tabular-nums text-foreground">{entry.value === null ? "—" : entry.format(entry.value)}</span>
                 </div>
               ))}
               {showTrendsInTooltip && <div className="text-[10px] text-faint">{trendLabel}, projetada</div>}
@@ -472,7 +524,7 @@ export function LineChart({
       </div>
 
       {!bare && (
-        <div className="mt-2 text-[10px] text-faint">{formatRowLabel(hoveredValues, yFormat) || "Hover a point to inspect the exact value."}</div>
+        <div className="mt-2 text-[10px] text-faint">{formatRowLabel(hoveredValues) || "Hover a point to inspect the exact value."}</div>
       )}
     </div>
   );

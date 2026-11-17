@@ -319,3 +319,39 @@ FROM mm ORDER BY mes`;
     sql: r.sql,
   };
 }
+
+export interface PorConta {
+  meses: string[];
+  /** Average number of subscriptions in force per active account, at each month. */
+  assinaturas: number[];
+  /** Average MRR (US$) of the subscriptions in force per active account, at each month. */
+  receita: number[];
+  sql: string;
+}
+
+/**
+ * Subscriptions and revenue per account, month by month (D47), jan/2023 to dez/2024. An account is
+ * active in a month when it has a subscription in force in it (D21); for each active account we
+ * count its subscriptions in force and add up their MRR, then average over the active accounts.
+ */
+export function porConta(f: Filtros): PorConta {
+  const sql = `WITH RECURSIVE ${MESES_CTE},
+conta_mes AS (
+  SELECT mm.ini, s.account_id, count(*) AS assinaturas, sum(s.mrr_amount) AS mrr FROM mm
+  JOIN subscriptions s ON s.start_date <= mm.fim AND (s.end_date IS NULL OR s.end_date >= mm.ini)
+  WHERE ${whereAssinatura(f)}
+  GROUP BY mm.ini, s.account_id
+)
+SELECT substr(mm.ini, 1, 7) AS mes,
+  (SELECT count(*) FROM conta_mes c WHERE c.ini = mm.ini) AS contas_ativas,
+  (SELECT round(avg(assinaturas), 2) FROM conta_mes c WHERE c.ini = mm.ini) AS assinaturas_por_conta,
+  (SELECT round(avg(mrr)) FROM conta_mes c WHERE c.ini = mm.ini) AS mrr_por_conta
+FROM mm ORDER BY mes`;
+  const r = runQuery(sql);
+  return {
+    meses: r.rows.map((row) => String(row.mes)),
+    assinaturas: r.rows.map((row) => num(row.assinaturas_por_conta)),
+    receita: r.rows.map((row) => num(row.mrr_por_conta)),
+    sql: r.sql,
+  };
+}
