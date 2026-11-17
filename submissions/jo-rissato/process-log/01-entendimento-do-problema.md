@@ -1125,3 +1125,9 @@ repositório da G4 só altera arquivos em `submissions/jo-rissato/` e não tem c
 **Abertura do PR (12:55 a 13:05 BRT):** o GitHub recusou o PR com "Validation failed: must be a collaborator", pelo Jó
 e de novo pelo navegador com o formulário limpo. A sessão do navegador estava numa conta diferente da dona do fork.
 **Mensagem do Jó (literal):** "Pode abrir a issue". Issue #251 aberta no repositório da G4 pedindo orientação.
+
+**Mensagem do Jó (literal):** "acredito que agora deu certo estava logado no git da creagle acredoitio que foi por isso
+que deu erro"
+
+**Feito:** o Jó entrou na conta dona do fork e o PR #252 foi aberto. Conferido: título no formato pedido, 14 commits,
+72 arquivos só nesta pasta, sem conflito. A issue #251 recebeu comentário apontando o PR.
