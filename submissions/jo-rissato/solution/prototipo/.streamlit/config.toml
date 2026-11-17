@@ -1,0 +1,14 @@
+[theme]
+base = "light"
+primaryColor = "#1E40AF"
+backgroundColor = "#F8FAFC"
+secondaryBackgroundColor = "#E9EEF6"
+textColor = "#0F172A"
+
+[browser]
+gatherUsageStats = false
+
+# Link público (régua de 2026-11-11): visitante não vê traceback nem caminho interno, nem menu de desenvolvedor.
+[client]
+showErrorDetails = "none"
+toolbarMode = "viewer"
