@@ -75,16 +75,16 @@ export default async function Tela3({ searchParams }: { searchParams: Promise<Re
 
         <div className="grid min-h-0 grid-cols-2 gap-2 lg:grid-cols-4">
           <Painel titulo="Tickets por prioridade" nota="parte de cada prioridade no total de tickets" sql={[prioridade.sql]}>
-            <Donut dados={prioridade.dados} formato="int" />
+            <Donut dados={prioridade.dados} formato="int" recorte={{ universo: "ticket", dim: "prioridade" }} />
           </Painel>
           <Painel titulo="Notas de satisfação" nota="parte de cada nota no total de tickets" sql={[notas.sql]}>
-            <Donut dados={notas.dados} formato="int" />
+            <Donut dados={notas.dados} formato="int" recorte={{ universo: "ticket", dim: "nota" }} />
           </Painel>
           <Painel titulo="Tempo de resolução" nota="tickets por faixa de tempo até fechar" sql={[resolucao.sql]}>
-            <Barras dados={resolucao.dados} formato="int" tema="receita" />
+            <Barras dados={resolucao.dados} formato="int" tema="receita" recorte={{ universo: "ticket", dim: "resolucao" }} />
           </Painel>
           <Painel titulo="Tempo até a 1ª resposta" nota="tickets por faixa de tempo" sql={[resposta.sql]}>
-            <Barras dados={resposta.dados} formato="int" tema="receita" />
+            <Barras dados={resposta.dados} formato="int" tema="receita" recorte={{ universo: "ticket", dim: "resposta" }} />
           </Painel>
         </div>
 
@@ -93,7 +93,7 @@ export default async function Tela3({ searchParams }: { searchParams: Promise<Re
             <RecursosErros recursos={recursos.recursos} />
           </Painel>
           <Painel titulo="Os 10 recursos mais usados" nota="usos no período" sql={[maisUsados.sql]}>
-            <Colunas dados={maisUsados.dados} formato="int" tema="receita" gradiente />
+            <Colunas dados={maisUsados.dados.map((d) => ({ ...d, chave: d.label.replace(/^Recurso /, "feature_") }))} formato="int" tema="receita" gradiente recorte={{ universo: "uso", dim: "recurso" }} />
           </Painel>
         </div>
       </div>

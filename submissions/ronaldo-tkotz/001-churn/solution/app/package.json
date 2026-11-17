@@ -31,6 +31,7 @@
     "mcp": "node --import tsx src/mcp/server.ts",
     "mcp-probe": "node --import tsx scripts/mcp-probe.ts",
     "drill-test": "node --import tsx scripts/drill-test.ts",
+    "recorte-test": "node --import tsx scripts/recorte-test.ts",
     "axis-test": "node --import tsx scripts/axis-test.ts",
     "sanitize-test": "node --import tsx scripts/sanitize-check.ts",
     "ds-test": "node --import tsx scripts/ds-test.ts",

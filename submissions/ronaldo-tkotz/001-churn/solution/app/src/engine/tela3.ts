@@ -16,8 +16,8 @@ const opt = (v: unknown): number | null => (v === null || v === undefined ? null
 
 const T06 = `(u.usage_date < s.start_date OR (s.end_date IS NOT NULL AND u.usage_date > s.end_date))`;
 const E13 = `u.usage_id IN (SELECT usage_id FROM feature_usage GROUP BY usage_id HAVING count(*) > 1)`;
-const semAlertaUso = (f: Filtros) => (f.alerta === "sem" ? ` AND NOT (${T06} OR ${E13})` : "");
-const semAlertaTicket = (f: Filtros) => (f.alerta === "sem" ? ` AND NOT (t.submitted_at < a.signup_date)` : "");
+export const semAlertaUso = (f: Filtros) => (f.alerta === "sem" ? ` AND NOT (${T06} OR ${E13})` : "");
+export const semAlertaTicket = (f: Filtros) => (f.alerta === "sem" ? ` AND NOT (t.submitted_at < a.signup_date)` : "");
 
 /** The filtered tickets, as a CTE named `tk`. */
 const ticketsCte = (f: Filtros) => `tk AS (

@@ -31,28 +31,28 @@ export default async function Tela2({ searchParams }: { searchParams: Promise<Re
       <div className="grid h-full grid-cols-[minmax(0,1fr)] grid-rows-[minmax(0,1.5fr)_minmax(0,1fr)] gap-2">
         <div className="grid min-h-0 grid-cols-2 gap-2 lg:grid-cols-4">
           <Painel titulo="Churn por indústria" nota={CONTAS} sql={[setor.sql]}>
-            <Colunas dados={setor.dados} formato="pct" tema="churn" gradiente />
+            <Colunas dados={setor.dados} formato="pct" tema="churn" gradiente recorte={{ universo: "conta", dim: "setor" }} />
           </Painel>
           <Painel titulo="Churn por origem" nota={CONTAS} sql={[origem.sql]}>
-            <Colunas dados={origem.dados} formato="pct" tema="churn" gradiente />
+            <Colunas dados={origem.dados} formato="pct" tema="churn" gradiente recorte={{ universo: "conta", dim: "origem" }} />
           </Painel>
           <Painel titulo="Churn por país" nota={CONTAS} sql={[pais.sql]}>
-            <Colunas dados={pais.dados} formato="pct" tema="churn" gradiente />
+            <Colunas dados={pais.dados} formato="pct" tema="churn" gradiente recorte={{ universo: "conta", dim: "pais" }} />
           </Painel>
           <Painel titulo="Eventos de churn por motivo" nota="motivo declarado no cancelamento" sql={[motivos.sql]}>
-            <Colunas dados={motivos.dados.map((d) => ({ ...d, label: motivoPt(d.label) }))} formato="int" tema="churn" gradiente />
+            <Colunas dados={motivos.dados.map((d) => ({ ...d, chave: d.label, label: motivoPt(d.label) }))} formato="int" tema="churn" gradiente recorte={{ universo: "evento", dim: "motivo" }} />
           </Painel>
         </div>
 
         <div className="grid min-h-0 grid-cols-3 gap-2">
           <Painel titulo="Churn por plano" nota="parte de cada plano nas contas com churn" sql={[plano.sql]}>
-            <Donut dados={plano.dados} formato="int" />
+            <Donut dados={plano.dados} formato="int" recorte={{ universo: "conta", dim: "plano_conta", base: [{ dim: "churn_flag", valor: "Sim" }] }} />
           </Painel>
           <Painel titulo="Churn por tipo de cobrança" nota="parte de cada cobrança nas assinaturas com churn" sql={[cobranca.sql]}>
-            <Donut dados={cobranca.dados} formato="int" />
+            <Donut dados={cobranca.dados} formato="int" recorte={{ universo: "assinatura", dim: "cobranca", base: [{ dim: "churn_assin", valor: "Sim" }] }} />
           </Painel>
           <Painel titulo="Churn no teste × no pago" nota="parte de trial e pagas nas contas com churn" sql={[trial.sql]}>
-            <Donut dados={trial.dados} formato="int" />
+            <Donut dados={trial.dados.map((d) => ({ ...d, chave: d.label === "Trial" ? "Sim" : "Não" }))} formato="int" recorte={{ universo: "conta", dim: "trial_conta", base: [{ dim: "churn_flag", valor: "Sim" }] }} />
           </Painel>
         </div>
       </div>

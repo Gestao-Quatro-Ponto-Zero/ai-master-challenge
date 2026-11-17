@@ -9,6 +9,7 @@ import { DataSourceDialog } from "../dashboard/DataSourceDialog";
 import { FiltrosBar } from "./FiltrosBar";
 import { ChatPanel } from "./ChatPanel";
 import { MarcadosProvider } from "./Marcados";
+import { RecorteProvider } from "./Recorte";
 
 /**
  * The frame every screen shares (D27): side menu with the three screens (D44), the global
@@ -34,6 +35,7 @@ export function TelaShell({
 
   return (
     <MarcadosProvider>
+    <RecorteProvider>
     <div className="flex h-screen overflow-hidden bg-background">
       <div className="hidden lg:block">
         <Sidebar email={email} />
@@ -63,6 +65,7 @@ export function TelaShell({
       <ConnectDialog />
       <DataSourceDialog />
     </div>
+    </RecorteProvider>
     </MarcadosProvider>
   );
 }

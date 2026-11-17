@@ -120,16 +120,16 @@ export default async function Home({ searchParams }: { searchParams: Promise<Rec
 
         <div className="grid min-h-0 grid-cols-2 gap-2 lg:grid-cols-4">
           <Painel titulo="Receita por plano" nota="MRR das assinaturas ativas" sql={[rPlano.sql]}>
-            <Donut dados={rPlano.dados} formato="usd" />
+            <Donut dados={rPlano.dados} formato="usd" recorte={{ universo: "assinatura", dim: "plano_assin" }} />
           </Painel>
           <Painel titulo="Contas pagas × trial" nota="% do total de contas" sql={[pagasTrial.sql]}>
-            <Donut dados={pagasTrial.dados} formato="int" />
+            <Donut dados={pagasTrial.dados.map((d) => ({ ...d, chave: d.label === "Trial" ? "Sim" : "Não" }))} formato="int" recorte={{ universo: "conta", dim: "trial_conta" }} />
           </Painel>
           <Painel titulo="Receita por indústria" nota="MRR das assinaturas ativas, US$" sql={[rSetor.sql]}>
-            <Colunas dados={rSetor.dados} formato="usd" tema="receita" />
+            <Colunas dados={rSetor.dados} formato="usd" tema="receita" recorte={{ universo: "conta", dim: "setor" }} />
           </Painel>
           <Painel titulo="Receita por país" nota="MRR das assinaturas ativas, US$" sql={[rPais.sql]}>
-            <Colunas dados={rPais.dados} formato="usd" tema="receita" />
+            <Colunas dados={rPais.dados} formato="usd" tema="receita" recorte={{ universo: "conta", dim: "pais" }} />
           </Painel>
         </div>
       </div>

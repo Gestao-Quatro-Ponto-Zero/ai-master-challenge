@@ -634,3 +634,28 @@
   - Três montagens reais com 10 gráficos (7 a 8 s cada); a última sem nenhum ajuste de número.
   - Typecheck, lint e todos os testes passam.
   - **Não verificado:** os slides renderizados. Não há LibreOffice nesta máquina, e a exportação do Keynote por script falhou. A estrutura foi conferida pelo XML do .pptx.
+
+## D46 — De painel para ferramenta de trabalho: drill-down, telas próprias com o analista e apresentação pelo contexto (pedido humano; desenho e código da IA)
+
+- **Pedido do humano (2026-11-17, palavras dele):**
+  > "A apresentação precisa ser montada com base nos gráficos que foram marcados, ou ela precisa ser montada com base no chat ocorrido junto ao agente do DeepSeek. Nós também precisamos adicionar o recurso de o usuário poder criar a sua própria tela, pedir para o DeepSeek fazer algumas análises de dados, produzir gráficos e jogar esse gráfico numa tela. O usuário pode pegar esse gráfico, marcar e jogar na apresentação. A apresentação deve ser executada com base no contexto do que está marcado nela, no contexto que o usuário pediu, não uma apresentação genérica [...]. Por mais que seja um desafio, estamos criando uma ferramenta de trabalho. Outro ponto que está faltando também é o drill down. [...] se eu estou na tela 2 e eu vou ver eventos de churn por motivo, eu vejo que recursos estão representando 114 churns. Eu quero clicar em cima desse recurso e poder entender um pouco mais esse dado, poder mergulhar dentro do contexto da informação do dado, eventualmente cruzar outros dados e criar informações novas."
+  > "Eu quero que isso seja colocado no [Vercel] ou no Railway [...]. Tem que estar hospedado em algum lugar." Depois: "Se você já está autenticado no Vercel, então esquece o Railway."
+  > "Lembre de fazer commit e push conforme você for evoluindo. Faça as anotações necessárias também."
+- **Contexto:** o humano deu o pedido e foi dormir; a IA trabalhou sozinha durante a noite. Cada parte abaixo diz o que foi escolha da IA, para o humano revisar de manhã.
+
+### D46.1 — Drill-down (ISC-40)
+- **IA desenhou (`engine/recorte.ts`, `components/telas/Recorte.tsx`, `api/recorte`):**
+  - Clicar numa barra ou fatia abre um painel com aquele recorte. No exemplo do humano: motivo declarado = Recursos → 114 eventos, 104 contas, 19% dos 600 eventos.
+  - **Cinco universos, um por identificador (D23):** eventos de churn, contas, assinaturas, tickets e uso. Cada gráfico das telas diz em qual universo e dimensão ele abre; as rosquinhas de composição já entram com a condição delas (por exemplo, só contas com churn_flag = 1).
+  - **O que o painel mostra:**
+    - O tamanho do recorte e a parte que ele é do total no filtro.
+    - As contas do recorte contra o resto da base (receita, assentos, tickets, satisfação, escalação, resolução, uso, erro, eventos de churn por conta, de `vw_conta`). É aqui que o recorte cruza com outros dados.
+    - O recorte quebrado por cada outro atributo. Clicar numa barra desce mais um nível; o caminho aparece no topo e dá para voltar.
+    - Um cruzamento de dois atributos escolhidos pelo usuário (tabela com intensidade).
+    - Os registros do recorte (até 200).
+    - "Perguntar ao analista sobre este recorte" manda o recorte para o chat do DeepSeek.
+  - Nas contas e assinaturas, as quebras mostram a taxa de churn de cada grupo (D36), com troca para contagem.
+  - Cada bloco é um painel normal: mostra o SQL e pode ser marcado para a apresentação.
+  - **Segurança:** as dimensões são fixas no código; um valor do caminho só entra no SQL depois de conferido contra o banco (a regra dos filtros globais). Valor inventado ou injetado é recusado.
+- **Achado que apareceu no próprio drill:** nos 114 eventos com motivo "Recursos", os comentários dos clientes são "too expensive" (32), "missing features" (27) e "switched to competitor" (23), além de 32 sem comentário. O motivo declarado e o comentário não batem; vale para o relatório.
+- **Como foi verificado:** `recorte-test` (28 checagens: total = SQL independente, cada quebra soma o recorte, segundo nível = barra clicada, valor injetado recusado, cruzamento soma o recorte, filtro global aplicado, tickets e uso). No navegador: Tela 2 (motivo → Recursos → mês), Tela 3 (prioridade, recursos mais usados) e visão geral com filtro de país, sem erro no console.

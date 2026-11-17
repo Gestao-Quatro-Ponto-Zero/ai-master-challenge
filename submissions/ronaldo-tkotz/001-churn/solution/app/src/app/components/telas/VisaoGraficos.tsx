@@ -4,6 +4,7 @@ import { BarChart } from "../charts/BarChart";
 import { PieChart } from "../charts/PieChart";
 import { LineChart } from "../charts/LineChart";
 import { Ajustado } from "./Ajustado";
+import { useAbrirRecorte, type AlvoRecorte } from "./Recorte";
 
 /**
  * Client wrappers for the executive overview. Every chart fills its panel at the panel's real
@@ -44,12 +45,13 @@ function alturaLegenda(nomes: string[], largura: number): number {
 }
 
 /** Horizontal bars, for short lists (under five items). */
-export function Barras({ dados, formato, tema }: { dados: { label: string; value: number }[]; formato: Formato; tema: "receita" | "churn" }) {
+export function Barras({ dados, formato, tema, recorte }: { dados: { label: string; value: number; chave?: string }[]; formato: Formato; tema: "receita" | "churn"; recorte?: AlvoRecorte }) {
+  const abrir = useAbrirRecorte(recorte, dados);
   const color = tema === "receita" ? AZUL : LARANJA;
   return (
     <Ajustado>
       {(w, h) => (
-        <BarChart data={dados.map((d) => ({ ...d, color }))} valueFormat={FORMATOS[formato]} horizontal height={h} viewWidth={w} bare />
+        <BarChart data={dados.map((d) => ({ ...d, color }))} valueFormat={FORMATOS[formato]} horizontal height={h} viewWidth={w} bare onSelect={abrir} />
       )}
     </Ajustado>
   );
@@ -78,12 +80,16 @@ export function Colunas({
   formato,
   tema,
   gradiente = false,
+  recorte,
 }: {
-  dados: { label: string; value: number }[];
+  dados: { label: string; value: number; chave?: string }[];
   formato: Formato;
   tema: "receita" | "churn";
   gradiente?: boolean;
+  /** Clicking a column opens that slice (drill-down, ISC-40). */
+  recorte?: AlvoRecorte;
 }) {
+  const abrir = useAbrirRecorte(recorte, dados);
   const base = tema === "receita" ? AZUL : LARANJA;
   const min = Math.min(...dados.map((d) => d.value));
   const max = Math.max(...dados.map((d) => d.value));
@@ -91,13 +97,14 @@ export function Colunas({
   return (
     <Ajustado>
       {(w, h) => (
-        <BarChart data={dados.map((d) => ({ ...d, color: cor(d.value) }))} valueFormat={COLUNA[formato]} horizontal={false} fit showValues height={h} viewWidth={w} bare />
+        <BarChart data={dados.map((d) => ({ ...d, color: cor(d.value) }))} valueFormat={COLUNA[formato]} horizontal={false} fit showValues height={h} viewWidth={w} bare onSelect={abrir} />
       )}
     </Ajustado>
   );
 }
 
-export function Donut({ dados, formato }: { dados: { label: string; value: number }[]; formato: Formato }) {
+export function Donut({ dados, formato, recorte }: { dados: { label: string; value: number; chave?: string }[]; formato: Formato; recorte?: AlvoRecorte }) {
+  const abrir = useAbrirRecorte(recorte, dados);
   return (
     <Ajustado>
       {(w, h) => (
@@ -105,6 +112,7 @@ export function Donut({ dados, formato }: { dados: { label: string; value: numbe
           slices={dados.map((d, i) => ({ label: d.label, value: d.value, color: DONUT[i % DONUT.length] }))}
           valueFormat={formato === "usd" ? usdCompacto : FORMATOS[formato]}
           donut
+          onSelect={abrir}
           height={h}
           viewWidth={w}
           bare
