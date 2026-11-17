@@ -1020,8 +1020,8 @@ export function Chat({ idleBrief }: { idleBrief?: ReactNode }) {
   const empty = messages.length === 0;
 
   return (
-    <div className="flex h-full flex-col">
-      <div ref={scrollRef} className="flex-1 overflow-y-auto">
+    <div className="flex h-full min-h-0 flex-col">
+      <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
         {empty ? (
           <div className="flex h-full flex-col gap-5 px-0.5 py-0.5">
             {idleBrief ?? (

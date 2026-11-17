@@ -1,6 +1,6 @@
 # Sessão principal — Claude Code (14 a 17/11/2026)
 
-Export da sessão do Claude Code, gerado a partir do arquivo `.jsonl` da própria ferramenta. 91 mensagens do humano, 440 blocos de resposta da IA, 1500 chamadas de ferramenta.
+Export da sessão do Claude Code, gerado a partir do arquivo `.jsonl` da própria ferramenta. 93 mensagens do humano, 450 blocos de resposta da IA, 1538 chamadas de ferramenta.
 
 O que foi mantido: o texto que o humano digitou, o texto das respostas da IA e, em blocos recolhíveis, o nome e a descrição de cada ferramenta chamada. O que foi retirado: as saídas das ferramentas, o raciocínio interno do modelo, os resumos automáticos de compactação, as instruções de sistema e de hooks do ambiente pessoal do autor, o caminho da pasta pessoal (trocado por `~`) e endereços de e-mail.
 
@@ -7336,7 +7336,7 @@ Reproduced: the scroll area grows to 2,609 px inside a 900 px panel, so the end 
 
 The fix works at both sizes and the input box stays visible. Now a type check, then the README copy in `001-churn/`.
 
-<details><summary>ferramentas (7)</summary>
+<details><summary>ferramentas (8)</summary>
 
 - `Bash` — Type-check the app and find the export command
 - `Bash` — Recover the exact export invocation used earlier
@@ -7345,5 +7345,183 @@ The fix works at both sizes and the input box stays visible. Now a type check, t
 - `Bash` — Generate 001-churn README copy and check relative links
 - `Edit` — ~/Projects/07_Lab/G4_Challenges/ai-master-challenge/submissions/ronaldo-tkotz/001-churn/process-log/decisions.md
 - `Bash` — Re-export transcript, stage docs, run pre-commit
+- `Bash` — Update message count, regenerate copy, restage
+
+</details>
+
+**🤖 IA · 2026-11-17 23:15**
+
+Committing and pushing the submission files now. The scroll fix stays out until you test it locally.
+
+<details><summary>ferramentas (2)</summary>
+
+- `Bash` — Commit submission docs and push the branch
+- `Bash` — Verify the live report link, draft removal, README
+
+</details>
+
+**🤖 IA · 2026-11-17 23:15**
+
+Push done, and the report link now works in the browser. Recording the scroll fix in the ISA and the decisions log (not committed yet).
+
+<details><summary>ferramentas (3)</summary>
+
+- `Edit` — ~/Projects/07_Lab/G4_Challenges/ai-master-challenge/submissions/ronaldo-tkotz/001-churn/solution/app/ISA.md
+- `Edit` — ~/Projects/07_Lab/G4_Challenges/ai-master-challenge/submissions/ronaldo-tkotz/001-churn/solution/app/ISA.md
+- `Edit` — ~/Projects/07_Lab/G4_Challenges/ai-master-challenge/submissions/ronaldo-tkotz/001-churn/process-log/decisions.md
+
+</details>
+
+**🤖 IA · 2026-11-17 23:16**
+
+Já está no GitHub: o commit `948ee65` foi para o branch `submission/ronaldo-tkotz`. Os links da submissão funcionam; o PR ainda não foi aberto.
+
+- **Relatório:** o [link de abertura no navegador](https://raw.githack.com/ronaldomt/ai-master-challenge/submission/ronaldo-tkotz/submissions/ronaldo-tkotz/001-churn/solution/relatorio-churn.html) abre como página e já traz a versão nova, com o link do vídeo.
+- **Rascunho antigo:** o `diagnostico-churn.html` saiu do branch. O GitHub agora responde que o arquivo não existe.
+- **README:** está agora em `001-churn/README.md`, com os links ajustados a essa pasta. Também ficou em `submissions/ronaldo-tkotz/README.md`, porque o `CONTRIBUTING.md` exige o arquivo lá. Conferi os 28 links das duas versões e todos funcionam.
+
+**A rolagem do chat não estava resolvida.** Ela tinha ficado adiada para o fechamento do projeto. Reproduzi o problema: com uma resposta longa, a área do texto crescia a 2.609 px dentro de um painel de 900 px, e o final ficava cortado. Faltava `min-h-0` nas caixas entre o painel e a conversa.
+
+Depois da correção, testei com uma resposta de 80 linhas na tela 2 e na visão geral, em 1440×900 e 1280×800. Rolando com a roda do mouse, a última linha aparece acima da caixa de pergunta, e a checagem de tipos passou.
+
+**Teste local:** o servidor em http://127.0.0.1:3100 já roda a correção. Abra o analista, faça uma pergunta de resposta longa e role até o fim. A correção e o registro dela (D55 e ISC-37) ainda não foram commitados. Com o seu ok, eu commito e dou push, o Vercel publica, e eu confiro a versão online antes de abrir o PR.
+
+### 🧑 Humano · 2026-11-17 23:23
+
+Voce violou a instrucao de submissao.
+
+Segue abaixo o esquema:
+
+> [texto colado]
+
+submissions/seu-nome/
+├── README.md            ← Use o template de templates/submission-template.md
+├── solution/            ← Sua solução (análise, código, protótipo)
+│   ├── ...
+│   └── ...
+├── process-log/         ← Evidências de uso de IA
+│   ├── screenshots/
+│   ├── chat-exports/
+│   └── ...
+└── docs/                ← Documentação adicional (se houver)
+</pasted_content id="d7be">
+
+**🤖 IA · 2026-11-17 23:23**
+
+Você tem razão: o esquema pede `solution/` e `process-log/` direto em `submissions/ronaldo-tkotz/`, e eu criei uma subpasta `001-churn/` no meio. Vou levantar o que depende desse caminho antes de mover.
+
+<details><summary>ferramentas (5)</summary>
+
+- `Bash` — Inventory 001-churn references and Vercel linkage
+- `Bash` — Check targets, ignored files, and Vercel root setting
+- `Bash` — Find how the Vercel root directory was set before
+- `Bash` — Search transcript for prior Vercel CLI commands
+- `Bash` — Search transcript for prior Vercel CLI commands
+
+</details>
+
+**🤖 IA · 2026-11-17 23:24**
+
+The Vercel CLI can change the Root Directory (`vercel api ... PATCH`), so the move won't take the site down. First I'll stop the dev server, which runs inside the folder that is moving.
+
+<details><summary>ferramentas (3)</summary>
+
+- `ToolSearch` — select:TaskStop
+- `TaskStop`
+- `Bash` — Move solution and process-log to the submission root
+
+</details>
+
+**🤖 IA · 2026-11-17 23:24**
+
+Moved, and the ignored files (`.env`, `.vercel`, `node_modules`) came along. Now updating the references.
+
+<details><summary>ferramentas (6)</summary>
+
+- `Bash` — Show every live reference to 001-churn
+- `Bash` — Rewrite README paths and show the tree section
+- `Read` — ~/Projects/07_Lab/G4_Challenges/ai-master-challenge/submissions/ronaldo-tkotz/README.md
+- `Edit` — ~/Projects/07_Lab/G4_Challenges/ai-master-challenge/submissions/ronaldo-tkotz/README.md
+- `Bash` — Check README links and deep path assumptions
+- `Bash` — Rerun scripts 21 and 22 from the new location
+
+</details>
+
+**🤖 IA · 2026-11-17 23:24**
+
+Os scripts rodam da pasta nova com saída idêntica. Agora vou religar o servidor local e atualizar o pre-commit e o corpo do PR.
+
+<details><summary>ferramentas (7)</summary>
+
+- `Bash` — Start the dev server from the new app path
+- `Bash` — Update pre-commit, PR body, and probe paths
+- `Bash` — Show the tree in the evidence plan
+- `Read` — ~/Projects/07_Lab/G4_Challenges/docs/PLANO_EVIDENCIAS.md
+- `Read` — ~/Projects/07_Lab/G4_Challenges/tools/pre-commit
+- `Edit` — ~/Projects/07_Lab/G4_Challenges/docs/PLANO_EVIDENCIAS.md
+- `Bash` — Wait for dev server and rerun scroll probe at new path
+
+</details>
+
+**🤖 IA · 2026-11-17 23:25**
+
+O app roda da pasta nova e a rolagem continua OK. Agora vou registrar a D56 e atualizar as contagens.
+
+<details><summary>ferramentas (6)</summary>
+
+- `Edit` — ~/Projects/07_Lab/G4_Challenges/ai-master-challenge/submissions/ronaldo-tkotz/process-log/decisions.md
+- `Bash` — Update decision counts in README and PR body
+- `Read` — ~/Projects/07_Lab/G4_Challenges/ai-master-challenge/submissions/ronaldo-tkotz/README.md
+- `Edit` — ~/Projects/07_Lab/G4_Challenges/ai-master-challenge/submissions/ronaldo-tkotz/README.md
+- `Edit` — ~/Projects/07_Lab/G4_Challenges/ai-master-challenge/submissions/ronaldo-tkotz/solution/app/ISA.md
+- `Bash` — Stage tracked changes and run pre-commit
+
+</details>
+
+**🤖 IA · 2026-11-17 23:26**
+
+Corrigido: a pasta agora segue o esquema, mas ainda não commitei, porque a rolagem do chat espera o seu teste.
+
+- **Estrutura:** `README.md`, `solution/` e `process-log/` ficam direto em `submissions/ronaldo-tkotz/`. A subpasta `001-churn/` e a cópia do README que eu tinha criado nela deixaram de existir. Usei `git mv`, então o histórico de cada arquivo continua.
+
+- **`docs/`:** não criei, porque o esquema diz "se houver" e não temos documentação extra.
+
+- **Referências:** atualizei os caminhos no README, no README do app, no corpo do PR e nas exceções de tamanho do pre-commit. As entradas antigas do diário e as conversas exportadas mantêm os caminhos da época.
+
+- **Verificado:** o script 21 rodou da pasta nova com saída idêntica à salva, os links do README apontam para arquivos que existem, e o app subiu do novo caminho. Os 240 arquivos estão em stage e o pre-commit passou.
+
+- **Registro:** a D56 descreve o erro de estrutura e a correção. O README também lista esse erro e o da rolagem em "Onde a IA errou".
+
+**Teste local:** o servidor em http://127.0.0.1:3100 está rodando da pasta nova, com a correção da rolagem. A prova automática passou nos dois tamanhos de tela.
+
+Quando você der o ok, eu:
+1. mudo o Root Directory do Vercel para `submissions/ronaldo-tkotz/solution/app`;
+2. exporto a conversa de novo e faço o commit e o push;
+3. confiro o site e o link do relatório no ar.
+
+Sem a primeira etapa, o push derrubaria o build do Vercel.
+
+### 🧑 Humano · 2026-11-17 23:29
+
+Tem dois README no Github!!!! Vou remover o extra mal colocado.
+
+Scroll no chat do Veta funcionando no servidor local. Pode comitar e atualizar o Vercel.
+
+<details><summary>ferramentas (1)</summary>
+
+- `Bash` — Check whether the remote branch changed
+
+</details>
+
+**🤖 IA · 2026-11-17 23:30**
+
+Você já apagou o README extra pelo GitHub (`c2d2595`). Vou trazer esse commit para cá e, antes do push, mudar o Root Directory do Vercel.
+
+<details><summary>ferramentas (4)</summary>
+
+- `Bash` — Point the Vercel Root Directory at the new app path
+- `Edit` — ~/Projects/07_Lab/G4_Challenges/ai-master-challenge/submissions/ronaldo-tkotz/process-log/decisions.md
+- `Edit` — ~/Projects/07_Lab/G4_Challenges/ai-master-challenge/submissions/ronaldo-tkotz/process-log/decisions.md
+- `Bash` — Update ISA note and re-export the transcript
 
 </details>

@@ -855,3 +855,30 @@
 - **Humano pediu e a IA redigiu:** uma seção "Como avaliar esta submissão" no topo do README, com a ordem sugerida (relatório, vídeo, ferramenta e process log) e uma tabela que liga cada item pedido no desafio ao arquivo onde ele está.
 - **Humano pediu:** o README também na raiz de `001-churn/`. A IA manteve o da raiz da submissão, porque o `CONTRIBUTING.md` o exige em `submissions/ronaldo-tkotz/README.md`, e gerou uma cópia em `001-churn/README.md` com os links ajustados a essa pasta. Os 28 links relativos das duas versões foram conferidos e apontam para arquivos que existem.
 - **Humano autorizou (17/11):** o push para o GitHub.
+
+## D55 — O painel do analista rola (humano apontou; correção da IA)
+- **Humano lembrou (17/11):** a rolagem da janela do analista (ISC-37, aberta no mesmo dia e adiada por ele). Com uma resposta longa, não dava para rolar o texto.
+- **IA confirmou que não estava resolvido e reproduziu o problema:** uma resposta longa foi injetada no painel, e a roda do mouse foi usada sobre ele. A área de rolagem crescia junto com o texto (2.609 px dentro de um painel de 900 px), e o painel cortava o que passava da tela. A última linha ficava a 2.696 px do topo, fora de vista.
+- **Causa:** faltava `min-h-0` na cadeia de caixas flex entre o painel lateral e a conversa. Sem isso, a caixa cresce com o conteúdo em vez de rolar.
+- **IA corrigiu:** `min-h-0` no `ConversationCanvas` e na área de rolagem do chat, mais `overscroll-contain`, para a rolagem do painel não passar para a página.
+- **Como foi verificado:**
+  - a mesma prova, na tela 2 e na visão geral, em 1440×900 e 1280×800. A área de rolagem passou a ter 655 e 555 px, e a última linha aparece acima da caixa de pergunta;
+  - `tsc --noEmit` sem erros.
+- **Humano testou (17/11):** a rolagem funciona no servidor local. O push publica a correção no Vercel.
+
+## D56 — A pasta segue o esquema do CONTRIBUTING (humano apontou; correção da IA)
+- **Humano apontou (17/11):** a submissão violava o esquema do `CONTRIBUTING.md`, que pede `README.md`, `solution/`, `process-log/` e `docs/` direto em `submissions/<nome>/`.
+- **IA errou:** a IA tinha posto tudo numa subpasta `001-churn/`, herdada do plano inicial de entregar os quatro desafios (`docs/PLANO_EVIDENCIAS.md`, fora do repositório). Com um desafio só, a subpasta não tinha razão de existir. Na D54, ela ainda criou uma cópia do README dentro dela, em vez de questionar a estrutura.
+- **IA corrigiu:**
+  - `git mv` de `001-churn/solution` para `solution/` e de `001-churn/process-log` para `process-log/`, preservando o histórico de cada arquivo;
+  - a cópia `001-churn/README.md` foi apagada, e a pasta deixou de existir;
+  - os caminhos foram atualizados no README, no README do app, no corpo do PR, nas exceções de tamanho do pre-commit e no Root Directory do projeto no Vercel (`submissions/ronaldo-tkotz/solution/app`).
+
+  As entradas antigas deste diário e as conversas exportadas mantêm os caminhos da época.
+- **Como foi verificado:**
+  - os caminhos relativos internos não mudaram de profundidade (`solution/app/../../process-log` continua apontando para o diário);
+  - o script 21 rodou da pasta nova com saída idêntica à salva, e o 22 gerou a mesma página;
+  - os links relativos do README apontam para arquivos que existem;
+  - o app subiu da pasta nova, e a prova da rolagem (D55) passou de novo nos dois tamanhos de tela.
+- **Humano fez:** apagou pelo GitHub o README extra que tinha ficado em `001-churn/` (commit `c2d2595`). A IA trouxe esse commit antes do push.
+- **IA mudou no Vercel:** o Root Directory do projeto `ravenstack-churn` passou a ser `submissions/ronaldo-tkotz/solution/app`, antes do push, para o build pelo GitHub achar o app no lugar novo.

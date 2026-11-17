@@ -47,7 +47,7 @@ so anyone can open the material the analysis was built on, and it ships inside e
 
 The Vercel project is linked to this GitHub repository (D48): every push to `submission/ronaldo-tkotz`
 builds and publishes production from this folder (Root Directory
-`submissions/ronaldo-tkotz/001-churn/solution/app`); other branches get preview deploys.
+`submissions/ronaldo-tkotz/solution/app`); other branches get preview deploys.
 
 On Vercel the app DB (logins, conversations, marks, screens, decks) is an AES-GCM-encrypted
 SQLite snapshot in a private Vercel Blob (`src/engine/estado.ts`, D46.4).

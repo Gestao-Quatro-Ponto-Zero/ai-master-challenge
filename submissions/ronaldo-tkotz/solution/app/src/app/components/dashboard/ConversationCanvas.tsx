@@ -14,7 +14,8 @@ function newChat(): void {
  */
 export function ConversationCanvas({ idleBrief }: { idleBrief: ReactNode }) {
   return (
-    <section className="flex min-w-0 flex-1 flex-col rounded-xl border border-edge bg-panel">
+    // min-h-0 down the flex chain: without it the panel grows with a long answer instead of scrolling (ISC-37).
+    <section className="flex min-h-0 min-w-0 flex-1 flex-col rounded-xl border border-edge bg-panel">
       <div className="flex items-center gap-2 border-b border-edge px-4 py-2.5">
         <span className="h-1.5 w-1.5 rounded-full bg-accent" />
         <h2 className="text-[13px] font-semibold text-foreground">Analista</h2>
