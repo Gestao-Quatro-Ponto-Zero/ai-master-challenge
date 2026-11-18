@@ -2,9 +2,9 @@
 
 Gerado por `exportar.py` a partir do arquivo de sessão do Claude Code. Horários de Brasília.
 
-- Mensagens minhas: 78
-- Respostas da IA em texto: 137
-- Chamadas de ferramenta: 747
+- Mensagens minhas: 85
+- Respostas da IA em texto: 145
+- Chamadas de ferramenta: 780
 - Relatórios de subagentes: 14
 
 O que ficou de fora e por quê está no cabeçalho do script.
@@ -5702,9 +5702,255 @@ As suas pendências continuam as mesmas: ler a conversa exportada, tirar os prin
 
 Sim, pode
 
-<details><summary>2 chamada(s) de ferramenta</summary>
+<details><summary>7 chamada(s) de ferramenta</summary>
 
 - `update_plan`
 - `Bash`: Conferir estado do repositório, regras de ignorados e o que o README diz sobre commits
+- `export_transcript`
+- `Bash`: Listar os arquivos da submissão por pasta para montar os grupos de commit
+- `Bash`: Regenerar a conversa exportada e conferir que não há e-mail, chave nem nome de usuário
+- `Write`: D:\Case G4\work\commits.sh
+- `Bash`: Conferir branches, upstream e hooks antes de commitar
+
+</details>
+
+**Claude · 18/11 19:09**
+
+Tudo conferido (branch certa, nada preparado, sem hooks, conversa exportada regenerada). Fazendo os 7 commits agora.
+
+<details><summary>5 chamada(s) de ferramenta</summary>
+
+- `Bash`: Criar os 7 commits locais por componente
+- `update_plan`
+- `Bash`: Conferir os commits e testar um clone limpo da branch
+- `Bash`: Rodar os testes da priorização no clone limpo, como o README manda
+- `wrap_up`: 2 ações no navegador
+
+</details>
+
+**Claude · 18/11 19:11**
+
+Os 7 commits estão feitos, só no seu computador, na branch `submission/gustavo-civita`. Nada foi enviado ao GitHub.
+
+| # | Commit | Arquivos |
+|---|---|---|
+| 1 | `feat(003)`: dados do CRM e priorização preço × chance | 8 |
+| 2 | `test(003)`: teste histórico em 24 semanas e testes da priorização | 2 |
+| 3 | `build(003)`: gerador dos dados da tela | 2 |
+| 4 | `feat(003)`: fluxo de contato e retorno, com testes | 2 |
+| 5 | `feat(003)`: interface do vendedor, do gerente e de operações de receita | 11 |
+| 6 | `docs(003)`: como rodar, análises de apoio, exemplos e plano de adoção | 56 |
+| 7 | `docs(003)`: process log, prints e README da submissão | 42 |
+
+## O que conferi depois
+
+- **Conteúdo:** 123 arquivos, nenhum fora de `submissions/gustavo-civita/`, nenhum `__pycache__` nem temporário.
+- **Clone limpo da branch:** os 16 testes do fluxo e os 19 da priorização passaram, e o `data.js` regerado saiu igual ao commitado.
+- **Conversa exportada:** regenerada antes do último commit, vai até a sua mensagem das 19h08. Sem e-mail, chave ou nome de usuário do Windows.
+
+## O que você precisa saber
+
+- **Os 7 commits têm o horário de agora.** Não simulei datas antigas. O histórico mostra a entrega organizada por componente, e a evolução real está no log de decisões e na conversa exportada.
+- **Autor dos commits:** nome "Gustavo" e o seu Gmail, que é o que está configurado no Git. O e-mail fica público quando a branch for enviada. Para trocar pelo noreply eu preciso do seu usuário do GitHub; dá para ajustar o nome para "Gustavo Civita" na mesma passada.
+- **O README foi commitado com dois campos em branco** (LinkedIn e data de envio). Quando você preencher, entra num commit novo.
+
+## O que falta para abrir o PR
+
+1. **Fork:** crie o fork do repositório do G4 na sua conta e me passe o endereço. O clone ainda aponta para o repositório do G4, onde você não tem permissão de envio.
+2. **Prints da conversa com a IA** (6 a 10), em `process-log/screenshots/conversa/`.
+3. **Ler a conversa exportada** antes de publicar: ela traz o nome antigo da pasta e a pesquisa sobre o feedback dos outros candidatos.
+4. **LinkedIn e data de envio** no README.
+
+## Gustavo · 18/11 19:19
+
+Troco o Gmail dos commits pelo e-mail noreply do GitHub antes do envio?
+-> oq a g4 solicita que tem que ser feito?
+
+meu email é: [e-mail]
+
+<details><summary>3 chamada(s) de ferramenta</summary>
+
+- `Bash`: Ler o que o repositório do G4 pede sobre identificação, e-mail e envio
+- `Bash`: Ler as regras de envio do G4 na íntegra
+- `wrap_up`: 2 ações no navegador
+
+</details>
+
+**Claude · 18/11 19:20**
+
+O G4 não pede nada sobre o e-mail dos commits. Li de novo o `CONTRIBUTING.md`, o `submission-guide.md` e o template: nenhum deles fala de e-mail nem de autor de commit.
+
+## O que o G4 pede para o envio
+
+| Exigência do G4 | Situação |
+|---|---|
+| Fork do repositório | **Falta** (depende de você) |
+| Branch `submission/seu-nome` | Feito: `submission/gustavo-civita` |
+| Pasta `submissions/seu-nome/` com `README.md`, `solution/`, `process-log/` e `docs/` | Feito |
+| README no formato do template, com nome, LinkedIn e challenge | Feito, **menos o LinkedIn** |
+| Process log com evidências de uso de IA | Feito: decisões, conversa exportada e prints das telas. **Faltam os prints da conversa** |
+| Instruções de como rodar, se houver código | Feito |
+| Nenhum arquivo alterado fora da sua pasta | Conferido: 0 arquivos fora |
+| Pull Request para `main` com o título `[Submission] Gustavo Civita — Challenge 003` | **Falta** (depois do fork) |
+| Um PR por pessoa; atualizações vão por push na mesma branch | Anotado |
+
+O G4 identifica você pelo nome e pelo LinkedIn no README e pela conta do GitHub que abre o PR.
+
+## Sobre o e-mail
+
+O Gmail que você informou é o mesmo que já está configurado no Git, então os commits já estão com ele. Recomendo manter: é o caminho mais simples e o G4 não se importa com isso. O único efeito é que o endereço fica visível publicamente no histórico. A opção noreply esconde o endereço, mas para montá-la eu preciso do seu usuário do GitHub.
+
+O que vale ajustar é o nome: os commits saíram como "Gustavo", e o título do PR vai dizer "Gustavo Civita". Como nada foi enviado ainda, reescrever o autor dos 7 commits é seguro.
+
+## Gustavo · 18/11 19:20
+
+Meu linkedln é: https://www.linkedin.com/in/gustavo-civita-aibuilder/
+
+<details><summary>6 chamada(s) de ferramenta</summary>
+
+- `update_plan`
+- `Read`: D:\Case G4\repo\submissions\gustavo-civita\README.md
+- `Edit`: D:\Case G4\repo\submissions\gustavo-civita\README.md
+- `Bash`: Registrar o LinkedIn num commit novo e conferir o que ainda está em branco
+- `update_plan`
+- `wrap_up`: 2 ações no navegador
+
+</details>
+
+**Claude · 18/11 19:21**
+
+O LinkedIn está no README da submissão e entrou num commit novo (`c84cd1a`). São 8 commits locais agora, e nada foi enviado ao GitHub.
+
+No README só falta a data de envio, que eu preencho no dia em que o PR for aberto.
+
+O que ainda depende de você para abrir o PR:
+
+1. **Fork:** crie o fork do repositório do G4 na sua conta do GitHub e me passe o endereço ou o seu usuário.
+2. **Prints da conversa com a IA** (6 a 10), em `process-log/screenshots/conversa/`. É o item que mais travou outros candidatos.
+3. **Ler a conversa exportada** antes de publicar, em `process-log/chat-exports/sessao-claude-code.md`.
+
+## Gustavo · 18/11 19:21
+
+Sim, ajustar
+
+<details><summary>3 chamada(s) de ferramenta</summary>
+
+- `update_plan`
+- `Bash`: Reescrever o autor dos commits locais para Gustavo Civita e conferir que o conteúdo não mudou
+- `wrap_up`
+
+</details>
+
+**Claude · 18/11 19:22**
+
+Os 8 commits locais agora têm o autor "Gustavo Civita", com o mesmo Gmail. O conteúdo ficou idêntico ao de antes e os horários originais foram mantidos.
+
+Também deixei o nome configurado neste repositório, então os próximos commits já saem como "Gustavo Civita". A configuração global do Git no seu computador não foi alterada.
+
+Nada foi enviado ao GitHub. Para abrir o PR ainda falta:
+
+1. **Fork:** crie o fork do repositório do G4 na sua conta e me passe o endereço ou o seu usuário do GitHub.
+2. **Prints da conversa com a IA** (6 a 10), em `process-log/screenshots/conversa/`.
+3. **Ler a conversa exportada** antes de publicar, em `process-log/chat-exports/sessao-claude-code.md`.
+4. **Data de envio** no README, que eu preencho no dia do PR.
+
+## Gustavo · 18/11 19:22
+
+Fork: crie o fork do repositório do G4 na sua conta e me passe o endereço ou o seu usuário do GitHub. -> envie o passo a passo
+
+**Claude · 18/11 19:22**
+
+O fork é feito no site do GitHub, em menos de um minuto:
+
+1. Entre em [github.com](https://github.com) e faça login na sua conta. Se ainda não tiver conta, crie uma em "Sign up".
+2. Abra o repositório do G4: https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge
+3. No canto superior direito da página, clique no botão **Fork**.
+4. Na tela "Create a new fork":
+   - em **Owner**, escolha a sua conta;
+   - deixe o nome do repositório como `ai-master-challenge`;
+   - deixe marcado "Copy the `main` branch only";
+   - clique em **Create fork**.
+5. Em alguns segundos o GitHub abre a sua cópia, num endereço do tipo `https://github.com/SEU-USUARIO/ai-master-challenge`.
+6. Copie esse endereço da barra do navegador e cole aqui.
+
+Com o endereço em mãos, eu aponto o repositório local para o seu fork e deixo o envio da branch pronto. No envio, o Git abre uma janela pedindo o seu login do GitHub; esse login é você quem faz, eu não digito senha.
+
+O Pull Request é aberto depois, pelo site, a partir do seu fork. Eu te passo o título e o texto prontos quando chegarmos lá.
+
+## Gustavo · 18/11 19:23
+
+https://github.com/tivita912/ai-master-challenge.git
+
+<details><summary>3 chamada(s) de ferramenta</summary>
+
+- `update_plan`
+- `Bash`: Apontar o repositório para o fork e conferir que ele responde
+- `wrap_up`: 2 ações no navegador
+
+</details>
+
+**Claude · 18/11 19:23**
+
+O fork está certo e o repositório local já aponta para ele. Nada foi enviado ainda.
+
+- **Fork:** respondeu e está idêntico ao `main` do G4.
+- **Endereços:** `origin` agora é o seu fork; o repositório do G4 ficou como `upstream`, só para leitura.
+- **Pronto para enviar:** os 8 commits da branch `submission/gustavo-civita`.
+
+Enviar agora tem uma vantagem: você vê no GitHub como o README, os prints e as pastas aparecem antes de abrir o PR, e já testamos o seu login. O PR continua sendo um passo separado, depois.
+
+O que muda com o envio é que o fork é público. A partir dele, qualquer pessoa pode ver a conversa exportada (`process-log/chat-exports/sessao-claude-code.md`). Ela não tem e-mail, chave nem o nome do seu usuário do Windows, mas traz o nome antigo da pasta, a pesquisa sobre o feedback dos outros candidatos e as notas dos avaliadores simulados. Se quiser ler antes, a hora é agora.
+
+No envio, o Git deve abrir uma janela pedindo o login do GitHub; essa parte é sua.
+
+## Gustavo · 18/11 19:25
+
+Hoje é 18/11/2026
+e realmente precisa das prints das conversas? nao basta somente tudo que conversamos aqui? e voce ja realizou isso?
+
+<details><summary>6 chamada(s) de ferramenta</summary>
+
+- `Read`: C:\Users\[usuario]\.claude\projects\D--Case-G4\memory\g4-ai-master-challenge-intel.md
+- `update_plan`
+- `Bash`: Ver o que o README promete sobre prints da conversa e a linha da data
+- `Edit`: D:\Case G4\repo\submissions\gustavo-civita\README.md
+- `Bash`: Registrar a data de envio num commit e conferir que não sobrou campo em branco
+- `wrap_up`: 2 ações no navegador
+
+</details>
+
+**Claude · 18/11 19:25**
+
+Não, os prints da conversa não são obrigatórios, e eu fui mais duro nisso do que a regra pede.
+
+**O que o G4 escreve.** O guia de submissão lista seis formatos de process log e diz "escolha um ou combine": prints das conversas, gravação de tela, conversa exportada, narrativa escrita, histórico de commits e notebook comentado. Sem nenhum deles, a submissão é desclassificada.
+
+**O que já está no repositório:**
+
+| Formato aceito pelo G4 | Temos? |
+|---|---|
+| Conversa exportada | Sim: a conversa inteira, com horários, as suas mensagens como você escreveu e os relatórios dos subagentes |
+| Narrativa escrita | Sim: as 42 decisões, com as suas falas e onde você contrariou a IA |
+| Histórico de commits | Sim: 9 commits por componente |
+| Prints das conversas | Não |
+
+Então "tudo que conversamos aqui" já está lá, pela conversa exportada. Isso eu fiz. O que eu não fiz, e não consigo fazer, são os prints: eu não enxergo a sua tela, só você consegue fotografar a janela do aplicativo.
+
+**Por que eu insisti.** No levantamento do feedback dado a outros candidatos, a falta de prints ou de conversa exportada apareceu como motivo de bloqueio. Pela regra escrita, o problema deles era não ter nenhuma evidência bruta da conversa, e nós temos a exportação completa. Não tenho como garantir como cada avaliador lê isso, porque o critério de nota é interno do G4.
+
+**Minha recomendação:** os prints são um reforço, não um requisito. Eles servem para o avaliador ver a conversa real em dez segundos, sem abrir um arquivo de 5.700 linhas. Se quiser enviar hoje, pode ir sem. Se tiver cinco minutos, seis prints com `Win + Shift + S` já ajudam, e eu indico quais momentos valem mais.
+
+**Data de envio:** preenchi 18/11/2026 no README e registrei num commit. Não sobrou campo em branco.
+
+Antes de enviar, eu gero a conversa exportada mais uma vez, porque a versão commitada para nas 19h08.
+
+## Gustavo · 18/11 19:26
+
+Sim, enviar
+
+<details><summary>2 chamada(s) de ferramenta</summary>
+
+- `update_plan`
+- `export_transcript`
 
 </details>
