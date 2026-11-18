@@ -3,7 +3,7 @@
 ## Sobre mim
 
 - **Nome:** Gustavo Civita
-- **LinkedIn:** _[PREENCHER]_
+- **LinkedIn:** https://www.linkedin.com/in/gustavo-civita-aibuilder/
 - **Challenge escolhido:** 003 — Lead Scorer
 
 ---
