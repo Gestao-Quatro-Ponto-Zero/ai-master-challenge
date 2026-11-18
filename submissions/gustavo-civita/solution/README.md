@@ -5,6 +5,9 @@ gastar o tempo. Roda no navegador, a partir dos quatro CSVs do CRM.
 
 ## Como rodar
 
+**Demo no ar:** <https://case-g4-gustavo-c.vercel.app/>. Link direto para uma
+vendedora: <https://case-g4-gustavo-c.vercel.app/?vendedor=Kary%20Hendrixson>.
+
 **Sem instalar nada:** abra `solution/app/index.html` com dois cliques. A
 ferramenta roda inteira no navegador, sem servidor, sem banco e sem etapa de
 build: `index.html`, `style.css`, `app.js`, `workflow.js` e os dados em
@@ -45,9 +48,13 @@ A tela se adapta de celular a monitor largo e tem modo escuro (botão no canto
 da barra lateral; segue a preferência do sistema na primeira vez). Para abrir já
 num tema: `?tema=escuro` ou `?tema=claro`.
 
-**Publicar uma demonstração:** a pasta `app/` é um site estático, sem etapa de
-build. Em qualquer hospedagem de arquivos estáticos (Vercel, Netlify, GitHub
-Pages) basta apontar a raiz do projeto para `submissions/gustavo-civita/solution/app`.
+**Como a demo foi publicada:** a pasta `app/` é um site estático, sem etapa de
+build. A demo é uma cópia dela, sem alteração, num repositório próprio
+(<https://github.com/tivita912/case-g4>), publicado na Vercel sem configuração.
+Em qualquer hospedagem de arquivos estáticos (Vercel, Netlify, GitHub Pages)
+basta apontar a raiz do projeto para `submissions/gustavo-civita/solution/app`.
+A demo é pública e sem senha; o que cada visitante registra fica só no
+navegador dele.
 
 ## O que a ferramenta faz
 

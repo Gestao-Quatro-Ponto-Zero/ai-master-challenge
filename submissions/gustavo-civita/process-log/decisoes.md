@@ -7,7 +7,8 @@ estão transcritas como escrevi, erros de digitação incluídos, e podem ser
 conferidas na conversa exportada em `chat-exports/`.
 
 Para quem tem pouco tempo: as decisões de **lógica** são 1 a 8, 10, 14, 16, 18,
-20, 21, 24, 25, 31, 37, 39, 40, 41 e 42. As demais são de interface.
+20, 21, 24, 25, 31, 37, 39, 40, 41 e 42. As demais são de interface e de
+entrega.
 
 ---
 
@@ -1519,3 +1520,37 @@ priorização, os 16 do fluxo, o `data.js` regerado idêntico ao entregue e as
 quatro telas abrindo por `file://` sem erro. Os prints da tela de Hoje, de
 celular, de tablet e de "Como funciona" foram refeitos, e os exemplos em
 `docs/exemplos/` passaram a mostrar as duas partes.
+
+---
+
+## Decisão 43 — Envio e demo pública
+
+**Commits.** Nada foi commitado enquanto a solução mudava: os commits
+dependiam da aprovação do Gustavo. Com o "Sim, pode" dele, a IA fez os commits por
+componente (dados e priorização, teste histórico, gerador dos dados, fluxo de
+contato, interface, documentação, process log), todos com o horário real de
+18/11. O histórico de commits mostra a organização da entrega; a evolução de
+verdade está neste registro e na conversa exportada.
+
+**Prints da conversa.** A IA vinha tratando prints da conversa como
+obrigatórios. O Gustavo perguntou:
+
+> "e realmente precisa das prints das conversas? nao basta somente tudo que
+> conversamos aqui?"
+
+A IA releu o guia do G4: ele aceita seis formatos de process log e diz
+"escolha um ou combine". A conversa exportada, este registro e o histórico de
+commits já cobrem três. A IA corrigiu a própria orientação: prints são reforço,
+não requisito. A submissão foi enviada sem eles.
+
+**Demo.** Pedido do Gustavo:
+
+> "Acho legal colocar uma demo no vercel, suba para este repositorio"
+
+A pasta `solution/app` foi copiada, sem alteração, para um repositório próprio
+(o do desafio não pode ter arquivos fora da pasta da submissão), e o Gustavo
+publicou na Vercel sem configuração: <https://case-g4-gustavo-c.vercel.app/>.
+A IA abriu a demo publicada e conferiu a tela de Hoje de uma vendedora e o
+Painel de operações de receita, sem erro no console. A demo é pública e sem
+senha; a tela de entrada já dizia que é projeto de candidato, não produto
+oficial do G4 (ressalva da Decisão 30), e os dados são fictícios.

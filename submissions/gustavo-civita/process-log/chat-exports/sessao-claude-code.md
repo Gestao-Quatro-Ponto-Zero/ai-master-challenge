@@ -2,9 +2,9 @@
 
 Gerado por `exportar.py` a partir do arquivo de sessão do Claude Code. Horários de Brasília.
 
-- Mensagens minhas: 85
-- Respostas da IA em texto: 145
-- Chamadas de ferramenta: 780
+- Mensagens minhas: 87
+- Respostas da IA em texto: 148
+- Chamadas de ferramenta: 815
 - Relatórios de subagentes: 14
 
 O que ficou de fora e por quê está no cabeçalho do script.
@@ -5948,9 +5948,136 @@ Antes de enviar, eu gero a conversa exportada mais uma vez, porque a versão com
 
 Sim, enviar
 
-<details><summary>2 chamada(s) de ferramenta</summary>
+<details><summary>7 chamada(s) de ferramenta</summary>
 
 - `update_plan`
+- `export_transcript`
+- `Bash`: Regenerar a conversa exportada, conferir dados pessoais e commitar
+- `Bash`: Ver onde a palavra gmail aparece na conversa exportada
+- `Bash`: Enviar a branch da submissão para o fork no GitHub
+- `update_plan`
+- `Bash`: Conferir que o GitHub recebeu a branch e se o gh está disponível
+
+</details>
+
+**Claude · 18/11 19:27**
+
+A branch chegou ao GitHub (o código remoto é idêntico ao local). Faço uma última conferência de como a pasta aparece no site e te passo o link do PR.
+
+<details><summary>2 chamada(s) de ferramenta</summary>
+
+- `browser_batch`: 2 ações no navegador
+- `wrap_up`: 2 ações no navegador
+
+</details>
+
+**Claude · 18/11 19:27**
+
+A branch está no seu fork do GitHub. Falta só abrir o Pull Request, que é um passo seu.
+
+## O que foi enviado
+
+- **Onde:** [tivita912/ai-master-challenge, branch `submission/gustavo-civita`](https://github.com/tivita912/ai-master-challenge/tree/submission/gustavo-civita/submissions/gustavo-civita)
+- **Conteúdo:** 10 commits, 123 arquivos, nenhum fora de `submissions/gustavo-civita/`.
+- **Conferido:** o código no GitHub é idêntico ao local, e o README aparece certo no site, com nome, LinkedIn e data.
+- **Conversa exportada:** regenerada antes do envio, vai até as 19h26. Conferi de novo: sem endereço de e-mail, chave ou usuário do Windows.
+
+## Como abrir o Pull Request
+
+1. Abra este link, que já vem com a origem, o destino e o título preenchidos:
+   [Abrir o PR no repositório do G4](https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/compare/main...tivita912:ai-master-challenge:submission/gustavo-civita?expand=1&title=%5BSubmission%5D%20Gustavo%20Civita%20%E2%80%94%20Challenge%20003)
+2. Confira o título: `[Submission] Gustavo Civita — Challenge 003`
+3. Cole a descrição abaixo no campo de texto.
+4. Clique em **Create pull request**.
+
+```markdown
+## Submissão — Challenge 003 (Lead Scorer)
+
+Ferramenta de priorização de pipeline que roda inteira no navegador: o vendedor vê a meta do dia na ordem em que deve trabalhar e registra cada contato; o gerente e operações de receita acompanham o pipeline e a atividade do time.
+
+**Como rodar:** abrir `submissions/gustavo-civita/solution/app/index.html` com dois cliques. Não precisa de servidor nem de instalação.
+
+**O que o teste histórico mostrou (24 semanas de 2017):**
+- Nenhuma das 801 negociações tiradas da lista de ligação foi ganha depois.
+- A ordem preço × chance rende de 14% a 20% mais do que ordenar as mesmas negociações só pelo preço.
+- Contra uma boa regra simples, a ferramenta ganha no 3º trimestre (+9%) e empata no 4º. Está declarado no README.
+
+**Onde está cada coisa:**
+- `README.md`: resumo, abordagem, resultados, limitações e process log
+- `solution/`: código, testes automatizados (19 + 16) e instruções
+- `process-log/`: 42 decisões com as minhas falas, conversa exportada e prints
+- `docs/`: análises de apoio, exemplos de saída e plano de adoção
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+```
+
+Se o GitHub pedir login ao abrir o link, entre com a conta `tivita912`. Depois de aberto, o PR aparece na lista do repositório do G4, e qualquer ajuste futuro vai por novo envio na mesma branch.
+
+## Gustavo · 18/11 19:30
+
+Acho legal colocar uma demo no vercel, suba para este repositorio: https://github.com/tivita912/case-g4.git
+
+<details><summary>11 chamada(s) de ferramenta</summary>
+
+- `update_plan`
+- `Bash`: Ver se o repositório case-g4 está vazio e o que compõe o app
+- `Bash`: Criar a pasta da demo com uma cópia exata do app
+- `update_plan`
+- `Write`: D:\Case G4\demo\README.md
+- `Bash`: Criar o repositório local da demo e fazer o primeiro commit
+- `Bash`: Abrir a demo localmente e conferir que a tela de Hoje carrega
+- `update_plan`
+- `Bash`: Enviar a demo para o repositório case-g4 e conferir que chegou
+- `update_plan`
+- `wrap_up`: 2 ações no navegador
+
+</details>
+
+**Claude · 18/11 19:31**
+
+A demo está no repositório [tivita912/case-g4](https://github.com/tivita912/case-g4), pronta para a Vercel. A publicação em si depende do seu login na Vercel.
+
+## O que subi
+
+- **A tela do app na raiz do repositório:** uma cópia exata de `solution/app` da submissão, com 13 arquivos. Como é só HTML, CSS e JavaScript, a Vercel publica sem configuração.
+- **Um README de apresentação:** o que é, como usar, de onde vêm os dados e o link para a submissão completa. Ele diz que é um trabalho de candidato, não um produto oficial do G4, já que a tela mostra o logo.
+- **Conferido:** abri a cópia localmente e a tela de Hoje carregou; o código no GitHub é idêntico ao local.
+
+## Como publicar na Vercel
+
+1. Entre em [vercel.com](https://vercel.com) e clique em **Sign Up** (ou **Log In**), escolhendo **Continue with GitHub** com a conta `tivita912`.
+2. No painel, clique em **Add New…** e depois em **Project**.
+3. Na lista "Import Git Repository", ache `case-g4` e clique em **Import**. Se ele não aparecer, clique em "Adjust GitHub App Permissions" e libere esse repositório.
+4. Na tela de configuração, não mude nada: "Framework Preset" fica em **Other** e o resto em branco.
+5. Clique em **Deploy** e espere cerca de meio minuto.
+6. A Vercel mostra o endereço da demo, algo como `case-g4.vercel.app`. Copie e cole aqui.
+
+Com o endereço, eu coloco o link da demo no README da submissão e envio para o seu fork. Se o Pull Request já estiver aberto, ele se atualiza sozinho.
+
+A demo é pública: qualquer pessoa com o link entra em qualquer perfil, sem senha. Os dados são do dataset público, com empresas fictícias, e o que cada visitante registrar fica só no navegador dele.
+
+## Gustavo · 18/11 19:33
+
+Sim! https://case-g4-gustavo-c.vercel.app/
+
+<details><summary>17 chamada(s) de ferramenta</summary>
+
+- `update_plan`
+- `browser_batch`: 8 ações no navegador
+- `Grep`: Vercel|vercel|demo
+- `Read`: D:\Case G4\repo\submissions\gustavo-civita\process-log\decisoes.md
+- `Read`: D:\Case G4\repo\submissions\gustavo-civita\solution\README.md
+- `Grep`: ^## Solução|Abra `solution/app/index.html`|^## Executive Summary
+- `browser_batch`: 2 ações no navegador
+- `Edit`: D:\Case G4\repo\submissions\gustavo-civita\README.md
+- `Edit`: D:\Case G4\repo\submissions\gustavo-civita\solution\README.md
+- `Edit`: D:\Case G4\repo\submissions\gustavo-civita\solution\README.md
+- `Edit`: D:\Case G4\demo\README.md
+- `Edit`: D:\Case G4\repo\submissions\gustavo-civita\process-log\decisoes.md
+- `Write`: D:\Case G4\work\decisao43.py
+- `Bash`: Conferir em qual decisão está a ressalva do logo e se o aviso existe na tela de entrada
+- `Edit`: D:\Case G4\work\decisao43.py
+- `Bash`: Acrescentar a Decisão 43 ao log e ver o que mudou
 - `export_transcript`
 
 </details>

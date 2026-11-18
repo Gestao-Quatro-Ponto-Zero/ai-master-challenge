@@ -30,7 +30,10 @@ vendas; para isso proponho um piloto de um trimestre, descrito em
 Como rodar, a lógica completa e as limitações estão em
 [solution/README.md](solution/README.md). Em resumo:
 
-Abra `solution/app/index.html` com dois cliques: a ferramenta roda inteira no
+**Demo no ar:** <https://case-g4-gustavo-c.vercel.app/>. Escolha um perfil e um
+nome; não há senha. É a mesma tela desta pasta, publicada como site estático.
+
+Para rodar na sua máquina, abra `solution/app/index.html` com dois cliques: a ferramenta roda inteira no
 navegador, sem servidor e sem instalar nada. Prints em
 [process-log/screenshots/](process-log/screenshots/README.md) e exemplos de saída
 em [docs/exemplos/](docs/exemplos/README.md).
@@ -252,6 +255,6 @@ ganhava em 7 de 10.
 entre 11h40 e 13h15 de 18/11, foi a IA executando o QA e as correções que eu
 tinha pedido no fim do primeiro bloco (decisão 41). O terceiro, a partir das
 18h48 de 18/11, foi a separação da fila de Hoje (decisão 42), com novos testes
-e prints. Os horários de cada mensagem estão na conversa exportada.
+e prints, e depois os commits, o envio e a demo (decisão 43). Os horários de cada mensagem estão na conversa exportada.
 
 _Submissão enviada em: 18/11/2026_
