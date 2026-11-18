@@ -1,0 +1,50 @@
+ratio: media 0.9965 dp 0.0989 n 4238 | min 0.657 max 1.342
+normalidade (D'Agostino): NormaltestResult(statistic=np.float64(0.3572116701857339), pvalue=np.float64(0.8364355279609631))  skew -0.008 kurt -0.045
+              fator  niveis       F  p_anova  p_kruskal    eta2  min_media  max_media       q
+0       sales_agent      30  0.9207   0.5878     0.4665  0.0063     0.9752     1.0141  0.8737
+1           account      85  0.9038   0.7218     0.6019  0.0180     0.9560     1.0485  0.8737
+2           product       7  2.6653   0.0139     0.0519  0.0038     0.9855     1.0035  0.1531
+3            sector      10  0.6076   0.7916     0.6167  0.0013     0.9905     1.0018  0.8737
+4           manager       6  1.1407   0.3363     0.2506  0.0013     0.9907     1.0012  0.6619
+5   regional_office       3  1.5137   0.2202     0.2042  0.0007     0.9930     0.9992  0.6619
+6                cm      10  0.6045   0.7943     0.8599  0.0013     0.9902     1.0012  0.8737
+7                mq       3  0.0065   0.9935     0.8817  0.0000     0.9962     0.9966  0.9935
+8            size_b       4  1.2324   0.2962     0.3813  0.0009     0.9924     1.0004  0.6619
+9            is_sub       2  3.7890   0.0517     0.0509  0.0009     0.9951     1.0029  0.2841
+10  office_location      15  1.0900   0.3611     0.4751  0.0036     0.9820     1.0485  0.6619
+spearman ratio x cycle SignificanceResult(statistic=np.float64(-0.021513933977754564), pvalue=np.float64(0.16142219679424605))
+spearman ratio x dq SignificanceResult(statistic=np.float64(-0.0028299819691282035), pvalue=np.float64(0.8538741071389317))
+spearman ratio x revenue SignificanceResult(statistic=np.float64(-0.0064445084811286715), pvalue=np.float64(0.6749109617376152))
+spearman ratio x employees SignificanceResult(statistic=np.float64(-0.011849527611304497), pvalue=np.float64(0.4405867029312895))
+spearman ratio x sales_price SignificanceResult(statistic=np.float64(-0.001475019116860956), pvalue=np.float64(0.9235242598116308))
+variancia do ratio por produto (Levene): LeveneResult(statistic=np.float64(0.9527455182292192), pvalue=np.float64(0.45582410027462594))
+                  mean     std  count
+product                              
+GTK 500         0.9977  0.0773     15
+GTX Basic       0.9921  0.0977    915
+GTX Plus Basic  0.9855  0.0965    653
+GTX Plus Pro    1.0014  0.1043    479
+GTX Pro         0.9989  0.0986    729
+MG Advanced     0.9988  0.0994    654
+MG Special      1.0035  0.0982    793
+2017-06-30 sales_agent grupos=30 rho=0.083 p=0.663 | MAE ratio global=0.0798 grupo=0.0799 (n_teste=2453)
+2017-06-30 account grupos=85 rho=-0.101 p=0.359 | MAE ratio global=0.0798 grupo=0.0803 (n_teste=2453)
+2017-06-30 product grupos=7 rho=0.321 p=0.482 | MAE ratio global=0.0798 grupo=0.0798 (n_teste=2453)
+2017-06-30 sales_agentxproduct grupos=128 rho=-0.019 p=0.831 | MAE ratio global=0.0798 grupo=0.0800 (n_teste=2453)
+2017-06-30 sales_agentxaccount grupos=35 rho=-0.162 p=0.352 | MAE ratio global=0.0798 grupo=0.0799 (n_teste=2453)
+2017-06-30 accountxproduct grupos=94 rho=-0.010 p=0.924 | MAE ratio global=0.0798 grupo=0.0800 (n_teste=2453)
+2017-09-30 sales_agent grupos=30 rho=0.087 p=0.649 | MAE ratio global=0.0806 grupo=0.0807 (n_teste=1196)
+2017-09-30 account grupos=85 rho=-0.215 p=0.048 | MAE ratio global=0.0806 grupo=0.0815 (n_teste=1196)
+2017-09-30 product grupos=6 rho=0.543 p=0.266 | MAE ratio global=0.0806 grupo=0.0807 (n_teste=1196)
+2017-09-30 sales_agentxproduct grupos=104 rho=0.142 p=0.150 | MAE ratio global=0.0806 grupo=0.0804 (n_teste=1196)
+2017-09-30 sales_agentxaccount grupos=17 rho=-0.319 p=0.213 | MAE ratio global=0.0806 grupo=0.0810 (n_teste=1196)
+2017-09-30 accountxproduct grupos=54 rho=-0.143 p=0.301 | MAE ratio global=0.0806 grupo=0.0811 (n_teste=1196)
+product
+GTK 500           0.9977
+GTX Basic         0.9921
+GTX Plus Basic    0.9855
+GTX Plus Pro      1.0014
+GTX Pro           0.9989
+MG Advanced       0.9988
+MG Special        1.0035
+dtype: float64

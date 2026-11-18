@@ -1,0 +1,13 @@
+cenario,metrica,MDE80_raw,MDE80_did,MDE80_ancova,SD_cluster_mgr_did,max|placebo|_mgr,placebo_escritorio_did
+"1 mes (pre Q3, pos out)",receita,1.001,0.691,0.709,0.127,0.216,"[np.float64(0.221), np.float64(-0.207), np.float64(-0.014)]"
+"1 mes (pre Q3, pos out)",ganhos,0.646,0.467,0.474,0.126,0.211,"[np.float64(0.215), np.float64(-0.233), np.float64(0.018)]"
+"1 mes (pre Q3, pos out)",fechados,0.54,0.32,0.328,0.157,0.279,"[np.float64(0.226), np.float64(-0.221), np.float64(-0.005)]"
+"1 trimestre (pre Q3, pos Q4)",receita,0.616,0.306,0.304,0.088,0.173,"[np.float64(-0.003), np.float64(-0.063), np.float64(0.066)]"
+"1 trimestre (pre Q3, pos Q4)",ganhos,0.391,0.185,0.177,0.117,0.228,"[np.float64(-0.053), np.float64(-0.14), np.float64(0.193)]"
+"1 trimestre (pre Q3, pos Q4)",fechados,0.391,0.161,0.144,0.068,0.114,"[np.float64(-0.015), np.float64(-0.071), np.float64(0.086)]"
+"1 trimestre (pre Q2, pos Q3)",receita,0.656,0.418,0.434,0.163,0.223,"[np.float64(0.193), np.float64(-0.095), np.float64(-0.098)]"
+"1 trimestre (pre Q2, pos Q3)",ganhos,0.439,0.191,0.192,0.093,0.17,"[np.float64(0.021), np.float64(0.061), np.float64(-0.082)]"
+"1 trimestre (pre Q2, pos Q3)",fechados,0.439,0.152,0.152,0.059,0.111,"[np.float64(0.036), np.float64(0.039), np.float64(-0.075)]"
+"2 trimestres (pre Q2, pos Q3+Q4)",receita,0.612,0.347,0.363,0.139,0.169,"[np.float64(0.192), np.float64(-0.126), np.float64(-0.066)]"
+"2 trimestres (pre Q2, pos Q3+Q4)",ganhos,0.406,0.157,0.166,0.063,0.113,"[np.float64(-0.005), np.float64(-0.007), np.float64(0.012)]"
+"2 trimestres (pre Q2, pos Q3+Q4)",fechados,0.418,0.114,0.115,0.059,0.11,"[np.float64(0.028), np.float64(0.004), np.float64(-0.033)]"
