@@ -1,0 +1,35 @@
+eventos de churn com fim de assinatura da conta em ±30 dias: 21.0% | em ±7 dias: 7.8% | conta sem nenhuma assinatura encerrada: 35.7%
+   baseline com datas aleatórias: ±30 dias = 21.8%
+
+receita por trimestre:
+         mrr_novo  mrr_encerrado  churn_receita_%_do_novo
+2023Q1     41648            0.0                      0.0
+2023Q2    202694         1421.0                      1.0
+2023Q3    402265          914.0                      0.0
+2023Q4    667001        49160.0                      7.0
+2024Q1   1064291        50138.0                      5.0
+2024Q2   1616165        59026.0                      4.0
+2024Q3   2348608       146668.0                      6.0
+2024Q4   4996075       871812.0                     17.0
+MRR 0 (trial/grátis): 778 assinaturas; is_trial: 778
+
+churn com downgrade anterior: 8.8% | com upgrade anterior: 20.5% | base de assinaturas: downgrade 4.4% upgrade 10.6%
+
+contas com evento de churn nos últimos 90 dias: 177 | MRR ativo nelas: $3,401,263 (33% do total)
+            eventos_90d     ultimo               motivos  eventos_total  mrr_ativo  subs_ativas account_name       industry   plan_tier  seats
+account_id                                                                                                                                    
+A-18793f              1 2024-12-30               support              1      75776           10  Company_488         EdTech       Basic    148
+A-4814a3              1 2024-11-25               pricing              1      70644           10  Company_337  Cybersecurity       Basic     87
+A-09316c              1 2024-12-05               unknown              1      70000           11  Company_341        FinTech  Enterprise     70
+A-e08cd3              1 2024-12-17              features              2      67737           10  Company_475        FinTech         Pro     67
+A-0cc442              2 2024-10-23       budget, unknown              4      60092           11  Company_198         EdTech       Basic     45
+A-05f0e5              1 2024-11-25              features              2      51109           12   Company_40        FinTech       Basic     32
+A-bd4513              2 2024-12-09      budget, features              2      48804           10  Company_205       DevTools  Enterprise     50
+A-1e1b80              2 2024-11-13  competitor, features              3      48647           12  Company_416        FinTech  Enterprise     50
+A-d77f4c              2 2024-12-03               unknown              3      48378           12  Company_470       DevTools         Pro      4
+A-76fa4d              2 2024-12-03      pricing, unknown              2      47955            5  Company_226     HealthTech         Pro     69
+A-2d1036              2 2024-10-28       budget, pricing              2      46230           10  Company_399        FinTech         Pro     69
+A-0651a4              2 2024-12-25     features, support              2      44564           14  Company_255     HealthTech         Pro     16
+A-cd458b              1 2024-11-07                budget              1      42740           14  Company_430       DevTools       Basic     10
+A-158f4e              1 2024-12-04              features              2      42700           11  Company_180        FinTech  Enterprise     61
+A-712f1c              1 2024-10-24                budget              1      39616           11  Company_331       DevTools       Basic     17

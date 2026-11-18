@@ -1,0 +1,8 @@
+2023Q1: cadastradas=55 | sem assinatura ativa=34 (das quais já tiveram alguma antes: 0) | sem assinatura PAGA ativa=36 (já tiveram antes: 2)
+2023Q2: cadastradas=109 | sem assinatura ativa=38 (das quais já tiveram alguma antes: 0) | sem assinatura PAGA ativa=45 (já tiveram antes: 7)
+2023Q3: cadastradas=162 | sem assinatura ativa=31 (das quais já tiveram alguma antes: 0) | sem assinatura PAGA ativa=43 (já tiveram antes: 12)
+2023Q4: cadastradas=227 | sem assinatura ativa=37 (das quais já tiveram alguma antes: 1) | sem assinatura PAGA ativa=42 (já tiveram antes: 6)
+2024Q1: cadastradas=283 | sem assinatura ativa=23 (das quais já tiveram alguma antes: 0) | sem assinatura PAGA ativa=33 (já tiveram antes: 10)
+2024Q2: cadastradas=348 | sem assinatura ativa=11 (das quais já tiveram alguma antes: 0) | sem assinatura PAGA ativa=15 (já tiveram antes: 4)
+2024Q3: cadastradas=420 | sem assinatura ativa=5 (das quais já tiveram alguma antes: 1) | sem assinatura PAGA ativa=6 (já tiveram antes: 2)
+2024Q4: cadastradas=500 | sem assinatura ativa=0 (das quais já tiveram alguma antes: 0) | sem assinatura PAGA ativa=0 (já tiveram antes: 0)

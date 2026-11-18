@@ -1,0 +1,21 @@
+# Never ship the host's compiled node_modules (native better-sqlite3 is platform-specific —
+# the image installs its own linux binary) or build artefacts.
+node_modules
+.next
+.git
+.gitignore
+
+# Secrets + local env (Railway injects real env vars). .env.example is kept for reference.
+.env
+.env.local
+.env.*.local
+
+# Local app DB and uploads stay OUT of the image.
+data/*.sqlite
+data/*.sqlite-*
+data/*.zip
+data/datasets/
+
+# Noise.
+*.log
+.DS_Store

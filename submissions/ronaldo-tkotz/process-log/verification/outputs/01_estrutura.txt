@@ -1,0 +1,73 @@
+
+=== accounts: 500 linhas x 10 cols
+Series([], )
+  signup_date: 2023-01-02 00:00:00 → 2024-12-31 00:00:00
+
+=== subscriptions: 5000 linhas x 14 cols
+end_date    4514
+  start_date: 2023-01-09 00:00:00 → 2024-12-31 00:00:00
+  end_date: 2023-04-05 00:00:00 → 2024-12-31 00:00:00
+
+=== feature_usage: 25000 linhas x 8 cols
+Series([], )
+  usage_date: 2023-01-01 00:00:00 → 2024-12-31 00:00:00
+
+=== support_tickets: 2000 linhas x 9 cols
+satisfaction_score    825
+  submitted_at: 2023-01-02 00:00:00 → 2024-12-31 00:00:00
+  closed_at: 2023-01-03 03:00:00 → 2024-12-31 19:00:00
+
+=== churn_events: 600 linhas x 9 cols
+feedback_text    148
+  churn_date: 2023-01-25 00:00:00 → 2024-12-31 00:00:00
+
+=== chaves
+accounts únicos: 500 | subs únicos: 5000
+subs→accounts órfãos: 0 | usage→subs órfãos: 0
+tickets→accounts órfãos: 0 | churn→accounts órfãos: 0
+usage_id duplicados: 21 | linhas usage duplicadas (sem id): 0
+
+=== coerência de churn
+accounts.churn_flag=True: 110 | contas com evento de churn: 352 | eventos: 600 | reativações: 61
+tem evento  False  True 
+churn_flag              
+False         113    277
+True           35     75
+subs churn_flag=True: 486 | subs com end_date: 486
+tem end_date    False  True 
+sub churn_flag              
+False            4514      0
+True                0    486
+subs por conta: {'count': 500.0, 'mean': 10.0, 'std': 3.3, 'min': 2.0, '25%': 7.0, '50%': 10.0, '75%': 12.0, 'max': 19.0}
+plan_tier conta == plano da última sub: 0.344
+seats conta == seats última sub: 0.486
+churn antes do signup: 0
+eventos de churn em contas que ainda têm sub ativa: 600 de 600
+
+=== distribuições
+industry {'DevTools': 113, 'FinTech': 112, 'Cybersecurity': 100, 'HealthTech': 96, 'EdTech': 79}
+country {'US': 291, 'UK': 58, 'IN': 49, 'AU': 32, 'DE': 25, 'CA': 23, 'FR': 22}
+referral_source {'organic': 114, 'other': 103, 'ads': 98, 'event': 96, 'partner': 89}
+plan_tier {'Pro': 178, 'Basic': 168, 'Enterprise': 154}
+is_trial {False: 403, True: 97}
+subs.plan_tier {'Enterprise': 1723, 'Pro': 1675, 'Basic': 1602}
+subs.billing_frequency {'monthly': 2539, 'annual': 2461}
+subs.is_trial {False: 4222, True: 778}
+subs.upgrade_flag {False: 4471, True: 529}
+subs.downgrade_flag {False: 4782, True: 218}
+subs.auto_renew_flag {True: 4005, False: 995}
+mrr por plano:              count    mean     std  min     25%     50%     75%      max
+plan_tier                                                               
+Basic       1602.0   475.0   440.0  0.0   157.0   380.0   665.0   3097.0
+Enterprise  1723.0  4918.0  4624.0  0.0  1592.0  3781.0  6766.0  33830.0
+Pro         1675.0  1257.0  1204.0  0.0   392.0   980.0  1764.0   9261.0
+mrr/seat por plano:              count   mean   std  min    25%    50%    75%    max
+plan_tier                                                       
+Basic       1602.0   16.1   6.9  0.0   19.0   19.0   19.0   19.0
+Enterprise  1723.0  167.5  72.7  0.0  199.0  199.0  199.0  199.0
+Pro         1675.0   41.4  17.7  0.0   49.0   49.0   49.0   49.0
+arr == 12*mrr: 1.0
+ce.reason_code: {'features': 114, 'support': 104, 'budget': 104, 'unknown': 95, 'competitor': 92, 'pricing': 91}
+ce.feedback_text: {'too expensive': 161, 'missing features': 155, nan: 148, 'switched to competitor': 136}
+tickets prioridade: {'urgent': 514, 'high': 510, 'medium': 491, 'low': 485} | satisfação: {3.0: 396, 4.0: 405, 5.0: 374, nan: 825}
+features: 40 | beta share: 0.102

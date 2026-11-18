@@ -1,0 +1,37 @@
+=== upgrade x cancelamento (churn_flag)
+  upgrade=False: 193 contas, 46 canceladas (23.8%)
+  upgrade=True: 307 contas, 64 canceladas (20.8%)
+  qui-quadrado p=0.500 | Fisher p=0.440
+  IC95% da taxa com upgrade: 16.4%–25.8%
+  IC95% da taxa sem upgrade: 18.0%–30.5%
+  por plano (plan_tier da conta):
+    Basic      com upgrade 111 contas, retenção 81.1% | sem upgrade 57 contas, retenção 71.9% | Fisher p=0.238
+    Enterprise com upgrade 98 contas, retenção 76.5% | sem upgrade 56 contas, retenção 80.4% | Fisher p=0.688
+    Pro        com upgrade 98 contas, retenção 79.6% | sem upgrade 80 contas, retenção 76.2% | Fisher p=0.716
+  retenção geral: 78.0%
+
+=== erros por feature
+              acoes  erros  sessoes      taxa  rank_erros  rank_acoes  rank_taxa
+feature_name                                                                    
+feature_4      6374    418      625  0.065579           1          18          1
+feature_26     6470    417      649  0.064451           2          10          3
+feature_9      6207    404      624  0.065088           3          28          2
+feature_2      6525    401      642  0.061456           4           8          6
+feature_34     6536    397      650  0.060741           5           5          9
+feature_16     6273    396      622  0.063128           6          24          4
+  correlação erros x ações entre features (Spearman): 0.26
+  taxas de erro diferem entre features? qui-quadrado p=0.000
+  feature_4: taxa de erro por conta — canceladas 0.000 vs ativas 0.000 | p=0.897
+  feature_9: taxa de erro por conta — canceladas 0.014 vs ativas 0.000 | p=0.863
+
+=== suporte
+  sem avaliação: 41.2%
+  resolução (h) por prioridade:
+           count  mean   50%
+priority                   
+high      510.0  37.0  38.0
+low       485.0  36.3  36.0
+medium    491.0  35.6  34.0
+urgent    514.0  34.6  33.0
+  1ª resposta (min) por prioridade: {'high': 92.0, 'low': 95.0, 'medium': 81.0, 'urgent': 86.0}
+  Kruskal resolução entre prioridades: p=0.333

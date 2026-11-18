@@ -1,0 +1,92 @@
+contas canceladas sem evento (vida = até a data de referência): 35
+eventos de churn ANTES do signup: 0 de 600
+
+=== por país: contas, canceladas, idade média (31/12/2024), churn por 100 contas-mês de exposição
+         contas  canc  idade     expo  churn%  por_100_contas_mes    IC95
+country                                                                  
+AU           32     4  11.98   360.41   12.50                1.11   4–29%
+CA           23     4  12.10   268.00   17.39                1.49   5–39%
+DE           25     8  14.65   338.73   32.00                2.36  15–54%
+FR           22     5   9.56   191.39   22.73                2.61   8–45%
+IN           49    10  11.69   556.67   20.41                1.80  10–34%
+UK           58    11  10.73   601.74   18.97                1.83  10–31%
+US          291    68  10.76  2941.39   23.37                2.31  19–29%
+Fisher DE x resto: p=0.220
+Spearman idade média x churn% entre os 7 países: rho=-0.04, p=0.94
+
+=== idade x churn na base inteira (500 contas)
+       contas  canc         expo  churn%  por_100_contas_mes
+faixa                                                       
+0–6       151    26   430.289093    17.2                6.04
+7–12      121    26  1005.190539    21.5                2.59
+13–18     117    29  1638.370565    24.8                1.77
+19–24     110    29  2184.494087    26.4                1.33
+  AUC idade -> churn_flag: 0.559
+  logit churn ~ idade + DE:
+            Coef.  P>|z|
+Intercept -1.598  0.000
+idade_ref  0.027  0.087
+DE         0.448  0.317
+
+=== França por faixa (n pequeno)
+       size  sum
+faixa           
+0–6       6    1
+7–12      7    1
+13–18     6    3
+19–24     2    0
+  13–18 meses: 3/6, IC95% 12%–88%
+  13–18 meses, outros países: 26/111 (23%) | Fisher FR x resto p=0.16
+
+=== renovação anual: o churn cai perto dos 12 meses de vida?
+  annual: 48 canceladas, vida no churn mediana 6.5 m; entre 11 e 13 meses: 6%
+  monthly: 27 canceladas, vida no churn mediana 8.9 m; entre 11 e 13 meses: 15%
+  esperado se uniforme em 0–24 meses: 8%
+  eventos de contas com assinatura anual encerrada: 225; com fim de assinatura anual a ±30 dias: 28%
+  churn das contas cuja última assinatura paga é annual: 67/266 (25.2%)
+  churn das contas cuja última assinatura paga é monthly: 43/234 (18.4%)
+  Fisher anual x mensal: p=0.083
+
+=== hipótese de idioma: suporte nos países sem inglês (DE, FR) vs anglófonos
+            tickets  resol_h  resp_min   csat  com_nota  escalado
+grupo                                                            
+DE/FR           194   35.340    87.588  4.034     0.603     0.041
+anglófonos     1806   35.917    88.576  3.975     0.586     0.048
+  resolution_time_hours: Mann-Whitney p=0.699
+  first_response_time_minutes: Mann-Whitney p=0.802
+  satisfaction_score: Mann-Whitney p=0.468
+  escalação: Fisher p=0.859
+  só DE: {'resolution_time_hours': 37.57, 'first_response_time_minutes': 87.24, 'satisfaction_score': 4.07, 'escalation_flag': 0.02}
+  tickets por conta: DE 3.8 | geral 4.0
+
+=== tábua de vida: risco mensal pela IDADE no momento (não pela idade hoje), separado por ano-calendário
+ano    2023  2024
+faixa            
+0–5    0.19  2.67
+6–11   0.00  1.86
+12–17   NaN  3.05
+18–23   NaN  4.36
+  contas-mês:
+ ano      2023    2024
+faixa                
+0–5    1036.0  1534.0
+6–11    379.0  1291.0
+12–17     NaN   950.0
+18–23     NaN   321.0
+  risco mensal por país (contas-mês, mesmo método): {'AU': 1.06, 'CA': 1.43, 'DE': 2.28, 'FR': 2.48, 'IN': 1.72, 'UK': 1.74, 'US': 2.2}
+  idem, só 2024: {'AU': 1.47, 'CA': 1.85, 'DE': 3.46, 'FR': 2.92, 'IN': 2.34, 'UK': 2.26, 'US': 2.88}
+
+=== conferência das 5 canceladas da França citadas no texto
+           country   plan_tier     freq  vida  idade_ref
+account_id                                              
+A-038089        FR         Pro   annual  12.2       12.4
+A-ccc747        FR         Pro   annual   7.7       11.6
+A-798a3f        FR  Enterprise  monthly   9.0       14.4
+A-72799b        FR  Enterprise   annual   5.7       13.6
+A-117171        FR       Basic   annual   2.1        3.6
+
+=== sensibilidade: 2024, sem as 35 canceladas sem evento (churn datado artificialmente em 31/12)
+  idade 0–11 m: 48 churns em 2617 contas-mês = 1.83%/mês
+  idade 12+ m: 25 churns em 1154 contas-mês = 2.17%/mês
+  razão de taxas 12+/0–11: 1.18 | teste binomial condicional p=0.526
+  (idade, período e coorte não se separam: quem tem 12+ meses em 2024 é, por construção, das coortes de 2023)

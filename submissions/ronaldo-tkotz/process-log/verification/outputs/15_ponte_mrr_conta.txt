@@ -1,0 +1,15 @@
+=== ponte de MRR por conta (US$), trimestral — só assinaturas pagas
+           contas_ini  contas_fim   mrr_ini      novo  expansao  contracao  perda_total  contas_perdidas  contas_contraidas    mrr_fim   GRR   NRR
+trimestre                                                                                                                                         
+2023-06            19          64    41,648   141,589    60,860      1,176        0.000                0                  1    242,921 0.972     2
+2023-09            64         119   242,921   261,015   140,336     -0.000        0.000                0                  0    644,272 1.000 1.578
+2023-12           119         185   644,272   290,357   360,664     20,444       12,736                1                  4  1,262,113 0.949 1.508
+2024-03           185         250 1,262,113   394,260   636,516     16,623        0.000                0                  5  2,276,266 0.987 1.491
+2024-06           250         333 2,276,266   595,085   995,056     33,002        0.000                0                 16  3,833,405 0.986 1.423
+2024-09           333         414 3,833,405   687,308 1,552,081     31,678        5,771                1                 13  6,035,345 0.990 1.395
+2024-12           414         500 6,035,345 1,690,305 2,589,496    155,538        0.000                0                 28 10,159,608 0.974 1.403
+
+assinaturas ativas por conta em 31/12/2024: mediana 8, min 1, max 16 | contas com MRR > 0: 500
+contas com churn_flag que ainda têm MRR ativo em 31/12/2024: 110 de 110 (MRR $2,073,153)
+
+soma 2023-Q2 a 2024-Q4: {'expansao': '$6,335,009', 'contracao': '$258,461', 'perda_total': '$18,507', 'novo': '$4,059,919'}

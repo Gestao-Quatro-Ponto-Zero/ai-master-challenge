@@ -1,0 +1,35 @@
+(a) posição relativa do churn [0=signup,1=fim da base]: quartis [0.26, 0.5, 0.76] | KS vs uniforme p= 0.921
+    dias do signup até o churn: mediana 115.5 | % nos primeiros 90 dias: 42.8
+    taxa mensal média de eventos por conta exposta: 2023=0.051  2024=0.120
+
+(b) contas com >=1 assinatura ativa em 31/12/2024: 500 de 500
+    contas com evento de churn que abriram assinatura NOVA depois do último evento: 284 de 352
+    MRR em assinaturas ativas: total $10,159,608 | em contas com evento de churn $7,139,868
+    contas churn_flag=True ainda com assinatura ativa: 110 de 110
+    eventos por conta: {1: 177, 2: 116, 3: 47, 4: 10, 5: 2} | reativação flag: 61
+    refund: total $8,652, mediana $0, zero em 76%
+    receita das assinaturas encerradas por mês (end_date) — dez/2024 concentra: 39.7 % dos encerramentos
+
+(c) uso 0-90d antes do churn vs 90-180d antes: medianas 59.0 vs 56.0 | Wilcoxon p= 0.429
+    erros 0-90d vs 90-180d: medianas 3.0 vs 3.0 | p= 0.659
+    tickets nos 90d antes de um churn: CSAT 4.09 | demais tickets: 3.98
+
+(d) uso total por semestre e plano:
+ sem         2023H1  2023H2  2024H1  2024H2
+plan_tier                                 
+Basic        21956   22103   22212   22531
+Enterprise   19058   18835   18283   19301
+Pro          21514   21095   21887   21750
+ uso total por semestre e indústria:
+ sem            2023H1  2023H2  2024H1  2024H2
+industry                                     
+Cybersecurity   12751   12419   12033   13169
+DevTools        13826   14829   14859   13878
+EdTech          10145    9715    9964   10181
+FinTech         14037   13687   13982   14222
+HealthTech      11769   11383   11544   12132
+(e) churn_evento  logística          AUC CV = 0.438 ± 0.046
+(e) churn_evento  gradient boosting  AUC CV = 0.454 ± 0.093
+(e) churn_flag    logística          AUC CV = 0.529 ± 0.025
+(e) churn_flag    gradient boosting  AUC CV = 0.533 ± 0.052
+    placebo (alvo embaralhado) logística AUC = 0.562

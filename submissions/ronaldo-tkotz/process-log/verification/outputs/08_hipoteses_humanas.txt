@@ -1,0 +1,59 @@
+=== H1: 110 contas com churn_flag=True — estão canceladas ou ativas?
+  contas: 110 | com assinatura ativa: 110 | MRR ativo nelas: $2,073,153 (20.4% do MRR ativo)
+  sem nenhum evento de churn: 35
+  assinaturas ativas abertas ANTES do último evento (nunca fechadas): 420 | DEPOIS do evento: 245
+  contas churn_flag com assinatura PAGA aberta depois do último evento: 58 de 75
+
+=== H2: impacto financeiro
+  MRR de assinaturas encerradas no período: $1,179,139 em 486 assinaturas | refunds: $8,652
+  MRR encerrado em contas churn_flag=True: $282,092 | em contas com evento: $851,114 | em contas sem evento: $328,025
+  taxa de encerramento de assinaturas — contas com evento 10.0% vs sem evento 9.1%
+  taxa de encerramento — contas churn_flag=True 10.2% vs False 9.6%
+
+=== H3: reativação — flag x assinaturas
+  eventos seguidos de assinatura PAGA nova: 86.2% (mediana 20 dias)
+  por is_reactivation: {False: '86.5% com nova paga', True: '83.6% com nova paga'}
+
+=== H4: uso — volume, erros, sessões longas
+  ações (soma usage_count): 250,525 | registros (sessões): 25,000 | erros: 14,107 | taxa de erro: 5.63%
+  duração média: 50.7 min | sessões > 50 min: 45.7%
+  Spearman erro x duração: -0.001 | erro x ações: -0.004 | ações x duração: 0.415
+  erros por ação — sessões >50 min: 4.92% vs ≤50 min: 6.37%
+  erros por ação — beta: 5.53% vs não beta: 5.64%
+  taxa de erro por feature: min 4.71%, max 6.56% (40 features)
+            acoes  erros  taxa  dur_min
+usage_date                             
+2023Q1      31400   1795  5.72     50.9
+2023Q2      31128   1869  6.00     51.0
+2023Q3      31155   1698  5.45     50.7
+2023Q4      30878   1729  5.60     51.4
+2024Q1      31593   1802  5.70     50.5
+2024Q2      30789   1757  5.71     51.1
+2024Q3      31355   1775  5.66     50.0
+2024Q4      32227   1682  5.22     50.1
+  taxa_erro    x churn_flag  : ficou 0.0550 | churn 0.0537 | p=0.115 AUC=0.45
+  taxa_erro    x churn_evento: ficou 0.0543 | churn 0.0547 | p=0.873 AUC=0.50
+  erros        x churn_flag  : ficou 27.0000 | churn 28.5000 | p=0.795 AUC=0.51
+  erros        x churn_evento: ficou 27.0000 | churn 28.0000 | p=0.470 AUC=0.52
+  dur_media_s  x churn_flag  : ficou 3039.7491 | churn 3022.6871 | p=0.787 AUC=0.49
+  dur_media_s  x churn_evento: ficou 3012.1748 | churn 3044.8800 | p=0.432 AUC=0.52
+  dur_longa    x churn_flag  : ficou 0.4583 | churn 0.4616 | p=0.674 AUC=0.51
+  dur_longa    x churn_evento: ficou 0.4590 | churn 0.4583 | p=0.975 AUC=0.50
+
+=== H5: churn logo após upgrade
+  eventos com preceding_upgrade_flag: 123 de 600 (20.5%)
+  upgrade (assinatura com upgrade_flag) iniciada até 30d antes: eventos reais 11.7% | datas sorteadas 14.3%
+     concordância com preceding_upgrade_flag: flag=True → 14.6% | flag=False → 10.9%
+  upgrade (assinatura com upgrade_flag) iniciada até 90d antes: eventos reais 24.2% | datas sorteadas 25.5%
+     concordância com preceding_upgrade_flag: flag=True → 27.6% | flag=False → 23.3%
+  contas com algum upgrade: churn_flag 20.8% vs sem upgrade 23.8% | evento 71.3% vs 68.9%
+  assinaturas com upgrade_flag encerram: 8.7% vs sem: 9.8%
+  motivo dos eventos pós-upgrade: {'support': 0.23, 'budget': 0.2, 'unknown': 0.15, 'pricing': 0.15, 'features': 0.14, 'competitor': 0.14}
+  motivo dos demais:             {'features': 0.2, 'budget': 0.17, 'unknown': 0.16, 'support': 0.16, 'competitor': 0.16, 'pricing': 0.15}
+  qui-quadrado motivo x pós-upgrade: p=0.356
+
+=== H6: CSAT — viés de não resposta
+  taxa de resposta por prioridade: {'high': 0.578, 'low': 0.592, 'medium': 0.595, 'urgent': 0.586} | escalado: {False: 0.584, True: 0.663}
+  resolução (h) respondidos 35.0 vs sem resposta 36.0 | p=0.892
+  taxa de resposta — contas churn_flag: 0.602 | demais: 0.584
+  CSAT por escalonamento: {False: 3.98, True: 4.08} | por prioridade: {'high': 4.0, 'low': 4.02, 'medium': 3.93, 'urgent': 3.97}

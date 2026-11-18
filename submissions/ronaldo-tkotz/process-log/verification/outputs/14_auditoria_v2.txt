@@ -1,0 +1,13 @@
+=== tickets
+submitted_at exemplos: ['2023-07-27', '2024-07-08', '2024-10-17'] | tem hora? 0.0
+submitted às 00:00: 1.0
+closed_at minutos == 0: 1.0 | horas distintas em closed_at: 24
+closed - submitted == resolution_time_hours: 1.0
+resolution_time_hours inteiro: 1.0 | min/max 1.0 72.0
+first_response em min: min/max 1 180 | primeira resposta > resolução: 36
+closed_at nulo: 0
+resolução: distribuição por faixa de 12h: {Interval(0, 12, closed='right'): 361, Interval(12, 24, closed='right'): 348, Interval(24, 36, closed='right'): 327, Interval(36, 48, closed='right'): 289, Interval(48, 60, closed='right'): 347, Interval(60, 72, closed='right'): 328}
+=== ARR encerrado x churn_flag
+ARR encerrado total: 14149668 | assinaturas 486 | contas distintas 312
+  dessas, de contas com churn_flag: 3385104 (24%) | contas 72
+  de contas SEM churn_flag (ativas): 10764564 | contas 240
