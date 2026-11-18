@@ -2,9 +2,9 @@
 
 Gerado por `exportar.py` a partir do arquivo de sessão do Claude Code. Horários de Brasília.
 
-- Mensagens minhas: 87
-- Respostas da IA em texto: 148
-- Chamadas de ferramenta: 815
+- Mensagens minhas: 95
+- Respostas da IA em texto: 158
+- Chamadas de ferramenta: 883
 - Relatórios de subagentes: 14
 
 O que ficou de fora e por quê está no cabeçalho do script.
@@ -6078,6 +6078,354 @@ Sim! https://case-g4-gustavo-c.vercel.app/
 - `Bash`: Conferir em qual decisão está a ressalva do logo e se o aviso existe na tela de entrada
 - `Edit`: D:\Case G4\work\decisao43.py
 - `Bash`: Acrescentar a Decisão 43 ao log e ver o que mudou
+- `export_transcript`
+
+</details>
+
+**Claude · 18/11 19:35**
+
+A demo publicada funciona. Estou colocando o link nos READMEs, registrando no log e enviando para o fork e para o repositório da demo.
+
+<details><summary>4 chamada(s) de ferramenta</summary>
+
+- `Edit`: D:\Case G4\repo\submissions\gustavo-civita\README.md
+- `Bash`: Regenerar a conversa exportada, conferir dados pessoais e commitar as mudanças
+- `Bash`: Enviar as atualizações para o fork e para o repositório da demo
+- `wrap_up`: 2 ações no navegador
+
+</details>
+
+**Claude · 18/11 19:35**
+
+A demo está no ar e funcionando, e o link dela já está na submissão enviada ao seu fork.
+
+## O que conferi e fiz
+
+- **Demo publicada:** abri https://case-g4-gustavo-c.vercel.app/ como vendedora e como operações de receita. A tela de Hoje mostra "0 de 13 prioridades" com o bloco "Se sobrar tempo", o Painel carrega, logo e ícones aparecem, sem erro no console.
+- **READMEs da submissão:** o link da demo entrou logo no começo da seção "Solução" e em "Como rodar".
+- **Log:** Decisão 43, com os commits, a correção sobre os prints da conversa e a demo, usando as suas falas.
+- **Conversa exportada:** regenerada de novo, sem endereço de e-mail nem chave.
+- **Enviado:** o fork está com 11 commits, e o repositório `case-g4` ganhou o link da demo no README.
+
+## Pull Request
+
+Olhei a lista de PRs do repositório do G4 e não achei nenhum da sua conta, então ele ainda está por abrir. Use o mesmo link:
+
+[Abrir o PR no repositório do G4](https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/compare/main...tivita912:ai-master-challenge:submission/gustavo-civita?expand=1&title=%5BSubmission%5D%20Gustavo%20Civita%20%E2%80%94%20Challenge%20003)
+
+A descrição mudou em dois pontos (a demo e o número de decisões). Cole esta versão:
+
+```markdown
+## Submissão — Challenge 003 (Lead Scorer)
+
+Ferramenta de priorização de pipeline que roda inteira no navegador: o vendedor vê a meta do dia na ordem em que deve trabalhar e registra cada contato; o gerente e operações de receita acompanham o pipeline e a atividade do time.
+
+**Demo:** https://case-g4-gustavo-c.vercel.app/ (escolha um perfil e um nome; não há senha)
+
+**Rodar localmente:** abrir `submissions/gustavo-civita/solution/app/index.html` com dois cliques. Não precisa de servidor nem de instalação.
+
+**O que o teste histórico mostrou (24 semanas de 2017):**
+- Nenhuma das 801 negociações tiradas da lista de ligação foi ganha depois.
+- A ordem preço × chance rende de 14% a 20% mais do que ordenar as mesmas negociações só pelo preço.
+- Contra uma boa regra simples, a ferramenta ganha no 3º trimestre (+9%) e empata no 4º. Está declarado no README.
+
+**Onde está cada coisa:**
+- `README.md`: resumo, abordagem, resultados, limitações e process log
+- `solution/`: código, testes automatizados (19 + 16) e instruções
+- `process-log/`: 43 decisões com as minhas falas, conversa exportada e prints
+- `docs/`: análises de apoio, exemplos de saída e plano de adoção
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+```
+
+Se a tela mudar depois, a demo não se atualiza sozinha: ela é uma cópia num repositório separado, e eu preciso reenviar para lá.
+
+## Gustavo · 18/11 19:36
+
+Abri o PR
+
+<details><summary>3 chamada(s) de ferramenta</summary>
+
+- `browser_batch`: 2 ações no navegador
+- `ToolSearch`: select:mcp__ccd_pr__get_status,mcp__ccd_pr__bind_pr
+- `get_page_text`
+
+</details>
+
+## Gustavo · 18/11 19:36
+
+[Request interrupted by user]
+
+## Gustavo · 18/11 19:37
+
+Abri o PR
+
+<details><summary>7 chamada(s) de ferramenta</summary>
+
+- `browser_batch`: 4 ações no navegador
+- `browser_batch`: 2 ações no navegador
+- `javascript_tool`
+- `get_status`
+- `Write`: C:\Users\[usuario]\.claude\projects\D--Case-G4\memory\g4-submissao-enderecos.md
+- `Edit`: C:\Users\[usuario]\.claude\projects\D--Case-G4\memory\MEMORY.md
+- `wrap_up`: 2 ações no navegador
+
+</details>
+
+**Claude · 18/11 19:37**
+
+O Pull Request está aberto e correto: [Gestao-Quatro-Ponto-Zero/ai-master-challenge#255](https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/255).
+
+Conferi a página dele:
+
+- **Título:** `[Submission] Gustavo Civita — Challenge 003`, no formato que o G4 pede.
+- **Origem e destino:** da sua branch `submission/gustavo-civita` para o `main` do G4.
+- **Conteúdo:** 11 commits e 123 arquivos, todos dentro de `submissions/gustavo-civita/`.
+- **Descrição:** entrou inteira, com o link da demo.
+- **Situação:** aberto, ainda sem comentário nem revisão do G4.
+
+A primeira busca que fiz, pelo seu usuário, voltou vazia porque o índice de busca do GitHub ainda não tinha o PR; ele apareceu na lista dos mais recentes.
+
+Daqui para a frente:
+
+- **Ajustes:** qualquer mudança vai por novo envio na mesma branch, e o PR se atualiza sozinho. O G4 aceita um PR por pessoa, então não abra outro.
+- **Demo:** ela é uma cópia separada. Se a tela mudar, preciso reenviar para o repositório `case-g4`.
+- **Depois da avaliação:** pelo que levantei no início, quem é aprovado ainda precisa se inscrever no sistema de vagas do G4. Vale confirmar no site de carreiras deles.
+
+Guardei os endereços do PR, do fork e da demo na memória do projeto, para uma próxima sessão não precisar perguntar de novo.
+
+## Gustavo · 18/11 19:39
+
+Sim, acompanhar
+
+<details><summary>2 chamada(s) de ferramenta</summary>
+
+- `bind_pr`: https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/255
+- `wrap_up`: 2 ações no navegador
+
+</details>
+
+**Claude · 18/11 19:39**
+
+Não consegui ligar o PR ao acompanhamento automático do aplicativo. Ele só aceita PRs do repositório em que a sessão trabalha, e o seu foi aberto no repositório do G4, a partir do fork. É uma trava do próprio aplicativo, então não tentei contornar.
+
+O que já funciona sem eu fazer nada:
+
+- **O GitHub avisa você por e-mail.** Como o PR é seu, todo comentário, revisão ou pedido de ajuste do G4 chega no e-mail da conta `tivita912`. Vale conferir a caixa de spam nos próximos dias.
+- **Você também vê pelo site:** o sino no canto superior direito do GitHub e a própria página do [PR 255](https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/255).
+
+Quando chegar algum comentário, cole aqui ou diga "olha o PR": eu leio a página, preparo a resposta e, se pedirem ajuste, faço e envio na mesma branch.
+
+Na minha avaliação o e-mail do GitHub já resolve. A verificação diária seria só um reforço: uma tarefa agendada que abre a página do PR uma vez por dia e te avisa se houver novidade.
+
+## Gustavo · 18/11 19:44
+
+vc sinceramente acha q a gente foi bem? q passa para a proxima fase?
+
+**Claude · 18/11 19:44**
+
+Sinceramente: acho que fomos bem, e acho mais provável passar do que não passar. Não é garantido, e eu não consigo dar uma porcentagem honesta, porque o critério de nota do G4 é interno.
+
+**O que joga a favor**
+
+- **Honestidade sobre os dados.** No feedback aos outros candidatos, foi o que mais apareceu como motivo de aprovação. A entrega diz onde a ferramenta ganha (0 de 801 negociações cortadas foram ganhas depois) e onde ela empata com uma regra simples.
+- **Suas decisões estão visíveis.** O log tem 43 decisões com as suas falas, incluindo as vezes em que você parou a IA, rejeitou telas e reabriu uma decisão sua. O process log pesa perto de 30% da nota.
+- **Funciona de primeira.** Abre com dois cliques, tem demo no ar, testes automatizados e um PR limpo. Vários candidatos caíram em erro bobo de formato, e esses nós conferimos um a um.
+- **Vai além da ferramenta.** Tem recomendação de negócio (limpar o pipeline antes de qualquer coisa) e plano de adoção com critério de decisão.
+
+**O que pode pesar contra**
+
+- **O sinal dos dados é fraco, e a gente mostra isso.** A ordem da ferramenta ganha pouco de uma boa regra simples, e para dez vendedores ela não prioriza. "Produto polido em cima de sinal fraco" foi motivo de reprovação de outros. Nossa defesa é ter declarado isso e posicionado a entrega em cima do corte, mas um avaliador pode ler como solução fraca.
+- **A IA executou quase tudo.** O README diz isso abertamente. O G4 avisa que submissão feita só por IA não passa, então tudo depende de o avaliador enxergar o seu papel no log.
+- **Os commits são todos do mesmo dia, em minutos.** O histórico não mostra evolução; quem mostra é o log e a conversa exportada.
+- **É muito material.** São 123 arquivos e uma conversa de 6 mil linhas. Um avaliador com pressa lê o README e pouco mais.
+- **Concorrência.** O Challenge 003 é o mais disputado: tinha 112 dos 251 PRs quando levantei.
+
+**O que eu faria agora**
+
+A próxima fase provavelmente é uma conversa, e ali quem responde é você. Vale ler o README principal e a página "Como funciona" da demo até conseguir explicar três coisas com as suas palavras:
+
+1. Por que a chance vem "do mesmo ponto dos trimestres anteriores".
+2. O que significam os números 0 de 801, +14% a +20% e o empate no 4º trimestre.
+3. Por que você recomendaria limpar o pipeline antes de adotar a ferramenta.
+
+Se você defender isso bem ao vivo, o ponto mais frágil da entrega (quem fez o quê) passa a contar a seu favor.
+
+## Gustavo · 18/11 20:04
+
+veja os prs do challenge 3 e o pq foram aprovados
+e ve se o meu segue bnessa linha
+
+<details><summary>9 chamada(s) de ferramenta</summary>
+
+- `update_plan`
+- `Bash`: Baixar a lista de etiquetas e de PRs do repositório do G4 pela API pública do GitHub
+- `Write`: D:\Case G4\work\prs_lista.py
+- `Bash`: Resumir os PRs por challenge, estado e etiqueta
+- `Bash`: Baixar todos os comentários dos PRs do repositório em três chamadas
+- `Write`: D:\Case G4\work\prs_comentarios.py
+- `Bash`: Listar o início de cada comentário dos avaliadores do G4
+- `Bash`: Listar o início de cada comentário dos avaliadores do G4
+- `Bash`: Baixar as revisões formais dos PRs do Challenge 003 que receberam convite para a próxima etapa
+
+</details>
+
+**Claude · 18/11 20:06**
+
+Achei onde ficam as avaliações: são revisões formais nos PRs, com "aprovado" ou "pede mudanças" e o motivo. Estou lendo as dos aprovados do Challenge 003.
+
+<details><summary>6 chamada(s) de ferramenta</summary>
+
+- `Write`: D:\Case G4\work\prs_reviews.py
+- `Bash`: Ler as revisões dos PRs aprovados do Challenge 003
+- `browser_batch`: 6 ações no navegador
+- `browser_batch`: 2 ações no navegador
+- `Bash`: Cruzar aprovados e reprovados com os PRs do Challenge 003 e ver o limite da API
+- `Bash`: Baixar as revisões dos demais PRs avaliados do Challenge 003
+
+</details>
+
+**Claude · 18/11 20:07**
+
+Baixei as avaliações dos 48 PRs do Challenge 003 que o G4 já revisou (33 aprovados, 15 com pedido de mudanças). Agora leio os motivos, começando pelos mais recentes.
+
+<details><summary>5 chamada(s) de ferramenta</summary>
+
+- `Write`: D:\Case G4\work\prs_leitura.py
+- `Bash`: Ler as aprovações do Challenge 003 de abril em diante
+- `Bash`: Ler os pedidos de mudança do Challenge 003 feitos com o critério atual
+- `Edit`: C:\Users\[usuario]\.claude\projects\D--Case-G4\memory\g4-ai-master-challenge-intel.md
+- `wrap_up`: 2 ações no navegador
+
+</details>
+
+**Claude · 18/11 20:08**
+
+A sua entrega segue a linha dos aprovados, com uma lacuna que preciso corrigir do que eu disse antes: prints da conversa com a IA.
+
+## O que eu li
+
+As avaliações do G4 ficam na aba de revisão de cada PR. Do Challenge 003, 48 PRs já foram avaliados: **33 aprovados e 15 com pedido de mudanças**. Vários dos 15 foram aprovados depois de corrigir. As notas dos aprovados vão de 7,3 a 9,1.
+
+Só há avaliação pública até o PR 107. O seu é o 255, então há fila, e as avaliações saem em lotes (março, abril, junho, julho e agosto).
+
+## Por que os aprovados passaram, e onde você está
+
+| O que o avaliador elogiou nos aprovados | Na sua entrega |
+|---|---|
+| Hipóteses derrubadas pelos dados, sem empilhar fatores | Tem: sete fatores testados e descartados, com os números |
+| Recusar modelo sofisticado quando o sinal é fraco | Tem: está declarado onde a ferramenta empata com uma regra simples |
+| "Hoje" fixado no fim da base, e correção de `GTXPro` | Tem |
+| Teste histórico com corte no tempo e controle de vazamento | Tem, com teste automatizado |
+| Testes automatizados | Tem: 35 |
+| Auditoria por outro agente de IA | Tem: três revisões e o recálculo independente |
+| Erros da IA documentados com a causa | Tem: tabela no README |
+| Separação clara entre decisão humana e IA | Tem: "(IA)" e "(eu)" na abordagem e 43 decisões com as suas falas |
+| Demo no ar | Tem |
+| Impacto tratado como hipótese, com proposta de grupo de controle | Tem: plano de piloto |
+| Achado de negócio incômodo reportado (pipeline morto, 68% sem empresa) | Tem |
+
+O PR mais parecido com o seu é o 75 (hipóteses refutadas, auditoria independente, testes, demo), aprovado com elogio. O 88 foi aprovado como "Forte" por abandonar o ranking quando viu que a probabilidade era instável, que é a mesma honestidade da sua entrega.
+
+Um detalhe: o achado dos 138 dias não é exclusivo. Os PRs 56 e 95 também chegaram nele. Isso confirma o achado, mas ele não diferencia você.
+
+## Onde você está exposto
+
+1. **Prints da conversa com a IA.** Eu disse que eram só um reforço. Pela regra escrita, são. Mas o avaliador exigiu isso como condição em três PRs deste challenge (18, 25 e 56). No 56 ele escreveu que as capturas eram "todas da aplicação final" e pediu prints dos chats, que é exatamente a sua situação. Outros passaram só com a conversa exportada (57, 77 e 89), então não é certo que travaria, mas o risco é real.
+2. **Leitura própria do problema antes da IA.** É o critério que ficou mais duro desde 20 de março. O seu README diz abertamente que a análise dos dados foi executada pela IA. O que te defende é o log com as suas decisões de negócio e as vezes em que você parou e redirecionou a IA.
+3. **Commits concentrados.** Em quase todos os aprovados isso apareceu só como "melhoria não bloqueante". Virou bloqueio quando o process log também estava vazio, o que não é o seu caso.
+
+## O que eu faria
+
+Tirar os prints agora, antes de o avaliador chegar no seu PR. São cinco minutos com `Win + Shift + S`, e os momentos que mais valem são estes:
+
+1. Quando você parou a IA: "isso não tira a minha parte lógica?"
+2. A sua regra de reativação (mensagem com condição especial para negociação parada).
+3. Uma rejeição de tela, com o motivo.
+4. A pergunta "resolve ou mascara?"
+5. O QA mostrando que o teste histórico exagerava, e a correção.
+6. A decisão de separar a fila de Hoje.
+
+Salve em `D:\Case G4\repo\submissions\gustavo-civita\process-log\screenshots\conversa\` e me avise. Eu referencio no README, registro no log que a minha orientação anterior estava frouxa e envio para o PR.
+
+## Gustavo · 18/11 20:17
+
+quais prints
+
+<details><summary>4 chamada(s) de ferramenta</summary>
+
+- `Bash`: Localizar na conversa exportada os horários e as frases dos momentos-chave
+- `Bash`: Localizar os momentos "resolve ou mascara" e a correção do teste histórico
+- `Bash`: Pegar o horário exato de três momentos da conversa
+- `wrap_up`: 2 ações no navegador
+
+</details>
+
+**Claude · 18/11 20:18**
+
+São oito prints desta conversa. Em cada um, enquadre a sua mensagem e o começo da resposta da IA logo abaixo, para aparecer o pedido e o efeito.
+
+| # | Quando | Sua mensagem começa com | O que o print prova |
+|---|---|---|---|
+| 1 | 17/11, 21h09 | "mas vc fazendo isso n tira a minha parte logica?" | Você parou a IA quando ela começou a decidir sozinha |
+| 2 | 17/11, 21h11 | "Se ele pediu uma proposta a 14 meses e nunca mais respondeu, eu mandaria uma mensagem com uma condicao especial…" | A regra de reativação é sua |
+| 3 | 17/11, 21h20 | "Próxima pergunta: Cliente A, se ele esta negociando a 4 meses…" | Sua intuição de negócio posta à prova, e a resposta da IA com o dado |
+| 4 | 17/11, 21h44 | "Vamos por partes, este sistema quem utiliza? porque nao podemos deixar que um vendedor consiga entrar e saber os deals de outro vendedor" | Você exigiu governança por perfil |
+| 5 | 17/11, 22h23 | "Não gostei deste novo layout, as fontes nao estao legais…" | Uma tela rejeitada, com o motivo |
+| 6 | 17/11, 23h08 | "Entao vamos la, os problemas apresentados foram: A e B. Estamos resolvendo eles de qual maneira?…" | Você questionou se a solução resolve ou só mascara |
+| 7 | 18/11, 12h17 | É uma resposta da IA, com a tabela "Como estava / Com desempate neutro" | A IA errou no teste histórico, o QA que você pediu achou, e os números caíram |
+| 8 | 18/11, 18h48 e 18h50 | "Separo a fila de Hoje…? oque voce recoemdna?" e depois "Sim, separar" | Você reabriu uma decisão sua |
+
+**Como tirar:** role a conversa até o trecho, aperte `Win + Shift + S`, arraste o retângulo e salve a imagem.
+
+**Onde salvar:** `D:\Case G4\repo\submissions\gustavo-civita\process-log\screenshots\conversa\`. A pasta ainda não existe; pode criar. O nome dos arquivos não importa, eu renomeio na ordem.
+
+**Para achar os trechos mais rápido:** o arquivo `process-log\chat-exports\sessao-claude-code.md` tem a conversa inteira com os horários. Os momentos de 17/11 estão no começo da conversa, e os de 18/11 no fim.
+
+Se algum trecho antigo não aparecer mais ao rolar a conversa no aplicativo, tire os que conseguir. Os números 1, 2, 6 e 7 são os que mais pesam.
+
+## Gustavo · 18/11 20:25
+
+salvei, pasta prints-claude nos downloads
+
+<details><summary>21 chamada(s) de ferramenta</summary>
+
+- `update_plan`
+- `Bash`: Listar os prints salvos e o tamanho de cada imagem
+- `Read`: C:\Users\[usuario]\Downloads\prints-claude\Screenshot_1.png
+- `Read`: C:\Users\[usuario]\Downloads\prints-claude\Screenshot_2.png
+- `Read`: C:\Users\[usuario]\Downloads\prints-claude\Screenshot_3.png
+- `Read`: C:\Users\[usuario]\Downloads\prints-claude\Screenshot_4.png
+- `Read`: C:\Users\[usuario]\Downloads\prints-claude\Screenshot_5.png
+- `Read`: C:\Users\[usuario]\Downloads\prints-claude\Screenshot_6.png
+- `Read`: C:\Users\[usuario]\Downloads\prints-claude\Screenshot_7.png
+- `Read`: C:\Users\[usuario]\Downloads\prints-claude\Screenshot_8.png
+- `Read`: C:\Users\[usuario]\Downloads\prints-claude\Screenshot_9.png
+- `Read`: C:\Users\[usuario]\Downloads\prints-claude\Screenshot_10.png
+- `Read`: C:\Users\[usuario]\Downloads\prints-claude\Screenshot_11.png
+- `Read`: C:\Users\[usuario]\Downloads\prints-claude\Screenshot_12.png
+- `Read`: C:\Users\[usuario]\Downloads\prints-claude\Screenshot_13.png
+- `Read`: C:\Users\[usuario]\Downloads\prints-claude\Screenshot_14.png
+- `Read`: C:\Users\[usuario]\Downloads\prints-claude\Screenshot_15.png
+- `Read`: C:\Users\[usuario]\Downloads\prints-claude\Screenshot_16.png
+- `Read`: C:\Users\[usuario]\Downloads\prints-claude\Screenshot_17.png
+- `Read`: C:\Users\[usuario]\Downloads\prints-claude\Screenshot_18.png
+- `Read`: C:\Users\[usuario]\Downloads\prints-claude\Screenshot_19.png
+
+</details>
+
+**Claude · 18/11 20:25**
+
+Vi os 19 prints um a um: são só trechos da conversa, sem e-mail, barra lateral ou dado pessoal. Estou organizando na pasta do process log e ligando nos documentos.
+
+<details><summary>7 chamada(s) de ferramenta</summary>
+
+- `Write`: D:\Case G4\work\prints_conversa.py
+- `Bash`: Copiar os prints em ordem para o process log e listá-los no README dos prints
+- `Edit`: D:\Case G4\repo\submissions\gustavo-civita\README.md
+- `Edit`: D:\Case G4\repo\submissions\gustavo-civita\README.md
+- `Write`: D:\Case G4\work\decisao44.py
+- `Bash`: Acrescentar a Decisão 44 ao log e ver o que mudou no repositório
 - `export_transcript`
 
 </details>

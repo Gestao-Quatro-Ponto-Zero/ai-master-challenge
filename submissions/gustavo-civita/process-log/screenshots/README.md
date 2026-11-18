@@ -1,11 +1,69 @@
 # Prints do processo
 
-Capturas tiradas durante a sessão de trabalho com o Claude Code, na ordem em que as telas foram
-construídas, avaliadas por mim e refeitas. O motivo de cada mudança está em `../decisoes.md`.
+Três conjuntos: a conversa com a IA, a versão final rodando e as versões anteriores da tela, na ordem
+em que foram construídas, avaliadas por mim e refeitas. O motivo de cada mudança está em `../decisoes.md`.
 
 Os prints pequenos (iterações) vêm do painel de navegador do Claude Code, que é estreito. Os da versão final
 foram tirados com o Chrome em tamanho cheio. Os de celular e tablet mostram várias telas lado a lado,
 cada uma numa moldura com a largura real do aparelho (390 px e 768 px).
+
+## Conversa com a IA
+
+Capturas que eu tirei da própria conversa no Claude Code (aplicativo de desktop), nos momentos em que
+decidi, discordei ou mandei conferir. A conversa inteira, com horários, está em
+[`../chat-exports/sessao-claude-code.md`](../chat-exports/sessao-claude-code.md).
+
+### 17/11, 21h09. Parei a IA quando ela começou a decidir a lógica sozinha; ela muda para uma pergunta de negócio por vez
+
+![01-parei-a-ia.png](conversa/01-parei-a-ia.png)
+
+### 17/11, 21h11. A regra de reativação é minha: mensagem com condição especial; a IA confere nos dados
+
+![02-regra-de-reativacao.png](conversa/02-regra-de-reativacao.png)
+
+### 17/11, 21h20. Minha intuição posta à prova: os dados discordam de um argumento meu e apoiam o outro
+
+![03-intuicao-e-dados-1.png](conversa/03-intuicao-e-dados-1.png)
+
+![04-intuicao-e-dados-2.png](conversa/04-intuicao-e-dados-2.png)
+
+![05-intuicao-e-dados-3.png](conversa/05-intuicao-e-dados-3.png)
+
+### 17/11, 21h44. Exigi governança por perfil e pedi para conferir o que a task pede; a IA expõe o limite técnico
+
+![06-governanca-1.png](conversa/06-governanca-1.png)
+
+![07-governanca-2.png](conversa/07-governanca-2.png)
+
+### 17/11, 22h23. Rejeitei o layout e mandei conferir contra a task; a auditoria achou um erro no cálculo da chance, que foi refeito
+
+![08-layout-rejeitado.png](conversa/08-layout-rejeitado.png)
+
+![09-auditoria-achou-erro-1.png](conversa/09-auditoria-achou-erro-1.png)
+
+![10-auditoria-achou-erro-2.png](conversa/10-auditoria-achou-erro-2.png)
+
+![11-auditoria-achou-erro-3.png](conversa/11-auditoria-achou-erro-3.png)
+
+### 17/11, 23h08. Perguntei se a solução resolve ou só mascara e mandei subagentes independentes atacarem a tese
+
+![12-resolve-ou-mascara-1.png](conversa/12-resolve-ou-mascara-1.png)
+
+![13-resolve-ou-mascara-2.png](conversa/13-resolve-ou-mascara-2.png)
+
+### 18/11, 18h48. Reabri uma decisão minha: a fila de Hoje separada em meta do dia e "se sobrar tempo", com teste e ensaio do zero
+
+![14-separar-a-fila-1.png](conversa/14-separar-a-fila-1.png)
+
+![15-separar-a-fila-2.png](conversa/15-separar-a-fila-2.png)
+
+![16-separar-a-fila-3.png](conversa/16-separar-a-fila-3.png)
+
+![17-separar-a-fila-4.png](conversa/17-separar-a-fila-4.png)
+
+![18-separar-a-fila-5.png](conversa/18-separar-a-fila-5.png)
+
+![19-separar-a-fila-6.png](conversa/19-separar-a-fila-6.png)
 
 ## Versão final rodando
 

@@ -241,7 +241,7 @@ ganhava em 7 de 10.
 ## Evidências
 
 - [x] [process-log/decisoes.md](process-log/decisoes.md): as decisões numeradas, com as minhas falas transcritas e um resumo de cinco minutos no topo
-- [x] [process-log/screenshots/](process-log/screenshots/README.md): prints das versões da tela (v1 a v9) e da versão final rodando
+- [x] [process-log/screenshots/](process-log/screenshots/README.md): 19 prints da conversa com a IA nos momentos de decisão, prints das versões da tela (v1 a v9) e da versão final rodando
 - [x] [docs/exemplos/](docs/exemplos/README.md): saídas da solução para conferência
 - [x] [process-log/chat-exports/sessao-claude-code.md](process-log/chat-exports/sessao-claude-code.md): a conversa com o Claude Code, gerada por `exportar.py` (o cabeçalho do arquivo diz até que horário ela vai)
 - [x] Análises de apoio e scripts de verificação em [docs/analises/](docs/analises/), todos rodando com caminhos relativos
@@ -255,6 +255,6 @@ ganhava em 7 de 10.
 entre 11h40 e 13h15 de 18/11, foi a IA executando o QA e as correções que eu
 tinha pedido no fim do primeiro bloco (decisão 41). O terceiro, a partir das
 18h48 de 18/11, foi a separação da fila de Hoje (decisão 42), com novos testes
-e prints, e depois os commits, o envio e a demo (decisão 43). Os horários de cada mensagem estão na conversa exportada.
+e prints, e depois os commits, o envio, a demo e os prints da conversa (decisões 43 e 44). Os horários de cada mensagem estão na conversa exportada.
 
 _Submissão enviada em: 18/11/2026_

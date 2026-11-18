@@ -1554,3 +1554,42 @@ A IA abriu a demo publicada e conferiu a tela de Hoje de uma vendedora e o
 Painel de operações de receita, sem erro no console. A demo é pública e sem
 senha; a tela de entrada já dizia que é projeto de candidato, não produto
 oficial do G4 (ressalva da Decisão 30), e os dados são fictícios.
+
+---
+
+## Decisão 44 — Prints da conversa, depois de ler como os aprovados foram avaliados
+
+**Pedido do Gustavo,** já com o PR aberto:
+
+> "veja os prs do challenge 3 e o pq foram aprovados e ve se o meu segue bnessa
+> linha"
+
+**O que a IA leu:** as revisões formais dos 48 PRs do Challenge 003 que o G4
+já tinha avaliado (33 aprovados, 15 com pedido de mudanças), pela API pública
+do GitHub.
+
+**O que os aprovados têm em comum e a submissão também tem:** hipóteses
+derrubadas pelos dados, recusa de modelo sofisticado quando o sinal é fraco,
+"hoje" fixado no fim da base, controle de vazamento, teste histórico com corte
+no tempo, testes automatizados, auditoria por outro agente, erros da IA com a
+causa, separação entre decisão humana e IA, e demo no ar. O achado dos 138
+dias não é exclusivo: outros dois candidatos aprovados chegaram nele.
+
+**Onde a IA tinha errado.** Na Decisão 43 ela disse que prints da conversa
+eram reforço, porque o guia aceita "um ou mais" formatos. As revisões mostram
+outra coisa: em três PRs deste challenge o avaliador exigiu prints das sessões
+com a IA antes de aprovar, e num deles o motivo foi exatamente ter só capturas
+da aplicação final. Outros passaram só com a conversa exportada, então não era
+certo que travaria, mas a orientação estava frouxa. A IA disse isso ao
+Gustavo e indicou os momentos que valiam print.
+
+**O que o Gustavo fez:** tirou 19 prints da própria conversa, nos momentos em
+que decidiu, discordou ou mandou conferir: quando parou a IA, a regra de
+reativação, a intuição dele posta à prova pelos dados, a exigência de
+governança, o layout rejeitado (com a auditoria que achou o erro no cálculo da
+chance), a pergunta "resolve ou mascara?" e a separação da fila de Hoje.
+
+**O que a IA fez:** abriu os 19 arquivos um a um antes de incluir (só trechos
+da conversa, sem dado pessoal), pôs em ordem cronológica em
+`screenshots/conversa/` e listou cada um, com data, hora e o que mostra, no
+README dos prints.
