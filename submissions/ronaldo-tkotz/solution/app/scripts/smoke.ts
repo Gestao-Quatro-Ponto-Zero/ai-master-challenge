@@ -1,7 +1,7 @@
 /**
- * Smoke test — proves the engine is wired to the real warehouse and grounded.
- * Asserts numbers verified by hand during the discovery pass. Run under node/tsx
- * (better-sqlite3 is a native module and does not load under the bun runtime).
+ * Smoke test — proves the engine is wired to the real RavenStack warehouse and grounded.
+ * Asserts numbers checked against the database during the process (decisions.md).
+ * Run under node/tsx (better-sqlite3 is a native module and does not load under the bun runtime).
  *
  *   bun run smoke   ->   tsx scripts/smoke.ts
  */
@@ -15,25 +15,41 @@ function check(label: string, actual: unknown, expected: unknown) {
   console.log(`${ok ? "✓" : "✗"} ${label}: got ${actual}${ok ? "" : ` (expected ${expected})`}`);
 }
 
-// 1. Schema is reachable and complete.
+// 1. Schema is reachable: source tables, views and data-quality tables.
 const schema = schemaSnapshot();
-check("table count", schema.length, 8);
+check("schema objects (tables + views)", schema.length, 15);
 
-// 2. Grounded macro numbers (verified in discovery).
-const macro = runQuery(METRICS.total_arr.sql).rows[0] as { accounts: number; total_arr: number };
-check("account count", macro.accounts, 500);
-check("total ARR", macro.total_arr, 180652200);
+// 2. Grounded base numbers.
+const base = runQuery(METRICS.base_resumo.sql).rows[0] as {
+  contas: number;
+  assinaturas: number;
+  contas_com_evento: number;
+  eventos_churn: number;
+};
+check("accounts", base.contas, 500);
+check("subscriptions", base.assinaturas, 5000);
+check("accounts with a churn event", base.contas_com_evento, 352);
+check("churn events", base.eventos_churn, 600);
 
-const ent = runQuery(
-  "SELECT SUM(arr_usd) AS v FROM accounts WHERE segment='Enterprise'",
-).rows[0] as { v: number };
-check("Enterprise ARR", ent.v, 133972800);
+// 3. The monthly series covers 24 months; 'features' is the top churn reason (114 events).
+check("churn_mensal months", runQuery(METRICS.churn_mensal.sql).rowCount, 24);
+const features = runQuery(METRICS.motivos_churn.sql).rows.find(
+  (r) => (r as { reason_code: string }).reason_code === "features",
+) as { eventos: number } | undefined;
+check("churn events with reason 'features'", features?.eventos, 114);
 
-// 3. The signature story: 12 critical-health Enterprise renewals inside 120 days.
-const cliff = runQuery(METRICS.renewal_cliff.sql);
-check("renewal-cliff accounts", cliff.rowCount, 12);
+// 4. Every metric in the catalog runs against the warehouse.
+for (const id of Object.keys(METRICS)) {
+  let ok = true;
+  try {
+    runQuery(METRICS[id].sql);
+  } catch {
+    ok = false;
+  }
+  check(`metric ${id} runs`, ok, true);
+}
 
-// 4. Read-only guard actually blocks writes.
+// 5. Read-only guard actually blocks writes.
 let blocked = false;
 try {
   runQuery("DELETE FROM accounts");

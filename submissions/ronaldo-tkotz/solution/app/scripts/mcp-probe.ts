@@ -125,22 +125,22 @@ async function main(): Promise<void> {
       }
     }
 
-    const renewalCliffResult = await client.callTool({
+    const churnMensalResult = await client.callTool({
       name: "run_metric",
-      arguments: { id: "renewal_cliff" },
+      arguments: { id: "churn_mensal" },
     }, CallToolResultSchema);
 
-    if (renewalCliffResult.isError) {
-      fail(`run_metric returned an MCP error: ${getTextContent(renewalCliffResult)}`);
+    if (churnMensalResult.isError) {
+      fail(`run_metric returned an MCP error: ${getTextContent(churnMensalResult)}`);
       hasFailure = true;
     } else {
-      const renewalCliffPayload = asQueryResult(parseToolPayload(renewalCliffResult));
+      const churnMensalPayload = asQueryResult(parseToolPayload(churnMensalResult));
 
       if (
         !assertCheck(
-          renewalCliffPayload.rowCount === 12 && renewalCliffPayload.rows.length === 12,
-          "run_metric returned 12 renewal_cliff rows",
-          `run_metric returned rowCount=${renewalCliffPayload.rowCount}, rows.length=${renewalCliffPayload.rows.length}`,
+          churnMensalPayload.rowCount === 24 && churnMensalPayload.rows.length === 24,
+          "run_metric returned 24 churn_mensal rows (one per month)",
+          `run_metric returned rowCount=${churnMensalPayload.rowCount}, rows.length=${churnMensalPayload.rows.length}`,
         )
       ) {
         hasFailure = true;

@@ -28,6 +28,33 @@ nothing from that project's dataset stays. The contract is `ISA.md`; human decis
   chat). The app then builds a Minto-pyramid deck (.pptx) from the marks, the audience, the brief and the
   conversations and screens you pick as context. Every number the AI writes is checked against the SQL.
   Earlier builds stay downloadable.
+- **MCP server** (D57): the same tools the analyst uses, exposed over the Model Context Protocol, so
+  any MCP client (Claude Code, Claude Desktop, Cursor) can query the RavenStack database directly.
+
+## MCP server
+
+`src/mcp/server.ts` serves the analyst's tool layer (`src/engine/tools.ts`) over stdio. Chat and MCP
+call the same code, so an answer in Claude Desktop cites the same SQL as one in the app.
+
+| Tool | What it does |
+|---|---|
+| `query_warehouse` | One read-only SQL query (SELECT or WITH) over the tables and views |
+| `list_metrics` / `run_metric` | The vetted named metrics (monthly churn, reasons, MRR by plan, satisfaction, usage, data quality) |
+| `describe_schema` | Every table and view with its columns |
+| `make_chart` | A chart spec from rows already queried |
+| `generate_deck` | A grounded Minto-pyramid deck spec over the warehouse |
+
+The server needs no model key; it only reads the database. After `bun install`, register it from this
+folder (absolute paths, so it starts from any directory):
+
+```bash
+claude mcp add ravenstack \
+  -e WAREHOUSE_PATH="$PWD/data/ravenstack.db" \
+  -- "$PWD/node_modules/.bin/tsx" "$PWD/src/mcp/server.ts"
+```
+
+For Claude Desktop or Cursor, the same command and env go in the client's `mcpServers` config.
+`bun run mcp-probe` connects as a client and checks the tools end to end.
 
 ## Run locally
 
@@ -61,6 +88,7 @@ the Blob store adds the last one.
 ```bash
 bun run typecheck && bun run lint
 # need WAREHOUSE_PATH:
+bun run smoke && bun run mcp-probe
 bun run visao-test && bun run churn-mensal-test && bun run tela2-test && bun run tela3-test
 bun run marcados-test && bun run deck-marcados-test && bun run recorte-test && bun run telas-test
 bun run estado-test

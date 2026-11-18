@@ -882,3 +882,24 @@
   - o app subiu da pasta nova, e a prova da rolagem (D55) passou de novo nos dois tamanhos de tela.
 - **Humano fez:** apagou pelo GitHub o README extra que tinha ficado em `001-churn/` (commit `c2d2595`). A IA trouxe esse commit antes do push.
 - **IA mudou no Vercel:** o Root Directory do projeto `ravenstack-churn` passou a ser `submissions/ronaldo-tkotz/solution/app`, antes do push, para o build pelo GitHub achar o app no lugar novo.
+
+## D57 — Conexões de API e MCP conferidas; o MCP entra na documentação (humano apontou; verificação e correção da IA)
+- **Humano lembrou (18/11):** depois da entrega, que as conexões de dados, de API e de MCP não tinham sido revisadas.
+- **IA conferiu a API (o analista, DeepSeek):**
+  - localmente, uma pergunta real pelo `bun run ask` ("Quantas contas existem na base?") voltou 500 contas, com o SQL citado;
+  - no Vercel, as variáveis do analista, do login e do estado estão na produção (só os nomes foram listados, nenhum valor);
+  - `/api/health` responde `warehouse: ok`, e o `/api/chat` recusa (401) quem não fez login;
+  - o `.env` continua fora do git.
+- **IA achou dois problemas no MCP:**
+  - **O servidor funcionava, mas os testes estavam velhos.** O `mcp-probe` e o `smoke` ainda pediam a métrica `renewal_cliff` e números do projeto de referência (Veta), de antes do catálogo de métricas do RavenStack (D20–D24). O probe falhava, e o smoke quebraria. A IA não tinha atualizado esses dois scripts quando trocou o catálogo.
+  - **O MCP não aparecia na entrega.** Não estava no README, nem neste diário, nem havia instrução de como conectar. Quem avalia não saberia que ele existe.
+- **IA corrigiu:**
+  - o `mcp-probe` passou a chamar `run_metric churn_mensal` (24 meses);
+  - o `smoke` foi reescrito com números do RavenStack: 15 tabelas e views, 500 contas, 5.000 assinaturas, 352 contas com evento, 600 eventos, 114 eventos com motivo `features`, todas as métricas do catálogo rodando e a escrita bloqueada;
+  - uma seção "MCP server" no README do app, com as 6 ferramentas e o comando para registrar no Claude Code, mais uma linha na tabela de entregas e na de ferramentas do README da submissão.
+- **Como foi verificado:**
+  - `bun run smoke`: 16 de 16 checagens passam;
+  - `bun run mcp-probe`: 4 de 4 checagens passam;
+  - um cliente MCP aberto de outra pasta, com o comando da documentação (caminhos absolutos e só `WAREHOUSE_PATH`), listou as 6 ferramentas e contou 600 eventos de churn;
+  - `tsc --noEmit` sem erros.
+- **Humano autorizou (18/11):** os ajustes e o push.

@@ -62,6 +62,7 @@ A recomendação principal é conciliar o CRM com o faturamento e corrigir a cap
 | Base SQL a partir dos CSVs (schema, tipagem, 43 checagens, views) | [`solution/sql/`](solution/sql/) e o banco em `solution/app/data/ravenstack.db` |
 | **Vídeo de 2 minutos mostrando a ferramenta** (narração e legendas) | **[assistir no Google Drive](https://drive.google.com/file/d/14ctMS_deoJNzGt1KyqubhB7UHZZSIxQn/view?usp=sharing)**; cópia em [`solution/demo/ravenstack-demo.mp4`](solution/demo/ravenstack-demo.mp4), legenda em [`ravenstack-demo.srt`](solution/demo/ravenstack-demo.srt); como foi feito: [`process-log/video/`](process-log/video/) |
 | Ferramenta interativa (opcional): telas, drill-down, analista com SQL, apresentação | https://ravenstack-churn.vercel.app ([código](solution/app/)); login e senha de avaliador na descrição do pull request |
+| Servidor MCP: as mesmas ferramentas do analista para qualquer cliente MCP (Claude Code, Claude Desktop, Cursor) consultar o banco direto | [`solution/app/src/mcp/server.ts`](solution/app/src/mcp/server.ts); como conectar: [README do app, seção MCP server](solution/app/README.md#mcp-server) |
 
 ### Estrutura da pasta e como rodar
 
@@ -157,6 +158,7 @@ Estão em ordem de prioridade, com dono, prazo e impacto estimado na seção 3 d
 | Claude (whiteboard) | Desenho do dashboard (D22) |
 | Gemini (no Google Sheets) | Minha análise exploratória inicial nas planilhas (links nas evidências). Os números que trouxe dela foram conferidos contra os CSVs (D12, D52) |
 | DeepSeek | O analista dentro da ferramenta: responde em SQL, monta telas e escreve a apresentação |
+| MCP (Model Context Protocol) | Expõe as ferramentas do analista fora do app, para qualquer cliente MCP consultar o banco com as mesmas regras (D57) |
 | Datasette | Navegar no banco SQL durante a exploração |
 | Vercel + GitHub | Publicação da ferramenta com deploy automático (D48) |
 
