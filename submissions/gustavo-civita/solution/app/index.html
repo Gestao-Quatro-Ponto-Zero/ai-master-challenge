@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Case G4 · AI Master: a fila diária de negociações para o vendedor, com o motivo de cada prioridade.">
+  <title>Case G4 · AI Master</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/icone-180.png">
+  <script>
+    /* Aplica o tema antes de desenhar a página, para não piscar. */
+    (function () {
+      var saved = null;
+      try { saved = JSON.parse(localStorage.getItem("leadscorer.tema")); } catch (error) { /* sem armazenamento */ }
+      var asked = new URLSearchParams(location.search).get("tema"); /* ?tema=escuro ou ?tema=claro */
+      if (asked === "escuro" || asked === "claro") saved = asked === "escuro" ? "dark" : "light";
+      var dark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.dataset.theme = dark ? "dark" : "light";
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="vendor/phosphor/phosphor.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside class="side">
+    <p class="brand"><img class="logo light" src="assets/g4-logo.png" alt="G4" width="76" height="30"><img class="logo dark" src="assets/g4-logo-escuro.png" alt="G4" width="76" height="30"><small>AI Master Challenge</small></p>
+    <nav id="nav" aria-label="Páginas"></nav>
+    <div class="account">
+      <div id="user"></div>
+      <div class="account-actions">
+        <button class="link" data-act="theme" type="button" title="Trocar entre modo claro e escuro"></button>
+        <button class="link" id="leave" type="button" title="Trocar perfil"><i class="ph ph-swap" aria-hidden="true"></i><span>Trocar perfil</span></button>
+      </div>
+    </div>
+  </aside>
+  <main id="view"></main>
+
+  <dialog class="sheet" id="sheet"></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite" popover="manual" hidden></div>
+
+  <script src="data.js"></script>
+  <script src="workflow.js"></script>
+  <script src="charts.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

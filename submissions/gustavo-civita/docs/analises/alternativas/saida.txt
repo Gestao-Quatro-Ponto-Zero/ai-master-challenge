@@ -1,0 +1,297 @@
+﻿today 2017-12-31 00:00:00 n 8800
+deal_stage
+Won            4238
+Lost           2473
+Engaging       1589
+Prospecting     500
+Name: count, dtype: int64
+agents in teams 35 with deals 30
+agents w/o deals: ['Carl Lin', 'Carol Thompson', 'Elizabeth Anderson', 'Mei-Mei Johns', 'Natalya Ivanova']
+
+== LISTAS ==
+lista
+encerrar    987
+abordar     500
+reativar    474
+foco        128
+Name: count, dtype: int64
+conta vazia em abertas: 0.682
+            n    preco           ve  sem_conta
+lista                                         
+abordar   500  1073986      0.00000   0.674000
+encerrar  987  2073269      0.00000   0.687943
+foco      128   306707  63992.15838   0.710938
+reativar  474  1512253      0.00000   0.670886
+idade por lista
+          count        mean        std    min     25%    50%    75%    max
+lista                                                                     
+abordar     0.0         NaN        NaN    NaN     NaN    NaN    NaN    NaN
+encerrar  987.0  244.240122  70.047898  151.0  176.00  239.0  299.0  423.0
+foco      128.0   61.859375  24.590099    9.0   46.75   65.0   83.0   96.0
+reativar  474.0  141.215190  19.093851   97.0  128.00  144.0  157.0  180.0
+
+== POR VENDEDOR ==
+                    abordar  encerrar  foco  reativar  abertas  morto  pct_morto  pct_morto_eng      ve  fechadas  ganhos    receita     wr           manager regional_office  ganhos_mes  meses_de_foco
+sales_agent                                                                                                                                                                                             
+Darcel Schlecht         111        25     0        58      194     83       0.43           1.00     0.0       553     349  1153214.0  0.631     Melvin Marxen         Central        34.9           0.00
+Anna Snelling            55        30     0        27      112     57       0.51           1.00     0.0       336     208   275056.0  0.619  Dustin Brinkmann         Central        20.8           0.00
+Vicki Laflamme            0        65     8        31      104     96       0.92           0.92  3977.0       347     221   478396.0  0.637      Celia Rouche            West        22.1           0.23
+Kary Hendrixson           0        73    13        17      103     90       0.87           0.87  9535.0       335     209   454298.0  0.624     Summer Sewald            West        20.9           0.39
+Versie Hillebrand        54        27     0        16       97     43       0.44           1.00     0.0       264     176   187693.0  0.667  Dustin Brinkmann         Central        17.6           0.00
+Kami Bicknell             0        60    10        20       90     80       0.89           0.89  3562.0       272     174   316456.0  0.640     Summer Sewald            West        17.4           0.37
+Zane Levy                 0        54    10        24       88     78       0.89           0.89  5938.0       261     161   430068.0  0.617     Summer Sewald            West        16.1           0.38
+Marty Freudenburg        54        14     0        19       87     33       0.38           1.00     0.0       194     122   291195.0  0.629     Melvin Marxen         Central        12.2           0.00
+Cassey Cress              0        51     8        26       85     77       0.91           0.91  6114.0       261     163   450489.0  0.625     Rocco Neubert            East        16.3           0.31
+Gladys Colclough         49        19     0        17       85     36       0.42           1.00     0.0       232     135   345674.0  0.582     Melvin Marxen         Central        13.5           0.00
+Corliss Cosme             0        60     9        12       81     72       0.89           0.89  5948.0       229     150   421036.0  0.655        Cara Losch            East        15.0           0.39
+Jonathan Berthelot       48        23     0        10       81     33       0.41           1.00     0.0       264     171   284886.0  0.648     Melvin Marxen         Central        17.1           0.00
+Lajuana Vencill          40        20     0        20       80     40       0.50           1.00     0.0       231     127   194632.0  0.550  Dustin Brinkmann         Central        12.7           0.00
+Markita Hansen            0        53    13        13       79     66       0.84           0.84  5163.0       227     130   328792.0  0.573      Celia Rouche            West        13.0           0.57
+Maureen Marcano           0        48     7        17       72     65       0.90           0.90  3829.0       213     149   350395.0  0.700     Summer Sewald            West        14.9           0.33
+Daniell Hammack           0        47     9        16       72     63       0.88           0.88  2176.0       187     114   364229.0  0.610     Rocco Neubert            East        11.4           0.48
+Violet Mclelland          0        48     8        12       68     60       0.88           0.88   396.0       193     122   123431.0  0.632        Cara Losch            East        12.2           0.41
+Moses Frase              31        16     0        18       65     34       0.52           1.00     0.0       195     129   207182.0  0.662  Dustin Brinkmann         Central        12.9           0.00
+Niesha Huffines          34        15     0        15       64     30       0.47           1.00     0.0       175     105   176961.0  0.600     Melvin Marxen         Central        10.5           0.00
+James Ascencio            0        43     5        13       61     56       0.92           0.92  4097.0       206     135   413533.0  0.655     Summer Sewald            West        13.5           0.24
+Boris Faz                 0        39     5        13       57     52       0.91           0.91  6009.0       153     101   261631.0  0.660     Rocco Neubert            East        10.1           0.33
+Elease Gluck              0        33     5        13       51     46       0.90           0.90   626.0       126      80   289195.0  0.635      Celia Rouche            West         8.0           0.40
+Hayden Neloms             0        37     2        11       50     48       0.96           0.96    41.0       152     107   272111.0  0.704      Celia Rouche            West        10.7           0.13
+Rosalina Dieter           0        31     6        13       50     44       0.88           0.88  1149.0       110      72   235403.0  0.655      Celia Rouche            West         7.2           0.55
+Cecily Lampkin           24        10     0         9       43     19       0.44           1.00     0.0       160     107   229800.0  0.669  Dustin Brinkmann         Central        10.7           0.00
+Rosie Papadopoulos        0        26     3        10       39     36       0.92           0.92  2457.0       121      78   230169.0  0.645        Cara Losch            East         7.8           0.25
+Wilburn Farren            0        20     7         4       31     24       0.77           0.77  2975.0        79      55   157640.0  0.696        Cara Losch            East         5.5           0.89
+abertas        min      31.00 p25      59.00 med      79.00 p75      87.50 max     194.00 cv 0.40
+foco           min       0.00 p25       0.00 med       5.00 p75       8.00 max      13.00 cv 0.93
+abordar        min       0.00 p25       0.00 med       0.00 p75      37.00 max     111.00 cv 1.53
+morto          min      19.00 p25      36.00 med      52.00 p75      69.00 max      96.00 cv 0.39
+pct_morto      min       0.38 p25       0.48 med       0.88 p75       0.90 max       0.96 cv 0.30
+pct_morto_eng  min       0.77 p25       0.89 med       0.92 p75       1.00 max       1.00 cv 0.07
+fechadas       min      79.00 p25     167.50 med     213.00 p75     262.50 max     553.00 cv 0.42
+wr             min       0.55 p25       0.62 med       0.64 p75       0.66 max       0.70 cv 0.06
+receita        min  123431.00 p25  229984.50 med  289195.00 p75  388881.00 max 1153214.00 cv 0.58
+ve             min       0.00 p25       0.00 med    1149.00 p75    4037.00 max    9535.00 cv 1.15
+vendedores com 0 em foco: 10  com 0 abordar: 17
+top5 share of abordar: 0.646  top5 share foco: 0.4296875
+
+== POR ESCRITORIO / MANAGER ==
+                 vend  abertas  foco  abordar  morto       ve  fechadas  ganhos    receita  foco_por_vend  abordar_por_vend     wr  pct_morto
+regional_office                                                                                                                              
+Central            10      908     0      500    408      0.0      2604    1629  3346293.0            0.0              50.0  0.626       0.45
+East                7      433    49        0    384  26075.0      1223     783  2008625.0            7.0               0.0  0.640       0.89
+West               10      748    79        0    669  37917.0      2249    1438  3568647.0            7.9               0.0  0.639       0.89
+                  vend  abertas  foco  abordar  morto       ve  fechadas  ganhos    receita  foco_por_vend  abordar_por_vend     wr  pct_morto
+manager                                                                                                                                       
+Cara Losch           4      219    27        0    192  11776.0       622     405   932276.0            6.8               0.0  0.651       0.88
+Celia Rouche         5      334    34        0    300  10956.0       962     610  1603897.0            6.8               0.0  0.634       0.90
+Dustin Brinkmann     5      397     0      204    193      0.0      1186     747  1094363.0            0.0              40.8  0.630       0.49
+Melvin Marxen        5      511     0      296    215      0.0      1418     882  2251930.0            0.0              59.2  0.622       0.42
+Rocco Neubert        3      214    22        0    192  14299.0       601     378  1076349.0            7.3               0.0  0.629       0.90
+Summer Sewald        5      414    45        0    369  26961.0      1287     828  1964750.0            9.0               0.0  0.643       0.89
+redistribuir foco: mover 52 de 128 (41%) iguala a carteira; media 4.7
+redistribuir abordar: mover 315 de 500 (63%) iguala a carteira; media 18.5
+meses_de_foco (foco / fechadas por mes):
+count    27.00
+mean      0.25
+std       0.23
+min       0.00
+25%       0.00
+50%       0.25
+75%       0.39
+max       0.89
+Name: meses_de_foco, dtype: float64
+corr abertas-foco vs fechadas hist: SignificanceResult(statistic=np.float64(0.05446899390013431), pvalue=np.float64(0.7872858054260067))
+corr abordar vs fechadas hist: SignificanceResult(statistic=np.float64(0.37446422825134357), pvalue=np.float64(0.054306670550346846))
+
+== WIN RATE POR VENDEDOR / PRODUTO / ESCRITORIO (qui2) ==
+sales_agent      p=0.264  wr min 0.550 max 0.704
+product          p=0.372  wr min 0.600 max 0.648
+regional_office  p=0.604  wr min 0.626 max 0.639
+manager          p=0.786  wr min 0.621 max 0.644
+sector           p=0.971  wr min 0.612 max 0.648
+
+== CICLO: ganhos e perdidos por idade ==
+             count  mean   std  min  25%   50%   75%    max
+deal_stage                                                 
+Lost        2473.0  41.5  40.0  1.0  7.0  14.0  79.0  138.0
+Won         4238.0  51.8  41.2  1.0  9.0  57.0  88.0  138.0
+max dur Won: 138  Lost: 138
+thr | ganhos apos thr (n, %, receita %) | perdidos apos thr | abertas Engaging acima thr (n, %)
+  14 |  2681  63.3%  62.6% |  1224  49.5% |  1582  99.6%
+  30 |  2421  57.1%  56.7% |  1127  45.6% |  1571  98.9%
+  45 |  2294  54.1%  53.7% |  1059  42.8% |  1558  98.0%
+  60 |  2044  48.2%  47.6% |   935  37.8% |  1532  96.4%
+  75 |  1555  36.7%  35.9% |   681  27.5% |  1505  94.7%
+  90 |   966  22.8%  22.2% |   392  15.9% |  1479  93.1%
+ 100 |   599  14.1%  14.2% |   247  10.0% |  1454  91.5%
+ 110 |   329   7.8%   7.6% |   123   5.0% |  1420  89.4%
+ 120 |   146   3.4%   3.2% |    47   1.9% |  1376  86.6%
+ 130 |    41   1.0%   0.7% |    12   0.5% |  1329  83.6%
+ 138 |     0   0.0%   0.0% |     0   0.0% |  1291  81.2%
+ 140 |     0   0.0%   0.0% |     0   0.0% |  1260  79.3%
+ 150 |     0   0.0%   0.0% |     0   0.0% |  1152  72.5%
+ 180 |     0   0.0%   0.0% |     0   0.0% |   730  45.9%
+receita ganha por faixa de duracao
+               n        rec  pct_rec  perdidos     wr
+dur                                                  
+(-1, 7]      756  1799273.0    0.180       657  0.535
+(7, 14]      801  1939343.0    0.194       592  0.575
+(14, 30]     260   594309.0    0.059        97  0.728
+(30, 60]     377   907383.0    0.091       192  0.663
+(60, 90]    1078  2540245.0    0.254       543  0.665
+(90, 120]    820  1905388.0    0.190       345  0.704
+(120, 200]   146   319593.0    0.032        47  0.756
+deal-dias: ganhos 219452 perdidos 102578 pct perdidos 0.3185355401670652
+deal-dias acumulados nas abertas Engaging: 315919.0  das quais mortas: 308001.0
+idade abertas Engaging:
+count    1589.000000
+mean      198.816237
+std        83.595796
+min         9.000000
+25%       148.000000
+50%       165.000000
+75%       263.000000
+max       423.000000
+Name: age, dtype: float64
+age
+(0, 30]        18
+(30, 60]       39
+(60, 90]       53
+(90, 120]     103
+(120, 150]    224
+(150, 180]    422
+(180, 250]    280
+(250, 400]    438
+(400, 600]     12
+Name: count, dtype: int64
+
+== SAZONALIDADE (artefato?) ==
+engage por mes
+engage_date
+2016-10       7
+2016-11     115
+2016-12     236
+2017-01     312
+2017-02     515
+2017-03     792
+2017-04     874
+2017-05     722
+2017-06     792
+2017-07    1198
+2017-08     793
+2017-09     779
+2017-10     761
+2017-11     283
+2017-12     121
+Freq: M
+close por mes
+deal_stage  Lost  Won
+close_date           
+2017-03      116  531
+2017-04      301  285
+2017-05      367  438
+2017-06      110  531
+2017-07      319  308
+2017-08      339  446
+2017-09      132  503
+2017-10      287  279
+2017-11      362  406
+2017-12      140  511
+abertas Engaging por mes de engage
+engage_date
+2016-11     13
+2016-12     40
+2017-01     65
+2017-02     95
+2017-03    137
+2017-04    121
+2017-05    134
+2017-06    111
+2017-07    402
+2017-08    254
+2017-09    102
+2017-10     58
+2017-11     39
+2017-12     18
+Freq: M
+ganhos: trimestres entre engage e close
+0    2203
+1    2035
+Name: count, dtype: int64
+
+== CARGA x RESULTADO ==
+                  n     wr   dur  dur_won
+load_q                                   
+(4.999, 39.0]  1211  0.625  18.0     38.0
+(39.0, 57.0]   1106  0.614  17.5     48.0
+(57.0, 75.0]   1170  0.620  26.5     43.0
+(75.0, 98.0]   1126  0.600  14.0     21.0
+(98.0, 169.0]  1126  0.615  13.0     16.0
+spearman load~won SignificanceResult(statistic=np.float64(-0.014534942839274518), pvalue=np.float64(0.27092705589679633))
+spearman load~dur SignificanceResult(statistic=np.float64(-0.0714098396832934), pvalue=np.float64(6.112686393497545e-08))
+within-agent load~won PearsonRResult(statistic=np.float64(-0.02480014291167527), pvalue=np.float64(0.06029312521937696))
+within-agent load~dur PearsonRResult(statistic=np.float64(-0.11033078000514174), pvalue=np.float64(5.202766147175499e-17))
+agente: fechadas vs wr SignificanceResult(statistic=np.float64(-0.35899787804531896), pvalue=np.float64(0.06591676462231523))
+agente: abertas vs wr SignificanceResult(statistic=np.float64(-0.45140586797066024), pvalue=np.float64(0.018104769295800304))
+agente: fechadas vs dur mediana SignificanceResult(statistic=np.float64(0.11655973657386313), pvalue=np.float64(0.5626010701499113))
+agente: receita vs fechadas SignificanceResult(statistic=np.float64(0.5697710189276164), pvalue=np.float64(0.001919625821948159))  receita vs wr SignificanceResult(statistic=np.float64(-0.259010433177348), pvalue=np.float64(0.19203959998359413))
+ticket medio por vendedor min/med/max 1012.0 2529.0 3615.0  receita~ticket SignificanceResult(statistic=np.float64(0.43223443223443225), pvalue=np.float64(0.024347584827244126))
+receita por vendedor: min/med/max 123431.0 289195.0 1153214.0
+R2 log receita ~ log volume 0.43  ~ log ticket 0.29
+
+== MIX DE PRODUTO ==
+                   n     wr        rec  preco   dur  pct_rec
+product                                                     
+GTK 500           25  0.600   400612.0  26768  59.0    0.040
+GTX Basic       1436  0.637   499263.0    550  50.0    0.050
+GTX Plus Basic  1051  0.621   705275.0   1096  48.0    0.070
+GTX Plus Pro     745  0.643  2629651.0   5482  38.0    0.263
+GTX Pro         1147  0.636  3510578.0   4821  37.0    0.351
+MG Advanced     1084  0.603  2216387.0   3393  43.0    0.222
+MG Special      1223  0.648    43768.0     55  49.0    0.004
+abertas por produto x lista
+lista           abordar  encerrar  foco  reativar
+product                                          
+GTK 500               0        10     1         4
+GTX Basic            93       251    24        62
+GTX Plus Basic       74       185    26        47
+GTX Plus Pro         47        84    18        74
+GTX Pro              80       120    23       110
+MG Advanced          86       122     8       112
+MG Special          120       215    28        65
+desconto: close_value/price ganhos
+count    4238.000
+mean        0.996
+std         0.099
+min         0.657
+25%         0.929
+50%         0.998
+75%         1.063
+max         1.342
+dtype: float64
+share de deals caros (>=3000) por vendedor: min/med/max 0.22 0.46 0.68  receita~share caro SignificanceResult(statistic=np.float64(0.41819291819291815), pvalue=np.float64(0.029948897690206058))
+
+== CONTAS ==
+conta vazia por stage
+deal_stage
+Engaging       0.685
+Lost           0.000
+Prospecting    0.674
+Won            0.000
+Name: account, dtype: float64
+contas 85 wr min/max 0.531 0.75 deals por conta med 75.0
+top10 contas share receita 0.20722991896284595
+vendedores distintos por conta (mediana): 14.0  contas por vendedor (med): 43.0
+abertas com conta: 664  em contas com ganho previo: 1.0
+
+== PROSPECTING ==
+n 500 preco tabela total 1073986 sem conta 0.674
+x taxa base 63% x preco: 676611.18
+VE do foco: 63992.158379982444  n foco 128 preco foco 306707
+preco de tabela das mortas: 3585522
+faixa do foco
+faixa
+baixa    66
+alta     32
+media    30
+Name: count, dtype: int64
+receita media mensal ganha: 1000553.4  receita ult. trimestre: 2802496.0

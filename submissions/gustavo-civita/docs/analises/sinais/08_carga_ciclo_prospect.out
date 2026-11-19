@@ -1,0 +1,105 @@
+=== H3 carga do vendedor, dentro de cada escritorio (remove o efeito 'Central nao tinha zumbis') ===
+Central agent_open_n A +1.8pp p=0.604 n=1942 | B +3.0pp p=0.333 n=3036 | C30 +3.3pp p=0.155 n=2963 | dias ate fechar -3.4 p=0.135
+Central agent_open_fresh_n A +1.7pp p=0.584 n=1942 | B +3.2pp p=0.315 n=3036 | C30 +3.5pp p=0.096 n=2963 | dias ate fechar -3.4 p=0.135
+Central load_rel A +0.9pp p=0.901 n=1942 | B -6.1pp p=0.093 n=3036 | C30 -7.2pp p=0.057 n=2963 | dias ate fechar +2.5 p=0.307
+Central agent_stale_share A +3.0pp p=0.424 n=1942 | B -2.6pp p=0.292 n=3036 | C30 +13.2pp p=0.178 n=2963 | dias ate fechar +1.0 p=0.452
+Central agent_new30_n A +2.5pp p=0.410 n=1942 | B +2.9pp p=0.218 n=3036 | C30 +4.5pp p=0.148 n=2963 | dias ate fechar -2.4 p=0.087
+East agent_open_n A -15.8pp p=0.001 n=2171 | B -12.8pp p=0.001 n=2508 | C30 -5.8pp p=0.014 n=2646 | dias ate fechar +1.8 p=0.400
+East agent_open_fresh_n A -11.3pp p=0.014 n=2171 | B -9.2pp p=0.012 n=2508 | C30 -2.7pp p=0.257 n=2646 | dias ate fechar +1.7 p=0.464
+East load_rel A -22.7pp p=0.000 n=2171 | B -21.9pp p=0.000 n=2508 | C30 -8.7pp p=0.005 n=2646 | dias ate fechar +1.5 p=0.485
+East agent_stale_share A -25.6pp p=0.000 n=2171 | B -22.8pp p=0.000 n=2508 | C30 -11.8pp p=0.001 n=2646 | dias ate fechar +2.6 p=0.222
+East agent_new30_n A -4.9pp p=0.337 n=2171 | B -6.0pp p=0.108 n=2508 | C30 -1.4pp p=0.585 n=2646 | dias ate fechar +2.3 p=0.305
+West agent_open_n A +0.5pp p=0.890 n=3230 | B +3.6pp p=0.178 n=3731 | C30 +2.4pp p=0.169 n=4052 | dias ate fechar -0.3 p=0.893
+West agent_open_fresh_n A +0.4pp p=0.907 n=3230 | B +2.7pp p=0.269 n=3731 | C30 +2.2pp p=0.221 n=4052 | dias ate fechar -0.7 p=0.729
+West load_rel A +0.5pp p=0.872 n=3230 | B -0.1pp p=0.955 n=3731 | C30 +0.5pp p=0.893 n=4052 | dias ate fechar -1.6 p=0.493
+West agent_stale_share A +1.0pp p=0.801 n=3230 | B -1.1pp p=0.744 n=3731 | C30 -0.7pp p=0.821 n=4052 | dias ate fechar +5.1 p=0.151
+West agent_new30_n A +0.2pp p=0.964 n=3230 | B +4.8pp p=0.051 n=3731 | C30 +2.1pp p=0.312 n=4052 | dias ate fechar -0.6 p=0.748
+carga 'fresca' (deals abertos com <=90d) excluindo vendedores sem zumbis: efeito em ganhar
+=== taxa de nunca-fechar e homogenea entre os vendedores East/West que deixam deals abertos? ===
+chi2 p=0.977 n=3980 vendedores=17 faixa=0.25-0.32
+persistencia (ate abr vs mai-set): SignificanceResult(statistic=np.float64(-0.5003066544293188), pvalue=np.float64(0.04082549852054224))
+por office: {'mean': {'East': 0.275, 'West': 0.264}, 'size': {'East': 1411, 'West': 2569}} p=0.4735
+por manager: {'mean': {'Cara Losch': 0.274, 'Celia Rouche': 0.273, 'Rocco Neubert': 0.276, 'Summer Sewald': 0.257}, 'size': {'Cara Losch': 712, 'Celia Rouche': 1117, 'Rocco Neubert': 699, 'Summer Sewald': 1452}} p=0.7011
+                  mean        size     
+regional_office   East   West East West
+q                                      
+2016Q4           0.265  0.248   68  141
+2017Q1           0.310  0.293  348  644
+2017Q2           0.268  0.262  489  896
+2017Q3           0.259  0.247  506  888
+=== sinal 'vendedor nunca deixa deal aberto' fora da amostra: taxa historica de zumbis do vendedor (deals com >140d em T) -> fecha depois? ===
+             T  n_limpo  fecha_limpo  n_outros  fecha_outros  ganha_limpo  ganha_outros  g30_limpo  g30_outros
+0   2017-06-15      449        1.000       986         0.480        0.684         0.337      0.238       0.126
+1   2017-06-30      498        1.000       936         0.504        0.624         0.318      0.094       0.028
+2   2017-07-15      521        1.000       960         0.547        0.635         0.352      0.225       0.099
+3   2017-07-31      861        0.667      1062         0.532        0.424         0.355      0.223       0.167
+4   2017-08-15      882        0.537      1023         0.498        0.351         0.342      0.189       0.194
+5   2017-08-31      826        0.506      1045         0.455        0.356         0.328      0.229       0.212
+6   2017-09-15      827        0.507      1031         0.452        0.331         0.312      0.125       0.115
+7   2017-09-30      858        0.524      1008         0.481        0.297         0.302      0.033       0.026
+8   2017-10-15      905        0.549       942         0.584        0.324         0.376      0.101       0.094
+9   2017-10-31      908        0.551       993         0.576        0.333         0.381      0.152       0.192
+10  2017-11-15      799        0.489       844         0.520        0.312         0.361      0.184       0.243
+11  2017-11-30      662        0.384       697         0.422        0.296         0.337      0.284       0.326
+(cortes de out/nov: 'fecha'/'ganha' ate 31/12 apenas, censurado)
+=== H5 ciclo por produto ===
+                   n  mediana   media  curto
+product                                     
+GTK 500           25     59.0  53.720  0.400
+GTX Basic       1436     50.0  49.906  0.447
+GTX Plus Basic  1051     48.0  49.410  0.463
+GTX Plus Pro     745     38.0  46.077  0.487
+GTX Pro         1147     37.0  45.735  0.493
+MG Advanced     1084     43.0  47.123  0.487
+MG Special      1223     49.0  48.427  0.464
+kruskal ciclo x produto: KruskalResult(statistic=np.float64(11.03975571940556), pvalue=np.float64(0.08715547764952492))
+chi2 curto x produto p=0.2156
+iniciados ate jun ciclo medio residual (controlando mes de inicio) por produto: {'GTK 500': 10.4, 'GTX Basic': 1.3, 'GTX Plus Basic': 2.8, 'GTX Plus Pro': -1.8, 'GTX Pro': -0.7, 'MG Advanced': -2.6, 'MG Special': -0.1} kruskal p=0.110
+iniciados jul+ ciclo medio residual (controlando mes de inicio) por produto: {'GTK 500': -2.4, 'GTX Basic': 2.3, 'GTX Plus Basic': 0.4, 'GTX Plus Pro': -0.2, 'GTX Pro': -2.7, 'MG Advanced': 1.4, 'MG Special': -1.5} kruskal p=0.376
+ciclo residual x sales_agent kruskal p=0.113
+ciclo residual x sector kruskal p=0.389
+ciclo residual x regional_office kruskal p=0.576
+ciclo residual x manager kruskal p=0.599
+ciclo residual x series kruskal p=0.271
+=== H7 Prospecting ===
+                    prospects  iniciados_total  iniciados_Q3  iniciados_nov_dez  zumbis_engaging  prosp_por_mes_de_volume
+sales_agent                                                                                                              
+Anna Snelling            55.0              393           157                 15             57.0                     1.96
+Cecily Lampkin           24.0              179            68                  9             19.0                     1.88
+Darcel Schlecht         111.0              636           249                 20             83.0                     2.44
+Gladys Colclough         49.0              268           105                 16             36.0                     2.56
+Jonathan Berthelot       48.0              297           101                 12             33.0                     2.26
+Lajuana Vencill          40.0              271           108                  7             40.0                     2.07
+Marty Freudenburg        54.0              227            92                  9             33.0                     3.33
+Moses Frase              31.0              229            94                  7             34.0                     1.90
+Niesha Huffines          34.0              205            82                  9             30.0                     2.32
+Versie Hillebrand        54.0              307           126                 12             43.0                     2.46
+prospects ~ volume: SignificanceResult(statistic=np.float64(0.790277206784084), pvalue=np.float64(0.006514223587240812)) | chi2 de proporcionalidade ao volume p=0.183
+prospects ~ zumbis engaging: SignificanceResult(statistic=np.float64(0.7713414634146342), pvalue=np.float64(0.00898067085353011))
+mix de produto prospects vs iniciados (Central) p=0.956
+volume mensal de inicios por escritorio
+P(ganho | iniciou) por mes do trimestre de inicio x trimestre
+mes_no_trim      1      2      3
+engage_date                     
+2017Q1       0.580  0.538  0.556
+2017Q2       0.489  0.507  0.572
+2017Q3       0.368  0.430  0.546
+idem Central:
+mes_no_trim      1      2      3
+engage_date                     
+2017Q1       0.698  0.684  0.659
+2017Q2       0.564  0.614  0.673
+2017Q3       0.301  0.366  0.608
+chance que a solucao atual da a um prospect (idade 0 em 31/12): 0.493
+=== borda da base: coortes Q4 ===
+iniciados por mes: {Period('2017-07', 'M'): 1198, Period('2017-08', 'M'): 793, Period('2017-09', 'M'): 779, Period('2017-10', 'M'): 761, Period('2017-11', 'M'): 283, Period('2017-12', 'M'): 121}
+2017-06-30 iniciados no trimestre: 2388 ainda abertos no fim: 1336 (56%) por mes do trim: {4: 0.22, 5: 0.66, 6: 0.85}
+2017-09-30 iniciados no trimestre: 2770 ainda abertos no fim: 1692 (61%) por mes do trim: {7: 0.39, 8: 0.71, 9: 0.85}
+2017-12-31 iniciados no trimestre: 1165 ainda abertos no fim: 115 (10%) por mes do trim: {10: 0.08, 11: 0.14, 12: 0.15}
+            n  chance          ve
+lista                            
+abordar   500   0.493  529210.493
+encerrar  987   0.000       0.000
+foco      128   0.250   63992.158
+reativar  474   0.000       0.000
+foco por escritorio: {'East': 49, 'West': 79} chance media 0.250; ganhos esperados pela solucao: 32.0 de 128
