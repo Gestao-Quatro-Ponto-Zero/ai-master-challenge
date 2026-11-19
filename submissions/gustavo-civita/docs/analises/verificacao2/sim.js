@@ -2,7 +2,7 @@ const vm=require('vm'),fs=require('fs');
 const S=require("path").join(__dirname, "../../../solution/app/");
 function mk(search=""){
   const store={};const els={};
-  const el=(id)=>els[id]||(els[id]={id,innerHTML:"",hidden:false,open:false,value:"",classList:{toggle(){},remove(){},contains(){return false}},querySelector(){return {scrollTop:0}},addEventListener(){},close(){this.open=false},showModal(){this.open=true}});
+  const el=(id)=>els[id]||(els[id]={id,innerHTML:"",hidden:false,open:false,value:"",classList:{toggle(){},remove(){},contains(){return false}},querySelector(){return {scrollTop:0}},querySelectorAll(){return []},addEventListener(){},close(){this.open=false},showModal(){this.open=true}});
   const ctx={console,URLSearchParams,setTimeout(){},clearTimeout(){},
     localStorage:{getItem:k=>k in store?store[k]:null,setItem:(k,v)=>{store[k]=String(v)}},
     document:{getElementById:el,body:{classList:{toggle(){},remove(){}},appendChild(){}},documentElement:{dataset:{},scrollWidth:0,clientWidth:0},querySelector(){return {innerHTML:"",dataset:{},classList:{toggle(){},remove(){}},setAttribute(){}}},querySelectorAll(){return []},addEventListener(){} ,createElement(){return{click(){},style:{},dataset:{}}}},

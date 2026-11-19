@@ -730,8 +730,12 @@ function pageCarteira() {
     ? `<select id="filtro-manager" aria-label="Time">${optionHtml("", "Todos os times", state.filtroManager)}${unique(DATA.deals, "manager").map((m) => optionHtml(m, `Time de ${m}`, state.filtroManager)).join("")}</select>`
     : "";
   const situations = `<select id="situacao" aria-label="Situação">${SITUACOES.map(([id, label]) => optionHtml(id, label, state.situacao)).join("")}</select>`;
+  // As concluídas nesta ferramenta continuam na lista (situação "Concluídas"), mas não contam como abertas.
+  const all = workItems();
+  const done = all.filter((item) => item.status.fase === "concluida").length;
+  const split = done ? ` ${(all.length - done).toLocaleString("pt-BR")} abertas e ${done.toLocaleString("pt-BR")} ${done === 1 ? "concluída" : "concluídas"} nesta ferramenta.` : "";
   return `
-    ${pageHead("Carteira", isSeller() ? "Todas as suas negociações abertas, da de maior valor esperado para a menor." : "Todas as negociações abertas do time, da de maior valor esperado para a menor.")}
+    ${pageHead("Carteira", (isSeller() ? "Todas as suas negociações abertas, da de maior valor esperado para a menor." : "Todas as negociações abertas do time, da de maior valor esperado para a menor.") + split)}
     ${toolbarHtml(situations + managers + sellers + regions, viewToggle())}
     <div id="table-body">${carteiraBody()}</div>`;
 }
@@ -788,8 +792,8 @@ const PIPELINE_SERIES = [
 const tile = (value, label, note = "") => `<div class="tile"><span>${label}</span><strong>${value}</strong><small>${note}</small></div>`;
 const blockHead = (title, sub) => `<header class="block-head"><h2>${title}</h2><p>${sub}</p></header>`;
 const serieButton = (id, label) => `<button data-serie="${id}" aria-pressed="${state.serie === id}">${label}</button>`;
-const chartCard = (title, takeaway, chart, tools = "") => `
-  <section class="panel chart-card">
+const chartCard = (id, title, takeaway, chart, tools = "") => `
+  <section class="panel chart-card" data-chart-id="${id}">
     <header><h2>${title}</h2><div class="chart-tools">${tools}<button class="chart-toggle" data-chart-view aria-pressed="false" title="Trocar entre gráfico e tabela">${icon("table")}Tabela</button></div></header>
     <p class="muted">${takeaway}</p>${chart}
   </section>`;
@@ -856,8 +860,8 @@ function pagePainel() {
     </div>
     ${blockHead("Pipeline hoje", "O que está aberto agora e em que situação.")}
     <div class="chart-grid main-side">
-      ${chartCard(byTeam ? "Negociações abertas por time" : "Negociações abertas por vendedor", "Quem tem mais negociações com chance de fechar vem primeiro.", Charts.stacked(groups, PIPELINE_SERIES, { name: "Pipeline aberto", first: byTeam ? "Time" : "Vendedor" }))}
-      ${chartCard(`As ${pipeline.comChance} com chance de fechar`, `Divididas pela faixa de chance. ${soon === 1 ? "1 pode" : `${soon} podem`} fechar este mês.`, Charts.bars(bands, { format: (n) => n.toLocaleString("pt-BR"), name: "Negociações", first: "Faixa" }))}
+      ${chartCard("pipeline", byTeam ? "Negociações abertas por time" : "Negociações abertas por vendedor", "Quem tem mais negociações com chance de fechar vem primeiro.", Charts.stacked(groups, PIPELINE_SERIES, { name: "Pipeline aberto", first: byTeam ? "Time" : "Vendedor" }))}
+      ${chartCard("faixas", `As ${pipeline.comChance} com chance de fechar`, `Divididas pela faixa de chance. ${soon === 1 ? "1 pode" : `${soon} podem`} fechar este mês.`, Charts.bars(bands, { format: (n) => n.toLocaleString("pt-BR"), name: "Negociações", first: "Faixa" }))}
     </div>
     <section class="panel attention">
       <div><h2>Prioritárias sem contato</h2><p class="muted">Score ${GOOD_SCORE} ou mais e nenhum contato registrado. Quem tem mais vem primeiro.</p></div>
@@ -873,7 +877,7 @@ function pagePainel() {
     <p class="aside"><button class="btn" data-act="export">${icon("file-csv")}Baixar todos os registros de contato (CSV)</button> É a base para medir o piloto: cada ligação, mensagem, resposta e fechamento, com data.</p>
     ${blockHead("Como veio 2017", "De março a dezembro, o período que a base registra.")}
     <div class="chart-grid one">
-      ${chartCard(history.title, history.note, history.chart, `<div class="tabs seg" role="group" aria-label="Medida">${serieButton("receita", "Receita ganha")}${serieButton("iniciadas", "Negociações iniciadas")}</div>`)}
+      ${chartCard("historia", history.title, history.note, history.chart, `<div class="tabs seg" role="group" aria-label="Medida">${serieButton("receita", "Receita ganha")}${serieButton("iniciadas", "Negociações iniciadas")}</div>`)}
     </div>`;
 }
 
@@ -955,8 +959,8 @@ function pageVendedor() {
       ${tile(seller.cicloMedianoGanho === null ? "–" : `${seller.cicloMedianoGanho} dias`, "Ciclo mediano de ganho", "do início ao fechamento")}
     </div>
     <div class="chart-grid">
-      ${chartCard("Receita ganha por mês", "Valor das negociações ganhas por este vendedor.", Charts.columns(revenue, { format: moneyShort, name: "Receita ganha" }))}
-      ${chartCard("Carteira aberta hoje", "Quantas negociações em cada situação.", Charts.bars(situation, { format: (n) => n.toLocaleString("pt-BR"), name: "Negociações", first: "Situação" }))}
+      ${chartCard("vendedor-receita", "Receita ganha por mês", "Valor das negociações ganhas por este vendedor.", Charts.columns(revenue, { format: moneyShort, name: "Receita ganha" }))}
+      ${chartCard("vendedor-carteira", "Carteira aberta hoje", "Quantas negociações em cada situação.", Charts.bars(situation, { format: (n) => n.toLocaleString("pt-BR"), name: "Negociações", first: "Situação" }))}
     </div>
     <div class="panel"><h2>Últimos contatos registrados</h2>${log}</div>
     <p class="muted">A taxa de ganho não difere de forma significativa entre vendedores (ver Como funciona). Este detalhe serve para acompanhar carteira e atividade, não para ranquear pessoas.</p>`;
@@ -1166,7 +1170,7 @@ function render() {
   const counts = {
     hoje: todayParts(items).prioridade.length, // a meta do dia; o que é "se sobrar tempo" não conta
     aguardando: items.filter((item) => item.status.fase === "aguardando" || item.status.fase === "agendada").length,
-    carteira: items.length,
+    carteira: items.filter((item) => item.status.fase !== "concluida").length, // só as abertas, como no Painel
   };
   $("nav").innerHTML = PAGES[state.session.papel]
     .map(([id, label, glyph]) => `<button data-page="${id}"${id === state.page ? ' aria-current="page"' : ""}>${icon(glyph)}<span>${label}</span>${id in counts && (isSeller() || id === "carteira") ? `<em>${counts[id].toLocaleString("pt-BR")}</em>` : ""}</button>`)
@@ -1179,6 +1183,7 @@ function render() {
   };
   document.body.classList.toggle("fixed", state.page in TABLE_BODY);
   view.innerHTML = builders[state.page]();
+  Charts.restore(view);
   renderSheet();
 }
 

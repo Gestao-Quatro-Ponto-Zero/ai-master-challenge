@@ -59,7 +59,7 @@ as 1.291 negociações mortas, sem nada ter mudado.
 
 | O que acompanhar | Onde está | Limite atual |
 |---|---|---|
-| Quantas negociações têm chance e quanto devem render | Painel: "Com chance de fechar" e "Previsão de receita" (preço × chance) | Recalcula só quando os dados são regerados |
+| Quantas negociações têm chance e quanto devem render | Painel: "Com chance de fechar" e "Valor esperado das com chance" (preço × chance; não é a previsão do trimestre) | Recalcula só quando os dados são regerados |
 | Quanto do pipeline está morto | Painel: "Em andamento sem chance" | – |
 | Boa oportunidade parada | Painel: faixa "Prioritárias sem contato", por vendedor; filtro de mesmo nome na Carteira | Depende do registro |
 | O time está usando? | Painel: "Atividade do time" (contatos em 7 dias, prioritárias já contatadas, resposta positiva, vendedores usando) | Só vê os registros feitos no mesmo navegador |

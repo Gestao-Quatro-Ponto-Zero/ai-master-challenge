@@ -255,6 +255,6 @@ ganhava em 7 de 10.
 entre 11h40 e 13h15 de 18/11, foi a IA executando o QA e as correções que eu
 tinha pedido no fim do primeiro bloco (decisão 41). O terceiro, a partir das
 18h48 de 18/11, foi a separação da fila de Hoje (decisão 42), com novos testes
-e prints, e depois os commits, o envio, a demo e os prints da conversa (decisões 43 e 44). Os horários de cada mensagem estão na conversa exportada.
+e prints, e depois os commits, o envio, a demo, os prints da conversa e a conferência contra os motivos de reprovação de outros candidatos (decisões 43 a 45). Os horários de cada mensagem estão na conversa exportada.
 
 _Submissão enviada em: 18/11/2026_

@@ -1593,3 +1593,47 @@ chance), a pergunta "resolve ou mascara?" e a separação da fila de Hoje.
 da conversa, sem dado pessoal), pôs em ordem cronológica em
 `screenshots/conversa/` e listou cada um, com data, hora e o que mostra, no
 README dos prints.
+
+---
+
+## Decisão 45 — Conferir a entrega contra os motivos de reprovação dos outros
+
+**Pedido do Gustavo:**
+
+> "Agora veja TODOS do case 3 que foram reprovados, e ve se o motivo eu estou
+> cometendo"
+
+**O que a IA fez:** leu na íntegra as revisões com pedido de mudanças dos PRs
+do Challenge 003 (os 15 que seguem reprovados e os que foram reprovados antes
+de aprovar), agrupou os motivos em 17 e conferiu cada um na submissão com um
+script que só lê o repositório (`higiene`, chaves, commits, números dos
+READMEs contra o `data.js` e as constantes do `scoring.py`).
+
+**Resultado:** 11 motivos não se aplicam; 4 se aplicam em parte e estão
+declarados (commits concentrados no mesmo dia, análise executada pela IA, dez
+vendedores sem priorização, prazos de retorno sem dado por trás); 2 se
+aplicavam e foram corrigidos:
+
+| Motivo visto nos reprovados | O que havia aqui | Correção |
+|---|---|---|
+| Defeito documentado na própria submissão e não corrigido | A Decisão 41 declarava dois: o Painel e a Carteira contavam as concluídas de forma diferente, e a tabela de um gráfico voltava para gráfico ao trocar a medida | A Carteira passou a contar só as abertas no menu e a dizer "N abertas e M concluídas nesta ferramenta"; cada gráfico lembra que foi deixado em tabela, mesmo trocando a medida, o filtro ou a página |
+| Documentação diferente do que está implementado | O plano de adoção citava o indicador "Previsão de receita", renomeado na Decisão 41 para "Valor esperado das com chance" | Nome corrigido no plano |
+
+O terceiro defeito declarado na Decisão 41 (o contador do dia) já tinha sido
+resolvido na Decisão 42. Com isso não resta defeito conhecido sem correção.
+
+**Conferido no navegador:** com a tabela aberta em "Como veio 2017", trocar a
+medida, trocar a região e sair e voltar ao Painel mantêm a tabela; voltar ao
+gráfico também se mantém. Depois de três negociações marcadas como "Sem
+interesse" por uma vendedora, o menu dela mostra 100 na Carteira (eram 103) e
+a página diz "100 abertas e 3 concluídas"; no perfil de operações de receita,
+o Painel e a Carteira mostram o mesmo número, 2.086.
+
+**O que a IA disse que não dá para corrigir:** os sete primeiros commits têm o
+mesmo minuto. Mudar as datas seria falsificar o histórico; a evolução real
+está neste registro e na conversa exportada, com horário em cada mensagem.
+
+**Ensaio do zero depois das correções:** a primeira rodada deu 36 de 38; os
+dois scripts de apoio que simulam a tela (`verificacao2/sim.js` e `sim2.js`)
+não conheciam a função nova dos gráficos. Ajustados, a segunda rodada deu 38
+de 38, com os 19 testes da priorização e os 16 do fluxo passando.

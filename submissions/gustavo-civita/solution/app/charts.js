@@ -100,16 +100,34 @@ const Charts = (() => {
       const button = event.target.closest ? event.target.closest("[data-chart-view]") : null;
       if (!button) return;
       const card = button.closest(".chart-card");
-      const chart = card.querySelector(".chart");
-      const data = card.querySelector(".chart-data");
-      const showTable = data.hidden;
-      if (showTable) data.style.height = `${chart.offsetHeight}px`;
-      chart.hidden = showTable;
-      data.hidden = !showTable;
-      button.setAttribute("aria-pressed", showTable);
-      button.innerHTML = showTable ? '<i class="ph ph-chart-bar"></i>Gráfico' : '<i class="ph ph-table"></i>Tabela';
+      const showTable = card.querySelector(".chart-data").hidden;
+      if (showTable) asTable.add(card.dataset.chartId);
+      else asTable.delete(card.dataset.chartId);
+      setView(card, showTable);
     });
   }
 
-  return { columns, bars, stacked, installTooltip };
+  /* Quais gráficos a pessoa deixou em tabela. A tela é redesenhada a cada filtro ou troca de medida; sem isto a escolha se perdia. */
+  const asTable = new Set();
+
+  function setView(card, showTable) {
+    const chart = card.querySelector(".chart");
+    const data = card.querySelector(".chart-data");
+    const button = card.querySelector("[data-chart-view]");
+    if (!chart || !data || !button) return;
+    if (showTable) data.style.height = `${chart.offsetHeight}px`;
+    chart.hidden = showTable;
+    data.hidden = !showTable;
+    button.setAttribute("aria-pressed", showTable);
+    button.innerHTML = showTable ? '<i class="ph ph-chart-bar"></i>Gráfico' : '<i class="ph ph-table"></i>Tabela';
+  }
+
+  /* Depois de redesenhar a tela, devolve à tabela os gráficos que estavam em tabela. */
+  function restore(root) {
+    for (const card of root.querySelectorAll(".chart-card[data-chart-id]")) {
+      if (asTable.has(card.dataset.chartId)) setView(card, true);
+    }
+  }
+
+  return { columns, bars, stacked, installTooltip, restore };
 })();
