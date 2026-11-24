@@ -105,7 +105,7 @@ churn concordam, US$ 216 mil de MRR encerrado), e a aba **Dados** tem as 500 con
 
 1. Pedi um plano antes de qualquer código. O Claude leu o repositório, baixou os dados e fez um reconhecimento rápido.
 2. Pedi as tabelas ligadas e separadas por categoria → base `account_360` + auditoria de ligação + correlações com correção.
-3. Pedi o painel. A cada iteração revisei os prints e devolvi feedback (12 mensagens minhas no total, ~200 ações executadas).
+3. Pedi o painel. A cada iteração revisei os prints e devolvi feedback (16 mensagens minhas no total, mais de 220 ações executadas).
 4. Questionei a conclusão sobre o churn, pedi provas visuais com certeza, a página de sugestões, a previsão "só com dado real",
    a linguagem para leigos e a skill de um comando.
 5. Cada etapa virou commit (ver `git log` da branch) e entrada no process log.
