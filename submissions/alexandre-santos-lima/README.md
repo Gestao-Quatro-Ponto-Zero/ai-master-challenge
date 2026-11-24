@@ -3,7 +3,7 @@
 ## Sobre mim
 
 - **Nome:** Alexandre Santos Lima
-- **LinkedIn:** _(a preencher)_
+- **LinkedIn:** https://www.linkedin.com/in/alexandreslima-oficial/
 - **Challenge escolhido:** 001 — Diagnóstico de Churn (RavenStack)
 
 ---
