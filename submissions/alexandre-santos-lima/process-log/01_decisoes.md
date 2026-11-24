@@ -111,3 +111,16 @@ Cada etapa abaixo tem o script que a reproduz em `solution/scripts/`.
 - Erro pego ao reler o texto contra o gráfico: eu tinha escrito que nenhum mês fica acima do esperado nos dois anos — dezembro fica
   (1,16 e 1,40; dez/24 tem o erro de registro do fim dos dados). Título mudou para "Não há uma época do ano comprovadamente pior" e a nota cita dezembro.
 - Regra de linguagem adicionada ao SKILL.md para as próximas rodadas manterem o padrão.
+
+## Etapa 9 — Publicação e entrega
+- **Pedido do usuário:** publicar o painel no Cloudflare usando o acesso do projeto operation e preparar a entrega.
+- Publicado manualmente em https://ravenstack-churn.apsolutions-technology-services.workers.dev, num projeto próprio (sem
+  afetar outros sites da mesma conta), e validado com Playwright no endereço público.
+- **Decisão do usuário:** a publicação **não** entra na skill, para não acoplar credenciais pessoais a algo que vai para um
+  repositório público. A skill termina no painel validado em `dist/`.
+- Revisão de segredos antes do push: o exportador de conversa tinha um trecho literal de credencial como regra de remoção e o
+  `vite.config.ts` tinha o endereço interno da máquina de trabalho. Ambos trocados por regras genéricas / variável de ambiente,
+  e os commits locais reescritos antes do primeiro push.
+- Export da conversa para o process log com remoção automática de tokens, senhas, e-mails, IPs e endereços internos
+  (checagem final: zero ocorrências).
+- README no template do G4 e relatório executivo de 2 páginas em linguagem simples.

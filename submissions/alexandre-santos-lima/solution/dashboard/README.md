@@ -1,5 +1,12 @@
 # Dashboard — Diagnóstico de churn RavenStack
 
+**Publicado:** https://ravenstack-churn.apsolutions-technology-services.workers.dev
+
+Três abas: **Diagnóstico** (achados e previsão), **Sugestões** (o que fazer) e **Dados** (auditoria, mapa e as 500 contas).
+Texto em linguagem simples; os números estatísticos ficam em "Detalhe técnico".
+
+O jeito mais simples de regenerar tudo é a skill: `../../skill/diagnostico-churn/scripts/rodar.sh` (veja o SKILL.md).
+
 Site em React + Vite + Recharts com os achados da análise. Os dados vêm de `src/data.json`,
 gerado pelos scripts Python (nada é digitado à mão no front).
 

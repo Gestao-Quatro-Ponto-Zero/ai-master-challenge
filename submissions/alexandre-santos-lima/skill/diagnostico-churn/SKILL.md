@@ -13,6 +13,9 @@ description: Roda de ponta a ponta o diagnóstico de churn da RavenStack (datase
 ~/.claude/skills/diagnostico-churn/scripts/rodar.sh --servir    # no fim, deixa o dashboard em 0.0.0.0:5180
 ```
 
+A skill não publica nada: ela gera o painel em `solution/dashboard/dist/`, que pode ser enviado para qualquer hospedagem
+estática. Nenhuma credencial fica na skill (o único segredo usado é o token do Kaggle, lido de `~/.kaggle`).
+
 Requisitos: `uv`, `node`/`npm`, token do Kaggle em `~/.kaggle/access_token` (ou `KAGGLE_API_TOKEN`).
 A pasta da submissão é detectada a partir da skill; para outra pasta, `CHURN_ROOT=/caminho`.
 
