@@ -1,0 +1,7 @@
+ok /home/alexandre/Projetos/seletivo/submissions/alexandre-santos-lima/solution/dashboard/src/mrr.json
+{"preco_por_assento": {"Basic": 19.0, "Enterprise": 199.0, "Pro": 49.0}, "pct_mrr_formula": 1.0, "pct_arr_12x": 1.0, "trial_mrr_zero": 1.0, "ativas_simult_mediana": 8.0, "ativas_simult_max": 16, "contas_com_uma": 4, "contas_com_ativas": 500, "mrr_conta_mediana": 16654.0, "mrr_conta_max": 131911.0, "mrr_total_ativo": 10159608.0, "upgrade_e_downgrade": 20, "pct_plano_conta_bate": 0.306, "rho_assentos": 0.5327581743141264, "dist_simultaneas": [{"n": 1, "contas": 4}, {"n": 2, "contas": 6}, {"n": 3, "contas": 18}, {"n": 4, "contas": 45}, {"n": 5, "contas": 49}, {"n": 6, "contas": 67}, {"n": 7, "contas": 56}, {"n": 8, "contas": 69}, {"n": 9, "contas": 59}, {"n": 10, "contas": 44}, {"n": 11, "contas": 35}, {"n": 12, "contas": 25}, {"n": 13, "contas": 10}, {"n": 14, "contas": 10}, {"n": 15, "contas": 1}, {"n": 16, "contas": 2}]}
+Indústria | acima: [] | abaixo: [] | [('Cybersecurity', 12.4), ('DevTools', 9.9), ('EdTech', 9.7), ('FinTech', 9.5), ('HealthTech', 10.6)]
+País | acima: [] | abaixo: [] | [('AU', 10.5), ('CA', 9.1), ('DE', 11.5), ('FR', 17.1), ('IN', 6.8), ('UK', 14.4), ('US', 9.7)]
+Canal de aquisição | acima: [] | abaixo: [] | [('ads', 9.0), ('event', 13.6), ('organic', 9.5), ('other', 11.5), ('partner', 8.8)]
+Plano da assinatura | acima: [] | abaixo: ['Pro'] | [('Basic', 9.5), ('Enterprise', 10.9), ('Pro', 8.6)]
+Cobrança | acima: [] | abaixo: [] | [('annual', 9.8), ('monthly', 11.0)]

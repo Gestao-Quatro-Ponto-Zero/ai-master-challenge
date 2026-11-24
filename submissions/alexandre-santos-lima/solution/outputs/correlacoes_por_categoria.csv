@@ -1,0 +1,99 @@
+alvo,categoria,variavel,tipo,efeito,medida,p,leitura,q_bh,forca,sobrevive
+churn_flag_conta,perfil,perfil_dias_desde_signup,numérica,0.559020979020979,AUC,0.05854795482564179,churn 371.67 × retida 329.43 (+13%),0.6383165221238166,0.11804195804195805,False
+churn_flag_conta,perfil,perfil_industry,categórica,0.13283951153566953,V de Cramér,0.06567465981750352,maior: DevTools 31% (n=113); menor: Cybersecurity 16% (n=100),0.6383165221238166,0.13283951153566953,False
+churn_flag_conta,perfil,perfil_referral_source,categórica,0.12927921706120557,V de Cramér,0.07935639594437033,maior: event 30% (n=96); menor: partner 15% (n=89),0.6383165221238166,0.12927921706120557,False
+churn_flag_conta,perfil,perfil_is_trial,categórica,0.03858247208662129,V de Cramér,0.3882857671584188,maior: True 26% (n=97); menor: False 21% (n=403),0.7545405813547753,0.03858247208662129,False
+churn_flag_conta,perfil,perfil_coorte_signup,categórica,0.10775762246982468,V de Cramér,0.5625932201742225,maior: 2023Q1 29% (n=55); menor: 2024Q4 15% (n=80),0.8353656905617244,0.10775762246982468,False
+churn_flag_conta,perfil,perfil_country,categórica,0.09090796837198577,V de Cramér,0.658801048683201,maior: DE 32% (n=25); menor: AU 12% (n=32),0.9206132301876545,0.09090796837198577,False
+churn_flag_conta,perfil,perfil_seats,numérica,0.48763403263403265,AUC,0.6919178580020775,churn 19.24 × retida 20.93 (-8%),0.9206132301876545,0.02473193473193469,False
+churn_flag_conta,perfil,perfil_plan_tier,categórica,0.0016961856555120906,V de Cramér,0.9992809971620159,maior: Enterprise 22% (n=154); menor: Pro 22% (n=178),0.999280997162016,0.0016961856555120906,False
+churn_flag_conta,receita,receita_mrr_medio_assinatura,numérica,0.4555594405594406,AUC,0.15439327298437425,"churn 2,082.92 × retida 2,315.30 (-10%)",0.6383165221238166,0.08888111888111883,False
+churn_flag_conta,receita,receita_assinaturas_trial,numérica,0.5403263403263403,AUC,0.18093736188135245,churn 1.67 × retida 1.52 (+10%),0.6383165221238166,0.08065268065268061,False
+churn_flag_conta,receita,receita_assinaturas_encerradas,numérica,0.5375174825174825,AUC,0.202755331838964,churn 1.05 × retida 0.95 (+11%),0.6383165221238166,0.0750349650349651,False
+churn_flag_conta,receita,receita_pct_assin_basic,numérica,0.5343473193473194,AUC,0.270553676127286,churn 0.33 × retida 0.32 (+4%),0.7365072294576118,0.06869463869463877,False
+churn_flag_conta,receita,receita_assinaturas,numérica,0.5327389277389277,AUC,0.2920287341872929,churn 10.29 × retida 9.92 (+4%),0.7531267355356501,0.06547785547785545,False
+churn_flag_conta,receita,receita_pct_mrr_perdido,numérica,0.5303613053613053,AUC,0.31143757399718874,churn 0.11 × retida 0.10 (+21%),0.7545405813547753,0.06072261072261065,False
+churn_flag_conta,receita,receita_assinaturas_ativas,numérica,0.5264452214452214,AUC,0.39470407082735537,churn 9.24 × retida 8.97 (+3%),0.7545405813547753,0.05289044289044287,False
+churn_flag_conta,receita,receita_mrr_perdido,numérica,0.5246736596736596,AUC,0.41078027052924926,"churn 2,564.47 × retida 2,300.12 (+11%)",0.7545405813547753,0.049347319347319285,False
+churn_flag_conta,receita,receita_pct_assin_enterprise,numérica,0.4746386946386946,AUC,0.41590410704079295,churn 0.34 × retida 0.35 (-3%),0.7545405813547753,0.05072261072261075,False
+churn_flag_conta,receita,receita_mrr_ativo,numérica,0.4782750582750583,AUC,0.48641196192238767,"churn 18,846.85 × retida 20,734.50 (-9%)",0.788204782023751,0.04344988344988343,False
+churn_flag_conta,receita,receita_arr_ativo,numérica,0.4782750582750583,AUC,0.48641196192238767,"churn 226,162.15 × retida 248,814.00 (-9%)",0.788204782023751,0.04344988344988343,False
+churn_flag_conta,receita,receita_downgrades,numérica,0.4910606060606061,AUC,0.7334779067293226,churn 0.43 × retida 0.44 (-3%),0.9206132301876545,0.017878787878787827,False
+churn_flag_conta,receita,receita_seats_ativos,numérica,0.49293706293706296,AUC,0.82117550096128,churn 264.25 × retida 271.00 (-2%),0.9206132301876545,0.014125874125874072,False
+churn_flag_conta,receita,receita_pct_auto_renew,numérica,0.5056993006993007,AUC,0.8550079716342807,churn 0.80 × retida 0.80 (+0%),0.9206132301876545,0.011398601398601382,False
+churn_flag_conta,receita,receita_pct_assin_pro,numérica,0.5054428904428905,AUC,0.8616511754238209,churn 0.33 × retida 0.33 (-1%),0.9206132301876545,0.01088578088578096,False
+churn_flag_conta,receita,receita_pct_anual,numérica,0.4954079254079254,AUC,0.8830371799759135,churn 0.49 × retida 0.49 (-1%),0.9206132301876545,0.009184149184149226,False
+churn_flag_conta,receita,receita_upgrades,numérica,0.4965034965034965,AUC,0.9065180266153785,churn 1.05 × retida 1.06 (-0%),0.9254038188365322,0.006993006993006978,False
+churn_flag_conta,suporte,suporte_primeira_resposta_media_min,numérica,0.4486641589506173,AUC,0.10296049629654055,churn 84.93 × retida 89.58 (-5%),0.6383165221238166,0.10267168209876543,False
+churn_flag_conta,suporte,suporte_pct_urgente_alta,numérica,0.45568094135802467,AUC,0.15651204837609284,churn 0.48 × retida 0.53 (-9%),0.6383165221238166,0.08863811728395066,False
+churn_flag_conta,suporte,suporte_tickets,numérica,0.47073426573426574,AUC,0.34185440027435166,churn 3.93 × retida 4.02 (-2%),0.7545405813547753,0.05853146853146851,False
+churn_flag_conta,suporte,suporte_pct_escalonados,numérica,0.5182894483024691,AUC,0.3910542744643045,churn 0.06 × retida 0.04 (+41%),0.7545405813547753,0.036578896604938294,False
+churn_flag_conta,suporte,suporte_escalonamentos,numérica,0.5176107226107226,AUC,0.39889357599163366,churn 0.22 × retida 0.18 (+20%),0.7545405813547753,0.03522144522144521,False
+churn_flag_conta,suporte,suporte_satisfacao_media,numérica,0.5195001077354019,AUC,0.5403207411732884,churn 4.00 × retida 3.95 (+1%),0.8273661349215979,0.03900021547080379,False
+churn_flag_conta,suporte,suporte_resolucao_media_h,numérica,0.48857060185185186,AUC,0.7167861952966362,churn 35.49 × retida 36.45 (-3%),0.9206132301876545,0.02285879629629628,False
+churn_flag_conta,suporte,suporte_resolucao_max_h,numérica,0.48996913580246915,AUC,0.7500936231851866,churn 55.66 × retida 56.68 (-2%),0.9206132301876545,0.020061728395061706,False
+churn_flag_conta,suporte,suporte_pct_sem_nota,numérica,0.4935739776234568,AUC,0.8373126189122283,churn 0.40 × retida 0.40 (-2%),0.9206132301876545,0.012852044753086433,False
+churn_flag_conta,uso,uso_dias_desde_ultimo,numérica,0.4292657342657343,AUC,0.023297617275856608,churn 12.27 × retida 17.45 (-30%),0.6383165221238166,0.14146853146853144,False
+churn_flag_conta,uso,uso_pct_registros_com_erro,numérica,0.43657342657342657,AUC,0.04206199547790414,churn 0.30 × retida 0.31 (-4%),0.6383165221238166,0.12685314685314686,False
+churn_flag_conta,uso,uso_eventos_2024,numérica,0.5504195804195804,AUC,0.1061232918743096,churn 264.26 × retida 248.45 (+6%),0.6383165221238166,0.10083916083916078,False
+churn_flag_conta,uso,uso_taxa_erro,numérica,0.4508508158508159,AUC,0.1152283282972941,churn 0.05 × retida 0.06 (-6%),0.6383165221238166,0.09829836829836824,False
+churn_flag_conta,uso,uso_duracao_h,numérica,0.5397202797202797,AUC,0.20306292699620299,churn 43.99 × retida 41.76 (+5%),0.6383165221238166,0.07944055944055939,False
+churn_flag_conta,uso,uso_eventos,numérica,0.5394755244755245,AUC,0.20585894382071646,churn 522.04 × retida 495.13 (+5%),0.6383165221238166,0.07895104895104899,False
+churn_flag_conta,uso,uso_registros_beta,numérica,0.5384965034965035,AUC,0.21419180720257158,churn 5.48 × retida 4.98 (+10%),0.6383165221238166,0.07699300699300693,False
+churn_flag_conta,uso,uso_features_distintas,numérica,0.5384848484848485,AUC,0.21658723589339746,churn 28.34 × retida 27.41 (+3%),0.6383165221238166,0.07696969696969691,False
+churn_flag_conta,uso,uso_registros,numérica,0.5381468531468532,AUC,0.221456752573569,churn 52.05 × retida 49.42 (+5%),0.6383165221238166,0.07629370629370635,False
+churn_flag_conta,uso,uso_eventos_2023,numérica,0.5245687645687646,AUC,0.43116604648844303,churn 257.77 × retida 246.68 (+4%),0.7545405813547753,0.04913752913752911,False
+churn_flag_conta,uso,uso_variacao_2024_vs_2023,numérica,0.5211188811188812,AUC,0.49866016821910775,churn 0.07 × retida 0.05 (+44%),0.788204782023751,0.04223776223776232,False
+churn_flag_conta,uso,uso_registros_com_erro,numérica,0.5143822843822844,AUC,0.6446514793632168,churn 15.65 × retida 15.41 (+2%),0.9206132301876545,0.028764568764568788,False
+churn_flag_conta,uso,uso_duracao_media_min,numérica,0.49156177156177155,AUC,0.7870704841803031,churn 50.90 × retida 50.95 (-0%),0.9206132301876545,0.01687645687645689,False
+churn_flag_conta,uso,uso_erros,numérica,0.5081002331002331,AUC,0.7953437679377273,churn 28.15 × retida 28.23 (-0%),0.9206132301876545,0.016200466200466224,False
+churn_flag_conta,uso,uso_pct_beta,numérica,0.49475524475524474,AUC,0.8667737552378674,churn 0.10 × retida 0.10 (-0%),0.9206132301876545,0.010489510489510523,False
+churn_tem_evento,perfil,perfil_referral_source,categórica,0.11724787602136305,V de Cramér,0.1427243186661575,maior: partner 75% (n=89); menor: ads 60% (n=98),0.9769641243316675,0.11724787602136305,False
+churn_tem_evento,perfil,perfil_coorte_signup,categórica,0.13181792293063227,V de Cramér,0.275840519460764,maior: 2023Q4 80% (n=65); menor: 2023Q2 57% (n=54),0.9769641243316675,0.13181792293063227,False
+churn_tem_evento,perfil,perfil_seats,numérica,0.5216619318181818,AUC,0.44409152251434314,churn 20.67 × retida 20.30 (+2%),0.9769641243316675,0.043323863636363535,False
+churn_tem_evento,perfil,perfil_country,categórica,0.09243602175280757,V de Cramér,0.6398918626074057,maior: UK 78% (n=58); menor: DE 56% (n=25),0.9769641243316675,0.09243602175280757,False
+churn_tem_evento,perfil,perfil_plan_tier,categórica,0.036820976704752637,V de Cramér,0.7125208662003093,maior: Pro 72% (n=178); menor: Basic 68% (n=168),0.9769641243316675,0.036820976704752637,False
+churn_tem_evento,perfil,perfil_industry,categórica,0.05888495452484117,V de Cramér,0.7845838120465712,maior: DevTools 73% (n=113); menor: HealthTech 67% (n=96),0.9769641243316675,0.05888495452484117,False
+churn_tem_evento,perfil,perfil_is_trial,categórica,0.008730832214014887,V de Cramér,0.8452149740234396,maior: False 71% (n=403); menor: True 69% (n=97),0.9769641243316675,0.008730832214014887,False
+churn_tem_evento,perfil,perfil_dias_desde_signup,numérica,0.5023610257985258,AUC,0.9338014448966865,churn 338.74 × retida 338.69 (+0%),0.9769641243316675,0.004722051597051635,False
+churn_tem_evento,receita,receita_upgrades,numérica,0.5355113636363636,AUC,0.1873926697010102,churn 1.11 × retida 0.95 (+17%),0.9769641243316675,0.07102272727272729,False
+churn_tem_evento,receita,receita_mrr_perdido,numérica,0.5344556203931204,AUC,0.20551548484378845,"churn 2,417.94 × retida 2,216.39 (+9%)",0.9769641243316675,0.06891124078624089,False
+churn_tem_evento,receita,receita_pct_mrr_perdido,numérica,0.5280539772727273,AUC,0.30267694993068306,churn 0.10 × retida 0.09 (+20%),0.9769641243316675,0.056107954545454586,False
+churn_tem_evento,receita,receita_downgrades,numérica,0.5241381296068796,AUC,0.3105318312192401,churn 0.45 × retida 0.39 (+16%),0.9769641243316675,0.04827625921375911,False
+churn_tem_evento,receita,receita_assinaturas_encerradas,numérica,0.5256161701474201,AUC,0.3379050792385726,churn 1.00 × retida 0.91 (+10%),0.9769641243316675,0.05123234029484025,False
+churn_tem_evento,receita,receita_seats_ativos,numérica,0.5231111793611793,AUC,0.41446844661046756,churn 267.20 × retida 275.01 (-3%),0.9769641243316675,0.04622235872235869,False
+churn_tem_evento,receita,receita_assinaturas_trial,numérica,0.47859720515970516,AUC,0.4340086541910113,churn 1.53 × retida 1.62 (-6%),0.9769641243316675,0.04280558968058967,False
+churn_tem_evento,receita,receita_mrr_medio_assinatura,numérica,0.5193680896805897,AUC,0.4940851507054741,"churn 2,285.20 × retida 2,214.17 (+3%)",0.9769641243316675,0.038736179361179346,False
+churn_tem_evento,receita,receita_pct_assin_pro,numérica,0.5140509828009828,AUC,0.6195457979723543,churn 0.33 × retida 0.33 (+1%),0.9769641243316675,0.02810196560196565,False
+churn_tem_evento,receita,receita_mrr_ativo,numérica,0.5138302364864865,AUC,0.625404709346058,"churn 20,283.72 × retida 20,403.65 (-1%)",0.9769641243316675,0.027660472972973027,False
+churn_tem_evento,receita,receita_arr_ativo,numérica,0.5138302364864865,AUC,0.625404709346058,"churn 243,404.59 × retida 244,843.78 (-1%)",0.9769641243316675,0.027660472972973027,False
+churn_tem_evento,receita,receita_pct_assin_basic,numérica,0.48695677211302213,AUC,0.6448817958338816,churn 0.32 × retida 0.32 (-1%),0.9769641243316675,0.02608645577395574,False
+churn_tem_evento,receita,receita_assinaturas,numérica,0.510768581081081,AUC,0.7026694350264397,churn 10.02 × retida 9.95 (+1%),0.9769641243316675,0.02153716216216206,False
+churn_tem_evento,receita,receita_pct_auto_renew,numérica,0.5053458998771498,AUC,0.8501490025051079,churn 0.80 × retida 0.80 (+1%),0.9769641243316675,0.01069179975429968,False
+churn_tem_evento,receita,receita_pct_assin_enterprise,numérica,0.5050579699017199,AUC,0.8582987705344884,churn 0.35 × retida 0.35 (-1%),0.9769641243316675,0.010115939803439833,False
+churn_tem_evento,receita,receita_assinaturas_ativas,numérica,0.5014300522113022,AUC,0.959803255495243,churn 9.02 × retida 9.04 (-0%),0.9769641243316675,0.002860104422604426,False
+churn_tem_evento,receita,receita_pct_anual,numérica,0.5008253992628993,AUC,0.9769641243316675,churn 0.49 × retida 0.49 (-0%),0.9769641243316675,0.0016507985257985247,False
+churn_tem_evento,suporte,suporte_escalonamentos,numérica,0.5234279023341524,AUC,0.21608111471249325,churn 0.20 × retida 0.16 (+24%),0.9769641243316675,0.046855804668304746,False
+churn_tem_evento,suporte,suporte_pct_escalonados,numérica,0.5226870714498658,AUC,0.24113580699663706,churn 0.05 × retida 0.04 (+10%),0.9769641243316675,0.04537414289973163,False
+churn_tem_evento,suporte,suporte_pct_urgente_alta,numérica,0.47358640564444004,AUC,0.35234964370343136,churn 0.51 × retida 0.53 (-3%),0.9769641243316675,0.05282718871111991,False
+churn_tem_evento,suporte,suporte_pct_sem_nota,numérica,0.5176090629037067,AUC,0.5348808153322827,churn 0.40 × retida 0.39 (+2%),0.9769641243316675,0.03521812580741335,False
+churn_tem_evento,suporte,suporte_tickets,numérica,0.4863233261670762,AUC,0.6245949490959579,churn 3.96 × retida 4.09 (-3%),0.9769641243316675,0.027353347665847627,False
+churn_tem_evento,suporte,suporte_primeira_resposta_media_min,numérica,0.5078803537712412,AUC,0.7829837263984761,churn 88.78 × retida 88.04 (+1%),0.9769641243316675,0.015760707542482377,False
+churn_tem_evento,suporte,suporte_satisfacao_media,numérica,0.5063057040998218,AUC,0.8278463514886745,churn 3.96 × retida 3.97 (-0%),0.9769641243316675,0.01261140819964357,False
+churn_tem_evento,suporte,suporte_resolucao_media_h,numérica,0.49551823511875187,AUC,0.8756408791258521,churn 36.24 × retida 36.25 (-0%),0.9769641243316675,0.008963529762496258,False
+churn_tem_evento,suporte,suporte_resolucao_max_h,numérica,0.5038755838219219,AUC,0.8923227826092688,churn 56.59 × retida 56.15 (+1%),0.9769641243316675,0.007751167643843759,False
+churn_tem_evento,uso,uso_features_distintas,numérica,0.5365095208845209,AUC,0.19641732161581138,churn 27.76 × retida 27.27 (+2%),0.9769641243316675,0.07301904176904173,False
+churn_tem_evento,uso,uso_pct_beta,numérica,0.468778792997543,AUC,0.27020575437052063,churn 0.10 × retida 0.10 (-4%),0.9769641243316675,0.062442414004914015,False
+churn_tem_evento,uso,uso_registros_beta,numérica,0.47690801597051596,AUC,0.41166207122147613,churn 5.04 × retida 5.21 (-3%),0.9769641243316675,0.04618396805896807,False
+churn_tem_evento,uso,uso_duracao_media_min,numérica,0.5222473894348895,AUC,0.432139884912936,churn 51.01 × retida 50.77 (+0%),0.9769641243316675,0.04449477886977893,False
+churn_tem_evento,uso,uso_erros,numérica,0.5204430282555282,AUC,0.470255403324502,churn 28.39 × retida 27.79 (+2%),0.9769641243316675,0.04088605651105648,False
+churn_tem_evento,uso,uso_registros_com_erro,numérica,0.5166999385749386,AUC,0.5550038812007985,churn 15.53 × retida 15.31 (+1%),0.9769641243316675,0.03339987714987713,False
+churn_tem_evento,uso,uso_duracao_h,numérica,0.516143273955774,AUC,0.5687378421690034,churn 42.51 × retida 41.63 (+2%),0.9769641243316675,0.03228654791154795,False
+churn_tem_evento,uso,uso_eventos_2024,numérica,0.5158457463144963,AUC,0.5758824640412787,churn 254.05 × retida 246.89 (+3%),0.9769641243316675,0.031691492628992624,False
+churn_tem_evento,uso,uso_registros,numérica,0.5125633445945946,AUC,0.6573787953608965,churn 50.26 × retida 49.39 (+2%),0.9769641243316675,0.025126689189189255,False
+churn_tem_evento,uso,uso_eventos,numérica,0.5114308200245701,AUC,0.6866178044728035,churn 503.43 × retida 495.38 (+2%),0.9769641243316675,0.022861640049140153,False
+churn_tem_evento,uso,uso_dias_desde_ultimo,numérica,0.49260019963144963,AUC,0.793919364433129,churn 16.12 × retida 16.76 (-4%),0.9769641243316675,0.014799600737100738,False
+churn_tem_evento,uso,uso_pct_registros_com_erro,numérica,0.4936367475429975,AUC,0.8224057766874625,churn 0.31 × retida 0.31 (-1%),0.9769641243316675,0.012726504914004955,False
+churn_tem_evento,uso,uso_taxa_erro,numérica,0.5045205006142506,AUC,0.8733972364985921,churn 0.06 × retida 0.06 (-1%),0.9769641243316675,0.009041001228501155,False
+churn_tem_evento,uso,uso_eventos_2023,numérica,0.5032919993857494,AUC,0.9076919185192281,churn 249.39 × retida 248.49 (+0%),0.9769641243316675,0.006583998771498845,False
+churn_tem_evento,uso,uso_variacao_2024_vs_2023,numérica,0.49890586609336607,AUC,0.9694401029930715,churn 0.05 × retida 0.07 (-19%),0.9769641243316675,0.0021882678132678635,False
