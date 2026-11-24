@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
 import raw from "./data.json";
 import { ForcaBars, Heatmap, Matrix, MonthlyBars, MonthlyLines, SatBars, SegmentCI, leitura, type Corr } from "./charts";
-import { dec, int, mes, nome, pct, pval, usd, usdK } from "./format";
+import { dec, int, mes, nome, pct, pval, usd } from "./format";
 import { useTheme } from "./theme";
+import { Hero } from "./hero";
 
 type Mensal = (typeof raw.mensal)[number];
 type Seg = { p: number; itens: { nivel: string; n: number; churn: number; taxa: number; ic: [number, number]; mrr_ativo: number }[] };
@@ -49,36 +50,7 @@ export default function App() {
       </header>
 
       <main className="wrap">
-        {/* ------------------------------------------------------------ RESUMO */}
-        <section className="hero" id="resumo">
-          <div className="eyebrow">Diagnóstico de churn · as 5 tabelas ligadas por conta</div>
-          <h1>As três versões da diretoria são, cada uma, meia verdade</h1>
-          <p>
-            O churn subiu de fato no 2º semestre de 2024. O “uso cresceu” vale para o total, não por cliente. A “satisfação ok” só
-            mede quem respondeu. E nenhuma variável isolada (perfil, receita, uso ou suporte) explica quem sai.
-          </p>
-          <p className="quote">“Os números mostram que o churn subiu, mas o time de CS diz que a satisfação está ok. O time de produto diz que o uso
-            da plataforma cresceu. Algo não bate.” · CEO</p>
-
-          <div className="kpis">
-            <div className="kpi"><div className="label">Contas</div><div className="value">{int(k.contas)}</div><div className="sub">{int(k.assinaturas)} assinaturas</div></div>
-            <div className="kpi"><div className="label">MRR ativo</div><div className="value">{usdK(k.mrr_ativo)}</div><div className="sub">{usdK(k.mrr_perdido)} em assinaturas encerradas</div></div>
-            <div className="kpi"><div className="label">Churn de MRR · dez/24</div><div className="value">{pct(dez.taxa_churn_mrr)}</div><div className="sub">era {pct(jun.taxa_churn_mrr)} em jun/24</div></div>
-            <div className="kpi"><div className="label">Tickets sem nota</div><div className="value">{pct(k.pct_sem_nota, 0)}</div><div className="sub">e nenhuma nota 1 ou 2</div></div>
-            <div className="kpi"><div className="label">Variáveis com efeito real</div><div className="value">{int(k.variaveis_significativas)} de {int(k.variaveis_testadas)}</div><div className="sub">após correção estatística</div></div>
-          </div>
-
-          <div className="findings">
-            <div className="finding"><div className="n">1 · Churn</div><h4>Subiu, e não só em volume</h4>
-              <p>A taxa mensal de assinaturas encerradas ficou perto de 1% até ago/24 e foi a {pct(dez.taxa_churn_assinaturas)} em dez/24.</p></div>
-            <div className="finding"><div className="n">2 · Uso</div><h4>O total ficou parado, o uso por cliente despencou</h4>
-              <p>A base de assinaturas ativas multiplicou e o volume de uso mensal ficou igual: cada assinatura usa {pct(1 - dez.uso_por_assinatura_ativa / jan24.uso_por_assinatura_ativa, 0)} menos que em jan/24.</p></div>
-            <div className="finding"><div className="n">3 · Satisfação</div><h4>A média {dec(satMedia, 1)} é de quem respondeu</h4>
-              <p>{pct(k.pct_sem_nota, 0)} dos tickets não têm nota e não existe nenhuma nota 1 ou 2. O indicador não enxerga o cliente insatisfeito.</p></div>
-            <div className="finding"><div className="n">4 · Medição</div><h4>A empresa não sabe quem saiu, nem por quê</h4>
-              <p>Três registros de churn que não batem, e o motivo registrado não conversa com o comentário do cliente.</p></div>
-          </div>
-        </section>
+        <Hero pal={pal} mensal={M} sat={sat} kpis={k} def={df} />
 
         {/* ------------------------------------------------------------ CHURN */}
         <section className="block" id="churn">

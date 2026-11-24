@@ -117,7 +117,7 @@ section.block > .lede { color: var(--ink-2); margin: 0 0 16px; max-width: 820px;
 .card .foot { font-size: 12.5px; color: var(--muted); margin-top: 8px; }
 
 .verdict { display: flex; gap: 10px; align-items: flex-start; border-radius: 10px; padding: 12px 14px; margin-top: 14px; font-size: 14px; background: var(--surface-2); border: 1px solid var(--border); }
-.verdict .tag { font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; padding: 2px 8px; border-radius: 999px; border: 1px solid currentColor; }
+.verdict .tag, .claim-verdict .tag { font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; padding: 2px 8px; border-radius: 999px; border: 1px solid currentColor; }
 .tag.false { color: var(--critical); }
 .tag.true { color: var(--good); }
 .tag.partial { color: var(--ink-2); }
@@ -182,3 +182,47 @@ footer { margin-top: 56px; color: var(--muted); font-size: 12.5px; border-top: 1
   .kpi .value { font-size: 22px; }
   section.block > h2 { font-size: 19px; }
 }
+
+/* ------------------------------------------------------------ abertura */
+.hero2 { padding: 40px 0 8px; scroll-margin-top: 64px; }
+.hero2 h1 { font-size: clamp(26px, 3.6vw, 40px); font-weight: 600; line-height: 1.12; letter-spacing: -0.02em; margin: 0 0 24px; max-width: 900px; text-wrap: balance; }
+.headline {
+  display: grid; grid-template-columns: minmax(260px, 360px) 1fr; gap: 8px 32px; align-items: center;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 22px 24px 14px;
+}
+.hn-label { font-size: 13px; color: var(--ink-2); }
+.hn-value { font-size: clamp(52px, 7vw, 76px); font-weight: 600; letter-spacing: -0.03em; line-height: 1; margin: 6px 0 8px; color: var(--ink); }
+.hn-sub { font-size: 14.5px; color: var(--ink-2); max-width: 320px; }
+.hn-sub b { color: var(--ink); font-weight: 600; }
+.hn-facts { list-style: none; padding: 14px 0 0; margin: 14px 0 0; border-top: 1px solid var(--grid); font-size: 13px; color: var(--ink-2); display: grid; gap: 4px; }
+.hn-facts b { color: var(--ink); font-weight: 600; }
+.headline-chart { min-width: 0; }
+
+.claims-title { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin: 34px 0 12px; }
+.claims { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); overflow: hidden; }
+.claim { padding: 20px 22px 18px; display: flex; flex-direction: column; min-width: 0; }
+.claim + .claim { border-left: 1px solid var(--grid); }
+.claim-who { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.claim-said { font-size: 21px; font-weight: 600; letter-spacing: -0.01em; margin: 4px 0 10px; line-height: 1.25; }
+.claim-chart { margin: 0 -8px; }
+.claim-verdict { margin: 12px 0 6px; }
+.claim-proof { font-size: 13.5px; color: var(--ink-2); margin: 0; }
+.mini-cap { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 11.5px; color: var(--muted); padding: 2px 8px 0; }
+.mini-cap i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 5px; vertical-align: 0; }
+
+.nobody {
+  display: grid; grid-template-columns: 1.1fr 1fr auto; gap: 16px 28px; align-items: center; margin-top: 16px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 18px 22px;
+}
+.nobody-said { font-size: 19px; font-weight: 600; margin: 4px 0 6px; letter-spacing: -0.01em; }
+.nobody .venn { margin: 0 0 6px; }
+.nobody .mini-cap { padding: 0; }
+.nobody-link { font-size: 13px; text-decoration: none; white-space: nowrap; }
+
+@media (max-width: 900px) {
+  .headline { grid-template-columns: 1fr; }
+  .claims { grid-template-columns: 1fr; }
+  .claim + .claim { border-left: 0; border-top: 1px solid var(--grid); }
+  .nobody { grid-template-columns: 1fr; }
+}
+.hn-note { font-size: 12px; color: var(--muted); margin-top: 6px; max-width: 320px; }

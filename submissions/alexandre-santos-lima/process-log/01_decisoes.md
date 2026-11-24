@@ -45,3 +45,8 @@ Cada etapa abaixo tem o script que a reproduz em `solution/scripts/`.
   rótulos ligados aos campos. Corrigido o que os prints mostraram: mapa de calor cortando as linhas de churn,
   matriz cortada no celular, rótulos "fraca/moderada" sobrepostos, números em formato americano na auditoria
   ("5,000", "22.0%"), "−0%" na leitura e nota que citava "pricing" quando a tabela mostra "preço".
+- **Feedback do usuário:** "os gráficos estão excelentes, mas a primeira visão está horrível" (texto corrido + 9 caixas
+  iguais repetindo números). Refeita em volta da pergunta do CEO: um número-manchete com a curva (churn de MRR 2024),
+  três colunas "o que cada área disse × o que os dados mostram" com mini-gráfico e veredito, e uma faixa com o achado
+  que ninguém pediu (registros de churn que discordam). Nota de honestidade no número: o "11×" usa dez/24, que tem
+  efeito de borda — a nota mostra que nov/24 já está em 4× junho.
