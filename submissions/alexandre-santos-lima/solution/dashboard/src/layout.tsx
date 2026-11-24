@@ -85,7 +85,7 @@ export function Shell({ pagina, itens, isDark, toggle, children }: {
     <>
       <header className="top">
         <div className="bar">
-          <span className="brand">RavenStack · Churn</span>
+          <span className="brand">RavenStack · Cancelamentos</span>
           <nav aria-label="Páginas" className="tabs">
             {PAGINAS.map((p) => (
               <a key={p.id} href={p.hash} aria-current={pagina === p.id ? "page" : undefined}>{p.titulo}</a>

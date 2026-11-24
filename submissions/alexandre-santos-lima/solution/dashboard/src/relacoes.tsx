@@ -4,6 +4,7 @@ import {
 } from "recharts";
 import raw from "./mes_uso.json";
 import { dec, int, mes, pct, pval } from "./format";
+import { Tecnico } from "./charts";
 import type { Palette } from "./theme";
 
 type Mes = (typeof raw.mensal)[number];
@@ -18,11 +19,12 @@ function Box({ children }: { children: React.ReactNode }) {
 function Row({ k, v }: { k: string; v: string }) {
   return <div className="row"><span>{k}</span><span>{v}</span></div>;
 }
-function Stats({ itens }: { itens: [string, string][] }) {
+function Stats({ itens, extra }: { itens: [string, string][]; extra?: React.ReactNode }) {
   return (
-    <div className="stats">
-      {itens.map(([k, v]) => <span key={k}><b>{v}</b> {k}</span>)}
-    </div>
+    <Tecnico>
+      <div className="stats">{itens.map(([k, v]) => <span key={k}><b>{v}</b> {k}</span>)}</div>
+      {extra}
+    </Tecnico>
   );
 }
 function Leg({ itens, pal }: { itens: ([string, keyof Palette] | [string, keyof Palette, "dot" | "line" | "band"])[]; pal: Palette }) {
@@ -71,23 +73,24 @@ export function Relacoes({ pal }: { pal: Palette }) {
   return (
     <section className="block" id="relacoes">
       <div className="eyebrow">O que determina os cancelamentos</div>
-      <h2>Os cancelamentos seguem o tamanho da base, e não o mês nem o uso</h2>
-      <p className="lede">Cada gráfico testa uma explicação. Os números ao lado de cada título são o resultado do teste estatístico.
-        Os meses de jan–jun/23, com no máximo 5 cancelamentos, e dez/24, que tem o efeito do fim dos dados, entram nos gráficos mas ficam fora dos testes.</p>
+      <h2>Os cancelamentos acompanham o número de clientes, e não a época do ano nem o uso do produto</h2>
+      <p className="lede">Cada gráfico testa uma explicação possível para o número de cancelamentos. O começo de 2023, quando havia pouquíssimos
+        clientes, e dezembro de 2024, que tem um erro de registro no fim dos dados, aparecem nos gráficos em cinza e ficam fora das contas.</p>
 
       {/* ------------------------------------------------ BASE */}
-      <h3 className="sub">1. Tamanho da base</h3>
+      <h3 className="sub">1. Número de clientes</h3>
       <div className="grid2">
         <div className="card">
-          <h3>A base explica {pct(S.r2, 0)} da variação dos cancelamentos</h3>
-          <Stats itens={[["da variação explicada", pct(S.r2, 0)], [`elasticidade (IC ${dec(S.elasticidade_ic[0], 2)} a ${dec(S.elasticidade_ic[1], 2)})`, dec(S.elasticidade, 2)]]} />
-          <p className="note">Cada ponto é um mês. A curva é o modelo “cancelamentos proporcionais à base”. Elasticidade 1 = proporcional.</p>
-          <Leg pal={pal} itens={[["mês usado no teste", "--s1", "dot"], ["mês fora do teste", "--neutral", "dot"], ["modelo", "--s2", "line"]]} />
+          <h3>O número de clientes explica {pct(S.r2, 0)} das variações nos cancelamentos</h3>
+          <p className="note">Cada ponto é um mês. Quanto mais clientes ativos, mais cancelamentos, quase na mesma proporção. A linha mostra o que se esperaria só pelo número de clientes.</p>
+          <Stats itens={[["da variação explicada (pseudo-R²)", pct(S.r2, 0)], [`elasticidade, IC 95% ${dec(S.elasticidade_ic[0], 2)} a ${dec(S.elasticidade_ic[1], 2)}`, dec(S.elasticidade, 2)]]}
+            extra={<p>Regressão quase-Poisson com log do nº de assinaturas ativas, meses de jul/23 a nov/24. Elasticidade 1 = cancelamentos proporcionais ao nº de clientes.</p>} />
+          <Leg pal={pal} itens={[["mês usado na conta", "--s1", "dot"], ["mês fora da conta", "--neutral", "dot"], ["esperado pelo nº de clientes", "--s2", "line"]]} />
           <ResponsiveContainer width="100%" height={260}>
             <ComposedChart margin={{ top: 10, right: 12, left: 0, bottom: 14 }}>
               <CartesianGrid stroke={pal["--grid"]} />
               <XAxis type="number" dataKey="base" domain={[0, "dataMax"]} {...ax(pal)} tickFormatter={(v) => int(v)}
-                label={{ value: "assinaturas ativas no mês", position: "insideBottom", offset: -8, fill: pal["--muted"], fontSize: 11 }} />
+                label={{ value: "clientes ativos no mês (assinaturas)", position: "insideBottom", offset: -8, fill: pal["--muted"], fontSize: 11 }} />
               <YAxis type="number" dataKey="cancelamentos" {...ax(pal)} axisLine={false} width={40} />
               <Tooltip content={tipMes as never} cursor={{ stroke: pal["--axis"] }} />
               <Line data={raw.curva} dataKey="esp" stroke={pal["--s2"]} strokeWidth={2} dot={false} isAnimationActive={false} activeDot={false} />
@@ -97,10 +100,10 @@ export function Relacoes({ pal }: { pal: Palette }) {
           </ResponsiveContainer>
         </div>
         <div className="card">
-          <h3>{S.dentro_faixa} de {S.n_estavel} meses caem dentro do esperado pela base</h3>
-          <Stats itens={[["tendência além da base", `p = ${pval(S.p_tendencia)}`], ["meses dentro da faixa", `${S.dentro_faixa}/${S.n_estavel}`]]} />
-          <p className="note">Faixa: onde os cancelamentos cairiam 95% das vezes se dependessem só do tamanho da base.</p>
-          <Leg pal={pal} itens={[["faixa esperada (95%)", "--s1", "band"], ["esperado", "--s1", "line"], ["observado", "--s2", "dot"]]} />
+          <h3>{S.dentro_faixa} de {S.n_estavel} meses ficaram dentro do esperado</h3>
+          <p className="note">A faixa azul mostra quantos cancelamentos seriam normais em cada mês só pelo número de clientes. Os pontos laranja são os cancelamentos reais.</p>
+          <Stats itens={[["tendência além do nº de clientes", `p = ${pval(S.p_tendencia)}`], ["meses dentro da faixa de 95%", `${S.dentro_faixa}/${S.n_estavel}`]]} />
+          <Leg pal={pal} itens={[["faixa normal", "--s1", "band"], ["esperado", "--s1", "line"], ["cancelamentos reais", "--s2", "dot"]]} />
           <ResponsiveContainer width="100%" height={260}>
             <ComposedChart data={desde} margin={{ top: 10, right: 12, left: 0, bottom: 0 }}>
               <CartesianGrid vertical={false} stroke={pal["--grid"]} />
@@ -113,17 +116,19 @@ export function Relacoes({ pal }: { pal: Palette }) {
                 dot={{ r: 4, fill: pal["--s2"], stroke: pal["--surface"], strokeWidth: 2 }} activeDot={{ r: 5, fill: pal["--s2"] }} />
             </ComposedChart>
           </ResponsiveContainer>
-          <p className="foot">Fora da faixa: só fev/24 ({int(feb.cancelamentos)} contra {dec(feb.esp, 0)} esperados). Dez/24 fica acima, pelo efeito do fim dos dados.</p>
+          <p className="foot">Fora da faixa: só fev/24 ({int(feb.cancelamentos)} contra {dec(feb.esp, 0)} esperados). Dez/24 fica acima por causa do erro de registro no fim dos dados.</p>
         </div>
       </div>
 
       {/* ------------------------------------------------ MÊS */}
-      <h3 className="sub">2. Mês do ano</h3>
+      <h3 className="sub">2. Época do ano</h3>
       <div className="card">
-        <h3>Nenhum mês se repete acima ou abaixo do esperado nos dois anos</h3>
-        <Stats itens={[["efeito do mês do ano", `p = ${pval(S.p_sazonal)}`], [`concordância 2023 × 2024 (${S.n_saz} meses comparáveis)`, `ρ = ${dec(S.rho_saz, 2)}`]]} />
-        <p className="note">Cancelados ÷ esperado pela base em cada mês. Acima de 1, o mês cancelou mais que o tamanho da base explica.
-          A linha em 1,0 marca o esperado. Se houvesse sazonalidade, as duas barras de cada mês ficariam do mesmo lado da linha.</p>
+        <h3>Não há uma época do ano comprovadamente pior</h3>
+        <p className="note">Cada barra compara os cancelamentos do mês com o esperado pelo número de clientes. Acima da linha, o mês cancelou mais que o normal.
+          Se houvesse uma época ruim, as barras de 2023 e de 2024 daquele mês ficariam as duas bem acima da linha. Só dezembro fica acima
+          nos dois anos, e dezembro de 2024 tem o erro de registro do fim dos dados; os outros meses ficam perto da linha ou de lados opostos.</p>
+        <Stats itens={[["efeito do mês do ano", `p = ${pval(S.p_sazonal)}`], [`concordância 2023 × 2024 (${S.n_saz} meses comparáveis)`, `ρ = ${dec(S.rho_saz, 2)}`]]}
+          extra={<p>Barras = cancelados ÷ esperado pelo modelo. Linha em 1,0 = igual ao esperado.</p>} />
         <Leg pal={pal} itens={[["2023", "--s3"], ["2024", "--s1"]]} />
         <ResponsiveContainer width="100%" height={240}>
           <BarChart data={saz} margin={{ top: 10, right: 8, left: 0, bottom: 0 }} barCategoryGap="22%" barGap={2}>
@@ -148,23 +153,23 @@ export function Relacoes({ pal }: { pal: Palette }) {
             <Bar dataKey="r2024" name="2024" fill={pal["--s1"]} radius={[3, 3, 0, 0]} isAnimationActive={false} />
           </BarChart>
         </ResponsiveContainer>
-        <div className="warn">Barras claras: meses de 2023 com menos de 5 cancelamentos esperados, nos quais a razão oscila só por acaso (jan/23 passa de 8× e foi cortado).
-          Com apenas 2 anos de dados, cada mês aparece duas vezes: o teste mostra ausência de sinal sazonal, mas não prova que ele não existe.</div>
+        <div className="warn">Barras claras: meses de 2023 com muito poucos clientes, em que qualquer variação parece grande (janeiro de 2023 passa do limite do gráfico).
+          Com só dois anos de dados, não dá para descartar de vez uma época ruim. O que dá para dizer é que nenhuma apareceu.</div>
       </div>
 
       {/* ------------------------------------------------ USO */}
       <h3 className="sub">3. Uso do produto</h3>
       <div className="grid2">
         <div className="card">
-          <h3>Aparente: menos uso, mais cancelamentos (ρ = {dec(S.rho_cru, 2)})</h3>
-          <Stats itens={[["correlação crua", `ρ = ${dec(S.rho_cru, 2)}`]]} />
-          <p className="note">Cada ponto é um mês. A correlação quase perfeita vem só do crescimento da base: o uso total fica parado,
-            então o uso por assinatura cai, e os cancelamentos sobem junto com a base.</p>
+          <h3>Parece que quem usa menos cancela mais…</h3>
+          <p className="note">Cada ponto é um mês. Parece uma relação forte, mas é ilusão: os clientes aumentaram e o uso total ficou igual. Então o uso por
+            cliente caiu e os cancelamentos subiram ao mesmo tempo, sem que um cause o outro.</p>
+          <Stats itens={[["correlação sem descontar o crescimento", `ρ = ${dec(S.rho_cru, 2)}`]]} />
           <ResponsiveContainer width="100%" height={240}>
             <ScatterChart margin={{ top: 10, right: 12, left: 0, bottom: 14 }}>
               <CartesianGrid stroke={pal["--grid"]} />
               <XAxis type="number" dataKey="uso_por_assinatura" {...ax(pal)} tickFormatter={(v) => dec(v, 0)}
-                label={{ value: "uso por assinatura ativa", position: "insideBottom", offset: -8, fill: pal["--muted"], fontSize: 11 }} />
+                label={{ value: "uso do produto por cliente", position: "insideBottom", offset: -8, fill: pal["--muted"], fontSize: 11 }} />
               <YAxis type="number" dataKey="cancelamentos" {...ax(pal)} axisLine={false} width={40} />
               <ZAxis range={[60, 60]} />
               <Tooltip content={tipMes as never} />
@@ -173,15 +178,16 @@ export function Relacoes({ pal }: { pal: Palette }) {
           </ResponsiveContainer>
         </div>
         <div className="card">
-          <h3>Real: descontada a base, não há relação significativa</h3>
-          <Stats itens={[["descontando a base", `ρ = ${dec(S.rho_controlado, 2)}, p = ${pval(S.p_controlado)}`], ["variação mês a mês", `ρ = ${dec(S.rho_delta, 2)}, p = ${pval(S.p_delta)}`]]} />
-          <p className="note">Os mesmos meses, agora com o efeito da base removido dos dois eixos. Se menos uso causasse churn, os pontos
-            formariam uma linha descendo da esquerda para a direita. A leve subida que aparece não é significativa e vai na direção oposta.</p>
+          <h3>…mas, tirando o efeito do crescimento, não há relação</h3>
+          <p className="note">Os mesmos meses, sem o efeito do crescimento. Se usar menos levasse a cancelar, os pontos formariam uma linha descendo da
+            esquerda para a direita. Não formam: estão espalhados, com uma leve subida que pode ser acaso.</p>
+          <Stats itens={[["descontando o nº de clientes", `ρ = ${dec(S.rho_controlado, 2)}, p = ${pval(S.p_controlado)}`], ["variação de um mês para o outro", `ρ = ${dec(S.rho_delta, 2)}, p = ${pval(S.p_delta)}`]]}
+            extra={<p>Resíduos dos dois eixos contra o log do nº de assinaturas ativas; eixo vertical em escala log.</p>} />
           <ResponsiveContainer width="100%" height={240}>
             <ScatterChart margin={{ top: 10, right: 12, left: 0, bottom: 14 }}>
               <CartesianGrid stroke={pal["--grid"]} />
               <XAxis type="number" dataKey="uso_resid" {...ax(pal)} tickFormatter={(v) => dec(v, 2)} domain={[-0.15, 0.15]}
-                label={{ value: "uso acima (+) ou abaixo (−) do esperado", position: "insideBottom", offset: -8, fill: pal["--muted"], fontSize: 11 }} />
+                label={{ value: "uso acima (+) ou abaixo (−) do normal", position: "insideBottom", offset: -8, fill: pal["--muted"], fontSize: 11 }} />
               <YAxis type="number" dataKey="cancel_resid" {...ax(pal)} axisLine={false} width={44} tickFormatter={(v) => dec(v, 1)} />
               <ReferenceLine x={0} stroke={pal["--axis"]} />
               <ReferenceLine y={0} stroke={pal["--axis"]} />
@@ -190,16 +196,18 @@ export function Relacoes({ pal }: { pal: Palette }) {
               <Scatter data={resid} fill={pal["--s1"]} isAnimationActive={false} />
             </ScatterChart>
           </ResponsiveContainer>
-          <p className="foot">Eixo vertical: cancelamentos acima (+) ou abaixo (−) do esperado pela base, em escala log.</p>
+          <p className="foot">Eixo vertical: cancelamentos acima (+) ou abaixo (−) do normal para o número de clientes.</p>
         </div>
       </div>
 
       <div className="grid2" style={{ marginTop: 16 }}>
         <div className="card">
-          <h3>O cliente usa igual antes e depois do churn</h3>
-          <Stats itens={[["média 90 dias antes", dec(S.antes_media, 1)], ["média 90 dias depois", dec(S.depois_media, 1)], ["seguem usando depois", pct(S.pct_usa_depois, 0)], ["diferença", `p = ${pval(S.p_antes_depois)}`]]} />
-          <p className="note">Cada ponto é um evento de churn ({int(S.n_antes_depois)} eventos até out/24). Uso da conta nos 90 dias antes e nos 90 dias depois.
-            Se o churn fosse saída real, quase todos os pontos ficariam colados no eixo de baixo (uso zero depois).</p>
+          <h3>O cliente continua usando o produto depois de “cancelar”</h3>
+          <p className="note" style={{ fontSize: 14 }}><b>{dec(S.pct_usa_depois * 100, 0)} de cada 100</b> clientes seguem usando depois do cancelamento registrado, e usam
+            o mesmo tanto: em média {dec(S.antes_media, 0)} usos nos 90 dias antes e {dec(S.depois_media, 0)} nos 90 dias depois.</p>
+          <Stats itens={[["média 90 dias antes", dec(S.antes_media, 1)], ["média 90 dias depois", dec(S.depois_media, 1)], ["diferença (Wilcoxon pareado)", `p = ${pval(S.p_antes_depois)}`]]} />
+          <p className="note">Cada ponto é um cancelamento registrado ({int(S.n_antes_depois)}, até out/24). Se o cliente tivesse saído de verdade, os pontos
+            ficariam todos no chão do gráfico (uso zero depois). Ficam espalhados em volta da linha de “igual antes e depois”.</p>
           <ResponsiveContainer width="100%" height={260}>
             <ScatterChart margin={{ top: 10, right: 12, left: 0, bottom: 14 }}>
               <CartesianGrid stroke={pal["--grid"]} />
@@ -213,37 +221,37 @@ export function Relacoes({ pal }: { pal: Palette }) {
               <Tooltip content={({ active, payload }) => {
                 if (!active || !payload?.length) return null;
                 const p = payload[0].payload as { antes: number; depois: number };
-                return <Box><b>Evento de churn</b><Row k="90 dias antes" v={int(p.antes)} /><Row k="90 dias depois" v={int(p.depois)} /></Box>;
+                return <Box><b>Cancelamento registrado</b><Row k="90 dias antes" v={int(p.antes)} /><Row k="90 dias depois" v={int(p.depois)} /></Box>;
               }} />
               <Scatter data={ad} fill={pal["--s1"]} fillOpacity={0.45} isAnimationActive={false} />
             </ScatterChart>
           </ResponsiveContainer>
         </div>
         <div className="card">
-          <h3>Quem saiu e quem ficou usam o produto do mesmo jeito</h3>
-          <Stats itens={[["AUC (0,5 = não separa)", dec(S.auc_conta, 2)], ["diferença entre distribuições", `p = ${pval(S.p_ks)}`]]} />
-          <p className="note">% das contas em cada faixa de eventos de uso, separando contas com flag de churn das demais. As distribuições se sobrepõem.</p>
-          <Leg pal={pal} itens={[["contas com churn", "--s2"], ["contas sem churn", "--s1"]]} />
+          <h3>Quem cancelou e quem ficou usam o produto do mesmo jeito</h3>
+          <p className="note">Porcentagem de clientes em cada faixa de uso. As barras laranja (cancelaram) e azuis (ficaram) quase se sobrepõem.</p>
+          <Stats itens={[["AUC (0,5 = não separa)", dec(S.auc_conta, 2)], ["diferença entre distribuições (KS)", `p = ${pval(S.p_ks)}`]]} />
+          <Leg pal={pal} itens={[["cancelaram", "--s2"], ["ficaram", "--s1"]]} />
           <ResponsiveContainer width="100%" height={240}>
             <BarChart data={raw.hist_conta} margin={{ top: 10, right: 8, left: 0, bottom: 14 }} barCategoryGap="16%" barGap={2}>
               <CartesianGrid vertical={false} stroke={pal["--grid"]} />
               <XAxis dataKey="faixa" {...ax(pal)} interval="preserveStartEnd" tick={{ fill: pal["--muted"], fontSize: 10 }}
-                label={{ value: "eventos de uso da conta (histórico)", position: "insideBottom", offset: -8, fill: pal["--muted"], fontSize: 11 }} />
+                label={{ value: "quanto o cliente usou o produto (total)", position: "insideBottom", offset: -8, fill: pal["--muted"], fontSize: 11 }} />
               <YAxis {...ax(pal)} axisLine={false} width={40} domain={[0, 0.3]} ticks={[0, 0.1, 0.2, 0.3]} tickFormatter={(v) => pct(v, 0)} />
               <Tooltip cursor={{ fill: pal["--grid"], opacity: 0.5 }} content={({ active, payload, label }) => {
                 if (!active || !payload?.length) return null;
                 return <Box><b>{label} eventos</b>{payload.map((p) => <Row key={String(p.name)} k={String(p.name)} v={pct(Number(p.value))} />)}</Box>;
               }} />
-              <Bar dataKey="churn" name="Com churn" fill={pal["--s2"]} radius={[3, 3, 0, 0]} isAnimationActive={false} />
-              <Bar dataKey="retida" name="Sem churn" fill={pal["--s1"]} radius={[3, 3, 0, 0]} isAnimationActive={false} />
+              <Bar dataKey="churn" name="Cancelaram" fill={pal["--s2"]} radius={[3, 3, 0, 0]} isAnimationActive={false} />
+              <Bar dataKey="retida" name="Ficaram" fill={pal["--s1"]} radius={[3, 3, 0, 0]} isAnimationActive={false} />
             </BarChart>
           </ResponsiveContainer>
         </div>
       </div>
 
       <div className="verdict"><span className="tag partial">Conclusão</span>
-        <span>Os cancelamentos são proporcionais ao tamanho da base ({pct(S.r2, 0)} explicado), sem efeito de mês e sem relação com o uso.
-          O cliente que “cancela” continua usando o produto do mesmo jeito, o que indica que o registro de churn não marca a saída real do cliente.</span>
+        <span>O número de cancelamentos sobe porque a empresa tem mais clientes, e não por causa da época do ano ou do uso do produto. E o cliente
+          que “cancela” continua usando o produto do mesmo jeito: o registro de cancelamento não marca a saída real do cliente.</span>
       </div>
     </section>
   );

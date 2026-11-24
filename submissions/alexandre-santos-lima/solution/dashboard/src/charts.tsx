@@ -144,7 +144,7 @@ export function ForcaBars({ rows, pal }: { rows: Corr[]; pal: Palette }) {
             <div className="tt">
               <b>{r.label}</b>
               <div className="row"><span>Força</span><span>{dec(r.forca, 2)}</span></div>
-              <div className="row"><span>p bruto</span><span>{pval(r.p)}</span></div>
+              <div className="row"><span>p (antes da correção)</span><span>{pval(r.p)}</span></div>
               <div className="row"><span>q (corrigido)</span><span>{pval(r.q)}</span></div>
             </div>
           );
@@ -169,13 +169,13 @@ export function SegmentCI({ itens, media, pal }: {
   return (
     <div role="table" aria-label="Taxa de churn por segmento com intervalo de confiança de 95%">
       <div style={{ display: "grid", gridTemplateColumns: "minmax(90px,140px) 1fr 92px", gap: 8, fontSize: 12, color: pal["--muted"], marginBottom: 6 }}>
-        <span>Segmento</span>
+        <span>Grupo</span>
         <span style={{ position: "relative" }}>
           {[0, 0.2, 0.4, 0.6].map((t) => (
             <span key={t} style={{ position: "absolute", left: x(t), transform: t ? "translateX(-50%)" : undefined }}>{pct(t, 0)}</span>
           ))}
         </span>
-        <span style={{ textAlign: "right" }}>Churn (n)</span>
+        <span style={{ textAlign: "right" }}>Cancelou (clientes)</span>
       </div>
       {sorted.map((s) => (
         <div role="row" key={s.nivel} title={`IC 95%: ${pct(s.ic[0])} a ${pct(s.ic[1])} · MRR ativo ${usd(s.mrr_ativo)}`}
@@ -190,9 +190,9 @@ export function SegmentCI({ itens, media, pal }: {
         </div>
       ))}
       <div className="legend" style={{ marginTop: 8 }}>
-        <span><i style={{ background: pal["--s1"], borderRadius: 999 }} />taxa de churn</span>
-        <span><i style={{ background: pal["--s1"], opacity: 0.35, height: 4 }} />intervalo de confiança 95%</span>
-        <span><i style={{ background: pal["--muted"], width: 1 }} />média geral {pct(media, 0)}</span>
+        <span><i style={{ background: pal["--s1"], borderRadius: 999 }} />% que cancelou</span>
+        <span><i style={{ background: pal["--s1"], opacity: 0.35, height: 4 }} />margem de erro</span>
+        <span><i style={{ background: pal["--muted"], width: 1 }} />média de todos os clientes: {pct(media, 0)}</span>
       </div>
     </div>
   );
@@ -212,8 +212,8 @@ export function Heatmap({ vars, vals, pal, isDark }: { vars: string[]; vals: (nu
     <div>
       <div className="tt" style={{ minHeight: 44, marginBottom: 10, boxShadow: "none" }} aria-live="polite">
         {h ? (
-          <><b>{nome(h.a)} × {nome(h.b)}</b><div className="row"><span>ρ de Spearman</span><span>{dec(h.v, 2)}</span></div></>
-        ) : <span style={{ color: pal["--muted"] }}>Passe o mouse (ou toque) numa célula para ver o par e o valor.</span>}
+          <><b>{nome(h.a)} × {nome(h.b)}</b><div className="row"><span>Relação (de −1 a 1)</span><span>{dec(h.v, 2)}</span></div></>
+        ) : <span style={{ color: pal["--muted"] }}>Passe o mouse (ou toque) num quadrado para ver as duas informações cruzadas.</span>}
       </div>
       <div className="heat-scroll">
         <div style={{ display: "grid", gridTemplateColumns: `180px repeat(${n}, minmax(9px, 1fr))`, gap: 1, minWidth: 180 + n * 10 }}
@@ -234,9 +234,9 @@ export function Heatmap({ vars, vals, pal, isDark }: { vars: string[]; vals: (nu
         </div>
       </div>
       <div className="legend" style={{ marginTop: 10 }}>
-        <span><i style={{ background: `rgba(${neg},.9)` }} />correlação negativa</span>
-        <span><i style={{ background: pal["--grid"] }} />sem correlação</span>
-        <span><i style={{ background: `rgba(${pos},.9)` }} />correlação positiva</span>
+        <span><i style={{ background: `rgba(${neg},.9)` }} />uma sobe, a outra desce</span>
+        <span><i style={{ background: pal["--grid"] }} />sem relação</span>
+        <span><i style={{ background: `rgba(${pos},.9)` }} />sobem juntas</span>
       </div>
     </div>
   );
@@ -293,7 +293,7 @@ export function SafraBars({ data, media, pal, height = 240, compact = false }: {
             <div className="tt">
               <b>Assinaturas iniciadas no {s.tri.slice(5)}º trimestre de {s.tri.slice(0, 4)}</b>
               <div className="row"><span>Canceladas</span><span>{int(s.encerradas)} de {int(s.n)} ({pct(s.pct)})</span></div>
-              <div className="row"><span>Margem (IC 95%)</span><span>{pct(s.ic[0])} a {pct(s.ic[1])}</span></div>
+              <div className="row"><span>Margem de erro</span><span>{pct(s.ic[0])} a {pct(s.ic[1])}</span></div>
             </div>
           );
         }} />
@@ -303,5 +303,15 @@ export function SafraBars({ data, media, pal, height = 240, compact = false }: {
         </Bar>
       </BarChart>
     </ResponsiveContainer>
+  );
+}
+
+/* ---------------------------------------------------------------- detalhe técnico (fechado por padrão) */
+export function Tecnico({ children }: { children: React.ReactNode }) {
+  return (
+    <details className="tech">
+      <summary>Detalhe técnico</summary>
+      <div className="tech-body">{children}</div>
+    </details>
   );
 }

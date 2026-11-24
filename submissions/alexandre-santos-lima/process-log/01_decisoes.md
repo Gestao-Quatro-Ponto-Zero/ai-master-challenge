@@ -102,3 +102,12 @@ Cada etapa abaixo tem o script que a reproduz em `solution/scripts/`.
   (datas antes de taxas, safra em vez de contagem, descontar a base, robustez, antes × depois, grau de certeza).
 - Bugs pegos na validação: sumário marcando a seção errada no fim da página e durante a rolagem suave; numeração dupla;
   gaveta do sumário que não fechava no celular; motivos em inglês na tabela; eixo da previsão com marcas quebradas.
+
+## Etapa 8 — Linguagem para quem não é técnico
+- **Feedback do usuário:** "precisamos que pessoas não-técnicas entendam" (print da página de Sugestões).
+- Reescrita de todo o painel: churn → cancelamento, MRR → receita mensal, base → número de clientes, safra → quem entrou no trimestre,
+  flag → marcação da conta, tickets → chamados; números como "X de cada 100"; exemplos concretos ("o motivo diz preço e o comentário diz troquei pelo concorrente").
+- Rigor preservado: ρ, p, AUC, IC, nome dos testes e modelos foram para um bloco "Detalhe técnico" fechado por padrão.
+- Erro pego ao reler o texto contra o gráfico: eu tinha escrito que nenhum mês fica acima do esperado nos dois anos — dezembro fica
+  (1,16 e 1,40; dez/24 tem o erro de registro do fim dos dados). Título mudou para "Não há uma época do ano comprovadamente pior" e a nota cita dezembro.
+- Regra de linguagem adicionada ao SKILL.md para as próximas rodadas manterem o padrão.

@@ -73,7 +73,12 @@ Cada passo existe porque, sem ele, a conclusão saiu errada pelo menos uma vez n
 
 ## Regras do dashboard
 
+- **Escrito para quem não é técnico.** Frases curtas, palavras do dia a dia, números como "X de cada 100". Sem siglas nem jargão no texto
+  principal: "cancelamento" (não churn), "receita mensal" (não MRR), "número de clientes" (não base), "quem entrou no trimestre" (não safra/coorte),
+  "pode ser acaso" (não p-valor), "margem de erro" (não IC). Os números estatísticos (ρ, p, AUC, IC, nome do teste) ficam no bloco
+  **"Detalhe técnico"** (componente `Tecnico`), fechado por padrão: o leitor leigo entende, o avaliador técnico confere.
 - Títulos são **respostas**, não perguntas. Nada de "quem disse o quê": só resultados, para quem não conhece a empresa.
+- Toda frase que afirma um padrão precisa ser conferida contra o gráfico ao lado (ex.: "nenhum mês fica acima nos dois anos" era falso para dezembro).
 - Todo número na tela vem dos JSONs gerados; texto com número fixo é exceção e precisa ser conferido.
 - pt-BR: vírgula decimal, ponto de milhar, datas `mmm/aa`. Paleta validada para daltonismo, tema claro e escuro.
 - Cada gráfico de prova traz o número do teste ao lado do título.

@@ -61,25 +61,25 @@ export function Hero({ pal, mensal, sat, kpis, def, safras, mediaSafra }: Props)
 
   return (
     <section id="resumo" className="hero2">
-      <div className="eyebrow">RavenStack · diagnóstico de churn · jan/23 a dez/24</div>
-      <h1>Não há sinal de que o churn piorou. A empresa cresceu, e mede mal.</h1>
+      <div className="eyebrow">RavenStack · diagnóstico de cancelamentos · jan/23 a dez/24</div>
+      <h1>Não há sinal de que os clientes estejam cancelando mais. A empresa cresceu, e anota mal os cancelamentos.</h1>
 
       {/* ---------------------------------------------------- número principal */}
       <div className="headline">
         <div className="headline-num">
-          <div className="hn-label">Cada safra de assinaturas perde</div>
+          <div className="hn-label">Dos clientes que entram, cancelam</div>
           <div className="hn-value">{pct(mediaSafra)}</div>
-          <div className="hn-sub">dos clientes, <b>sem piora: 12% nas safras de 2023, 9% nas de 2024</b>. O que cresceu foi a base.</div>
+          <div className="hn-sub"><b>sem piora: 12% de quem entrou em 2023, 9% de quem entrou em 2024</b>. O que cresceu foi o número de clientes.</div>
           <ul className="hn-facts">
             <li>Cancelamentos por mês: <b>{int(dez23.eventos_churn)} → {int(dez.eventos_churn)}</b> ({dec(xEv, 0)}×)</li>
-            <li>Assinaturas ativas: <b>{int(dez23.assinaturas_ativas)} → {int(dez.assinaturas_ativas)}</b> ({dec(xBase, 0)}×)</li>
-            <li><b>{int(kpis.variaveis_significativas)}</b> de {int(kpis.variaveis_testadas)} variáveis explicam quem sai · <b>{usdK(kpis.mrr_ativo)}</b> de MRR</li>
+            <li>Clientes ativos (assinaturas): <b>{int(dez23.assinaturas_ativas)} → {int(dez.assinaturas_ativas)}</b> ({dec(xBase, 0)}×)</li>
+            <li>Nenhuma característica do cliente explica quem cancela · <b>{usdK(kpis.mrr_ativo)}</b> de receita mensal</li>
           </ul>
         </div>
         <div className="headline-pair">
           <div>
             <div className="hp-title">Cancelamentos por mês</div>
-            <div className="hp-sub">sobem junto com a base de clientes</div>
+            <div className="hp-sub">sobem junto com o número de clientes</div>
             <ResponsiveContainer width="100%" height={170}>
               <BarChart data={desde} margin={{ top: 10, right: 4, left: 4, bottom: 0 }} barCategoryGap={2}>
                 <XAxis dataKey="mes" tickFormatter={mes} stroke={pal["--axis"]} tick={{ fill: pal["--muted"], fontSize: 10 }} tickLine={false} interval="preserveStartEnd" minTickGap={30} />
@@ -90,8 +90,8 @@ export function Hero({ pal, mensal, sat, kpis, def, safras, mediaSafra }: Props)
             </ResponsiveContainer>
           </div>
           <div>
-            <div className="hp-title">% de cada safra que cancelou</div>
-            <div className="hp-sub">por trimestre de entrada: estável</div>
+            <div className="hp-title">% que cancelou, por trimestre de entrada</div>
+            <div className="hp-sub">estável</div>
             <SafraBars data={safras} media={mediaSafra} pal={pal} height={170} compact />
           </div>
         </div>
@@ -100,8 +100,8 @@ export function Hero({ pal, mensal, sat, kpis, def, safras, mediaSafra }: Props)
       {/* ---------------------------------------------------- resultados */}
       <h2 className="claims-title">Principais resultados</h2>
       <div className="claims">
-        <Result tema="Churn" titulo="Os cancelamentos crescem no mesmo ritmo da base"
-          prova="De dez/23 a dez/24, cancelamentos e assinaturas ativas cresceram 7×. A proporção de clientes que sai não aumentou.">
+        <Result tema="Cancelamentos" titulo="Os cancelamentos crescem no mesmo ritmo que o número de clientes"
+          prova="De dez/23 a dez/24, cancelamentos e clientes ativos cresceram 7 vezes. A proporção de clientes que sai não aumentou.">
           <ResponsiveContainer width="100%" height={92}>
             <LineChart data={idx} margin={{ top: 8, right: 8, left: 8, bottom: 0 }}>
               <YAxis hide domain={[0, "dataMax"]} />
@@ -111,11 +111,11 @@ export function Hero({ pal, mensal, sat, kpis, def, safras, mediaSafra }: Props)
               <Line type="monotone" dataKey="cancelamentos" name="Cancelamentos" stroke={pal["--s2"]} strokeWidth={2} dot={false} isAnimationActive={false} />
             </LineChart>
           </ResponsiveContainer>
-          <Cap pal={pal} itens={[["base ativa", "--neutral"], ["cancelamentos", "--s2"]]} />
+          <Cap pal={pal} itens={[["clientes ativos", "--neutral"], ["cancelamentos", "--s2"]]} />
         </Result>
 
-        <Result tema="Uso" titulo={`O uso total está parado; por assinatura, caiu ${pct(usoQueda, 0)}`}
-          prova={`O volume de uso ficou em ~10 mil eventos por mês enquanto a base de assinaturas cresceu.`}>
+        <Result tema="Uso do produto" titulo={`O uso total está parado; por cliente, caiu ${pct(usoQueda, 0)}`}
+          prova={`O produto é usado o mesmo tanto (cerca de 10 mil vezes por mês) enquanto o número de clientes cresceu.`}>
           <ResponsiveContainer width="100%" height={92}>
             <LineChart data={idx} margin={{ top: 8, right: 8, left: 8, bottom: 0 }}>
               <YAxis hide domain={[0, 120]} />
@@ -125,7 +125,7 @@ export function Hero({ pal, mensal, sat, kpis, def, safras, mediaSafra }: Props)
               <Line type="monotone" dataKey="usoPorAssinatura" name="Uso por assinatura" stroke={pal["--s1"]} strokeWidth={2} dot={false} isAnimationActive={false} />
             </LineChart>
           </ResponsiveContainer>
-          <Cap pal={pal} itens={[["uso total", "--neutral"], ["por assinatura", "--s1"]]} />
+          <Cap pal={pal} itens={[["uso total", "--neutral"], ["por cliente", "--s1"]]} />
         </Result>
 
         <Result tema="Satisfação" titulo="A nota média não enxerga o cliente insatisfeito"
@@ -151,23 +151,23 @@ export function Hero({ pal, mensal, sat, kpis, def, safras, mediaSafra }: Props)
           <div className="claim-who">Qualidade dos dados</div>
           <p className="nobody-said">Não há registro confiável de quem cancelou, quando e por quê.</p>
           <p className="claim-proof">
-            Dois registros de churn por conta discordam em {int(def.so_flag + def.so_evento)} das {int(total)} contas, e o motivo de saída
-            registrado não tem relação com o comentário do cliente. Nem a data de cancelamento é confiável: contratos anuais “terminam” em
-            poucos dias. Antes de atacar a causa, é preciso medir direito.
+            Os dois registros de cancelamento discordam em {int(def.so_flag + def.so_evento)} das {int(total)} contas. O motivo anotado não combina
+            com o que o cliente escreveu. E nem a data é confiável: contratos anuais “terminam” em poucos dias. Antes de atacar a causa, é
+            preciso medir direito.
           </p>
         </div>
         <div className="nobody-bar">
-          <div className="venn" role="img" aria-label={`Só flag ${def.so_flag}, ambos ${def.ambos}, só evento ${def.so_evento}, nenhum ${def.nenhum}`}>
+          <div className="venn" role="img" aria-label={`Só na marcação da conta ${def.so_flag}, nos dois ${def.ambos}, só na lista de cancelamentos ${def.so_evento}, em nenhum ${def.nenhum}`}>
             <div style={{ flex: def.so_flag, background: pal["--s2"] }}>{def.so_flag}</div>
             <div style={{ flex: def.ambos, background: pal["--s1"] }}>{def.ambos}</div>
             <div style={{ flex: def.so_evento, background: pal["--s3"] }}>{def.so_evento}</div>
             <div style={{ flex: def.nenhum, background: pal["--neutral"], color: pal["--ink"] }}>{def.nenhum}</div>
           </div>
           <div className="mini-cap">
-            <span><i style={{ background: pal["--s2"] }} />só flag</span>
-            <span><i style={{ background: pal["--s1"] }} />os dois concordam</span>
-            <span><i style={{ background: pal["--s3"] }} />só evento</span>
-            <span><i style={{ background: pal["--neutral"] }} />nenhum</span>
+            <span><i style={{ background: pal["--s2"] }} />só na marcação da conta</span>
+            <span><i style={{ background: pal["--s1"] }} />nos dois</span>
+            <span><i style={{ background: pal["--s3"] }} />só na lista de cancelamentos</span>
+            <span><i style={{ background: pal["--neutral"] }} />em nenhum</span>
           </div>
         </div>
         <a className="nobody-link" href="#definicoes">Ver detalhes ↓</a>
