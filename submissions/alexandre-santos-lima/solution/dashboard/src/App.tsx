@@ -58,26 +58,26 @@ export default function App() {
 
         {/* ------------------------------------------------------------ CHURN */}
         <section className="block" id="churn">
-          <div className="eyebrow">O CEO diz: “o churn subiu”</div>
+          <div className="eyebrow">Churn</div>
           <h2>Não há sinal de que o churn piorou: os cancelamentos crescem junto com a base</h2>
           <p className="lede">Os cancelamentos por mês subiram {dec(dez.eventos_churn / dez23.eventos_churn, 0)}× de dez/23 a dez/24, mas a base de assinaturas
-            ativas também cresceu {dec(dez.assinaturas_ativas / dez23.assinaturas_ativas, 0)}×. A pergunta certa é se cada safra de clientes perde mais que a anterior. Não perde: as safras de 2023 perderam 12%, as de 2024, 9%.</p>
+            ativas também cresceu {dec(dez.assinaturas_ativas / dez23.assinaturas_ativas, 0)}×. Medido como proporção de cada safra de clientes, o churn não aumentou: as safras de 2023 perderam 12%, as de 2024, 9%.</p>
           <div className="grid2">
             <div className="card">
-              <h3>O que o CEO vê: cancelamentos por mês</h3>
+              <h3>Cancelamentos por mês</h3>
               <p className="note">Eventos em <code>churn_events</code>, contagem absoluta</p>
               <MonthlyBars data={M} k="eventos_churn" nomeSerie="Eventos" pal={pal} fmt={int} />
               <p className="foot">De {int(dez23.eventos_churn)} em dez/23 para {int(dez.eventos_churn)} em dez/24, enquanto as assinaturas ativas foram de {int(dez23.assinaturas_ativas)} para {int(dez.assinaturas_ativas)}.</p>
             </div>
             <div className="card">
-              <h3>O que acontece: % de cada safra que cancelou</h3>
+              <h3>% de cada safra que cancelou</h3>
               <p className="note">Assinaturas pagas agrupadas pelo trimestre em que começaram</p>
               <SafraBars data={safras} media={mediaSafra} pal={pal} />
               <p className="foot">Todas as safras de 2024 ficam entre 8% e 10%. As de 2023 oscilam mais (10% a 15%) por serem menores. Fora a barra clara
                 (T1/23, só {safras[0].n} assinaturas), a diferença entre safras não é significativa (p = {pval(dt.p_safras_sem_2023q1)}).</p>
             </div>
           </div>
-          <Verdict tipo="false" rotulo="Só em volume">
+          <Verdict tipo="partial" rotulo="Conclusão">
             O número de cancelamentos subiu porque a empresa tem mais clientes. A proporção que sai não aumentou: {pct(mediaSafra, 0)} na média, 12% nas safras de 2023 e 9% nas de 2024.
           </Verdict>
           <div className="card" style={{ marginTop: 16 }}>
@@ -97,7 +97,7 @@ export default function App() {
 
         {/* ------------------------------------------------------------ USO */}
         <section className="block" id="uso">
-          <div className="eyebrow">O Produto diz: “o uso cresceu”</div>
+          <div className="eyebrow">Uso</div>
           <h2>O uso total ficou parado, e por cliente caiu</h2>
           <p className="lede">O volume de uso é o mesmo de jan/23. Como a base de clientes cresceu, cada assinatura usa bem menos.</p>
           <div className="grid2">
@@ -114,7 +114,7 @@ export default function App() {
               <p className="foot">De {dec(jan24.uso_por_assinatura_ativa, 1)} (jan/24) para {dec(dez.uso_por_assinatura_ativa, 1)} (dez/24): queda em todos os meses.</p>
             </div>
           </div>
-          <Verdict tipo="false" rotulo="Não cresceu">
+          <Verdict tipo="partial" rotulo="Conclusão">
             O uso total ficou parado em cerca de 10 mil eventos por mês enquanto a base de assinaturas se multiplicou. Por assinatura,
             o uso caiu {pct(1 - dez.uso_por_assinatura_ativa / jan24.uso_por_assinatura_ativa, 0)} em 2024.
           </Verdict>
@@ -124,7 +124,7 @@ export default function App() {
 
         {/* ------------------------------------------------------------ SATISFAÇÃO */}
         <section className="block" id="satisfacao">
-          <div className="eyebrow">O CS diz: “a satisfação está ok”</div>
+          <div className="eyebrow">Satisfação</div>
           <h2>A satisfação parece ok porque só mede quem responde</h2>
           <p className="lede">Distribuição das notas dos {int(k.tickets)} tickets de suporte (escala de 1 a 5).</p>
           <div className="grid2">
@@ -143,14 +143,14 @@ export default function App() {
               </ul>
             </div>
           </div>
-          <Verdict tipo="partial" rotulo="Mal medida">
-            “Satisfação ok” é um artefato de medição: o indicador só enxerga quem respondeu, e a escala não registra insatisfação.
+          <Verdict tipo="partial" rotulo="Conclusão">
+            A nota média só enxerga quem respondeu, e a base não tem nenhuma nota baixa: o indicador não mede insatisfação.
           </Verdict>
         </section>
 
         {/* ------------------------------------------------------------ DEFINIÇÕES */}
         <section className="block" id="definicoes">
-          <div className="eyebrow">O que ninguém disse</div>
+          <div className="eyebrow">Qualidade dos dados de churn</div>
           <h2>A empresa não sabe quem saiu, nem por quê</h2>
           <p className="lede">A base tem três registros de churn. Eles deveriam descrever as mesmas contas, mas não descrevem.</p>
           <div className="grid2">
@@ -182,7 +182,7 @@ export default function App() {
               <p className="foot">Associação (V de Cramér) = 0,06. Exemplo: “preço” aparece tanto com “switched to competitor” quanto com “too expensive”, em proporções quase iguais.</p>
             </div>
           </div>
-          <Verdict tipo="false" rotulo="Sem base">
+          <Verdict tipo="partial" rotulo="Conclusão">
             Sem uma definição única de churn e com motivo de saída preenchido ao acaso, a empresa não consegue nem contar nem explicar o
             churn. Esse é o primeiro problema a resolver.
           </Verdict>
@@ -285,7 +285,7 @@ function Correlacoes({ pal }: { pal: ReturnType<typeof useTheme>["pal"] }) {
           </div>
         </div>
       </div>
-      <Verdict tipo="false" rotulo="Nenhuma causa isolada">
+      <Verdict tipo="partial" rotulo="Conclusão">
         Em {int(d.kpis.variaveis_testadas)} testes, nos três recortes de churn, nenhuma variável passa da correção. O maior efeito fica abaixo de 0,15
         (“fraco”). Destaques como DevTools ou canal “event” somem quando se considera o tamanho da amostra.
       </Verdict>

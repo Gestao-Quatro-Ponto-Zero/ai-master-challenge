@@ -231,3 +231,4 @@ footer { margin-top: 56px; color: var(--muted); font-size: 12.5px; border-top: 1
 .hp-title { font-size: 14px; font-weight: 600; }
 .hp-sub { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
 @media (max-width: 640px) { .headline-pair { grid-template-columns: 1fr; } }
+.claim .claim-proof { margin-top: 12px; }

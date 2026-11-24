@@ -66,3 +66,6 @@ Cada etapa abaixo tem o script que a reproduz em `solution/scripts/`.
   menos tempo de exposição e a velocidade de cancelamento não pode ser medida com datas não confiáveis.
 - **Por que o CEO vê alta:** olha a contagem de cancelamentos, que cresce com a base. Lição registrada: auditar as datas antes de calcular qualquer taxa.
 - Dashboard: todos os títulos viraram respostas; abertura passou a mostrar "o que o CEO vê" (contagem) ao lado de "o que acontece" (% por safra).
+- **Feedback do usuário:** o dashboard será lido por quem não faz parte da administração; não importa "quem disse o quê".
+  Removido todo enquadramento por fala (CEO/Produto/CS, "o que ninguém disse", selos de veredito sobre afirmações);
+  os blocos agora são temas (Churn, Uso, Satisfação, Qualidade dos dados) com o resultado como título.

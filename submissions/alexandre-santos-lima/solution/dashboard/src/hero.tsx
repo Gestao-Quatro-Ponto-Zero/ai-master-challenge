@@ -18,15 +18,12 @@ type Props = {
   mediaSafra: number;
 };
 
-function Claim({ quem, frase, veredito, tipo, children, prova }: {
-  quem: string; frase: string; veredito: string; tipo: "true" | "false" | "partial"; children: React.ReactNode; prova: string;
-}) {
+function Result({ tema, titulo, children, prova }: { tema: string; titulo: string; children: React.ReactNode; prova: string }) {
   return (
     <article className="claim">
-      <div className="claim-who">{quem} diz</div>
-      <p className="claim-said">“{frase}”</p>
+      <div className="claim-who">{tema}</div>
+      <p className="claim-said">{titulo}</p>
       <div className="claim-chart">{children}</div>
-      <div className="claim-verdict"><span className={`tag ${tipo}`}>{veredito}</span></div>
       <p className="claim-proof">{prova}</p>
     </article>
   );
@@ -81,8 +78,8 @@ export function Hero({ pal, mensal, sat, kpis, def, safras, mediaSafra }: Props)
         </div>
         <div className="headline-pair">
           <div>
-            <div className="hp-title">O que o CEO vê</div>
-            <div className="hp-sub">cancelamentos por mês</div>
+            <div className="hp-title">Cancelamentos por mês</div>
+            <div className="hp-sub">sobem junto com a base de clientes</div>
             <ResponsiveContainer width="100%" height={170}>
               <BarChart data={desde} margin={{ top: 10, right: 4, left: 4, bottom: 0 }} barCategoryGap={2}>
                 <XAxis dataKey="mes" tickFormatter={mes} stroke={pal["--axis"]} tick={{ fill: pal["--muted"], fontSize: 10 }} tickLine={false} interval="preserveStartEnd" minTickGap={30} />
@@ -93,18 +90,18 @@ export function Hero({ pal, mensal, sat, kpis, def, safras, mediaSafra }: Props)
             </ResponsiveContainer>
           </div>
           <div>
-            <div className="hp-title">O que acontece</div>
-            <div className="hp-sub">% de cada safra que cancelou, por trimestre de entrada</div>
+            <div className="hp-title">% de cada safra que cancelou</div>
+            <div className="hp-sub">por trimestre de entrada: estável</div>
             <SafraBars data={safras} media={mediaSafra} pal={pal} height={170} compact />
           </div>
         </div>
       </div>
 
-      {/* ---------------------------------------------------- o que cada área disse */}
-      <h2 className="claims-title">O que cada área disse, e o que os dados mostram</h2>
+      {/* ---------------------------------------------------- resultados */}
+      <h2 className="claims-title">Principais resultados</h2>
       <div className="claims">
-        <Claim quem="O CEO" frase="O churn subiu." veredito="Só em volume" tipo="false"
-          prova="Os cancelamentos sobem no mesmo ritmo da base de clientes. A proporção que sai não mudou.">
+        <Result tema="Churn" titulo="Os cancelamentos crescem no mesmo ritmo da base"
+          prova="De dez/23 a dez/24, cancelamentos e assinaturas ativas cresceram 7×. A proporção de clientes que sai não aumentou.">
           <ResponsiveContainer width="100%" height={92}>
             <LineChart data={idx} margin={{ top: 8, right: 8, left: 8, bottom: 0 }}>
               <YAxis hide domain={[0, "dataMax"]} />
@@ -115,10 +112,10 @@ export function Hero({ pal, mensal, sat, kpis, def, safras, mediaSafra }: Props)
             </LineChart>
           </ResponsiveContainer>
           <Cap pal={pal} itens={[["base ativa", "--neutral"], ["cancelamentos", "--s2"]]} />
-        </Claim>
+        </Result>
 
-        <Claim quem="Produto" frase="O uso da plataforma cresceu." veredito="Não cresceu" tipo="false"
-          prova={`O uso total ficou parado enquanto a base cresceu: cada assinatura usa ${pct(usoQueda, 0)} menos que em jan/24.`}>
+        <Result tema="Uso" titulo={`O uso total está parado; por assinatura, caiu ${pct(usoQueda, 0)}`}
+          prova={`O volume de uso ficou em ~10 mil eventos por mês enquanto a base de assinaturas cresceu.`}>
           <ResponsiveContainer width="100%" height={92}>
             <LineChart data={idx} margin={{ top: 8, right: 8, left: 8, bottom: 0 }}>
               <YAxis hide domain={[0, 120]} />
@@ -129,9 +126,9 @@ export function Hero({ pal, mensal, sat, kpis, def, safras, mediaSafra }: Props)
             </LineChart>
           </ResponsiveContainer>
           <Cap pal={pal} itens={[["uso total", "--neutral"], ["por assinatura", "--s1"]]} />
-        </Claim>
+        </Result>
 
-        <Claim quem="CS" frase="A satisfação está ok." veredito="Mal medida" tipo="partial"
+        <Result tema="Satisfação" titulo="A nota média não enxerga o cliente insatisfeito"
           prova={`A média ${dec(media, 1)} vem de quem respondeu. ${pct(kpis.pct_sem_nota, 0)} dos tickets não têm nota e não existe nenhuma nota 1 ou 2.`}>
           <ResponsiveContainer width="100%" height={92}>
             <BarChart data={sat} margin={{ top: 8, right: 8, left: 8, bottom: 0 }} barCategoryGap="18%">
@@ -145,14 +142,14 @@ export function Hero({ pal, mensal, sat, kpis, def, safras, mediaSafra }: Props)
             </BarChart>
           </ResponsiveContainer>
           <div className="mini-cap">tickets por nota (1 a 5)</div>
-        </Claim>
+        </Result>
       </div>
 
-      {/* ---------------------------------------------------- o que ninguém disse */}
+      {/* ---------------------------------------------------- qualidade dos dados */}
       <div className="nobody">
         <div className="nobody-text">
-          <div className="claim-who">O que ninguém disse</div>
-          <p className="nobody-said">A empresa não sabe quem saiu, nem por quê.</p>
+          <div className="claim-who">Qualidade dos dados</div>
+          <p className="nobody-said">Não há registro confiável de quem cancelou, quando e por quê.</p>
           <p className="claim-proof">
             Dois registros de churn por conta discordam em {int(def.so_flag + def.so_evento)} das {int(total)} contas, e o motivo de saída
             registrado não tem relação com o comentário do cliente. Nem a data de cancelamento é confiável: contratos anuais “terminam” em
