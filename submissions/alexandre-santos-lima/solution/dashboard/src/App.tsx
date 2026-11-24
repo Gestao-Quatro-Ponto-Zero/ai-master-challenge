@@ -4,6 +4,7 @@ import { ForcaBars, Heatmap, Matrix, MonthlyBars, MonthlyLines, SafraBars, SatBa
 import { dec, int, mes, nome, pct, pval, usd } from "./format";
 import { useTheme } from "./theme";
 import { Hero } from "./hero";
+import { Relacoes } from "./relacoes";
 
 type Mensal = (typeof raw.mensal)[number];
 type Seg = { p: number; itens: { nivel: string; n: number; churn: number; taxa: number; ic: [number, number]; mrr_ativo: number }[] };
@@ -16,7 +17,7 @@ const Mt = M.filter((m) => m.mes >= DESDE);
 const get = (m: string) => M.find((x) => x.mes === m)!;
 
 const SECOES = [
-  ["resumo", "Resumo"], ["churn", "Churn"], ["uso", "Uso"], ["satisfacao", "Satisfação"],
+  ["resumo", "Resumo"], ["churn", "Churn"], ["relacoes", "Base, mês e uso"], ["uso", "Uso"], ["satisfacao", "Satisfação"],
   ["definicoes", "Medição"], ["correlacoes", "Correlações"], ["segmentos", "Segmentos"], ["mapa", "Mapa"],
   ["auditoria", "Auditoria"], ["contas", "Contas"],
 ] as const;
@@ -94,6 +95,8 @@ export default function App() {
           </div>
           <div className="warn">A taxa mensal não serve para medir o churn enquanto a data de encerramento não for confiável. A medida que se sustenta é a proporção de cada safra que cancela.</div>
         </section>
+
+        <Relacoes pal={pal} />
 
         {/* ------------------------------------------------------------ USO */}
         <section className="block" id="uso">

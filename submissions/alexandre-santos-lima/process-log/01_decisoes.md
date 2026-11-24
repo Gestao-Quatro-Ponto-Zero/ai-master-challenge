@@ -69,3 +69,17 @@ Cada etapa abaixo tem o script que a reproduz em `solution/scripts/`.
 - **Feedback do usuário:** o dashboard será lido por quem não faz parte da administração; não importa "quem disse o quê".
   Removido todo enquadramento por fala (CEO/Produto/CS, "o que ninguém disse", selos de veredito sobre afirmações);
   os blocos agora são temas (Churn, Uso, Satisfação, Qualidade dos dados) com o resultado como título.
+
+## Etapa 6 — Cancelamentos × mês × uso (script 06 + seção "Base, mês e uso")
+- **Pergunta do usuário:** a quantidade de cancelamentos é casual ou tem relação com o mês? E com o uso? Depois: "quero que os gráficos comprovem a tese, quero certeza".
+- **Resultados (janela estável jul/23–nov/24, quase-Poisson):** base explica 96% da variação; elasticidade 0,91 (IC 0,81–1,01, inclui 1 = proporcional);
+  16 de 17 meses dentro da faixa de 95% esperada; tendência além da base p = 0,44; mês do ano p = 0,19.
+- **Armadilha evitada:** uso por assinatura × cancelamentos dá ρ = −0,97 ("menos uso, mais churn") — espúrio, ambos são função do crescimento da base.
+  Descontada a base: ρ = 0,40 (p = 0,11), não significativo e no sentido oposto. Variação mês a mês: ρ = 0,43 (p = 0,10).
+- **Achado forte:** uso da conta 90 dias antes × depois de cada churn = 62,0 × 62,2 (351 eventos, p = 0,96); 99% seguem usando depois de "cancelar".
+  O registro de churn não marca saída real.
+- **Robustez que mudou a leitura:** com todos os meses, "tendência" dava p = 0,006 e uso×churn p = 0,014 — ambos somem ao tirar jan–jun/23 (contagens 0–5)
+  e dez/24 (borda). Dispersão: 2,05 com todos os meses, 0,61 na janela estável → faixa calculada com φ = max(φ, 1), a opção conservadora.
+- **Limite declarado:** sazonalidade com 2 anos = 2 observações por mês; o gráfico mostra ausência de sinal, não prova de ausência.
+- Correções de texto pegas nos prints: fev/24 tinha 19 esperados (eu tinha escrito 21); "a relação some" virou "não há relação significativa"
+  porque a nuvem tem leve inclinação positiva.
