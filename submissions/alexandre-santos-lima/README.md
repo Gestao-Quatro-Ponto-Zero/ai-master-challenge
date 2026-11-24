@@ -14,7 +14,7 @@ Liguei as 5 tabelas por conta, auditei chaves **e datas** e testei cada explica�
 clientes estejam cancelando mais:** os cancelamentos por mês subiram 7×, mas a base ativa também cresceu 7×, e de cada 100
 clientes que entram cerca de 10 cancelam (12 em 2023, 9 em 2024). O "algo não bate" do CEO tem outra causa: **a empresa não mede
 o cancelamento.** Os dois registros de churn discordam em 312 de 500 contas, 211 de 216 contratos anuais "terminam" antes de um
-ano e 99% dos clientes "cancelados" seguem usando o produto. A recomendação principal é corrigir a medição em 30 dias, ouvir as 15
+ano, 99% dos clientes "cancelados" seguem usando o produto e a receita registrada é uma fórmula com assinaturas sobrepostas. A recomendação principal é corrigir a medição em 30 dias, ouvir as 15
 contas de maior valor e só então testar ações de retenção com grupo de comparação.
 
 **Entregáveis**
@@ -23,6 +23,7 @@ contas de maior valor e só então testar ações de retenção com grupo de com
 |---|---|
 | Painel interativo (Diagnóstico · Sugestões · Dados) | https://ravenstack-churn.apsolutions-technology-services.workers.dev |
 | Relatório para o CEO (2 páginas, linguagem simples) | [`docs/relatorio-executivo.md`](docs/relatorio-executivo.md) |
+| Auditorias (tabelas e receita) | [`docs/auditoria_dados.md`](docs/auditoria_dados.md) · [`docs/auditoria_mrr.md`](docs/auditoria_mrr.md) |
 | Diagnóstico inteiro com um comando (skill do Claude Code) | [`skill/diagnostico-churn/`](skill/diagnostico-churn/) |
 | Scripts da análise (01–07) e código do painel | [`solution/`](solution/) |
 | Process log | [`process-log/`](process-log/) |
@@ -46,7 +47,9 @@ contas de maior valor e só então testar ações de retenção com grupo de com
 5. **Testar base × mês × uso** (`06`): quase-Poisson com o tamanho da base, robustez sem os meses atípicos, uso antes × depois
    de cada churn.
 6. **Previsão só do que os dados sustentam e sugestões com tamanho de amostra** (`07`).
-7. **Painel React** validado no navegador (Playwright, desktop claro/escuro e celular) e **skill** que refaz tudo com um comando.
+7. **Auditar a receita e medir os segmentos também pela receita** (`08`): MRR como valor faturado ou fórmula, assinaturas
+   sobrepostas, plano e assentos do cadastro × assinaturas, churn de receita por segmento com IC por bootstrap de contas.
+8. **Painel React** validado no navegador (Playwright, desktop claro/escuro e celular) e **skill** que refaz tudo com um comando.
 
 ### Resultados / Findings
 
@@ -59,6 +62,8 @@ contas de maior valor e só então testar ações de retenção com grupo de com
 | Uso explica churn? | Não | Cru ρ = −0,97 (espúrio); descontada a base ρ = 0,40, p = 0,11; uso 90 dias antes × depois do churn = 62,0 × 62,2 (p = 0,96) |
 | A satisfação está ok? | Mal medida | 41% dos tickets sem nota; zero notas 1 ou 2 em 2.000 |
 | Quem está em risco? | Nenhuma característica isolada | 0 de 117 testes sobrevivem à correção; DevTools (31%) e canal "event" (30%) são hipóteses: confirmá-las exigiria 218 e 284 contas (~4 e ~6 anos) |
+| E pesando pela receita? | Nenhum segmento acima da média com IC | Churn de receita médio 10,4%; topo: França 17,1%, Reino Unido 14,4%, "event" 13,6% (todos com IC cruzando a média); DevTools cai para 9,9%. "Event" é o único no topo nas duas medidas |
+| A receita registrada é confiável? | Não | 100% do MRR = assentos × preço de tabela (US$ 19/49/199); mediana de 8 assinaturas ativas sobrepostas por conta; plano da conta bate com as assinaturas em 31%; soma de US$ 10,2 mi provavelmente inflada |
 | Por que "algo não bate"? | A medição está quebrada | Registros de churn discordam em 312/500 contas; 211/216 anuais encerrados com < 1 ano; motivo × comentário sem relação (V = 0,06) |
 
 Contas específicas: a aba **Sugestões** lista as 15 contas para ouvir primeiro (maior MRR entre as 75 em que flag e evento de
@@ -69,7 +74,7 @@ churn concordam, US$ 216 mil de MRR encerrado), e a aba **Dados** tem as 500 con
 1. **Corrigir a medição (1º mês):** regra única de churn calculada pelo sistema; data de encerramento vinda da cobrança; uso e
    tickets validados contra a assinatura ativa; motivo de saída em lista fechada + texto livre classificado por IA (que sinaliza
    contradição para o CS confirmar); pesquisa de satisfação que ofereça e acompanhe notas baixas; checagem automática semanal
-   (a própria skill).
+   (a própria skill); receita copiada da cobrança, com uma assinatura ativa por serviço.
 2. **Descobrir o porquê (2º–3º mês):** ligar para as 15 contas da lista; refazer o diagnóstico com os dados corrigidos, testando
    nesta ordem: uso cai antes do churn? tickets escalados antecedem a saída? DevTools e "event" se confirmam?
 3. **Reduzir o churn (a partir do 4º mês):** medir pela % de cada safra que cancela (hoje 9,7%, IC 8,8–10,6%); testar cada ação
@@ -83,6 +88,8 @@ churn concordam, US$ 216 mil de MRR encerrado), e a aba **Dados** tem as 500 con
   não "o churn caiu".
 - Sazonalidade: com 2 anos, só dá para dizer que nenhum sinal apareceu.
 - Sem previsão por data (exigiria prever o crescimento da base).
+- Valores absolutos de receita (MRR total, MRR por conta) não são confiáveis pelas assinaturas sobrepostas; uso a receita só
+  para comparar grupos entre si.
 
 ---
 

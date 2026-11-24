@@ -303,3 +303,18 @@ header.top .bar { max-width: 1400px; }
 .tech-body { margin-top: 6px; padding: 8px 10px; background: var(--surface-2); border-radius: 8px; color: var(--ink-2); }
 .tech-body .stats { margin: 0; }
 .tech-body p { margin: 4px 0 0; }
+
+.precos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 10px 0; }
+.precos div { background: var(--surface-2); border-radius: 10px; padding: 10px 12px; display: grid; }
+.precos span { font-size: 12px; color: var(--muted); }
+.precos b { font-size: 20px; font-weight: 600; }
+.precos small { font-size: 11.5px; color: var(--muted); }
+
+/* gráfico de grupos com margem de erro */
+.ci-row { display: grid; grid-template-columns: minmax(84px, 140px) minmax(0, 1fr) 96px; gap: 10px; align-items: center; height: 30px; }
+.ci-head { height: auto; font-size: 12px; margin-bottom: 6px; }
+@media (max-width: 520px) {
+  .ci-row { grid-template-columns: 76px minmax(0, 1fr) 74px; gap: 8px; }
+  .ci-row > span:first-child { font-size: 12px !important; }
+  .ci-head > span:nth-child(2) span { font-size: 10px; }
+}

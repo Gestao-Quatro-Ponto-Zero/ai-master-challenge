@@ -1,6 +1,7 @@
 import raw from "./sugestoes.json";
 import dados from "./data.json";
 import mesUso from "./mes_uso.json";
+import mrr from "./mrr.json";
 import { dec, int, usd, usdK } from "./format";
 import type { Palette } from "./theme";
 
@@ -46,6 +47,8 @@ export function Sugestoes({ pal }: { pal: Palette }) {
   const dt = D.datas;
   const im = S.impacto;
   const [dev, evento] = S.hipoteses;
+  const recDev = mrr.segmentos_receita["Indústria"].itens.find((i) => i.nivel === "DevTools")!.taxa;
+  const recEvento = mrr.segmentos_receita["Canal de aquisição"].itens.find((i) => i.nivel === "event")!.taxa;
   const faixaAtual = S.curva.find((c) => c.base === S.base_atual)!;
   const semComentario = D.motivos.valores.reduce((a, r) => a + r[D.motivos.colunas.indexOf("(sem comentário)")], 0);
   const desconhecido = D.motivos.valores[D.motivos.linhas.indexOf("unknown")].reduce((a, b) => a + b, 0);
@@ -94,6 +97,14 @@ export function Sugestoes({ pal }: { pal: Palette }) {
       pronto: <>Aparecem notas de 1 a 5, e a empresa sabe quais clientes não respondem.</>,
     },
     {
+      titulo: "Registrar a receita que é realmente cobrada", quem: "Financeiro",
+      problema: <>A receita de cada serviço é sempre usuários × preço de tabela, sem nenhum desconto. E metade dos clientes tem
+        {" "}<b>{dec(mrr.auditoria.ativas_simult_mediana, 0)} ou mais assinaturas ativas ao mesmo tempo</b> (só {int(mrr.auditoria.contas_com_uma)} de {int(mrr.auditoria.contas_com_ativas)} têm uma só), o que infla a receita somada.</>,
+      fazer: <>Copiar a receita do sistema de cobrança (o valor de fato faturado) e, ao renovar ou trocar de plano, encerrar a assinatura
+        anterior. O plano e o número de usuários da conta passam a vir das assinaturas ativas.</>,
+      pronto: <>Cada cliente com uma assinatura ativa por serviço, e a receita somada igual ao total faturado no mês.</>,
+    },
+    {
       titulo: "Conferir os dados toda semana, automaticamente", quem: "Dados",
       problema: <>Nenhum desses problemas aparece olhando uma planilha de cada vez. Todos só surgiram quando as informações foram cruzadas.</>,
       fazer: <>Rodar toda semana a mesma análise deste painel (ela já está pronta e roda com um único comando) e receber um alerta quando
@@ -102,7 +113,7 @@ export function Sugestoes({ pal }: { pal: Palette }) {
     },
   ];
 
-  const hipotese = (h: typeof dev, grupo: string) => (
+  const hipotese = (h: typeof dev, grupo: string, extra?: React.ReactNode) => (
     <div className="card" key={h.nome}>
       <h3>{grupo}: pode ser só coincidência</h3>
       <p className="note" style={{ margin: "6px 0 0", fontSize: 14 }}>
@@ -112,6 +123,7 @@ export function Sugestoes({ pal }: { pal: Palette }) {
       <p className="note" style={{ margin: "8px 0 0", fontSize: 14 }}>
         Para ter certeza seriam precisos <b>{int(h.contas_necessarias)} clientes</b> desse grupo: no ritmo atual, <b>cerca de {dec(h.anos, 0)} anos</b>.
       </p>
+      {extra && <p className="note" style={{ margin: "8px 0 0", fontSize: 14 }}>{extra}</p>}
     </div>
   );
 
@@ -123,7 +135,7 @@ export function Sugestoes({ pal }: { pal: Palette }) {
         <p className="lede" style={{ maxWidth: 820 }}>Hoje os dados não mostram com segurança quem cancelou, quando cancelou nem por quê. Sem isso,
           não há como saber se uma ação para segurar clientes funcionou. Por isso a ordem importa:</p>
         <ol className="steps">
-          <li><span className="step-n">1</span><div><b>Arrumar os registros</b><span>primeiro mês</span><p>Cada cancelamento anotado uma vez só, com a data certa e o motivo real.</p></div></li>
+          <li><span className="step-n">1</span><div><b>Arrumar os registros</b><span>primeiro mês</span><p>Cada cancelamento anotado uma vez só, com a data certa, o motivo real e a receita de verdade.</p></div></li>
           <li><span className="step-n">2</span><div><b>Entender por que saem</b><span>2º e 3º mês</span><p>Conversar com quem cancelou e olhar de novo os dados, já arrumados.</p></div></li>
           <li><span className="step-n">3</span><div><b>Reduzir os cancelamentos</b><span>a partir do 4º mês</span><p>Testar cada ação em parte dos clientes e comparar com quem não recebeu.</p></div></li>
         </ol>
@@ -132,7 +144,7 @@ export function Sugestoes({ pal }: { pal: Palette }) {
       <section className="block" id="medir">
         <div className="eyebrow">Passo 1 · primeiro mês</div>
         <h2>Arrumar os registros</h2>
-        <p className="lede">Seis problemas encontrados nos dados, e como resolver cada um.</p>
+        <p className="lede">Sete problemas encontrados nos dados, e como resolver cada um.</p>
         <div className="acoes">{medir.map((a, i) => <Card key={a.titulo} n={i + 1} a={a} />)}</div>
       </section>
 
@@ -142,8 +154,11 @@ export function Sugestoes({ pal }: { pal: Palette }) {
         <p className="lede">Dois grupos de clientes parecem cancelar mais que os outros, mas com os dados de hoje a diferença pode ser coincidência.
           Esperar a empresa crescer para tirar a dúvida levaria anos. É mais rápido perguntar a quem saiu.</p>
         <div className="grid2">
-          {hipotese(dev, "Empresas de ferramentas para programadores (DevTools)")}
-          {hipotese(evento, "Clientes que chegaram por eventos")}
+          {hipotese(dev, "Empresas de ferramentas para programadores (DevTools)",
+            <>Medido pela receita, porém, o grupo fica na média ({dec(recDev * 100, 0)} de cada 100 dólares cancelados): quem sai são clientes menores.</>)}
+          {hipotese(evento, "Clientes que chegaram por eventos",
+            <>É o <b>único grupo que também fica no topo quando o cancelamento é medido pela receita</b> ({dec(recEvento * 100, 0)} de cada 100 dólares,
+              contra {dec(mrr.media_receita * 100, 0)} na média). Por isso é a primeira hipótese a investigar.</>)}
         </div>
         <div className="acoes" style={{ marginTop: 16 }}>
           <Card n={1} a={{

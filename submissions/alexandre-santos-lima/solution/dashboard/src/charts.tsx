@@ -159,28 +159,35 @@ export function ForcaBars({ rows, pal }: { rows: Corr[]; pal: Palette }) {
 }
 
 /* ---------------------------------------------------------------- taxa de churn por segmento com IC 95% */
-export function SegmentCI({ itens, media, pal }: {
-  itens: { nivel: string; n: number; churn: number; taxa: number; ic: [number, number]; mrr_ativo: number }[];
-  media: number; pal: Palette;
+const NIVEL: Record<string, string> = {
+  ads: "anúncios", event: "eventos", organic: "busca orgânica", other: "outros", partner: "parceiros",
+  monthly: "mensal", annual: "anual", True: "sim", False: "não",
+  AU: "Austrália", CA: "Canadá", DE: "Alemanha", FR: "França", IN: "Índia", UK: "Reino Unido", US: "Estados Unidos",
+};
+export const nivelPt = (n: string) => NIVEL[n] ?? n;
+
+export function SegmentCI({ itens, media, pal, max = 0.6, rotuloN = "clientes", rotuloTaxa = "% que cancelou", rotuloMedia = "média de todos os clientes" }: {
+  itens: { nivel: string; n: number; taxa: number; ic: number[] | [number, number] }[];
+  media: number; pal: Palette; max?: number; rotuloN?: string; rotuloTaxa?: string; rotuloMedia?: string;
 }) {
-  const max = 0.6;
-  const x = (v: number) => `${(v / max) * 100}%`;
+  const x = (v: number) => `${(Math.min(v, max) / max) * 100}%`;
   const sorted = [...itens].sort((a, b) => b.taxa - a.taxa);
+  const marcas = [0, max / 3, (2 * max) / 3, max];
   return (
-    <div role="table" aria-label="Taxa de churn por segmento com intervalo de confiança de 95%">
-      <div style={{ display: "grid", gridTemplateColumns: "minmax(90px,140px) 1fr 92px", gap: 8, fontSize: 12, color: pal["--muted"], marginBottom: 6 }}>
+    <div role="table" aria-label={`${rotuloTaxa} por grupo, com margem de erro`}>
+      <div className="ci-row ci-head" style={{ color: pal["--muted"] }}>
         <span>Grupo</span>
         <span style={{ position: "relative" }}>
-          {[0, 0.2, 0.4, 0.6].map((t) => (
+          {marcas.map((t) => (
             <span key={t} style={{ position: "absolute", left: x(t), transform: t ? "translateX(-50%)" : undefined }}>{pct(t, 0)}</span>
           ))}
         </span>
-        <span style={{ textAlign: "right" }}>Cancelou (clientes)</span>
+        <span style={{ textAlign: "right" }}>({rotuloN})</span>
       </div>
       {sorted.map((s) => (
-        <div role="row" key={s.nivel} title={`IC 95%: ${pct(s.ic[0])} a ${pct(s.ic[1])} · MRR ativo ${usd(s.mrr_ativo)}`}
-          style={{ display: "grid", gridTemplateColumns: "minmax(90px,140px) 1fr 92px", gap: 8, alignItems: "center", height: 30 }}>
-          <span role="cell" style={{ fontSize: 13 }}>{s.nivel}</span>
+        <div role="row" key={s.nivel} title={`Margem de erro: ${pct(s.ic[0])} a ${pct(s.ic[1])}`}
+          className="ci-row">
+          <span role="cell" style={{ fontSize: 13 }}>{nivelPt(s.nivel)}</span>
           <span role="cell" style={{ position: "relative", height: 20, borderLeft: `1px solid ${pal["--axis"]}` }}>
             <span style={{ position: "absolute", left: x(media), top: -4, bottom: -4, borderLeft: `1px solid ${pal["--muted"]}` }} />
             <span style={{ position: "absolute", left: x(s.ic[0]), width: `calc(${x(s.ic[1])} - ${x(s.ic[0])})`, top: 8, height: 4, borderRadius: 2, background: pal["--s1"], opacity: 0.35 }} />
@@ -190,9 +197,9 @@ export function SegmentCI({ itens, media, pal }: {
         </div>
       ))}
       <div className="legend" style={{ marginTop: 8 }}>
-        <span><i style={{ background: pal["--s1"], borderRadius: 999 }} />% que cancelou</span>
+        <span><i style={{ background: pal["--s1"], borderRadius: 999 }} />{rotuloTaxa}</span>
         <span><i style={{ background: pal["--s1"], opacity: 0.35, height: 4 }} />margem de erro</span>
-        <span><i style={{ background: pal["--muted"], width: 1 }} />média de todos os clientes: {pct(media, 0)}</span>
+        <span><i style={{ background: pal["--muted"], width: 1 }} />{rotuloMedia}: {pct(media, 0)}</span>
       </div>
     </div>
   );

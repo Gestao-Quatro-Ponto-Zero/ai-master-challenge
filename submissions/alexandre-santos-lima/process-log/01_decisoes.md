@@ -124,3 +124,18 @@ Cada etapa abaixo tem o script que a reproduz em `solution/scripts/`.
 - Export da conversa para o process log com remoção automática de tokens, senhas, e-mails, IPs e endereços internos
   (checagem final: zero ocorrências).
 - README no template do G4 e relatório executivo de 2 páginas em linguagem simples.
+
+## Etapa 10 — Auditoria da receita (MRR) e churn por segmento pesado pela receita
+- **Pergunta do usuário:** "encontrou alguma avaria em relação ao MRR? alguma taxa de churn maior em algum segmento?"
+- Resposta honesta: o MRR tinha entrado só como variável nas correlações; não havia sido auditado. Script `08_auditoria_mrr.py`:
+  - MRR = assentos × preço de tabela em 100% das assinaturas (US$ 19 / 49 / 199 por assento), ARR = 12 × MRR sempre;
+  - mediana de 8 assinaturas pagas ativas ao mesmo tempo por conta (só 4 de 500 com uma) → MRR somado (US$ 10,2 mi) inflado;
+  - plano da conta bate com o das assinaturas em 31% (acaso ≈ 33%); 20 assinaturas com upgrade e downgrade ao mesmo tempo.
+- **Correção na entrega:** o "US$ 10,2 mi de receita mensal" saiu da abertura do painel e passou a aparecer só com o aviso de que
+  está provavelmente inflado. Nenhuma conclusão principal dependia dele.
+- **Churn por receita** (bootstrap reamostrando contas): média 10,4%; nenhum segmento acima com IC. A ordem muda em relação à
+  contagem: DevTools cai para a média (9,9%), França/Reino Unido/"event" sobem. "Event" é o único no topo nas duas medidas →
+  vira a primeira hipótese. Pro fica abaixo (8,6%), possivelmente acaso com ~22 comparações.
+- Painel: seção "Receita registrada", alternância "pela quantidade de clientes / pela receita" nos grupos, 7ª correção nas
+  Sugestões. Validação pegou o gráfico de grupos espremido no celular (defeito antigo, corrigido com grid responsivo) e o uso
+  de "em média" para uma mediana.

@@ -47,11 +47,12 @@ $PY "$SCR/02_correlacoes.py" "$OUT" "$DOCS" > /dev/null
 $PY "$SCR/03_correlacoes_assinatura.py" "$OUT" "$DOCS" > /dev/null
 echo "ok"
 
-etapa "4/6 Séries, safras, base × mês × uso, previsão (04–07)"
+etapa "4/6 Séries, safras, base × mês × uso, previsão, receita (04–08)"
 $PY "$SCR/04_export_dashboard.py" "$RAW" "$OUT" "$DASH/src/data.json" | head -1
 $PY "$SCR/05_teste_safras.py" "$RAW" > "$OUT/teste_safras.txt"
 $PY "$SCR/06_cancelamentos_mes_uso.py" "$RAW" "$OUT" "$DASH/src/mes_uso.json" > "$OUT/cancelamentos_mes_uso.txt" 2>/dev/null
 $PY "$SCR/07_sugestoes_previsao.py" "$RAW" "$OUT" "$DASH/src/sugestoes.json" | head -1
+$PY "$SCR/08_auditoria_mrr.py" "$RAW" "$DASH/src/mrr.json" "$DOCS" > "$OUT/auditoria_mrr.txt"
 
 etapa "5/6 Dashboard (build)"
 cd "$DASH"

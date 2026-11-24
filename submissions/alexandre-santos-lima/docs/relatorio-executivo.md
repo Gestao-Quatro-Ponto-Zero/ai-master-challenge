@@ -25,13 +25,18 @@ recebeu nota 1 ou 2. A média boa (4 de 5) vem só de quem respondeu.
 - os dois registros de cancelamento discordam em 312 das 500 contas, e as 110 contas marcadas como "canceladas" seguem pagando algo;
 - 211 dos 216 contratos anuais cancelados aparecem encerrados antes de um ano (103 em menos de um mês): a data está errada;
 - o motivo anotado não combina com o que o cliente escreveu (ex.: motivo "preço", comentário "troquei pelo concorrente");
-- 99 de cada 100 clientes "cancelados" seguem usando o produto do mesmo jeito depois do cancelamento registrado.
+- 99 de cada 100 clientes "cancelados" seguem usando o produto do mesmo jeito depois do cancelamento registrado;
+- a receita registrada também não é confiável: é sempre usuários × preço de tabela (US$ 19, 49 ou 199 por usuário), sem
+  nenhum desconto, e metade dos clientes tem 8 ou mais assinaturas ativas ao mesmo tempo. A receita mensal somada
+  (US$ 10,2 mi) provavelmente está inflada e não deve ser usada como valor real.
 
 ## Quem está em risco
 
 Nenhuma característica do cliente (setor, país, plano, canal, receita, uso, atendimento), sozinha, separa quem cancela de quem
 fica: foram 117 testes. Dois grupos chamam atenção, mas podem ser coincidência: empresas de DevTools (31% contra 19% nos demais)
-e clientes vindos de eventos (30% contra 20%). Confirmar esperando mais clientes levaria 4 e 6 anos. O caminho rápido é ouvir
+e clientes vindos de eventos (30% contra 20%). Medindo pela receita cancelada em vez do número de clientes, a ordem muda: DevTools
+volta para a média (quem sai são clientes menores), e França, Reino Unido e clientes de eventos ficam no topo, ainda dentro da
+margem de erro. **Clientes vindos de eventos são os únicos no topo nas duas medidas:** é a primeira hipótese a investigar. Confirmar esperando mais clientes levaria 4 e 6 anos. O caminho rápido é ouvir
 quem saiu: o painel traz a lista das **15 contas para ligar primeiro** (as de maior valor entre as 75 em que os dois registros
 concordam, US$ 216 mil por mês em serviços cancelados).
 
@@ -44,6 +49,7 @@ concordam, US$ 216 mil por mês em serviços cancelados).
 | 1º mês | Uso e chamados registrados já com o cliente certo | Produto e Engenharia | Quase nenhum uso fora do período contratado |
 | 1º mês | Motivo de saída em lista curta + texto livre lido por IA | Atendimento e Produto | Quase nenhum "desconhecido"; motivo e texto concordam |
 | 1º mês | Pesquisa que capte insatisfação (notas 1 a 5, quem não responde) | Atendimento | Aparecem notas baixas; resposta acompanhada por cliente |
+| 1º mês | Receita copiada do sistema de cobrança; renovação encerra a assinatura anterior | Financeiro | Uma assinatura ativa por serviço; receita somada = total faturado |
 | 2º–3º mês | Ligar para as 15 contas da lista e refazer a análise com dados arrumados | Atendimento e Dados | Motivos confirmados; hipóteses confirmadas ou descartadas |
 | a partir do 4º mês | Testar cada ação de retenção em parte dos clientes, com comparação | Atendimento e Dados | Ação só é ampliada se quem recebeu cancela menos |
 

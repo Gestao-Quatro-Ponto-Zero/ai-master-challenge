@@ -25,7 +25,7 @@ async function abrir() {
 }
 
 const PAGINAS = {
-  "#/": ["resumo", "churn", "relacoes", "uso", "satisfacao", "definicoes", "correlacoes", "segmentos", "previsao"],
+  "#/": ["resumo", "churn", "relacoes", "uso", "satisfacao", "definicoes", "receita", "correlacoes", "segmentos", "previsao"],
   "#/sugestoes": ["plano", "medir", "porque", "investigar", "reduzir"],
   "#/dados": ["auditoria", "mapa", "contas"],
 };

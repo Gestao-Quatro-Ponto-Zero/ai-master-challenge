@@ -1,9 +1,11 @@
 import { useMemo, useState } from "react";
 import raw from "./data.json";
+import mrr from "./mrr.json";
+import { Receita } from "./receita";
 import { ForcaBars, Heatmap, Matrix, MonthlyBars, MonthlyLines, SafraBars, SatBars, SegmentCI, leitura, type Corr, type Safra } from "./charts";
 import { dec, int, mes, nome, pct, pval, usd } from "./format";
 import { useTheme } from "./theme";
-import { Tecnico } from "./charts";
+import { Tecnico, nivelPt } from "./charts";
 import { Hero } from "./hero";
 import { Relacoes } from "./relacoes";
 import { Previsao } from "./previsao";
@@ -22,7 +24,7 @@ const get = (m: string) => M.find((x) => x.mes === m)!;
 
 const ITENS_DIAGNOSTICO: Item[] = [
   { id: "resumo", titulo: "Resumo" }, { id: "churn", titulo: "Cancelamentos" }, { id: "relacoes", titulo: "O que explica os cancelamentos" },
-  { id: "uso", titulo: "Uso do produto" }, { id: "satisfacao", titulo: "Satisfação" }, { id: "definicoes", titulo: "Qualidade dos dados" },
+  { id: "uso", titulo: "Uso do produto" }, { id: "satisfacao", titulo: "Satisfação" }, { id: "definicoes", titulo: "Qualidade dos dados" }, { id: "receita", titulo: "Receita registrada" },
   { id: "correlacoes", titulo: "Características do cliente" }, { id: "segmentos", titulo: "Grupos de clientes" }, { id: "previsao", titulo: "Previsão" },
 ];
 const ITENS_DADOS: Item[] = [
@@ -194,6 +196,8 @@ export default function App() {
           </Verdict>
         </section>
 
+        <Receita pal={pal} />
+
         <Correlacoes pal={pal} />
         <Segmentos pal={pal} />
         <Previsao pal={pal} />
@@ -310,25 +314,53 @@ function Correlacoes({ pal }: { pal: ReturnType<typeof useTheme>["pal"] }) {
 
 /* ================================================================== SEGMENTOS */
 function Segmentos({ pal }: { pal: ReturnType<typeof useTheme>["pal"] }) {
-  const segs = d.segmentos as unknown as Record<string, Seg>;
-  const nomes = Object.keys(segs);
-  const [dim, setDim] = useState(nomes[0]);
-  const s = segs[dim];
-  const media = d.kpis.churn_flag / d.kpis.contas;
+  const [modo, setModo] = useState<"clientes" | "receita">("clientes");
+  const segC = d.segmentos as unknown as Record<string, Seg>;
+  const segR = mrr.segmentos_receita as Record<string, { itens: { nivel: string; n: number; taxa: number; ic: number[] }[]; acima: string[]; abaixo: string[] }>;
+  const nomes = Object.keys(modo === "clientes" ? segC : segR);
+  const [dimSel, setDim] = useState(nomes[0]);
+  const dim = nomes.includes(dimSel) ? dimSel : nomes[0];
+  const media = modo === "clientes" ? d.kpis.churn_flag / d.kpis.contas : mrr.media_receita;
+  const abaixo = modo === "receita" ? segR[dim].abaixo : [];
   return (
     <section className="block" id="segmentos">
       <div className="eyebrow">Grupos de clientes</div>
       <h2>Nenhum grupo de clientes cancela comprovadamente mais que os outros</h2>
-      <p className="lede">O ponto mostra quantos clientes do grupo cancelaram; a barra clara, a margem de erro. Se a barra cruza a linha da média, a diferença pode
-        ser acaso. DevTools (31%) fica raspando acima da média, mas, comparando cerca de 25 grupos, é normal que um pareça diferente por sorte.</p>
+      {modo === "clientes" ? (
+        <p className="lede">O ponto mostra quantos clientes do grupo cancelaram; a barra clara, a margem de erro. Se a barra cruza a linha da média, a diferença pode
+          ser acaso. DevTools (31%) fica raspando acima da média, mas, comparando cerca de 25 grupos, é normal que um pareça diferente por sorte.</p>
+      ) : (
+        <p className="lede">Aqui cada grupo é medido pela parte da receita mensal que foi cancelada, e não pelo número de clientes. A ordem muda: DevTools volta
+          para a média, e França, Reino Unido e clientes vindos de eventos ficam no topo. Mesmo assim, nenhum grupo fica acima da média além da margem de erro.
+          Clientes vindos de eventos são os únicos que aparecem no topo nas duas medidas: é a primeira hipótese a investigar.</p>
+      )}
       <div className="controls">
+        <div className="seg" role="group" aria-label="Como medir">
+          <button aria-pressed={modo === "clientes"} onClick={() => setModo("clientes")}>Pela quantidade de clientes</button>
+          <button aria-pressed={modo === "receita"} onClick={() => setModo("receita")}>Pela receita</button>
+        </div>
         <label htmlFor="dim">Agrupar por</label>
         <select id="dim" value={dim} onChange={(e) => setDim(e.target.value)}>
           {nomes.map((n) => <option key={n}>{n}</option>)}
         </select>
-        <span className="pill">{s.p < 0.05 ? "diferença improvável de ser acaso" : "diferença pode ser acaso"} (p = {pval(s.p)})</span>
+        {modo === "clientes" && (
+          <span className="pill">{segC[dim].p < 0.05 ? "diferença improvável de ser acaso" : "diferença pode ser acaso"} (p = {pval(segC[dim].p)})</span>
+        )}
       </div>
-      <div className="card"><SegmentCI itens={s.itens} media={media} pal={pal} /></div>
+      <div className="card">
+        {modo === "clientes" ? (
+          <SegmentCI itens={segC[dim].itens} media={media} pal={pal} />
+        ) : (
+          <SegmentCI itens={segR[dim].itens} media={media} pal={pal} max={0.36} rotuloN="clientes" rotuloTaxa="% da receita cancelada" rotuloMedia="média da empresa" />
+        )}
+        {abaixo.length > 0 && (
+          <p className="foot">{abaixo.map(nivelPt).join(", ")} fica um pouco abaixo da média, mas, com cerca de 22 grupos comparados, isso também pode ser acaso.</p>
+        )}
+      </div>
+      {modo === "receita" && (
+        <Tecnico><p>% do MRR das assinaturas pagas que está em assinaturas encerradas; margem de erro = IC 95% por bootstrap reamostrando contas (4.000 reamostras).
+          O MRR é assentos × preço de tabela (ver “Receita registrada”), então serve para comparar grupos, não como valor absoluto.</p></Tecnico>
+      )}
     </section>
   );
 }

@@ -73,7 +73,7 @@ export function Hero({ pal, mensal, sat, kpis, def, safras, mediaSafra }: Props)
           <ul className="hn-facts">
             <li>Cancelamentos por mês: <b>{int(dez23.eventos_churn)} → {int(dez.eventos_churn)}</b> ({dec(xEv, 0)}×)</li>
             <li>Clientes ativos (assinaturas): <b>{int(dez23.assinaturas_ativas)} → {int(dez.assinaturas_ativas)}</b> ({dec(xBase, 0)}×)</li>
-            <li>Nenhuma característica do cliente explica quem cancela · <b>{usdK(kpis.mrr_ativo)}</b> de receita mensal</li>
+            <li>Nenhuma característica do cliente, sozinha, explica quem cancela</li>
           </ul>
         </div>
         <div className="headline-pair">

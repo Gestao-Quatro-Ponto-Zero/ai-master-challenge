@@ -29,6 +29,7 @@ O comando faz, nesta ordem, e para no primeiro erro:
 | Séries e safras | `04_export_dashboard.py`, `05_teste_safras.py` | `dashboard/src/data.json` |
 | Base × mês × uso | `06_cancelamentos_mes_uso.py` | `dashboard/src/mes_uso.json` |
 | Previsão e sugestões | `07_sugestoes_previsao.py` | `dashboard/src/sugestoes.json` |
+| Auditoria do MRR e churn por receita | `08_auditoria_mrr.py` | `dashboard/src/mrr.json`, `docs/auditoria_mrr.md` |
 | Dashboard | `npm run build` | `dashboard/dist/` |
 | Validação | `dashboard/scripts/validar.mjs` (Playwright) | `solution/outputs/validacao/*.png` |
 
@@ -72,7 +73,10 @@ Cada passo existe porque, sem ele, a conclusão saiu errada pelo menos uma vez n
    com dados novos (e quanto tempo isso leva no ritmo atual).
 10. **Previsão só do que os dados sustentam:** % por safra com IC e registros esperados por tamanho de base, marcando extrapolação.
     Sem previsão por data quando as datas não são confiáveis ou quando ela dependeria de prever o crescimento.
-11. **Dizer o grau de certeza.** "Não há sinal de piora" ≠ "o churn caiu". Ausência de sinal sazonal com 2 anos ≠ prova de ausência.
+11. **Auditar a receita antes de somá-la.** Aqui o MRR era sempre assentos × preço de tabela e as contas tinham ~8 assinaturas
+    ativas sobrepostas: a soma (US$ 10,2 mi) estava inflada. Medir o churn de cada segmento também pela receita: a ordem muda
+    (DevTools sai do topo) e o segmento que aparece nas duas medidas ("event") vira a primeira hipótese.
+12. **Dizer o grau de certeza.** "Não há sinal de piora" ≠ "o churn caiu". Ausência de sinal sazonal com 2 anos ≠ prova de ausência.
 
 ## Regras do dashboard
 
