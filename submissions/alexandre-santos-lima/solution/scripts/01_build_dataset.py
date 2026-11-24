@@ -35,7 +35,7 @@ def check(nome, valor, nota=""):
     audit.append((nome, valor, nota))
 
 check("Contas", len(acc))
-check("Assinaturas / contas com assinatura", f"{len(sub)} / {sub.account_id.nunique()}")
+check("Assinaturas / contas com assinatura", f"{len(sub):,} / {sub.account_id.nunique()}".replace(",", "."))
 check("Assinaturas órfãs (account_id inexistente)", int((~sub.account_id.isin(acc.account_id)).sum()))
 check("Linhas de uso órfãs (subscription_id inexistente)", int((~use.subscription_id.isin(sub.subscription_id)).sum()))
 check("Tickets órfãos", int((~tkt.account_id.isin(acc.account_id)).sum()))
@@ -46,7 +46,7 @@ check("Assinaturas sem nenhum uso", int((~sub.subscription_id.isin(use.subscript
 s_ac = sub.groupby("account_id").agg(n=("subscription_id", "size"), n_end=("churn_flag", "sum"),
                                      last_start=("start_date", "max"), first_start=("start_date", "min"))
 a_ = acc.merge(s_ac, left_on="account_id", right_index=True)
-check("Contas com churn_flag=True", int(acc.churn_flag.sum()), f"{acc.churn_flag.mean():.1%} da base")
+check("Contas com churn_flag=True", int(acc.churn_flag.sum()), f"{acc.churn_flag.mean():.1%} da base".replace(".", ","))
 check("...dessas, com TODAS as assinaturas encerradas", int((a_.churn_flag & (a_.n == a_.n_end)).sum()),
       "conta 'churnada' continua com assinaturas ativas")
 ev_acc = set(chn.account_id)
@@ -197,7 +197,9 @@ for p in cols:
 aud = ["# Auditoria de ligação entre as tabelas\n",
        "Gerado por `solution/scripts/01_build_dataset.py`. Chaves ligam 100%; **datas entre tabelas não**.\n",
        "| checagem | resultado | leitura |", "|---|---|---|"]
-aud += [f"| {n} | {v} | {o} |" for n, v, o in audit]
+import re
+br = lambda v: re.sub(r"(\d)\.(\d{1,2})(?!\d)", r"\1,\2", v) if isinstance(v, str) else f"{v:,}".replace(",", ".")
+aud += [f"| {n} | {br(v)} | {o} |" for n, v, o in audit]
 (DOCS / "auditoria_dados.md").write_text("\n".join(aud) + "\n", encoding="utf-8")
 
 print(f"account_360: {base.shape}  subscription_360: {subx.shape}")

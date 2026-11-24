@@ -30,3 +30,18 @@ Cada etapa abaixo tem o script que a reproduz em `solution/scripts/`.
   (DevTools 31%, canal event 30%, Alemanha 32%) têm p bruto 0,07–0,66 e somem com a correção (n=25 na Alemanha).
 - Correção de bug do próprio script: no pandas 3 colunas de texto não são `object`; o teste categórico
   estava caindo no ramo numérico e gerando NaN. Detectado olhando a saída, corrigido com `is_numeric_dtype`.
+
+## Etapa 4 — Dashboard em React (scripts 04 + solution/dashboard)
+- **Pedido do usuário:** ver os dados num dashboard; React + Vite + Recharts, dados gerados por `04_export_dashboard.py`.
+- **Correção de uma afirmação minha (IA):** no reconhecimento eu disse que a taxa de churn estava "estável em ~2,5%".
+  A conta dividia *eventos por conta* por *assinaturas* — unidades diferentes. Refeita direito (assinaturas pagas
+  encerradas ÷ ativas no início do mês), **a taxa sobe**: ~1% até ago/24 → 1,5% set → 2,4% nov → 5,3% dez.
+  A narrativa mudou de "o churn não subiu" para "subiu, e o problema é outro".
+- **Checagem do pico de dezembro:** 54 dos 167 encerramentos pagos de dez/24 caem nos dias 29–31 (borda do dataset).
+  Sem eles: 3,6% em 28 dias — ainda o maior mês. Escrevi "perto de 4%" no primeiro rascunho do site; corrigido para o número exato.
+- **Uso:** total estável (~10 mil eventos/mês, ρ 2024 = 0,05) enquanto a base cresce → uso por assinatura cai 83% em 2024.
+- **Paleta validada** com o validador de daltonismo (skill de dataviz) antes de desenhar; tema claro/escuro.
+- **Validação com Playwright** (desktop 1366 px claro/escuro e celular 390 px): sem erros de console, sem rolagem horizontal,
+  rótulos ligados aos campos. Corrigido o que os prints mostraram: mapa de calor cortando as linhas de churn,
+  matriz cortada no celular, rótulos "fraca/moderada" sobrepostos, números em formato americano na auditoria
+  ("5,000", "22.0%"), "−0%" na leitura e nota que citava "pricing" quando a tabela mostra "preço".
