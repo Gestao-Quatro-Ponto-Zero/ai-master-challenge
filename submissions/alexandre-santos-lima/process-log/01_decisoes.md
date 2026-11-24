@@ -83,3 +83,22 @@ Cada etapa abaixo tem o script que a reproduz em `solution/scripts/`.
 - **Limite declarado:** sazonalidade com 2 anos = 2 observações por mês; o gráfico mostra ausência de sinal, não prova de ausência.
 - Correções de texto pegas nos prints: fev/24 tinha 19 esperados (eu tinha escrito 21); "a relação some" virou "não há relação significativa"
   porque a nuvem tem leve inclinação positiva.
+
+## Etapa 7 — Sumário lateral, página de Sugestões, previsão e skill de um comando
+- **Pedido do usuário:** sumário na barra lateral; aba "Sugestões" com o que fazer para ter clareza nos dados, reduzir o churn e
+  entender os cancelamentos; previsão "se for possível, com certeza, sem nada inventado"; e uma skill que refaça tudo com um comando.
+- **Previsão — o que entrou e o que ficou de fora (decisão de honestidade):** entrou a % por safra (9,7%, IC 8,8–10,6%, n = 4.222)
+  e os registros esperados por tamanho de base (4.707 assinaturas → 83/mês, faixa 57–114, área de extrapolação marcada).
+  Ficou de fora previsão por data: dependeria de prever o crescimento da base e as datas de encerramento não são confiáveis.
+- **Hipóteses DevTools e "event":** em vez de recomendar ação sobre elas, calculei quanto falta para confirmá-las num teste novo
+  (α = 0,05, poder 80%): 218 e 284 contas do segmento, ~4 e ~6 anos no ritmo atual. Daí a sugestão de entrevistar quem saiu.
+- **Sugestões:** plano em 3 etapas (medir, entender, reduzir), 6 correções de medição cada uma ligada a um número do diagnóstico
+  e com critério de "resolvido", lista das 15 contas onde os registros concordam (US$ 216 mil de MRR encerrado), e a regra de
+  medir pela % por safra e testar ações com grupo de controle. O impacto de 1 p.p. é aritmética (38 assinaturas × MRR mediano/médio
+  das que cancelaram), apresentado como "tamanho do prêmio, não promessa".
+- **Abas:** Diagnóstico / Sugestões / Dados (auditoria, mapa e contas saíram da página principal, que estava inchada).
+- **Skill `diagnostico-churn`** (`skill/diagnostico-churn/`): `rodar.sh` faz download → 7 scripts → build → validação Playwright
+  (3 páginas × desktop claro/escuro/celular) → resumo, em ~34 s. O SKILL.md guarda o método com as armadilhas deste projeto
+  (datas antes de taxas, safra em vez de contagem, descontar a base, robustez, antes × depois, grau de certeza).
+- Bugs pegos na validação: sumário marcando a seção errada no fim da página e durante a rolagem suave; numeração dupla;
+  gaveta do sumário que não fechava no celular; motivos em inglês na tabela; eixo da previsão com marcas quebradas.

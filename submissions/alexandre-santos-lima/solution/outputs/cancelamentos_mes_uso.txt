@@ -1,0 +1,85 @@
+cancel_vs_tempo: (np.float64(0.9860752211501915), np.float64(1.2330931900678978e-18))
+cancel_vs_base: (np.float64(0.9860752211501915), np.float64(1.2330931900678978e-18))
+elasticidade_base: (np.float64(0.9008518485750855), [0.8048079916138341, 0.9968957055363369])
+pseudo_r2_base: 0.9457237120128882
+lr_tempo_alem_base_p: 0.0013788776438469275
+lr_sazonalidade_p: 0.031299196884688706
+elasticidade_contas: (np.float64(2.0334468036231024), [1.8081802216848186, 2.258713385561386])
+dispersao_pearson: 2.051512329247582
+cancel_vs_uso_por_assin_cru: (np.float64(-0.9860752211501915), np.float64(1.2330931900678978e-18))
+cancel_vs_uso_total_cru: (np.float64(0.023498703416641807), np.float64(0.9132113539592609))
+cancel_vs_uso_controlando_base: (np.float64(0.49391304347826087), np.float64(0.014166268020548073))
+delta_cancel_vs_delta_uso: (np.float64(0.42928467907966056), np.float64(0.04093691769965802))
+conta_uso_eventos_auc: (np.float64(0.5394755244755245), np.float64(0.20585894382071646))
+conta_uso_taxa_erro_auc: (np.float64(0.4508508158508159), np.float64(0.1152283282972941))
+conta_uso_dias_desde_ultimo_auc: (np.float64(0.4292657342657343), np.float64(0.023297617275856608))
+conta_uso_variacao_2024_vs_2023_auc: (np.float64(0.5211188811188812), np.float64(0.49866016821910775))
+uso_90d_antes_depois: (np.float64(62.022792022792025), np.float64(62.22222222222222), np.float64(0.9886039886039886), np.float64(0.9624134946678142), 351)
+    mes  cancelamentos  assinaturas_ativas  esperado_pela_base  razao_obs_esp  uso_por_assinatura
+2023-01              1                   3                0.12           8.50             3625.67
+2023-02              0                  14                0.47           0.00              678.00
+2023-03              5                  31                0.96           5.18              355.84
+2023-04              3                  62                1.80           1.67              167.24
+2023-05              3                  90                2.52           1.19              119.52
+2023-06              5                 136                3.66           1.37               73.54
+2023-07              6                 194                5.03           1.19               57.13
+2023-08              7                 275                6.89           1.02               37.58
+2023-09              6                 336                8.26           0.73               28.98
+2023-10             10                 420               10.10           0.99               26.11
+2023-11             11                 538               12.62           0.87               17.61
+2023-12             16                 651               14.98           1.07               16.03
+2024-01             20                 782               17.68           1.13               13.58
+2024-02             10                 923               20.52           0.49               11.10
+2024-03             24                1102               24.07           1.00                9.73
+2024-04             25                1286               27.67           0.90                7.88
+2024-05             27                1519               32.15           0.84                6.95
+2024-06             40                1755               36.61           1.09                5.76
+2024-07             35                2072               42.52           0.82                5.12
+2024-08             42                2392               48.39           0.87                4.41
+2024-09             53                2804               55.84           0.95                3.64
+2024-10             66                3273               64.19           1.03                3.50
+2024-11             68                3827               73.90           0.92                2.62
+2024-12            117                4707               89.04           1.31                2.28
+
+=== ROBUSTEZ
+[todos os meses] n=24 elasticidade base=0.90 IC=[0.76, 1.04] | tendência além da base p=0.006 | sazonalidade p=0.191 (df resid 11)
+   uso × cancelamentos controlando a base: rho=0.49 p=0.014
+   variação mensal uso × variação cancelamentos: rho=0.43 p=0.041
+   cru uso/assinatura × cancelamentos: rho=-0.99
+[jul/23–nov/24] n=17 elasticidade base=0.91 IC=[0.81, 1.01] | tendência além da base p=0.441 | sazonalidade p=0.188 (df resid 4)
+   uso × cancelamentos controlando a base: rho=0.40 p=0.115
+   variação mensal uso × variação cancelamentos: rho=0.43 p=0.095
+   cru uso/assinatura × cancelamentos: rho=-0.97
+
+export ok /home/alexandre/Projetos/seletivo/submissions/alexandre-santos-lima/solution/dashboard/src/mes_uso.json {
+"r2": 0.9576602425923083,
+"elasticidade": 0.9088450898629458,
+"elasticidade_ic": [
+0.8058004598894986,
+1.011889719836393
+],
+"dispersao": 1.0,
+"p_tendencia": 0.4413048674152256,
+"p_sazonal": 0.1880689409370796,
+"rho_saz": -0.39999999999999997,
+"p_saz": 0.6,
+"n_saz": 4,
+"dentro_faixa": 16,
+"n_estavel": 17,
+"rho_cru": -0.9742338621959643,
+"p_cru": 4.120954914386661e-11,
+"rho_controlado": 0.3970588235294118,
+"p_controlado": 0.11454177561107581,
+"rho_delta": 0.43163918413532254,
+"p_delta": 0.09502716641530566,
+"antes_media": 62.022792022792025,
+"depois_media": 62.22222222222222,
+"pct_usa_depois": 0.9886039886039886,
+"p_antes_depois": 0.9624134946678142,
+"n_antes_depois": 351,
+"rho_antes_depois": 0.3796416341832599,
+"auc_conta": 0.5394755244755245,
+"p_conta": 0.20585894382071646,
+"ks": 0.1018648018648019,
+"p_ks": 0.3113445594556941
+}
