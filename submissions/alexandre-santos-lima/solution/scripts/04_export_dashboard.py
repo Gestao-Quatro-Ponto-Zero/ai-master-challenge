@@ -74,6 +74,28 @@ for col, nome in [("perfil_industry", "Indústria"), ("perfil_referral_source", 
     segs[nome] = dict(p=r(p), itens=[dict(nivel=str(x[col]), n=int(x.n), churn=int(x.k), taxa=r(x.k / x.n),
                                           ic=wilson(x.k, x.n), mrr_ativo=r(x.mrr, 0)) for _, x in g.iterrows()])
 
+
+# ------------------------------------------------------------ safras (coortes): a proporção que sai muda?
+pg = sub[~sub.is_trial].copy()
+pg["q"] = pg.start_date.dt.to_period("Q").astype(str)
+pg["dur"] = (pg.end_date - pg.start_date).dt.days
+pg["dias_disp"] = (pd.Timestamp("2024-12-31") - pg.start_date).dt.days
+saf = pg.groupby("q").agg(n=("subscription_id", "size"), encerradas=("churn_flag", "sum"),
+                          dias_disp=("dias_disp", "median")).reset_index()
+saf["dur_mediana"] = saf.q.map(pg[pg.churn_flag].groupby("q").dur.median())
+safras = [dict(tri=x.q, n=int(x.n), encerradas=int(x.encerradas), pct=r(x.encerradas / x.n), ic=wilson(x.encerradas, x.n),
+               dias_disponiveis=r(x.dias_disp, 0), duracao_mediana=r(x.dur_mediana, 0)) for x in saf.itertuples()]
+_, p_saf, *_ = stats.chi2_contingency(pd.crosstab(pg.q, pg.churn_flag))
+_, p_saf23, *_ = stats.chi2_contingency(pd.crosstab(pg[pg.q != "2023Q1"].q, pg[pg.q != "2023Q1"].churn_flag))
+ev_conta = chn.groupby("account_id").size().reindex(acc.account_id).fillna(0)
+sq = acc.signup_date.dt.to_period("Q").astype(str).values
+safras_contas = [dict(tri=q, contas=int((sq == q).sum()), eventos_por_conta=r(ev_conta.values[sq == q].mean(), 2))
+                 for q in sorted(set(sq))]
+anuais = pg[pg.churn_flag & pg.billing_frequency.eq("annual")]
+datas = dict(anuais_encerradas=len(anuais), anuais_menos_1_ano=int((anuais.dur < 365).sum()),
+             anuais_menos_30_dias=int((anuais.dur < 30).sum()), p_safras=r(p_saf), p_safras_sem_2023q1=r(p_saf23),
+             fracao_janela_mediana=r((pg[pg.churn_flag].dur / pg[pg.churn_flag].dias_disp.clip(lower=1)).median(), 2))
+
 # ------------------------------------------------------------ definições de churn
 f = set(acc[acc.churn_flag].account_id); e = set(chn.account_id)
 sub_enc = set(sub[sub.churn_flag].account_id)
@@ -141,7 +163,7 @@ kpis = dict(
     variaveis_testadas=int(len(corr) + len(corr_s)), variaveis_significativas=int((corr.q_bh < .05).sum() + (corr_s.q_bh < .05).sum()),
 )
 
-data = dict(gerado_em=pd.Timestamp.now().isoformat(timespec="minutes"), kpis=kpis, mensal=mensal, tendencia_2024=tend,
+data = dict(safras=safras, safras_contas=safras_contas, datas=datas, gerado_em=pd.Timestamp.now().isoformat(timespec="minutes"), kpis=kpis, mensal=mensal, tendencia_2024=tend,
             segmentos=segs, definicoes=definicoes, satisfacao=satisfacao, motivos=motivos, auditoria=auditoria,
             correlacoes=corr_rows(corr, b), correlacoes_assinatura=corr_rows(corr_s, sx, "churn_flag"),
             spearman=dict(variaveis=list(sp.columns), valores=[[r(v, 3) for v in row] for row in sp.values]),

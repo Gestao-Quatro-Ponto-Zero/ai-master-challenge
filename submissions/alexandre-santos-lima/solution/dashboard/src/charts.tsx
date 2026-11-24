@@ -273,3 +273,35 @@ export function Matrix({ linhas, colunas, valores, pal, isDark }: { linhas: stri
     </div>
   );
 }
+
+/* ---------------------------------------------------------------- % de cada safra que cancelou */
+export type Safra = { tri: string; n: number; encerradas: number; pct: number; ic: [number, number]; dias_disponiveis: number; duracao_mediana: number };
+export const triLabel = (t: string) => `T${t.slice(5)}/${t.slice(2, 4)}`;
+
+export function SafraBars({ data, media, pal, height = 240, compact = false }: { data: Safra[]; media: number; pal: Palette; height?: number; compact?: boolean }) {
+  return (
+    <ResponsiveContainer width="100%" height={height}>
+      <BarChart data={data} margin={{ top: compact ? 14 : 22, right: compact ? 4 : 64, left: 0, bottom: 0 }} barCategoryGap="18%">
+        {!compact && <CartesianGrid vertical={false} stroke={pal["--grid"]} />}
+        <XAxis dataKey="tri" tickFormatter={triLabel} {...axisProps(pal)} interval={0} tick={{ fill: pal["--muted"], fontSize: compact ? 10 : 11 }} />
+        <YAxis hide={compact} {...axisProps(pal)} axisLine={false} width={40} domain={[0, 0.3]} ticks={[0, 0.1, 0.2, 0.3]} tickFormatter={(v) => pct(v, 0)} />
+        <ReferenceLine y={media} stroke={pal["--muted"]} label={compact ? undefined : { value: `média ${pct(media)}`, position: "right", fill: pal["--ink-2"], fontSize: 11 }} />
+        <Tooltip cursor={{ fill: pal["--grid"], opacity: 0.5 }} content={({ active, payload }) => {
+          if (!active || !payload?.length) return null;
+          const s = payload[0].payload as Safra;
+          return (
+            <div className="tt">
+              <b>Assinaturas iniciadas no {s.tri.slice(5)}º trimestre de {s.tri.slice(0, 4)}</b>
+              <div className="row"><span>Canceladas</span><span>{int(s.encerradas)} de {int(s.n)} ({pct(s.pct)})</span></div>
+              <div className="row"><span>Margem (IC 95%)</span><span>{pct(s.ic[0])} a {pct(s.ic[1])}</span></div>
+            </div>
+          );
+        }} />
+        <Bar dataKey="pct" name="% cancelada" radius={[4, 4, 0, 0]} isAnimationActive={false}>
+          {data.map((s) => <Cell key={s.tri} fill={pal["--s1"]} fillOpacity={s.n < 50 ? 0.4 : 1} />)}
+          {!compact && <LabelList dataKey="pct" position="top" fill={pal["--ink-2"]} fontSize={11} formatter={(v: number) => pct(v, 0)} />}
+        </Bar>
+      </BarChart>
+    </ResponsiveContainer>
+  );
+}

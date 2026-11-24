@@ -50,3 +50,19 @@ Cada etapa abaixo tem o script que a reproduz em `solution/scripts/`.
   três colunas "o que cada área disse × o que os dados mostram" com mini-gráfico e veredito, e uma faixa com o achado
   que ninguém pediu (registros de churn que discordam). Nota de honestidade no número: o "11×" usa dez/24, que tem
   efeito de borda — a nota mostra que nov/24 já está em 4× junho.
+
+## Etapa 5 — O churn subiu? (correção apontada pelo usuário)
+- **Feedback do usuário:** "a página está repleta de perguntas sem respostas; pelo que eu vi o churn não subiu, por que o CEO diria que subiu?"
+  Dois problemas: (1) títulos-pergunta ("O churn subiu?") em vez de títulos-resposta; (2) o veredito "Verdade" estava errado.
+- **Segunda correção da mesma conclusão.** Eu (IA) primeiro disse "taxa estável" (unidades misturadas), depois "taxa subiu"
+  (aceitando datas de encerramento sem auditá-las). O usuário desconfiou; os testes (`05_teste_safras.py` + export 04) mostraram:
+  - % de cada safra de assinaturas que cancela: 2023 = 12,1%, 2024 = 9,3% (p = 0,047); sem a safra minúscula T1/23, safras não diferem (p = 0,13);
+  - eventos de churn por conta, por trimestre de cadastro: 1,1–1,4 em todas as safras;
+  - cancelamentos/mês 16 → 117 (7×) e assinaturas ativas 437 → 3.174 (7×): **o volume acompanha a base**;
+  - a "alta da taxa" em out–dez vem das datas: 211 de 216 contratos ANUAIS encerrados duraram < 1 ano (103 < 30 dias),
+    e o cancelamento cai sempre na metade do tempo que resta até o fim dos dados (mediana 49%) em qualquer safra;
+  - teste de composição por idade: não explica (a taxa padronizada também sobe) — o problema é a data, não o mix.
+- **Conclusão reformulada com cautela:** "não há sinal de que o churn piorou" (e não "o churn caiu"), porque safras recentes tiveram
+  menos tempo de exposição e a velocidade de cancelamento não pode ser medida com datas não confiáveis.
+- **Por que o CEO vê alta:** olha a contagem de cancelamentos, que cresce com a base. Lição registrada: auditar as datas antes de calcular qualquer taxa.
+- Dashboard: todos os títulos viraram respostas; abertura passou a mostrar "o que o CEO vê" (contagem) ao lado de "o que acontece" (% por safra).

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import raw from "./data.json";
-import { ForcaBars, Heatmap, Matrix, MonthlyBars, MonthlyLines, SatBars, SegmentCI, leitura, type Corr } from "./charts";
+import { ForcaBars, Heatmap, Matrix, MonthlyBars, MonthlyLines, SafraBars, SatBars, SegmentCI, leitura, type Corr, type Safra } from "./charts";
 import { dec, int, mes, nome, pct, pval, usd } from "./format";
 import { useTheme } from "./theme";
 import { Hero } from "./hero";
@@ -16,8 +16,8 @@ const Mt = M.filter((m) => m.mes >= DESDE);
 const get = (m: string) => M.find((x) => x.mes === m)!;
 
 const SECOES = [
-  ["resumo", "Resumo"], ["churn", "Churn subiu?"], ["uso", "Uso cresceu?"], ["satisfacao", "Satisfação ok?"],
-  ["definicoes", "Quem saiu?"], ["correlacoes", "Correlações"], ["segmentos", "Segmentos"], ["mapa", "Mapa"],
+  ["resumo", "Resumo"], ["churn", "Churn"], ["uso", "Uso"], ["satisfacao", "Satisfação"],
+  ["definicoes", "Medição"], ["correlacoes", "Correlações"], ["segmentos", "Segmentos"], ["mapa", "Mapa"],
   ["auditoria", "Auditoria"], ["contas", "Contas"],
 ] as const;
 
@@ -31,11 +31,15 @@ export default function App() {
   const { pal, isDark, toggle } = useTheme();
   const k = d.kpis;
   const t = d.tendencia_2024 as Record<string, { rho: number; p: number }>;
-  const dez = get("2024-12"), set_ = get("2024-09"), jun = get("2024-06"), jan24 = get("2024-01"), jul23 = get("2023-07");
+  const dez = get("2024-12"), jan24 = get("2024-01");
   const sat = d.satisfacao;
   const satResp = sat.filter((s) => s.nota !== "Sem nota").reduce((a, b) => a + b.tickets, 0);
   const satMedia = sat.filter((s) => s.nota !== "Sem nota").reduce((a, b) => a + Number(b.nota) * b.tickets, 0) / satResp;
   const df = d.definicoes;
+  const dez23 = get("2023-12");
+  const safras = d.safras as unknown as Safra[];
+  const dt = d.datas;
+  const mediaSafra = safras.reduce((a, b) => a + b.encerradas, 0) / safras.reduce((a, b) => a + b.n, 0);
 
   return (
     <>
@@ -50,43 +54,52 @@ export default function App() {
       </header>
 
       <main className="wrap">
-        <Hero pal={pal} mensal={M} sat={sat} kpis={k} def={df} />
+        <Hero pal={pal} mensal={M} sat={sat} kpis={k} def={df} safras={safras} mediaSafra={mediaSafra} />
 
         {/* ------------------------------------------------------------ CHURN */}
         <section className="block" id="churn">
-          <div className="eyebrow">Pergunta 1</div>
-          <h2>O churn subiu?</h2>
-          <p className="lede">Contar eventos engana quando a base cresce. Comparamos o volume com a taxa (churn ÷ base ativa no início do mês),
-            em assinaturas e em receita.</p>
+          <div className="eyebrow">O CEO diz: “o churn subiu”</div>
+          <h2>Não há sinal de que o churn piorou: os cancelamentos crescem junto com a base</h2>
+          <p className="lede">Os cancelamentos por mês subiram {dec(dez.eventos_churn / dez23.eventos_churn, 0)}× de dez/23 a dez/24, mas a base de assinaturas
+            ativas também cresceu {dec(dez.assinaturas_ativas / dez23.assinaturas_ativas, 0)}×. A pergunta certa é se cada safra de clientes perde mais que a anterior. Não perde: as safras de 2023 perderam 12%, as de 2024, 9%.</p>
           <div className="grid2">
             <div className="card">
-              <h3>Eventos de churn por mês</h3>
-              <p className="note">Tabela <code>churn_events</code>, contagem absoluta</p>
+              <h3>O que o CEO vê: cancelamentos por mês</h3>
+              <p className="note">Eventos em <code>churn_events</code>, contagem absoluta</p>
               <MonthlyBars data={M} k="eventos_churn" nomeSerie="Eventos" pal={pal} fmt={int} />
-              <p className="foot">De {int(jan24.eventos_churn)} em jan/24 para {int(dez.eventos_churn)} em dez/24.</p>
+              <p className="foot">De {int(dez23.eventos_churn)} em dez/23 para {int(dez.eventos_churn)} em dez/24, enquanto as assinaturas ativas foram de {int(dez23.assinaturas_ativas)} para {int(dez.assinaturas_ativas)}.</p>
             </div>
             <div className="card">
-              <h3>Taxa mensal de churn</h3>
-              <p className="note">Assinaturas pagas encerradas e MRR perdido ÷ base ativa no início do mês</p>
-              <MonthlyLines data={Mt} pal={pal} fmt={(v) => pct(v)}
-                series={[{ k: "taxa_churn_assinaturas", nome: "Assinaturas", cor: "--s1" }, { k: "taxa_churn_mrr", nome: "MRR", cor: "--s2" }]}
-                marca={{ mes: "2024-09", texto: "aceleração" }} />
-              <p className="foot">Base ativa: {int(jul23.assinaturas_ativas)} assinaturas em jul/23 → {int(dez.assinaturas_ativas)} em dez/24.</p>
+              <h3>O que acontece: % de cada safra que cancelou</h3>
+              <p className="note">Assinaturas pagas agrupadas pelo trimestre em que começaram</p>
+              <SafraBars data={safras} media={mediaSafra} pal={pal} />
+              <p className="foot">Todas as safras de 2024 ficam entre 8% e 10%. As de 2023 oscilam mais (10% a 15%) por serem menores. Fora a barra clara
+                (T1/23, só {safras[0].n} assinaturas), a diferença entre safras não é significativa (p = {pval(dt.p_safras_sem_2023q1)}).</p>
             </div>
           </div>
-          <Verdict tipo="true" rotulo="Verdade">
-            O volume subiu, e a taxa também, a partir de set/24 ({pct(set_.taxa_churn_assinaturas)} → {pct(dez.taxa_churn_assinaturas)} das
-            assinaturas; {pct(set_.taxa_churn_mrr)} → {pct(dez.taxa_churn_mrr)} do MRR). Tendência 2024: ρ = {dec(t.taxa_churn_assinaturas.rho, 2)} (p = {pval(t.taxa_churn_assinaturas.p)}).
+          <Verdict tipo="false" rotulo="Só em volume">
+            O número de cancelamentos subiu porque a empresa tem mais clientes. A proporção que sai não aumentou: {pct(mediaSafra, 0)} na média, 12% nas safras de 2023 e 9% nas de 2024.
           </Verdict>
-          <div className="warn">⚠ Parte do pico de dez/24 é efeito de borda: 54 dos 167 encerramentos pagos de dezembro caem nos dias 29 a 31, os últimos dias dos dados.
-            Sem eles, dezembro fica em 3,6% em apenas 28 dias, ainda acima de todos os meses anteriores (o maior foi {pct(get("2024-11").taxa_churn_assinaturas)} em nov/24).</div>
+          <div className="card" style={{ marginTop: 16 }}>
+            <h3>E a taxa mensal que dispara no fim de 2024?</h3>
+            <p className="note">Assinaturas encerradas ÷ ativas no início do mês. O salto em out–dez vem de datas de encerramento que não são confiáveis.</p>
+            <MonthlyLines data={Mt} pal={pal} fmt={(v) => pct(v)} height={200}
+              series={[{ k: "taxa_churn_assinaturas", nome: "Assinaturas", cor: "--s1" }, { k: "taxa_churn_mrr", nome: "MRR", cor: "--s2" }]} />
+            <ul style={{ margin: "10px 0 0", paddingLeft: 18, fontSize: 13.5, color: pal["--ink-2"] }}>
+              <li><b style={{ color: pal["--ink"] }}>{int(dt.anuais_menos_1_ano)} de {int(dt.anuais_encerradas)}</b> contratos <b style={{ color: pal["--ink"] }}>anuais</b> encerrados duraram menos de um ano, e {int(dt.anuais_menos_30_dias)} menos de 30 dias. Isso não acontece com contrato anual.</li>
+              <li>Em todas as safras, o cancelamento cai na metade do tempo que resta até o fim dos dados (mediana {pct(dt.fracao_janela_mediana, 0)}). Por isso as safras recentes, que tinham poucas semanas, “cancelam” todas em out–dez.</li>
+              <li>{54} dos {167} encerramentos de dez/24 caem nos dias 29 a 31, os últimos dias da base.</li>
+              <li>Pelo mesmo motivo, não dá para comparar as safras pela velocidade com que cancelam. Por isso a conclusão é “não há sinal de piora”, e não “o churn caiu”.</li>
+            </ul>
+          </div>
+          <div className="warn">A taxa mensal não serve para medir o churn enquanto a data de encerramento não for confiável. A medida que se sustenta é a proporção de cada safra que cancela.</div>
         </section>
 
         {/* ------------------------------------------------------------ USO */}
         <section className="block" id="uso">
-          <div className="eyebrow">Pergunta 2</div>
-          <h2>O uso cresceu?</h2>
-          <p className="lede">O produto olha o total. O que importa para retenção é o uso de cada cliente.</p>
+          <div className="eyebrow">O Produto diz: “o uso cresceu”</div>
+          <h2>O uso total ficou parado, e por cliente caiu</h2>
+          <p className="lede">O volume de uso é o mesmo de jan/23. Como a base de clientes cresceu, cada assinatura usa bem menos.</p>
           <div className="grid2">
             <div className="card">
               <h3>Eventos de uso por mês (total)</h3>
@@ -101,7 +114,7 @@ export default function App() {
               <p className="foot">De {dec(jan24.uso_por_assinatura_ativa, 1)} (jan/24) para {dec(dez.uso_por_assinatura_ativa, 1)} (dez/24): queda em todos os meses.</p>
             </div>
           </div>
-          <Verdict tipo="false" rotulo="Não por cliente">
+          <Verdict tipo="false" rotulo="Não cresceu">
             O uso total ficou parado em cerca de 10 mil eventos por mês enquanto a base de assinaturas se multiplicou. Por assinatura,
             o uso caiu {pct(1 - dez.uso_por_assinatura_ativa / jan24.uso_por_assinatura_ativa, 0)} em 2024.
           </Verdict>
@@ -111,8 +124,8 @@ export default function App() {
 
         {/* ------------------------------------------------------------ SATISFAÇÃO */}
         <section className="block" id="satisfacao">
-          <div className="eyebrow">Pergunta 3</div>
-          <h2>A satisfação está ok?</h2>
+          <div className="eyebrow">O CS diz: “a satisfação está ok”</div>
+          <h2>A satisfação parece ok porque só mede quem responde</h2>
           <p className="lede">Distribuição das notas dos {int(k.tickets)} tickets de suporte (escala de 1 a 5).</p>
           <div className="grid2">
             <div className="card">
@@ -137,8 +150,8 @@ export default function App() {
 
         {/* ------------------------------------------------------------ DEFINIÇÕES */}
         <section className="block" id="definicoes">
-          <div className="eyebrow">Achado que ninguém pediu</div>
-          <h2>Quem saiu? Depende de qual tabela você pergunta</h2>
+          <div className="eyebrow">O que ninguém disse</div>
+          <h2>A empresa não sabe quem saiu, nem por quê</h2>
           <p className="lede">A base tem três registros de churn. Eles deveriam descrever as mesmas contas, mas não descrevem.</p>
           <div className="grid2">
             <div className="card">
@@ -181,7 +194,7 @@ export default function App() {
         {/* ------------------------------------------------------------ MAPA */}
         <section className="block" id="mapa">
           <div className="eyebrow">Todas as categorias cruzadas</div>
-          <h2>Mapa de correlação entre as tabelas</h2>
+          <h2>Receita e uso andam juntos; o churn não anda com nada</h2>
           <p className="lede">Spearman entre as variáveis numéricas da base ligada, agrupadas por categoria (perfil, receita, uso, suporte, churn).
             Receita e uso andam juntos porque mais assinaturas geram mais registros de uso. As linhas de churn, no fim, ficam praticamente neutras.</p>
           <div className="card">
@@ -192,7 +205,7 @@ export default function App() {
         {/* ------------------------------------------------------------ AUDITORIA */}
         <section className="block" id="auditoria">
           <div className="eyebrow">Antes de qualquer conclusão</div>
-          <h2>Auditoria de ligação entre as tabelas</h2>
+          <h2>As chaves entre as tabelas batem; as datas, não</h2>
           <p className="lede">As chaves ligam 100%, mas as datas entre tabelas não são coerentes. Por isso a base foi ligada por chave e agregada
             no histórico inteiro de cada conta, sem janelas do tipo “90 dias antes do churn”.</p>
           <div className="tbl-wrap">
@@ -235,8 +248,8 @@ function Correlacoes({ pal }: { pal: ReturnType<typeof useTheme>["pal"] }) {
   const sobrev = fonte.filter((c) => c.q < 0.05).length;
   return (
     <section className="block" id="correlacoes">
-      <div className="eyebrow">O que causa o churn?</div>
-      <h2>Correlação de cada variável com o churn, por categoria</h2>
+      <div className="eyebrow">O que causa o churn</div>
+      <h2>Nenhuma variável isolada explica quem sai</h2>
       <p className="lede">Força de 0 (nenhuma) a 1 (separa perfeitamente quem sai de quem fica). Numéricas: |AUC − 0,5| × 2; categóricas: V de Cramér.
         “q” é o p-valor corrigido para {int(fonte.length)} testes simultâneos (Benjamini-Hochberg): só q &lt; 0,05 conta como efeito real.</p>
       <div className="controls">
@@ -289,10 +302,11 @@ function Segmentos({ pal }: { pal: ReturnType<typeof useTheme>["pal"] }) {
   const media = d.kpis.churn_flag / d.kpis.contas;
   return (
     <section className="block" id="segmentos">
-      <div className="eyebrow">Quais segmentos estão em risco?</div>
-      <h2>Taxa de churn por segmento, com margem de erro</h2>
+      <div className="eyebrow">Segmentos em risco</div>
+      <h2>Nenhuma diferença entre segmentos resiste ao teste estatístico</h2>
       <p className="lede">O ponto é a taxa observada (flag de churn da conta); a barra clara é o intervalo de confiança de 95%. Se a barra cruza a linha da
-        média, a diferença pode ser acaso.</p>
+        média, a diferença pode ser acaso. DevTools (31%) passa raspando acima da média, mas com cerca de 25 segmentos testados é esperado
+        que um caia fora por sorte. O teste do conjunto (p abaixo) não confirma.</p>
       <div className="controls">
         <label htmlFor="dim">Segmentar por</label>
         <select id="dim" value={dim} onChange={(e) => setDim(e.target.value)}>
@@ -331,7 +345,7 @@ function Contas({ pal }: { pal: ReturnType<typeof useTheme>["pal"] }) {
   return (
     <section className="block" id="contas">
       <div className="eyebrow">Base ligada · account_360</div>
-      <h2>Explorar as contas</h2>
+      <h2>As 500 contas, com as cinco tabelas cruzadas</h2>
       <p className="lede">Uma linha por conta, com as cinco tabelas já cruzadas. Clique no cabeçalho para ordenar.</p>
       <div className="controls">
         <label htmlFor="busca" className="sr-only">Buscar conta</label>
