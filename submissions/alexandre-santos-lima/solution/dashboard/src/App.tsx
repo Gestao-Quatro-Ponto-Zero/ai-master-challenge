@@ -5,6 +5,9 @@ import { dec, int, mes, nome, pct, pval, usd } from "./format";
 import { useTheme } from "./theme";
 import { Hero } from "./hero";
 import { Relacoes } from "./relacoes";
+import { Previsao } from "./previsao";
+import { Sugestoes, ITENS_SUGESTOES } from "./sugestoes";
+import { Shell, useRota, type Item } from "./layout";
 
 type Mensal = (typeof raw.mensal)[number];
 type Seg = { p: number; itens: { nivel: string; n: number; churn: number; taxa: number; ic: [number, number]; mrr_ativo: number }[] };
@@ -16,11 +19,14 @@ const DESDE = "2023-07"; // antes disso a base tem < 120 assinaturas: taxa vira 
 const Mt = M.filter((m) => m.mes >= DESDE);
 const get = (m: string) => M.find((x) => x.mes === m)!;
 
-const SECOES = [
-  ["resumo", "Resumo"], ["churn", "Churn"], ["relacoes", "Base, mês e uso"], ["uso", "Uso"], ["satisfacao", "Satisfação"],
-  ["definicoes", "Medição"], ["correlacoes", "Correlações"], ["segmentos", "Segmentos"], ["mapa", "Mapa"],
-  ["auditoria", "Auditoria"], ["contas", "Contas"],
-] as const;
+const ITENS_DIAGNOSTICO: Item[] = [
+  { id: "resumo", titulo: "Resumo" }, { id: "churn", titulo: "Churn" }, { id: "relacoes", titulo: "Base, mês e uso" },
+  { id: "uso", titulo: "Uso" }, { id: "satisfacao", titulo: "Satisfação" }, { id: "definicoes", titulo: "Qualidade dos dados" },
+  { id: "correlacoes", titulo: "Correlações" }, { id: "segmentos", titulo: "Segmentos" }, { id: "previsao", titulo: "Previsão" },
+];
+const ITENS_DADOS: Item[] = [
+  { id: "auditoria", titulo: "Auditoria das tabelas" }, { id: "mapa", titulo: "Mapa de correlação" }, { id: "contas", titulo: "As 500 contas" },
+];
 
 function Verdict({ tipo, rotulo, children }: { tipo: "true" | "false" | "partial"; rotulo: string; children: React.ReactNode }) {
   return (
@@ -30,6 +36,7 @@ function Verdict({ tipo, rotulo, children }: { tipo: "true" | "false" | "partial
 
 export default function App() {
   const { pal, isDark, toggle } = useTheme();
+  const pagina = useRota();
   const k = d.kpis;
   const t = d.tendencia_2024 as Record<string, { rho: number; p: number }>;
   const dez = get("2024-12"), jan24 = get("2024-01");
@@ -44,17 +51,9 @@ export default function App() {
 
   return (
     <>
-      <header className="top">
-        <div className="bar">
-          <span className="brand">RavenStack · Churn</span>
-          <nav aria-label="Seções">{SECOES.map(([id, l]) => <a key={id} href={`#${id}`}>{l}</a>)}</nav>
-          <button className="theme-btn" onClick={toggle} aria-label={isDark ? "Mudar para tema claro" : "Mudar para tema escuro"}>
-            {isDark ? "☀ Claro" : "☾ Escuro"}
-          </button>
-        </div>
-      </header>
-
-      <main className="wrap">
+      <Shell pagina={pagina} isDark={isDark} toggle={toggle}
+        itens={pagina === "sugestoes" ? ITENS_SUGESTOES : pagina === "dados" ? ITENS_DADOS : ITENS_DIAGNOSTICO}>
+        {pagina === "diagnostico" && (<>
         <Hero pal={pal} mensal={M} sat={sat} kpis={k} def={df} safras={safras} mediaSafra={mediaSafra} />
 
         {/* ------------------------------------------------------------ CHURN */}
@@ -193,17 +192,10 @@ export default function App() {
 
         <Correlacoes pal={pal} />
         <Segmentos pal={pal} />
+        <Previsao pal={pal} />
+        </>)}
 
-        {/* ------------------------------------------------------------ MAPA */}
-        <section className="block" id="mapa">
-          <div className="eyebrow">Todas as categorias cruzadas</div>
-          <h2>Receita e uso andam juntos; o churn não anda com nada</h2>
-          <p className="lede">Spearman entre as variáveis numéricas da base ligada, agrupadas por categoria (perfil, receita, uso, suporte, churn).
-            Receita e uso andam juntos porque mais assinaturas geram mais registros de uso. As linhas de churn, no fim, ficam praticamente neutras.</p>
-          <div className="card">
-            <Heatmap vars={d.spearman.variaveis} vals={d.spearman.valores} pal={pal} isDark={isDark} />
-          </div>
-        </section>
+        {pagina === "dados" && (<>
 
         {/* ------------------------------------------------------------ AUDITORIA */}
         <section className="block" id="auditoria">
@@ -223,13 +215,27 @@ export default function App() {
           </div>
         </section>
 
+        {/* ------------------------------------------------------------ MAPA */}
+        <section className="block" id="mapa">
+          <div className="eyebrow">Todas as categorias cruzadas</div>
+          <h2>Receita e uso andam juntos; o churn não anda com nada</h2>
+          <p className="lede">Spearman entre as variáveis numéricas da base ligada, agrupadas por categoria (perfil, receita, uso, suporte, churn).
+            Receita e uso andam juntos porque mais assinaturas geram mais registros de uso. As linhas de churn, no fim, ficam praticamente neutras.</p>
+          <div className="card">
+            <Heatmap vars={d.spearman.variaveis} vals={d.spearman.valores} pal={pal} isDark={isDark} />
+          </div>
+        </section>
+
         <Contas pal={pal} />
+        </>)}
+
+        {pagina === "sugestoes" && <Sugestoes pal={pal} />}
 
         <footer>
           Dados: RavenStack, dataset sintético de River @ Rivalytics (Kaggle, licença MIT). Base gerada pelos scripts
-          <code>01</code>–<code>04</code> em <code>solution/scripts</code>. Atualizado em {d.gerado_em.replace("T", " ")}.
+          <code>01</code>–<code>07</code> em <code>solution/scripts</code>. Atualizado em {d.gerado_em.replace("T", " ")}.
         </footer>
-      </main>
+      </Shell>
     </>
   );
 }
